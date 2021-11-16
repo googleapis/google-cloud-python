@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.compute_v1.types import compute
@@ -74,14 +74,14 @@ class AggregatedListPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[compute.NodeGroupAggregatedList]:
+    def pages(self) -> Iterator[compute.NodeGroupAggregatedList]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[Tuple[str, compute.NodeGroupsScopedList]]:
+    def __iter__(self) -> Iterator[Tuple[str, compute.NodeGroupsScopedList]]:
         for page in self.pages:
             yield from page.items.items()
 
@@ -139,14 +139,14 @@ class ListPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[compute.NodeGroupList]:
+    def pages(self) -> Iterator[compute.NodeGroupList]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[compute.NodeGroup]:
+    def __iter__(self) -> Iterator[compute.NodeGroup]:
         for page in self.pages:
             yield from page.items
 
@@ -201,14 +201,14 @@ class ListNodesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[compute.NodeGroupsListNodes]:
+    def pages(self) -> Iterator[compute.NodeGroupsListNodes]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[compute.NodeGroupNode]:
+    def __iter__(self) -> Iterator[compute.NodeGroupNode]:
         for page in self.pages:
             yield from page.items
 

@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.compute_v1.types import compute
@@ -74,14 +74,14 @@ class AggregatedListPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[compute.InstanceGroupAggregatedList]:
+    def pages(self) -> Iterator[compute.InstanceGroupAggregatedList]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[Tuple[str, compute.InstanceGroupsScopedList]]:
+    def __iter__(self) -> Iterator[Tuple[str, compute.InstanceGroupsScopedList]]:
         for page in self.pages:
             yield from page.items.items()
 
@@ -139,14 +139,14 @@ class ListPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[compute.InstanceGroupList]:
+    def pages(self) -> Iterator[compute.InstanceGroupList]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[compute.InstanceGroup]:
+    def __iter__(self) -> Iterator[compute.InstanceGroup]:
         for page in self.pages:
             yield from page.items
 
@@ -201,14 +201,14 @@ class ListInstancesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[compute.InstanceGroupsListInstances]:
+    def pages(self) -> Iterator[compute.InstanceGroupsListInstances]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[compute.InstanceWithNamedPorts]:
+    def __iter__(self) -> Iterator[compute.InstanceWithNamedPorts]:
         for page in self.pages:
             yield from page.items
 

@@ -1,3 +1,22 @@
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+import json  # type: ignore
+import grpc  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.api_core import rest_helpers
+from google.api_core import path_template
+from google.api_core import gapic_v1
+from requests import __version__ as requests_version
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import warnings
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
+
 # -*- coding: utf-8 -*-
 # Copyright 2020 Google LLC
 #
@@ -13,21 +32,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
 
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-
-import grpc  # type: ignore
-
-from google.auth.transport.requests import AuthorizedSession
 
 from google.cloud.compute_v1.types import compute
 
-from .base import SecurityPoliciesTransport, DEFAULT_CLIENT_INFO
+from .base import (
+    SecurityPoliciesTransport,
+    DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO,
+)
+
+
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
+    grpc_version=None,
+    rest_version=requests_version,
+)
 
 
 class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
@@ -53,6 +72,7 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
+        url_scheme: str = "https",
     ) -> None:
         """Instantiate the transport.
 
@@ -80,6 +100,11 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                be used for service account credentials.
+            url_scheme: the protocol scheme for the API endpoint.  Normally
+                "https", but for testing or local servers,
+                "http" can be specified.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -98,10 +123,12 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._prep_wrapped_messages(client_info)
 
-    def add_rule(
+    def _add_rule(
         self,
         request: compute.AddRuleSecurityPolicyRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the add rule method over HTTP.
@@ -112,6 +139,9 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 SecurityPolicies.AddRule. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -135,30 +165,62 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/global/securityPolicies/{security_policy}/addRule",
+                "body": "security_policy_rule_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("security_policy", "securityPolicy"),
+        ]
+
+        request_kwargs = compute.AddRuleSecurityPolicyRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.SecurityPolicyRule.to_json(
-            request.security_policy_rule_resource,
+            compute.SecurityPolicyRule(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/securityPolicies/{security_policy}/addRule".format(
-            host=self._host,
-            project=request.project,
-            security_policy=request.security_policy,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.AddRuleSecurityPolicyRequest.to_json(
+                compute.AddRuleSecurityPolicyRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -169,10 +231,12 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def delete(
+    def _delete(
         self,
         request: compute.DeleteSecurityPolicyRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the delete method over HTTP.
@@ -183,6 +247,9 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 SecurityPolicies.Delete. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -206,24 +273,53 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/securityPolicies/{security_policy}".format(
-            host=self._host,
-            project=request.project,
-            security_policy=request.security_policy,
+        http_options = [
+            {
+                "method": "delete",
+                "uri": "/compute/v1/projects/{project}/global/securityPolicies/{security_policy}",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("security_policy", "securityPolicy"),
+        ]
+
+        request_kwargs = compute.DeleteSecurityPolicyRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.DeleteSecurityPolicyRequest.to_json(
+                compute.DeleteSecurityPolicyRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.DeleteSecurityPolicyRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.delete(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -233,10 +329,12 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def get(
+    def _get(
         self,
         request: compute.GetSecurityPolicyRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.SecurityPolicy:
         r"""Call the get method over HTTP.
@@ -247,6 +345,9 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 SecurityPolicies.Get. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -261,22 +362,53 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/securityPolicies/{security_policy}".format(
-            host=self._host,
-            project=request.project,
-            security_policy=request.security_policy,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/global/securityPolicies/{security_policy}",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("security_policy", "securityPolicy"),
+        ]
+
+        request_kwargs = compute.GetSecurityPolicyRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.GetSecurityPolicyRequest.to_json(
+                compute.GetSecurityPolicyRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -288,10 +420,12 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def get_rule(
+    def _get_rule(
         self,
         request: compute.GetRuleSecurityPolicyRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.SecurityPolicyRule:
         r"""Call the get rule method over HTTP.
@@ -302,6 +436,9 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 SecurityPolicies.GetRule. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -314,24 +451,55 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/securityPolicies/{security_policy}/getRule".format(
-            host=self._host,
-            project=request.project,
-            security_policy=request.security_policy,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/global/securityPolicies/{security_policy}/getRule",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("security_policy", "securityPolicy"),
+        ]
+
+        request_kwargs = compute.GetRuleSecurityPolicyRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.GetRuleSecurityPolicyRequest.to_json(
+                compute.GetRuleSecurityPolicyRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.GetRuleSecurityPolicyRequest.priority in request:
-            query_params["priority"] = request.priority
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -343,10 +511,12 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def insert(
+    def _insert(
         self,
         request: compute.InsertSecurityPolicyRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the insert method over HTTP.
@@ -357,6 +527,9 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 SecurityPolicies.Insert. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -380,30 +553,59 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/global/securityPolicies",
+                "body": "security_policy_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.InsertSecurityPolicyRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.SecurityPolicy.to_json(
-            request.security_policy_resource,
+            compute.SecurityPolicy(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/securityPolicies".format(
-            host=self._host, project=request.project,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.InsertSecurityPolicyRequest.to_json(
+                compute.InsertSecurityPolicyRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.InsertSecurityPolicyRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -414,10 +616,12 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def list(
+    def _list(
         self,
         request: compute.ListSecurityPoliciesRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.SecurityPolicyList:
         r"""Call the list method over HTTP.
@@ -428,6 +632,9 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 SecurityPolicies.List. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -436,30 +643,52 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/securityPolicies".format(
-            host=self._host, project=request.project,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/global/securityPolicies",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.ListSecurityPoliciesRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.ListSecurityPoliciesRequest.to_json(
+                compute.ListSecurityPoliciesRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.ListSecurityPoliciesRequest.filter in request:
-            query_params["filter"] = request.filter
-        if compute.ListSecurityPoliciesRequest.max_results in request:
-            query_params["maxResults"] = request.max_results
-        if compute.ListSecurityPoliciesRequest.order_by in request:
-            query_params["orderBy"] = request.order_by
-        if compute.ListSecurityPoliciesRequest.page_token in request:
-            query_params["pageToken"] = request.page_token
-        if compute.ListSecurityPoliciesRequest.return_partial_success in request:
-            query_params["returnPartialSuccess"] = request.return_partial_success
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -471,10 +700,12 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def list_preconfigured_expression_sets(
+    def _list_preconfigured_expression_sets(
         self,
         request: compute.ListPreconfiguredExpressionSetsSecurityPoliciesRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse:
         r"""Call the list preconfigured
@@ -486,6 +717,9 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 SecurityPolicies.ListPreconfiguredExpressionSets.
                 See the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -494,45 +728,56 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/securityPolicies/listPreconfiguredExpressionSets".format(
-            host=self._host, project=request.project,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/global/securityPolicies/listPreconfiguredExpressionSets",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.ListPreconfiguredExpressionSetsSecurityPoliciesRequest.to_dict(
+            request
+        )
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.ListPreconfiguredExpressionSetsSecurityPoliciesRequest.to_json(
+                compute.ListPreconfiguredExpressionSetsSecurityPoliciesRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if (
-            compute.ListPreconfiguredExpressionSetsSecurityPoliciesRequest.filter
-            in request
-        ):
-            query_params["filter"] = request.filter
-        if (
-            compute.ListPreconfiguredExpressionSetsSecurityPoliciesRequest.max_results
-            in request
-        ):
-            query_params["maxResults"] = request.max_results
-        if (
-            compute.ListPreconfiguredExpressionSetsSecurityPoliciesRequest.order_by
-            in request
-        ):
-            query_params["orderBy"] = request.order_by
-        if (
-            compute.ListPreconfiguredExpressionSetsSecurityPoliciesRequest.page_token
-            in request
-        ):
-            query_params["pageToken"] = request.page_token
-        if (
-            compute.ListPreconfiguredExpressionSetsSecurityPoliciesRequest.return_partial_success
-            in request
-        ):
-            query_params["returnPartialSuccess"] = request.return_partial_success
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -544,10 +789,12 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def patch(
+    def _patch(
         self,
         request: compute.PatchSecurityPolicyRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the patch method over HTTP.
@@ -558,6 +805,9 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 SecurityPolicies.Patch. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -581,32 +831,60 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "patch",
+                "uri": "/compute/v1/projects/{project}/global/securityPolicies/{security_policy}",
+                "body": "security_policy_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("security_policy", "securityPolicy"),
+        ]
+
+        request_kwargs = compute.PatchSecurityPolicyRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.SecurityPolicy.to_json(
-            request.security_policy_resource,
+            compute.SecurityPolicy(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/securityPolicies/{security_policy}".format(
-            host=self._host,
-            project=request.project,
-            security_policy=request.security_policy,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.PatchSecurityPolicyRequest.to_json(
+                compute.PatchSecurityPolicyRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.PatchSecurityPolicyRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.patch(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -617,10 +895,12 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def patch_rule(
+    def _patch_rule(
         self,
         request: compute.PatchRuleSecurityPolicyRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the patch rule method over HTTP.
@@ -631,6 +911,9 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 SecurityPolicies.PatchRule. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -654,32 +937,62 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/global/securityPolicies/{security_policy}/patchRule",
+                "body": "security_policy_rule_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("security_policy", "securityPolicy"),
+        ]
+
+        request_kwargs = compute.PatchRuleSecurityPolicyRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.SecurityPolicyRule.to_json(
-            request.security_policy_rule_resource,
+            compute.SecurityPolicyRule(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/securityPolicies/{security_policy}/patchRule".format(
-            host=self._host,
-            project=request.project,
-            security_policy=request.security_policy,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.PatchRuleSecurityPolicyRequest.to_json(
+                compute.PatchRuleSecurityPolicyRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.PatchRuleSecurityPolicyRequest.priority in request:
-            query_params["priority"] = request.priority
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -690,10 +1003,12 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def remove_rule(
+    def _remove_rule(
         self,
         request: compute.RemoveRuleSecurityPolicyRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the remove rule method over HTTP.
@@ -704,6 +1019,9 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 SecurityPolicies.RemoveRule. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -727,24 +1045,55 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/securityPolicies/{security_policy}/removeRule".format(
-            host=self._host,
-            project=request.project,
-            security_policy=request.security_policy,
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/global/securityPolicies/{security_policy}/removeRule",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("security_policy", "securityPolicy"),
+        ]
+
+        request_kwargs = compute.RemoveRuleSecurityPolicyRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.RemoveRuleSecurityPolicyRequest.to_json(
+                compute.RemoveRuleSecurityPolicyRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.RemoveRuleSecurityPolicyRequest.priority in request:
-            query_params["priority"] = request.priority
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -753,6 +1102,72 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
 
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
+
+    @property
+    def add_rule(
+        self,
+    ) -> Callable[[compute.AddRuleSecurityPolicyRequest], compute.Operation]:
+        return self._add_rule
+
+    @property
+    def delete(
+        self,
+    ) -> Callable[[compute.DeleteSecurityPolicyRequest], compute.Operation]:
+        return self._delete
+
+    @property
+    def get(
+        self,
+    ) -> Callable[[compute.GetSecurityPolicyRequest], compute.SecurityPolicy]:
+        return self._get
+
+    @property
+    def get_rule(
+        self,
+    ) -> Callable[[compute.GetRuleSecurityPolicyRequest], compute.SecurityPolicyRule]:
+        return self._get_rule
+
+    @property
+    def insert(
+        self,
+    ) -> Callable[[compute.InsertSecurityPolicyRequest], compute.Operation]:
+        return self._insert
+
+    @property
+    def list(
+        self,
+    ) -> Callable[[compute.ListSecurityPoliciesRequest], compute.SecurityPolicyList]:
+        return self._list
+
+    @property
+    def list_preconfigured_expression_sets(
+        self,
+    ) -> Callable[
+        [compute.ListPreconfiguredExpressionSetsSecurityPoliciesRequest],
+        compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse,
+    ]:
+        return self._list_preconfigured_expression_sets
+
+    @property
+    def patch(
+        self,
+    ) -> Callable[[compute.PatchSecurityPolicyRequest], compute.Operation]:
+        return self._patch
+
+    @property
+    def patch_rule(
+        self,
+    ) -> Callable[[compute.PatchRuleSecurityPolicyRequest], compute.Operation]:
+        return self._patch_rule
+
+    @property
+    def remove_rule(
+        self,
+    ) -> Callable[[compute.RemoveRuleSecurityPolicyRequest], compute.Operation]:
+        return self._remove_rule
+
+    def close(self):
+        self._session.close()
 
 
 __all__ = ("SecurityPoliciesRestTransport",)

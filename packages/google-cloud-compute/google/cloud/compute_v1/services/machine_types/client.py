@@ -14,21 +14,25 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.compute_v1.services.machine_types import pagers
 from google.cloud.compute_v1.types import compute
@@ -261,8 +265,15 @@ class MachineTypesClient(metaclass=MachineTypesClientMeta):
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
         )
 
         client_cert_source_func = None
@@ -324,21 +335,22 @@ class MachineTypesClient(metaclass=MachineTypesClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
             )
 
     def aggregated_list(
         self,
-        request: compute.AggregatedListMachineTypesRequest = None,
+        request: Union[compute.AggregatedListMachineTypesRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of machine types.
 
         Args:
-            request (google.cloud.compute_v1.types.AggregatedListMachineTypesRequest):
+            request (Union[google.cloud.compute_v1.types.AggregatedListMachineTypesRequest, dict]):
                 The request object. A request message for
                 MachineTypes.AggregatedList. See the method description
                 for details.
@@ -399,12 +411,12 @@ class MachineTypesClient(metaclass=MachineTypesClientMeta):
 
     def get(
         self,
-        request: compute.GetMachineTypeRequest = None,
+        request: Union[compute.GetMachineTypeRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         machine_type: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.MachineType:
@@ -412,7 +424,7 @@ class MachineTypesClient(metaclass=MachineTypesClientMeta):
         available machine types by making a list() request.
 
         Args:
-            request (google.cloud.compute_v1.types.GetMachineTypeRequest):
+            request (Union[google.cloud.compute_v1.types.GetMachineTypeRequest, dict]):
                 The request object. A request message for
                 MachineTypes.Get. See the method description for
                 details.
@@ -485,11 +497,11 @@ class MachineTypesClient(metaclass=MachineTypesClientMeta):
 
     def list(
         self,
-        request: compute.ListMachineTypesRequest = None,
+        request: Union[compute.ListMachineTypesRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
@@ -497,7 +509,7 @@ class MachineTypesClient(metaclass=MachineTypesClientMeta):
         specified project.
 
         Args:
-            request (google.cloud.compute_v1.types.ListMachineTypesRequest):
+            request (Union[google.cloud.compute_v1.types.ListMachineTypesRequest, dict]):
                 The request object. A request message for
                 MachineTypes.List. See the method description for
                 details.
@@ -565,6 +577,19 @@ class MachineTypesClient(metaclass=MachineTypesClientMeta):
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:

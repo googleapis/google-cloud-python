@@ -1,3 +1,22 @@
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+import json  # type: ignore
+import grpc  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.api_core import rest_helpers
+from google.api_core import path_template
+from google.api_core import gapic_v1
+from requests import __version__ as requests_version
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import warnings
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
+
 # -*- coding: utf-8 -*-
 # Copyright 2020 Google LLC
 #
@@ -13,21 +32,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
 
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-
-import grpc  # type: ignore
-
-from google.auth.transport.requests import AuthorizedSession
 
 from google.cloud.compute_v1.types import compute
 
-from .base import ProjectsTransport, DEFAULT_CLIENT_INFO
+from .base import ProjectsTransport, DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+
+
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
+    grpc_version=None,
+    rest_version=requests_version,
+)
 
 
 class ProjectsRestTransport(ProjectsTransport):
@@ -53,6 +69,7 @@ class ProjectsRestTransport(ProjectsTransport):
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
+        url_scheme: str = "https",
     ) -> None:
         """Instantiate the transport.
 
@@ -80,6 +97,11 @@ class ProjectsRestTransport(ProjectsTransport):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                be used for service account credentials.
+            url_scheme: the protocol scheme for the API endpoint.  Normally
+                "https", but for testing or local servers,
+                "http" can be specified.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -98,10 +120,12 @@ class ProjectsRestTransport(ProjectsTransport):
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._prep_wrapped_messages(client_info)
 
-    def disable_xpn_host(
+    def _disable_xpn_host(
         self,
         request: compute.DisableXpnHostProjectRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the disable xpn host method over HTTP.
@@ -112,6 +136,9 @@ class ProjectsRestTransport(ProjectsTransport):
                 Projects.DisableXpnHost. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -135,22 +162,51 @@ class ProjectsRestTransport(ProjectsTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/disableXpnHost".format(
-            host=self._host, project=request.project,
+        http_options = [
+            {"method": "post", "uri": "/compute/v1/projects/{project}/disableXpnHost",},
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.DisableXpnHostProjectRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.DisableXpnHostProjectRequest.to_json(
+                compute.DisableXpnHostProjectRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.DisableXpnHostProjectRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -160,10 +216,12 @@ class ProjectsRestTransport(ProjectsTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def disable_xpn_resource(
+    def _disable_xpn_resource(
         self,
         request: compute.DisableXpnResourceProjectRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the disable xpn resource method over HTTP.
@@ -174,6 +232,9 @@ class ProjectsRestTransport(ProjectsTransport):
                 Projects.DisableXpnResource. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -197,30 +258,61 @@ class ProjectsRestTransport(ProjectsTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/disableXpnResource",
+                "body": "projects_disable_xpn_resource_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.DisableXpnResourceProjectRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.ProjectsDisableXpnResourceRequest.to_json(
-            request.projects_disable_xpn_resource_request_resource,
+            compute.ProjectsDisableXpnResourceRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/disableXpnResource".format(
-            host=self._host, project=request.project,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.DisableXpnResourceProjectRequest.to_json(
+                compute.DisableXpnResourceProjectRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.DisableXpnResourceProjectRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -231,10 +323,12 @@ class ProjectsRestTransport(ProjectsTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def enable_xpn_host(
+    def _enable_xpn_host(
         self,
         request: compute.EnableXpnHostProjectRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the enable xpn host method over HTTP.
@@ -245,6 +339,9 @@ class ProjectsRestTransport(ProjectsTransport):
                 Projects.EnableXpnHost. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -268,22 +365,49 @@ class ProjectsRestTransport(ProjectsTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/enableXpnHost".format(
-            host=self._host, project=request.project,
+        http_options = [
+            {"method": "post", "uri": "/compute/v1/projects/{project}/enableXpnHost",},
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.EnableXpnHostProjectRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.EnableXpnHostProjectRequest.to_json(
+                compute.EnableXpnHostProjectRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.EnableXpnHostProjectRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -293,10 +417,12 @@ class ProjectsRestTransport(ProjectsTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def enable_xpn_resource(
+    def _enable_xpn_resource(
         self,
         request: compute.EnableXpnResourceProjectRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the enable xpn resource method over HTTP.
@@ -307,6 +433,9 @@ class ProjectsRestTransport(ProjectsTransport):
                 Projects.EnableXpnResource. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -330,30 +459,61 @@ class ProjectsRestTransport(ProjectsTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/enableXpnResource",
+                "body": "projects_enable_xpn_resource_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.EnableXpnResourceProjectRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.ProjectsEnableXpnResourceRequest.to_json(
-            request.projects_enable_xpn_resource_request_resource,
+            compute.ProjectsEnableXpnResourceRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/enableXpnResource".format(
-            host=self._host, project=request.project,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.EnableXpnResourceProjectRequest.to_json(
+                compute.EnableXpnResourceProjectRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.EnableXpnResourceProjectRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -364,10 +524,12 @@ class ProjectsRestTransport(ProjectsTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def get(
+    def _get(
         self,
         request: compute.GetProjectRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Project:
         r"""Call the get method over HTTP.
@@ -377,6 +539,9 @@ class ProjectsRestTransport(ProjectsTransport):
                 The request object. A request message for Projects.Get.
                 See the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -390,20 +555,49 @@ class ProjectsRestTransport(ProjectsTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}".format(
-            host=self._host, project=request.project,
+        http_options = [
+            {"method": "get", "uri": "/compute/v1/projects/{project}",},
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.GetProjectRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.GetProjectRequest.to_json(
+                compute.GetProjectRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -413,10 +607,12 @@ class ProjectsRestTransport(ProjectsTransport):
         # Return the response
         return compute.Project.from_json(response.content, ignore_unknown_fields=True)
 
-    def get_xpn_host(
+    def _get_xpn_host(
         self,
         request: compute.GetXpnHostProjectRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Project:
         r"""Call the get xpn host method over HTTP.
@@ -427,6 +623,9 @@ class ProjectsRestTransport(ProjectsTransport):
                 Projects.GetXpnHost. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -440,20 +639,49 @@ class ProjectsRestTransport(ProjectsTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/getXpnHost".format(
-            host=self._host, project=request.project,
+        http_options = [
+            {"method": "get", "uri": "/compute/v1/projects/{project}/getXpnHost",},
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.GetXpnHostProjectRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.GetXpnHostProjectRequest.to_json(
+                compute.GetXpnHostProjectRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -463,10 +691,12 @@ class ProjectsRestTransport(ProjectsTransport):
         # Return the response
         return compute.Project.from_json(response.content, ignore_unknown_fields=True)
 
-    def get_xpn_resources(
+    def _get_xpn_resources(
         self,
         request: compute.GetXpnResourcesProjectsRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.ProjectsGetXpnResources:
         r"""Call the get xpn resources method over HTTP.
@@ -477,6 +707,9 @@ class ProjectsRestTransport(ProjectsTransport):
                 Projects.GetXpnResources. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -485,30 +718,51 @@ class ProjectsRestTransport(ProjectsTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/getXpnResources".format(
-            host=self._host, project=request.project,
+        http_options = [
+            {"method": "get", "uri": "/compute/v1/projects/{project}/getXpnResources",},
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.GetXpnResourcesProjectsRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.GetXpnResourcesProjectsRequest.to_json(
+                compute.GetXpnResourcesProjectsRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.GetXpnResourcesProjectsRequest.filter in request:
-            query_params["filter"] = request.filter
-        if compute.GetXpnResourcesProjectsRequest.max_results in request:
-            query_params["maxResults"] = request.max_results
-        if compute.GetXpnResourcesProjectsRequest.order_by in request:
-            query_params["orderBy"] = request.order_by
-        if compute.GetXpnResourcesProjectsRequest.page_token in request:
-            query_params["pageToken"] = request.page_token
-        if compute.GetXpnResourcesProjectsRequest.return_partial_success in request:
-            query_params["returnPartialSuccess"] = request.return_partial_success
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -520,10 +774,12 @@ class ProjectsRestTransport(ProjectsTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def list_xpn_hosts(
+    def _list_xpn_hosts(
         self,
         request: compute.ListXpnHostsProjectsRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.XpnHostList:
         r"""Call the list xpn hosts method over HTTP.
@@ -534,6 +790,9 @@ class ProjectsRestTransport(ProjectsTransport):
                 Projects.ListXpnHosts. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -542,38 +801,59 @@ class ProjectsRestTransport(ProjectsTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/listXpnHosts",
+                "body": "projects_list_xpn_hosts_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.ListXpnHostsProjectsRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.ProjectsListXpnHostsRequest.to_json(
-            request.projects_list_xpn_hosts_request_resource,
+            compute.ProjectsListXpnHostsRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/listXpnHosts".format(
-            host=self._host, project=request.project,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.ListXpnHostsProjectsRequest.to_json(
+                compute.ListXpnHostsProjectsRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.ListXpnHostsProjectsRequest.filter in request:
-            query_params["filter"] = request.filter
-        if compute.ListXpnHostsProjectsRequest.max_results in request:
-            query_params["maxResults"] = request.max_results
-        if compute.ListXpnHostsProjectsRequest.order_by in request:
-            query_params["orderBy"] = request.order_by
-        if compute.ListXpnHostsProjectsRequest.page_token in request:
-            query_params["pageToken"] = request.page_token
-        if compute.ListXpnHostsProjectsRequest.return_partial_success in request:
-            query_params["returnPartialSuccess"] = request.return_partial_success
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -586,10 +866,12 @@ class ProjectsRestTransport(ProjectsTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def move_disk(
+    def _move_disk(
         self,
         request: compute.MoveDiskProjectRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the move disk method over HTTP.
@@ -600,6 +882,9 @@ class ProjectsRestTransport(ProjectsTransport):
                 Projects.MoveDisk. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -623,30 +908,59 @@ class ProjectsRestTransport(ProjectsTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/moveDisk",
+                "body": "disk_move_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.MoveDiskProjectRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.DiskMoveRequest.to_json(
-            request.disk_move_request_resource,
+            compute.DiskMoveRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/moveDisk".format(
-            host=self._host, project=request.project,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.MoveDiskProjectRequest.to_json(
+                compute.MoveDiskProjectRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.MoveDiskProjectRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -657,10 +971,12 @@ class ProjectsRestTransport(ProjectsTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def move_instance(
+    def _move_instance(
         self,
         request: compute.MoveInstanceProjectRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the move instance method over HTTP.
@@ -671,6 +987,9 @@ class ProjectsRestTransport(ProjectsTransport):
                 Projects.MoveInstance. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -694,30 +1013,59 @@ class ProjectsRestTransport(ProjectsTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/moveInstance",
+                "body": "instance_move_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.MoveInstanceProjectRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.InstanceMoveRequest.to_json(
-            request.instance_move_request_resource,
+            compute.InstanceMoveRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/moveInstance".format(
-            host=self._host, project=request.project,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.MoveInstanceProjectRequest.to_json(
+                compute.MoveInstanceProjectRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.MoveInstanceProjectRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -728,10 +1076,12 @@ class ProjectsRestTransport(ProjectsTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def set_common_instance_metadata(
+    def _set_common_instance_metadata(
         self,
         request: compute.SetCommonInstanceMetadataProjectRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the set common instance
@@ -743,6 +1093,9 @@ class ProjectsRestTransport(ProjectsTransport):
                 Projects.SetCommonInstanceMetadata. See
                 the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -766,30 +1119,63 @@ class ProjectsRestTransport(ProjectsTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/setCommonInstanceMetadata",
+                "body": "metadata_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.SetCommonInstanceMetadataProjectRequest.to_dict(
+            request
+        )
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.Metadata.to_json(
-            request.metadata_resource,
+            compute.Metadata(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/setCommonInstanceMetadata".format(
-            host=self._host, project=request.project,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.SetCommonInstanceMetadataProjectRequest.to_json(
+                compute.SetCommonInstanceMetadataProjectRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.SetCommonInstanceMetadataProjectRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -800,10 +1186,12 @@ class ProjectsRestTransport(ProjectsTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def set_default_network_tier(
+    def _set_default_network_tier(
         self,
         request: compute.SetDefaultNetworkTierProjectRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the set default network tier method over HTTP.
@@ -814,6 +1202,9 @@ class ProjectsRestTransport(ProjectsTransport):
                 Projects.SetDefaultNetworkTier. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -837,30 +1228,61 @@ class ProjectsRestTransport(ProjectsTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/setDefaultNetworkTier",
+                "body": "projects_set_default_network_tier_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.SetDefaultNetworkTierProjectRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.ProjectsSetDefaultNetworkTierRequest.to_json(
-            request.projects_set_default_network_tier_request_resource,
+            compute.ProjectsSetDefaultNetworkTierRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/setDefaultNetworkTier".format(
-            host=self._host, project=request.project,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.SetDefaultNetworkTierProjectRequest.to_json(
+                compute.SetDefaultNetworkTierProjectRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.SetDefaultNetworkTierProjectRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -871,10 +1293,12 @@ class ProjectsRestTransport(ProjectsTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def set_usage_export_bucket(
+    def _set_usage_export_bucket(
         self,
         request: compute.SetUsageExportBucketProjectRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the set usage export bucket method over HTTP.
@@ -885,6 +1309,9 @@ class ProjectsRestTransport(ProjectsTransport):
                 Projects.SetUsageExportBucket. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -908,30 +1335,61 @@ class ProjectsRestTransport(ProjectsTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/setUsageExportBucket",
+                "body": "usage_export_location_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.SetUsageExportBucketProjectRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.UsageExportLocation.to_json(
-            request.usage_export_location_resource,
+            compute.UsageExportLocation(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/setUsageExportBucket".format(
-            host=self._host, project=request.project,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.SetUsageExportBucketProjectRequest.to_json(
+                compute.SetUsageExportBucketProjectRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.SetUsageExportBucketProjectRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -941,6 +1399,87 @@ class ProjectsRestTransport(ProjectsTransport):
 
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
+
+    @property
+    def disable_xpn_host(
+        self,
+    ) -> Callable[[compute.DisableXpnHostProjectRequest], compute.Operation]:
+        return self._disable_xpn_host
+
+    @property
+    def disable_xpn_resource(
+        self,
+    ) -> Callable[[compute.DisableXpnResourceProjectRequest], compute.Operation]:
+        return self._disable_xpn_resource
+
+    @property
+    def enable_xpn_host(
+        self,
+    ) -> Callable[[compute.EnableXpnHostProjectRequest], compute.Operation]:
+        return self._enable_xpn_host
+
+    @property
+    def enable_xpn_resource(
+        self,
+    ) -> Callable[[compute.EnableXpnResourceProjectRequest], compute.Operation]:
+        return self._enable_xpn_resource
+
+    @property
+    def get(self) -> Callable[[compute.GetProjectRequest], compute.Project]:
+        return self._get
+
+    @property
+    def get_xpn_host(
+        self,
+    ) -> Callable[[compute.GetXpnHostProjectRequest], compute.Project]:
+        return self._get_xpn_host
+
+    @property
+    def get_xpn_resources(
+        self,
+    ) -> Callable[
+        [compute.GetXpnResourcesProjectsRequest], compute.ProjectsGetXpnResources
+    ]:
+        return self._get_xpn_resources
+
+    @property
+    def list_xpn_hosts(
+        self,
+    ) -> Callable[[compute.ListXpnHostsProjectsRequest], compute.XpnHostList]:
+        return self._list_xpn_hosts
+
+    @property
+    def move_disk(
+        self,
+    ) -> Callable[[compute.MoveDiskProjectRequest], compute.Operation]:
+        return self._move_disk
+
+    @property
+    def move_instance(
+        self,
+    ) -> Callable[[compute.MoveInstanceProjectRequest], compute.Operation]:
+        return self._move_instance
+
+    @property
+    def set_common_instance_metadata(
+        self,
+    ) -> Callable[[compute.SetCommonInstanceMetadataProjectRequest], compute.Operation]:
+        return self._set_common_instance_metadata
+
+    @property
+    def set_default_network_tier(
+        self,
+    ) -> Callable[[compute.SetDefaultNetworkTierProjectRequest], compute.Operation]:
+        return self._set_default_network_tier
+
+    @property
+    def set_usage_export_bucket(
+        self,
+    ) -> Callable[[compute.SetUsageExportBucketProjectRequest], compute.Operation]:
+        return self._set_usage_export_bucket
+
+    def close(self):
+        self._session.close()
 
 
 __all__ = ("ProjectsRestTransport",)

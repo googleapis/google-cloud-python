@@ -14,21 +14,25 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.compute_v1.services.projects import pagers
 from google.cloud.compute_v1.types import compute
@@ -261,8 +265,15 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
         )
 
         client_cert_source_func = None
@@ -324,21 +335,22 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
             )
 
     def disable_xpn_host(
         self,
-        request: compute.DisableXpnHostProjectRequest = None,
+        request: Union[compute.DisableXpnHostProjectRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Disable this project as a shared VPC host project.
 
         Args:
-            request (google.cloud.compute_v1.types.DisableXpnHostProjectRequest):
+            request (Union[google.cloud.compute_v1.types.DisableXpnHostProjectRequest, dict]):
                 The request object. A request message for
                 Projects.DisableXpnHost. See the method description for
                 details.
@@ -405,11 +417,11 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def disable_xpn_resource(
         self,
-        request: compute.DisableXpnResourceProjectRequest = None,
+        request: Union[compute.DisableXpnResourceProjectRequest, dict] = None,
         *,
         project: str = None,
         projects_disable_xpn_resource_request_resource: compute.ProjectsDisableXpnResourceRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -417,7 +429,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         project) associated with this host project.
 
         Args:
-            request (google.cloud.compute_v1.types.DisableXpnResourceProjectRequest):
+            request (Union[google.cloud.compute_v1.types.DisableXpnResourceProjectRequest, dict]):
                 The request object. A request message for
                 Projects.DisableXpnResource. See the method description
                 for details.
@@ -495,17 +507,17 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def enable_xpn_host(
         self,
-        request: compute.EnableXpnHostProjectRequest = None,
+        request: Union[compute.EnableXpnHostProjectRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Enable this project as a shared VPC host project.
 
         Args:
-            request (google.cloud.compute_v1.types.EnableXpnHostProjectRequest):
+            request (Union[google.cloud.compute_v1.types.EnableXpnHostProjectRequest, dict]):
                 The request object. A request message for
                 Projects.EnableXpnHost. See the method description for
                 details.
@@ -572,11 +584,11 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def enable_xpn_resource(
         self,
-        request: compute.EnableXpnResourceProjectRequest = None,
+        request: Union[compute.EnableXpnResourceProjectRequest, dict] = None,
         *,
         project: str = None,
         projects_enable_xpn_resource_request_resource: compute.ProjectsEnableXpnResourceRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -585,7 +597,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         used by instances in the service project.
 
         Args:
-            request (google.cloud.compute_v1.types.EnableXpnResourceProjectRequest):
+            request (Union[google.cloud.compute_v1.types.EnableXpnResourceProjectRequest, dict]):
                 The request object. A request message for
                 Projects.EnableXpnResource. See the method description
                 for details.
@@ -663,17 +675,17 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def get(
         self,
-        request: compute.GetProjectRequest = None,
+        request: Union[compute.GetProjectRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Project:
         r"""Returns the specified Project resource.
 
         Args:
-            request (google.cloud.compute_v1.types.GetProjectRequest):
+            request (Union[google.cloud.compute_v1.types.GetProjectRequest, dict]):
                 The request object. A request message for Projects.Get.
                 See the method description for details.
             project (str):
@@ -729,10 +741,10 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def get_xpn_host(
         self,
-        request: compute.GetXpnHostProjectRequest = None,
+        request: Union[compute.GetXpnHostProjectRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Project:
@@ -740,7 +752,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         links to. May be empty if no link exists.
 
         Args:
-            request (google.cloud.compute_v1.types.GetXpnHostProjectRequest):
+            request (Union[google.cloud.compute_v1.types.GetXpnHostProjectRequest, dict]):
                 The request object. A request message for
                 Projects.GetXpnHost. See the method description for
                 details.
@@ -797,10 +809,10 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def get_xpn_resources(
         self,
-        request: compute.GetXpnResourcesProjectsRequest = None,
+        request: Union[compute.GetXpnResourcesProjectsRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.GetXpnResourcesPager:
@@ -808,7 +820,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         associated with this host project.
 
         Args:
-            request (google.cloud.compute_v1.types.GetXpnResourcesProjectsRequest):
+            request (Union[google.cloud.compute_v1.types.GetXpnResourcesProjectsRequest, dict]):
                 The request object. A request message for
                 Projects.GetXpnResources. See the method description for
                 details.
@@ -869,11 +881,11 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def list_xpn_hosts(
         self,
-        request: compute.ListXpnHostsProjectsRequest = None,
+        request: Union[compute.ListXpnHostsProjectsRequest, dict] = None,
         *,
         project: str = None,
         projects_list_xpn_hosts_request_resource: compute.ProjectsListXpnHostsRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListXpnHostsPager:
@@ -881,7 +893,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         user in an organization.
 
         Args:
-            request (google.cloud.compute_v1.types.ListXpnHostsProjectsRequest):
+            request (Union[google.cloud.compute_v1.types.ListXpnHostsProjectsRequest, dict]):
                 The request object. A request message for
                 Projects.ListXpnHosts. See the method description for
                 details.
@@ -951,18 +963,18 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def move_disk(
         self,
-        request: compute.MoveDiskProjectRequest = None,
+        request: Union[compute.MoveDiskProjectRequest, dict] = None,
         *,
         project: str = None,
         disk_move_request_resource: compute.DiskMoveRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Moves a persistent disk from one zone to another.
 
         Args:
-            request (google.cloud.compute_v1.types.MoveDiskProjectRequest):
+            request (Union[google.cloud.compute_v1.types.MoveDiskProjectRequest, dict]):
                 The request object. A request message for
                 Projects.MoveDisk. See the method description for
                 details.
@@ -1036,11 +1048,11 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def move_instance(
         self,
-        request: compute.MoveInstanceProjectRequest = None,
+        request: Union[compute.MoveInstanceProjectRequest, dict] = None,
         *,
         project: str = None,
         instance_move_request_resource: compute.InstanceMoveRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -1048,7 +1060,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         from one zone to another.
 
         Args:
-            request (google.cloud.compute_v1.types.MoveInstanceProjectRequest):
+            request (Union[google.cloud.compute_v1.types.MoveInstanceProjectRequest, dict]):
                 The request object. A request message for
                 Projects.MoveInstance. See the method description for
                 details.
@@ -1122,11 +1134,11 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def set_common_instance_metadata(
         self,
-        request: compute.SetCommonInstanceMetadataProjectRequest = None,
+        request: Union[compute.SetCommonInstanceMetadataProjectRequest, dict] = None,
         *,
         project: str = None,
         metadata_resource: compute.Metadata = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -1135,7 +1147,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         request.
 
         Args:
-            request (google.cloud.compute_v1.types.SetCommonInstanceMetadataProjectRequest):
+            request (Union[google.cloud.compute_v1.types.SetCommonInstanceMetadataProjectRequest, dict]):
                 The request object. A request message for
                 Projects.SetCommonInstanceMetadata. See the method
                 description for details.
@@ -1211,11 +1223,11 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def set_default_network_tier(
         self,
-        request: compute.SetDefaultNetworkTierProjectRequest = None,
+        request: Union[compute.SetDefaultNetworkTierProjectRequest, dict] = None,
         *,
         project: str = None,
         projects_set_default_network_tier_request_resource: compute.ProjectsSetDefaultNetworkTierRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -1225,7 +1237,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         specifying the network tier field.
 
         Args:
-            request (google.cloud.compute_v1.types.SetDefaultNetworkTierProjectRequest):
+            request (Union[google.cloud.compute_v1.types.SetDefaultNetworkTierProjectRequest, dict]):
                 The request object. A request message for
                 Projects.SetDefaultNetworkTier. See the method
                 description for details.
@@ -1303,11 +1315,11 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
     def set_usage_export_bucket(
         self,
-        request: compute.SetUsageExportBucketProjectRequest = None,
+        request: Union[compute.SetUsageExportBucketProjectRequest, dict] = None,
         *,
         project: str = None,
         usage_export_location_resource: compute.UsageExportLocation = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -1317,7 +1329,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         export feature will be disabled.
 
         Args:
-            request (google.cloud.compute_v1.types.SetUsageExportBucketProjectRequest):
+            request (Union[google.cloud.compute_v1.types.SetUsageExportBucketProjectRequest, dict]):
                 The request object. A request message for
                 Projects.SetUsageExportBucket. See the method
                 description for details.
@@ -1388,6 +1400,19 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:

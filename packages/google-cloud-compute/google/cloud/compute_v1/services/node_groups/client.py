@@ -14,21 +14,25 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.compute_v1.services.node_groups import pagers
 from google.cloud.compute_v1.types import compute
@@ -261,8 +265,15 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
         )
 
         client_cert_source_func = None
@@ -324,24 +335,25 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
             )
 
     def add_nodes(
         self,
-        request: compute.AddNodesNodeGroupRequest = None,
+        request: Union[compute.AddNodesNodeGroupRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         node_group: str = None,
         node_groups_add_nodes_request_resource: compute.NodeGroupsAddNodesRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Adds specified number of nodes to the node group.
 
         Args:
-            request (google.cloud.compute_v1.types.AddNodesNodeGroupRequest):
+            request (Union[google.cloud.compute_v1.types.AddNodesNodeGroupRequest, dict]):
                 The request object. A request message for
                 NodeGroups.AddNodes. See the method description for
                 details.
@@ -435,10 +447,10 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
     def aggregated_list(
         self,
-        request: compute.AggregatedListNodeGroupsRequest = None,
+        request: Union[compute.AggregatedListNodeGroupsRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
@@ -447,7 +459,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         group.
 
         Args:
-            request (google.cloud.compute_v1.types.AggregatedListNodeGroupsRequest):
+            request (Union[google.cloud.compute_v1.types.AggregatedListNodeGroupsRequest, dict]):
                 The request object. A request message for
                 NodeGroups.AggregatedList. See the method description
                 for details.
@@ -508,19 +520,19 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
     def delete(
         self,
-        request: compute.DeleteNodeGroupRequest = None,
+        request: Union[compute.DeleteNodeGroupRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         node_group: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified NodeGroup resource.
 
         Args:
-            request (google.cloud.compute_v1.types.DeleteNodeGroupRequest):
+            request (Union[google.cloud.compute_v1.types.DeleteNodeGroupRequest, dict]):
                 The request object. A request message for
                 NodeGroups.Delete. See the method description for
                 details.
@@ -605,20 +617,20 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
     def delete_nodes(
         self,
-        request: compute.DeleteNodesNodeGroupRequest = None,
+        request: Union[compute.DeleteNodesNodeGroupRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         node_group: str = None,
         node_groups_delete_nodes_request_resource: compute.NodeGroupsDeleteNodesRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes specified nodes from the node group.
 
         Args:
-            request (google.cloud.compute_v1.types.DeleteNodesNodeGroupRequest):
+            request (Union[google.cloud.compute_v1.types.DeleteNodesNodeGroupRequest, dict]):
                 The request object. A request message for
                 NodeGroups.DeleteNodes. See the method description for
                 details.
@@ -714,12 +726,12 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
     def get(
         self,
-        request: compute.GetNodeGroupRequest = None,
+        request: Union[compute.GetNodeGroupRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         node_group: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.NodeGroup:
@@ -729,7 +741,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         nodeGroups.listNodes instead.
 
         Args:
-            request (google.cloud.compute_v1.types.GetNodeGroupRequest):
+            request (Union[google.cloud.compute_v1.types.GetNodeGroupRequest, dict]):
                 The request object. A request message for
                 NodeGroups.Get. See the method description for details.
             project (str):
@@ -807,12 +819,12 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
     def get_iam_policy(
         self,
-        request: compute.GetIamPolicyNodeGroupRequest = None,
+        request: Union[compute.GetIamPolicyNodeGroupRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
@@ -820,7 +832,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         empty if no such policy or resource exists.
 
         Args:
-            request (google.cloud.compute_v1.types.GetIamPolicyNodeGroupRequest):
+            request (Union[google.cloud.compute_v1.types.GetIamPolicyNodeGroupRequest, dict]):
                 The request object. A request message for
                 NodeGroups.GetIamPolicy. See the method description for
                 details.
@@ -929,13 +941,13 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
     def insert(
         self,
-        request: compute.InsertNodeGroupRequest = None,
+        request: Union[compute.InsertNodeGroupRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         initial_node_count: int = None,
         node_group_resource: compute.NodeGroup = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -943,7 +955,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         using the data included in the request.
 
         Args:
-            request (google.cloud.compute_v1.types.InsertNodeGroupRequest):
+            request (Union[google.cloud.compute_v1.types.InsertNodeGroupRequest, dict]):
                 The request object. A request message for
                 NodeGroups.Insert. See the method description for
                 details.
@@ -1037,11 +1049,11 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
     def list(
         self,
-        request: compute.ListNodeGroupsRequest = None,
+        request: Union[compute.ListNodeGroupsRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
@@ -1050,7 +1062,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         more details about each group.
 
         Args:
-            request (google.cloud.compute_v1.types.ListNodeGroupsRequest):
+            request (Union[google.cloud.compute_v1.types.ListNodeGroupsRequest, dict]):
                 The request object. A request message for
                 NodeGroups.List. See the method description for details.
             project (str):
@@ -1120,19 +1132,19 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
     def list_nodes(
         self,
-        request: compute.ListNodesNodeGroupsRequest = None,
+        request: Union[compute.ListNodesNodeGroupsRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         node_group: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListNodesPager:
         r"""Lists nodes in the node group.
 
         Args:
-            request (google.cloud.compute_v1.types.ListNodesNodeGroupsRequest):
+            request (Union[google.cloud.compute_v1.types.ListNodesNodeGroupsRequest, dict]):
                 The request object. A request message for
                 NodeGroups.ListNodes. See the method description for
                 details.
@@ -1211,20 +1223,20 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
     def patch(
         self,
-        request: compute.PatchNodeGroupRequest = None,
+        request: Union[compute.PatchNodeGroupRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         node_group: str = None,
         node_group_resource: compute.NodeGroup = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Updates the specified node group.
 
         Args:
-            request (google.cloud.compute_v1.types.PatchNodeGroupRequest):
+            request (Union[google.cloud.compute_v1.types.PatchNodeGroupRequest, dict]):
                 The request object. A request message for
                 NodeGroups.Patch. See the method description for
                 details.
@@ -1316,13 +1328,13 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
     def set_iam_policy(
         self,
-        request: compute.SetIamPolicyNodeGroupRequest = None,
+        request: Union[compute.SetIamPolicyNodeGroupRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         resource: str = None,
         zone_set_policy_request_resource: compute.ZoneSetPolicyRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
@@ -1330,7 +1342,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         resource. Replaces any existing policy.
 
         Args:
-            request (google.cloud.compute_v1.types.SetIamPolicyNodeGroupRequest):
+            request (Union[google.cloud.compute_v1.types.SetIamPolicyNodeGroupRequest, dict]):
                 The request object. A request message for
                 NodeGroups.SetIamPolicy. See the method description for
                 details.
@@ -1450,20 +1462,20 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
     def set_node_template(
         self,
-        request: compute.SetNodeTemplateNodeGroupRequest = None,
+        request: Union[compute.SetNodeTemplateNodeGroupRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         node_group: str = None,
         node_groups_set_node_template_request_resource: compute.NodeGroupsSetNodeTemplateRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Updates the node template of the node group.
 
         Args:
-            request (google.cloud.compute_v1.types.SetNodeTemplateNodeGroupRequest):
+            request (Union[google.cloud.compute_v1.types.SetNodeTemplateNodeGroupRequest, dict]):
                 The request object. A request message for
                 NodeGroups.SetNodeTemplate. See the method description
                 for details.
@@ -1559,13 +1571,13 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
     def test_iam_permissions(
         self,
-        request: compute.TestIamPermissionsNodeGroupRequest = None,
+        request: Union[compute.TestIamPermissionsNodeGroupRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         resource: str = None,
         test_permissions_request_resource: compute.TestPermissionsRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TestPermissionsResponse:
@@ -1573,7 +1585,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         specified resource.
 
         Args:
-            request (google.cloud.compute_v1.types.TestIamPermissionsNodeGroupRequest):
+            request (Union[google.cloud.compute_v1.types.TestIamPermissionsNodeGroupRequest, dict]):
                 The request object. A request message for
                 NodeGroups.TestIamPermissions. See the method
                 description for details.
@@ -1651,6 +1663,19 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:

@@ -1,3 +1,22 @@
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+import json  # type: ignore
+import grpc  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.api_core import rest_helpers
+from google.api_core import path_template
+from google.api_core import gapic_v1
+from requests import __version__ as requests_version
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import warnings
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
+
 # -*- coding: utf-8 -*-
 # Copyright 2020 Google LLC
 #
@@ -13,21 +32,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
 
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-
-import grpc  # type: ignore
-
-from google.auth.transport.requests import AuthorizedSession
 
 from google.cloud.compute_v1.types import compute
 
-from .base import DisksTransport, DEFAULT_CLIENT_INFO
+from .base import DisksTransport, DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+
+
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
+    grpc_version=None,
+    rest_version=requests_version,
+)
 
 
 class DisksRestTransport(DisksTransport):
@@ -53,6 +69,7 @@ class DisksRestTransport(DisksTransport):
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
+        url_scheme: str = "https",
     ) -> None:
         """Instantiate the transport.
 
@@ -80,6 +97,11 @@ class DisksRestTransport(DisksTransport):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                be used for service account credentials.
+            url_scheme: the protocol scheme for the API endpoint.  Normally
+                "https", but for testing or local servers,
+                "http" can be specified.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -98,10 +120,12 @@ class DisksRestTransport(DisksTransport):
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._prep_wrapped_messages(client_info)
 
-    def add_resource_policies(
+    def _add_resource_policies(
         self,
         request: compute.AddResourcePoliciesDiskRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the add resource policies method over HTTP.
@@ -112,6 +136,9 @@ class DisksRestTransport(DisksTransport):
                 Disks.AddResourcePolicies. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -135,33 +162,63 @@ class DisksRestTransport(DisksTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/disks/{disk}/addResourcePolicies",
+                "body": "disks_add_resource_policies_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("disk", "disk"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.AddResourcePoliciesDiskRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.DisksAddResourcePoliciesRequest.to_json(
-            request.disks_add_resource_policies_request_resource,
+            compute.DisksAddResourcePoliciesRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/disks/{disk}/addResourcePolicies".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            disk=request.disk,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.AddResourcePoliciesDiskRequest.to_json(
+                compute.AddResourcePoliciesDiskRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.AddResourcePoliciesDiskRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -172,10 +229,12 @@ class DisksRestTransport(DisksTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def aggregated_list(
+    def _aggregated_list(
         self,
         request: compute.AggregatedListDisksRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.DiskAggregatedList:
         r"""Call the aggregated list method over HTTP.
@@ -186,6 +245,9 @@ class DisksRestTransport(DisksTransport):
                 Disks.AggregatedList. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -194,32 +256,52 @@ class DisksRestTransport(DisksTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/aggregated/disks".format(
-            host=self._host, project=request.project,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/aggregated/disks",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.AggregatedListDisksRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.AggregatedListDisksRequest.to_json(
+                compute.AggregatedListDisksRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.AggregatedListDisksRequest.filter in request:
-            query_params["filter"] = request.filter
-        if compute.AggregatedListDisksRequest.include_all_scopes in request:
-            query_params["includeAllScopes"] = request.include_all_scopes
-        if compute.AggregatedListDisksRequest.max_results in request:
-            query_params["maxResults"] = request.max_results
-        if compute.AggregatedListDisksRequest.order_by in request:
-            query_params["orderBy"] = request.order_by
-        if compute.AggregatedListDisksRequest.page_token in request:
-            query_params["pageToken"] = request.page_token
-        if compute.AggregatedListDisksRequest.return_partial_success in request:
-            query_params["returnPartialSuccess"] = request.return_partial_success
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -231,10 +313,12 @@ class DisksRestTransport(DisksTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def create_snapshot(
+    def _create_snapshot(
         self,
         request: compute.CreateSnapshotDiskRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the create snapshot method over HTTP.
@@ -245,6 +329,9 @@ class DisksRestTransport(DisksTransport):
                 Disks.CreateSnapshot. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -268,35 +355,61 @@ class DisksRestTransport(DisksTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/disks/{disk}/createSnapshot",
+                "body": "snapshot_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("disk", "disk"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.CreateSnapshotDiskRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.Snapshot.to_json(
-            request.snapshot_resource,
+            compute.Snapshot(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/disks/{disk}/createSnapshot".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            disk=request.disk,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.CreateSnapshotDiskRequest.to_json(
+                compute.CreateSnapshotDiskRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.CreateSnapshotDiskRequest.guest_flush in request:
-            query_params["guestFlush"] = request.guest_flush
-        if compute.CreateSnapshotDiskRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -307,10 +420,12 @@ class DisksRestTransport(DisksTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def delete(
+    def _delete(
         self,
         request: compute.DeleteDiskRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the delete method over HTTP.
@@ -320,6 +435,9 @@ class DisksRestTransport(DisksTransport):
                 The request object. A request message for Disks.Delete.
                 See the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -343,25 +461,54 @@ class DisksRestTransport(DisksTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/disks/{disk}".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            disk=request.disk,
+        http_options = [
+            {
+                "method": "delete",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/disks/{disk}",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("disk", "disk"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.DeleteDiskRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.DeleteDiskRequest.to_json(
+                compute.DeleteDiskRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.DeleteDiskRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.delete(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -371,10 +518,12 @@ class DisksRestTransport(DisksTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def get(
+    def _get(
         self,
         request: compute.GetDiskRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Disk:
         r"""Call the get method over HTTP.
@@ -384,6 +533,9 @@ class DisksRestTransport(DisksTransport):
                 The request object. A request message for Disks.Get. See
                 the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -404,23 +556,54 @@ class DisksRestTransport(DisksTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/disks/{disk}".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            disk=request.disk,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/disks/{disk}",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("disk", "disk"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.GetDiskRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.GetDiskRequest.to_json(
+                compute.GetDiskRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -430,10 +613,12 @@ class DisksRestTransport(DisksTransport):
         # Return the response
         return compute.Disk.from_json(response.content, ignore_unknown_fields=True)
 
-    def get_iam_policy(
+    def _get_iam_policy(
         self,
         request: compute.GetIamPolicyDiskRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
         r"""Call the get iam policy method over HTTP.
@@ -444,6 +629,9 @@ class DisksRestTransport(DisksTransport):
                 Disks.GetIamPolicy. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -492,27 +680,54 @@ class DisksRestTransport(DisksTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/disks/{resource}/getIamPolicy".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            resource=request.resource,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/disks/{resource}/getIamPolicy",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("resource", "resource"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.GetIamPolicyDiskRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.GetIamPolicyDiskRequest.to_json(
+                compute.GetIamPolicyDiskRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.GetIamPolicyDiskRequest.options_requested_policy_version in request:
-            query_params[
-                "optionsRequestedPolicyVersion"
-            ] = request.options_requested_policy_version
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -522,10 +737,12 @@ class DisksRestTransport(DisksTransport):
         # Return the response
         return compute.Policy.from_json(response.content, ignore_unknown_fields=True)
 
-    def insert(
+    def _insert(
         self,
         request: compute.InsertDiskRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the insert method over HTTP.
@@ -535,6 +752,9 @@ class DisksRestTransport(DisksTransport):
                 The request object. A request message for Disks.Insert.
                 See the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -558,32 +778,60 @@ class DisksRestTransport(DisksTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/disks",
+                "body": "disk_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.InsertDiskRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.Disk.to_json(
-            request.disk_resource,
+            compute.Disk(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/disks".format(
-            host=self._host, project=request.project, zone=request.zone,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.InsertDiskRequest.to_json(
+                compute.InsertDiskRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.InsertDiskRequest.request_id in request:
-            query_params["requestId"] = request.request_id
-        if compute.InsertDiskRequest.source_image in request:
-            query_params["sourceImage"] = request.source_image
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -594,10 +842,12 @@ class DisksRestTransport(DisksTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def list(
+    def _list(
         self,
         request: compute.ListDisksRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.DiskList:
         r"""Call the list method over HTTP.
@@ -607,6 +857,9 @@ class DisksRestTransport(DisksTransport):
                 The request object. A request message for Disks.List. See
                 the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -615,30 +868,53 @@ class DisksRestTransport(DisksTransport):
                 A list of Disk resources.
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/disks".format(
-            host=self._host, project=request.project, zone=request.zone,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/disks",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.ListDisksRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.ListDisksRequest.to_json(
+                compute.ListDisksRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.ListDisksRequest.filter in request:
-            query_params["filter"] = request.filter
-        if compute.ListDisksRequest.max_results in request:
-            query_params["maxResults"] = request.max_results
-        if compute.ListDisksRequest.order_by in request:
-            query_params["orderBy"] = request.order_by
-        if compute.ListDisksRequest.page_token in request:
-            query_params["pageToken"] = request.page_token
-        if compute.ListDisksRequest.return_partial_success in request:
-            query_params["returnPartialSuccess"] = request.return_partial_success
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -648,10 +924,12 @@ class DisksRestTransport(DisksTransport):
         # Return the response
         return compute.DiskList.from_json(response.content, ignore_unknown_fields=True)
 
-    def remove_resource_policies(
+    def _remove_resource_policies(
         self,
         request: compute.RemoveResourcePoliciesDiskRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the remove resource policies method over HTTP.
@@ -662,6 +940,9 @@ class DisksRestTransport(DisksTransport):
                 Disks.RemoveResourcePolicies. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -685,33 +966,63 @@ class DisksRestTransport(DisksTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/disks/{disk}/removeResourcePolicies",
+                "body": "disks_remove_resource_policies_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("disk", "disk"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.RemoveResourcePoliciesDiskRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.DisksRemoveResourcePoliciesRequest.to_json(
-            request.disks_remove_resource_policies_request_resource,
+            compute.DisksRemoveResourcePoliciesRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/disks/{disk}/removeResourcePolicies".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            disk=request.disk,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.RemoveResourcePoliciesDiskRequest.to_json(
+                compute.RemoveResourcePoliciesDiskRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.RemoveResourcePoliciesDiskRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -722,10 +1033,12 @@ class DisksRestTransport(DisksTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def resize(
+    def _resize(
         self,
         request: compute.ResizeDiskRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the resize method over HTTP.
@@ -735,6 +1048,9 @@ class DisksRestTransport(DisksTransport):
                 The request object. A request message for Disks.Resize.
                 See the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -758,33 +1074,61 @@ class DisksRestTransport(DisksTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/disks/{disk}/resize",
+                "body": "disks_resize_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("disk", "disk"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.ResizeDiskRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.DisksResizeRequest.to_json(
-            request.disks_resize_request_resource,
+            compute.DisksResizeRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/disks/{disk}/resize".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            disk=request.disk,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.ResizeDiskRequest.to_json(
+                compute.ResizeDiskRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.ResizeDiskRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -795,10 +1139,12 @@ class DisksRestTransport(DisksTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def set_iam_policy(
+    def _set_iam_policy(
         self,
         request: compute.SetIamPolicyDiskRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
         r"""Call the set iam policy method over HTTP.
@@ -809,6 +1155,9 @@ class DisksRestTransport(DisksTransport):
                 Disks.SetIamPolicy. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -857,31 +1206,61 @@ class DisksRestTransport(DisksTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/disks/{resource}/setIamPolicy",
+                "body": "zone_set_policy_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("resource", "resource"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.SetIamPolicyDiskRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.ZoneSetPolicyRequest.to_json(
-            request.zone_set_policy_request_resource,
+            compute.ZoneSetPolicyRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/disks/{resource}/setIamPolicy".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            resource=request.resource,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.SetIamPolicyDiskRequest.to_json(
+                compute.SetIamPolicyDiskRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -892,10 +1271,12 @@ class DisksRestTransport(DisksTransport):
         # Return the response
         return compute.Policy.from_json(response.content, ignore_unknown_fields=True)
 
-    def set_labels(
+    def _set_labels(
         self,
         request: compute.SetLabelsDiskRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the set labels method over HTTP.
@@ -906,6 +1287,9 @@ class DisksRestTransport(DisksTransport):
                 Disks.SetLabels. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -929,33 +1313,61 @@ class DisksRestTransport(DisksTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/disks/{resource}/setLabels",
+                "body": "zone_set_labels_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("resource", "resource"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.SetLabelsDiskRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.ZoneSetLabelsRequest.to_json(
-            request.zone_set_labels_request_resource,
+            compute.ZoneSetLabelsRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/disks/{resource}/setLabels".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            resource=request.resource,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.SetLabelsDiskRequest.to_json(
+                compute.SetLabelsDiskRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.SetLabelsDiskRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -966,10 +1378,12 @@ class DisksRestTransport(DisksTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def test_iam_permissions(
+    def _test_iam_permissions(
         self,
         request: compute.TestIamPermissionsDiskRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TestPermissionsResponse:
         r"""Call the test iam permissions method over HTTP.
@@ -980,6 +1394,9 @@ class DisksRestTransport(DisksTransport):
                 Disks.TestIamPermissions. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -988,31 +1405,63 @@ class DisksRestTransport(DisksTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/disks/{resource}/testIamPermissions",
+                "body": "test_permissions_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("resource", "resource"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.TestIamPermissionsDiskRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.TestPermissionsRequest.to_json(
-            request.test_permissions_request_resource,
+            compute.TestPermissionsRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/disks/{resource}/testIamPermissions".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            resource=request.resource,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.TestIamPermissionsDiskRequest.to_json(
+                compute.TestIamPermissionsDiskRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1024,6 +1473,77 @@ class DisksRestTransport(DisksTransport):
         return compute.TestPermissionsResponse.from_json(
             response.content, ignore_unknown_fields=True
         )
+
+    @property
+    def add_resource_policies(
+        self,
+    ) -> Callable[[compute.AddResourcePoliciesDiskRequest], compute.Operation]:
+        return self._add_resource_policies
+
+    @property
+    def aggregated_list(
+        self,
+    ) -> Callable[[compute.AggregatedListDisksRequest], compute.DiskAggregatedList]:
+        return self._aggregated_list
+
+    @property
+    def create_snapshot(
+        self,
+    ) -> Callable[[compute.CreateSnapshotDiskRequest], compute.Operation]:
+        return self._create_snapshot
+
+    @property
+    def delete(self) -> Callable[[compute.DeleteDiskRequest], compute.Operation]:
+        return self._delete
+
+    @property
+    def get(self) -> Callable[[compute.GetDiskRequest], compute.Disk]:
+        return self._get
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[[compute.GetIamPolicyDiskRequest], compute.Policy]:
+        return self._get_iam_policy
+
+    @property
+    def insert(self) -> Callable[[compute.InsertDiskRequest], compute.Operation]:
+        return self._insert
+
+    @property
+    def list(self) -> Callable[[compute.ListDisksRequest], compute.DiskList]:
+        return self._list
+
+    @property
+    def remove_resource_policies(
+        self,
+    ) -> Callable[[compute.RemoveResourcePoliciesDiskRequest], compute.Operation]:
+        return self._remove_resource_policies
+
+    @property
+    def resize(self) -> Callable[[compute.ResizeDiskRequest], compute.Operation]:
+        return self._resize
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[[compute.SetIamPolicyDiskRequest], compute.Policy]:
+        return self._set_iam_policy
+
+    @property
+    def set_labels(self) -> Callable[[compute.SetLabelsDiskRequest], compute.Operation]:
+        return self._set_labels
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [compute.TestIamPermissionsDiskRequest], compute.TestPermissionsResponse
+    ]:
+        return self._test_iam_permissions
+
+    def close(self):
+        self._session.close()
 
 
 __all__ = ("DisksRestTransport",)

@@ -14,21 +14,25 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.compute_v1.services.target_pools import pagers
 from google.cloud.compute_v1.types import compute
@@ -261,8 +265,15 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
         )
 
         client_cert_source_func = None
@@ -324,24 +335,25 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
             )
 
     def add_health_check(
         self,
-        request: compute.AddHealthCheckTargetPoolRequest = None,
+        request: Union[compute.AddHealthCheckTargetPoolRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         target_pool: str = None,
         target_pools_add_health_check_request_resource: compute.TargetPoolsAddHealthCheckRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Adds health check URLs to a target pool.
 
         Args:
-            request (google.cloud.compute_v1.types.AddHealthCheckTargetPoolRequest):
+            request (Union[google.cloud.compute_v1.types.AddHealthCheckTargetPoolRequest, dict]):
                 The request object. A request message for
                 TargetPools.AddHealthCheck. See the method description
                 for details.
@@ -442,20 +454,20 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
     def add_instance(
         self,
-        request: compute.AddInstanceTargetPoolRequest = None,
+        request: Union[compute.AddInstanceTargetPoolRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         target_pool: str = None,
         target_pools_add_instance_request_resource: compute.TargetPoolsAddInstanceRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Adds an instance to a target pool.
 
         Args:
-            request (google.cloud.compute_v1.types.AddInstanceTargetPoolRequest):
+            request (Union[google.cloud.compute_v1.types.AddInstanceTargetPoolRequest, dict]):
                 The request object. A request message for
                 TargetPools.AddInstance. See the method description for
                 details.
@@ -551,17 +563,17 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
     def aggregated_list(
         self,
-        request: compute.AggregatedListTargetPoolsRequest = None,
+        request: Union[compute.AggregatedListTargetPoolsRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of target pools.
 
         Args:
-            request (google.cloud.compute_v1.types.AggregatedListTargetPoolsRequest):
+            request (Union[google.cloud.compute_v1.types.AggregatedListTargetPoolsRequest, dict]):
                 The request object. A request message for
                 TargetPools.AggregatedList. See the method description
                 for details.
@@ -622,19 +634,19 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
     def delete(
         self,
-        request: compute.DeleteTargetPoolRequest = None,
+        request: Union[compute.DeleteTargetPoolRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         target_pool: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified target pool.
 
         Args:
-            request (google.cloud.compute_v1.types.DeleteTargetPoolRequest):
+            request (Union[google.cloud.compute_v1.types.DeleteTargetPoolRequest, dict]):
                 The request object. A request message for
                 TargetPools.Delete. See the method description for
                 details.
@@ -719,12 +731,12 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
     def get(
         self,
-        request: compute.GetTargetPoolRequest = None,
+        request: Union[compute.GetTargetPoolRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         target_pool: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TargetPool:
@@ -732,7 +744,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         available target pools by making a list() request.
 
         Args:
-            request (google.cloud.compute_v1.types.GetTargetPoolRequest):
+            request (Union[google.cloud.compute_v1.types.GetTargetPoolRequest, dict]):
                 The request object. A request message for
                 TargetPools.Get. See the method description for details.
             project (str):
@@ -809,13 +821,13 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
     def get_health(
         self,
-        request: compute.GetHealthTargetPoolRequest = None,
+        request: Union[compute.GetHealthTargetPoolRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         target_pool: str = None,
         instance_reference_resource: compute.InstanceReference = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TargetPoolInstanceHealth:
@@ -824,7 +836,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         pool.
 
         Args:
-            request (google.cloud.compute_v1.types.GetHealthTargetPoolRequest):
+            request (Union[google.cloud.compute_v1.types.GetHealthTargetPoolRequest, dict]):
                 The request object. A request message for
                 TargetPools.GetHealth. See the method description for
                 details.
@@ -903,12 +915,12 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
     def insert(
         self,
-        request: compute.InsertTargetPoolRequest = None,
+        request: Union[compute.InsertTargetPoolRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         target_pool_resource: compute.TargetPool = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -916,7 +928,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         region using the data included in the request.
 
         Args:
-            request (google.cloud.compute_v1.types.InsertTargetPoolRequest):
+            request (Union[google.cloud.compute_v1.types.InsertTargetPoolRequest, dict]):
                 The request object. A request message for
                 TargetPools.Insert. See the method description for
                 details.
@@ -999,11 +1011,11 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
     def list(
         self,
-        request: compute.ListTargetPoolsRequest = None,
+        request: Union[compute.ListTargetPoolsRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
@@ -1011,7 +1023,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         specified project and region.
 
         Args:
-            request (google.cloud.compute_v1.types.ListTargetPoolsRequest):
+            request (Union[google.cloud.compute_v1.types.ListTargetPoolsRequest, dict]):
                 The request object. A request message for
                 TargetPools.List. See the method description for
                 details.
@@ -1083,20 +1095,20 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
     def remove_health_check(
         self,
-        request: compute.RemoveHealthCheckTargetPoolRequest = None,
+        request: Union[compute.RemoveHealthCheckTargetPoolRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         target_pool: str = None,
         target_pools_remove_health_check_request_resource: compute.TargetPoolsRemoveHealthCheckRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Removes health check URL from a target pool.
 
         Args:
-            request (google.cloud.compute_v1.types.RemoveHealthCheckTargetPoolRequest):
+            request (Union[google.cloud.compute_v1.types.RemoveHealthCheckTargetPoolRequest, dict]):
                 The request object. A request message for
                 TargetPools.RemoveHealthCheck. See the method
                 description for details.
@@ -1195,20 +1207,20 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
     def remove_instance(
         self,
-        request: compute.RemoveInstanceTargetPoolRequest = None,
+        request: Union[compute.RemoveInstanceTargetPoolRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         target_pool: str = None,
         target_pools_remove_instance_request_resource: compute.TargetPoolsRemoveInstanceRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Removes instance URL from a target pool.
 
         Args:
-            request (google.cloud.compute_v1.types.RemoveInstanceTargetPoolRequest):
+            request (Union[google.cloud.compute_v1.types.RemoveInstanceTargetPoolRequest, dict]):
                 The request object. A request message for
                 TargetPools.RemoveInstance. See the method description
                 for details.
@@ -1309,20 +1321,20 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
     def set_backup(
         self,
-        request: compute.SetBackupTargetPoolRequest = None,
+        request: Union[compute.SetBackupTargetPoolRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         target_pool: str = None,
         target_reference_resource: compute.TargetReference = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Changes a backup target pool's configurations.
 
         Args:
-            request (google.cloud.compute_v1.types.SetBackupTargetPoolRequest):
+            request (Union[google.cloud.compute_v1.types.SetBackupTargetPoolRequest, dict]):
                 The request object. A request message for
                 TargetPools.SetBackup. See the method description for
                 details.
@@ -1413,6 +1425,19 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:

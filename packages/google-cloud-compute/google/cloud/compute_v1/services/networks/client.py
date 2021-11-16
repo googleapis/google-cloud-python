@@ -14,21 +14,25 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.compute_v1.services.networks import pagers
 from google.cloud.compute_v1.types import compute
@@ -261,8 +265,15 @@ class NetworksClient(metaclass=NetworksClientMeta):
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
         )
 
         client_cert_source_func = None
@@ -324,23 +335,24 @@ class NetworksClient(metaclass=NetworksClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
             )
 
     def add_peering(
         self,
-        request: compute.AddPeeringNetworkRequest = None,
+        request: Union[compute.AddPeeringNetworkRequest, dict] = None,
         *,
         project: str = None,
         network: str = None,
         networks_add_peering_request_resource: compute.NetworksAddPeeringRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Adds a peering to the specified network.
 
         Args:
-            request (google.cloud.compute_v1.types.AddPeeringNetworkRequest):
+            request (Union[google.cloud.compute_v1.types.AddPeeringNetworkRequest, dict]):
                 The request object. A request message for
                 Networks.AddPeering. See the method description for
                 details.
@@ -427,18 +439,18 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
     def delete(
         self,
-        request: compute.DeleteNetworkRequest = None,
+        request: Union[compute.DeleteNetworkRequest, dict] = None,
         *,
         project: str = None,
         network: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified network.
 
         Args:
-            request (google.cloud.compute_v1.types.DeleteNetworkRequest):
+            request (Union[google.cloud.compute_v1.types.DeleteNetworkRequest, dict]):
                 The request object. A request message for
                 Networks.Delete. See the method description for details.
             project (str):
@@ -511,11 +523,11 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
     def get(
         self,
-        request: compute.GetNetworkRequest = None,
+        request: Union[compute.GetNetworkRequest, dict] = None,
         *,
         project: str = None,
         network: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Network:
@@ -523,7 +535,7 @@ class NetworksClient(metaclass=NetworksClientMeta):
         available networks by making a list() request.
 
         Args:
-            request (google.cloud.compute_v1.types.GetNetworkRequest):
+            request (Union[google.cloud.compute_v1.types.GetNetworkRequest, dict]):
                 The request object. A request message for Networks.Get.
                 See the method description for details.
             project (str):
@@ -586,18 +598,18 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
     def get_effective_firewalls(
         self,
-        request: compute.GetEffectiveFirewallsNetworkRequest = None,
+        request: Union[compute.GetEffectiveFirewallsNetworkRequest, dict] = None,
         *,
         project: str = None,
         network: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.NetworksGetEffectiveFirewallsResponse:
         r"""Returns the effective firewalls on a given network.
 
         Args:
-            request (google.cloud.compute_v1.types.GetEffectiveFirewallsNetworkRequest):
+            request (Union[google.cloud.compute_v1.types.GetEffectiveFirewallsNetworkRequest, dict]):
                 The request object. A request message for
                 Networks.GetEffectiveFirewalls. See the method
                 description for details.
@@ -656,11 +668,11 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
     def insert(
         self,
-        request: compute.InsertNetworkRequest = None,
+        request: Union[compute.InsertNetworkRequest, dict] = None,
         *,
         project: str = None,
         network_resource: compute.Network = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -668,7 +680,7 @@ class NetworksClient(metaclass=NetworksClientMeta):
         data included in the request.
 
         Args:
-            request (google.cloud.compute_v1.types.InsertNetworkRequest):
+            request (Union[google.cloud.compute_v1.types.InsertNetworkRequest, dict]):
                 The request object. A request message for
                 Networks.Insert. See the method description for details.
             project (str):
@@ -741,10 +753,10 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
     def list(
         self,
-        request: compute.ListNetworksRequest = None,
+        request: Union[compute.ListNetworksRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
@@ -752,7 +764,7 @@ class NetworksClient(metaclass=NetworksClientMeta):
         specified project.
 
         Args:
-            request (google.cloud.compute_v1.types.ListNetworksRequest):
+            request (Union[google.cloud.compute_v1.types.ListNetworksRequest, dict]):
                 The request object. A request message for Networks.List.
                 See the method description for details.
             project (str):
@@ -813,11 +825,11 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
     def list_peering_routes(
         self,
-        request: compute.ListPeeringRoutesNetworksRequest = None,
+        request: Union[compute.ListPeeringRoutesNetworksRequest, dict] = None,
         *,
         project: str = None,
         network: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPeeringRoutesPager:
@@ -825,7 +837,7 @@ class NetworksClient(metaclass=NetworksClientMeta):
         connection.
 
         Args:
-            request (google.cloud.compute_v1.types.ListPeeringRoutesNetworksRequest):
+            request (Union[google.cloud.compute_v1.types.ListPeeringRoutesNetworksRequest, dict]):
                 The request object. A request message for
                 Networks.ListPeeringRoutes. See the method description
                 for details.
@@ -893,12 +905,12 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
     def patch(
         self,
-        request: compute.PatchNetworkRequest = None,
+        request: Union[compute.PatchNetworkRequest, dict] = None,
         *,
         project: str = None,
         network: str = None,
         network_resource: compute.Network = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -907,7 +919,7 @@ class NetworksClient(metaclass=NetworksClientMeta):
         modified: routingConfig.routingMode.
 
         Args:
-            request (google.cloud.compute_v1.types.PatchNetworkRequest):
+            request (Union[google.cloud.compute_v1.types.PatchNetworkRequest, dict]):
                 The request object. A request message for
                 Networks.Patch. See the method description for details.
             project (str):
@@ -987,19 +999,19 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
     def remove_peering(
         self,
-        request: compute.RemovePeeringNetworkRequest = None,
+        request: Union[compute.RemovePeeringNetworkRequest, dict] = None,
         *,
         project: str = None,
         network: str = None,
         networks_remove_peering_request_resource: compute.NetworksRemovePeeringRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Removes a peering from the specified network.
 
         Args:
-            request (google.cloud.compute_v1.types.RemovePeeringNetworkRequest):
+            request (Union[google.cloud.compute_v1.types.RemovePeeringNetworkRequest, dict]):
                 The request object. A request message for
                 Networks.RemovePeering. See the method description for
                 details.
@@ -1086,11 +1098,11 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
     def switch_to_custom_mode(
         self,
-        request: compute.SwitchToCustomModeNetworkRequest = None,
+        request: Union[compute.SwitchToCustomModeNetworkRequest, dict] = None,
         *,
         project: str = None,
         network: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -1098,7 +1110,7 @@ class NetworksClient(metaclass=NetworksClientMeta):
         custom subnet mode.
 
         Args:
-            request (google.cloud.compute_v1.types.SwitchToCustomModeNetworkRequest):
+            request (Union[google.cloud.compute_v1.types.SwitchToCustomModeNetworkRequest, dict]):
                 The request object. A request message for
                 Networks.SwitchToCustomMode. See the method description
                 for details.
@@ -1172,12 +1184,12 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
     def update_peering(
         self,
-        request: compute.UpdatePeeringNetworkRequest = None,
+        request: Union[compute.UpdatePeeringNetworkRequest, dict] = None,
         *,
         project: str = None,
         network: str = None,
         networks_update_peering_request_resource: compute.NetworksUpdatePeeringRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -1187,7 +1199,7 @@ class NetworksClient(metaclass=NetworksClientMeta):
         NetworkPeering.import_custom_routes field.
 
         Args:
-            request (google.cloud.compute_v1.types.UpdatePeeringNetworkRequest):
+            request (Union[google.cloud.compute_v1.types.UpdatePeeringNetworkRequest, dict]):
                 The request object. A request message for
                 Networks.UpdatePeering. See the method description for
                 details.
@@ -1271,6 +1283,19 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:

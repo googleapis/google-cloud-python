@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.compute_v1.types import compute
@@ -74,14 +74,14 @@ class AggregatedListPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[compute.SslCertificateAggregatedList]:
+    def pages(self) -> Iterator[compute.SslCertificateAggregatedList]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[Tuple[str, compute.SslCertificatesScopedList]]:
+    def __iter__(self) -> Iterator[Tuple[str, compute.SslCertificatesScopedList]]:
         for page in self.pages:
             yield from page.items.items()
 
@@ -139,14 +139,14 @@ class ListPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[compute.SslCertificateList]:
+    def pages(self) -> Iterator[compute.SslCertificateList]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[compute.SslCertificate]:
+    def __iter__(self) -> Iterator[compute.SslCertificate]:
         for page in self.pages:
             yield from page.items
 

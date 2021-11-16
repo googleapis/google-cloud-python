@@ -1,3 +1,22 @@
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+import json  # type: ignore
+import grpc  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.api_core import rest_helpers
+from google.api_core import path_template
+from google.api_core import gapic_v1
+from requests import __version__ as requests_version
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import warnings
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
+
 # -*- coding: utf-8 -*-
 # Copyright 2020 Google LLC
 #
@@ -13,21 +32,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
 
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-
-import grpc  # type: ignore
-
-from google.auth.transport.requests import AuthorizedSession
 
 from google.cloud.compute_v1.types import compute
 
-from .base import NetworksTransport, DEFAULT_CLIENT_INFO
+from .base import NetworksTransport, DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+
+
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
+    grpc_version=None,
+    rest_version=requests_version,
+)
 
 
 class NetworksRestTransport(NetworksTransport):
@@ -53,6 +69,7 @@ class NetworksRestTransport(NetworksTransport):
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
+        url_scheme: str = "https",
     ) -> None:
         """Instantiate the transport.
 
@@ -80,6 +97,11 @@ class NetworksRestTransport(NetworksTransport):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                be used for service account credentials.
+            url_scheme: the protocol scheme for the API endpoint.  Normally
+                "https", but for testing or local servers,
+                "http" can be specified.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -98,10 +120,12 @@ class NetworksRestTransport(NetworksTransport):
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._prep_wrapped_messages(client_info)
 
-    def add_peering(
+    def _add_peering(
         self,
         request: compute.AddPeeringNetworkRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the add peering method over HTTP.
@@ -112,6 +136,9 @@ class NetworksRestTransport(NetworksTransport):
                 Networks.AddPeering. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -135,30 +162,60 @@ class NetworksRestTransport(NetworksTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/global/networks/{network}/addPeering",
+                "body": "networks_add_peering_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("network", "network"),
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.AddPeeringNetworkRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.NetworksAddPeeringRequest.to_json(
-            request.networks_add_peering_request_resource,
+            compute.NetworksAddPeeringRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/networks/{network}/addPeering".format(
-            host=self._host, project=request.project, network=request.network,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.AddPeeringNetworkRequest.to_json(
+                compute.AddPeeringNetworkRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.AddPeeringNetworkRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -169,10 +226,12 @@ class NetworksRestTransport(NetworksTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def delete(
+    def _delete(
         self,
         request: compute.DeleteNetworkRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the delete method over HTTP.
@@ -183,6 +242,9 @@ class NetworksRestTransport(NetworksTransport):
                 Networks.Delete. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -206,22 +268,53 @@ class NetworksRestTransport(NetworksTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/networks/{network}".format(
-            host=self._host, project=request.project, network=request.network,
+        http_options = [
+            {
+                "method": "delete",
+                "uri": "/compute/v1/projects/{project}/global/networks/{network}",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("network", "network"),
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.DeleteNetworkRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.DeleteNetworkRequest.to_json(
+                compute.DeleteNetworkRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.DeleteNetworkRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.delete(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -231,10 +324,12 @@ class NetworksRestTransport(NetworksTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def get(
+    def _get(
         self,
         request: compute.GetNetworkRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Network:
         r"""Call the get method over HTTP.
@@ -244,6 +339,9 @@ class NetworksRestTransport(NetworksTransport):
                 The request object. A request message for Networks.Get.
                 See the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -257,20 +355,53 @@ class NetworksRestTransport(NetworksTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/networks/{network}".format(
-            host=self._host, project=request.project, network=request.network,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/global/networks/{network}",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("network", "network"),
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.GetNetworkRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.GetNetworkRequest.to_json(
+                compute.GetNetworkRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -280,10 +411,12 @@ class NetworksRestTransport(NetworksTransport):
         # Return the response
         return compute.Network.from_json(response.content, ignore_unknown_fields=True)
 
-    def get_effective_firewalls(
+    def _get_effective_firewalls(
         self,
         request: compute.GetEffectiveFirewallsNetworkRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.NetworksGetEffectiveFirewallsResponse:
         r"""Call the get effective firewalls method over HTTP.
@@ -294,6 +427,9 @@ class NetworksRestTransport(NetworksTransport):
                 Networks.GetEffectiveFirewalls. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -302,20 +438,55 @@ class NetworksRestTransport(NetworksTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/networks/{network}/getEffectiveFirewalls".format(
-            host=self._host, project=request.project, network=request.network,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/global/networks/{network}/getEffectiveFirewalls",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("network", "network"),
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.GetEffectiveFirewallsNetworkRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.GetEffectiveFirewallsNetworkRequest.to_json(
+                compute.GetEffectiveFirewallsNetworkRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -327,10 +498,12 @@ class NetworksRestTransport(NetworksTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def insert(
+    def _insert(
         self,
         request: compute.InsertNetworkRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the insert method over HTTP.
@@ -341,6 +514,9 @@ class NetworksRestTransport(NetworksTransport):
                 Networks.Insert. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -364,30 +540,59 @@ class NetworksRestTransport(NetworksTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/global/networks",
+                "body": "network_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.InsertNetworkRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.Network.to_json(
-            request.network_resource,
+            compute.Network(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/networks".format(
-            host=self._host, project=request.project,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.InsertNetworkRequest.to_json(
+                compute.InsertNetworkRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.InsertNetworkRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -398,10 +603,12 @@ class NetworksRestTransport(NetworksTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def list(
+    def _list(
         self,
         request: compute.ListNetworksRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.NetworkList:
         r"""Call the list method over HTTP.
@@ -411,6 +618,9 @@ class NetworksRestTransport(NetworksTransport):
                 The request object. A request message for Networks.List.
                 See the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -419,30 +629,49 @@ class NetworksRestTransport(NetworksTransport):
                 Contains a list of networks.
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/networks".format(
-            host=self._host, project=request.project,
+        http_options = [
+            {"method": "get", "uri": "/compute/v1/projects/{project}/global/networks",},
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.ListNetworksRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.ListNetworksRequest.to_json(
+                compute.ListNetworksRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.ListNetworksRequest.filter in request:
-            query_params["filter"] = request.filter
-        if compute.ListNetworksRequest.max_results in request:
-            query_params["maxResults"] = request.max_results
-        if compute.ListNetworksRequest.order_by in request:
-            query_params["orderBy"] = request.order_by
-        if compute.ListNetworksRequest.page_token in request:
-            query_params["pageToken"] = request.page_token
-        if compute.ListNetworksRequest.return_partial_success in request:
-            query_params["returnPartialSuccess"] = request.return_partial_success
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -454,10 +683,12 @@ class NetworksRestTransport(NetworksTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def list_peering_routes(
+    def _list_peering_routes(
         self,
         request: compute.ListPeeringRoutesNetworksRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.ExchangedPeeringRoutesList:
         r"""Call the list peering routes method over HTTP.
@@ -468,6 +699,9 @@ class NetworksRestTransport(NetworksTransport):
                 Networks.ListPeeringRoutes. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -476,36 +710,55 @@ class NetworksRestTransport(NetworksTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/networks/{network}/listPeeringRoutes".format(
-            host=self._host, project=request.project, network=request.network,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/global/networks/{network}/listPeeringRoutes",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("network", "network"),
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.ListPeeringRoutesNetworksRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.ListPeeringRoutesNetworksRequest.to_json(
+                compute.ListPeeringRoutesNetworksRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.ListPeeringRoutesNetworksRequest.direction in request:
-            query_params["direction"] = request.direction
-        if compute.ListPeeringRoutesNetworksRequest.filter in request:
-            query_params["filter"] = request.filter
-        if compute.ListPeeringRoutesNetworksRequest.max_results in request:
-            query_params["maxResults"] = request.max_results
-        if compute.ListPeeringRoutesNetworksRequest.order_by in request:
-            query_params["orderBy"] = request.order_by
-        if compute.ListPeeringRoutesNetworksRequest.page_token in request:
-            query_params["pageToken"] = request.page_token
-        if compute.ListPeeringRoutesNetworksRequest.peering_name in request:
-            query_params["peeringName"] = request.peering_name
-        if compute.ListPeeringRoutesNetworksRequest.region in request:
-            query_params["region"] = request.region
-        if compute.ListPeeringRoutesNetworksRequest.return_partial_success in request:
-            query_params["returnPartialSuccess"] = request.return_partial_success
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -517,10 +770,12 @@ class NetworksRestTransport(NetworksTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def patch(
+    def _patch(
         self,
         request: compute.PatchNetworkRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the patch method over HTTP.
@@ -530,6 +785,9 @@ class NetworksRestTransport(NetworksTransport):
                 The request object. A request message for Networks.Patch.
                 See the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -553,30 +811,60 @@ class NetworksRestTransport(NetworksTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "patch",
+                "uri": "/compute/v1/projects/{project}/global/networks/{network}",
+                "body": "network_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("network", "network"),
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.PatchNetworkRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.Network.to_json(
-            request.network_resource,
+            compute.Network(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/networks/{network}".format(
-            host=self._host, project=request.project, network=request.network,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.PatchNetworkRequest.to_json(
+                compute.PatchNetworkRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.PatchNetworkRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.patch(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -587,10 +875,12 @@ class NetworksRestTransport(NetworksTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def remove_peering(
+    def _remove_peering(
         self,
         request: compute.RemovePeeringNetworkRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the remove peering method over HTTP.
@@ -601,6 +891,9 @@ class NetworksRestTransport(NetworksTransport):
                 Networks.RemovePeering. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -624,30 +917,60 @@ class NetworksRestTransport(NetworksTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/global/networks/{network}/removePeering",
+                "body": "networks_remove_peering_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("network", "network"),
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.RemovePeeringNetworkRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.NetworksRemovePeeringRequest.to_json(
-            request.networks_remove_peering_request_resource,
+            compute.NetworksRemovePeeringRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/networks/{network}/removePeering".format(
-            host=self._host, project=request.project, network=request.network,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.RemovePeeringNetworkRequest.to_json(
+                compute.RemovePeeringNetworkRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.RemovePeeringNetworkRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -658,10 +981,12 @@ class NetworksRestTransport(NetworksTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def switch_to_custom_mode(
+    def _switch_to_custom_mode(
         self,
         request: compute.SwitchToCustomModeNetworkRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the switch to custom mode method over HTTP.
@@ -672,6 +997,9 @@ class NetworksRestTransport(NetworksTransport):
                 Networks.SwitchToCustomMode. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -695,22 +1023,55 @@ class NetworksRestTransport(NetworksTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/networks/{network}/switchToCustomMode".format(
-            host=self._host, project=request.project, network=request.network,
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/global/networks/{network}/switchToCustomMode",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("network", "network"),
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.SwitchToCustomModeNetworkRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.SwitchToCustomModeNetworkRequest.to_json(
+                compute.SwitchToCustomModeNetworkRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.SwitchToCustomModeNetworkRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -720,10 +1081,12 @@ class NetworksRestTransport(NetworksTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def update_peering(
+    def _update_peering(
         self,
         request: compute.UpdatePeeringNetworkRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the update peering method over HTTP.
@@ -734,6 +1097,9 @@ class NetworksRestTransport(NetworksTransport):
                 Networks.UpdatePeering. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -757,30 +1123,60 @@ class NetworksRestTransport(NetworksTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "patch",
+                "uri": "/compute/v1/projects/{project}/global/networks/{network}/updatePeering",
+                "body": "networks_update_peering_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("network", "network"),
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.UpdatePeeringNetworkRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.NetworksUpdatePeeringRequest.to_json(
-            request.networks_update_peering_request_resource,
+            compute.NetworksUpdatePeeringRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/networks/{network}/updatePeering".format(
-            host=self._host, project=request.project, network=request.network,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.UpdatePeeringNetworkRequest.to_json(
+                compute.UpdatePeeringNetworkRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.UpdatePeeringNetworkRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.patch(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -790,6 +1186,70 @@ class NetworksRestTransport(NetworksTransport):
 
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
+
+    @property
+    def add_peering(
+        self,
+    ) -> Callable[[compute.AddPeeringNetworkRequest], compute.Operation]:
+        return self._add_peering
+
+    @property
+    def delete(self) -> Callable[[compute.DeleteNetworkRequest], compute.Operation]:
+        return self._delete
+
+    @property
+    def get(self) -> Callable[[compute.GetNetworkRequest], compute.Network]:
+        return self._get
+
+    @property
+    def get_effective_firewalls(
+        self,
+    ) -> Callable[
+        [compute.GetEffectiveFirewallsNetworkRequest],
+        compute.NetworksGetEffectiveFirewallsResponse,
+    ]:
+        return self._get_effective_firewalls
+
+    @property
+    def insert(self) -> Callable[[compute.InsertNetworkRequest], compute.Operation]:
+        return self._insert
+
+    @property
+    def list(self) -> Callable[[compute.ListNetworksRequest], compute.NetworkList]:
+        return self._list
+
+    @property
+    def list_peering_routes(
+        self,
+    ) -> Callable[
+        [compute.ListPeeringRoutesNetworksRequest], compute.ExchangedPeeringRoutesList
+    ]:
+        return self._list_peering_routes
+
+    @property
+    def patch(self) -> Callable[[compute.PatchNetworkRequest], compute.Operation]:
+        return self._patch
+
+    @property
+    def remove_peering(
+        self,
+    ) -> Callable[[compute.RemovePeeringNetworkRequest], compute.Operation]:
+        return self._remove_peering
+
+    @property
+    def switch_to_custom_mode(
+        self,
+    ) -> Callable[[compute.SwitchToCustomModeNetworkRequest], compute.Operation]:
+        return self._switch_to_custom_mode
+
+    @property
+    def update_peering(
+        self,
+    ) -> Callable[[compute.UpdatePeeringNetworkRequest], compute.Operation]:
+        return self._update_peering
+
+    def close(self):
+        self._session.close()
 
 
 __all__ = ("NetworksRestTransport",)

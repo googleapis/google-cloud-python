@@ -14,21 +14,25 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.compute_v1.services.health_checks import pagers
 from google.cloud.compute_v1.types import compute
@@ -261,8 +265,15 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
         )
 
         client_cert_source_func = None
@@ -324,14 +335,15 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
             )
 
     def aggregated_list(
         self,
-        request: compute.AggregatedListHealthChecksRequest = None,
+        request: Union[compute.AggregatedListHealthChecksRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
@@ -339,7 +351,7 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         regional and global, available to the specified project.
 
         Args:
-            request (google.cloud.compute_v1.types.AggregatedListHealthChecksRequest):
+            request (Union[google.cloud.compute_v1.types.AggregatedListHealthChecksRequest, dict]):
                 The request object. A request message for
                 HealthChecks.AggregatedList. See the method description
                 for details.
@@ -402,18 +414,18 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
 
     def delete(
         self,
-        request: compute.DeleteHealthCheckRequest = None,
+        request: Union[compute.DeleteHealthCheckRequest, dict] = None,
         *,
         project: str = None,
         health_check: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified HealthCheck resource.
 
         Args:
-            request (google.cloud.compute_v1.types.DeleteHealthCheckRequest):
+            request (Union[google.cloud.compute_v1.types.DeleteHealthCheckRequest, dict]):
                 The request object. A request message for
                 HealthChecks.Delete. See the method description for
                 details.
@@ -489,11 +501,11 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
 
     def get(
         self,
-        request: compute.GetHealthCheckRequest = None,
+        request: Union[compute.GetHealthCheckRequest, dict] = None,
         *,
         project: str = None,
         health_check: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.HealthCheck:
@@ -502,7 +514,7 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         request.
 
         Args:
-            request (google.cloud.compute_v1.types.GetHealthCheckRequest):
+            request (Union[google.cloud.compute_v1.types.GetHealthCheckRequest, dict]):
                 The request object. A request message for
                 HealthChecks.Get. See the method description for
                 details.
@@ -582,11 +594,11 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
 
     def insert(
         self,
-        request: compute.InsertHealthCheckRequest = None,
+        request: Union[compute.InsertHealthCheckRequest, dict] = None,
         *,
         project: str = None,
         health_check_resource: compute.HealthCheck = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -594,7 +606,7 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         project using the data included in the request.
 
         Args:
-            request (google.cloud.compute_v1.types.InsertHealthCheckRequest):
+            request (Union[google.cloud.compute_v1.types.InsertHealthCheckRequest, dict]):
                 The request object. A request message for
                 HealthChecks.Insert. See the method description for
                 details.
@@ -668,10 +680,10 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
 
     def list(
         self,
-        request: compute.ListHealthChecksRequest = None,
+        request: Union[compute.ListHealthChecksRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
@@ -679,7 +691,7 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         to the specified project.
 
         Args:
-            request (google.cloud.compute_v1.types.ListHealthChecksRequest):
+            request (Union[google.cloud.compute_v1.types.ListHealthChecksRequest, dict]):
                 The request object. A request message for
                 HealthChecks.List. See the method description for
                 details.
@@ -742,12 +754,12 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
 
     def patch(
         self,
-        request: compute.PatchHealthCheckRequest = None,
+        request: Union[compute.PatchHealthCheckRequest, dict] = None,
         *,
         project: str = None,
         health_check: str = None,
         health_check_resource: compute.HealthCheck = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -757,7 +769,7 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         patch format and processing rules.
 
         Args:
-            request (google.cloud.compute_v1.types.PatchHealthCheckRequest):
+            request (Union[google.cloud.compute_v1.types.PatchHealthCheckRequest, dict]):
                 The request object. A request message for
                 HealthChecks.Patch. See the method description for
                 details.
@@ -840,12 +852,12 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
 
     def update(
         self,
-        request: compute.UpdateHealthCheckRequest = None,
+        request: Union[compute.UpdateHealthCheckRequest, dict] = None,
         *,
         project: str = None,
         health_check: str = None,
         health_check_resource: compute.HealthCheck = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -853,7 +865,7 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         project using the data included in the request.
 
         Args:
-            request (google.cloud.compute_v1.types.UpdateHealthCheckRequest):
+            request (Union[google.cloud.compute_v1.types.UpdateHealthCheckRequest, dict]):
                 The request object. A request message for
                 HealthChecks.Update. See the method description for
                 details.
@@ -933,6 +945,19 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:

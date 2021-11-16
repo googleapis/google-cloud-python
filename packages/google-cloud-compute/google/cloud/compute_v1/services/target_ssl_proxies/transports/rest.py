@@ -1,3 +1,22 @@
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+import json  # type: ignore
+import grpc  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.api_core import rest_helpers
+from google.api_core import path_template
+from google.api_core import gapic_v1
+from requests import __version__ as requests_version
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import warnings
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
+
 # -*- coding: utf-8 -*-
 # Copyright 2020 Google LLC
 #
@@ -13,21 +32,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
 
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-
-import grpc  # type: ignore
-
-from google.auth.transport.requests import AuthorizedSession
 
 from google.cloud.compute_v1.types import compute
 
-from .base import TargetSslProxiesTransport, DEFAULT_CLIENT_INFO
+from .base import (
+    TargetSslProxiesTransport,
+    DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO,
+)
+
+
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
+    grpc_version=None,
+    rest_version=requests_version,
+)
 
 
 class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
@@ -53,6 +72,7 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
+        url_scheme: str = "https",
     ) -> None:
         """Instantiate the transport.
 
@@ -80,6 +100,11 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                be used for service account credentials.
+            url_scheme: the protocol scheme for the API endpoint.  Normally
+                "https", but for testing or local servers,
+                "http" can be specified.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -98,10 +123,12 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._prep_wrapped_messages(client_info)
 
-    def delete(
+    def _delete(
         self,
         request: compute.DeleteTargetSslProxyRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the delete method over HTTP.
@@ -112,6 +139,9 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
                 TargetSslProxies.Delete. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -135,24 +165,53 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}".format(
-            host=self._host,
-            project=request.project,
-            target_ssl_proxy=request.target_ssl_proxy,
+        http_options = [
+            {
+                "method": "delete",
+                "uri": "/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("target_ssl_proxy", "targetSslProxy"),
+        ]
+
+        request_kwargs = compute.DeleteTargetSslProxyRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.DeleteTargetSslProxyRequest.to_json(
+                compute.DeleteTargetSslProxyRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.DeleteTargetSslProxyRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.delete(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -162,10 +221,12 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def get(
+    def _get(
         self,
         request: compute.GetTargetSslProxyRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TargetSslProxy:
         r"""Call the get method over HTTP.
@@ -176,6 +237,9 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
                 TargetSslProxies.Get. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -192,22 +256,53 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}".format(
-            host=self._host,
-            project=request.project,
-            target_ssl_proxy=request.target_ssl_proxy,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("target_ssl_proxy", "targetSslProxy"),
+        ]
+
+        request_kwargs = compute.GetTargetSslProxyRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.GetTargetSslProxyRequest.to_json(
+                compute.GetTargetSslProxyRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -219,10 +314,12 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def insert(
+    def _insert(
         self,
         request: compute.InsertTargetSslProxyRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the insert method over HTTP.
@@ -233,6 +330,9 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
                 TargetSslProxies.Insert. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -256,30 +356,59 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/global/targetSslProxies",
+                "body": "target_ssl_proxy_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.InsertTargetSslProxyRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.TargetSslProxy.to_json(
-            request.target_ssl_proxy_resource,
+            compute.TargetSslProxy(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/targetSslProxies".format(
-            host=self._host, project=request.project,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.InsertTargetSslProxyRequest.to_json(
+                compute.InsertTargetSslProxyRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.InsertTargetSslProxyRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -290,10 +419,12 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def list(
+    def _list(
         self,
         request: compute.ListTargetSslProxiesRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TargetSslProxyList:
         r"""Call the list method over HTTP.
@@ -304,6 +435,9 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
                 TargetSslProxies.List. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -314,30 +448,52 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/targetSslProxies".format(
-            host=self._host, project=request.project,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/global/targetSslProxies",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.ListTargetSslProxiesRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.ListTargetSslProxiesRequest.to_json(
+                compute.ListTargetSslProxiesRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.ListTargetSslProxiesRequest.filter in request:
-            query_params["filter"] = request.filter
-        if compute.ListTargetSslProxiesRequest.max_results in request:
-            query_params["maxResults"] = request.max_results
-        if compute.ListTargetSslProxiesRequest.order_by in request:
-            query_params["orderBy"] = request.order_by
-        if compute.ListTargetSslProxiesRequest.page_token in request:
-            query_params["pageToken"] = request.page_token
-        if compute.ListTargetSslProxiesRequest.return_partial_success in request:
-            query_params["returnPartialSuccess"] = request.return_partial_success
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -349,10 +505,12 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def set_backend_service(
+    def _set_backend_service(
         self,
         request: compute.SetBackendServiceTargetSslProxyRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the set backend service method over HTTP.
@@ -363,6 +521,9 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
                 TargetSslProxies.SetBackendService. See
                 the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -386,32 +547,64 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}/setBackendService",
+                "body": "target_ssl_proxies_set_backend_service_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("target_ssl_proxy", "targetSslProxy"),
+        ]
+
+        request_kwargs = compute.SetBackendServiceTargetSslProxyRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.TargetSslProxiesSetBackendServiceRequest.to_json(
-            request.target_ssl_proxies_set_backend_service_request_resource,
+            compute.TargetSslProxiesSetBackendServiceRequest(
+                transcoded_request["body"]
+            ),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}/setBackendService".format(
-            host=self._host,
-            project=request.project,
-            target_ssl_proxy=request.target_ssl_proxy,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.SetBackendServiceTargetSslProxyRequest.to_json(
+                compute.SetBackendServiceTargetSslProxyRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.SetBackendServiceTargetSslProxyRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -422,10 +615,12 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def set_proxy_header(
+    def _set_proxy_header(
         self,
         request: compute.SetProxyHeaderTargetSslProxyRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the set proxy header method over HTTP.
@@ -436,6 +631,9 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
                 TargetSslProxies.SetProxyHeader. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -459,32 +657,62 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}/setProxyHeader",
+                "body": "target_ssl_proxies_set_proxy_header_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("target_ssl_proxy", "targetSslProxy"),
+        ]
+
+        request_kwargs = compute.SetProxyHeaderTargetSslProxyRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.TargetSslProxiesSetProxyHeaderRequest.to_json(
-            request.target_ssl_proxies_set_proxy_header_request_resource,
+            compute.TargetSslProxiesSetProxyHeaderRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}/setProxyHeader".format(
-            host=self._host,
-            project=request.project,
-            target_ssl_proxy=request.target_ssl_proxy,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.SetProxyHeaderTargetSslProxyRequest.to_json(
+                compute.SetProxyHeaderTargetSslProxyRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.SetProxyHeaderTargetSslProxyRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -495,10 +723,12 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def set_ssl_certificates(
+    def _set_ssl_certificates(
         self,
         request: compute.SetSslCertificatesTargetSslProxyRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the set ssl certificates method over HTTP.
@@ -509,6 +739,9 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
                 TargetSslProxies.SetSslCertificates. See
                 the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -532,32 +765,66 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}/setSslCertificates",
+                "body": "target_ssl_proxies_set_ssl_certificates_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("target_ssl_proxy", "targetSslProxy"),
+        ]
+
+        request_kwargs = compute.SetSslCertificatesTargetSslProxyRequest.to_dict(
+            request
+        )
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.TargetSslProxiesSetSslCertificatesRequest.to_json(
-            request.target_ssl_proxies_set_ssl_certificates_request_resource,
+            compute.TargetSslProxiesSetSslCertificatesRequest(
+                transcoded_request["body"]
+            ),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}/setSslCertificates".format(
-            host=self._host,
-            project=request.project,
-            target_ssl_proxy=request.target_ssl_proxy,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.SetSslCertificatesTargetSslProxyRequest.to_json(
+                compute.SetSslCertificatesTargetSslProxyRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.SetSslCertificatesTargetSslProxyRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -568,10 +835,12 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def set_ssl_policy(
+    def _set_ssl_policy(
         self,
         request: compute.SetSslPolicyTargetSslProxyRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the set ssl policy method over HTTP.
@@ -582,6 +851,9 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
                 TargetSslProxies.SetSslPolicy. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -605,32 +877,62 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}/setSslPolicy",
+                "body": "ssl_policy_reference_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("target_ssl_proxy", "targetSslProxy"),
+        ]
+
+        request_kwargs = compute.SetSslPolicyTargetSslProxyRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.SslPolicyReference.to_json(
-            request.ssl_policy_reference_resource,
+            compute.SslPolicyReference(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}/setSslPolicy".format(
-            host=self._host,
-            project=request.project,
-            target_ssl_proxy=request.target_ssl_proxy,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.SetSslPolicyTargetSslProxyRequest.to_json(
+                compute.SetSslPolicyTargetSslProxyRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.SetSslPolicyTargetSslProxyRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -640,6 +942,57 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
 
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
+
+    @property
+    def delete(
+        self,
+    ) -> Callable[[compute.DeleteTargetSslProxyRequest], compute.Operation]:
+        return self._delete
+
+    @property
+    def get(
+        self,
+    ) -> Callable[[compute.GetTargetSslProxyRequest], compute.TargetSslProxy]:
+        return self._get
+
+    @property
+    def insert(
+        self,
+    ) -> Callable[[compute.InsertTargetSslProxyRequest], compute.Operation]:
+        return self._insert
+
+    @property
+    def list(
+        self,
+    ) -> Callable[[compute.ListTargetSslProxiesRequest], compute.TargetSslProxyList]:
+        return self._list
+
+    @property
+    def set_backend_service(
+        self,
+    ) -> Callable[[compute.SetBackendServiceTargetSslProxyRequest], compute.Operation]:
+        return self._set_backend_service
+
+    @property
+    def set_proxy_header(
+        self,
+    ) -> Callable[[compute.SetProxyHeaderTargetSslProxyRequest], compute.Operation]:
+        return self._set_proxy_header
+
+    @property
+    def set_ssl_certificates(
+        self,
+    ) -> Callable[[compute.SetSslCertificatesTargetSslProxyRequest], compute.Operation]:
+        return self._set_ssl_certificates
+
+    @property
+    def set_ssl_policy(
+        self,
+    ) -> Callable[[compute.SetSslPolicyTargetSslProxyRequest], compute.Operation]:
+        return self._set_ssl_policy
+
+    def close(self):
+        self._session.close()
 
 
 __all__ = ("TargetSslProxiesRestTransport",)

@@ -1,5 +1,8 @@
 .. include:: README.rst
 
+.. include:: multiprocessing.rst
+
+
 API Reference
 -------------
 .. toctree::
@@ -15,6 +18,6 @@ Changelog
 For a list of all ``google-cloud-compute`` releases:
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   changelog
+    changelog

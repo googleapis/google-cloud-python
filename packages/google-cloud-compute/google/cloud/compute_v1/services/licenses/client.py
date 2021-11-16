@@ -14,21 +14,25 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.compute_v1.services.licenses import pagers
 from google.cloud.compute_v1.types import compute
@@ -261,8 +265,15 @@ class LicensesClient(metaclass=LicensesClientMeta):
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
         )
 
         client_cert_source_func = None
@@ -324,15 +335,16 @@ class LicensesClient(metaclass=LicensesClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
             )
 
     def delete(
         self,
-        request: compute.DeleteLicenseRequest = None,
+        request: Union[compute.DeleteLicenseRequest, dict] = None,
         *,
         project: str = None,
         license_: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -341,7 +353,7 @@ class LicensesClient(metaclass=LicensesClientMeta):
         Cloud Marketplace images.
 
         Args:
-            request (google.cloud.compute_v1.types.DeleteLicenseRequest):
+            request (Union[google.cloud.compute_v1.types.DeleteLicenseRequest, dict]):
                 The request object. A request message for
                 Licenses.Delete. See the method description for details.
             project (str):
@@ -416,11 +428,11 @@ class LicensesClient(metaclass=LicensesClientMeta):
 
     def get(
         self,
-        request: compute.GetLicenseRequest = None,
+        request: Union[compute.GetLicenseRequest, dict] = None,
         *,
         project: str = None,
         license_: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.License:
@@ -429,7 +441,7 @@ class LicensesClient(metaclass=LicensesClientMeta):
         creating Cloud Marketplace images.
 
         Args:
-            request (google.cloud.compute_v1.types.GetLicenseRequest):
+            request (Union[google.cloud.compute_v1.types.GetLicenseRequest, dict]):
                 The request object. A request message for Licenses.Get.
                 See the method description for details.
             project (str):
@@ -494,11 +506,11 @@ class LicensesClient(metaclass=LicensesClientMeta):
 
     def get_iam_policy(
         self,
-        request: compute.GetIamPolicyLicenseRequest = None,
+        request: Union[compute.GetIamPolicyLicenseRequest, dict] = None,
         *,
         project: str = None,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
@@ -508,7 +520,7 @@ class LicensesClient(metaclass=LicensesClientMeta):
         Cloud Marketplace images.
 
         Args:
-            request (google.cloud.compute_v1.types.GetIamPolicyLicenseRequest):
+            request (Union[google.cloud.compute_v1.types.GetIamPolicyLicenseRequest, dict]):
                 The request object. A request message for
                 Licenses.GetIamPolicy. See the method description for
                 details.
@@ -608,11 +620,11 @@ class LicensesClient(metaclass=LicensesClientMeta):
 
     def insert(
         self,
-        request: compute.InsertLicenseRequest = None,
+        request: Union[compute.InsertLicenseRequest, dict] = None,
         *,
         project: str = None,
         license_resource: compute.License = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -621,7 +633,7 @@ class LicensesClient(metaclass=LicensesClientMeta):
         who are creating Cloud Marketplace images.
 
         Args:
-            request (google.cloud.compute_v1.types.InsertLicenseRequest):
+            request (Union[google.cloud.compute_v1.types.InsertLicenseRequest, dict]):
                 The request object. A request message for
                 Licenses.Insert. See the method description for details.
             project (str):
@@ -694,10 +706,10 @@ class LicensesClient(metaclass=LicensesClientMeta):
 
     def list(
         self,
-        request: compute.ListLicensesRequest = None,
+        request: Union[compute.ListLicensesRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
@@ -712,7 +724,7 @@ class LicensesClient(metaclass=LicensesClientMeta):
         images.
 
         Args:
-            request (google.cloud.compute_v1.types.ListLicensesRequest):
+            request (Union[google.cloud.compute_v1.types.ListLicensesRequest, dict]):
                 The request object. A request message for Licenses.List.
                 See the method description for details.
             project (str):
@@ -772,12 +784,12 @@ class LicensesClient(metaclass=LicensesClientMeta):
 
     def set_iam_policy(
         self,
-        request: compute.SetIamPolicyLicenseRequest = None,
+        request: Union[compute.SetIamPolicyLicenseRequest, dict] = None,
         *,
         project: str = None,
         resource: str = None,
         global_set_policy_request_resource: compute.GlobalSetPolicyRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
@@ -787,7 +799,7 @@ class LicensesClient(metaclass=LicensesClientMeta):
         Cloud Marketplace images.
 
         Args:
-            request (google.cloud.compute_v1.types.SetIamPolicyLicenseRequest):
+            request (Union[google.cloud.compute_v1.types.SetIamPolicyLicenseRequest, dict]):
                 The request object. A request message for
                 Licenses.SetIamPolicy. See the method description for
                 details.
@@ -898,12 +910,12 @@ class LicensesClient(metaclass=LicensesClientMeta):
 
     def test_iam_permissions(
         self,
-        request: compute.TestIamPermissionsLicenseRequest = None,
+        request: Union[compute.TestIamPermissionsLicenseRequest, dict] = None,
         *,
         project: str = None,
         resource: str = None,
         test_permissions_request_resource: compute.TestPermissionsRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TestPermissionsResponse:
@@ -912,7 +924,7 @@ class LicensesClient(metaclass=LicensesClientMeta):
         partners who are creating Cloud Marketplace images.
 
         Args:
-            request (google.cloud.compute_v1.types.TestIamPermissionsLicenseRequest):
+            request (Union[google.cloud.compute_v1.types.TestIamPermissionsLicenseRequest, dict]):
                 The request object. A request message for
                 Licenses.TestIamPermissions. See the method description
                 for details.
@@ -981,6 +993,19 @@ class LicensesClient(metaclass=LicensesClientMeta):
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:

@@ -1,3 +1,22 @@
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+import json  # type: ignore
+import grpc  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.api_core import rest_helpers
+from google.api_core import path_template
+from google.api_core import gapic_v1
+from requests import __version__ as requests_version
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import warnings
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
+
 # -*- coding: utf-8 -*-
 # Copyright 2020 Google LLC
 #
@@ -13,21 +32,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
 
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-
-import grpc  # type: ignore
-
-from google.auth.transport.requests import AuthorizedSession
 
 from google.cloud.compute_v1.types import compute
 
-from .base import NodeGroupsTransport, DEFAULT_CLIENT_INFO
+from .base import NodeGroupsTransport, DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+
+
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
+    grpc_version=None,
+    rest_version=requests_version,
+)
 
 
 class NodeGroupsRestTransport(NodeGroupsTransport):
@@ -53,6 +69,7 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
+        url_scheme: str = "https",
     ) -> None:
         """Instantiate the transport.
 
@@ -80,6 +97,11 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                be used for service account credentials.
+            url_scheme: the protocol scheme for the API endpoint.  Normally
+                "https", but for testing or local servers,
+                "http" can be specified.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -98,10 +120,12 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._prep_wrapped_messages(client_info)
 
-    def add_nodes(
+    def _add_nodes(
         self,
         request: compute.AddNodesNodeGroupRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the add nodes method over HTTP.
@@ -112,6 +136,9 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 NodeGroups.AddNodes. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -135,33 +162,61 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/nodeGroups/{node_group}/addNodes",
+                "body": "node_groups_add_nodes_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("node_group", "nodeGroup"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.AddNodesNodeGroupRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.NodeGroupsAddNodesRequest.to_json(
-            request.node_groups_add_nodes_request_resource,
+            compute.NodeGroupsAddNodesRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/nodeGroups/{node_group}/addNodes".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            node_group=request.node_group,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.AddNodesNodeGroupRequest.to_json(
+                compute.AddNodesNodeGroupRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.AddNodesNodeGroupRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -172,10 +227,12 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def aggregated_list(
+    def _aggregated_list(
         self,
         request: compute.AggregatedListNodeGroupsRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.NodeGroupAggregatedList:
         r"""Call the aggregated list method over HTTP.
@@ -186,6 +243,9 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 NodeGroups.AggregatedList. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -194,32 +254,54 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/aggregated/nodeGroups".format(
-            host=self._host, project=request.project,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/aggregated/nodeGroups",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.AggregatedListNodeGroupsRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.AggregatedListNodeGroupsRequest.to_json(
+                compute.AggregatedListNodeGroupsRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.AggregatedListNodeGroupsRequest.filter in request:
-            query_params["filter"] = request.filter
-        if compute.AggregatedListNodeGroupsRequest.include_all_scopes in request:
-            query_params["includeAllScopes"] = request.include_all_scopes
-        if compute.AggregatedListNodeGroupsRequest.max_results in request:
-            query_params["maxResults"] = request.max_results
-        if compute.AggregatedListNodeGroupsRequest.order_by in request:
-            query_params["orderBy"] = request.order_by
-        if compute.AggregatedListNodeGroupsRequest.page_token in request:
-            query_params["pageToken"] = request.page_token
-        if compute.AggregatedListNodeGroupsRequest.return_partial_success in request:
-            query_params["returnPartialSuccess"] = request.return_partial_success
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -231,10 +313,12 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def delete(
+    def _delete(
         self,
         request: compute.DeleteNodeGroupRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the delete method over HTTP.
@@ -245,6 +329,9 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 NodeGroups.Delete. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -268,25 +355,54 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/nodeGroups/{node_group}".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            node_group=request.node_group,
+        http_options = [
+            {
+                "method": "delete",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/nodeGroups/{node_group}",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("node_group", "nodeGroup"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.DeleteNodeGroupRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.DeleteNodeGroupRequest.to_json(
+                compute.DeleteNodeGroupRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.DeleteNodeGroupRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.delete(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -296,10 +412,12 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def delete_nodes(
+    def _delete_nodes(
         self,
         request: compute.DeleteNodesNodeGroupRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the delete nodes method over HTTP.
@@ -310,6 +428,9 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 NodeGroups.DeleteNodes. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -333,33 +454,61 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/nodeGroups/{node_group}/deleteNodes",
+                "body": "node_groups_delete_nodes_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("node_group", "nodeGroup"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.DeleteNodesNodeGroupRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.NodeGroupsDeleteNodesRequest.to_json(
-            request.node_groups_delete_nodes_request_resource,
+            compute.NodeGroupsDeleteNodesRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/nodeGroups/{node_group}/deleteNodes".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            node_group=request.node_group,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.DeleteNodesNodeGroupRequest.to_json(
+                compute.DeleteNodesNodeGroupRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.DeleteNodesNodeGroupRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -370,10 +519,12 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def get(
+    def _get(
         self,
         request: compute.GetNodeGroupRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.NodeGroup:
         r"""Call the get method over HTTP.
@@ -383,6 +534,9 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 The request object. A request message for NodeGroups.Get.
                 See the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -402,23 +556,54 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/nodeGroups/{node_group}".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            node_group=request.node_group,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/nodeGroups/{node_group}",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("node_group", "nodeGroup"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.GetNodeGroupRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.GetNodeGroupRequest.to_json(
+                compute.GetNodeGroupRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -428,10 +613,12 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
         # Return the response
         return compute.NodeGroup.from_json(response.content, ignore_unknown_fields=True)
 
-    def get_iam_policy(
+    def _get_iam_policy(
         self,
         request: compute.GetIamPolicyNodeGroupRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
         r"""Call the get iam policy method over HTTP.
@@ -442,6 +629,9 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 NodeGroups.GetIamPolicy. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -490,30 +680,56 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/nodeGroups/{resource}/getIamPolicy".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            resource=request.resource,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/nodeGroups/{resource}/getIamPolicy",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("resource", "resource"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.GetIamPolicyNodeGroupRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.GetIamPolicyNodeGroupRequest.to_json(
+                compute.GetIamPolicyNodeGroupRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if (
-            compute.GetIamPolicyNodeGroupRequest.options_requested_policy_version
-            in request
-        ):
-            query_params[
-                "optionsRequestedPolicyVersion"
-            ] = request.options_requested_policy_version
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -523,10 +739,12 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
         # Return the response
         return compute.Policy.from_json(response.content, ignore_unknown_fields=True)
 
-    def insert(
+    def _insert(
         self,
         request: compute.InsertNodeGroupRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the insert method over HTTP.
@@ -537,6 +755,9 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 NodeGroups.Insert. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -560,31 +781,61 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/nodeGroups",
+                "body": "node_group_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("initial_node_count", "initialNodeCount"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.InsertNodeGroupRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.NodeGroup.to_json(
-            request.node_group_resource,
+            compute.NodeGroup(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/nodeGroups".format(
-            host=self._host, project=request.project, zone=request.zone,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.InsertNodeGroupRequest.to_json(
+                compute.InsertNodeGroupRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        query_params["initialNodeCount"] = request.initial_node_count
-        if compute.InsertNodeGroupRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -595,10 +846,12 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def list(
+    def _list(
         self,
         request: compute.ListNodeGroupsRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.NodeGroupList:
         r"""Call the list method over HTTP.
@@ -609,6 +862,9 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 NodeGroups.List. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -617,30 +873,53 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 Contains a list of nodeGroups.
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/nodeGroups".format(
-            host=self._host, project=request.project, zone=request.zone,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/nodeGroups",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.ListNodeGroupsRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.ListNodeGroupsRequest.to_json(
+                compute.ListNodeGroupsRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.ListNodeGroupsRequest.filter in request:
-            query_params["filter"] = request.filter
-        if compute.ListNodeGroupsRequest.max_results in request:
-            query_params["maxResults"] = request.max_results
-        if compute.ListNodeGroupsRequest.order_by in request:
-            query_params["orderBy"] = request.order_by
-        if compute.ListNodeGroupsRequest.page_token in request:
-            query_params["pageToken"] = request.page_token
-        if compute.ListNodeGroupsRequest.return_partial_success in request:
-            query_params["returnPartialSuccess"] = request.return_partial_success
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -652,10 +931,12 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def list_nodes(
+    def _list_nodes(
         self,
         request: compute.ListNodesNodeGroupsRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.NodeGroupsListNodes:
         r"""Call the list nodes method over HTTP.
@@ -666,6 +947,9 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 NodeGroups.ListNodes. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -674,33 +958,54 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/nodeGroups/{node_group}/listNodes".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            node_group=request.node_group,
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/nodeGroups/{node_group}/listNodes",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("node_group", "nodeGroup"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.ListNodesNodeGroupsRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.ListNodesNodeGroupsRequest.to_json(
+                compute.ListNodesNodeGroupsRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.ListNodesNodeGroupsRequest.filter in request:
-            query_params["filter"] = request.filter
-        if compute.ListNodesNodeGroupsRequest.max_results in request:
-            query_params["maxResults"] = request.max_results
-        if compute.ListNodesNodeGroupsRequest.order_by in request:
-            query_params["orderBy"] = request.order_by
-        if compute.ListNodesNodeGroupsRequest.page_token in request:
-            query_params["pageToken"] = request.page_token
-        if compute.ListNodesNodeGroupsRequest.return_partial_success in request:
-            query_params["returnPartialSuccess"] = request.return_partial_success
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -712,10 +1017,12 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def patch(
+    def _patch(
         self,
         request: compute.PatchNodeGroupRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the patch method over HTTP.
@@ -726,6 +1033,9 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 NodeGroups.Patch. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -749,33 +1059,61 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "patch",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/nodeGroups/{node_group}",
+                "body": "node_group_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("node_group", "nodeGroup"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.PatchNodeGroupRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.NodeGroup.to_json(
-            request.node_group_resource,
+            compute.NodeGroup(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/nodeGroups/{node_group}".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            node_group=request.node_group,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.PatchNodeGroupRequest.to_json(
+                compute.PatchNodeGroupRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.PatchNodeGroupRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.patch(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -786,10 +1124,12 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def set_iam_policy(
+    def _set_iam_policy(
         self,
         request: compute.SetIamPolicyNodeGroupRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
         r"""Call the set iam policy method over HTTP.
@@ -800,6 +1140,9 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 NodeGroups.SetIamPolicy. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -848,31 +1191,63 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/nodeGroups/{resource}/setIamPolicy",
+                "body": "zone_set_policy_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("resource", "resource"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.SetIamPolicyNodeGroupRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.ZoneSetPolicyRequest.to_json(
-            request.zone_set_policy_request_resource,
+            compute.ZoneSetPolicyRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/nodeGroups/{resource}/setIamPolicy".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            resource=request.resource,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.SetIamPolicyNodeGroupRequest.to_json(
+                compute.SetIamPolicyNodeGroupRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -883,10 +1258,12 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
         # Return the response
         return compute.Policy.from_json(response.content, ignore_unknown_fields=True)
 
-    def set_node_template(
+    def _set_node_template(
         self,
         request: compute.SetNodeTemplateNodeGroupRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the set node template method over HTTP.
@@ -897,6 +1274,9 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 NodeGroups.SetNodeTemplate. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -920,33 +1300,63 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/nodeGroups/{node_group}/setNodeTemplate",
+                "body": "node_groups_set_node_template_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("node_group", "nodeGroup"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.SetNodeTemplateNodeGroupRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.NodeGroupsSetNodeTemplateRequest.to_json(
-            request.node_groups_set_node_template_request_resource,
+            compute.NodeGroupsSetNodeTemplateRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/nodeGroups/{node_group}/setNodeTemplate".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            node_group=request.node_group,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.SetNodeTemplateNodeGroupRequest.to_json(
+                compute.SetNodeTemplateNodeGroupRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.SetNodeTemplateNodeGroupRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -957,10 +1367,12 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def test_iam_permissions(
+    def _test_iam_permissions(
         self,
         request: compute.TestIamPermissionsNodeGroupRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TestPermissionsResponse:
         r"""Call the test iam permissions method over HTTP.
@@ -971,6 +1383,9 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
                 NodeGroups.TestIamPermissions. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -979,31 +1394,63 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/nodeGroups/{resource}/testIamPermissions",
+                "body": "test_permissions_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("resource", "resource"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.TestIamPermissionsNodeGroupRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.TestPermissionsRequest.to_json(
-            request.test_permissions_request_resource,
+            compute.TestPermissionsRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/nodeGroups/{resource}/testIamPermissions".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            resource=request.resource,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.TestIamPermissionsNodeGroupRequest.to_json(
+                compute.TestIamPermissionsNodeGroupRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1015,6 +1462,81 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
         return compute.TestPermissionsResponse.from_json(
             response.content, ignore_unknown_fields=True
         )
+
+    @property
+    def add_nodes(
+        self,
+    ) -> Callable[[compute.AddNodesNodeGroupRequest], compute.Operation]:
+        return self._add_nodes
+
+    @property
+    def aggregated_list(
+        self,
+    ) -> Callable[
+        [compute.AggregatedListNodeGroupsRequest], compute.NodeGroupAggregatedList
+    ]:
+        return self._aggregated_list
+
+    @property
+    def delete(self) -> Callable[[compute.DeleteNodeGroupRequest], compute.Operation]:
+        return self._delete
+
+    @property
+    def delete_nodes(
+        self,
+    ) -> Callable[[compute.DeleteNodesNodeGroupRequest], compute.Operation]:
+        return self._delete_nodes
+
+    @property
+    def get(self) -> Callable[[compute.GetNodeGroupRequest], compute.NodeGroup]:
+        return self._get
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[[compute.GetIamPolicyNodeGroupRequest], compute.Policy]:
+        return self._get_iam_policy
+
+    @property
+    def insert(self) -> Callable[[compute.InsertNodeGroupRequest], compute.Operation]:
+        return self._insert
+
+    @property
+    def list(self) -> Callable[[compute.ListNodeGroupsRequest], compute.NodeGroupList]:
+        return self._list
+
+    @property
+    def list_nodes(
+        self,
+    ) -> Callable[[compute.ListNodesNodeGroupsRequest], compute.NodeGroupsListNodes]:
+        return self._list_nodes
+
+    @property
+    def patch(self) -> Callable[[compute.PatchNodeGroupRequest], compute.Operation]:
+        return self._patch
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[[compute.SetIamPolicyNodeGroupRequest], compute.Policy]:
+        return self._set_iam_policy
+
+    @property
+    def set_node_template(
+        self,
+    ) -> Callable[[compute.SetNodeTemplateNodeGroupRequest], compute.Operation]:
+        return self._set_node_template
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [compute.TestIamPermissionsNodeGroupRequest], compute.TestPermissionsResponse
+    ]:
+        return self._test_iam_permissions
+
+    def close(self):
+        self._session.close()
 
 
 __all__ = ("NodeGroupsRestTransport",)

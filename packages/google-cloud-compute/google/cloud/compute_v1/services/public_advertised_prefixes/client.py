@@ -14,21 +14,25 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.compute_v1.services.public_advertised_prefixes import pagers
 from google.cloud.compute_v1.types import compute
@@ -265,8 +269,15 @@ class PublicAdvertisedPrefixesClient(metaclass=PublicAdvertisedPrefixesClientMet
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
         )
 
         client_cert_source_func = None
@@ -328,22 +339,23 @@ class PublicAdvertisedPrefixesClient(metaclass=PublicAdvertisedPrefixesClientMet
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
             )
 
     def delete(
         self,
-        request: compute.DeletePublicAdvertisedPrefixeRequest = None,
+        request: Union[compute.DeletePublicAdvertisedPrefixeRequest, dict] = None,
         *,
         project: str = None,
         public_advertised_prefix: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified PublicAdvertisedPrefix
 
         Args:
-            request (google.cloud.compute_v1.types.DeletePublicAdvertisedPrefixeRequest):
+            request (Union[google.cloud.compute_v1.types.DeletePublicAdvertisedPrefixeRequest, dict]):
                 The request object. A request message for
                 PublicAdvertisedPrefixes.Delete. See the method
                 description for details.
@@ -419,11 +431,11 @@ class PublicAdvertisedPrefixesClient(metaclass=PublicAdvertisedPrefixesClientMet
 
     def get(
         self,
-        request: compute.GetPublicAdvertisedPrefixeRequest = None,
+        request: Union[compute.GetPublicAdvertisedPrefixeRequest, dict] = None,
         *,
         project: str = None,
         public_advertised_prefix: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.PublicAdvertisedPrefix:
@@ -431,7 +443,7 @@ class PublicAdvertisedPrefixesClient(metaclass=PublicAdvertisedPrefixesClientMet
         resource.
 
         Args:
-            request (google.cloud.compute_v1.types.GetPublicAdvertisedPrefixeRequest):
+            request (Union[google.cloud.compute_v1.types.GetPublicAdvertisedPrefixeRequest, dict]):
                 The request object. A request message for
                 PublicAdvertisedPrefixes.Get. See the method description
                 for details.
@@ -498,11 +510,11 @@ class PublicAdvertisedPrefixesClient(metaclass=PublicAdvertisedPrefixesClientMet
 
     def insert(
         self,
-        request: compute.InsertPublicAdvertisedPrefixeRequest = None,
+        request: Union[compute.InsertPublicAdvertisedPrefixeRequest, dict] = None,
         *,
         project: str = None,
         public_advertised_prefix_resource: compute.PublicAdvertisedPrefix = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -511,7 +523,7 @@ class PublicAdvertisedPrefixesClient(metaclass=PublicAdvertisedPrefixesClientMet
         request.
 
         Args:
-            request (google.cloud.compute_v1.types.InsertPublicAdvertisedPrefixeRequest):
+            request (Union[google.cloud.compute_v1.types.InsertPublicAdvertisedPrefixeRequest, dict]):
                 The request object. A request message for
                 PublicAdvertisedPrefixes.Insert. See the method
                 description for details.
@@ -587,17 +599,17 @@ class PublicAdvertisedPrefixesClient(metaclass=PublicAdvertisedPrefixesClientMet
 
     def list(
         self,
-        request: compute.ListPublicAdvertisedPrefixesRequest = None,
+        request: Union[compute.ListPublicAdvertisedPrefixesRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
         r"""Lists the PublicAdvertisedPrefixes for a project.
 
         Args:
-            request (google.cloud.compute_v1.types.ListPublicAdvertisedPrefixesRequest):
+            request (Union[google.cloud.compute_v1.types.ListPublicAdvertisedPrefixesRequest, dict]):
                 The request object. A request message for
                 PublicAdvertisedPrefixes.List. See the method
                 description for details.
@@ -658,12 +670,12 @@ class PublicAdvertisedPrefixesClient(metaclass=PublicAdvertisedPrefixesClientMet
 
     def patch(
         self,
-        request: compute.PatchPublicAdvertisedPrefixeRequest = None,
+        request: Union[compute.PatchPublicAdvertisedPrefixeRequest, dict] = None,
         *,
         project: str = None,
         public_advertised_prefix: str = None,
         public_advertised_prefix_resource: compute.PublicAdvertisedPrefix = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -673,7 +685,7 @@ class PublicAdvertisedPrefixesClient(metaclass=PublicAdvertisedPrefixesClientMet
         processing rules.
 
         Args:
-            request (google.cloud.compute_v1.types.PatchPublicAdvertisedPrefixeRequest):
+            request (Union[google.cloud.compute_v1.types.PatchPublicAdvertisedPrefixeRequest, dict]):
                 The request object. A request message for
                 PublicAdvertisedPrefixes.Patch. See the method
                 description for details.
@@ -757,6 +769,19 @@ class PublicAdvertisedPrefixesClient(metaclass=PublicAdvertisedPrefixesClientMet
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:

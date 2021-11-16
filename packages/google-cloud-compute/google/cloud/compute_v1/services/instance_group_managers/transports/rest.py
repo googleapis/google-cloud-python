@@ -1,3 +1,22 @@
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+import json  # type: ignore
+import grpc  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.api_core import rest_helpers
+from google.api_core import path_template
+from google.api_core import gapic_v1
+from requests import __version__ as requests_version
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import warnings
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
+
 # -*- coding: utf-8 -*-
 # Copyright 2020 Google LLC
 #
@@ -13,21 +32,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
 
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-
-import grpc  # type: ignore
-
-from google.auth.transport.requests import AuthorizedSession
 
 from google.cloud.compute_v1.types import compute
 
-from .base import InstanceGroupManagersTransport, DEFAULT_CLIENT_INFO
+from .base import (
+    InstanceGroupManagersTransport,
+    DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO,
+)
+
+
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
+    grpc_version=None,
+    rest_version=requests_version,
+)
 
 
 class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
@@ -53,6 +72,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
+        url_scheme: str = "https",
     ) -> None:
         """Instantiate the transport.
 
@@ -80,6 +100,11 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                be used for service account credentials.
+            url_scheme: the protocol scheme for the API endpoint.  Normally
+                "https", but for testing or local servers,
+                "http" can be specified.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -98,10 +123,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._prep_wrapped_messages(client_info)
 
-    def abandon_instances(
+    def _abandon_instances(
         self,
         request: compute.AbandonInstancesInstanceGroupManagerRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the abandon instances method over HTTP.
@@ -113,6 +140,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 InstanceGroupManagers.AbandonInstances.
                 See the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -136,33 +166,67 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/abandonInstances",
+                "body": "instance_group_managers_abandon_instances_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance_group_manager", "instanceGroupManager"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.AbandonInstancesInstanceGroupManagerRequest.to_dict(
+            request
+        )
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.InstanceGroupManagersAbandonInstancesRequest.to_json(
-            request.instance_group_managers_abandon_instances_request_resource,
+            compute.InstanceGroupManagersAbandonInstancesRequest(
+                transcoded_request["body"]
+            ),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/abandonInstances".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance_group_manager=request.instance_group_manager,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.AbandonInstancesInstanceGroupManagerRequest.to_json(
+                compute.AbandonInstancesInstanceGroupManagerRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.AbandonInstancesInstanceGroupManagerRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -173,10 +237,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def aggregated_list(
+    def _aggregated_list(
         self,
         request: compute.AggregatedListInstanceGroupManagersRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.InstanceGroupManagerAggregatedList:
         r"""Call the aggregated list method over HTTP.
@@ -187,6 +253,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 InstanceGroupManagers.AggregatedList.
                 See the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -195,38 +264,56 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/aggregated/instanceGroupManagers".format(
-            host=self._host, project=request.project,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/aggregated/instanceGroupManagers",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.AggregatedListInstanceGroupManagersRequest.to_dict(
+            request
+        )
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.AggregatedListInstanceGroupManagersRequest.to_json(
+                compute.AggregatedListInstanceGroupManagersRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.AggregatedListInstanceGroupManagersRequest.filter in request:
-            query_params["filter"] = request.filter
-        if (
-            compute.AggregatedListInstanceGroupManagersRequest.include_all_scopes
-            in request
-        ):
-            query_params["includeAllScopes"] = request.include_all_scopes
-        if compute.AggregatedListInstanceGroupManagersRequest.max_results in request:
-            query_params["maxResults"] = request.max_results
-        if compute.AggregatedListInstanceGroupManagersRequest.order_by in request:
-            query_params["orderBy"] = request.order_by
-        if compute.AggregatedListInstanceGroupManagersRequest.page_token in request:
-            query_params["pageToken"] = request.page_token
-        if (
-            compute.AggregatedListInstanceGroupManagersRequest.return_partial_success
-            in request
-        ):
-            query_params["returnPartialSuccess"] = request.return_partial_success
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -238,10 +325,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def apply_updates_to_instances(
+    def _apply_updates_to_instances(
         self,
         request: compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the apply updates to
@@ -253,6 +342,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 InstanceGroupManagers.ApplyUpdatesToInstances.
                 See the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -276,31 +368,67 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/applyUpdatesToInstances",
+                "body": "instance_group_managers_apply_updates_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance_group_manager", "instanceGroupManager"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest.to_dict(
+            request
+        )
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.InstanceGroupManagersApplyUpdatesRequest.to_json(
-            request.instance_group_managers_apply_updates_request_resource,
+            compute.InstanceGroupManagersApplyUpdatesRequest(
+                transcoded_request["body"]
+            ),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/applyUpdatesToInstances".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance_group_manager=request.instance_group_manager,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest.to_json(
+                compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -311,10 +439,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def create_instances(
+    def _create_instances(
         self,
         request: compute.CreateInstancesInstanceGroupManagerRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the create instances method over HTTP.
@@ -325,6 +455,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 InstanceGroupManagers.CreateInstances.
                 See the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -348,33 +481,67 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/createInstances",
+                "body": "instance_group_managers_create_instances_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance_group_manager", "instanceGroupManager"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.CreateInstancesInstanceGroupManagerRequest.to_dict(
+            request
+        )
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.InstanceGroupManagersCreateInstancesRequest.to_json(
-            request.instance_group_managers_create_instances_request_resource,
+            compute.InstanceGroupManagersCreateInstancesRequest(
+                transcoded_request["body"]
+            ),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/createInstances".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance_group_manager=request.instance_group_manager,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.CreateInstancesInstanceGroupManagerRequest.to_json(
+                compute.CreateInstancesInstanceGroupManagerRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.CreateInstancesInstanceGroupManagerRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -385,10 +552,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def delete(
+    def _delete(
         self,
         request: compute.DeleteInstanceGroupManagerRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the delete method over HTTP.
@@ -399,6 +568,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 InstanceGroupManagers.Delete. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -422,25 +594,56 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance_group_manager=request.instance_group_manager,
+        http_options = [
+            {
+                "method": "delete",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance_group_manager", "instanceGroupManager"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.DeleteInstanceGroupManagerRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.DeleteInstanceGroupManagerRequest.to_json(
+                compute.DeleteInstanceGroupManagerRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.DeleteInstanceGroupManagerRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.delete(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -450,10 +653,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def delete_instances(
+    def _delete_instances(
         self,
         request: compute.DeleteInstancesInstanceGroupManagerRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the delete instances method over HTTP.
@@ -464,6 +669,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 InstanceGroupManagers.DeleteInstances.
                 See the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -487,33 +695,67 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/deleteInstances",
+                "body": "instance_group_managers_delete_instances_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance_group_manager", "instanceGroupManager"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.DeleteInstancesInstanceGroupManagerRequest.to_dict(
+            request
+        )
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.InstanceGroupManagersDeleteInstancesRequest.to_json(
-            request.instance_group_managers_delete_instances_request_resource,
+            compute.InstanceGroupManagersDeleteInstancesRequest(
+                transcoded_request["body"]
+            ),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/deleteInstances".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance_group_manager=request.instance_group_manager,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.DeleteInstancesInstanceGroupManagerRequest.to_json(
+                compute.DeleteInstancesInstanceGroupManagerRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.DeleteInstancesInstanceGroupManagerRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -524,10 +766,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def delete_per_instance_configs(
+    def _delete_per_instance_configs(
         self,
         request: compute.DeletePerInstanceConfigsInstanceGroupManagerRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the delete per instance
@@ -539,6 +783,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 InstanceGroupManagers.DeletePerInstanceConfigs.
                 See the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -562,31 +809,67 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/deletePerInstanceConfigs",
+                "body": "instance_group_managers_delete_per_instance_configs_req_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance_group_manager", "instanceGroupManager"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.DeletePerInstanceConfigsInstanceGroupManagerRequest.to_dict(
+            request
+        )
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.InstanceGroupManagersDeletePerInstanceConfigsReq.to_json(
-            request.instance_group_managers_delete_per_instance_configs_req_resource,
+            compute.InstanceGroupManagersDeletePerInstanceConfigsReq(
+                transcoded_request["body"]
+            ),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/deletePerInstanceConfigs".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance_group_manager=request.instance_group_manager,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.DeletePerInstanceConfigsInstanceGroupManagerRequest.to_json(
+                compute.DeletePerInstanceConfigsInstanceGroupManagerRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -597,10 +880,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def get(
+    def _get(
         self,
         request: compute.GetInstanceGroupManagerRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.InstanceGroupManager:
         r"""Call the get method over HTTP.
@@ -611,6 +896,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 InstanceGroupManagers.Get. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -628,23 +916,56 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance_group_manager=request.instance_group_manager,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance_group_manager", "instanceGroupManager"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.GetInstanceGroupManagerRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.GetInstanceGroupManagerRequest.to_json(
+                compute.GetInstanceGroupManagerRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -656,10 +977,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def insert(
+    def _insert(
         self,
         request: compute.InsertInstanceGroupManagerRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the insert method over HTTP.
@@ -670,6 +993,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 InstanceGroupManagers.Insert. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -693,30 +1019,62 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers",
+                "body": "instance_group_manager_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.InsertInstanceGroupManagerRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.InstanceGroupManager.to_json(
-            request.instance_group_manager_resource,
+            compute.InstanceGroupManager(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers".format(
-            host=self._host, project=request.project, zone=request.zone,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.InsertInstanceGroupManagerRequest.to_json(
+                compute.InsertInstanceGroupManagerRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.InsertInstanceGroupManagerRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -727,10 +1085,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def list(
+    def _list(
         self,
         request: compute.ListInstanceGroupManagersRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.InstanceGroupManagerList:
         r"""Call the list method over HTTP.
@@ -741,6 +1101,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 InstanceGroupManagers.List. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -749,30 +1112,55 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 [Output Only] A list of managed instance groups.
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers".format(
-            host=self._host, project=request.project, zone=request.zone,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.ListInstanceGroupManagersRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.ListInstanceGroupManagersRequest.to_json(
+                compute.ListInstanceGroupManagersRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.ListInstanceGroupManagersRequest.filter in request:
-            query_params["filter"] = request.filter
-        if compute.ListInstanceGroupManagersRequest.max_results in request:
-            query_params["maxResults"] = request.max_results
-        if compute.ListInstanceGroupManagersRequest.order_by in request:
-            query_params["orderBy"] = request.order_by
-        if compute.ListInstanceGroupManagersRequest.page_token in request:
-            query_params["pageToken"] = request.page_token
-        if compute.ListInstanceGroupManagersRequest.return_partial_success in request:
-            query_params["returnPartialSuccess"] = request.return_partial_success
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -784,10 +1172,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def list_errors(
+    def _list_errors(
         self,
         request: compute.ListErrorsInstanceGroupManagersRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.InstanceGroupManagersListErrorsResponse:
         r"""Call the list errors method over HTTP.
@@ -798,6 +1188,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 InstanceGroupManagers.ListErrors. See
                 the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -806,36 +1199,56 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/listErrors".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance_group_manager=request.instance_group_manager,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/listErrors",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance_group_manager", "instanceGroupManager"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.ListErrorsInstanceGroupManagersRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.ListErrorsInstanceGroupManagersRequest.to_json(
+                compute.ListErrorsInstanceGroupManagersRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.ListErrorsInstanceGroupManagersRequest.filter in request:
-            query_params["filter"] = request.filter
-        if compute.ListErrorsInstanceGroupManagersRequest.max_results in request:
-            query_params["maxResults"] = request.max_results
-        if compute.ListErrorsInstanceGroupManagersRequest.order_by in request:
-            query_params["orderBy"] = request.order_by
-        if compute.ListErrorsInstanceGroupManagersRequest.page_token in request:
-            query_params["pageToken"] = request.page_token
-        if (
-            compute.ListErrorsInstanceGroupManagersRequest.return_partial_success
-            in request
-        ):
-            query_params["returnPartialSuccess"] = request.return_partial_success
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -847,10 +1260,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def list_managed_instances(
+    def _list_managed_instances(
         self,
         request: compute.ListManagedInstancesInstanceGroupManagersRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.InstanceGroupManagersListManagedInstancesResponse:
         r"""Call the list managed instances method over HTTP.
@@ -861,6 +1276,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 InstanceGroupManagers.ListManagedInstances.
                 See the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -869,42 +1287,58 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/listManagedInstances".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance_group_manager=request.instance_group_manager,
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/listManagedInstances",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance_group_manager", "instanceGroupManager"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.ListManagedInstancesInstanceGroupManagersRequest.to_dict(
+            request
+        )
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.ListManagedInstancesInstanceGroupManagersRequest.to_json(
+                compute.ListManagedInstancesInstanceGroupManagersRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.ListManagedInstancesInstanceGroupManagersRequest.filter in request:
-            query_params["filter"] = request.filter
-        if (
-            compute.ListManagedInstancesInstanceGroupManagersRequest.max_results
-            in request
-        ):
-            query_params["maxResults"] = request.max_results
-        if compute.ListManagedInstancesInstanceGroupManagersRequest.order_by in request:
-            query_params["orderBy"] = request.order_by
-        if (
-            compute.ListManagedInstancesInstanceGroupManagersRequest.page_token
-            in request
-        ):
-            query_params["pageToken"] = request.page_token
-        if (
-            compute.ListManagedInstancesInstanceGroupManagersRequest.return_partial_success
-            in request
-        ):
-            query_params["returnPartialSuccess"] = request.return_partial_success
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -916,10 +1350,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def list_per_instance_configs(
+    def _list_per_instance_configs(
         self,
         request: compute.ListPerInstanceConfigsInstanceGroupManagersRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.InstanceGroupManagersListPerInstanceConfigsResp:
         r"""Call the list per instance configs method over HTTP.
@@ -930,6 +1366,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 InstanceGroupManagers.ListPerInstanceConfigs.
                 See the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -938,45 +1377,58 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/listPerInstanceConfigs".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance_group_manager=request.instance_group_manager,
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/listPerInstanceConfigs",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance_group_manager", "instanceGroupManager"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.ListPerInstanceConfigsInstanceGroupManagersRequest.to_dict(
+            request
+        )
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.ListPerInstanceConfigsInstanceGroupManagersRequest.to_json(
+                compute.ListPerInstanceConfigsInstanceGroupManagersRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.ListPerInstanceConfigsInstanceGroupManagersRequest.filter in request:
-            query_params["filter"] = request.filter
-        if (
-            compute.ListPerInstanceConfigsInstanceGroupManagersRequest.max_results
-            in request
-        ):
-            query_params["maxResults"] = request.max_results
-        if (
-            compute.ListPerInstanceConfigsInstanceGroupManagersRequest.order_by
-            in request
-        ):
-            query_params["orderBy"] = request.order_by
-        if (
-            compute.ListPerInstanceConfigsInstanceGroupManagersRequest.page_token
-            in request
-        ):
-            query_params["pageToken"] = request.page_token
-        if (
-            compute.ListPerInstanceConfigsInstanceGroupManagersRequest.return_partial_success
-            in request
-        ):
-            query_params["returnPartialSuccess"] = request.return_partial_success
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -988,10 +1440,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def patch(
+    def _patch(
         self,
         request: compute.PatchInstanceGroupManagerRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the patch method over HTTP.
@@ -1002,6 +1456,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 InstanceGroupManagers.Patch. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -1025,33 +1482,63 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "patch",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}",
+                "body": "instance_group_manager_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance_group_manager", "instanceGroupManager"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.PatchInstanceGroupManagerRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.InstanceGroupManager.to_json(
-            request.instance_group_manager_resource,
+            compute.InstanceGroupManager(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance_group_manager=request.instance_group_manager,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.PatchInstanceGroupManagerRequest.to_json(
+                compute.PatchInstanceGroupManagerRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.PatchInstanceGroupManagerRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.patch(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1062,10 +1549,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def patch_per_instance_configs(
+    def _patch_per_instance_configs(
         self,
         request: compute.PatchPerInstanceConfigsInstanceGroupManagerRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the patch per instance
@@ -1077,6 +1566,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 InstanceGroupManagers.PatchPerInstanceConfigs.
                 See the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -1100,36 +1592,67 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/patchPerInstanceConfigs",
+                "body": "instance_group_managers_patch_per_instance_configs_req_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance_group_manager", "instanceGroupManager"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.PatchPerInstanceConfigsInstanceGroupManagerRequest.to_dict(
+            request
+        )
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.InstanceGroupManagersPatchPerInstanceConfigsReq.to_json(
-            request.instance_group_managers_patch_per_instance_configs_req_resource,
+            compute.InstanceGroupManagersPatchPerInstanceConfigsReq(
+                transcoded_request["body"]
+            ),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/patchPerInstanceConfigs".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance_group_manager=request.instance_group_manager,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.PatchPerInstanceConfigsInstanceGroupManagerRequest.to_json(
+                compute.PatchPerInstanceConfigsInstanceGroupManagerRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if (
-            compute.PatchPerInstanceConfigsInstanceGroupManagerRequest.request_id
-            in request
-        ):
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1140,10 +1663,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def recreate_instances(
+    def _recreate_instances(
         self,
         request: compute.RecreateInstancesInstanceGroupManagerRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the recreate instances method over HTTP.
@@ -1154,6 +1679,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 InstanceGroupManagers.RecreateInstances.
                 See the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -1177,33 +1705,67 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/recreateInstances",
+                "body": "instance_group_managers_recreate_instances_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance_group_manager", "instanceGroupManager"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.RecreateInstancesInstanceGroupManagerRequest.to_dict(
+            request
+        )
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.InstanceGroupManagersRecreateInstancesRequest.to_json(
-            request.instance_group_managers_recreate_instances_request_resource,
+            compute.InstanceGroupManagersRecreateInstancesRequest(
+                transcoded_request["body"]
+            ),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/recreateInstances".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance_group_manager=request.instance_group_manager,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.RecreateInstancesInstanceGroupManagerRequest.to_json(
+                compute.RecreateInstancesInstanceGroupManagerRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.RecreateInstancesInstanceGroupManagerRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1214,10 +1776,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def resize(
+    def _resize(
         self,
         request: compute.ResizeInstanceGroupManagerRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the resize method over HTTP.
@@ -1228,6 +1792,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 InstanceGroupManagers.Resize. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -1251,26 +1818,57 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/resize".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance_group_manager=request.instance_group_manager,
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/resize",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance_group_manager", "instanceGroupManager"),
+            ("project", "project"),
+            ("size", "size"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.ResizeInstanceGroupManagerRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.ResizeInstanceGroupManagerRequest.to_json(
+                compute.ResizeInstanceGroupManagerRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.ResizeInstanceGroupManagerRequest.request_id in request:
-            query_params["requestId"] = request.request_id
-        query_params["size"] = request.size
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -1280,10 +1878,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def set_instance_template(
+    def _set_instance_template(
         self,
         request: compute.SetInstanceTemplateInstanceGroupManagerRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the set instance template method over HTTP.
@@ -1294,6 +1894,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 InstanceGroupManagers.SetInstanceTemplate.
                 See the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -1317,33 +1920,67 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/setInstanceTemplate",
+                "body": "instance_group_managers_set_instance_template_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance_group_manager", "instanceGroupManager"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.SetInstanceTemplateInstanceGroupManagerRequest.to_dict(
+            request
+        )
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.InstanceGroupManagersSetInstanceTemplateRequest.to_json(
-            request.instance_group_managers_set_instance_template_request_resource,
+            compute.InstanceGroupManagersSetInstanceTemplateRequest(
+                transcoded_request["body"]
+            ),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/setInstanceTemplate".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance_group_manager=request.instance_group_manager,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.SetInstanceTemplateInstanceGroupManagerRequest.to_json(
+                compute.SetInstanceTemplateInstanceGroupManagerRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.SetInstanceTemplateInstanceGroupManagerRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1354,10 +1991,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def set_target_pools(
+    def _set_target_pools(
         self,
         request: compute.SetTargetPoolsInstanceGroupManagerRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the set target pools method over HTTP.
@@ -1368,6 +2007,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 InstanceGroupManagers.SetTargetPools.
                 See the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -1391,33 +2033,67 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/setTargetPools",
+                "body": "instance_group_managers_set_target_pools_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance_group_manager", "instanceGroupManager"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.SetTargetPoolsInstanceGroupManagerRequest.to_dict(
+            request
+        )
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.InstanceGroupManagersSetTargetPoolsRequest.to_json(
-            request.instance_group_managers_set_target_pools_request_resource,
+            compute.InstanceGroupManagersSetTargetPoolsRequest(
+                transcoded_request["body"]
+            ),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/setTargetPools".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance_group_manager=request.instance_group_manager,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.SetTargetPoolsInstanceGroupManagerRequest.to_json(
+                compute.SetTargetPoolsInstanceGroupManagerRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.SetTargetPoolsInstanceGroupManagerRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1428,10 +2104,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def update_per_instance_configs(
+    def _update_per_instance_configs(
         self,
         request: compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the update per instance
@@ -1443,6 +2121,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 InstanceGroupManagers.UpdatePerInstanceConfigs.
                 See the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -1466,36 +2147,67 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/updatePerInstanceConfigs",
+                "body": "instance_group_managers_update_per_instance_configs_req_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance_group_manager", "instanceGroupManager"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest.to_dict(
+            request
+        )
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.InstanceGroupManagersUpdatePerInstanceConfigsReq.to_json(
-            request.instance_group_managers_update_per_instance_configs_req_resource,
+            compute.InstanceGroupManagersUpdatePerInstanceConfigsReq(
+                transcoded_request["body"]
+            ),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/updatePerInstanceConfigs".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance_group_manager=request.instance_group_manager,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest.to_json(
+                compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if (
-            compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest.request_id
-            in request
-        ):
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1505,6 +2217,165 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
+
+    @property
+    def abandon_instances(
+        self,
+    ) -> Callable[
+        [compute.AbandonInstancesInstanceGroupManagerRequest], compute.Operation
+    ]:
+        return self._abandon_instances
+
+    @property
+    def aggregated_list(
+        self,
+    ) -> Callable[
+        [compute.AggregatedListInstanceGroupManagersRequest],
+        compute.InstanceGroupManagerAggregatedList,
+    ]:
+        return self._aggregated_list
+
+    @property
+    def apply_updates_to_instances(
+        self,
+    ) -> Callable[
+        [compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest], compute.Operation
+    ]:
+        return self._apply_updates_to_instances
+
+    @property
+    def create_instances(
+        self,
+    ) -> Callable[
+        [compute.CreateInstancesInstanceGroupManagerRequest], compute.Operation
+    ]:
+        return self._create_instances
+
+    @property
+    def delete(
+        self,
+    ) -> Callable[[compute.DeleteInstanceGroupManagerRequest], compute.Operation]:
+        return self._delete
+
+    @property
+    def delete_instances(
+        self,
+    ) -> Callable[
+        [compute.DeleteInstancesInstanceGroupManagerRequest], compute.Operation
+    ]:
+        return self._delete_instances
+
+    @property
+    def delete_per_instance_configs(
+        self,
+    ) -> Callable[
+        [compute.DeletePerInstanceConfigsInstanceGroupManagerRequest], compute.Operation
+    ]:
+        return self._delete_per_instance_configs
+
+    @property
+    def get(
+        self,
+    ) -> Callable[
+        [compute.GetInstanceGroupManagerRequest], compute.InstanceGroupManager
+    ]:
+        return self._get
+
+    @property
+    def insert(
+        self,
+    ) -> Callable[[compute.InsertInstanceGroupManagerRequest], compute.Operation]:
+        return self._insert
+
+    @property
+    def list(
+        self,
+    ) -> Callable[
+        [compute.ListInstanceGroupManagersRequest], compute.InstanceGroupManagerList
+    ]:
+        return self._list
+
+    @property
+    def list_errors(
+        self,
+    ) -> Callable[
+        [compute.ListErrorsInstanceGroupManagersRequest],
+        compute.InstanceGroupManagersListErrorsResponse,
+    ]:
+        return self._list_errors
+
+    @property
+    def list_managed_instances(
+        self,
+    ) -> Callable[
+        [compute.ListManagedInstancesInstanceGroupManagersRequest],
+        compute.InstanceGroupManagersListManagedInstancesResponse,
+    ]:
+        return self._list_managed_instances
+
+    @property
+    def list_per_instance_configs(
+        self,
+    ) -> Callable[
+        [compute.ListPerInstanceConfigsInstanceGroupManagersRequest],
+        compute.InstanceGroupManagersListPerInstanceConfigsResp,
+    ]:
+        return self._list_per_instance_configs
+
+    @property
+    def patch(
+        self,
+    ) -> Callable[[compute.PatchInstanceGroupManagerRequest], compute.Operation]:
+        return self._patch
+
+    @property
+    def patch_per_instance_configs(
+        self,
+    ) -> Callable[
+        [compute.PatchPerInstanceConfigsInstanceGroupManagerRequest], compute.Operation
+    ]:
+        return self._patch_per_instance_configs
+
+    @property
+    def recreate_instances(
+        self,
+    ) -> Callable[
+        [compute.RecreateInstancesInstanceGroupManagerRequest], compute.Operation
+    ]:
+        return self._recreate_instances
+
+    @property
+    def resize(
+        self,
+    ) -> Callable[[compute.ResizeInstanceGroupManagerRequest], compute.Operation]:
+        return self._resize
+
+    @property
+    def set_instance_template(
+        self,
+    ) -> Callable[
+        [compute.SetInstanceTemplateInstanceGroupManagerRequest], compute.Operation
+    ]:
+        return self._set_instance_template
+
+    @property
+    def set_target_pools(
+        self,
+    ) -> Callable[
+        [compute.SetTargetPoolsInstanceGroupManagerRequest], compute.Operation
+    ]:
+        return self._set_target_pools
+
+    @property
+    def update_per_instance_configs(
+        self,
+    ) -> Callable[
+        [compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest], compute.Operation
+    ]:
+        return self._update_per_instance_configs
+
+    def close(self):
+        self._session.close()
 
 
 __all__ = ("InstanceGroupManagersRestTransport",)

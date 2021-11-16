@@ -14,21 +14,25 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.compute_v1.services.target_https_proxies import pagers
 from google.cloud.compute_v1.types import compute
@@ -265,8 +269,15 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
         )
 
         client_cert_source_func = None
@@ -328,14 +339,15 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
             )
 
     def aggregated_list(
         self,
-        request: compute.AggregatedListTargetHttpsProxiesRequest = None,
+        request: Union[compute.AggregatedListTargetHttpsProxiesRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
@@ -343,7 +355,7 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         regional and global, available to the specified project.
 
         Args:
-            request (google.cloud.compute_v1.types.AggregatedListTargetHttpsProxiesRequest):
+            request (Union[google.cloud.compute_v1.types.AggregatedListTargetHttpsProxiesRequest, dict]):
                 The request object. A request message for
                 TargetHttpsProxies.AggregatedList. See the method
                 description for details.
@@ -406,18 +418,18 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
     def delete(
         self,
-        request: compute.DeleteTargetHttpsProxyRequest = None,
+        request: Union[compute.DeleteTargetHttpsProxyRequest, dict] = None,
         *,
         project: str = None,
         target_https_proxy: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified TargetHttpsProxy resource.
 
         Args:
-            request (google.cloud.compute_v1.types.DeleteTargetHttpsProxyRequest):
+            request (Union[google.cloud.compute_v1.types.DeleteTargetHttpsProxyRequest, dict]):
                 The request object. A request message for
                 TargetHttpsProxies.Delete. See the method description
                 for details.
@@ -493,11 +505,11 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
     def get(
         self,
-        request: compute.GetTargetHttpsProxyRequest = None,
+        request: Union[compute.GetTargetHttpsProxyRequest, dict] = None,
         *,
         project: str = None,
         target_https_proxy: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TargetHttpsProxy:
@@ -506,7 +518,7 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         list() request.
 
         Args:
-            request (google.cloud.compute_v1.types.GetTargetHttpsProxyRequest):
+            request (Union[google.cloud.compute_v1.types.GetTargetHttpsProxyRequest, dict]):
                 The request object. A request message for
                 TargetHttpsProxies.Get. See the method description for
                 details.
@@ -579,11 +591,11 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
     def insert(
         self,
-        request: compute.InsertTargetHttpsProxyRequest = None,
+        request: Union[compute.InsertTargetHttpsProxyRequest, dict] = None,
         *,
         project: str = None,
         target_https_proxy_resource: compute.TargetHttpsProxy = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -591,7 +603,7 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         project using the data included in the request.
 
         Args:
-            request (google.cloud.compute_v1.types.InsertTargetHttpsProxyRequest):
+            request (Union[google.cloud.compute_v1.types.InsertTargetHttpsProxyRequest, dict]):
                 The request object. A request message for
                 TargetHttpsProxies.Insert. See the method description
                 for details.
@@ -665,10 +677,10 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
     def list(
         self,
-        request: compute.ListTargetHttpsProxiesRequest = None,
+        request: Union[compute.ListTargetHttpsProxiesRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
@@ -676,7 +688,7 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         available to the specified project.
 
         Args:
-            request (google.cloud.compute_v1.types.ListTargetHttpsProxiesRequest):
+            request (Union[google.cloud.compute_v1.types.ListTargetHttpsProxiesRequest, dict]):
                 The request object. A request message for
                 TargetHttpsProxies.List. See the method description for
                 details.
@@ -739,12 +751,12 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
     def patch(
         self,
-        request: compute.PatchTargetHttpsProxyRequest = None,
+        request: Union[compute.PatchTargetHttpsProxyRequest, dict] = None,
         *,
         project: str = None,
         target_https_proxy: str = None,
         target_https_proxy_resource: compute.TargetHttpsProxy = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -754,7 +766,7 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         processing rules.
 
         Args:
-            request (google.cloud.compute_v1.types.PatchTargetHttpsProxyRequest):
+            request (Union[google.cloud.compute_v1.types.PatchTargetHttpsProxyRequest, dict]):
                 The request object. A request message for
                 TargetHttpsProxies.Patch. See the method description for
                 details.
@@ -839,19 +851,19 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
     def set_quic_override(
         self,
-        request: compute.SetQuicOverrideTargetHttpsProxyRequest = None,
+        request: Union[compute.SetQuicOverrideTargetHttpsProxyRequest, dict] = None,
         *,
         project: str = None,
         target_https_proxy: str = None,
         target_https_proxies_set_quic_override_request_resource: compute.TargetHttpsProxiesSetQuicOverrideRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Sets the QUIC override policy for TargetHttpsProxy.
 
         Args:
-            request (google.cloud.compute_v1.types.SetQuicOverrideTargetHttpsProxyRequest):
+            request (Union[google.cloud.compute_v1.types.SetQuicOverrideTargetHttpsProxyRequest, dict]):
                 The request object. A request message for
                 TargetHttpsProxies.SetQuicOverride. See the method
                 description for details.
@@ -943,19 +955,19 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
     def set_ssl_certificates(
         self,
-        request: compute.SetSslCertificatesTargetHttpsProxyRequest = None,
+        request: Union[compute.SetSslCertificatesTargetHttpsProxyRequest, dict] = None,
         *,
         project: str = None,
         target_https_proxy: str = None,
         target_https_proxies_set_ssl_certificates_request_resource: compute.TargetHttpsProxiesSetSslCertificatesRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Replaces SslCertificates for TargetHttpsProxy.
 
         Args:
-            request (google.cloud.compute_v1.types.SetSslCertificatesTargetHttpsProxyRequest):
+            request (Union[google.cloud.compute_v1.types.SetSslCertificatesTargetHttpsProxyRequest, dict]):
                 The request object. A request message for
                 TargetHttpsProxies.SetSslCertificates. See the method
                 description for details.
@@ -1046,12 +1058,12 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
     def set_ssl_policy(
         self,
-        request: compute.SetSslPolicyTargetHttpsProxyRequest = None,
+        request: Union[compute.SetSslPolicyTargetHttpsProxyRequest, dict] = None,
         *,
         project: str = None,
         target_https_proxy: str = None,
         ssl_policy_reference_resource: compute.SslPolicyReference = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -1062,7 +1074,7 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         connection between the load balancer and the backends.
 
         Args:
-            request (google.cloud.compute_v1.types.SetSslPolicyTargetHttpsProxyRequest):
+            request (Union[google.cloud.compute_v1.types.SetSslPolicyTargetHttpsProxyRequest, dict]):
                 The request object. A request message for
                 TargetHttpsProxies.SetSslPolicy. See the method
                 description for details.
@@ -1149,19 +1161,19 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
     def set_url_map(
         self,
-        request: compute.SetUrlMapTargetHttpsProxyRequest = None,
+        request: Union[compute.SetUrlMapTargetHttpsProxyRequest, dict] = None,
         *,
         project: str = None,
         target_https_proxy: str = None,
         url_map_reference_resource: compute.UrlMapReference = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Changes the URL map for TargetHttpsProxy.
 
         Args:
-            request (google.cloud.compute_v1.types.SetUrlMapTargetHttpsProxyRequest):
+            request (Union[google.cloud.compute_v1.types.SetUrlMapTargetHttpsProxyRequest, dict]):
                 The request object. A request message for
                 TargetHttpsProxies.SetUrlMap. See the method description
                 for details.
@@ -1243,6 +1255,19 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:

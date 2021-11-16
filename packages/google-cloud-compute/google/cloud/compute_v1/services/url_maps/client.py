@@ -14,21 +14,25 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.compute_v1.services.url_maps import pagers
 from google.cloud.compute_v1.types import compute
@@ -261,8 +265,15 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
         )
 
         client_cert_source_func = None
@@ -324,14 +335,15 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
             )
 
     def aggregated_list(
         self,
-        request: compute.AggregatedListUrlMapsRequest = None,
+        request: Union[compute.AggregatedListUrlMapsRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
@@ -339,7 +351,7 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
         and global, available to the specified project.
 
         Args:
-            request (google.cloud.compute_v1.types.AggregatedListUrlMapsRequest):
+            request (Union[google.cloud.compute_v1.types.AggregatedListUrlMapsRequest, dict]):
                 The request object. A request message for
                 UrlMaps.AggregatedList. See the method description for
                 details.
@@ -402,18 +414,18 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
 
     def delete(
         self,
-        request: compute.DeleteUrlMapRequest = None,
+        request: Union[compute.DeleteUrlMapRequest, dict] = None,
         *,
         project: str = None,
         url_map: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified UrlMap resource.
 
         Args:
-            request (google.cloud.compute_v1.types.DeleteUrlMapRequest):
+            request (Union[google.cloud.compute_v1.types.DeleteUrlMapRequest, dict]):
                 The request object. A request message for
                 UrlMaps.Delete. See the method description for details.
             project (str):
@@ -488,11 +500,11 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
 
     def get(
         self,
-        request: compute.GetUrlMapRequest = None,
+        request: Union[compute.GetUrlMapRequest, dict] = None,
         *,
         project: str = None,
         url_map: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.UrlMap:
@@ -500,7 +512,7 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
         available URL maps by making a list() request.
 
         Args:
-            request (google.cloud.compute_v1.types.GetUrlMapRequest):
+            request (Union[google.cloud.compute_v1.types.GetUrlMapRequest, dict]):
                 The request object. A request message for UrlMaps.Get.
                 See the method description for details.
             project (str):
@@ -581,11 +593,11 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
 
     def insert(
         self,
-        request: compute.InsertUrlMapRequest = None,
+        request: Union[compute.InsertUrlMapRequest, dict] = None,
         *,
         project: str = None,
         url_map_resource: compute.UrlMap = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -593,7 +605,7 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
         using the data included in the request.
 
         Args:
-            request (google.cloud.compute_v1.types.InsertUrlMapRequest):
+            request (Union[google.cloud.compute_v1.types.InsertUrlMapRequest, dict]):
                 The request object. A request message for
                 UrlMaps.Insert. See the method description for details.
             project (str):
@@ -666,12 +678,12 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
 
     def invalidate_cache(
         self,
-        request: compute.InvalidateCacheUrlMapRequest = None,
+        request: Union[compute.InvalidateCacheUrlMapRequest, dict] = None,
         *,
         project: str = None,
         url_map: str = None,
         cache_invalidation_rule_resource: compute.CacheInvalidationRule = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -681,7 +693,7 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
         content </cdn/docs/invalidating-cached-content>`__.
 
         Args:
-            request (google.cloud.compute_v1.types.InvalidateCacheUrlMapRequest):
+            request (Union[google.cloud.compute_v1.types.InvalidateCacheUrlMapRequest, dict]):
                 The request object. A request message for
                 UrlMaps.InvalidateCache. See the method description for
                 details.
@@ -766,10 +778,10 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
 
     def list(
         self,
-        request: compute.ListUrlMapsRequest = None,
+        request: Union[compute.ListUrlMapsRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
@@ -777,7 +789,7 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
         the specified project.
 
         Args:
-            request (google.cloud.compute_v1.types.ListUrlMapsRequest):
+            request (Union[google.cloud.compute_v1.types.ListUrlMapsRequest, dict]):
                 The request object. A request message for UrlMaps.List.
                 See the method description for details.
             project (str):
@@ -838,12 +850,12 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
 
     def patch(
         self,
-        request: compute.PatchUrlMapRequest = None,
+        request: Union[compute.PatchUrlMapRequest, dict] = None,
         *,
         project: str = None,
         url_map: str = None,
         url_map_resource: compute.UrlMap = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -853,7 +865,7 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
         processing rules.
 
         Args:
-            request (google.cloud.compute_v1.types.PatchUrlMapRequest):
+            request (Union[google.cloud.compute_v1.types.PatchUrlMapRequest, dict]):
                 The request object. A request message for UrlMaps.Patch.
                 See the method description for details.
             project (str):
@@ -933,12 +945,12 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
 
     def update(
         self,
-        request: compute.UpdateUrlMapRequest = None,
+        request: Union[compute.UpdateUrlMapRequest, dict] = None,
         *,
         project: str = None,
         url_map: str = None,
         url_map_resource: compute.UrlMap = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -946,7 +958,7 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
         included in the request.
 
         Args:
-            request (google.cloud.compute_v1.types.UpdateUrlMapRequest):
+            request (Union[google.cloud.compute_v1.types.UpdateUrlMapRequest, dict]):
                 The request object. A request message for
                 UrlMaps.Update. See the method description for details.
             project (str):
@@ -1028,12 +1040,12 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
 
     def validate(
         self,
-        request: compute.ValidateUrlMapRequest = None,
+        request: Union[compute.ValidateUrlMapRequest, dict] = None,
         *,
         project: str = None,
         url_map: str = None,
         url_maps_validate_request_resource: compute.UrlMapsValidateRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.UrlMapsValidateResponse:
@@ -1042,7 +1054,7 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
         this method does NOT create the UrlMap.
 
         Args:
-            request (google.cloud.compute_v1.types.ValidateUrlMapRequest):
+            request (Union[google.cloud.compute_v1.types.ValidateUrlMapRequest, dict]):
                 The request object. A request message for
                 UrlMaps.Validate. See the method description for
                 details.
@@ -1111,6 +1123,19 @@ class UrlMapsClient(metaclass=UrlMapsClientMeta):
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:

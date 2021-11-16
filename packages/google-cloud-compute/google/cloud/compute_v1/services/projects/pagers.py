@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.compute_v1.types import compute
@@ -74,14 +74,14 @@ class GetXpnResourcesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[compute.ProjectsGetXpnResources]:
+    def pages(self) -> Iterator[compute.ProjectsGetXpnResources]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[compute.XpnResourceId]:
+    def __iter__(self) -> Iterator[compute.XpnResourceId]:
         for page in self.pages:
             yield from page.resources
 
@@ -136,14 +136,14 @@ class ListXpnHostsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[compute.XpnHostList]:
+    def pages(self) -> Iterator[compute.XpnHostList]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[compute.Project]:
+    def __iter__(self) -> Iterator[compute.Project]:
         for page in self.pages:
             yield from page.items
 

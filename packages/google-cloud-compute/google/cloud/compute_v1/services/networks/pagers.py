@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.compute_v1.types import compute
@@ -74,14 +74,14 @@ class ListPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[compute.NetworkList]:
+    def pages(self) -> Iterator[compute.NetworkList]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[compute.Network]:
+    def __iter__(self) -> Iterator[compute.Network]:
         for page in self.pages:
             yield from page.items
 
@@ -136,14 +136,14 @@ class ListPeeringRoutesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[compute.ExchangedPeeringRoutesList]:
+    def pages(self) -> Iterator[compute.ExchangedPeeringRoutesList]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[compute.ExchangedPeeringRoute]:
+    def __iter__(self) -> Iterator[compute.ExchangedPeeringRoute]:
         for page in self.pages:
             yield from page.items
 

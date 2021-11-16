@@ -14,21 +14,25 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.compute_v1.services.vpn_gateways import pagers
 from google.cloud.compute_v1.types import compute
@@ -261,8 +265,15 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
         )
 
         client_cert_source_func = None
@@ -324,21 +335,22 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
             )
 
     def aggregated_list(
         self,
-        request: compute.AggregatedListVpnGatewaysRequest = None,
+        request: Union[compute.AggregatedListVpnGatewaysRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of VPN gateways.
 
         Args:
-            request (google.cloud.compute_v1.types.AggregatedListVpnGatewaysRequest):
+            request (Union[google.cloud.compute_v1.types.AggregatedListVpnGatewaysRequest, dict]):
                 The request object. A request message for
                 VpnGateways.AggregatedList. See the method description
                 for details.
@@ -399,19 +411,19 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
 
     def delete(
         self,
-        request: compute.DeleteVpnGatewayRequest = None,
+        request: Union[compute.DeleteVpnGatewayRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         vpn_gateway: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified VPN gateway.
 
         Args:
-            request (google.cloud.compute_v1.types.DeleteVpnGatewayRequest):
+            request (Union[google.cloud.compute_v1.types.DeleteVpnGatewayRequest, dict]):
                 The request object. A request message for
                 VpnGateways.Delete. See the method description for
                 details.
@@ -492,12 +504,12 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
 
     def get(
         self,
-        request: compute.GetVpnGatewayRequest = None,
+        request: Union[compute.GetVpnGatewayRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         vpn_gateway: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.VpnGateway:
@@ -505,7 +517,7 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
         available VPN gateways by making a list() request.
 
         Args:
-            request (google.cloud.compute_v1.types.GetVpnGatewayRequest):
+            request (Union[google.cloud.compute_v1.types.GetVpnGatewayRequest, dict]):
                 The request object. A request message for
                 VpnGateways.Get. See the method description for details.
             project (str):
@@ -579,19 +591,19 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
 
     def get_status(
         self,
-        request: compute.GetStatusVpnGatewayRequest = None,
+        request: Union[compute.GetStatusVpnGatewayRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         vpn_gateway: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.VpnGatewaysGetStatusResponse:
         r"""Returns the status for the specified VPN gateway.
 
         Args:
-            request (google.cloud.compute_v1.types.GetStatusVpnGatewayRequest):
+            request (Union[google.cloud.compute_v1.types.GetStatusVpnGatewayRequest, dict]):
                 The request object. A request message for
                 VpnGateways.GetStatus. See the method description for
                 details.
@@ -657,12 +669,12 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
 
     def insert(
         self,
-        request: compute.InsertVpnGatewayRequest = None,
+        request: Union[compute.InsertVpnGatewayRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         vpn_gateway_resource: compute.VpnGateway = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -670,7 +682,7 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
         region using the data included in the request.
 
         Args:
-            request (google.cloud.compute_v1.types.InsertVpnGatewayRequest):
+            request (Union[google.cloud.compute_v1.types.InsertVpnGatewayRequest, dict]):
                 The request object. A request message for
                 VpnGateways.Insert. See the method description for
                 details.
@@ -751,11 +763,11 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
 
     def list(
         self,
-        request: compute.ListVpnGatewaysRequest = None,
+        request: Union[compute.ListVpnGatewaysRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
@@ -763,7 +775,7 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
         specified project and region.
 
         Args:
-            request (google.cloud.compute_v1.types.ListVpnGatewaysRequest):
+            request (Union[google.cloud.compute_v1.types.ListVpnGatewaysRequest, dict]):
                 The request object. A request message for
                 VpnGateways.List. See the method description for
                 details.
@@ -833,13 +845,13 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
 
     def set_labels(
         self,
-        request: compute.SetLabelsVpnGatewayRequest = None,
+        request: Union[compute.SetLabelsVpnGatewayRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         resource: str = None,
         region_set_labels_request_resource: compute.RegionSetLabelsRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -847,7 +859,7 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
         labels, read the Labeling Resources documentation.
 
         Args:
-            request (google.cloud.compute_v1.types.SetLabelsVpnGatewayRequest):
+            request (Union[google.cloud.compute_v1.types.SetLabelsVpnGatewayRequest, dict]):
                 The request object. A request message for
                 VpnGateways.SetLabels. See the method description for
                 details.
@@ -941,13 +953,13 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
 
     def test_iam_permissions(
         self,
-        request: compute.TestIamPermissionsVpnGatewayRequest = None,
+        request: Union[compute.TestIamPermissionsVpnGatewayRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         resource: str = None,
         test_permissions_request_resource: compute.TestPermissionsRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TestPermissionsResponse:
@@ -955,7 +967,7 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
         specified resource.
 
         Args:
-            request (google.cloud.compute_v1.types.TestIamPermissionsVpnGatewayRequest):
+            request (Union[google.cloud.compute_v1.types.TestIamPermissionsVpnGatewayRequest, dict]):
                 The request object. A request message for
                 VpnGateways.TestIamPermissions. See the method
                 description for details.
@@ -1033,6 +1045,19 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:

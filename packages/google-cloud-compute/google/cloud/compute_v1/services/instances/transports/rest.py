@@ -1,3 +1,22 @@
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+import json  # type: ignore
+import grpc  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.api_core import rest_helpers
+from google.api_core import path_template
+from google.api_core import gapic_v1
+from requests import __version__ as requests_version
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import warnings
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
+
 # -*- coding: utf-8 -*-
 # Copyright 2020 Google LLC
 #
@@ -13,21 +32,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
 
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-
-import grpc  # type: ignore
-
-from google.auth.transport.requests import AuthorizedSession
 
 from google.cloud.compute_v1.types import compute
 
-from .base import InstancesTransport, DEFAULT_CLIENT_INFO
+from .base import InstancesTransport, DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+
+
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+    gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
+    grpc_version=None,
+    rest_version=requests_version,
+)
 
 
 class InstancesRestTransport(InstancesTransport):
@@ -53,6 +69,7 @@ class InstancesRestTransport(InstancesTransport):
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
+        url_scheme: str = "https",
     ) -> None:
         """Instantiate the transport.
 
@@ -80,6 +97,11 @@ class InstancesRestTransport(InstancesTransport):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                be used for service account credentials.
+            url_scheme: the protocol scheme for the API endpoint.  Normally
+                "https", but for testing or local servers,
+                "http" can be specified.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -98,10 +120,12 @@ class InstancesRestTransport(InstancesTransport):
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._prep_wrapped_messages(client_info)
 
-    def add_access_config(
+    def _add_access_config(
         self,
         request: compute.AddAccessConfigInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the add access config method over HTTP.
@@ -112,6 +136,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.AddAccessConfig. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -135,34 +162,64 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/addAccessConfig",
+                "body": "access_config_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("network_interface", "networkInterface"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.AddAccessConfigInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.AccessConfig.to_json(
-            request.access_config_resource,
+            compute.AccessConfig(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/addAccessConfig".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.AddAccessConfigInstanceRequest.to_json(
+                compute.AddAccessConfigInstanceRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        query_params["networkInterface"] = request.network_interface
-        if compute.AddAccessConfigInstanceRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -173,10 +230,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def add_resource_policies(
+    def _add_resource_policies(
         self,
         request: compute.AddResourcePoliciesInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the add resource policies method over HTTP.
@@ -187,6 +246,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.AddResourcePolicies. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -210,33 +272,63 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/addResourcePolicies",
+                "body": "instances_add_resource_policies_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.AddResourcePoliciesInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.InstancesAddResourcePoliciesRequest.to_json(
-            request.instances_add_resource_policies_request_resource,
+            compute.InstancesAddResourcePoliciesRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/addResourcePolicies".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.AddResourcePoliciesInstanceRequest.to_json(
+                compute.AddResourcePoliciesInstanceRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.AddResourcePoliciesInstanceRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -247,10 +339,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def aggregated_list(
+    def _aggregated_list(
         self,
         request: compute.AggregatedListInstancesRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.InstanceAggregatedList:
         r"""Call the aggregated list method over HTTP.
@@ -261,6 +355,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.AggregatedList. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -269,32 +366,54 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/aggregated/instances".format(
-            host=self._host, project=request.project,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/aggregated/instances",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+        ]
+
+        request_kwargs = compute.AggregatedListInstancesRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.AggregatedListInstancesRequest.to_json(
+                compute.AggregatedListInstancesRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.AggregatedListInstancesRequest.filter in request:
-            query_params["filter"] = request.filter
-        if compute.AggregatedListInstancesRequest.include_all_scopes in request:
-            query_params["includeAllScopes"] = request.include_all_scopes
-        if compute.AggregatedListInstancesRequest.max_results in request:
-            query_params["maxResults"] = request.max_results
-        if compute.AggregatedListInstancesRequest.order_by in request:
-            query_params["orderBy"] = request.order_by
-        if compute.AggregatedListInstancesRequest.page_token in request:
-            query_params["pageToken"] = request.page_token
-        if compute.AggregatedListInstancesRequest.return_partial_success in request:
-            query_params["returnPartialSuccess"] = request.return_partial_success
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -306,10 +425,12 @@ class InstancesRestTransport(InstancesTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def attach_disk(
+    def _attach_disk(
         self,
         request: compute.AttachDiskInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the attach disk method over HTTP.
@@ -320,6 +441,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.AttachDisk. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -343,35 +467,61 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/attachDisk",
+                "body": "attached_disk_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.AttachDiskInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.AttachedDisk.to_json(
-            request.attached_disk_resource,
+            compute.AttachedDisk(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/attachDisk".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.AttachDiskInstanceRequest.to_json(
+                compute.AttachDiskInstanceRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.AttachDiskInstanceRequest.force_attach in request:
-            query_params["forceAttach"] = request.force_attach
-        if compute.AttachDiskInstanceRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -382,10 +532,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def bulk_insert(
+    def _bulk_insert(
         self,
         request: compute.BulkInsertInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the bulk insert method over HTTP.
@@ -396,6 +548,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.BulkInsert. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -419,30 +574,60 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/bulkInsert",
+                "body": "bulk_insert_instance_resource_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.BulkInsertInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.BulkInsertInstanceResource.to_json(
-            request.bulk_insert_instance_resource_resource,
+            compute.BulkInsertInstanceResource(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/bulkInsert".format(
-            host=self._host, project=request.project, zone=request.zone,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.BulkInsertInstanceRequest.to_json(
+                compute.BulkInsertInstanceRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.BulkInsertInstanceRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -453,10 +638,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def delete(
+    def _delete(
         self,
         request: compute.DeleteInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the delete method over HTTP.
@@ -467,6 +654,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.Delete. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -490,25 +680,54 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        http_options = [
+            {
+                "method": "delete",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.DeleteInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.DeleteInstanceRequest.to_json(
+                compute.DeleteInstanceRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.DeleteInstanceRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.delete(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -518,10 +737,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def delete_access_config(
+    def _delete_access_config(
         self,
         request: compute.DeleteAccessConfigInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the delete access config method over HTTP.
@@ -532,6 +753,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.DeleteAccessConfig. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -555,27 +779,58 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/deleteAccessConfig".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/deleteAccessConfig",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("access_config", "accessConfig"),
+            ("instance", "instance"),
+            ("network_interface", "networkInterface"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.DeleteAccessConfigInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.DeleteAccessConfigInstanceRequest.to_json(
+                compute.DeleteAccessConfigInstanceRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        query_params["accessConfig"] = request.access_config
-        query_params["networkInterface"] = request.network_interface
-        if compute.DeleteAccessConfigInstanceRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -585,10 +840,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def detach_disk(
+    def _detach_disk(
         self,
         request: compute.DetachDiskInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the detach disk method over HTTP.
@@ -599,6 +856,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.DetachDisk. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -622,26 +882,55 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/detachDisk".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/detachDisk",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("device_name", "deviceName"),
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.DetachDiskInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.DetachDiskInstanceRequest.to_json(
+                compute.DetachDiskInstanceRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        query_params["deviceName"] = request.device_name
-        if compute.DetachDiskInstanceRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -651,10 +940,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def get(
+    def _get(
         self,
         request: compute.GetInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Instance:
         r"""Call the get method over HTTP.
@@ -664,6 +955,9 @@ class InstancesRestTransport(InstancesTransport):
                 The request object. A request message for Instances.Get.
                 See the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -677,23 +971,54 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.GetInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.GetInstanceRequest.to_json(
+                compute.GetInstanceRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -703,10 +1028,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Instance.from_json(response.content, ignore_unknown_fields=True)
 
-    def get_effective_firewalls(
+    def _get_effective_firewalls(
         self,
         request: compute.GetEffectiveFirewallsInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.InstancesGetEffectiveFirewallsResponse:
         r"""Call the get effective firewalls method over HTTP.
@@ -717,6 +1044,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.GetEffectiveFirewalls. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -725,24 +1055,57 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/getEffectiveFirewalls".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/getEffectiveFirewalls",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("network_interface", "networkInterface"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.GetEffectiveFirewallsInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.GetEffectiveFirewallsInstanceRequest.to_json(
+                compute.GetEffectiveFirewallsInstanceRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        query_params["networkInterface"] = request.network_interface
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -754,10 +1117,12 @@ class InstancesRestTransport(InstancesTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def get_guest_attributes(
+    def _get_guest_attributes(
         self,
         request: compute.GetGuestAttributesInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.GuestAttributes:
         r"""Call the get guest attributes method over HTTP.
@@ -768,6 +1133,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.GetGuestAttributes. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -776,27 +1144,56 @@ class InstancesRestTransport(InstancesTransport):
                 A guest attributes entry.
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/getGuestAttributes".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/getGuestAttributes",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.GetGuestAttributesInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.GetGuestAttributesInstanceRequest.to_json(
+                compute.GetGuestAttributesInstanceRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.GetGuestAttributesInstanceRequest.query_path in request:
-            query_params["queryPath"] = request.query_path
-        if compute.GetGuestAttributesInstanceRequest.variable_key in request:
-            query_params["variableKey"] = request.variable_key
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -808,10 +1205,12 @@ class InstancesRestTransport(InstancesTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def get_iam_policy(
+    def _get_iam_policy(
         self,
         request: compute.GetIamPolicyInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
         r"""Call the get iam policy method over HTTP.
@@ -822,6 +1221,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.GetIamPolicy. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -870,30 +1272,54 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{resource}/getIamPolicy".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            resource=request.resource,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{resource}/getIamPolicy",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("resource", "resource"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.GetIamPolicyInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.GetIamPolicyInstanceRequest.to_json(
+                compute.GetIamPolicyInstanceRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if (
-            compute.GetIamPolicyInstanceRequest.options_requested_policy_version
-            in request
-        ):
-            query_params[
-                "optionsRequestedPolicyVersion"
-            ] = request.options_requested_policy_version
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -903,10 +1329,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Policy.from_json(response.content, ignore_unknown_fields=True)
 
-    def get_screenshot(
+    def _get_screenshot(
         self,
         request: compute.GetScreenshotInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Screenshot:
         r"""Call the get screenshot method over HTTP.
@@ -917,6 +1345,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.GetScreenshot. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -925,23 +1356,56 @@ class InstancesRestTransport(InstancesTransport):
                 An instance's screenshot.
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/screenshot".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/screenshot",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.GetScreenshotInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.GetScreenshotInstanceRequest.to_json(
+                compute.GetScreenshotInstanceRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -953,10 +1417,12 @@ class InstancesRestTransport(InstancesTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def get_serial_port_output(
+    def _get_serial_port_output(
         self,
         request: compute.GetSerialPortOutputInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.SerialPortOutput:
         r"""Call the get serial port output method over HTTP.
@@ -967,6 +1433,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.GetSerialPortOutput. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -975,27 +1444,56 @@ class InstancesRestTransport(InstancesTransport):
                 An instance serial console output.
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/serialPort".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/serialPort",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.GetSerialPortOutputInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.GetSerialPortOutputInstanceRequest.to_json(
+                compute.GetSerialPortOutputInstanceRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.GetSerialPortOutputInstanceRequest.port in request:
-            query_params["port"] = request.port
-        if compute.GetSerialPortOutputInstanceRequest.start in request:
-            query_params["start"] = request.start
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -1007,10 +1505,12 @@ class InstancesRestTransport(InstancesTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def get_shielded_instance_identity(
+    def _get_shielded_instance_identity(
         self,
         request: compute.GetShieldedInstanceIdentityInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.ShieldedInstanceIdentity:
         r"""Call the get shielded instance
@@ -1022,6 +1522,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.GetShieldedInstanceIdentity.
                 See the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -1030,23 +1533,58 @@ class InstancesRestTransport(InstancesTransport):
                 A Shielded Instance Identity.
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/getShieldedInstanceIdentity".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/getShieldedInstanceIdentity",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.GetShieldedInstanceIdentityInstanceRequest.to_dict(
+            request
+        )
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.GetShieldedInstanceIdentityInstanceRequest.to_json(
+                compute.GetShieldedInstanceIdentityInstanceRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -1058,10 +1596,12 @@ class InstancesRestTransport(InstancesTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def insert(
+    def _insert(
         self,
         request: compute.InsertInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the insert method over HTTP.
@@ -1072,6 +1612,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.Insert. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -1095,32 +1638,60 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances",
+                "body": "instance_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.InsertInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.Instance.to_json(
-            request.instance_resource,
+            compute.Instance(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances".format(
-            host=self._host, project=request.project, zone=request.zone,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.InsertInstanceRequest.to_json(
+                compute.InsertInstanceRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.InsertInstanceRequest.request_id in request:
-            query_params["requestId"] = request.request_id
-        if compute.InsertInstanceRequest.source_instance_template in request:
-            query_params["sourceInstanceTemplate"] = request.source_instance_template
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1131,10 +1702,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def list(
+    def _list(
         self,
         request: compute.ListInstancesRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.InstanceList:
         r"""Call the list method over HTTP.
@@ -1144,6 +1717,9 @@ class InstancesRestTransport(InstancesTransport):
                 The request object. A request message for Instances.List.
                 See the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -1152,30 +1728,53 @@ class InstancesRestTransport(InstancesTransport):
                 Contains a list of instances.
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances".format(
-            host=self._host, project=request.project, zone=request.zone,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.ListInstancesRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.ListInstancesRequest.to_json(
+                compute.ListInstancesRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.ListInstancesRequest.filter in request:
-            query_params["filter"] = request.filter
-        if compute.ListInstancesRequest.max_results in request:
-            query_params["maxResults"] = request.max_results
-        if compute.ListInstancesRequest.order_by in request:
-            query_params["orderBy"] = request.order_by
-        if compute.ListInstancesRequest.page_token in request:
-            query_params["pageToken"] = request.page_token
-        if compute.ListInstancesRequest.return_partial_success in request:
-            query_params["returnPartialSuccess"] = request.return_partial_success
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -1187,10 +1786,12 @@ class InstancesRestTransport(InstancesTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def list_referrers(
+    def _list_referrers(
         self,
         request: compute.ListReferrersInstancesRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.InstanceListReferrers:
         r"""Call the list referrers method over HTTP.
@@ -1201,6 +1802,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.ListReferrers. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -1211,33 +1815,56 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/referrers".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        http_options = [
+            {
+                "method": "get",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/referrers",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.ListReferrersInstancesRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.ListReferrersInstancesRequest.to_json(
+                compute.ListReferrersInstancesRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.ListReferrersInstancesRequest.filter in request:
-            query_params["filter"] = request.filter
-        if compute.ListReferrersInstancesRequest.max_results in request:
-            query_params["maxResults"] = request.max_results
-        if compute.ListReferrersInstancesRequest.order_by in request:
-            query_params["orderBy"] = request.order_by
-        if compute.ListReferrersInstancesRequest.page_token in request:
-            query_params["pageToken"] = request.page_token
-        if compute.ListReferrersInstancesRequest.return_partial_success in request:
-            query_params["returnPartialSuccess"] = request.return_partial_success
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.get(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -1249,10 +1876,12 @@ class InstancesRestTransport(InstancesTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def remove_resource_policies(
+    def _remove_resource_policies(
         self,
         request: compute.RemoveResourcePoliciesInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the remove resource policies method over HTTP.
@@ -1263,6 +1892,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.RemoveResourcePolicies. See
                 the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -1286,33 +1918,63 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/removeResourcePolicies",
+                "body": "instances_remove_resource_policies_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.RemoveResourcePoliciesInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.InstancesRemoveResourcePoliciesRequest.to_json(
-            request.instances_remove_resource_policies_request_resource,
+            compute.InstancesRemoveResourcePoliciesRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/removeResourcePolicies".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.RemoveResourcePoliciesInstanceRequest.to_json(
+                compute.RemoveResourcePoliciesInstanceRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.RemoveResourcePoliciesInstanceRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1323,10 +1985,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def reset(
+    def _reset(
         self,
         request: compute.ResetInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the reset method over HTTP.
@@ -1337,6 +2001,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.Reset. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -1360,25 +2027,54 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/reset".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/reset",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.ResetInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.ResetInstanceRequest.to_json(
+                compute.ResetInstanceRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.ResetInstanceRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -1388,10 +2084,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def send_diagnostic_interrupt(
+    def _send_diagnostic_interrupt(
         self,
         request: compute.SendDiagnosticInterruptInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.SendDiagnosticInterruptInstanceResponse:
         r"""Call the send diagnostic interrupt method over HTTP.
@@ -1402,6 +2100,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.SendDiagnosticInterrupt. See
                 the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -1413,23 +2114,56 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/sendDiagnosticInterrupt".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/sendDiagnosticInterrupt",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.SendDiagnosticInterruptInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.SendDiagnosticInterruptInstanceRequest.to_json(
+                compute.SendDiagnosticInterruptInstanceRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -1441,10 +2175,12 @@ class InstancesRestTransport(InstancesTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def set_deletion_protection(
+    def _set_deletion_protection(
         self,
         request: compute.SetDeletionProtectionInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the set deletion protection method over HTTP.
@@ -1455,6 +2191,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.SetDeletionProtection. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -1478,27 +2217,56 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{resource}/setDeletionProtection".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            resource=request.resource,
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{resource}/setDeletionProtection",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("resource", "resource"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.SetDeletionProtectionInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.SetDeletionProtectionInstanceRequest.to_json(
+                compute.SetDeletionProtectionInstanceRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.SetDeletionProtectionInstanceRequest.deletion_protection in request:
-            query_params["deletionProtection"] = request.deletion_protection
-        if compute.SetDeletionProtectionInstanceRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -1508,10 +2276,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def set_disk_auto_delete(
+    def _set_disk_auto_delete(
         self,
         request: compute.SetDiskAutoDeleteInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the set disk auto delete method over HTTP.
@@ -1522,6 +2292,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.SetDiskAutoDelete. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -1545,27 +2318,58 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setDiskAutoDelete".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setDiskAutoDelete",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("auto_delete", "autoDelete"),
+            ("device_name", "deviceName"),
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.SetDiskAutoDeleteInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.SetDiskAutoDeleteInstanceRequest.to_json(
+                compute.SetDiskAutoDeleteInstanceRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        query_params["autoDelete"] = request.auto_delete
-        query_params["deviceName"] = request.device_name
-        if compute.SetDiskAutoDeleteInstanceRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -1575,10 +2379,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def set_iam_policy(
+    def _set_iam_policy(
         self,
         request: compute.SetIamPolicyInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
         r"""Call the set iam policy method over HTTP.
@@ -1589,6 +2395,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.SetIamPolicy. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -1637,31 +2446,61 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{resource}/setIamPolicy",
+                "body": "zone_set_policy_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("resource", "resource"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.SetIamPolicyInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.ZoneSetPolicyRequest.to_json(
-            request.zone_set_policy_request_resource,
+            compute.ZoneSetPolicyRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{resource}/setIamPolicy".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            resource=request.resource,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.SetIamPolicyInstanceRequest.to_json(
+                compute.SetIamPolicyInstanceRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1672,10 +2511,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Policy.from_json(response.content, ignore_unknown_fields=True)
 
-    def set_labels(
+    def _set_labels(
         self,
         request: compute.SetLabelsInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the set labels method over HTTP.
@@ -1686,6 +2527,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.SetLabels. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -1709,33 +2553,61 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setLabels",
+                "body": "instances_set_labels_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.SetLabelsInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.InstancesSetLabelsRequest.to_json(
-            request.instances_set_labels_request_resource,
+            compute.InstancesSetLabelsRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setLabels".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.SetLabelsInstanceRequest.to_json(
+                compute.SetLabelsInstanceRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.SetLabelsInstanceRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1746,10 +2618,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def set_machine_resources(
+    def _set_machine_resources(
         self,
         request: compute.SetMachineResourcesInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the set machine resources method over HTTP.
@@ -1760,6 +2634,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.SetMachineResources. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -1783,33 +2660,63 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setMachineResources",
+                "body": "instances_set_machine_resources_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.SetMachineResourcesInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.InstancesSetMachineResourcesRequest.to_json(
-            request.instances_set_machine_resources_request_resource,
+            compute.InstancesSetMachineResourcesRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setMachineResources".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.SetMachineResourcesInstanceRequest.to_json(
+                compute.SetMachineResourcesInstanceRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.SetMachineResourcesInstanceRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1820,10 +2727,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def set_machine_type(
+    def _set_machine_type(
         self,
         request: compute.SetMachineTypeInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the set machine type method over HTTP.
@@ -1834,6 +2743,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.SetMachineType. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -1857,33 +2769,63 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setMachineType",
+                "body": "instances_set_machine_type_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.SetMachineTypeInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.InstancesSetMachineTypeRequest.to_json(
-            request.instances_set_machine_type_request_resource,
+            compute.InstancesSetMachineTypeRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setMachineType".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.SetMachineTypeInstanceRequest.to_json(
+                compute.SetMachineTypeInstanceRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.SetMachineTypeInstanceRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1894,10 +2836,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def set_metadata(
+    def _set_metadata(
         self,
         request: compute.SetMetadataInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the set metadata method over HTTP.
@@ -1908,6 +2852,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.SetMetadata. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -1931,33 +2878,61 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setMetadata",
+                "body": "metadata_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.SetMetadataInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.Metadata.to_json(
-            request.metadata_resource,
+            compute.Metadata(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setMetadata".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.SetMetadataInstanceRequest.to_json(
+                compute.SetMetadataInstanceRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.SetMetadataInstanceRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1968,10 +2943,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def set_min_cpu_platform(
+    def _set_min_cpu_platform(
         self,
         request: compute.SetMinCpuPlatformInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the set min cpu platform method over HTTP.
@@ -1982,6 +2959,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.SetMinCpuPlatform. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -2005,33 +2985,63 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setMinCpuPlatform",
+                "body": "instances_set_min_cpu_platform_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.SetMinCpuPlatformInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.InstancesSetMinCpuPlatformRequest.to_json(
-            request.instances_set_min_cpu_platform_request_resource,
+            compute.InstancesSetMinCpuPlatformRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setMinCpuPlatform".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.SetMinCpuPlatformInstanceRequest.to_json(
+                compute.SetMinCpuPlatformInstanceRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.SetMinCpuPlatformInstanceRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2042,10 +3052,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def set_scheduling(
+    def _set_scheduling(
         self,
         request: compute.SetSchedulingInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the set scheduling method over HTTP.
@@ -2056,6 +3068,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.SetScheduling. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -2079,33 +3094,63 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setScheduling",
+                "body": "scheduling_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.SetSchedulingInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.Scheduling.to_json(
-            request.scheduling_resource,
+            compute.Scheduling(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setScheduling".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.SetSchedulingInstanceRequest.to_json(
+                compute.SetSchedulingInstanceRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.SetSchedulingInstanceRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2116,10 +3161,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def set_service_account(
+    def _set_service_account(
         self,
         request: compute.SetServiceAccountInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the set service account method over HTTP.
@@ -2130,6 +3177,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.SetServiceAccount. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -2153,33 +3203,63 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setServiceAccount",
+                "body": "instances_set_service_account_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.SetServiceAccountInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.InstancesSetServiceAccountRequest.to_json(
-            request.instances_set_service_account_request_resource,
+            compute.InstancesSetServiceAccountRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setServiceAccount".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.SetServiceAccountInstanceRequest.to_json(
+                compute.SetServiceAccountInstanceRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.SetServiceAccountInstanceRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2190,10 +3270,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def set_shielded_instance_integrity_policy(
+    def _set_shielded_instance_integrity_policy(
         self,
         request: compute.SetShieldedInstanceIntegrityPolicyInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the set shielded instance
@@ -2205,6 +3287,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.SetShieldedInstanceIntegrityPolicy.
                 See the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -2228,36 +3313,65 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "patch",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setShieldedInstanceIntegrityPolicy",
+                "body": "shielded_instance_integrity_policy_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.SetShieldedInstanceIntegrityPolicyInstanceRequest.to_dict(
+            request
+        )
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.ShieldedInstanceIntegrityPolicy.to_json(
-            request.shielded_instance_integrity_policy_resource,
+            compute.ShieldedInstanceIntegrityPolicy(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setShieldedInstanceIntegrityPolicy".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.SetShieldedInstanceIntegrityPolicyInstanceRequest.to_json(
+                compute.SetShieldedInstanceIntegrityPolicyInstanceRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if (
-            compute.SetShieldedInstanceIntegrityPolicyInstanceRequest.request_id
-            in request
-        ):
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.patch(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2268,10 +3382,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def set_tags(
+    def _set_tags(
         self,
         request: compute.SetTagsInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the set tags method over HTTP.
@@ -2282,6 +3398,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.SetTags. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -2305,33 +3424,61 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setTags",
+                "body": "tags_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.SetTagsInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.Tags.to_json(
-            request.tags_resource,
+            compute.Tags(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setTags".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.SetTagsInstanceRequest.to_json(
+                compute.SetTagsInstanceRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.SetTagsInstanceRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2342,10 +3489,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def simulate_maintenance_event(
+    def _simulate_maintenance_event(
         self,
         request: compute.SimulateMaintenanceEventInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the simulate maintenance
@@ -2357,6 +3506,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.SimulateMaintenanceEvent. See
                 the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -2380,23 +3532,58 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/simulateMaintenanceEvent".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/simulateMaintenanceEvent",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.SimulateMaintenanceEventInstanceRequest.to_dict(
+            request
+        )
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.SimulateMaintenanceEventInstanceRequest.to_json(
+                compute.SimulateMaintenanceEventInstanceRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -2406,10 +3593,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def start(
+    def _start(
         self,
         request: compute.StartInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the start method over HTTP.
@@ -2420,6 +3609,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.Start. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -2443,25 +3635,54 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/start".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/start",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.StartInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.StartInstanceRequest.to_json(
+                compute.StartInstanceRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.StartInstanceRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -2471,10 +3692,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def start_with_encryption_key(
+    def _start_with_encryption_key(
         self,
         request: compute.StartWithEncryptionKeyInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the start with encryption key method over HTTP.
@@ -2485,6 +3708,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.StartWithEncryptionKey. See
                 the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -2508,33 +3734,63 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/startWithEncryptionKey",
+                "body": "instances_start_with_encryption_key_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.StartWithEncryptionKeyInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.InstancesStartWithEncryptionKeyRequest.to_json(
-            request.instances_start_with_encryption_key_request_resource,
+            compute.InstancesStartWithEncryptionKeyRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/startWithEncryptionKey".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.StartWithEncryptionKeyInstanceRequest.to_json(
+                compute.StartWithEncryptionKeyInstanceRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.StartWithEncryptionKeyInstanceRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2545,10 +3801,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def stop(
+    def _stop(
         self,
         request: compute.StopInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the stop method over HTTP.
@@ -2558,6 +3816,9 @@ class InstancesRestTransport(InstancesTransport):
                 The request object. A request message for Instances.Stop.
                 See the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -2581,25 +3842,54 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/stop".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/stop",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.StopInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
+
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.StopInstanceRequest.to_json(
+                compute.StopInstanceRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.StopInstanceRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(url, headers=headers, params=query_params,)
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+        )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
         # subclass.
@@ -2609,10 +3899,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def test_iam_permissions(
+    def _test_iam_permissions(
         self,
         request: compute.TestIamPermissionsInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TestPermissionsResponse:
         r"""Call the test iam permissions method over HTTP.
@@ -2623,6 +3915,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.TestIamPermissions. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -2631,31 +3926,63 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{resource}/testIamPermissions",
+                "body": "test_permissions_request_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("project", "project"),
+            ("resource", "resource"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.TestIamPermissionsInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.TestPermissionsRequest.to_json(
-            request.test_permissions_request_resource,
+            compute.TestPermissionsRequest(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{resource}/testIamPermissions".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            resource=request.resource,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.TestIamPermissionsInstanceRequest.to_json(
+                compute.TestIamPermissionsInstanceRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2668,10 +3995,12 @@ class InstancesRestTransport(InstancesTransport):
             response.content, ignore_unknown_fields=True
         )
 
-    def update(
+    def _update(
         self,
         request: compute.UpdateInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the update method over HTTP.
@@ -2682,6 +4011,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.Update. See the method
                 description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -2705,39 +4037,61 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "put",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}",
+                "body": "instance_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.UpdateInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.Instance.to_json(
-            request.instance_resource,
+            compute.Instance(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.UpdateInstanceRequest.to_json(
+                compute.UpdateInstanceRequest(transcoded_request["query_params"]),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.UpdateInstanceRequest.minimal_action in request:
-            query_params["minimalAction"] = request.minimal_action
-        if compute.UpdateInstanceRequest.most_disruptive_allowed_action in request:
-            query_params[
-                "mostDisruptiveAllowedAction"
-            ] = request.most_disruptive_allowed_action
-        if compute.UpdateInstanceRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.put(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2748,10 +4102,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def update_access_config(
+    def _update_access_config(
         self,
         request: compute.UpdateAccessConfigInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the update access config method over HTTP.
@@ -2762,6 +4118,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.UpdateAccessConfig. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -2785,34 +4144,64 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "post",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/updateAccessConfig",
+                "body": "access_config_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("network_interface", "networkInterface"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.UpdateAccessConfigInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.AccessConfig.to_json(
-            request.access_config_resource,
+            compute.AccessConfig(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/updateAccessConfig".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.UpdateAccessConfigInstanceRequest.to_json(
+                compute.UpdateAccessConfigInstanceRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        query_params["networkInterface"] = request.network_interface
-        if compute.UpdateAccessConfigInstanceRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.post(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2823,10 +4212,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def update_display_device(
+    def _update_display_device(
         self,
         request: compute.UpdateDisplayDeviceInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the update display device method over HTTP.
@@ -2837,6 +4228,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.UpdateDisplayDevice. See the
                 method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -2860,33 +4254,63 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "patch",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/updateDisplayDevice",
+                "body": "display_device_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.UpdateDisplayDeviceInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.DisplayDevice.to_json(
-            request.display_device_resource,
+            compute.DisplayDevice(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/updateDisplayDevice".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.UpdateDisplayDeviceInstanceRequest.to_json(
+                compute.UpdateDisplayDeviceInstanceRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.UpdateDisplayDeviceInstanceRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.patch(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2897,10 +4321,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def update_network_interface(
+    def _update_network_interface(
         self,
         request: compute.UpdateNetworkInterfaceInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the update network interface method over HTTP.
@@ -2911,6 +4337,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.UpdateNetworkInterface. See
                 the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -2934,34 +4363,64 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "patch",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/updateNetworkInterface",
+                "body": "network_interface_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("network_interface", "networkInterface"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.UpdateNetworkInterfaceInstanceRequest.to_dict(request)
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.NetworkInterface.to_json(
-            request.network_interface_resource,
+            compute.NetworkInterface(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/updateNetworkInterface".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.UpdateNetworkInterfaceInstanceRequest.to_json(
+                compute.UpdateNetworkInterfaceInstanceRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        query_params["networkInterface"] = request.network_interface
-        if compute.UpdateNetworkInterfaceInstanceRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.patch(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2972,10 +4431,12 @@ class InstancesRestTransport(InstancesTransport):
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
-    def update_shielded_instance_config(
+    def _update_shielded_instance_config(
         self,
         request: compute.UpdateShieldedInstanceConfigInstanceRequest,
         *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Call the update shielded instance
@@ -2987,6 +4448,9 @@ class InstancesRestTransport(InstancesTransport):
                 Instances.UpdateShieldedInstanceConfig.
                 See the method description for details.
 
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -3010,33 +4474,65 @@ class InstancesRestTransport(InstancesTransport):
 
         """
 
+        http_options = [
+            {
+                "method": "patch",
+                "uri": "/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/updateShieldedInstanceConfig",
+                "body": "shielded_instance_config_resource",
+            },
+        ]
+
+        required_fields = [
+            # (snake_case_name, camel_case_name)
+            ("instance", "instance"),
+            ("project", "project"),
+            ("zone", "zone"),
+        ]
+
+        request_kwargs = compute.UpdateShieldedInstanceConfigInstanceRequest.to_dict(
+            request
+        )
+        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
         # Jsonify the request body
         body = compute.ShieldedInstanceConfig.to_json(
-            request.shielded_instance_config_resource,
+            compute.ShieldedInstanceConfig(transcoded_request["body"]),
             including_default_value_fields=False,
             use_integers_for_enums=False,
         )
+        uri = transcoded_request["uri"]
+        method = transcoded_request["method"]
 
-        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #               current impl assumes basic case of grpc transcoding
-        url = "https://{host}/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/updateShieldedInstanceConfig".format(
-            host=self._host,
-            project=request.project,
-            zone=request.zone,
-            instance=request.instance,
+        # Jsonify the query params
+        query_params = json.loads(
+            compute.UpdateShieldedInstanceConfigInstanceRequest.to_json(
+                compute.UpdateShieldedInstanceConfigInstanceRequest(
+                    transcoded_request["query_params"]
+                ),
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            )
         )
 
-        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
-        #               not required for GCE
-        query_params = {}
-        if compute.UpdateShieldedInstanceConfigInstanceRequest.request_id in request:
-            query_params["requestId"] = request.request_id
+        # Ensure required fields have values in query_params.
+        # If a required field has a default value, it can get lost
+        # by the to_json call above.
+        orig_query_params = transcoded_request["query_params"]
+        for snake_case_name, camel_case_name in required_fields:
+            if snake_case_name in orig_query_params:
+                if camel_case_name not in query_params:
+                    query_params[camel_case_name] = orig_query_params[snake_case_name]
 
         # Send the request
         headers = dict(metadata)
         headers["Content-Type"] = "application/json"
-        response = self._session.patch(
-            url, headers=headers, params=query_params, data=body,
+        response = getattr(self._session, method)(
+            # Replace with proper schema configuration (http/https) logic
+            "https://{host}{uri}".format(host=self._host, uri=uri),
+            timeout=timeout,
+            headers=headers,
+            params=rest_helpers.flatten_query_params(query_params),
+            data=body,
         )
 
         # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3046,6 +4542,270 @@ class InstancesRestTransport(InstancesTransport):
 
         # Return the response
         return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
+
+    @property
+    def add_access_config(
+        self,
+    ) -> Callable[[compute.AddAccessConfigInstanceRequest], compute.Operation]:
+        return self._add_access_config
+
+    @property
+    def add_resource_policies(
+        self,
+    ) -> Callable[[compute.AddResourcePoliciesInstanceRequest], compute.Operation]:
+        return self._add_resource_policies
+
+    @property
+    def aggregated_list(
+        self,
+    ) -> Callable[
+        [compute.AggregatedListInstancesRequest], compute.InstanceAggregatedList
+    ]:
+        return self._aggregated_list
+
+    @property
+    def attach_disk(
+        self,
+    ) -> Callable[[compute.AttachDiskInstanceRequest], compute.Operation]:
+        return self._attach_disk
+
+    @property
+    def bulk_insert(
+        self,
+    ) -> Callable[[compute.BulkInsertInstanceRequest], compute.Operation]:
+        return self._bulk_insert
+
+    @property
+    def delete(self) -> Callable[[compute.DeleteInstanceRequest], compute.Operation]:
+        return self._delete
+
+    @property
+    def delete_access_config(
+        self,
+    ) -> Callable[[compute.DeleteAccessConfigInstanceRequest], compute.Operation]:
+        return self._delete_access_config
+
+    @property
+    def detach_disk(
+        self,
+    ) -> Callable[[compute.DetachDiskInstanceRequest], compute.Operation]:
+        return self._detach_disk
+
+    @property
+    def get(self) -> Callable[[compute.GetInstanceRequest], compute.Instance]:
+        return self._get
+
+    @property
+    def get_effective_firewalls(
+        self,
+    ) -> Callable[
+        [compute.GetEffectiveFirewallsInstanceRequest],
+        compute.InstancesGetEffectiveFirewallsResponse,
+    ]:
+        return self._get_effective_firewalls
+
+    @property
+    def get_guest_attributes(
+        self,
+    ) -> Callable[[compute.GetGuestAttributesInstanceRequest], compute.GuestAttributes]:
+        return self._get_guest_attributes
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[[compute.GetIamPolicyInstanceRequest], compute.Policy]:
+        return self._get_iam_policy
+
+    @property
+    def get_screenshot(
+        self,
+    ) -> Callable[[compute.GetScreenshotInstanceRequest], compute.Screenshot]:
+        return self._get_screenshot
+
+    @property
+    def get_serial_port_output(
+        self,
+    ) -> Callable[
+        [compute.GetSerialPortOutputInstanceRequest], compute.SerialPortOutput
+    ]:
+        return self._get_serial_port_output
+
+    @property
+    def get_shielded_instance_identity(
+        self,
+    ) -> Callable[
+        [compute.GetShieldedInstanceIdentityInstanceRequest],
+        compute.ShieldedInstanceIdentity,
+    ]:
+        return self._get_shielded_instance_identity
+
+    @property
+    def insert(self) -> Callable[[compute.InsertInstanceRequest], compute.Operation]:
+        return self._insert
+
+    @property
+    def list(self) -> Callable[[compute.ListInstancesRequest], compute.InstanceList]:
+        return self._list
+
+    @property
+    def list_referrers(
+        self,
+    ) -> Callable[
+        [compute.ListReferrersInstancesRequest], compute.InstanceListReferrers
+    ]:
+        return self._list_referrers
+
+    @property
+    def remove_resource_policies(
+        self,
+    ) -> Callable[[compute.RemoveResourcePoliciesInstanceRequest], compute.Operation]:
+        return self._remove_resource_policies
+
+    @property
+    def reset(self) -> Callable[[compute.ResetInstanceRequest], compute.Operation]:
+        return self._reset
+
+    @property
+    def send_diagnostic_interrupt(
+        self,
+    ) -> Callable[
+        [compute.SendDiagnosticInterruptInstanceRequest],
+        compute.SendDiagnosticInterruptInstanceResponse,
+    ]:
+        return self._send_diagnostic_interrupt
+
+    @property
+    def set_deletion_protection(
+        self,
+    ) -> Callable[[compute.SetDeletionProtectionInstanceRequest], compute.Operation]:
+        return self._set_deletion_protection
+
+    @property
+    def set_disk_auto_delete(
+        self,
+    ) -> Callable[[compute.SetDiskAutoDeleteInstanceRequest], compute.Operation]:
+        return self._set_disk_auto_delete
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[[compute.SetIamPolicyInstanceRequest], compute.Policy]:
+        return self._set_iam_policy
+
+    @property
+    def set_labels(
+        self,
+    ) -> Callable[[compute.SetLabelsInstanceRequest], compute.Operation]:
+        return self._set_labels
+
+    @property
+    def set_machine_resources(
+        self,
+    ) -> Callable[[compute.SetMachineResourcesInstanceRequest], compute.Operation]:
+        return self._set_machine_resources
+
+    @property
+    def set_machine_type(
+        self,
+    ) -> Callable[[compute.SetMachineTypeInstanceRequest], compute.Operation]:
+        return self._set_machine_type
+
+    @property
+    def set_metadata(
+        self,
+    ) -> Callable[[compute.SetMetadataInstanceRequest], compute.Operation]:
+        return self._set_metadata
+
+    @property
+    def set_min_cpu_platform(
+        self,
+    ) -> Callable[[compute.SetMinCpuPlatformInstanceRequest], compute.Operation]:
+        return self._set_min_cpu_platform
+
+    @property
+    def set_scheduling(
+        self,
+    ) -> Callable[[compute.SetSchedulingInstanceRequest], compute.Operation]:
+        return self._set_scheduling
+
+    @property
+    def set_service_account(
+        self,
+    ) -> Callable[[compute.SetServiceAccountInstanceRequest], compute.Operation]:
+        return self._set_service_account
+
+    @property
+    def set_shielded_instance_integrity_policy(
+        self,
+    ) -> Callable[
+        [compute.SetShieldedInstanceIntegrityPolicyInstanceRequest], compute.Operation
+    ]:
+        return self._set_shielded_instance_integrity_policy
+
+    @property
+    def set_tags(self) -> Callable[[compute.SetTagsInstanceRequest], compute.Operation]:
+        return self._set_tags
+
+    @property
+    def simulate_maintenance_event(
+        self,
+    ) -> Callable[[compute.SimulateMaintenanceEventInstanceRequest], compute.Operation]:
+        return self._simulate_maintenance_event
+
+    @property
+    def start(self) -> Callable[[compute.StartInstanceRequest], compute.Operation]:
+        return self._start
+
+    @property
+    def start_with_encryption_key(
+        self,
+    ) -> Callable[[compute.StartWithEncryptionKeyInstanceRequest], compute.Operation]:
+        return self._start_with_encryption_key
+
+    @property
+    def stop(self) -> Callable[[compute.StopInstanceRequest], compute.Operation]:
+        return self._stop
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [compute.TestIamPermissionsInstanceRequest], compute.TestPermissionsResponse
+    ]:
+        return self._test_iam_permissions
+
+    @property
+    def update(self) -> Callable[[compute.UpdateInstanceRequest], compute.Operation]:
+        return self._update
+
+    @property
+    def update_access_config(
+        self,
+    ) -> Callable[[compute.UpdateAccessConfigInstanceRequest], compute.Operation]:
+        return self._update_access_config
+
+    @property
+    def update_display_device(
+        self,
+    ) -> Callable[[compute.UpdateDisplayDeviceInstanceRequest], compute.Operation]:
+        return self._update_display_device
+
+    @property
+    def update_network_interface(
+        self,
+    ) -> Callable[[compute.UpdateNetworkInterfaceInstanceRequest], compute.Operation]:
+        return self._update_network_interface
+
+    @property
+    def update_shielded_instance_config(
+        self,
+    ) -> Callable[
+        [compute.UpdateShieldedInstanceConfigInstanceRequest], compute.Operation
+    ]:
+        return self._update_shielded_instance_config
+
+    def close(self):
+        self._session.close()
 
 
 __all__ = ("InstancesRestTransport",)

@@ -14,21 +14,25 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.compute_v1.services.region_autoscalers import pagers
 from google.cloud.compute_v1.types import compute
@@ -265,8 +269,15 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
         )
 
         client_cert_source_func = None
@@ -328,23 +339,24 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
             )
 
     def delete(
         self,
-        request: compute.DeleteRegionAutoscalerRequest = None,
+        request: Union[compute.DeleteRegionAutoscalerRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         autoscaler: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified autoscaler.
 
         Args:
-            request (google.cloud.compute_v1.types.DeleteRegionAutoscalerRequest):
+            request (Union[google.cloud.compute_v1.types.DeleteRegionAutoscalerRequest, dict]):
                 The request object. A request message for
                 RegionAutoscalers.Delete. See the method description for
                 details.
@@ -427,19 +439,19 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
 
     def get(
         self,
-        request: compute.GetRegionAutoscalerRequest = None,
+        request: Union[compute.GetRegionAutoscalerRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         autoscaler: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Autoscaler:
         r"""Returns the specified autoscaler.
 
         Args:
-            request (google.cloud.compute_v1.types.GetRegionAutoscalerRequest):
+            request (Union[google.cloud.compute_v1.types.GetRegionAutoscalerRequest, dict]):
                 The request object. A request message for
                 RegionAutoscalers.Get. See the method description for
                 details.
@@ -518,12 +530,12 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
 
     def insert(
         self,
-        request: compute.InsertRegionAutoscalerRequest = None,
+        request: Union[compute.InsertRegionAutoscalerRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         autoscaler_resource: compute.Autoscaler = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -531,7 +543,7 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
         the data included in the request.
 
         Args:
-            request (google.cloud.compute_v1.types.InsertRegionAutoscalerRequest):
+            request (Union[google.cloud.compute_v1.types.InsertRegionAutoscalerRequest, dict]):
                 The request object. A request message for
                 RegionAutoscalers.Insert. See the method description for
                 details.
@@ -614,11 +626,11 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
 
     def list(
         self,
-        request: compute.ListRegionAutoscalersRequest = None,
+        request: Union[compute.ListRegionAutoscalersRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
@@ -626,7 +638,7 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
         specified region.
 
         Args:
-            request (google.cloud.compute_v1.types.ListRegionAutoscalersRequest):
+            request (Union[google.cloud.compute_v1.types.ListRegionAutoscalersRequest, dict]):
                 The request object. A request message for
                 RegionAutoscalers.List. See the method description for
                 details.
@@ -697,12 +709,12 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
 
     def patch(
         self,
-        request: compute.PatchRegionAutoscalerRequest = None,
+        request: Union[compute.PatchRegionAutoscalerRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         autoscaler_resource: compute.Autoscaler = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -712,7 +724,7 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
         processing rules.
 
         Args:
-            request (google.cloud.compute_v1.types.PatchRegionAutoscalerRequest):
+            request (Union[google.cloud.compute_v1.types.PatchRegionAutoscalerRequest, dict]):
                 The request object. A request message for
                 RegionAutoscalers.Patch. See the method description for
                 details.
@@ -795,12 +807,12 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
 
     def update(
         self,
-        request: compute.UpdateRegionAutoscalerRequest = None,
+        request: Union[compute.UpdateRegionAutoscalerRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         autoscaler_resource: compute.Autoscaler = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -808,7 +820,7 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
         the data included in the request.
 
         Args:
-            request (google.cloud.compute_v1.types.UpdateRegionAutoscalerRequest):
+            request (Union[google.cloud.compute_v1.types.UpdateRegionAutoscalerRequest, dict]):
                 The request object. A request message for
                 RegionAutoscalers.Update. See the method description for
                 details.
@@ -888,6 +900,19 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:

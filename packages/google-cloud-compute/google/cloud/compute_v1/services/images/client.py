@@ -14,21 +14,25 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.compute_v1.services.images import pagers
 from google.cloud.compute_v1.types import compute
@@ -261,8 +265,15 @@ class ImagesClient(metaclass=ImagesClientMeta):
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
         )
 
         client_cert_source_func = None
@@ -324,22 +335,23 @@ class ImagesClient(metaclass=ImagesClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
             )
 
     def delete(
         self,
-        request: compute.DeleteImageRequest = None,
+        request: Union[compute.DeleteImageRequest, dict] = None,
         *,
         project: str = None,
         image: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified image.
 
         Args:
-            request (google.cloud.compute_v1.types.DeleteImageRequest):
+            request (Union[google.cloud.compute_v1.types.DeleteImageRequest, dict]):
                 The request object. A request message for Images.Delete.
                 See the method description for details.
             project (str):
@@ -412,12 +424,12 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
     def deprecate(
         self,
-        request: compute.DeprecateImageRequest = None,
+        request: Union[compute.DeprecateImageRequest, dict] = None,
         *,
         project: str = None,
         image: str = None,
         deprecation_status_resource: compute.DeprecationStatus = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -426,7 +438,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
         instead.
 
         Args:
-            request (google.cloud.compute_v1.types.DeprecateImageRequest):
+            request (Union[google.cloud.compute_v1.types.DeprecateImageRequest, dict]):
                 The request object. A request message for
                 Images.Deprecate. See the method description for
                 details.
@@ -507,11 +519,11 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
     def get(
         self,
-        request: compute.GetImageRequest = None,
+        request: Union[compute.GetImageRequest, dict] = None,
         *,
         project: str = None,
         image: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Image:
@@ -519,7 +531,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
         images by making a list() request.
 
         Args:
-            request (google.cloud.compute_v1.types.GetImageRequest):
+            request (Union[google.cloud.compute_v1.types.GetImageRequest, dict]):
                 The request object. A request message for Images.Get.
                 See the method description for details.
             project (str):
@@ -581,11 +593,11 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
     def get_from_family(
         self,
-        request: compute.GetFromFamilyImageRequest = None,
+        request: Union[compute.GetFromFamilyImageRequest, dict] = None,
         *,
         project: str = None,
         family: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Image:
@@ -593,7 +605,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
         family and is not deprecated.
 
         Args:
-            request (google.cloud.compute_v1.types.GetFromFamilyImageRequest):
+            request (Union[google.cloud.compute_v1.types.GetFromFamilyImageRequest, dict]):
                 The request object. A request message for
                 Images.GetFromFamily. See the method description for
                 details.
@@ -658,11 +670,11 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
     def get_iam_policy(
         self,
-        request: compute.GetIamPolicyImageRequest = None,
+        request: Union[compute.GetIamPolicyImageRequest, dict] = None,
         *,
         project: str = None,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
@@ -670,7 +682,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
         empty if no such policy or resource exists.
 
         Args:
-            request (google.cloud.compute_v1.types.GetIamPolicyImageRequest):
+            request (Union[google.cloud.compute_v1.types.GetIamPolicyImageRequest, dict]):
                 The request object. A request message for
                 Images.GetIamPolicy. See the method description for
                 details.
@@ -770,11 +782,11 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
     def insert(
         self,
-        request: compute.InsertImageRequest = None,
+        request: Union[compute.InsertImageRequest, dict] = None,
         *,
         project: str = None,
         image_resource: compute.Image = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -782,7 +794,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
         data included in the request.
 
         Args:
-            request (google.cloud.compute_v1.types.InsertImageRequest):
+            request (Union[google.cloud.compute_v1.types.InsertImageRequest, dict]):
                 The request object. A request message for Images.Insert.
                 See the method description for details.
             project (str):
@@ -855,10 +867,10 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
     def list(
         self,
-        request: compute.ListImagesRequest = None,
+        request: Union[compute.ListImagesRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
@@ -872,7 +884,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
         as debian-cloud or windows-cloud.
 
         Args:
-            request (google.cloud.compute_v1.types.ListImagesRequest):
+            request (Union[google.cloud.compute_v1.types.ListImagesRequest, dict]):
                 The request object. A request message for Images.List.
                 See the method description for details.
             project (str):
@@ -933,12 +945,12 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
     def patch(
         self,
-        request: compute.PatchImageRequest = None,
+        request: Union[compute.PatchImageRequest, dict] = None,
         *,
         project: str = None,
         image: str = None,
         image_resource: compute.Image = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -947,7 +959,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
         family, description, deprecation status.
 
         Args:
-            request (google.cloud.compute_v1.types.PatchImageRequest):
+            request (Union[google.cloud.compute_v1.types.PatchImageRequest, dict]):
                 The request object. A request message for Images.Patch.
                 See the method description for details.
             project (str):
@@ -1027,12 +1039,12 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
     def set_iam_policy(
         self,
-        request: compute.SetIamPolicyImageRequest = None,
+        request: Union[compute.SetIamPolicyImageRequest, dict] = None,
         *,
         project: str = None,
         resource: str = None,
         global_set_policy_request_resource: compute.GlobalSetPolicyRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
@@ -1040,7 +1052,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
         resource. Replaces any existing policy.
 
         Args:
-            request (google.cloud.compute_v1.types.SetIamPolicyImageRequest):
+            request (Union[google.cloud.compute_v1.types.SetIamPolicyImageRequest, dict]):
                 The request object. A request message for
                 Images.SetIamPolicy. See the method description for
                 details.
@@ -1151,12 +1163,12 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
     def set_labels(
         self,
-        request: compute.SetLabelsImageRequest = None,
+        request: Union[compute.SetLabelsImageRequest, dict] = None,
         *,
         project: str = None,
         resource: str = None,
         global_set_labels_request_resource: compute.GlobalSetLabelsRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -1164,7 +1176,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
         labels, read the Labeling Resources documentation.
 
         Args:
-            request (google.cloud.compute_v1.types.SetLabelsImageRequest):
+            request (Union[google.cloud.compute_v1.types.SetLabelsImageRequest, dict]):
                 The request object. A request message for
                 Images.SetLabels. See the method description for
                 details.
@@ -1251,12 +1263,12 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
     def test_iam_permissions(
         self,
-        request: compute.TestIamPermissionsImageRequest = None,
+        request: Union[compute.TestIamPermissionsImageRequest, dict] = None,
         *,
         project: str = None,
         resource: str = None,
         test_permissions_request_resource: compute.TestPermissionsRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TestPermissionsResponse:
@@ -1264,7 +1276,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
         specified resource.
 
         Args:
-            request (google.cloud.compute_v1.types.TestIamPermissionsImageRequest):
+            request (Union[google.cloud.compute_v1.types.TestIamPermissionsImageRequest, dict]):
                 The request object. A request message for
                 Images.TestIamPermissions. See the method description
                 for details.
@@ -1333,6 +1345,19 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:

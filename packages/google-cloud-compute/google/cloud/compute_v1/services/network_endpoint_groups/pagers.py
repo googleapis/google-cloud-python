@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.compute_v1.types import compute
@@ -74,14 +74,14 @@ class AggregatedListPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[compute.NetworkEndpointGroupAggregatedList]:
+    def pages(self) -> Iterator[compute.NetworkEndpointGroupAggregatedList]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[Tuple[str, compute.NetworkEndpointGroupsScopedList]]:
+    def __iter__(self) -> Iterator[Tuple[str, compute.NetworkEndpointGroupsScopedList]]:
         for page in self.pages:
             yield from page.items.items()
 
@@ -139,14 +139,14 @@ class ListPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[compute.NetworkEndpointGroupList]:
+    def pages(self) -> Iterator[compute.NetworkEndpointGroupList]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[compute.NetworkEndpointGroup]:
+    def __iter__(self) -> Iterator[compute.NetworkEndpointGroup]:
         for page in self.pages:
             yield from page.items
 
@@ -203,14 +203,14 @@ class ListNetworkEndpointsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[compute.NetworkEndpointGroupsListNetworkEndpoints]:
+    def pages(self) -> Iterator[compute.NetworkEndpointGroupsListNetworkEndpoints]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[compute.NetworkEndpointWithHealthStatus]:
+    def __iter__(self) -> Iterator[compute.NetworkEndpointWithHealthStatus]:
         for page in self.pages:
             yield from page.items
 

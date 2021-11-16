@@ -14,21 +14,25 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.compute_v1.services.region_url_maps import pagers
 from google.cloud.compute_v1.types import compute
@@ -261,8 +265,15 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
         )
 
         client_cert_source_func = None
@@ -324,23 +335,24 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
             )
 
     def delete(
         self,
-        request: compute.DeleteRegionUrlMapRequest = None,
+        request: Union[compute.DeleteRegionUrlMapRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         url_map: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified UrlMap resource.
 
         Args:
-            request (google.cloud.compute_v1.types.DeleteRegionUrlMapRequest):
+            request (Union[google.cloud.compute_v1.types.DeleteRegionUrlMapRequest, dict]):
                 The request object. A request message for
                 RegionUrlMaps.Delete. See the method description for
                 details.
@@ -425,12 +437,12 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
     def get(
         self,
-        request: compute.GetRegionUrlMapRequest = None,
+        request: Union[compute.GetRegionUrlMapRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         url_map: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.UrlMap:
@@ -438,7 +450,7 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         available URL maps by making a list() request.
 
         Args:
-            request (google.cloud.compute_v1.types.GetRegionUrlMapRequest):
+            request (Union[google.cloud.compute_v1.types.GetRegionUrlMapRequest, dict]):
                 The request object. A request message for
                 RegionUrlMaps.Get. See the method description for
                 details.
@@ -529,12 +541,12 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
     def insert(
         self,
-        request: compute.InsertRegionUrlMapRequest = None,
+        request: Union[compute.InsertRegionUrlMapRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         url_map_resource: compute.UrlMap = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -542,7 +554,7 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         using the data included in the request.
 
         Args:
-            request (google.cloud.compute_v1.types.InsertRegionUrlMapRequest):
+            request (Union[google.cloud.compute_v1.types.InsertRegionUrlMapRequest, dict]):
                 The request object. A request message for
                 RegionUrlMaps.Insert. See the method description for
                 details.
@@ -625,11 +637,11 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
     def list(
         self,
-        request: compute.ListRegionUrlMapsRequest = None,
+        request: Union[compute.ListRegionUrlMapsRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
@@ -637,7 +649,7 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         the specified project in the specified region.
 
         Args:
-            request (google.cloud.compute_v1.types.ListRegionUrlMapsRequest):
+            request (Union[google.cloud.compute_v1.types.ListRegionUrlMapsRequest, dict]):
                 The request object. A request message for
                 RegionUrlMaps.List. See the method description for
                 details.
@@ -708,13 +720,13 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
     def patch(
         self,
-        request: compute.PatchRegionUrlMapRequest = None,
+        request: Union[compute.PatchRegionUrlMapRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         url_map: str = None,
         url_map_resource: compute.UrlMap = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -724,7 +736,7 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         processing rules.
 
         Args:
-            request (google.cloud.compute_v1.types.PatchRegionUrlMapRequest):
+            request (Union[google.cloud.compute_v1.types.PatchRegionUrlMapRequest, dict]):
                 The request object. A request message for
                 RegionUrlMaps.Patch. See the method description for
                 details.
@@ -814,13 +826,13 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
     def update(
         self,
-        request: compute.UpdateRegionUrlMapRequest = None,
+        request: Union[compute.UpdateRegionUrlMapRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         url_map: str = None,
         url_map_resource: compute.UrlMap = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -828,7 +840,7 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         included in the request.
 
         Args:
-            request (google.cloud.compute_v1.types.UpdateRegionUrlMapRequest):
+            request (Union[google.cloud.compute_v1.types.UpdateRegionUrlMapRequest, dict]):
                 The request object. A request message for
                 RegionUrlMaps.Update. See the method description for
                 details.
@@ -920,13 +932,13 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
     def validate(
         self,
-        request: compute.ValidateRegionUrlMapRequest = None,
+        request: Union[compute.ValidateRegionUrlMapRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         url_map: str = None,
         region_url_maps_validate_request_resource: compute.RegionUrlMapsValidateRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.UrlMapsValidateResponse:
@@ -935,7 +947,7 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         this method does NOT create the UrlMap.
 
         Args:
-            request (google.cloud.compute_v1.types.ValidateRegionUrlMapRequest):
+            request (Union[google.cloud.compute_v1.types.ValidateRegionUrlMapRequest, dict]):
                 The request object. A request message for
                 RegionUrlMaps.Validate. See the method description for
                 details.
@@ -1013,6 +1025,19 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:

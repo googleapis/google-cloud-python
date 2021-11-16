@@ -14,21 +14,25 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.compute_v1.types import compute
 from .transports.base import LicenseCodesTransport, DEFAULT_CLIENT_INFO
@@ -260,8 +264,15 @@ class LicenseCodesClient(metaclass=LicenseCodesClientMeta):
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
         )
 
         client_cert_source_func = None
@@ -323,15 +334,16 @@ class LicenseCodesClient(metaclass=LicenseCodesClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
             )
 
     def get(
         self,
-        request: compute.GetLicenseCodeRequest = None,
+        request: Union[compute.GetLicenseCodeRequest, dict] = None,
         *,
         project: str = None,
         license_code: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.LicenseCode:
@@ -341,7 +353,7 @@ class LicenseCodesClient(metaclass=LicenseCodesClientMeta):
         third-party partners who are creating Cloud Marketplace images.
 
         Args:
-            request (google.cloud.compute_v1.types.GetLicenseCodeRequest):
+            request (Union[google.cloud.compute_v1.types.GetLicenseCodeRequest, dict]):
                 The request object. A request message for
                 LicenseCodes.Get. See the method description for
                 details.
@@ -407,12 +419,12 @@ class LicenseCodesClient(metaclass=LicenseCodesClientMeta):
 
     def test_iam_permissions(
         self,
-        request: compute.TestIamPermissionsLicenseCodeRequest = None,
+        request: Union[compute.TestIamPermissionsLicenseCodeRequest, dict] = None,
         *,
         project: str = None,
         resource: str = None,
         test_permissions_request_resource: compute.TestPermissionsRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TestPermissionsResponse:
@@ -421,7 +433,7 @@ class LicenseCodesClient(metaclass=LicenseCodesClientMeta):
         partners who are creating Cloud Marketplace images.
 
         Args:
-            request (google.cloud.compute_v1.types.TestIamPermissionsLicenseCodeRequest):
+            request (Union[google.cloud.compute_v1.types.TestIamPermissionsLicenseCodeRequest, dict]):
                 The request object. A request message for
                 LicenseCodes.TestIamPermissions. See the method
                 description for details.
@@ -490,6 +502,19 @@ class LicenseCodesClient(metaclass=LicenseCodesClientMeta):
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:

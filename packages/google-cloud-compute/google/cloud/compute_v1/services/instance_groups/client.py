@@ -14,21 +14,25 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.compute_v1.services.instance_groups import pagers
 from google.cloud.compute_v1.types import compute
@@ -263,8 +267,15 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
         )
 
         client_cert_source_func = None
@@ -326,17 +337,18 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
             )
 
     def add_instances(
         self,
-        request: compute.AddInstancesInstanceGroupRequest = None,
+        request: Union[compute.AddInstancesInstanceGroupRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance_group: str = None,
         instance_groups_add_instances_request_resource: compute.InstanceGroupsAddInstancesRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -346,7 +358,7 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         for more information.
 
         Args:
-            request (google.cloud.compute_v1.types.AddInstancesInstanceGroupRequest):
+            request (Union[google.cloud.compute_v1.types.AddInstancesInstanceGroupRequest, dict]):
                 The request object. A request message for
                 InstanceGroups.AddInstances. See the method description
                 for details.
@@ -447,10 +459,10 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
 
     def aggregated_list(
         self,
-        request: compute.AggregatedListInstanceGroupsRequest = None,
+        request: Union[compute.AggregatedListInstanceGroupsRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
@@ -458,7 +470,7 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         by zone.
 
         Args:
-            request (google.cloud.compute_v1.types.AggregatedListInstanceGroupsRequest):
+            request (Union[google.cloud.compute_v1.types.AggregatedListInstanceGroupsRequest, dict]):
                 The request object. A request message for
                 InstanceGroups.AggregatedList. See the method
                 description for details.
@@ -519,12 +531,12 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
 
     def delete(
         self,
-        request: compute.DeleteInstanceGroupRequest = None,
+        request: Union[compute.DeleteInstanceGroupRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance_group: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -534,7 +546,7 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         instance group for more information.
 
         Args:
-            request (google.cloud.compute_v1.types.DeleteInstanceGroupRequest):
+            request (Union[google.cloud.compute_v1.types.DeleteInstanceGroupRequest, dict]):
                 The request object. A request message for
                 InstanceGroups.Delete. See the method description for
                 details.
@@ -619,12 +631,12 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
 
     def get(
         self,
-        request: compute.GetInstanceGroupRequest = None,
+        request: Union[compute.GetInstanceGroupRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance_group: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.InstanceGroup:
@@ -635,7 +647,7 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         methods instead.
 
         Args:
-            request (google.cloud.compute_v1.types.GetInstanceGroupRequest):
+            request (Union[google.cloud.compute_v1.types.GetInstanceGroupRequest, dict]):
                 The request object. A request message for
                 InstanceGroups.Get. See the method description for
                 details.
@@ -717,12 +729,12 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
 
     def insert(
         self,
-        request: compute.InsertInstanceGroupRequest = None,
+        request: Union[compute.InsertInstanceGroupRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance_group_resource: compute.InstanceGroup = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -730,7 +742,7 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         using the parameters that are included in the request.
 
         Args:
-            request (google.cloud.compute_v1.types.InsertInstanceGroupRequest):
+            request (Union[google.cloud.compute_v1.types.InsertInstanceGroupRequest, dict]):
                 The request object. A request message for
                 InstanceGroups.Insert. See the method description for
                 details.
@@ -813,11 +825,11 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
 
     def list(
         self,
-        request: compute.ListInstanceGroupsRequest = None,
+        request: Union[compute.ListInstanceGroupsRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
@@ -827,7 +839,7 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         regionInstanceGroupManagers methods instead.
 
         Args:
-            request (google.cloud.compute_v1.types.ListInstanceGroupsRequest):
+            request (Union[google.cloud.compute_v1.types.ListInstanceGroupsRequest, dict]):
                 The request object. A request message for
                 InstanceGroups.List. See the method description for
                 details.
@@ -898,13 +910,13 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
 
     def list_instances(
         self,
-        request: compute.ListInstancesInstanceGroupsRequest = None,
+        request: Union[compute.ListInstancesInstanceGroupsRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance_group: str = None,
         instance_groups_list_instances_request_resource: compute.InstanceGroupsListInstancesRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstancesPager:
@@ -912,7 +924,7 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         The orderBy query parameter is not supported.
 
         Args:
-            request (google.cloud.compute_v1.types.ListInstancesInstanceGroupsRequest):
+            request (Union[google.cloud.compute_v1.types.ListInstancesInstanceGroupsRequest, dict]):
                 The request object. A request message for
                 InstanceGroups.ListInstances. See the method description
                 for details.
@@ -1008,13 +1020,13 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
 
     def remove_instances(
         self,
-        request: compute.RemoveInstancesInstanceGroupRequest = None,
+        request: Union[compute.RemoveInstancesInstanceGroupRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance_group: str = None,
         instance_groups_remove_instances_request_resource: compute.InstanceGroupsRemoveInstancesRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -1026,7 +1038,7 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         is removed or deleted.
 
         Args:
-            request (google.cloud.compute_v1.types.RemoveInstancesInstanceGroupRequest):
+            request (Union[google.cloud.compute_v1.types.RemoveInstancesInstanceGroupRequest, dict]):
                 The request object. A request message for
                 InstanceGroups.RemoveInstances. See the method
                 description for details.
@@ -1127,13 +1139,13 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
 
     def set_named_ports(
         self,
-        request: compute.SetNamedPortsInstanceGroupRequest = None,
+        request: Union[compute.SetNamedPortsInstanceGroupRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance_group: str = None,
         instance_groups_set_named_ports_request_resource: compute.InstanceGroupsSetNamedPortsRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -1141,7 +1153,7 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         group.
 
         Args:
-            request (google.cloud.compute_v1.types.SetNamedPortsInstanceGroupRequest):
+            request (Union[google.cloud.compute_v1.types.SetNamedPortsInstanceGroupRequest, dict]):
                 The request object. A request message for
                 InstanceGroups.SetNamedPorts. See the method description
                 for details.
@@ -1239,6 +1251,19 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:

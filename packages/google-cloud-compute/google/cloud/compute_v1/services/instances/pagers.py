@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.compute_v1.types import compute
@@ -74,14 +74,14 @@ class AggregatedListPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[compute.InstanceAggregatedList]:
+    def pages(self) -> Iterator[compute.InstanceAggregatedList]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[Tuple[str, compute.InstancesScopedList]]:
+    def __iter__(self) -> Iterator[Tuple[str, compute.InstancesScopedList]]:
         for page in self.pages:
             yield from page.items.items()
 
@@ -139,14 +139,14 @@ class ListPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[compute.InstanceList]:
+    def pages(self) -> Iterator[compute.InstanceList]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[compute.Instance]:
+    def __iter__(self) -> Iterator[compute.Instance]:
         for page in self.pages:
             yield from page.items
 
@@ -201,14 +201,14 @@ class ListReferrersPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[compute.InstanceListReferrers]:
+    def pages(self) -> Iterator[compute.InstanceListReferrers]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[compute.Reference]:
+    def __iter__(self) -> Iterator[compute.Reference]:
         for page in self.pages:
             yield from page.items
 

@@ -14,21 +14,25 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.compute_v1.services.target_vpn_gateways import pagers
 from google.cloud.compute_v1.types import compute
@@ -265,8 +269,15 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
         )
 
         client_cert_source_func = None
@@ -328,21 +339,22 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
             )
 
     def aggregated_list(
         self,
-        request: compute.AggregatedListTargetVpnGatewaysRequest = None,
+        request: Union[compute.AggregatedListTargetVpnGatewaysRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of target VPN gateways.
 
         Args:
-            request (google.cloud.compute_v1.types.AggregatedListTargetVpnGatewaysRequest):
+            request (Union[google.cloud.compute_v1.types.AggregatedListTargetVpnGatewaysRequest, dict]):
                 The request object. A request message for
                 TargetVpnGateways.AggregatedList. See the method
                 description for details.
@@ -403,19 +415,19 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
 
     def delete(
         self,
-        request: compute.DeleteTargetVpnGatewayRequest = None,
+        request: Union[compute.DeleteTargetVpnGatewayRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         target_vpn_gateway: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified target VPN gateway.
 
         Args:
-            request (google.cloud.compute_v1.types.DeleteTargetVpnGatewayRequest):
+            request (Union[google.cloud.compute_v1.types.DeleteTargetVpnGatewayRequest, dict]):
                 The request object. A request message for
                 TargetVpnGateways.Delete. See the method description for
                 details.
@@ -498,12 +510,12 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
 
     def get(
         self,
-        request: compute.GetTargetVpnGatewayRequest = None,
+        request: Union[compute.GetTargetVpnGatewayRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         target_vpn_gateway: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TargetVpnGateway:
@@ -512,7 +524,7 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
         request.
 
         Args:
-            request (google.cloud.compute_v1.types.GetTargetVpnGatewayRequest):
+            request (Union[google.cloud.compute_v1.types.GetTargetVpnGatewayRequest, dict]):
                 The request object. A request message for
                 TargetVpnGateways.Get. See the method description for
                 details.
@@ -585,12 +597,12 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
 
     def insert(
         self,
-        request: compute.InsertTargetVpnGatewayRequest = None,
+        request: Union[compute.InsertTargetVpnGatewayRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         target_vpn_gateway_resource: compute.TargetVpnGateway = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -598,7 +610,7 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
         and region using the data included in the request.
 
         Args:
-            request (google.cloud.compute_v1.types.InsertTargetVpnGatewayRequest):
+            request (Union[google.cloud.compute_v1.types.InsertTargetVpnGatewayRequest, dict]):
                 The request object. A request message for
                 TargetVpnGateways.Insert. See the method description for
                 details.
@@ -679,11 +691,11 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
 
     def list(
         self,
-        request: compute.ListTargetVpnGatewaysRequest = None,
+        request: Union[compute.ListTargetVpnGatewaysRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
@@ -691,7 +703,7 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
         the specified project and region.
 
         Args:
-            request (google.cloud.compute_v1.types.ListTargetVpnGatewaysRequest):
+            request (Union[google.cloud.compute_v1.types.ListTargetVpnGatewaysRequest, dict]):
                 The request object. A request message for
                 TargetVpnGateways.List. See the method description for
                 details.
@@ -758,6 +770,19 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:

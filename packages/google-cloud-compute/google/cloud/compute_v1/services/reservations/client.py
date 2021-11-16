@@ -14,21 +14,25 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.compute_v1.services.reservations import pagers
 from google.cloud.compute_v1.types import compute
@@ -261,8 +265,15 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
         )
 
         client_cert_source_func = None
@@ -324,21 +335,22 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
             )
 
     def aggregated_list(
         self,
-        request: compute.AggregatedListReservationsRequest = None,
+        request: Union[compute.AggregatedListReservationsRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of reservations.
 
         Args:
-            request (google.cloud.compute_v1.types.AggregatedListReservationsRequest):
+            request (Union[google.cloud.compute_v1.types.AggregatedListReservationsRequest, dict]):
                 The request object. A request message for
                 Reservations.AggregatedList. See the method description
                 for details.
@@ -400,19 +412,19 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
 
     def delete(
         self,
-        request: compute.DeleteReservationRequest = None,
+        request: Union[compute.DeleteReservationRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         reservation: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified reservation.
 
         Args:
-            request (google.cloud.compute_v1.types.DeleteReservationRequest):
+            request (Union[google.cloud.compute_v1.types.DeleteReservationRequest, dict]):
                 The request object. A request message for
                 Reservations.Delete. See the method description for
                 details.
@@ -493,12 +505,12 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
 
     def get(
         self,
-        request: compute.GetReservationRequest = None,
+        request: Union[compute.GetReservationRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         reservation: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Reservation:
@@ -506,7 +518,7 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         reservation.
 
         Args:
-            request (google.cloud.compute_v1.types.GetReservationRequest):
+            request (Union[google.cloud.compute_v1.types.GetReservationRequest, dict]):
                 The request object. A request message for
                 Reservations.Get. See the method description for
                 details.
@@ -578,12 +590,12 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
 
     def get_iam_policy(
         self,
-        request: compute.GetIamPolicyReservationRequest = None,
+        request: Union[compute.GetIamPolicyReservationRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
@@ -591,7 +603,7 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         empty if no such policy or resource exists.
 
         Args:
-            request (google.cloud.compute_v1.types.GetIamPolicyReservationRequest):
+            request (Union[google.cloud.compute_v1.types.GetIamPolicyReservationRequest, dict]):
                 The request object. A request message for
                 Reservations.GetIamPolicy. See the method description
                 for details.
@@ -700,12 +712,12 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
 
     def insert(
         self,
-        request: compute.InsertReservationRequest = None,
+        request: Union[compute.InsertReservationRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         reservation_resource: compute.Reservation = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -713,7 +725,7 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         Reserving zonal resources.
 
         Args:
-            request (google.cloud.compute_v1.types.InsertReservationRequest):
+            request (Union[google.cloud.compute_v1.types.InsertReservationRequest, dict]):
                 The request object. A request message for
                 Reservations.Insert. See the method description for
                 details.
@@ -794,11 +806,11 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
 
     def list(
         self,
-        request: compute.ListReservationsRequest = None,
+        request: Union[compute.ListReservationsRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
@@ -806,7 +818,7 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         configured for the specified project in specified zone.
 
         Args:
-            request (google.cloud.compute_v1.types.ListReservationsRequest):
+            request (Union[google.cloud.compute_v1.types.ListReservationsRequest, dict]):
                 The request object. A request message for
                 Reservations.List. See the method description for
                 details.
@@ -874,13 +886,13 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
 
     def resize(
         self,
-        request: compute.ResizeReservationRequest = None,
+        request: Union[compute.ResizeReservationRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         reservation: str = None,
         reservations_resize_request_resource: compute.ReservationsResizeRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -889,7 +901,7 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         reservations.
 
         Args:
-            request (google.cloud.compute_v1.types.ResizeReservationRequest):
+            request (Union[google.cloud.compute_v1.types.ResizeReservationRequest, dict]):
                 The request object. A request message for
                 Reservations.Resize. See the method description for
                 details.
@@ -981,13 +993,13 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
 
     def set_iam_policy(
         self,
-        request: compute.SetIamPolicyReservationRequest = None,
+        request: Union[compute.SetIamPolicyReservationRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         resource: str = None,
         zone_set_policy_request_resource: compute.ZoneSetPolicyRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
@@ -995,7 +1007,7 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         resource. Replaces any existing policy.
 
         Args:
-            request (google.cloud.compute_v1.types.SetIamPolicyReservationRequest):
+            request (Union[google.cloud.compute_v1.types.SetIamPolicyReservationRequest, dict]):
                 The request object. A request message for
                 Reservations.SetIamPolicy. See the method description
                 for details.
@@ -1115,13 +1127,13 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
 
     def test_iam_permissions(
         self,
-        request: compute.TestIamPermissionsReservationRequest = None,
+        request: Union[compute.TestIamPermissionsReservationRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         resource: str = None,
         test_permissions_request_resource: compute.TestPermissionsRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TestPermissionsResponse:
@@ -1129,7 +1141,7 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         specified resource.
 
         Args:
-            request (google.cloud.compute_v1.types.TestIamPermissionsReservationRequest):
+            request (Union[google.cloud.compute_v1.types.TestIamPermissionsReservationRequest, dict]):
                 The request object. A request message for
                 Reservations.TestIamPermissions. See the method
                 description for details.
@@ -1207,6 +1219,19 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:

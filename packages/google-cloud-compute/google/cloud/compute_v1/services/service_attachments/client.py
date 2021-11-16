@@ -14,21 +14,25 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.compute_v1.services.service_attachments import pagers
 from google.cloud.compute_v1.types import compute
@@ -265,8 +269,15 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
         )
 
         client_cert_source_func = None
@@ -328,14 +339,15 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
             )
 
     def aggregated_list(
         self,
-        request: compute.AggregatedListServiceAttachmentsRequest = None,
+        request: Union[compute.AggregatedListServiceAttachmentsRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
@@ -344,7 +356,7 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         specified project.
 
         Args:
-            request (google.cloud.compute_v1.types.AggregatedListServiceAttachmentsRequest):
+            request (Union[google.cloud.compute_v1.types.AggregatedListServiceAttachmentsRequest, dict]):
                 The request object. A request message for
                 ServiceAttachments.AggregatedList. See the method
                 description for details.
@@ -409,12 +421,12 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
 
     def delete(
         self,
-        request: compute.DeleteServiceAttachmentRequest = None,
+        request: Union[compute.DeleteServiceAttachmentRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         service_attachment: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -422,7 +434,7 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         scope
 
         Args:
-            request (google.cloud.compute_v1.types.DeleteServiceAttachmentRequest):
+            request (Union[google.cloud.compute_v1.types.DeleteServiceAttachmentRequest, dict]):
                 The request object. A request message for
                 ServiceAttachments.Delete. See the method description
                 for details.
@@ -505,12 +517,12 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
 
     def get(
         self,
-        request: compute.GetServiceAttachmentRequest = None,
+        request: Union[compute.GetServiceAttachmentRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         service_attachment: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.ServiceAttachment:
@@ -518,7 +530,7 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         the given scope.
 
         Args:
-            request (google.cloud.compute_v1.types.GetServiceAttachmentRequest):
+            request (Union[google.cloud.compute_v1.types.GetServiceAttachmentRequest, dict]):
                 The request object. A request message for
                 ServiceAttachments.Get. See the method description for
                 details.
@@ -595,12 +607,12 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
 
     def get_iam_policy(
         self,
-        request: compute.GetIamPolicyServiceAttachmentRequest = None,
+        request: Union[compute.GetIamPolicyServiceAttachmentRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
@@ -608,7 +620,7 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         empty if no such policy or resource exists.
 
         Args:
-            request (google.cloud.compute_v1.types.GetIamPolicyServiceAttachmentRequest):
+            request (Union[google.cloud.compute_v1.types.GetIamPolicyServiceAttachmentRequest, dict]):
                 The request object. A request message for
                 ServiceAttachments.GetIamPolicy. See the method
                 description for details.
@@ -717,12 +729,12 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
 
     def insert(
         self,
-        request: compute.InsertServiceAttachmentRequest = None,
+        request: Union[compute.InsertServiceAttachmentRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         service_attachment_resource: compute.ServiceAttachment = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -731,7 +743,7 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         included in the request.
 
         Args:
-            request (google.cloud.compute_v1.types.InsertServiceAttachmentRequest):
+            request (Union[google.cloud.compute_v1.types.InsertServiceAttachmentRequest, dict]):
                 The request object. A request message for
                 ServiceAttachments.Insert. See the method description
                 for details.
@@ -812,11 +824,11 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
 
     def list(
         self,
-        request: compute.ListServiceAttachmentsRequest = None,
+        request: Union[compute.ListServiceAttachmentsRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
@@ -824,7 +836,7 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         given scope.
 
         Args:
-            request (google.cloud.compute_v1.types.ListServiceAttachmentsRequest):
+            request (Union[google.cloud.compute_v1.types.ListServiceAttachmentsRequest, dict]):
                 The request object. A request message for
                 ServiceAttachments.List. See the method description for
                 details.
@@ -892,13 +904,13 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
 
     def patch(
         self,
-        request: compute.PatchServiceAttachmentRequest = None,
+        request: Union[compute.PatchServiceAttachmentRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         service_attachment: str = None,
         service_attachment_resource: compute.ServiceAttachment = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -908,7 +920,7 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         processing rules.
 
         Args:
-            request (google.cloud.compute_v1.types.PatchServiceAttachmentRequest):
+            request (Union[google.cloud.compute_v1.types.PatchServiceAttachmentRequest, dict]):
                 The request object. A request message for
                 ServiceAttachments.Patch. See the method description for
                 details.
@@ -1004,13 +1016,13 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
 
     def set_iam_policy(
         self,
-        request: compute.SetIamPolicyServiceAttachmentRequest = None,
+        request: Union[compute.SetIamPolicyServiceAttachmentRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         resource: str = None,
         region_set_policy_request_resource: compute.RegionSetPolicyRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
@@ -1018,7 +1030,7 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         resource. Replaces any existing policy.
 
         Args:
-            request (google.cloud.compute_v1.types.SetIamPolicyServiceAttachmentRequest):
+            request (Union[google.cloud.compute_v1.types.SetIamPolicyServiceAttachmentRequest, dict]):
                 The request object. A request message for
                 ServiceAttachments.SetIamPolicy. See the method
                 description for details.
@@ -1138,13 +1150,13 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
 
     def test_iam_permissions(
         self,
-        request: compute.TestIamPermissionsServiceAttachmentRequest = None,
+        request: Union[compute.TestIamPermissionsServiceAttachmentRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         resource: str = None,
         test_permissions_request_resource: compute.TestPermissionsRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TestPermissionsResponse:
@@ -1152,7 +1164,7 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         specified resource.
 
         Args:
-            request (google.cloud.compute_v1.types.TestIamPermissionsServiceAttachmentRequest):
+            request (Union[google.cloud.compute_v1.types.TestIamPermissionsServiceAttachmentRequest, dict]):
                 The request object. A request message for
                 ServiceAttachments.TestIamPermissions. See the method
                 description for details.
@@ -1230,6 +1242,19 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:

@@ -14,21 +14,25 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.compute_v1.services.network_endpoint_groups import pagers
 from google.cloud.compute_v1.types import compute
@@ -265,8 +269,15 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
         )
 
         client_cert_source_func = None
@@ -328,14 +339,15 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
             )
 
     def aggregated_list(
         self,
-        request: compute.AggregatedListNetworkEndpointGroupsRequest = None,
+        request: Union[compute.AggregatedListNetworkEndpointGroupsRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
@@ -343,7 +355,7 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         sorts them by zone.
 
         Args:
-            request (google.cloud.compute_v1.types.AggregatedListNetworkEndpointGroupsRequest):
+            request (Union[google.cloud.compute_v1.types.AggregatedListNetworkEndpointGroupsRequest, dict]):
                 The request object. A request message for
                 NetworkEndpointGroups.AggregatedList. See the method
                 description for details.
@@ -404,13 +416,15 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
 
     def attach_network_endpoints(
         self,
-        request: compute.AttachNetworkEndpointsNetworkEndpointGroupRequest = None,
+        request: Union[
+            compute.AttachNetworkEndpointsNetworkEndpointGroupRequest, dict
+        ] = None,
         *,
         project: str = None,
         zone: str = None,
         network_endpoint_group: str = None,
         network_endpoint_groups_attach_endpoints_request_resource: compute.NetworkEndpointGroupsAttachEndpointsRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -418,7 +432,7 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         network endpoint group.
 
         Args:
-            request (google.cloud.compute_v1.types.AttachNetworkEndpointsNetworkEndpointGroupRequest):
+            request (Union[google.cloud.compute_v1.types.AttachNetworkEndpointsNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
                 NetworkEndpointGroups.AttachNetworkEndpoints. See the
                 method description for details.
@@ -524,12 +538,12 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
 
     def delete(
         self,
-        request: compute.DeleteNetworkEndpointGroupRequest = None,
+        request: Union[compute.DeleteNetworkEndpointGroupRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         network_endpoint_group: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -540,7 +554,7 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         services referencing it.
 
         Args:
-            request (google.cloud.compute_v1.types.DeleteNetworkEndpointGroupRequest):
+            request (Union[google.cloud.compute_v1.types.DeleteNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
                 NetworkEndpointGroups.Delete. See the method description
                 for details.
@@ -627,13 +641,15 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
 
     def detach_network_endpoints(
         self,
-        request: compute.DetachNetworkEndpointsNetworkEndpointGroupRequest = None,
+        request: Union[
+            compute.DetachNetworkEndpointsNetworkEndpointGroupRequest, dict
+        ] = None,
         *,
         project: str = None,
         zone: str = None,
         network_endpoint_group: str = None,
         network_endpoint_groups_detach_endpoints_request_resource: compute.NetworkEndpointGroupsDetachEndpointsRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -641,7 +657,7 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         network endpoint group.
 
         Args:
-            request (google.cloud.compute_v1.types.DetachNetworkEndpointsNetworkEndpointGroupRequest):
+            request (Union[google.cloud.compute_v1.types.DetachNetworkEndpointsNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
                 NetworkEndpointGroups.DetachNetworkEndpoints. See the
                 method description for details.
@@ -747,12 +763,12 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
 
     def get(
         self,
-        request: compute.GetNetworkEndpointGroupRequest = None,
+        request: Union[compute.GetNetworkEndpointGroupRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         network_endpoint_group: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.NetworkEndpointGroup:
@@ -761,7 +777,7 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         list() request.
 
         Args:
-            request (google.cloud.compute_v1.types.GetNetworkEndpointGroupRequest):
+            request (Union[google.cloud.compute_v1.types.GetNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
                 NetworkEndpointGroups.Get. See the method description
                 for details.
@@ -843,12 +859,12 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
 
     def insert(
         self,
-        request: compute.InsertNetworkEndpointGroupRequest = None,
+        request: Union[compute.InsertNetworkEndpointGroupRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         network_endpoint_group_resource: compute.NetworkEndpointGroup = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -857,7 +873,7 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         request.
 
         Args:
-            request (google.cloud.compute_v1.types.InsertNetworkEndpointGroupRequest):
+            request (Union[google.cloud.compute_v1.types.InsertNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
                 NetworkEndpointGroups.Insert. See the method description
                 for details.
@@ -943,11 +959,11 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
 
     def list(
         self,
-        request: compute.ListNetworkEndpointGroupsRequest = None,
+        request: Union[compute.ListNetworkEndpointGroupsRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
@@ -955,7 +971,7 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         are located in the specified project and zone.
 
         Args:
-            request (google.cloud.compute_v1.types.ListNetworkEndpointGroupsRequest):
+            request (Union[google.cloud.compute_v1.types.ListNetworkEndpointGroupsRequest, dict]):
                 The request object. A request message for
                 NetworkEndpointGroups.List. See the method description
                 for details.
@@ -1026,13 +1042,15 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
 
     def list_network_endpoints(
         self,
-        request: compute.ListNetworkEndpointsNetworkEndpointGroupsRequest = None,
+        request: Union[
+            compute.ListNetworkEndpointsNetworkEndpointGroupsRequest, dict
+        ] = None,
         *,
         project: str = None,
         zone: str = None,
         network_endpoint_group: str = None,
         network_endpoint_groups_list_endpoints_request_resource: compute.NetworkEndpointGroupsListEndpointsRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListNetworkEndpointsPager:
@@ -1040,7 +1058,7 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         endpoint group.
 
         Args:
-            request (google.cloud.compute_v1.types.ListNetworkEndpointsNetworkEndpointGroupsRequest):
+            request (Union[google.cloud.compute_v1.types.ListNetworkEndpointsNetworkEndpointGroupsRequest, dict]):
                 The request object. A request message for
                 NetworkEndpointGroups.ListNetworkEndpoints. See the
                 method description for details.
@@ -1140,13 +1158,15 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
 
     def test_iam_permissions(
         self,
-        request: compute.TestIamPermissionsNetworkEndpointGroupRequest = None,
+        request: Union[
+            compute.TestIamPermissionsNetworkEndpointGroupRequest, dict
+        ] = None,
         *,
         project: str = None,
         zone: str = None,
         resource: str = None,
         test_permissions_request_resource: compute.TestPermissionsRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TestPermissionsResponse:
@@ -1154,7 +1174,7 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         specified resource.
 
         Args:
-            request (google.cloud.compute_v1.types.TestIamPermissionsNetworkEndpointGroupRequest):
+            request (Union[google.cloud.compute_v1.types.TestIamPermissionsNetworkEndpointGroupRequest, dict]):
                 The request object. A request message for
                 NetworkEndpointGroups.TestIamPermissions. See the method
                 description for details.
@@ -1234,6 +1254,19 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:

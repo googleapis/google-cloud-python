@@ -14,21 +14,25 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.compute_v1.services.subnetworks import pagers
 from google.cloud.compute_v1.types import compute
@@ -261,8 +265,15 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
         )
 
         client_cert_source_func = None
@@ -324,21 +335,22 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
             )
 
     def aggregated_list(
         self,
-        request: compute.AggregatedListSubnetworksRequest = None,
+        request: Union[compute.AggregatedListSubnetworksRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of subnetworks.
 
         Args:
-            request (google.cloud.compute_v1.types.AggregatedListSubnetworksRequest):
+            request (Union[google.cloud.compute_v1.types.AggregatedListSubnetworksRequest, dict]):
                 The request object. A request message for
                 Subnetworks.AggregatedList. See the method description
                 for details.
@@ -399,19 +411,19 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
 
     def delete(
         self,
-        request: compute.DeleteSubnetworkRequest = None,
+        request: Union[compute.DeleteSubnetworkRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         subnetwork: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified subnetwork.
 
         Args:
-            request (google.cloud.compute_v1.types.DeleteSubnetworkRequest):
+            request (Union[google.cloud.compute_v1.types.DeleteSubnetworkRequest, dict]):
                 The request object. A request message for
                 Subnetworks.Delete. See the method description for
                 details.
@@ -496,13 +508,13 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
 
     def expand_ip_cidr_range(
         self,
-        request: compute.ExpandIpCidrRangeSubnetworkRequest = None,
+        request: Union[compute.ExpandIpCidrRangeSubnetworkRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         subnetwork: str = None,
         subnetworks_expand_ip_cidr_range_request_resource: compute.SubnetworksExpandIpCidrRangeRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -510,7 +522,7 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         specified value.
 
         Args:
-            request (google.cloud.compute_v1.types.ExpandIpCidrRangeSubnetworkRequest):
+            request (Union[google.cloud.compute_v1.types.ExpandIpCidrRangeSubnetworkRequest, dict]):
                 The request object. A request message for
                 Subnetworks.ExpandIpCidrRange. See the method
                 description for details.
@@ -611,12 +623,12 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
 
     def get(
         self,
-        request: compute.GetSubnetworkRequest = None,
+        request: Union[compute.GetSubnetworkRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         subnetwork: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Subnetwork:
@@ -624,7 +636,7 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         available subnetworks list() request.
 
         Args:
-            request (google.cloud.compute_v1.types.GetSubnetworkRequest):
+            request (Union[google.cloud.compute_v1.types.GetSubnetworkRequest, dict]):
                 The request object. A request message for
                 Subnetworks.Get. See the method description for details.
             project (str):
@@ -700,12 +712,12 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
 
     def get_iam_policy(
         self,
-        request: compute.GetIamPolicySubnetworkRequest = None,
+        request: Union[compute.GetIamPolicySubnetworkRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
@@ -713,7 +725,7 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         empty if no such policy or resource exists.
 
         Args:
-            request (google.cloud.compute_v1.types.GetIamPolicySubnetworkRequest):
+            request (Union[google.cloud.compute_v1.types.GetIamPolicySubnetworkRequest, dict]):
                 The request object. A request message for
                 Subnetworks.GetIamPolicy. See the method description for
                 details.
@@ -822,12 +834,12 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
 
     def insert(
         self,
-        request: compute.InsertSubnetworkRequest = None,
+        request: Union[compute.InsertSubnetworkRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         subnetwork_resource: compute.Subnetwork = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -835,7 +847,7 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         the data included in the request.
 
         Args:
-            request (google.cloud.compute_v1.types.InsertSubnetworkRequest):
+            request (Union[google.cloud.compute_v1.types.InsertSubnetworkRequest, dict]):
                 The request object. A request message for
                 Subnetworks.Insert. See the method description for
                 details.
@@ -918,11 +930,11 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
 
     def list(
         self,
-        request: compute.ListSubnetworksRequest = None,
+        request: Union[compute.ListSubnetworksRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
@@ -930,7 +942,7 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         specified project.
 
         Args:
-            request (google.cloud.compute_v1.types.ListSubnetworksRequest):
+            request (Union[google.cloud.compute_v1.types.ListSubnetworksRequest, dict]):
                 The request object. A request message for
                 Subnetworks.List. See the method description for
                 details.
@@ -1002,10 +1014,10 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
 
     def list_usable(
         self,
-        request: compute.ListUsableSubnetworksRequest = None,
+        request: Union[compute.ListUsableSubnetworksRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListUsablePager:
@@ -1013,7 +1025,7 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         subnetworks in the project.
 
         Args:
-            request (google.cloud.compute_v1.types.ListUsableSubnetworksRequest):
+            request (Union[google.cloud.compute_v1.types.ListUsableSubnetworksRequest, dict]):
                 The request object. A request message for
                 Subnetworks.ListUsable. See the method description for
                 details.
@@ -1074,13 +1086,13 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
 
     def patch(
         self,
-        request: compute.PatchSubnetworkRequest = None,
+        request: Union[compute.PatchSubnetworkRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         subnetwork: str = None,
         subnetwork_resource: compute.Subnetwork = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -1091,7 +1103,7 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         of the subnetwork resource being patched.
 
         Args:
-            request (google.cloud.compute_v1.types.PatchSubnetworkRequest):
+            request (Union[google.cloud.compute_v1.types.PatchSubnetworkRequest, dict]):
                 The request object. A request message for
                 Subnetworks.Patch. See the method description for
                 details.
@@ -1183,13 +1195,13 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
 
     def set_iam_policy(
         self,
-        request: compute.SetIamPolicySubnetworkRequest = None,
+        request: Union[compute.SetIamPolicySubnetworkRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         resource: str = None,
         region_set_policy_request_resource: compute.RegionSetPolicyRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
@@ -1197,7 +1209,7 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         resource. Replaces any existing policy.
 
         Args:
-            request (google.cloud.compute_v1.types.SetIamPolicySubnetworkRequest):
+            request (Union[google.cloud.compute_v1.types.SetIamPolicySubnetworkRequest, dict]):
                 The request object. A request message for
                 Subnetworks.SetIamPolicy. See the method description for
                 details.
@@ -1317,13 +1329,13 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
 
     def set_private_ip_google_access(
         self,
-        request: compute.SetPrivateIpGoogleAccessSubnetworkRequest = None,
+        request: Union[compute.SetPrivateIpGoogleAccessSubnetworkRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         subnetwork: str = None,
         subnetworks_set_private_ip_google_access_request_resource: compute.SubnetworksSetPrivateIpGoogleAccessRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -1332,7 +1344,7 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         Private Google Access.
 
         Args:
-            request (google.cloud.compute_v1.types.SetPrivateIpGoogleAccessSubnetworkRequest):
+            request (Union[google.cloud.compute_v1.types.SetPrivateIpGoogleAccessSubnetworkRequest, dict]):
                 The request object. A request message for
                 Subnetworks.SetPrivateIpGoogleAccess. See the method
                 description for details.
@@ -1433,13 +1445,13 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
 
     def test_iam_permissions(
         self,
-        request: compute.TestIamPermissionsSubnetworkRequest = None,
+        request: Union[compute.TestIamPermissionsSubnetworkRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         resource: str = None,
         test_permissions_request_resource: compute.TestPermissionsRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TestPermissionsResponse:
@@ -1447,7 +1459,7 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         specified resource.
 
         Args:
-            request (google.cloud.compute_v1.types.TestIamPermissionsSubnetworkRequest):
+            request (Union[google.cloud.compute_v1.types.TestIamPermissionsSubnetworkRequest, dict]):
                 The request object. A request message for
                 Subnetworks.TestIamPermissions. See the method
                 description for details.
@@ -1525,6 +1537,19 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:

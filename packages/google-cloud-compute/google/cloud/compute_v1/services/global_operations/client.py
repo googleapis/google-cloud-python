@@ -14,21 +14,25 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.compute_v1.services.global_operations import pagers
 from google.cloud.compute_v1.types import compute
@@ -263,8 +267,15 @@ class GlobalOperationsClient(metaclass=GlobalOperationsClientMeta):
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
         )
 
         client_cert_source_func = None
@@ -326,21 +337,22 @@ class GlobalOperationsClient(metaclass=GlobalOperationsClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
             )
 
     def aggregated_list(
         self,
-        request: compute.AggregatedListGlobalOperationsRequest = None,
+        request: Union[compute.AggregatedListGlobalOperationsRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of all operations.
 
         Args:
-            request (google.cloud.compute_v1.types.AggregatedListGlobalOperationsRequest):
+            request (Union[google.cloud.compute_v1.types.AggregatedListGlobalOperationsRequest, dict]):
                 The request object. A request message for
                 GlobalOperations.AggregatedList. See the method
                 description for details.
@@ -401,18 +413,18 @@ class GlobalOperationsClient(metaclass=GlobalOperationsClientMeta):
 
     def delete(
         self,
-        request: compute.DeleteGlobalOperationRequest = None,
+        request: Union[compute.DeleteGlobalOperationRequest, dict] = None,
         *,
         project: str = None,
         operation: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.DeleteGlobalOperationResponse:
         r"""Deletes the specified Operations resource.
 
         Args:
-            request (google.cloud.compute_v1.types.DeleteGlobalOperationRequest):
+            request (Union[google.cloud.compute_v1.types.DeleteGlobalOperationRequest, dict]):
                 The request object. A request message for
                 GlobalOperations.Delete. See the method description for
                 details.
@@ -476,18 +488,18 @@ class GlobalOperationsClient(metaclass=GlobalOperationsClientMeta):
 
     def get(
         self,
-        request: compute.GetGlobalOperationRequest = None,
+        request: Union[compute.GetGlobalOperationRequest, dict] = None,
         *,
         project: str = None,
         operation: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Retrieves the specified Operations resource.
 
         Args:
-            request (google.cloud.compute_v1.types.GetGlobalOperationRequest):
+            request (Union[google.cloud.compute_v1.types.GetGlobalOperationRequest, dict]):
                 The request object. A request message for
                 GlobalOperations.Get. See the method description for
                 details.
@@ -563,10 +575,10 @@ class GlobalOperationsClient(metaclass=GlobalOperationsClientMeta):
 
     def list(
         self,
-        request: compute.ListGlobalOperationsRequest = None,
+        request: Union[compute.ListGlobalOperationsRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
@@ -574,7 +586,7 @@ class GlobalOperationsClient(metaclass=GlobalOperationsClientMeta):
         within the specified project.
 
         Args:
-            request (google.cloud.compute_v1.types.ListGlobalOperationsRequest):
+            request (Union[google.cloud.compute_v1.types.ListGlobalOperationsRequest, dict]):
                 The request object. A request message for
                 GlobalOperations.List. See the method description for
                 details.
@@ -637,11 +649,11 @@ class GlobalOperationsClient(metaclass=GlobalOperationsClientMeta):
 
     def wait(
         self,
-        request: compute.WaitGlobalOperationRequest = None,
+        request: Union[compute.WaitGlobalOperationRequest, dict] = None,
         *,
         project: str = None,
         operation: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -660,7 +672,7 @@ class GlobalOperationsClient(metaclass=GlobalOperationsClientMeta):
         ``DONE``.
 
         Args:
-            request (google.cloud.compute_v1.types.WaitGlobalOperationRequest):
+            request (Union[google.cloud.compute_v1.types.WaitGlobalOperationRequest, dict]):
                 The request object. A request message for
                 GlobalOperations.Wait. See the method description for
                 details.
@@ -733,6 +745,19 @@ class GlobalOperationsClient(metaclass=GlobalOperationsClientMeta):
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:

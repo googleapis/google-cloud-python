@@ -14,21 +14,25 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.compute_v1.services.public_delegated_prefixes import pagers
 from google.cloud.compute_v1.types import compute
@@ -265,8 +269,15 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
         )
 
         client_cert_source_func = None
@@ -328,14 +339,17 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
             )
 
     def aggregated_list(
         self,
-        request: compute.AggregatedListPublicDelegatedPrefixesRequest = None,
+        request: Union[
+            compute.AggregatedListPublicDelegatedPrefixesRequest, dict
+        ] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
@@ -343,7 +357,7 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
         the specific project across all scopes.
 
         Args:
-            request (google.cloud.compute_v1.types.AggregatedListPublicDelegatedPrefixesRequest):
+            request (Union[google.cloud.compute_v1.types.AggregatedListPublicDelegatedPrefixesRequest, dict]):
                 The request object. A request message for
                 PublicDelegatedPrefixes.AggregatedList. See the method
                 description for details.
@@ -408,12 +422,12 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
 
     def delete(
         self,
-        request: compute.DeletePublicDelegatedPrefixeRequest = None,
+        request: Union[compute.DeletePublicDelegatedPrefixeRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         public_delegated_prefix: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -421,7 +435,7 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
         given region.
 
         Args:
-            request (google.cloud.compute_v1.types.DeletePublicDelegatedPrefixeRequest):
+            request (Union[google.cloud.compute_v1.types.DeletePublicDelegatedPrefixeRequest, dict]):
                 The request object. A request message for
                 PublicDelegatedPrefixes.Delete. See the method
                 description for details.
@@ -504,12 +518,12 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
 
     def get(
         self,
-        request: compute.GetPublicDelegatedPrefixeRequest = None,
+        request: Union[compute.GetPublicDelegatedPrefixeRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         public_delegated_prefix: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.PublicDelegatedPrefix:
@@ -517,7 +531,7 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
         in the given region.
 
         Args:
-            request (google.cloud.compute_v1.types.GetPublicDelegatedPrefixeRequest):
+            request (Union[google.cloud.compute_v1.types.GetPublicDelegatedPrefixeRequest, dict]):
                 The request object. A request message for
                 PublicDelegatedPrefixes.Get. See the method description
                 for details.
@@ -594,12 +608,12 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
 
     def insert(
         self,
-        request: compute.InsertPublicDelegatedPrefixeRequest = None,
+        request: Union[compute.InsertPublicDelegatedPrefixeRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         public_delegated_prefix_resource: compute.PublicDelegatedPrefix = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -608,7 +622,7 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
         are included in the request.
 
         Args:
-            request (google.cloud.compute_v1.types.InsertPublicDelegatedPrefixeRequest):
+            request (Union[google.cloud.compute_v1.types.InsertPublicDelegatedPrefixeRequest, dict]):
                 The request object. A request message for
                 PublicDelegatedPrefixes.Insert. See the method
                 description for details.
@@ -691,11 +705,11 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
 
     def list(
         self,
-        request: compute.ListPublicDelegatedPrefixesRequest = None,
+        request: Union[compute.ListPublicDelegatedPrefixesRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
@@ -703,7 +717,7 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
         the given region.
 
         Args:
-            request (google.cloud.compute_v1.types.ListPublicDelegatedPrefixesRequest):
+            request (Union[google.cloud.compute_v1.types.ListPublicDelegatedPrefixesRequest, dict]):
                 The request object. A request message for
                 PublicDelegatedPrefixes.List. See the method description
                 for details.
@@ -771,13 +785,13 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
 
     def patch(
         self,
-        request: compute.PatchPublicDelegatedPrefixeRequest = None,
+        request: Union[compute.PatchPublicDelegatedPrefixeRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         public_delegated_prefix: str = None,
         public_delegated_prefix_resource: compute.PublicDelegatedPrefix = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -787,7 +801,7 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
         format and processing rules.
 
         Args:
-            request (google.cloud.compute_v1.types.PatchPublicDelegatedPrefixeRequest):
+            request (Union[google.cloud.compute_v1.types.PatchPublicDelegatedPrefixeRequest, dict]):
                 The request object. A request message for
                 PublicDelegatedPrefixes.Patch. See the method
                 description for details.
@@ -878,6 +892,19 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:

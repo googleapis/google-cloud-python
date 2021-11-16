@@ -14,21 +14,25 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.compute_v1.services.target_grpc_proxies import pagers
 from google.cloud.compute_v1.types import compute
@@ -265,8 +269,15 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
         )
 
         client_cert_source_func = None
@@ -328,15 +339,16 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
             )
 
     def delete(
         self,
-        request: compute.DeleteTargetGrpcProxyRequest = None,
+        request: Union[compute.DeleteTargetGrpcProxyRequest, dict] = None,
         *,
         project: str = None,
         target_grpc_proxy: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -344,7 +356,7 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
         scope
 
         Args:
-            request (google.cloud.compute_v1.types.DeleteTargetGrpcProxyRequest):
+            request (Union[google.cloud.compute_v1.types.DeleteTargetGrpcProxyRequest, dict]):
                 The request object. A request message for
                 TargetGrpcProxies.Delete. See the method description for
                 details.
@@ -420,11 +432,11 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
 
     def get(
         self,
-        request: compute.GetTargetGrpcProxyRequest = None,
+        request: Union[compute.GetTargetGrpcProxyRequest, dict] = None,
         *,
         project: str = None,
         target_grpc_proxy: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TargetGrpcProxy:
@@ -432,7 +444,7 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
         given scope.
 
         Args:
-            request (google.cloud.compute_v1.types.GetTargetGrpcProxyRequest):
+            request (Union[google.cloud.compute_v1.types.GetTargetGrpcProxyRequest, dict]):
                 The request object. A request message for
                 TargetGrpcProxies.Get. See the method description for
                 details.
@@ -500,11 +512,11 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
 
     def insert(
         self,
-        request: compute.InsertTargetGrpcProxyRequest = None,
+        request: Union[compute.InsertTargetGrpcProxyRequest, dict] = None,
         *,
         project: str = None,
         target_grpc_proxy_resource: compute.TargetGrpcProxy = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -513,7 +525,7 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
         in the request.
 
         Args:
-            request (google.cloud.compute_v1.types.InsertTargetGrpcProxyRequest):
+            request (Union[google.cloud.compute_v1.types.InsertTargetGrpcProxyRequest, dict]):
                 The request object. A request message for
                 TargetGrpcProxies.Insert. See the method description for
                 details.
@@ -587,10 +599,10 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
 
     def list(
         self,
-        request: compute.ListTargetGrpcProxiesRequest = None,
+        request: Union[compute.ListTargetGrpcProxiesRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
@@ -598,7 +610,7 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
         given scope.
 
         Args:
-            request (google.cloud.compute_v1.types.ListTargetGrpcProxiesRequest):
+            request (Union[google.cloud.compute_v1.types.ListTargetGrpcProxiesRequest, dict]):
                 The request object. A request message for
                 TargetGrpcProxies.List. See the method description for
                 details.
@@ -659,12 +671,12 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
 
     def patch(
         self,
-        request: compute.PatchTargetGrpcProxyRequest = None,
+        request: Union[compute.PatchTargetGrpcProxyRequest, dict] = None,
         *,
         project: str = None,
         target_grpc_proxy: str = None,
         target_grpc_proxy_resource: compute.TargetGrpcProxy = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -674,7 +686,7 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
         processing rules.
 
         Args:
-            request (google.cloud.compute_v1.types.PatchTargetGrpcProxyRequest):
+            request (Union[google.cloud.compute_v1.types.PatchTargetGrpcProxyRequest, dict]):
                 The request object. A request message for
                 TargetGrpcProxies.Patch. See the method description for
                 details.
@@ -756,6 +768,19 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:

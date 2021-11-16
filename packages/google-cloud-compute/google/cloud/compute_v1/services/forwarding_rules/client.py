@@ -14,21 +14,25 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.compute_v1.services.forwarding_rules import pagers
 from google.cloud.compute_v1.types import compute
@@ -263,8 +267,15 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
         )
 
         client_cert_source_func = None
@@ -326,21 +337,22 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
             )
 
     def aggregated_list(
         self,
-        request: compute.AggregatedListForwardingRulesRequest = None,
+        request: Union[compute.AggregatedListForwardingRulesRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of forwarding rules.
 
         Args:
-            request (google.cloud.compute_v1.types.AggregatedListForwardingRulesRequest):
+            request (Union[google.cloud.compute_v1.types.AggregatedListForwardingRulesRequest, dict]):
                 The request object. A request message for
                 ForwardingRules.AggregatedList. See the method
                 description for details.
@@ -401,19 +413,19 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
 
     def delete(
         self,
-        request: compute.DeleteForwardingRuleRequest = None,
+        request: Union[compute.DeleteForwardingRuleRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         forwarding_rule: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified ForwardingRule resource.
 
         Args:
-            request (google.cloud.compute_v1.types.DeleteForwardingRuleRequest):
+            request (Union[google.cloud.compute_v1.types.DeleteForwardingRuleRequest, dict]):
                 The request object. A request message for
                 ForwardingRules.Delete. See the method description for
                 details.
@@ -498,19 +510,19 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
 
     def get(
         self,
-        request: compute.GetForwardingRuleRequest = None,
+        request: Union[compute.GetForwardingRuleRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         forwarding_rule: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.ForwardingRule:
         r"""Returns the specified ForwardingRule resource.
 
         Args:
-            request (google.cloud.compute_v1.types.GetForwardingRuleRequest):
+            request (Union[google.cloud.compute_v1.types.GetForwardingRuleRequest, dict]):
                 The request object. A request message for
                 ForwardingRules.Get. See the method description for
                 details.
@@ -592,12 +604,12 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
 
     def insert(
         self,
-        request: compute.InsertForwardingRuleRequest = None,
+        request: Union[compute.InsertForwardingRuleRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         forwarding_rule_resource: compute.ForwardingRule = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -606,7 +618,7 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
         request.
 
         Args:
-            request (google.cloud.compute_v1.types.InsertForwardingRuleRequest):
+            request (Union[google.cloud.compute_v1.types.InsertForwardingRuleRequest, dict]):
                 The request object. A request message for
                 ForwardingRules.Insert. See the method description for
                 details.
@@ -689,11 +701,11 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
 
     def list(
         self,
-        request: compute.ListForwardingRulesRequest = None,
+        request: Union[compute.ListForwardingRulesRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
@@ -701,7 +713,7 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
         available to the specified project and region.
 
         Args:
-            request (google.cloud.compute_v1.types.ListForwardingRulesRequest):
+            request (Union[google.cloud.compute_v1.types.ListForwardingRulesRequest, dict]):
                 The request object. A request message for
                 ForwardingRules.List. See the method description for
                 details.
@@ -773,13 +785,13 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
 
     def patch(
         self,
-        request: compute.PatchForwardingRuleRequest = None,
+        request: Union[compute.PatchForwardingRuleRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         forwarding_rule: str = None,
         forwarding_rule_resource: compute.ForwardingRule = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -789,7 +801,7 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
         only patch the network_tier field.
 
         Args:
-            request (google.cloud.compute_v1.types.PatchForwardingRuleRequest):
+            request (Union[google.cloud.compute_v1.types.PatchForwardingRuleRequest, dict]):
                 The request object. A request message for
                 ForwardingRules.Patch. See the method description for
                 details.
@@ -883,13 +895,13 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
 
     def set_labels(
         self,
-        request: compute.SetLabelsForwardingRuleRequest = None,
+        request: Union[compute.SetLabelsForwardingRuleRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         resource: str = None,
         region_set_labels_request_resource: compute.RegionSetLabelsRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -898,7 +910,7 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
         documentation.
 
         Args:
-            request (google.cloud.compute_v1.types.SetLabelsForwardingRuleRequest):
+            request (Union[google.cloud.compute_v1.types.SetLabelsForwardingRuleRequest, dict]):
                 The request object. A request message for
                 ForwardingRules.SetLabels. See the method description
                 for details.
@@ -992,13 +1004,13 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
 
     def set_target(
         self,
-        request: compute.SetTargetForwardingRuleRequest = None,
+        request: Union[compute.SetTargetForwardingRuleRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         forwarding_rule: str = None,
         target_reference_resource: compute.TargetReference = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -1006,7 +1018,7 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
         target should be of the same type as the old target.
 
         Args:
-            request (google.cloud.compute_v1.types.SetTargetForwardingRuleRequest):
+            request (Union[google.cloud.compute_v1.types.SetTargetForwardingRuleRequest, dict]):
                 The request object. A request message for
                 ForwardingRules.SetTarget. See the method description
                 for details.
@@ -1097,6 +1109,19 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:

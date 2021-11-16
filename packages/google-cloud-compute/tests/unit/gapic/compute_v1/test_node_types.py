@@ -15,7 +15,6 @@
 #
 import os
 import mock
-import packaging.version
 
 import grpc
 from grpc.experimental import aio
@@ -24,6 +23,7 @@ import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 
 from requests import Response
+from requests import Request
 from requests.sessions import Session
 
 from google.api_core import client_options
@@ -31,31 +31,15 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
+from google.api_core import path_template
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.compute_v1.services.node_types import NodeTypesClient
 from google.cloud.compute_v1.services.node_types import pagers
 from google.cloud.compute_v1.services.node_types import transports
-from google.cloud.compute_v1.services.node_types.transports.base import (
-    _GOOGLE_AUTH_VERSION,
-)
 from google.cloud.compute_v1.types import compute
 from google.oauth2 import service_account
 import google.auth
-
-
-# TODO(busunkim): Once google-auth >= 1.25.0 is required transitively
-# through google-api-core:
-# - Delete the auth "less than" test cases
-# - Delete these pytest markers (Make the "greater than or equal to" tests the default).
-requires_google_auth_lt_1_25_0 = pytest.mark.skipif(
-    packaging.version.parse(_GOOGLE_AUTH_VERSION) >= packaging.version.parse("1.25.0"),
-    reason="This test requires google-auth < 1.25.0",
-)
-requires_google_auth_gte_1_25_0 = pytest.mark.skipif(
-    packaging.version.parse(_GOOGLE_AUTH_VERSION) < packaging.version.parse("1.25.0"),
-    reason="This test requires google-auth >= 1.25.0",
-)
 
 
 def client_cert_source_callback():
@@ -187,7 +171,7 @@ def test_node_types_client_client_options(
     options = client_options.ClientOptions(api_endpoint="squid.clam.whelk")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -196,6 +180,7 @@ def test_node_types_client_client_options(
             client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
         )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
@@ -203,7 +188,7 @@ def test_node_types_client_client_options(
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class()
+            client = client_class(transport=transport_name)
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
@@ -212,6 +197,7 @@ def test_node_types_client_client_options(
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
+                always_use_jwt_access=True,
             )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
@@ -219,7 +205,7 @@ def test_node_types_client_client_options(
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class()
+            client = client_class(transport=transport_name)
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
@@ -228,6 +214,7 @@ def test_node_types_client_client_options(
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
+                always_use_jwt_access=True,
             )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
@@ -247,7 +234,7 @@ def test_node_types_client_client_options(
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -256,6 +243,7 @@ def test_node_types_client_client_options(
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
             client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
         )
 
 
@@ -286,7 +274,7 @@ def test_node_types_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(client_options=options)
+            client = client_class(transport=transport_name, client_options=options)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -303,6 +291,7 @@ def test_node_types_client_mtls_env_auto(
                 client_cert_source_for_mtls=expected_client_cert_source,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
+                always_use_jwt_access=True,
             )
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
@@ -327,7 +316,7 @@ def test_node_types_client_mtls_env_auto(
                         expected_client_cert_source = client_cert_source_callback
 
                     patched.return_value = None
-                    client = client_class()
+                    client = client_class(transport=transport_name)
                     patched.assert_called_once_with(
                         credentials=None,
                         credentials_file=None,
@@ -336,6 +325,7 @@ def test_node_types_client_mtls_env_auto(
                         client_cert_source_for_mtls=expected_client_cert_source,
                         quota_project_id=None,
                         client_info=transports.base.DEFAULT_CLIENT_INFO,
+                        always_use_jwt_access=True,
                     )
 
     # Check the case client_cert_source and ADC client cert are not provided.
@@ -348,7 +338,7 @@ def test_node_types_client_mtls_env_auto(
                 return_value=False,
             ):
                 patched.return_value = None
-                client = client_class()
+                client = client_class(transport=transport_name)
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
@@ -357,6 +347,7 @@ def test_node_types_client_mtls_env_auto(
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
                     client_info=transports.base.DEFAULT_CLIENT_INFO,
+                    always_use_jwt_access=True,
                 )
 
 
@@ -371,7 +362,7 @@ def test_node_types_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -380,6 +371,7 @@ def test_node_types_client_client_options_scopes(
             client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
         )
 
 
@@ -394,7 +386,7 @@ def test_node_types_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -403,6 +395,7 @@ def test_node_types_client_client_options_credentials_file(
             client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
         )
 
 
@@ -413,31 +406,25 @@ def test_aggregated_list_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1"}
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.NodeTypeAggregatedList(
             id="id_value",
-            items={
-                "key_value": compute.NodeTypesScopedList(
-                    node_types=[compute.NodeType(cpu_platform="cpu_platform_value")]
-                )
-            },
             kind="kind_value",
             next_page_token="next_page_token_value",
             self_link="self_link_value",
             unreachables=["unreachables_value"],
-            warning=compute.Warning(code=compute.Warning.Code.CLEANUP_FAILED),
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.NodeTypeAggregatedList.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.NodeTypeAggregatedList.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.aggregated_list(request)
@@ -445,24 +432,43 @@ def test_aggregated_list_rest(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.AggregatedListPager)
     assert response.id == "id_value"
-    assert response.items == {
-        "key_value": compute.NodeTypesScopedList(
-            node_types=[compute.NodeType(cpu_platform="cpu_platform_value")]
-        )
-    }
     assert response.kind == "kind_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.self_link == "self_link_value"
     assert response.unreachables == ["unreachables_value"]
-    assert response.warning == compute.Warning(code=compute.Warning.Code.CLEANUP_FAILED)
+
+
+def test_aggregated_list_rest_bad_request(
+    transport: str = "rest", request_type=compute.AggregatedListNodeTypesRequest
+):
+    client = NodeTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1"}
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.aggregated_list(request)
 
 
 def test_aggregated_list_rest_from_dict():
     test_aggregated_list_rest(request_type=dict)
 
 
-def test_aggregated_list_rest_flattened():
-    client = NodeTypesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_aggregated_list_rest_flattened(transport: str = "rest"):
+    client = NodeTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -470,27 +476,36 @@ def test_aggregated_list_rest_flattened():
         return_value = compute.NodeTypeAggregatedList()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.NodeTypeAggregatedList.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.NodeTypeAggregatedList.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.aggregated_list(project="project_value",)
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(project="project_value",)
+        mock_args.update(sample_request)
+        client.aggregated_list(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/aggregated/nodeTypes"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_aggregated_list_rest_flattened_error():
-    client = NodeTypesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_aggregated_list_rest_flattened_error(transport: str = "rest"):
+    client = NodeTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -500,11 +515,13 @@ def test_aggregated_list_rest_flattened_error():
         )
 
 
-def test_aggregated_list_pager():
+def test_aggregated_list_rest_pager():
     client = NodeTypesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
         # Set the response as a series of pages
         response = (
             compute.NodeTypeAggregatedList(
@@ -537,10 +554,9 @@ def test_aggregated_list_pager():
             return_val.status_code = 200
         req.side_effect = return_values
 
-        metadata = ()
-        pager = client.aggregated_list(request={})
+        sample_request = {"project": "sample1"}
 
-        assert pager._metadata == metadata
+        pager = client.aggregated_list(request=sample_request)
 
         assert isinstance(pager.get("a"), compute.NodeTypesScopedList)
         assert pager.get("h") is None
@@ -555,7 +571,7 @@ def test_aggregated_list_pager():
         assert pager.get("a") is None
         assert isinstance(pager.get("h"), compute.NodeTypesScopedList)
 
-        pages = list(client.aggregated_list(request={}).pages)
+        pages = list(client.aggregated_list(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
 
@@ -565,9 +581,9 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetNodeTypeReque
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "node_type": "sample3"}
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -575,7 +591,6 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetNodeTypeReque
         return_value = compute.NodeType(
             cpu_platform="cpu_platform_value",
             creation_timestamp="creation_timestamp_value",
-            deprecated=compute.DeprecationStatus(deleted="deleted_value"),
             description="description_value",
             guest_cpus=1090,
             id=205,
@@ -588,9 +603,9 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetNodeTypeReque
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.NodeType.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.NodeType.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.get(request)
@@ -599,7 +614,6 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetNodeTypeReque
     assert isinstance(response, compute.NodeType)
     assert response.cpu_platform == "cpu_platform_value"
     assert response.creation_timestamp == "creation_timestamp_value"
-    assert response.deprecated == compute.DeprecationStatus(deleted="deleted_value")
     assert response.description == "description_value"
     assert response.guest_cpus == 1090
     assert response.id == 205
@@ -611,12 +625,37 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetNodeTypeReque
     assert response.zone == "zone_value"
 
 
+def test_get_rest_bad_request(
+    transport: str = "rest", request_type=compute.GetNodeTypeRequest
+):
+    client = NodeTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "node_type": "sample3"}
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get(request)
+
+
 def test_get_rest_from_dict():
     test_get_rest(request_type=dict)
 
 
-def test_get_rest_flattened():
-    client = NodeTypesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_get_rest_flattened(transport: str = "rest"):
+    client = NodeTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -624,31 +663,42 @@ def test_get_rest_flattened():
         return_value = compute.NodeType()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.NodeType.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.NodeType.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.get(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "node_type": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value", zone="zone_value", node_type="node_type_value",
         )
+        mock_args.update(sample_request)
+        client.get(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "node_type_value" in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/nodeTypes/{node_type}"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_get_rest_flattened_error():
-    client = NodeTypesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_get_rest_flattened_error(transport: str = "rest"):
+    client = NodeTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -666,26 +716,24 @@ def test_list_rest(transport: str = "rest", request_type=compute.ListNodeTypesRe
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2"}
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.NodeTypeList(
             id="id_value",
-            items=[compute.NodeType(cpu_platform="cpu_platform_value")],
             kind="kind_value",
             next_page_token="next_page_token_value",
             self_link="self_link_value",
-            warning=compute.Warning(code=compute.Warning.Code.CLEANUP_FAILED),
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.NodeTypeList.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.NodeTypeList.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.list(request)
@@ -693,19 +741,42 @@ def test_list_rest(transport: str = "rest", request_type=compute.ListNodeTypesRe
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPager)
     assert response.id == "id_value"
-    assert response.items == [compute.NodeType(cpu_platform="cpu_platform_value")]
     assert response.kind == "kind_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.self_link == "self_link_value"
-    assert response.warning == compute.Warning(code=compute.Warning.Code.CLEANUP_FAILED)
+
+
+def test_list_rest_bad_request(
+    transport: str = "rest", request_type=compute.ListNodeTypesRequest
+):
+    client = NodeTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2"}
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list(request)
 
 
 def test_list_rest_from_dict():
     test_list_rest(request_type=dict)
 
 
-def test_list_rest_flattened():
-    client = NodeTypesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_list_rest_flattened(transport: str = "rest"):
+    client = NodeTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -713,30 +784,36 @@ def test_list_rest_flattened():
         return_value = compute.NodeTypeList()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.NodeTypeList.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.NodeTypeList.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.list(
-            project="project_value", zone="zone_value",
-        )
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "zone": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(project="project_value", zone="zone_value",)
+        mock_args.update(sample_request)
+        client.list(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/nodeTypes"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_list_rest_flattened_error():
-    client = NodeTypesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_list_rest_flattened_error(transport: str = "rest"):
+    client = NodeTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -746,11 +823,13 @@ def test_list_rest_flattened_error():
         )
 
 
-def test_list_pager():
+def test_list_rest_pager():
     client = NodeTypesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
         # Set the response as a series of pages
         response = (
             compute.NodeTypeList(
@@ -772,16 +851,15 @@ def test_list_pager():
             return_val.status_code = 200
         req.side_effect = return_values
 
-        metadata = ()
-        pager = client.list(request={})
+        sample_request = {"project": "sample1", "zone": "sample2"}
 
-        assert pager._metadata == metadata
+        pager = client.list(request=sample_request)
 
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.NodeType) for i in results)
 
-        pages = list(client.list(request={}).pages)
+        pages = list(client.list(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
 
@@ -864,8 +942,10 @@ def test_node_types_base_transport():
         with pytest.raises(NotImplementedError):
             getattr(transport, method)(request=object())
 
+    with pytest.raises(NotImplementedError):
+        transport.close()
 
-@requires_google_auth_gte_1_25_0
+
 def test_node_types_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
@@ -890,30 +970,6 @@ def test_node_types_base_transport_with_credentials_file():
         )
 
 
-@requires_google_auth_lt_1_25_0
-def test_node_types_base_transport_with_credentials_file_old_google_auth():
-    # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.compute_v1.services.node_types.transports.NodeTypesTransport._prep_wrapped_messages"
-    ) as Transport:
-        Transport.return_value = None
-        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.NodeTypesTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
-        )
-        load_creds.assert_called_once_with(
-            "credentials.json",
-            scopes=(
-                "https://www.googleapis.com/auth/compute.readonly",
-                "https://www.googleapis.com/auth/compute",
-                "https://www.googleapis.com/auth/cloud-platform",
-            ),
-            quota_project_id="octopus",
-        )
-
-
 def test_node_types_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
@@ -925,7 +981,6 @@ def test_node_types_base_transport_with_adc():
         adc.assert_called_once()
 
 
-@requires_google_auth_gte_1_25_0
 def test_node_types_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
@@ -934,22 +989,6 @@ def test_node_types_auth_adc():
         adc.assert_called_once_with(
             scopes=None,
             default_scopes=(
-                "https://www.googleapis.com/auth/compute.readonly",
-                "https://www.googleapis.com/auth/compute",
-                "https://www.googleapis.com/auth/cloud-platform",
-            ),
-            quota_project_id=None,
-        )
-
-
-@requires_google_auth_lt_1_25_0
-def test_node_types_auth_adc_old_google_auth():
-    # If no credentials are provided, we should use ADC credentials.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc:
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        NodeTypesClient()
-        adc.assert_called_once_with(
-            scopes=(
                 "https://www.googleapis.com/auth/compute.readonly",
                 "https://www.googleapis.com/auth/compute",
                 "https://www.googleapis.com/auth/cloud-platform",
@@ -1104,3 +1143,36 @@ def test_client_withDEFAULT_CLIENT_INFO():
             credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
+
+
+def test_transport_close():
+    transports = {
+        "rest": "_session",
+    }
+
+    for transport, close_name in transports.items():
+        client = NodeTypesClient(
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
+        )
+        with mock.patch.object(
+            type(getattr(client.transport, close_name)), "close"
+        ) as close:
+            with client:
+                close.assert_not_called()
+            close.assert_called_once()
+
+
+def test_client_ctx():
+    transports = [
+        "rest",
+    ]
+    for transport in transports:
+        client = NodeTypesClient(
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
+        )
+        # Test client calls underlying transport.
+        with mock.patch.object(type(client.transport), "close") as close:
+            close.assert_not_called()
+            with client:
+                pass
+            close.assert_called()

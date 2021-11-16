@@ -14,21 +14,25 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.compute_v1.services.region_health_check_services import pagers
 from google.cloud.compute_v1.types import compute
@@ -265,8 +269,15 @@ class RegionHealthCheckServicesClient(metaclass=RegionHealthCheckServicesClientM
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
         )
 
         client_cert_source_func = None
@@ -328,23 +339,24 @@ class RegionHealthCheckServicesClient(metaclass=RegionHealthCheckServicesClientM
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
             )
 
     def delete(
         self,
-        request: compute.DeleteRegionHealthCheckServiceRequest = None,
+        request: Union[compute.DeleteRegionHealthCheckServiceRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         health_check_service: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified regional HealthCheckService.
 
         Args:
-            request (google.cloud.compute_v1.types.DeleteRegionHealthCheckServiceRequest):
+            request (Union[google.cloud.compute_v1.types.DeleteRegionHealthCheckServiceRequest, dict]):
                 The request object. A request message for
                 RegionHealthCheckServices.Delete. See the method
                 description for details.
@@ -430,12 +442,12 @@ class RegionHealthCheckServicesClient(metaclass=RegionHealthCheckServicesClientM
 
     def get(
         self,
-        request: compute.GetRegionHealthCheckServiceRequest = None,
+        request: Union[compute.GetRegionHealthCheckServiceRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         health_check_service: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.HealthCheckService:
@@ -443,7 +455,7 @@ class RegionHealthCheckServicesClient(metaclass=RegionHealthCheckServicesClientM
         resource.
 
         Args:
-            request (google.cloud.compute_v1.types.GetRegionHealthCheckServiceRequest):
+            request (Union[google.cloud.compute_v1.types.GetRegionHealthCheckServiceRequest, dict]):
                 The request object. A request message for
                 RegionHealthCheckServices.Get. See the method
                 description for details.
@@ -516,12 +528,12 @@ class RegionHealthCheckServicesClient(metaclass=RegionHealthCheckServicesClientM
 
     def insert(
         self,
-        request: compute.InsertRegionHealthCheckServiceRequest = None,
+        request: Union[compute.InsertRegionHealthCheckServiceRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         health_check_service_resource: compute.HealthCheckService = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -530,7 +542,7 @@ class RegionHealthCheckServicesClient(metaclass=RegionHealthCheckServicesClientM
         the request.
 
         Args:
-            request (google.cloud.compute_v1.types.InsertRegionHealthCheckServiceRequest):
+            request (Union[google.cloud.compute_v1.types.InsertRegionHealthCheckServiceRequest, dict]):
                 The request object. A request message for
                 RegionHealthCheckServices.Insert. See the method
                 description for details.
@@ -613,11 +625,11 @@ class RegionHealthCheckServicesClient(metaclass=RegionHealthCheckServicesClientM
 
     def list(
         self,
-        request: compute.ListRegionHealthCheckServicesRequest = None,
+        request: Union[compute.ListRegionHealthCheckServicesRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
@@ -626,7 +638,7 @@ class RegionHealthCheckServicesClient(metaclass=RegionHealthCheckServicesClientM
         region.
 
         Args:
-            request (google.cloud.compute_v1.types.ListRegionHealthCheckServicesRequest):
+            request (Union[google.cloud.compute_v1.types.ListRegionHealthCheckServicesRequest, dict]):
                 The request object. A request message for
                 RegionHealthCheckServices.List. See the method
                 description for details.
@@ -696,13 +708,13 @@ class RegionHealthCheckServicesClient(metaclass=RegionHealthCheckServicesClientM
 
     def patch(
         self,
-        request: compute.PatchRegionHealthCheckServiceRequest = None,
+        request: Union[compute.PatchRegionHealthCheckServiceRequest, dict] = None,
         *,
         project: str = None,
         region: str = None,
         health_check_service: str = None,
         health_check_service_resource: compute.HealthCheckService = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -712,7 +724,7 @@ class RegionHealthCheckServicesClient(metaclass=RegionHealthCheckServicesClientM
         patch format and processing rules.
 
         Args:
-            request (google.cloud.compute_v1.types.PatchRegionHealthCheckServiceRequest):
+            request (Union[google.cloud.compute_v1.types.PatchRegionHealthCheckServiceRequest, dict]):
                 The request object. A request message for
                 RegionHealthCheckServices.Patch. See the method
                 description for details.
@@ -804,6 +816,19 @@ class RegionHealthCheckServicesClient(metaclass=RegionHealthCheckServicesClientM
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:

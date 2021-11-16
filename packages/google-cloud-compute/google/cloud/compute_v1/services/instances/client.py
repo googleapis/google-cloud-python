@@ -14,21 +14,25 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.compute_v1.services.instances import pagers
 from google.cloud.compute_v1.types import compute
@@ -261,8 +265,15 @@ class InstancesClient(metaclass=InstancesClientMeta):
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
         )
 
         client_cert_source_func = None
@@ -324,18 +335,19 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
             )
 
     def add_access_config(
         self,
-        request: compute.AddAccessConfigInstanceRequest = None,
+        request: Union[compute.AddAccessConfigInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
         network_interface: str = None,
         access_config_resource: compute.AccessConfig = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -343,7 +355,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         interface.
 
         Args:
-            request (google.cloud.compute_v1.types.AddAccessConfigInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.AddAccessConfigInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.AddAccessConfig. See the method description
                 for details.
@@ -444,13 +456,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def add_resource_policies(
         self,
-        request: compute.AddResourcePoliciesInstanceRequest = None,
+        request: Union[compute.AddResourcePoliciesInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
         instances_add_resource_policies_request_resource: compute.InstancesAddResourcePoliciesRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -459,7 +471,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         to this instance for scheduling live migrations.
 
         Args:
-            request (google.cloud.compute_v1.types.AddResourcePoliciesInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.AddResourcePoliciesInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.AddResourcePolicies. See the method
                 description for details.
@@ -553,10 +565,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def aggregated_list(
         self,
-        request: compute.AggregatedListInstancesRequest = None,
+        request: Union[compute.AggregatedListInstancesRequest, dict] = None,
         *,
         project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
@@ -567,7 +579,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         instances.
 
         Args:
-            request (google.cloud.compute_v1.types.AggregatedListInstancesRequest):
+            request (Union[google.cloud.compute_v1.types.AggregatedListInstancesRequest, dict]):
                 The request object. A request message for
                 Instances.AggregatedList. See the method description for
                 details.
@@ -628,13 +640,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def attach_disk(
         self,
-        request: compute.AttachDiskInstanceRequest = None,
+        request: Union[compute.AttachDiskInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
         attached_disk_resource: compute.AttachedDisk = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -645,7 +657,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         persistent disk to your instance.
 
         Args:
-            request (google.cloud.compute_v1.types.AttachDiskInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.AttachDiskInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.AttachDisk. See the method description for
                 details.
@@ -735,12 +747,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def bulk_insert(
         self,
-        request: compute.BulkInsertInstanceRequest = None,
+        request: Union[compute.BulkInsertInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         bulk_insert_instance_resource_resource: compute.BulkInsertInstanceResource = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -748,7 +760,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         number of instances to create.
 
         Args:
-            request (google.cloud.compute_v1.types.BulkInsertInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.BulkInsertInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.BulkInsert. See the method description for
                 details.
@@ -835,12 +847,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def delete(
         self,
-        request: compute.DeleteInstanceRequest = None,
+        request: Union[compute.DeleteInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -848,7 +860,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         information, see Deleting an instance.
 
         Args:
-            request (google.cloud.compute_v1.types.DeleteInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.DeleteInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.Delete. See the method description for
                 details.
@@ -933,14 +945,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def delete_access_config(
         self,
-        request: compute.DeleteAccessConfigInstanceRequest = None,
+        request: Union[compute.DeleteAccessConfigInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
         access_config: str = None,
         network_interface: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -948,7 +960,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         interface.
 
         Args:
-            request (google.cloud.compute_v1.types.DeleteAccessConfigInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.DeleteAccessConfigInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.DeleteAccessConfig. See the method description
                 for details.
@@ -1049,20 +1061,20 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def detach_disk(
         self,
-        request: compute.DetachDiskInstanceRequest = None,
+        request: Union[compute.DetachDiskInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
         device_name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Detaches a disk from an instance.
 
         Args:
-            request (google.cloud.compute_v1.types.DetachDiskInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.DetachDiskInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.DetachDisk. See the method description for
                 details.
@@ -1156,12 +1168,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def get(
         self,
-        request: compute.GetInstanceRequest = None,
+        request: Union[compute.GetInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Instance:
@@ -1169,7 +1181,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         of available instances by making a list() request.
 
         Args:
-            request (google.cloud.compute_v1.types.GetInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.GetInstanceRequest, dict]):
                 The request object. A request message for Instances.Get.
                 See the method description for details.
             project (str):
@@ -1243,13 +1255,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def get_effective_firewalls(
         self,
-        request: compute.GetEffectiveFirewallsInstanceRequest = None,
+        request: Union[compute.GetEffectiveFirewallsInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
         network_interface: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.InstancesGetEffectiveFirewallsResponse:
@@ -1257,7 +1269,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         of the instance.
 
         Args:
-            request (google.cloud.compute_v1.types.GetEffectiveFirewallsInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.GetEffectiveFirewallsInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.GetEffectiveFirewalls. See the method
                 description for details.
@@ -1336,19 +1348,19 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def get_guest_attributes(
         self,
-        request: compute.GetGuestAttributesInstanceRequest = None,
+        request: Union[compute.GetGuestAttributesInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.GuestAttributes:
         r"""Returns the specified guest attributes entry.
 
         Args:
-            request (google.cloud.compute_v1.types.GetGuestAttributesInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.GetGuestAttributesInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.GetGuestAttributes. See the method description
                 for details.
@@ -1418,12 +1430,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def get_iam_policy(
         self,
-        request: compute.GetIamPolicyInstanceRequest = None,
+        request: Union[compute.GetIamPolicyInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
@@ -1431,7 +1443,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         empty if no such policy or resource exists.
 
         Args:
-            request (google.cloud.compute_v1.types.GetIamPolicyInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.GetIamPolicyInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.GetIamPolicy. See the method description for
                 details.
@@ -1540,19 +1552,19 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def get_screenshot(
         self,
-        request: compute.GetScreenshotInstanceRequest = None,
+        request: Union[compute.GetScreenshotInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Screenshot:
         r"""Returns the screenshot from the specified instance.
 
         Args:
-            request (google.cloud.compute_v1.types.GetScreenshotInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.GetScreenshotInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.GetScreenshot. See the method description for
                 details.
@@ -1622,12 +1634,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def get_serial_port_output(
         self,
-        request: compute.GetSerialPortOutputInstanceRequest = None,
+        request: Union[compute.GetSerialPortOutputInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.SerialPortOutput:
@@ -1635,7 +1647,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         specified instance.
 
         Args:
-            request (google.cloud.compute_v1.types.GetSerialPortOutputInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.GetSerialPortOutputInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.GetSerialPortOutput. See the method
                 description for details.
@@ -1705,19 +1717,19 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def get_shielded_instance_identity(
         self,
-        request: compute.GetShieldedInstanceIdentityInstanceRequest = None,
+        request: Union[compute.GetShieldedInstanceIdentityInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.ShieldedInstanceIdentity:
         r"""Returns the Shielded Instance Identity of an instance
 
         Args:
-            request (google.cloud.compute_v1.types.GetShieldedInstanceIdentityInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.GetShieldedInstanceIdentityInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.GetShieldedInstanceIdentity. See the method
                 description for details.
@@ -1789,12 +1801,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def insert(
         self,
-        request: compute.InsertInstanceRequest = None,
+        request: Union[compute.InsertInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance_resource: compute.Instance = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -1802,7 +1814,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         using the data included in the request.
 
         Args:
-            request (google.cloud.compute_v1.types.InsertInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.InsertInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.Insert. See the method description for
                 details.
@@ -1885,11 +1897,11 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def list(
         self,
-        request: compute.ListInstancesRequest = None,
+        request: Union[compute.ListInstancesRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
@@ -1897,7 +1909,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         specified zone.
 
         Args:
-            request (google.cloud.compute_v1.types.ListInstancesRequest):
+            request (Union[google.cloud.compute_v1.types.ListInstancesRequest, dict]):
                 The request object. A request message for
                 Instances.List. See the method description for details.
             project (str):
@@ -1967,12 +1979,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def list_referrers(
         self,
-        request: compute.ListReferrersInstancesRequest = None,
+        request: Union[compute.ListReferrersInstancesRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListReferrersPager:
@@ -1984,7 +1996,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         instances.
 
         Args:
-            request (google.cloud.compute_v1.types.ListReferrersInstancesRequest):
+            request (Union[google.cloud.compute_v1.types.ListReferrersInstancesRequest, dict]):
                 The request object. A request message for
                 Instances.ListReferrers. See the method description for
                 details.
@@ -2067,20 +2079,20 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def remove_resource_policies(
         self,
-        request: compute.RemoveResourcePoliciesInstanceRequest = None,
+        request: Union[compute.RemoveResourcePoliciesInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
         instances_remove_resource_policies_request_resource: compute.InstancesRemoveResourcePoliciesRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Removes resource policies from an instance.
 
         Args:
-            request (google.cloud.compute_v1.types.RemoveResourcePoliciesInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.RemoveResourcePoliciesInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.RemoveResourcePolicies. See the method
                 description for details.
@@ -2179,12 +2191,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def reset(
         self,
-        request: compute.ResetInstanceRequest = None,
+        request: Union[compute.ResetInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -2193,7 +2205,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         information, see Resetting an instance.
 
         Args:
-            request (google.cloud.compute_v1.types.ResetInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.ResetInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.Reset. See the method description for details.
             project (str):
@@ -2277,19 +2289,19 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def send_diagnostic_interrupt(
         self,
-        request: compute.SendDiagnosticInterruptInstanceRequest = None,
+        request: Union[compute.SendDiagnosticInterruptInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.SendDiagnosticInterruptInstanceResponse:
         r"""Sends diagnostic interrupt to the instance.
 
         Args:
-            request (google.cloud.compute_v1.types.SendDiagnosticInterruptInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.SendDiagnosticInterruptInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.SendDiagnosticInterrupt. See the method
                 description for details.
@@ -2364,19 +2376,19 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_deletion_protection(
         self,
-        request: compute.SetDeletionProtectionInstanceRequest = None,
+        request: Union[compute.SetDeletionProtectionInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Sets deletion protection on the instance.
 
         Args:
-            request (google.cloud.compute_v1.types.SetDeletionProtectionInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.SetDeletionProtectionInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.SetDeletionProtection. See the method
                 description for details.
@@ -2461,14 +2473,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_disk_auto_delete(
         self,
-        request: compute.SetDiskAutoDeleteInstanceRequest = None,
+        request: Union[compute.SetDiskAutoDeleteInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
         auto_delete: bool = None,
         device_name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -2476,7 +2488,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         instance.
 
         Args:
-            request (google.cloud.compute_v1.types.SetDiskAutoDeleteInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.SetDiskAutoDeleteInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.SetDiskAutoDelete. See the method description
                 for details.
@@ -2579,13 +2591,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_iam_policy(
         self,
-        request: compute.SetIamPolicyInstanceRequest = None,
+        request: Union[compute.SetIamPolicyInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         resource: str = None,
         zone_set_policy_request_resource: compute.ZoneSetPolicyRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Policy:
@@ -2593,7 +2605,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         resource. Replaces any existing policy.
 
         Args:
-            request (google.cloud.compute_v1.types.SetIamPolicyInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.SetIamPolicyInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.SetIamPolicy. See the method description for
                 details.
@@ -2713,13 +2725,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_labels(
         self,
-        request: compute.SetLabelsInstanceRequest = None,
+        request: Union[compute.SetLabelsInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
         instances_set_labels_request_resource: compute.InstancesSetLabelsRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -2727,7 +2739,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         labels, read the Labeling Resources documentation.
 
         Args:
-            request (google.cloud.compute_v1.types.SetLabelsInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.SetLabelsInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.SetLabels. See the method description for
                 details.
@@ -2823,13 +2835,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_machine_resources(
         self,
-        request: compute.SetMachineResourcesInstanceRequest = None,
+        request: Union[compute.SetMachineResourcesInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
         instances_set_machine_resources_request_resource: compute.InstancesSetMachineResourcesRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -2837,7 +2849,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         stopped instance to the values specified in the request.
 
         Args:
-            request (google.cloud.compute_v1.types.SetMachineResourcesInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.SetMachineResourcesInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.SetMachineResources. See the method
                 description for details.
@@ -2933,13 +2945,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_machine_type(
         self,
-        request: compute.SetMachineTypeInstanceRequest = None,
+        request: Union[compute.SetMachineTypeInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
         instances_set_machine_type_request_resource: compute.InstancesSetMachineTypeRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -2947,7 +2959,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         the machine type specified in the request.
 
         Args:
-            request (google.cloud.compute_v1.types.SetMachineTypeInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.SetMachineTypeInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.SetMachineType. See the method description for
                 details.
@@ -3043,13 +3055,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_metadata(
         self,
-        request: compute.SetMetadataInstanceRequest = None,
+        request: Union[compute.SetMetadataInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
         metadata_resource: compute.Metadata = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -3057,7 +3069,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         included in the request.
 
         Args:
-            request (google.cloud.compute_v1.types.SetMetadataInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.SetMetadataInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.SetMetadata. See the method description for
                 details.
@@ -3149,13 +3161,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_min_cpu_platform(
         self,
-        request: compute.SetMinCpuPlatformInstanceRequest = None,
+        request: Union[compute.SetMinCpuPlatformInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
         instances_set_min_cpu_platform_request_resource: compute.InstancesSetMinCpuPlatformRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -3165,7 +3177,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Minimum CPU Platform.
 
         Args:
-            request (google.cloud.compute_v1.types.SetMinCpuPlatformInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.SetMinCpuPlatformInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.SetMinCpuPlatform. See the method description
                 for details.
@@ -3261,13 +3273,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_scheduling(
         self,
-        request: compute.SetSchedulingInstanceRequest = None,
+        request: Union[compute.SetSchedulingInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
         scheduling_resource: compute.Scheduling = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -3277,7 +3289,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         information on the possible instance states.
 
         Args:
-            request (google.cloud.compute_v1.types.SetSchedulingInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.SetSchedulingInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.SetScheduling. See the method description for
                 details.
@@ -3367,13 +3379,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_service_account(
         self,
-        request: compute.SetServiceAccountInstanceRequest = None,
+        request: Union[compute.SetServiceAccountInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
         instances_set_service_account_request_resource: compute.InstancesSetServiceAccountRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -3382,7 +3394,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         access scopes for an instance.
 
         Args:
-            request (google.cloud.compute_v1.types.SetServiceAccountInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.SetServiceAccountInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.SetServiceAccount. See the method description
                 for details.
@@ -3478,13 +3490,15 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_shielded_instance_integrity_policy(
         self,
-        request: compute.SetShieldedInstanceIntegrityPolicyInstanceRequest = None,
+        request: Union[
+            compute.SetShieldedInstanceIntegrityPolicyInstanceRequest, dict
+        ] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
         shielded_instance_integrity_policy_resource: compute.ShieldedInstanceIntegrityPolicy = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -3494,7 +3508,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         the JSON merge patch format and processing rules.
 
         Args:
-            request (google.cloud.compute_v1.types.SetShieldedInstanceIntegrityPolicyInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.SetShieldedInstanceIntegrityPolicyInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.SetShieldedInstanceIntegrityPolicy. See the
                 method description for details.
@@ -3594,13 +3608,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def set_tags(
         self,
-        request: compute.SetTagsInstanceRequest = None,
+        request: Union[compute.SetTagsInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
         tags_resource: compute.Tags = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -3608,7 +3622,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         data included in the request.
 
         Args:
-            request (google.cloud.compute_v1.types.SetTagsInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.SetTagsInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.SetTags. See the method description for
                 details.
@@ -3700,19 +3714,19 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def simulate_maintenance_event(
         self,
-        request: compute.SimulateMaintenanceEventInstanceRequest = None,
+        request: Union[compute.SimulateMaintenanceEventInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Simulates a maintenance event on the instance.
 
         Args:
-            request (google.cloud.compute_v1.types.SimulateMaintenanceEventInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.SimulateMaintenanceEventInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.SimulateMaintenanceEvent. See the method
                 description for details.
@@ -3799,12 +3813,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def start(
         self,
-        request: compute.StartInstanceRequest = None,
+        request: Union[compute.StartInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -3813,7 +3827,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Restart an instance.
 
         Args:
-            request (google.cloud.compute_v1.types.StartInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.StartInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.Start. See the method description for details.
             project (str):
@@ -3897,13 +3911,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def start_with_encryption_key(
         self,
-        request: compute.StartWithEncryptionKeyInstanceRequest = None,
+        request: Union[compute.StartWithEncryptionKeyInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
         instances_start_with_encryption_key_request_resource: compute.InstancesStartWithEncryptionKeyRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -3912,7 +3926,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Restart an instance.
 
         Args:
-            request (google.cloud.compute_v1.types.StartWithEncryptionKeyInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.StartWithEncryptionKeyInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.StartWithEncryptionKey. See the method
                 description for details.
@@ -4015,12 +4029,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def stop(
         self,
-        request: compute.StopInstanceRequest = None,
+        request: Union[compute.StopInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -4033,7 +4047,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         more information, see Stopping an instance.
 
         Args:
-            request (google.cloud.compute_v1.types.StopInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.StopInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.Stop. See the method description for details.
             project (str):
@@ -4117,13 +4131,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def test_iam_permissions(
         self,
-        request: compute.TestIamPermissionsInstanceRequest = None,
+        request: Union[compute.TestIamPermissionsInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         resource: str = None,
         test_permissions_request_resource: compute.TestPermissionsRequest = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.TestPermissionsResponse:
@@ -4131,7 +4145,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         specified resource.
 
         Args:
-            request (google.cloud.compute_v1.types.TestIamPermissionsInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.TestIamPermissionsInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.TestIamPermissions. See the method description
                 for details.
@@ -4212,13 +4226,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def update(
         self,
-        request: compute.UpdateInstanceRequest = None,
+        request: Union[compute.UpdateInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
         instance_resource: compute.Instance = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -4228,7 +4242,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         instance for a list of updatable instance properties.
 
         Args:
-            request (google.cloud.compute_v1.types.UpdateInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.UpdateInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.Update. See the method description for
                 details.
@@ -4320,14 +4334,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def update_access_config(
         self,
-        request: compute.UpdateAccessConfigInstanceRequest = None,
+        request: Union[compute.UpdateAccessConfigInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
         network_interface: str = None,
         access_config_resource: compute.AccessConfig = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -4337,7 +4351,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         uses the JSON merge patch format and processing rules.
 
         Args:
-            request (google.cloud.compute_v1.types.UpdateAccessConfigInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.UpdateAccessConfigInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.UpdateAccessConfig. See the method description
                 for details.
@@ -4438,13 +4452,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def update_display_device(
         self,
-        request: compute.UpdateDisplayDeviceInstanceRequest = None,
+        request: Union[compute.UpdateDisplayDeviceInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
         display_device_resource: compute.DisplayDevice = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -4454,7 +4468,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         patch format and processing rules.
 
         Args:
-            request (google.cloud.compute_v1.types.UpdateDisplayDeviceInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.UpdateDisplayDeviceInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.UpdateDisplayDevice. See the method
                 description for details.
@@ -4546,14 +4560,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def update_network_interface(
         self,
-        request: compute.UpdateNetworkInterfaceInstanceRequest = None,
+        request: Union[compute.UpdateNetworkInterfaceInstanceRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
         network_interface: str = None,
         network_interface_resource: compute.NetworkInterface = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -4566,7 +4580,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         follows PATCH semantics.
 
         Args:
-            request (google.cloud.compute_v1.types.UpdateNetworkInterfaceInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.UpdateNetworkInterfaceInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.UpdateNetworkInterface. See the method
                 description for details.
@@ -4667,13 +4681,15 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
     def update_shielded_instance_config(
         self,
-        request: compute.UpdateShieldedInstanceConfigInstanceRequest = None,
+        request: Union[
+            compute.UpdateShieldedInstanceConfigInstanceRequest, dict
+        ] = None,
         *,
         project: str = None,
         zone: str = None,
         instance: str = None,
         shielded_instance_config_resource: compute.ShieldedInstanceConfig = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -4683,7 +4699,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         patch format and processing rules.
 
         Args:
-            request (google.cloud.compute_v1.types.UpdateShieldedInstanceConfigInstanceRequest):
+            request (Union[google.cloud.compute_v1.types.UpdateShieldedInstanceConfigInstanceRequest, dict]):
                 The request object. A request message for
                 Instances.UpdateShieldedInstanceConfig. See the method
                 description for details.
@@ -4778,6 +4794,19 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:

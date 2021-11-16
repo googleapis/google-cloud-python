@@ -15,13 +15,13 @@
 #
 from typing import (
     Any,
-    AsyncIterable,
+    AsyncIterator,
     Awaitable,
     Callable,
-    Iterable,
     Sequence,
     Tuple,
     Optional,
+    Iterator,
 )
 
 from google.cloud.compute_v1.types import compute
@@ -74,14 +74,14 @@ class AggregatedListPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[compute.InstanceGroupManagerAggregatedList]:
+    def pages(self) -> Iterator[compute.InstanceGroupManagerAggregatedList]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[Tuple[str, compute.InstanceGroupManagersScopedList]]:
+    def __iter__(self) -> Iterator[Tuple[str, compute.InstanceGroupManagersScopedList]]:
         for page in self.pages:
             yield from page.items.items()
 
@@ -139,14 +139,14 @@ class ListPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[compute.InstanceGroupManagerList]:
+    def pages(self) -> Iterator[compute.InstanceGroupManagerList]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[compute.InstanceGroupManager]:
+    def __iter__(self) -> Iterator[compute.InstanceGroupManager]:
         for page in self.pages:
             yield from page.items
 
@@ -201,14 +201,14 @@ class ListErrorsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterable[compute.InstanceGroupManagersListErrorsResponse]:
+    def pages(self) -> Iterator[compute.InstanceGroupManagersListErrorsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[compute.InstanceManagedByIgmError]:
+    def __iter__(self) -> Iterator[compute.InstanceManagedByIgmError]:
         for page in self.pages:
             yield from page.items
 
@@ -269,14 +269,14 @@ class ListManagedInstancesPager:
     @property
     def pages(
         self,
-    ) -> Iterable[compute.InstanceGroupManagersListManagedInstancesResponse]:
+    ) -> Iterator[compute.InstanceGroupManagersListManagedInstancesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[compute.ManagedInstance]:
+    def __iter__(self) -> Iterator[compute.ManagedInstance]:
         for page in self.pages:
             yield from page.managed_instances
 
@@ -335,14 +335,14 @@ class ListPerInstanceConfigsPager:
     @property
     def pages(
         self,
-    ) -> Iterable[compute.InstanceGroupManagersListPerInstanceConfigsResp]:
+    ) -> Iterator[compute.InstanceGroupManagersListPerInstanceConfigsResp]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[compute.PerInstanceConfig]:
+    def __iter__(self) -> Iterator[compute.PerInstanceConfig]:
         for page in self.pages:
             yield from page.items
 

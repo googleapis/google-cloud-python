@@ -15,7 +15,6 @@
 #
 import os
 import mock
-import packaging.version
 
 import grpc
 from grpc.experimental import aio
@@ -24,6 +23,7 @@ import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 
 from requests import Response
+from requests import Request
 from requests.sessions import Session
 
 from google.api_core import client_options
@@ -31,31 +31,15 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
+from google.api_core import path_template
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.compute_v1.services.instances import InstancesClient
 from google.cloud.compute_v1.services.instances import pagers
 from google.cloud.compute_v1.services.instances import transports
-from google.cloud.compute_v1.services.instances.transports.base import (
-    _GOOGLE_AUTH_VERSION,
-)
 from google.cloud.compute_v1.types import compute
 from google.oauth2 import service_account
 import google.auth
-
-
-# TODO(busunkim): Once google-auth >= 1.25.0 is required transitively
-# through google-api-core:
-# - Delete the auth "less than" test cases
-# - Delete these pytest markers (Make the "greater than or equal to" tests the default).
-requires_google_auth_lt_1_25_0 = pytest.mark.skipif(
-    packaging.version.parse(_GOOGLE_AUTH_VERSION) >= packaging.version.parse("1.25.0"),
-    reason="This test requires google-auth < 1.25.0",
-)
-requires_google_auth_gte_1_25_0 = pytest.mark.skipif(
-    packaging.version.parse(_GOOGLE_AUTH_VERSION) < packaging.version.parse("1.25.0"),
-    reason="This test requires google-auth >= 1.25.0",
-)
 
 
 def client_cert_source_callback():
@@ -185,7 +169,7 @@ def test_instances_client_client_options(client_class, transport_class, transpor
     options = client_options.ClientOptions(api_endpoint="squid.clam.whelk")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -194,6 +178,7 @@ def test_instances_client_client_options(client_class, transport_class, transpor
             client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
         )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
@@ -201,7 +186,7 @@ def test_instances_client_client_options(client_class, transport_class, transpor
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class()
+            client = client_class(transport=transport_name)
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
@@ -210,6 +195,7 @@ def test_instances_client_client_options(client_class, transport_class, transpor
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
+                always_use_jwt_access=True,
             )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
@@ -217,7 +203,7 @@ def test_instances_client_client_options(client_class, transport_class, transpor
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class()
+            client = client_class(transport=transport_name)
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
@@ -226,6 +212,7 @@ def test_instances_client_client_options(client_class, transport_class, transpor
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
+                always_use_jwt_access=True,
             )
 
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
@@ -245,7 +232,7 @@ def test_instances_client_client_options(client_class, transport_class, transpor
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -254,6 +241,7 @@ def test_instances_client_client_options(client_class, transport_class, transpor
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
             client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
         )
 
 
@@ -284,7 +272,7 @@ def test_instances_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(client_options=options)
+            client = client_class(transport=transport_name, client_options=options)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -301,6 +289,7 @@ def test_instances_client_mtls_env_auto(
                 client_cert_source_for_mtls=expected_client_cert_source,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
+                always_use_jwt_access=True,
             )
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
@@ -325,7 +314,7 @@ def test_instances_client_mtls_env_auto(
                         expected_client_cert_source = client_cert_source_callback
 
                     patched.return_value = None
-                    client = client_class()
+                    client = client_class(transport=transport_name)
                     patched.assert_called_once_with(
                         credentials=None,
                         credentials_file=None,
@@ -334,6 +323,7 @@ def test_instances_client_mtls_env_auto(
                         client_cert_source_for_mtls=expected_client_cert_source,
                         quota_project_id=None,
                         client_info=transports.base.DEFAULT_CLIENT_INFO,
+                        always_use_jwt_access=True,
                     )
 
     # Check the case client_cert_source and ADC client cert are not provided.
@@ -346,7 +336,7 @@ def test_instances_client_mtls_env_auto(
                 return_value=False,
             ):
                 patched.return_value = None
-                client = client_class()
+                client = client_class(transport=transport_name)
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
@@ -355,6 +345,7 @@ def test_instances_client_mtls_env_auto(
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
                     client_info=transports.base.DEFAULT_CLIENT_INFO,
+                    always_use_jwt_access=True,
                 )
 
 
@@ -369,7 +360,7 @@ def test_instances_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -378,6 +369,7 @@ def test_instances_client_client_options_scopes(
             client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
         )
 
 
@@ -392,7 +384,7 @@ def test_instances_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(client_options=options)
+        client = client_class(transport=transport_name, client_options=options)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -401,6 +393,7 @@ def test_instances_client_client_options_credentials_file(
             client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
         )
 
 
@@ -411,9 +404,12 @@ def test_add_access_config_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init["access_config_resource"] = compute.AccessConfig(
+        external_ipv6="external_ipv6_value"
+    )
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -423,7 +419,6 @@ def test_add_access_config_rest(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -441,14 +436,13 @@ def test_add_access_config_rest(
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.add_access_config(request)
@@ -459,7 +453,6 @@ def test_add_access_config_rest(
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -477,18 +470,43 @@ def test_add_access_config_rest(
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_add_access_config_rest_bad_request(
+    transport: str = "rest", request_type=compute.AddAccessConfigInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init["access_config_resource"] = compute.AccessConfig(
+        external_ipv6="external_ipv6_value"
+    )
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.add_access_config(request)
 
 
 def test_add_access_config_rest_from_dict():
     test_add_access_config_rest(request_type=dict)
 
 
-def test_add_access_config_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_add_access_config_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -496,44 +514,48 @@ def test_add_access_config_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        access_config_resource = compute.AccessConfig(
-            external_ipv6="external_ipv6_value"
-        )
-        client.add_access_config(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value",
             zone="zone_value",
             instance="instance_value",
             network_interface="network_interface_value",
-            access_config_resource=access_config_resource,
+            access_config_resource=compute.AccessConfig(
+                external_ipv6="external_ipv6_value"
+            ),
         )
+        mock_args.update(sample_request)
+        client.add_access_config(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
-        assert "network_interface_value" in http_call[1] + str(body) + str(params)
-        assert compute.AccessConfig.to_json(
-            access_config_resource,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        ) in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/addAccessConfig"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_add_access_config_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_add_access_config_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -557,9 +579,14 @@ def test_add_resource_policies_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init[
+        "instances_add_resource_policies_request_resource"
+    ] = compute.InstancesAddResourcePoliciesRequest(
+        resource_policies=["resource_policies_value"]
+    )
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -569,7 +596,6 @@ def test_add_resource_policies_rest(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -587,14 +613,13 @@ def test_add_resource_policies_rest(
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.add_resource_policies(request)
@@ -605,7 +630,6 @@ def test_add_resource_policies_rest(
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -623,18 +647,45 @@ def test_add_resource_policies_rest(
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_add_resource_policies_rest_bad_request(
+    transport: str = "rest", request_type=compute.AddResourcePoliciesInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init[
+        "instances_add_resource_policies_request_resource"
+    ] = compute.InstancesAddResourcePoliciesRequest(
+        resource_policies=["resource_policies_value"]
+    )
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.add_resource_policies(request)
 
 
 def test_add_resource_policies_rest_from_dict():
     test_add_resource_policies_rest(request_type=dict)
 
 
-def test_add_resource_policies_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_add_resource_policies_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -642,42 +693,47 @@ def test_add_resource_policies_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        instances_add_resource_policies_request_resource = compute.InstancesAddResourcePoliciesRequest(
-            resource_policies=["resource_policies_value"]
-        )
-        client.add_resource_policies(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value",
             zone="zone_value",
             instance="instance_value",
-            instances_add_resource_policies_request_resource=instances_add_resource_policies_request_resource,
+            instances_add_resource_policies_request_resource=compute.InstancesAddResourcePoliciesRequest(
+                resource_policies=["resource_policies_value"]
+            ),
         )
+        mock_args.update(sample_request)
+        client.add_resource_policies(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
-        assert compute.InstancesAddResourcePoliciesRequest.to_json(
-            instances_add_resource_policies_request_resource,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        ) in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/addResourcePolicies"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_add_resource_policies_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_add_resource_policies_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -700,37 +756,25 @@ def test_aggregated_list_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1"}
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.InstanceAggregatedList(
             id="id_value",
-            items={
-                "key_value": compute.InstancesScopedList(
-                    instances=[
-                        compute.Instance(
-                            advanced_machine_features=compute.AdvancedMachineFeatures(
-                                enable_nested_virtualization=True
-                            )
-                        )
-                    ]
-                )
-            },
             kind="kind_value",
             next_page_token="next_page_token_value",
             self_link="self_link_value",
             unreachables=["unreachables_value"],
-            warning=compute.Warning(code=compute.Warning.Code.CLEANUP_FAILED),
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.InstanceAggregatedList.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.InstanceAggregatedList.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.aggregated_list(request)
@@ -738,30 +782,43 @@ def test_aggregated_list_rest(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.AggregatedListPager)
     assert response.id == "id_value"
-    assert response.items == {
-        "key_value": compute.InstancesScopedList(
-            instances=[
-                compute.Instance(
-                    advanced_machine_features=compute.AdvancedMachineFeatures(
-                        enable_nested_virtualization=True
-                    )
-                )
-            ]
-        )
-    }
     assert response.kind == "kind_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.self_link == "self_link_value"
     assert response.unreachables == ["unreachables_value"]
-    assert response.warning == compute.Warning(code=compute.Warning.Code.CLEANUP_FAILED)
+
+
+def test_aggregated_list_rest_bad_request(
+    transport: str = "rest", request_type=compute.AggregatedListInstancesRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1"}
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.aggregated_list(request)
 
 
 def test_aggregated_list_rest_from_dict():
     test_aggregated_list_rest(request_type=dict)
 
 
-def test_aggregated_list_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_aggregated_list_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -769,27 +826,36 @@ def test_aggregated_list_rest_flattened():
         return_value = compute.InstanceAggregatedList()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.InstanceAggregatedList.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.InstanceAggregatedList.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.aggregated_list(project="project_value",)
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(project="project_value",)
+        mock_args.update(sample_request)
+        client.aggregated_list(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/aggregated/instances"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_aggregated_list_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_aggregated_list_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -799,11 +865,13 @@ def test_aggregated_list_rest_flattened_error():
         )
 
 
-def test_aggregated_list_pager():
+def test_aggregated_list_rest_pager():
     client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
         # Set the response as a series of pages
         response = (
             compute.InstanceAggregatedList(
@@ -836,10 +904,9 @@ def test_aggregated_list_pager():
             return_val.status_code = 200
         req.side_effect = return_values
 
-        metadata = ()
-        pager = client.aggregated_list(request={})
+        sample_request = {"project": "sample1"}
 
-        assert pager._metadata == metadata
+        pager = client.aggregated_list(request=sample_request)
 
         assert isinstance(pager.get("a"), compute.InstancesScopedList)
         assert pager.get("h") is None
@@ -854,7 +921,7 @@ def test_aggregated_list_pager():
         assert pager.get("a") is None
         assert isinstance(pager.get("h"), compute.InstancesScopedList)
 
-        pages = list(client.aggregated_list(request={}).pages)
+        pages = list(client.aggregated_list(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
 
@@ -866,9 +933,10 @@ def test_attach_disk_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init["attached_disk_resource"] = compute.AttachedDisk(auto_delete=True)
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -878,7 +946,6 @@ def test_attach_disk_rest(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -896,14 +963,13 @@ def test_attach_disk_rest(
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.attach_disk(request)
@@ -914,7 +980,6 @@ def test_attach_disk_rest(
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -932,18 +997,41 @@ def test_attach_disk_rest(
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_attach_disk_rest_bad_request(
+    transport: str = "rest", request_type=compute.AttachDiskInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init["attached_disk_resource"] = compute.AttachedDisk(auto_delete=True)
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.attach_disk(request)
 
 
 def test_attach_disk_rest_from_dict():
     test_attach_disk_rest(request_type=dict)
 
 
-def test_attach_disk_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_attach_disk_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -951,40 +1039,45 @@ def test_attach_disk_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        attached_disk_resource = compute.AttachedDisk(auto_delete=True)
-        client.attach_disk(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value",
             zone="zone_value",
             instance="instance_value",
-            attached_disk_resource=attached_disk_resource,
+            attached_disk_resource=compute.AttachedDisk(auto_delete=True),
         )
+        mock_args.update(sample_request)
+        client.attach_disk(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
-        assert compute.AttachedDisk.to_json(
-            attached_disk_resource,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        ) in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/attachDisk"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_attach_disk_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_attach_disk_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1005,9 +1098,12 @@ def test_bulk_insert_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2"}
+    request_init[
+        "bulk_insert_instance_resource_resource"
+    ] = compute.BulkInsertInstanceResource(count=553)
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1017,7 +1113,6 @@ def test_bulk_insert_rest(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -1035,14 +1130,13 @@ def test_bulk_insert_rest(
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.bulk_insert(request)
@@ -1053,7 +1147,6 @@ def test_bulk_insert_rest(
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -1071,18 +1164,43 @@ def test_bulk_insert_rest(
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_bulk_insert_rest_bad_request(
+    transport: str = "rest", request_type=compute.BulkInsertInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2"}
+    request_init[
+        "bulk_insert_instance_resource_resource"
+    ] = compute.BulkInsertInstanceResource(count=553)
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.bulk_insert(request)
 
 
 def test_bulk_insert_rest_from_dict():
     test_bulk_insert_rest(request_type=dict)
 
 
-def test_bulk_insert_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_bulk_insert_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1090,40 +1208,42 @@ def test_bulk_insert_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        bulk_insert_instance_resource_resource = compute.BulkInsertInstanceResource(
-            count=553
-        )
-        client.bulk_insert(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "zone": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value",
             zone="zone_value",
-            bulk_insert_instance_resource_resource=bulk_insert_instance_resource_resource,
+            bulk_insert_instance_resource_resource=compute.BulkInsertInstanceResource(
+                count=553
+            ),
         )
+        mock_args.update(sample_request)
+        client.bulk_insert(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert compute.BulkInsertInstanceResource.to_json(
-            bulk_insert_instance_resource_resource,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        ) in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/bulkInsert"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_bulk_insert_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_bulk_insert_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1145,9 +1265,9 @@ def test_delete_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1157,7 +1277,6 @@ def test_delete_rest(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -1175,14 +1294,13 @@ def test_delete_rest(
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.delete(request)
@@ -1193,7 +1311,6 @@ def test_delete_rest(
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -1211,18 +1328,40 @@ def test_delete_rest(
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_delete_rest_bad_request(
+    transport: str = "rest", request_type=compute.DeleteInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete(request)
 
 
 def test_delete_rest_from_dict():
     test_delete_rest(request_type=dict)
 
 
-def test_delete_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_delete_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1230,31 +1369,42 @@ def test_delete_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.delete(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value", zone="zone_value", instance="instance_value",
         )
+        mock_args.update(sample_request)
+        client.delete(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_delete_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_delete_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1274,9 +1424,9 @@ def test_delete_access_config_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1286,7 +1436,6 @@ def test_delete_access_config_rest(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -1304,14 +1453,13 @@ def test_delete_access_config_rest(
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.delete_access_config(request)
@@ -1322,7 +1470,6 @@ def test_delete_access_config_rest(
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -1340,18 +1487,40 @@ def test_delete_access_config_rest(
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_delete_access_config_rest_bad_request(
+    transport: str = "rest", request_type=compute.DeleteAccessConfigInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_access_config(request)
 
 
 def test_delete_access_config_rest_from_dict():
     test_delete_access_config_rest(request_type=dict)
 
 
-def test_delete_access_config_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_delete_access_config_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1359,37 +1528,46 @@ def test_delete_access_config_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.delete_access_config(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value",
             zone="zone_value",
             instance="instance_value",
             access_config="access_config_value",
             network_interface="network_interface_value",
         )
+        mock_args.update(sample_request)
+        client.delete_access_config(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
-        assert "access_config_value" in http_call[1] + str(body) + str(params)
-        assert "network_interface_value" in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/deleteAccessConfig"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_delete_access_config_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_delete_access_config_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1411,9 +1589,9 @@ def test_detach_disk_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1423,7 +1601,6 @@ def test_detach_disk_rest(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -1441,14 +1618,13 @@ def test_detach_disk_rest(
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.detach_disk(request)
@@ -1459,7 +1635,6 @@ def test_detach_disk_rest(
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -1477,18 +1652,40 @@ def test_detach_disk_rest(
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_detach_disk_rest_bad_request(
+    transport: str = "rest", request_type=compute.DetachDiskInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.detach_disk(request)
 
 
 def test_detach_disk_rest_from_dict():
     test_detach_disk_rest(request_type=dict)
 
 
-def test_detach_disk_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_detach_disk_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1496,35 +1693,45 @@ def test_detach_disk_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.detach_disk(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value",
             zone="zone_value",
             instance="instance_value",
             device_name="device_name_value",
         )
+        mock_args.update(sample_request)
+        client.detach_disk(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
-        assert "device_name_value" in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/detachDisk"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_detach_disk_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_detach_disk_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1543,146 +1750,110 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetInstanceReque
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Instance(
-            advanced_machine_features=compute.AdvancedMachineFeatures(
-                enable_nested_virtualization=True
-            ),
             can_ip_forward=True,
-            confidential_instance_config=compute.ConfidentialInstanceConfig(
-                enable_confidential_compute=True
-            ),
             cpu_platform="cpu_platform_value",
             creation_timestamp="creation_timestamp_value",
             deletion_protection=True,
             description="description_value",
-            disks=[compute.AttachedDisk(auto_delete=True)],
-            display_device=compute.DisplayDevice(enable_display=True),
             fingerprint="fingerprint_value",
-            guest_accelerators=[compute.AcceleratorConfig(accelerator_count=1805)],
             hostname="hostname_value",
             id=205,
             kind="kind_value",
             label_fingerprint="label_fingerprint_value",
-            labels={"key_value": "value_value"},
             last_start_timestamp="last_start_timestamp_value",
             last_stop_timestamp="last_stop_timestamp_value",
             last_suspended_timestamp="last_suspended_timestamp_value",
             machine_type="machine_type_value",
-            metadata=compute.Metadata(fingerprint="fingerprint_value"),
             min_cpu_platform="min_cpu_platform_value",
             name="name_value",
-            network_interfaces=[
-                compute.NetworkInterface(
-                    access_configs=[
-                        compute.AccessConfig(external_ipv6="external_ipv6_value")
-                    ]
-                )
-            ],
             private_ipv6_google_access=compute.Instance.PrivateIpv6GoogleAccess.ENABLE_BIDIRECTIONAL_ACCESS_TO_GOOGLE,
-            reservation_affinity=compute.ReservationAffinity(
-                consume_reservation_type=compute.ReservationAffinity.ConsumeReservationType.ANY_RESERVATION
-            ),
             resource_policies=["resource_policies_value"],
             satisfies_pzs=True,
-            scheduling=compute.Scheduling(automatic_restart=True),
             self_link="self_link_value",
-            service_accounts=[compute.ServiceAccount(email="email_value")],
-            shielded_instance_config=compute.ShieldedInstanceConfig(
-                enable_integrity_monitoring=True
-            ),
-            shielded_instance_integrity_policy=compute.ShieldedInstanceIntegrityPolicy(
-                update_auto_learn_policy=True
-            ),
             start_restricted=True,
             status=compute.Instance.Status.DEPROVISIONING,
             status_message="status_message_value",
-            tags=compute.Tags(fingerprint="fingerprint_value"),
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Instance.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Instance.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.get(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Instance)
-    assert response.advanced_machine_features == compute.AdvancedMachineFeatures(
-        enable_nested_virtualization=True
-    )
     assert response.can_ip_forward is True
-    assert response.confidential_instance_config == compute.ConfidentialInstanceConfig(
-        enable_confidential_compute=True
-    )
     assert response.cpu_platform == "cpu_platform_value"
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.deletion_protection is True
     assert response.description == "description_value"
-    assert response.disks == [compute.AttachedDisk(auto_delete=True)]
-    assert response.display_device == compute.DisplayDevice(enable_display=True)
     assert response.fingerprint == "fingerprint_value"
-    assert response.guest_accelerators == [
-        compute.AcceleratorConfig(accelerator_count=1805)
-    ]
     assert response.hostname == "hostname_value"
     assert response.id == 205
     assert response.kind == "kind_value"
     assert response.label_fingerprint == "label_fingerprint_value"
-    assert response.labels == {"key_value": "value_value"}
     assert response.last_start_timestamp == "last_start_timestamp_value"
     assert response.last_stop_timestamp == "last_stop_timestamp_value"
     assert response.last_suspended_timestamp == "last_suspended_timestamp_value"
     assert response.machine_type == "machine_type_value"
-    assert response.metadata == compute.Metadata(fingerprint="fingerprint_value")
     assert response.min_cpu_platform == "min_cpu_platform_value"
     assert response.name == "name_value"
-    assert response.network_interfaces == [
-        compute.NetworkInterface(
-            access_configs=[compute.AccessConfig(external_ipv6="external_ipv6_value")]
-        )
-    ]
     assert (
         response.private_ipv6_google_access
         == compute.Instance.PrivateIpv6GoogleAccess.ENABLE_BIDIRECTIONAL_ACCESS_TO_GOOGLE
     )
-    assert response.reservation_affinity == compute.ReservationAffinity(
-        consume_reservation_type=compute.ReservationAffinity.ConsumeReservationType.ANY_RESERVATION
-    )
     assert response.resource_policies == ["resource_policies_value"]
     assert response.satisfies_pzs is True
-    assert response.scheduling == compute.Scheduling(automatic_restart=True)
     assert response.self_link == "self_link_value"
-    assert response.service_accounts == [compute.ServiceAccount(email="email_value")]
-    assert response.shielded_instance_config == compute.ShieldedInstanceConfig(
-        enable_integrity_monitoring=True
-    )
-    assert (
-        response.shielded_instance_integrity_policy
-        == compute.ShieldedInstanceIntegrityPolicy(update_auto_learn_policy=True)
-    )
     assert response.start_restricted is True
     assert response.status == compute.Instance.Status.DEPROVISIONING
     assert response.status_message == "status_message_value"
-    assert response.tags == compute.Tags(fingerprint="fingerprint_value")
     assert response.zone == "zone_value"
+
+
+def test_get_rest_bad_request(
+    transport: str = "rest", request_type=compute.GetInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get(request)
 
 
 def test_get_rest_from_dict():
     test_get_rest(request_type=dict)
 
 
-def test_get_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_get_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1690,31 +1861,42 @@ def test_get_rest_flattened():
         return_value = compute.Instance()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Instance.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Instance.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.get(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value", zone="zone_value", instance="instance_value",
         )
+        mock_args.update(sample_request)
+        client.get(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_get_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_get_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1734,54 +1916,9 @@ def test_get_effective_firewalls_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.InstancesGetEffectiveFirewallsResponse(
-            firewall_policys=[
-                compute.InstancesGetEffectiveFirewallsResponseEffectiveFirewallPolicy(
-                    display_name="display_name_value"
-                )
-            ],
-            firewalls=[
-                compute.Firewall(
-                    allowed=[compute.Allowed(I_p_protocol="I_p_protocol_value")]
-                )
-            ],
-        )
-
-        # Wrap the value into a proper Response obj
-        json_return_value = compute.InstancesGetEffectiveFirewallsResponse.to_json(
-            return_value
-        )
-        response_value = Response()
-        response_value.status_code = 200
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_effective_firewalls(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, compute.InstancesGetEffectiveFirewallsResponse)
-    assert response.firewall_policys == [
-        compute.InstancesGetEffectiveFirewallsResponseEffectiveFirewallPolicy(
-            display_name="display_name_value"
-        )
-    ]
-    assert response.firewalls == [
-        compute.Firewall(allowed=[compute.Allowed(I_p_protocol="I_p_protocol_value")])
-    ]
-
-
-def test_get_effective_firewalls_rest_from_dict():
-    test_get_effective_firewalls_rest(request_type=dict)
-
-
-def test_get_effective_firewalls_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1789,37 +1926,98 @@ def test_get_effective_firewalls_rest_flattened():
         return_value = compute.InstancesGetEffectiveFirewallsResponse()
 
         # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
         json_return_value = compute.InstancesGetEffectiveFirewallsResponse.to_json(
             return_value
         )
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_effective_firewalls(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.InstancesGetEffectiveFirewallsResponse)
+
+
+def test_get_effective_firewalls_rest_bad_request(
+    transport: str = "rest", request_type=compute.GetEffectiveFirewallsInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_effective_firewalls(request)
+
+
+def test_get_effective_firewalls_rest_from_dict():
+    test_get_effective_firewalls_rest(request_type=dict)
+
+
+def test_get_effective_firewalls_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.InstancesGetEffectiveFirewallsResponse()
+
+        # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.InstancesGetEffectiveFirewallsResponse.to_json(
+            return_value
+        )
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.get_effective_firewalls(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value",
             zone="zone_value",
             instance="instance_value",
             network_interface="network_interface_value",
         )
+        mock_args.update(sample_request)
+        client.get_effective_firewalls(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
-        assert "network_interface_value" in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/getEffectiveFirewalls"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_get_effective_firewalls_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_get_effective_firewalls_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1840,9 +2038,9 @@ def test_get_guest_attributes_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1850,18 +2048,15 @@ def test_get_guest_attributes_rest(
         return_value = compute.GuestAttributes(
             kind="kind_value",
             query_path="query_path_value",
-            query_value=compute.GuestAttributesValue(
-                items=[compute.GuestAttributesEntry(key="key_value")]
-            ),
             self_link="self_link_value",
             variable_key="variable_key_value",
             variable_value="variable_value_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.GuestAttributes.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.GuestAttributes.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.get_guest_attributes(request)
@@ -1870,20 +2065,42 @@ def test_get_guest_attributes_rest(
     assert isinstance(response, compute.GuestAttributes)
     assert response.kind == "kind_value"
     assert response.query_path == "query_path_value"
-    assert response.query_value == compute.GuestAttributesValue(
-        items=[compute.GuestAttributesEntry(key="key_value")]
-    )
     assert response.self_link == "self_link_value"
     assert response.variable_key == "variable_key_value"
     assert response.variable_value == "variable_value_value"
+
+
+def test_get_guest_attributes_rest_bad_request(
+    transport: str = "rest", request_type=compute.GetGuestAttributesInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_guest_attributes(request)
 
 
 def test_get_guest_attributes_rest_from_dict():
     test_get_guest_attributes_rest(request_type=dict)
 
 
-def test_get_guest_attributes_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_get_guest_attributes_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1891,31 +2108,42 @@ def test_get_guest_attributes_rest_flattened():
         return_value = compute.GuestAttributes()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.GuestAttributes.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.GuestAttributes.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.get_guest_attributes(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value", zone="zone_value", instance="instance_value",
         )
+        mock_args.update(sample_request)
+        client.get_guest_attributes(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/getGuestAttributes"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_get_guest_attributes_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_get_guest_attributes_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1935,60 +2163,61 @@ def test_get_iam_policy_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "resource": "sample3"}
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = compute.Policy(
-            audit_configs=[
-                compute.AuditConfig(
-                    audit_log_configs=[
-                        compute.AuditLogConfig(
-                            exempted_members=["exempted_members_value"]
-                        )
-                    ]
-                )
-            ],
-            bindings=[compute.Binding(binding_id="binding_id_value")],
-            etag="etag_value",
-            iam_owned=True,
-            rules=[compute.Rule(action=compute.Rule.Action.ALLOW)],
-            version=774,
-        )
+        return_value = compute.Policy(etag="etag_value", iam_owned=True, version=774,)
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Policy.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Policy.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.get_iam_policy(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Policy)
-    assert response.audit_configs == [
-        compute.AuditConfig(
-            audit_log_configs=[
-                compute.AuditLogConfig(exempted_members=["exempted_members_value"])
-            ]
-        )
-    ]
-    assert response.bindings == [compute.Binding(binding_id="binding_id_value")]
     assert response.etag == "etag_value"
     assert response.iam_owned is True
-    assert response.rules == [compute.Rule(action=compute.Rule.Action.ALLOW)]
     assert response.version == 774
+
+
+def test_get_iam_policy_rest_bad_request(
+    transport: str = "rest", request_type=compute.GetIamPolicyInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "resource": "sample3"}
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_iam_policy(request)
 
 
 def test_get_iam_policy_rest_from_dict():
     test_get_iam_policy_rest(request_type=dict)
 
 
-def test_get_iam_policy_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_get_iam_policy_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1996,31 +2225,42 @@ def test_get_iam_policy_rest_flattened():
         return_value = compute.Policy()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Policy.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Policy.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.get_iam_policy(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "resource": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value", zone="zone_value", resource="resource_value",
         )
+        mock_args.update(sample_request)
+        client.get_iam_policy(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "resource_value" in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{resource}/getIamPolicy"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_get_iam_policy_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_get_iam_policy_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2040,9 +2280,9 @@ def test_get_screenshot_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -2050,9 +2290,9 @@ def test_get_screenshot_rest(
         return_value = compute.Screenshot(contents="contents_value", kind="kind_value",)
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Screenshot.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Screenshot.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.get_screenshot(request)
@@ -2063,12 +2303,37 @@ def test_get_screenshot_rest(
     assert response.kind == "kind_value"
 
 
+def test_get_screenshot_rest_bad_request(
+    transport: str = "rest", request_type=compute.GetScreenshotInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_screenshot(request)
+
+
 def test_get_screenshot_rest_from_dict():
     test_get_screenshot_rest(request_type=dict)
 
 
-def test_get_screenshot_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_get_screenshot_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -2076,31 +2341,42 @@ def test_get_screenshot_rest_flattened():
         return_value = compute.Screenshot()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Screenshot.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Screenshot.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.get_screenshot(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value", zone="zone_value", instance="instance_value",
         )
+        mock_args.update(sample_request)
+        client.get_screenshot(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/screenshot"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_get_screenshot_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_get_screenshot_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2120,9 +2396,9 @@ def test_get_serial_port_output_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -2136,9 +2412,9 @@ def test_get_serial_port_output_rest(
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.SerialPortOutput.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.SerialPortOutput.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.get_serial_port_output(request)
@@ -2152,12 +2428,37 @@ def test_get_serial_port_output_rest(
     assert response.start == 558
 
 
+def test_get_serial_port_output_rest_bad_request(
+    transport: str = "rest", request_type=compute.GetSerialPortOutputInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_serial_port_output(request)
+
+
 def test_get_serial_port_output_rest_from_dict():
     test_get_serial_port_output_rest(request_type=dict)
 
 
-def test_get_serial_port_output_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_get_serial_port_output_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -2165,31 +2466,42 @@ def test_get_serial_port_output_rest_flattened():
         return_value = compute.SerialPortOutput()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.SerialPortOutput.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.SerialPortOutput.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.get_serial_port_output(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value", zone="zone_value", instance="instance_value",
         )
+        mock_args.update(sample_request)
+        client.get_serial_port_output(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/serialPort"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_get_serial_port_output_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_get_serial_port_output_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2210,46 +2522,60 @@ def test_get_shielded_instance_identity_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = compute.ShieldedInstanceIdentity(
-            encryption_key=compute.ShieldedInstanceIdentityEntry(
-                ek_cert="ek_cert_value"
-            ),
-            kind="kind_value",
-            signing_key=compute.ShieldedInstanceIdentityEntry(ek_cert="ek_cert_value"),
-        )
+        return_value = compute.ShieldedInstanceIdentity(kind="kind_value",)
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.ShieldedInstanceIdentity.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.ShieldedInstanceIdentity.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.get_shielded_instance_identity(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.ShieldedInstanceIdentity)
-    assert response.encryption_key == compute.ShieldedInstanceIdentityEntry(
-        ek_cert="ek_cert_value"
-    )
     assert response.kind == "kind_value"
-    assert response.signing_key == compute.ShieldedInstanceIdentityEntry(
-        ek_cert="ek_cert_value"
+
+
+def test_get_shielded_instance_identity_rest_bad_request(
+    transport: str = "rest",
+    request_type=compute.GetShieldedInstanceIdentityInstanceRequest,
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_shielded_instance_identity(request)
 
 
 def test_get_shielded_instance_identity_rest_from_dict():
     test_get_shielded_instance_identity_rest(request_type=dict)
 
 
-def test_get_shielded_instance_identity_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_get_shielded_instance_identity_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -2257,31 +2583,42 @@ def test_get_shielded_instance_identity_rest_flattened():
         return_value = compute.ShieldedInstanceIdentity()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.ShieldedInstanceIdentity.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.ShieldedInstanceIdentity.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.get_shielded_instance_identity(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value", zone="zone_value", instance="instance_value",
         )
+        mock_args.update(sample_request)
+        client.get_shielded_instance_identity(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/getShieldedInstanceIdentity"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_get_shielded_instance_identity_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_get_shielded_instance_identity_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2301,9 +2638,14 @@ def test_insert_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2"}
+    request_init["instance_resource"] = compute.Instance(
+        advanced_machine_features=compute.AdvancedMachineFeatures(
+            enable_nested_virtualization=True
+        )
+    )
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -2313,7 +2655,6 @@ def test_insert_rest(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -2331,14 +2672,13 @@ def test_insert_rest(
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.insert(request)
@@ -2349,7 +2689,6 @@ def test_insert_rest(
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -2367,18 +2706,45 @@ def test_insert_rest(
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_insert_rest_bad_request(
+    transport: str = "rest", request_type=compute.InsertInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2"}
+    request_init["instance_resource"] = compute.Instance(
+        advanced_machine_features=compute.AdvancedMachineFeatures(
+            enable_nested_virtualization=True
+        )
+    )
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.insert(request)
 
 
 def test_insert_rest_from_dict():
     test_insert_rest(request_type=dict)
 
 
-def test_insert_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_insert_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -2386,42 +2752,44 @@ def test_insert_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        instance_resource = compute.Instance(
-            advanced_machine_features=compute.AdvancedMachineFeatures(
-                enable_nested_virtualization=True
-            )
-        )
-        client.insert(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "zone": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value",
             zone="zone_value",
-            instance_resource=instance_resource,
+            instance_resource=compute.Instance(
+                advanced_machine_features=compute.AdvancedMachineFeatures(
+                    enable_nested_virtualization=True
+                )
+            ),
         )
+        mock_args.update(sample_request)
+        client.insert(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert compute.Instance.to_json(
-            instance_resource,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        ) in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_insert_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_insert_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2443,32 +2811,24 @@ def test_list_rest(transport: str = "rest", request_type=compute.ListInstancesRe
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2"}
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.InstanceList(
             id="id_value",
-            items=[
-                compute.Instance(
-                    advanced_machine_features=compute.AdvancedMachineFeatures(
-                        enable_nested_virtualization=True
-                    )
-                )
-            ],
             kind="kind_value",
             next_page_token="next_page_token_value",
             self_link="self_link_value",
-            warning=compute.Warning(code=compute.Warning.Code.CLEANUP_FAILED),
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.InstanceList.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.InstanceList.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.list(request)
@@ -2476,25 +2836,42 @@ def test_list_rest(transport: str = "rest", request_type=compute.ListInstancesRe
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPager)
     assert response.id == "id_value"
-    assert response.items == [
-        compute.Instance(
-            advanced_machine_features=compute.AdvancedMachineFeatures(
-                enable_nested_virtualization=True
-            )
-        )
-    ]
     assert response.kind == "kind_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.self_link == "self_link_value"
-    assert response.warning == compute.Warning(code=compute.Warning.Code.CLEANUP_FAILED)
+
+
+def test_list_rest_bad_request(
+    transport: str = "rest", request_type=compute.ListInstancesRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2"}
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list(request)
 
 
 def test_list_rest_from_dict():
     test_list_rest(request_type=dict)
 
 
-def test_list_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_list_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -2502,30 +2879,36 @@ def test_list_rest_flattened():
         return_value = compute.InstanceList()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.InstanceList.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.InstanceList.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.list(
-            project="project_value", zone="zone_value",
-        )
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "zone": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(project="project_value", zone="zone_value",)
+        mock_args.update(sample_request)
+        client.list(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_list_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_list_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2535,11 +2918,13 @@ def test_list_rest_flattened_error():
         )
 
 
-def test_list_pager():
+def test_list_rest_pager():
     client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
         # Set the response as a series of pages
         response = (
             compute.InstanceList(
@@ -2561,16 +2946,15 @@ def test_list_pager():
             return_val.status_code = 200
         req.side_effect = return_values
 
-        metadata = ()
-        pager = client.list(request={})
+        sample_request = {"project": "sample1", "zone": "sample2"}
 
-        assert pager._metadata == metadata
+        pager = client.list(request=sample_request)
 
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.Instance) for i in results)
 
-        pages = list(client.list(request={}).pages)
+        pages = list(client.list(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
 
@@ -2582,26 +2966,24 @@ def test_list_referrers_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.InstanceListReferrers(
             id="id_value",
-            items=[compute.Reference(kind="kind_value")],
             kind="kind_value",
             next_page_token="next_page_token_value",
             self_link="self_link_value",
-            warning=compute.Warning(code=compute.Warning.Code.CLEANUP_FAILED),
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.InstanceListReferrers.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.InstanceListReferrers.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.list_referrers(request)
@@ -2609,19 +2991,42 @@ def test_list_referrers_rest(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListReferrersPager)
     assert response.id == "id_value"
-    assert response.items == [compute.Reference(kind="kind_value")]
     assert response.kind == "kind_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.self_link == "self_link_value"
-    assert response.warning == compute.Warning(code=compute.Warning.Code.CLEANUP_FAILED)
+
+
+def test_list_referrers_rest_bad_request(
+    transport: str = "rest", request_type=compute.ListReferrersInstancesRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_referrers(request)
 
 
 def test_list_referrers_rest_from_dict():
     test_list_referrers_rest(request_type=dict)
 
 
-def test_list_referrers_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_list_referrers_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -2629,31 +3034,42 @@ def test_list_referrers_rest_flattened():
         return_value = compute.InstanceListReferrers()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.InstanceListReferrers.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.InstanceListReferrers.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.list_referrers(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value", zone="zone_value", instance="instance_value",
         )
+        mock_args.update(sample_request)
+        client.list_referrers(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/referrers"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_list_referrers_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_list_referrers_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2666,11 +3082,13 @@ def test_list_referrers_rest_flattened_error():
         )
 
 
-def test_list_referrers_pager():
+def test_list_referrers_rest_pager():
     client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
         # Set the response as a series of pages
         response = (
             compute.InstanceListReferrers(
@@ -2696,16 +3114,19 @@ def test_list_referrers_pager():
             return_val.status_code = 200
         req.side_effect = return_values
 
-        metadata = ()
-        pager = client.list_referrers(request={})
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
 
-        assert pager._metadata == metadata
+        pager = client.list_referrers(request=sample_request)
 
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.Reference) for i in results)
 
-        pages = list(client.list_referrers(request={}).pages)
+        pages = list(client.list_referrers(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
 
@@ -2717,9 +3138,14 @@ def test_remove_resource_policies_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init[
+        "instances_remove_resource_policies_request_resource"
+    ] = compute.InstancesRemoveResourcePoliciesRequest(
+        resource_policies=["resource_policies_value"]
+    )
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -2729,7 +3155,6 @@ def test_remove_resource_policies_rest(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -2747,14 +3172,13 @@ def test_remove_resource_policies_rest(
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.remove_resource_policies(request)
@@ -2765,7 +3189,6 @@ def test_remove_resource_policies_rest(
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -2783,18 +3206,45 @@ def test_remove_resource_policies_rest(
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_remove_resource_policies_rest_bad_request(
+    transport: str = "rest", request_type=compute.RemoveResourcePoliciesInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init[
+        "instances_remove_resource_policies_request_resource"
+    ] = compute.InstancesRemoveResourcePoliciesRequest(
+        resource_policies=["resource_policies_value"]
+    )
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.remove_resource_policies(request)
 
 
 def test_remove_resource_policies_rest_from_dict():
     test_remove_resource_policies_rest(request_type=dict)
 
 
-def test_remove_resource_policies_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_remove_resource_policies_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -2802,42 +3252,47 @@ def test_remove_resource_policies_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        instances_remove_resource_policies_request_resource = compute.InstancesRemoveResourcePoliciesRequest(
-            resource_policies=["resource_policies_value"]
-        )
-        client.remove_resource_policies(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value",
             zone="zone_value",
             instance="instance_value",
-            instances_remove_resource_policies_request_resource=instances_remove_resource_policies_request_resource,
+            instances_remove_resource_policies_request_resource=compute.InstancesRemoveResourcePoliciesRequest(
+                resource_policies=["resource_policies_value"]
+            ),
         )
+        mock_args.update(sample_request)
+        client.remove_resource_policies(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
-        assert compute.InstancesRemoveResourcePoliciesRequest.to_json(
-            instances_remove_resource_policies_request_resource,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        ) in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/removeResourcePolicies"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_remove_resource_policies_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_remove_resource_policies_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2858,9 +3313,9 @@ def test_reset_rest(transport: str = "rest", request_type=compute.ResetInstanceR
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -2870,7 +3325,6 @@ def test_reset_rest(transport: str = "rest", request_type=compute.ResetInstanceR
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -2888,14 +3342,13 @@ def test_reset_rest(transport: str = "rest", request_type=compute.ResetInstanceR
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.reset(request)
@@ -2906,7 +3359,6 @@ def test_reset_rest(transport: str = "rest", request_type=compute.ResetInstanceR
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -2924,18 +3376,40 @@ def test_reset_rest(transport: str = "rest", request_type=compute.ResetInstanceR
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_reset_rest_bad_request(
+    transport: str = "rest", request_type=compute.ResetInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.reset(request)
 
 
 def test_reset_rest_from_dict():
     test_reset_rest(request_type=dict)
 
 
-def test_reset_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_reset_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -2943,31 +3417,42 @@ def test_reset_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.reset(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value", zone="zone_value", instance="instance_value",
         )
+        mock_args.update(sample_request)
+        client.reset(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/reset"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_reset_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_reset_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2987,9 +3472,9 @@ def test_send_diagnostic_interrupt_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -2997,11 +3482,11 @@ def test_send_diagnostic_interrupt_rest(
         return_value = compute.SendDiagnosticInterruptInstanceResponse()
 
         # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
         json_return_value = compute.SendDiagnosticInterruptInstanceResponse.to_json(
             return_value
         )
-        response_value = Response()
-        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.send_diagnostic_interrupt(request)
@@ -3010,12 +3495,37 @@ def test_send_diagnostic_interrupt_rest(
     assert isinstance(response, compute.SendDiagnosticInterruptInstanceResponse)
 
 
+def test_send_diagnostic_interrupt_rest_bad_request(
+    transport: str = "rest", request_type=compute.SendDiagnosticInterruptInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.send_diagnostic_interrupt(request)
+
+
 def test_send_diagnostic_interrupt_rest_from_dict():
     test_send_diagnostic_interrupt_rest(request_type=dict)
 
 
-def test_send_diagnostic_interrupt_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_send_diagnostic_interrupt_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -3023,33 +3533,44 @@ def test_send_diagnostic_interrupt_rest_flattened():
         return_value = compute.SendDiagnosticInterruptInstanceResponse()
 
         # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
         json_return_value = compute.SendDiagnosticInterruptInstanceResponse.to_json(
             return_value
         )
-        response_value = Response()
-        response_value.status_code = 200
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.send_diagnostic_interrupt(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value", zone="zone_value", instance="instance_value",
         )
+        mock_args.update(sample_request)
+        client.send_diagnostic_interrupt(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/sendDiagnosticInterrupt"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_send_diagnostic_interrupt_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_send_diagnostic_interrupt_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3069,9 +3590,9 @@ def test_set_deletion_protection_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "resource": "sample3"}
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -3081,7 +3602,6 @@ def test_set_deletion_protection_rest(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -3099,14 +3619,13 @@ def test_set_deletion_protection_rest(
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.set_deletion_protection(request)
@@ -3117,7 +3636,6 @@ def test_set_deletion_protection_rest(
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -3135,18 +3653,40 @@ def test_set_deletion_protection_rest(
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_set_deletion_protection_rest_bad_request(
+    transport: str = "rest", request_type=compute.SetDeletionProtectionInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "resource": "sample3"}
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_deletion_protection(request)
 
 
 def test_set_deletion_protection_rest_from_dict():
     test_set_deletion_protection_rest(request_type=dict)
 
 
-def test_set_deletion_protection_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_set_deletion_protection_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -3154,31 +3694,42 @@ def test_set_deletion_protection_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.set_deletion_protection(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "resource": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value", zone="zone_value", resource="resource_value",
         )
+        mock_args.update(sample_request)
+        client.set_deletion_protection(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "resource_value" in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{resource}/setDeletionProtection"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_set_deletion_protection_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_set_deletion_protection_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3198,9 +3749,9 @@ def test_set_disk_auto_delete_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -3210,7 +3761,6 @@ def test_set_disk_auto_delete_rest(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -3228,14 +3778,13 @@ def test_set_disk_auto_delete_rest(
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.set_disk_auto_delete(request)
@@ -3246,7 +3795,6 @@ def test_set_disk_auto_delete_rest(
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -3264,18 +3812,40 @@ def test_set_disk_auto_delete_rest(
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_set_disk_auto_delete_rest_bad_request(
+    transport: str = "rest", request_type=compute.SetDiskAutoDeleteInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_disk_auto_delete(request)
 
 
 def test_set_disk_auto_delete_rest_from_dict():
     test_set_disk_auto_delete_rest(request_type=dict)
 
 
-def test_set_disk_auto_delete_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_set_disk_auto_delete_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -3283,37 +3853,46 @@ def test_set_disk_auto_delete_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.set_disk_auto_delete(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value",
             zone="zone_value",
             instance="instance_value",
             auto_delete=True,
             device_name="device_name_value",
         )
+        mock_args.update(sample_request)
+        client.set_disk_auto_delete(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
-        assert str(True) in http_call[1] + str(body) + str(params)
-        assert "device_name_value" in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setDiskAutoDelete"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_set_disk_auto_delete_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_set_disk_auto_delete_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3335,60 +3914,67 @@ def test_set_iam_policy_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "resource": "sample3"}
+    request_init["zone_set_policy_request_resource"] = compute.ZoneSetPolicyRequest(
+        bindings=[compute.Binding(binding_id="binding_id_value")]
+    )
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = compute.Policy(
-            audit_configs=[
-                compute.AuditConfig(
-                    audit_log_configs=[
-                        compute.AuditLogConfig(
-                            exempted_members=["exempted_members_value"]
-                        )
-                    ]
-                )
-            ],
-            bindings=[compute.Binding(binding_id="binding_id_value")],
-            etag="etag_value",
-            iam_owned=True,
-            rules=[compute.Rule(action=compute.Rule.Action.ALLOW)],
-            version=774,
-        )
+        return_value = compute.Policy(etag="etag_value", iam_owned=True, version=774,)
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Policy.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Policy.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.set_iam_policy(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Policy)
-    assert response.audit_configs == [
-        compute.AuditConfig(
-            audit_log_configs=[
-                compute.AuditLogConfig(exempted_members=["exempted_members_value"])
-            ]
-        )
-    ]
-    assert response.bindings == [compute.Binding(binding_id="binding_id_value")]
     assert response.etag == "etag_value"
     assert response.iam_owned is True
-    assert response.rules == [compute.Rule(action=compute.Rule.Action.ALLOW)]
     assert response.version == 774
+
+
+def test_set_iam_policy_rest_bad_request(
+    transport: str = "rest", request_type=compute.SetIamPolicyInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "resource": "sample3"}
+    request_init["zone_set_policy_request_resource"] = compute.ZoneSetPolicyRequest(
+        bindings=[compute.Binding(binding_id="binding_id_value")]
+    )
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_iam_policy(request)
 
 
 def test_set_iam_policy_rest_from_dict():
     test_set_iam_policy_rest(request_type=dict)
 
 
-def test_set_iam_policy_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_set_iam_policy_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -3396,42 +3982,47 @@ def test_set_iam_policy_rest_flattened():
         return_value = compute.Policy()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Policy.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Policy.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        zone_set_policy_request_resource = compute.ZoneSetPolicyRequest(
-            bindings=[compute.Binding(binding_id="binding_id_value")]
-        )
-        client.set_iam_policy(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "resource": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value",
             zone="zone_value",
             resource="resource_value",
-            zone_set_policy_request_resource=zone_set_policy_request_resource,
+            zone_set_policy_request_resource=compute.ZoneSetPolicyRequest(
+                bindings=[compute.Binding(binding_id="binding_id_value")]
+            ),
         )
+        mock_args.update(sample_request)
+        client.set_iam_policy(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "resource_value" in http_call[1] + str(body) + str(params)
-        assert compute.ZoneSetPolicyRequest.to_json(
-            zone_set_policy_request_resource,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        ) in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{resource}/setIamPolicy"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_set_iam_policy_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_set_iam_policy_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3454,9 +4045,12 @@ def test_set_labels_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init[
+        "instances_set_labels_request_resource"
+    ] = compute.InstancesSetLabelsRequest(label_fingerprint="label_fingerprint_value")
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -3466,7 +4060,6 @@ def test_set_labels_rest(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -3484,14 +4077,13 @@ def test_set_labels_rest(
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.set_labels(request)
@@ -3502,7 +4094,6 @@ def test_set_labels_rest(
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -3520,18 +4111,43 @@ def test_set_labels_rest(
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_set_labels_rest_bad_request(
+    transport: str = "rest", request_type=compute.SetLabelsInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init[
+        "instances_set_labels_request_resource"
+    ] = compute.InstancesSetLabelsRequest(label_fingerprint="label_fingerprint_value")
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_labels(request)
 
 
 def test_set_labels_rest_from_dict():
     test_set_labels_rest(request_type=dict)
 
 
-def test_set_labels_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_set_labels_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -3539,42 +4155,47 @@ def test_set_labels_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        instances_set_labels_request_resource = compute.InstancesSetLabelsRequest(
-            label_fingerprint="label_fingerprint_value"
-        )
-        client.set_labels(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value",
             zone="zone_value",
             instance="instance_value",
-            instances_set_labels_request_resource=instances_set_labels_request_resource,
+            instances_set_labels_request_resource=compute.InstancesSetLabelsRequest(
+                label_fingerprint="label_fingerprint_value"
+            ),
         )
+        mock_args.update(sample_request)
+        client.set_labels(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
-        assert compute.InstancesSetLabelsRequest.to_json(
-            instances_set_labels_request_resource,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        ) in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setLabels"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_set_labels_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_set_labels_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3597,9 +4218,14 @@ def test_set_machine_resources_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init[
+        "instances_set_machine_resources_request_resource"
+    ] = compute.InstancesSetMachineResourcesRequest(
+        guest_accelerators=[compute.AcceleratorConfig(accelerator_count=1805)]
+    )
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -3609,7 +4235,6 @@ def test_set_machine_resources_rest(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -3627,14 +4252,13 @@ def test_set_machine_resources_rest(
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.set_machine_resources(request)
@@ -3645,7 +4269,6 @@ def test_set_machine_resources_rest(
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -3663,18 +4286,45 @@ def test_set_machine_resources_rest(
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_set_machine_resources_rest_bad_request(
+    transport: str = "rest", request_type=compute.SetMachineResourcesInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init[
+        "instances_set_machine_resources_request_resource"
+    ] = compute.InstancesSetMachineResourcesRequest(
+        guest_accelerators=[compute.AcceleratorConfig(accelerator_count=1805)]
+    )
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_machine_resources(request)
 
 
 def test_set_machine_resources_rest_from_dict():
     test_set_machine_resources_rest(request_type=dict)
 
 
-def test_set_machine_resources_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_set_machine_resources_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -3682,42 +4332,47 @@ def test_set_machine_resources_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        instances_set_machine_resources_request_resource = compute.InstancesSetMachineResourcesRequest(
-            guest_accelerators=[compute.AcceleratorConfig(accelerator_count=1805)]
-        )
-        client.set_machine_resources(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value",
             zone="zone_value",
             instance="instance_value",
-            instances_set_machine_resources_request_resource=instances_set_machine_resources_request_resource,
+            instances_set_machine_resources_request_resource=compute.InstancesSetMachineResourcesRequest(
+                guest_accelerators=[compute.AcceleratorConfig(accelerator_count=1805)]
+            ),
         )
+        mock_args.update(sample_request)
+        client.set_machine_resources(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
-        assert compute.InstancesSetMachineResourcesRequest.to_json(
-            instances_set_machine_resources_request_resource,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        ) in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setMachineResources"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_set_machine_resources_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_set_machine_resources_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3740,9 +4395,12 @@ def test_set_machine_type_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init[
+        "instances_set_machine_type_request_resource"
+    ] = compute.InstancesSetMachineTypeRequest(machine_type="machine_type_value")
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -3752,7 +4410,6 @@ def test_set_machine_type_rest(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -3770,14 +4427,13 @@ def test_set_machine_type_rest(
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.set_machine_type(request)
@@ -3788,7 +4444,6 @@ def test_set_machine_type_rest(
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -3806,18 +4461,43 @@ def test_set_machine_type_rest(
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_set_machine_type_rest_bad_request(
+    transport: str = "rest", request_type=compute.SetMachineTypeInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init[
+        "instances_set_machine_type_request_resource"
+    ] = compute.InstancesSetMachineTypeRequest(machine_type="machine_type_value")
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_machine_type(request)
 
 
 def test_set_machine_type_rest_from_dict():
     test_set_machine_type_rest(request_type=dict)
 
 
-def test_set_machine_type_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_set_machine_type_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -3825,42 +4505,47 @@ def test_set_machine_type_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        instances_set_machine_type_request_resource = compute.InstancesSetMachineTypeRequest(
-            machine_type="machine_type_value"
-        )
-        client.set_machine_type(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value",
             zone="zone_value",
             instance="instance_value",
-            instances_set_machine_type_request_resource=instances_set_machine_type_request_resource,
+            instances_set_machine_type_request_resource=compute.InstancesSetMachineTypeRequest(
+                machine_type="machine_type_value"
+            ),
         )
+        mock_args.update(sample_request)
+        client.set_machine_type(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
-        assert compute.InstancesSetMachineTypeRequest.to_json(
-            instances_set_machine_type_request_resource,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        ) in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setMachineType"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_set_machine_type_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_set_machine_type_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3883,9 +4568,12 @@ def test_set_metadata_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init["metadata_resource"] = compute.Metadata(
+        fingerprint="fingerprint_value"
+    )
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -3895,7 +4583,6 @@ def test_set_metadata_rest(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -3913,14 +4600,13 @@ def test_set_metadata_rest(
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.set_metadata(request)
@@ -3931,7 +4617,6 @@ def test_set_metadata_rest(
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -3949,18 +4634,43 @@ def test_set_metadata_rest(
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_set_metadata_rest_bad_request(
+    transport: str = "rest", request_type=compute.SetMetadataInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init["metadata_resource"] = compute.Metadata(
+        fingerprint="fingerprint_value"
+    )
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_metadata(request)
 
 
 def test_set_metadata_rest_from_dict():
     test_set_metadata_rest(request_type=dict)
 
 
-def test_set_metadata_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_set_metadata_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -3968,40 +4678,45 @@ def test_set_metadata_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        metadata_resource = compute.Metadata(fingerprint="fingerprint_value")
-        client.set_metadata(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value",
             zone="zone_value",
             instance="instance_value",
-            metadata_resource=metadata_resource,
+            metadata_resource=compute.Metadata(fingerprint="fingerprint_value"),
         )
+        mock_args.update(sample_request)
+        client.set_metadata(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
-        assert compute.Metadata.to_json(
-            metadata_resource,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        ) in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setMetadata"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_set_metadata_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_set_metadata_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4022,9 +4737,14 @@ def test_set_min_cpu_platform_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init[
+        "instances_set_min_cpu_platform_request_resource"
+    ] = compute.InstancesSetMinCpuPlatformRequest(
+        min_cpu_platform="min_cpu_platform_value"
+    )
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -4034,7 +4754,6 @@ def test_set_min_cpu_platform_rest(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -4052,14 +4771,13 @@ def test_set_min_cpu_platform_rest(
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.set_min_cpu_platform(request)
@@ -4070,7 +4788,6 @@ def test_set_min_cpu_platform_rest(
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -4088,18 +4805,45 @@ def test_set_min_cpu_platform_rest(
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_set_min_cpu_platform_rest_bad_request(
+    transport: str = "rest", request_type=compute.SetMinCpuPlatformInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init[
+        "instances_set_min_cpu_platform_request_resource"
+    ] = compute.InstancesSetMinCpuPlatformRequest(
+        min_cpu_platform="min_cpu_platform_value"
+    )
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_min_cpu_platform(request)
 
 
 def test_set_min_cpu_platform_rest_from_dict():
     test_set_min_cpu_platform_rest(request_type=dict)
 
 
-def test_set_min_cpu_platform_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_set_min_cpu_platform_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -4107,42 +4851,47 @@ def test_set_min_cpu_platform_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        instances_set_min_cpu_platform_request_resource = compute.InstancesSetMinCpuPlatformRequest(
-            min_cpu_platform="min_cpu_platform_value"
-        )
-        client.set_min_cpu_platform(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value",
             zone="zone_value",
             instance="instance_value",
-            instances_set_min_cpu_platform_request_resource=instances_set_min_cpu_platform_request_resource,
+            instances_set_min_cpu_platform_request_resource=compute.InstancesSetMinCpuPlatformRequest(
+                min_cpu_platform="min_cpu_platform_value"
+            ),
         )
+        mock_args.update(sample_request)
+        client.set_min_cpu_platform(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
-        assert compute.InstancesSetMinCpuPlatformRequest.to_json(
-            instances_set_min_cpu_platform_request_resource,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        ) in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setMinCpuPlatform"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_set_min_cpu_platform_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_set_min_cpu_platform_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4165,9 +4914,10 @@ def test_set_scheduling_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init["scheduling_resource"] = compute.Scheduling(automatic_restart=True)
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -4177,7 +4927,6 @@ def test_set_scheduling_rest(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -4195,14 +4944,13 @@ def test_set_scheduling_rest(
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.set_scheduling(request)
@@ -4213,7 +4961,6 @@ def test_set_scheduling_rest(
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -4231,18 +4978,41 @@ def test_set_scheduling_rest(
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_set_scheduling_rest_bad_request(
+    transport: str = "rest", request_type=compute.SetSchedulingInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init["scheduling_resource"] = compute.Scheduling(automatic_restart=True)
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_scheduling(request)
 
 
 def test_set_scheduling_rest_from_dict():
     test_set_scheduling_rest(request_type=dict)
 
 
-def test_set_scheduling_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_set_scheduling_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -4250,40 +5020,45 @@ def test_set_scheduling_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        scheduling_resource = compute.Scheduling(automatic_restart=True)
-        client.set_scheduling(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value",
             zone="zone_value",
             instance="instance_value",
-            scheduling_resource=scheduling_resource,
+            scheduling_resource=compute.Scheduling(automatic_restart=True),
         )
+        mock_args.update(sample_request)
+        client.set_scheduling(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
-        assert compute.Scheduling.to_json(
-            scheduling_resource,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        ) in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setScheduling"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_set_scheduling_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_set_scheduling_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4304,9 +5079,12 @@ def test_set_service_account_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init[
+        "instances_set_service_account_request_resource"
+    ] = compute.InstancesSetServiceAccountRequest(email="email_value")
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -4316,7 +5094,6 @@ def test_set_service_account_rest(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -4334,14 +5111,13 @@ def test_set_service_account_rest(
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.set_service_account(request)
@@ -4352,7 +5128,6 @@ def test_set_service_account_rest(
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -4370,18 +5145,43 @@ def test_set_service_account_rest(
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_set_service_account_rest_bad_request(
+    transport: str = "rest", request_type=compute.SetServiceAccountInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init[
+        "instances_set_service_account_request_resource"
+    ] = compute.InstancesSetServiceAccountRequest(email="email_value")
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_service_account(request)
 
 
 def test_set_service_account_rest_from_dict():
     test_set_service_account_rest(request_type=dict)
 
 
-def test_set_service_account_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_set_service_account_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -4389,42 +5189,47 @@ def test_set_service_account_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        instances_set_service_account_request_resource = compute.InstancesSetServiceAccountRequest(
-            email="email_value"
-        )
-        client.set_service_account(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value",
             zone="zone_value",
             instance="instance_value",
-            instances_set_service_account_request_resource=instances_set_service_account_request_resource,
+            instances_set_service_account_request_resource=compute.InstancesSetServiceAccountRequest(
+                email="email_value"
+            ),
         )
+        mock_args.update(sample_request)
+        client.set_service_account(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
-        assert compute.InstancesSetServiceAccountRequest.to_json(
-            instances_set_service_account_request_resource,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        ) in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setServiceAccount"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_set_service_account_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_set_service_account_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4448,9 +5253,12 @@ def test_set_shielded_instance_integrity_policy_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init[
+        "shielded_instance_integrity_policy_resource"
+    ] = compute.ShieldedInstanceIntegrityPolicy(update_auto_learn_policy=True)
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -4460,7 +5268,6 @@ def test_set_shielded_instance_integrity_policy_rest(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -4478,14 +5285,13 @@ def test_set_shielded_instance_integrity_policy_rest(
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.set_shielded_instance_integrity_policy(request)
@@ -4496,7 +5302,6 @@ def test_set_shielded_instance_integrity_policy_rest(
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -4514,18 +5319,44 @@ def test_set_shielded_instance_integrity_policy_rest(
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_set_shielded_instance_integrity_policy_rest_bad_request(
+    transport: str = "rest",
+    request_type=compute.SetShieldedInstanceIntegrityPolicyInstanceRequest,
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init[
+        "shielded_instance_integrity_policy_resource"
+    ] = compute.ShieldedInstanceIntegrityPolicy(update_auto_learn_policy=True)
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_shielded_instance_integrity_policy(request)
 
 
 def test_set_shielded_instance_integrity_policy_rest_from_dict():
     test_set_shielded_instance_integrity_policy_rest(request_type=dict)
 
 
-def test_set_shielded_instance_integrity_policy_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_set_shielded_instance_integrity_policy_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -4533,42 +5364,49 @@ def test_set_shielded_instance_integrity_policy_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        shielded_instance_integrity_policy_resource = compute.ShieldedInstanceIntegrityPolicy(
-            update_auto_learn_policy=True
-        )
-        client.set_shielded_instance_integrity_policy(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value",
             zone="zone_value",
             instance="instance_value",
-            shielded_instance_integrity_policy_resource=shielded_instance_integrity_policy_resource,
+            shielded_instance_integrity_policy_resource=compute.ShieldedInstanceIntegrityPolicy(
+                update_auto_learn_policy=True
+            ),
         )
+        mock_args.update(sample_request)
+        client.set_shielded_instance_integrity_policy(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
-        assert compute.ShieldedInstanceIntegrityPolicy.to_json(
-            shielded_instance_integrity_policy_resource,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        ) in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setShieldedInstanceIntegrityPolicy"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_set_shielded_instance_integrity_policy_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_set_shielded_instance_integrity_policy_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4591,9 +5429,10 @@ def test_set_tags_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init["tags_resource"] = compute.Tags(fingerprint="fingerprint_value")
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -4603,7 +5442,6 @@ def test_set_tags_rest(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -4621,14 +5459,13 @@ def test_set_tags_rest(
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.set_tags(request)
@@ -4639,7 +5476,6 @@ def test_set_tags_rest(
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -4657,18 +5493,41 @@ def test_set_tags_rest(
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_set_tags_rest_bad_request(
+    transport: str = "rest", request_type=compute.SetTagsInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init["tags_resource"] = compute.Tags(fingerprint="fingerprint_value")
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_tags(request)
 
 
 def test_set_tags_rest_from_dict():
     test_set_tags_rest(request_type=dict)
 
 
-def test_set_tags_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_set_tags_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -4676,40 +5535,45 @@ def test_set_tags_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        tags_resource = compute.Tags(fingerprint="fingerprint_value")
-        client.set_tags(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value",
             zone="zone_value",
             instance="instance_value",
-            tags_resource=tags_resource,
+            tags_resource=compute.Tags(fingerprint="fingerprint_value"),
         )
+        mock_args.update(sample_request)
+        client.set_tags(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
-        assert compute.Tags.to_json(
-            tags_resource,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        ) in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/setTags"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_set_tags_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_set_tags_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4731,9 +5595,9 @@ def test_simulate_maintenance_event_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -4743,7 +5607,6 @@ def test_simulate_maintenance_event_rest(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -4761,14 +5624,13 @@ def test_simulate_maintenance_event_rest(
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.simulate_maintenance_event(request)
@@ -4779,7 +5641,6 @@ def test_simulate_maintenance_event_rest(
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -4797,18 +5658,41 @@ def test_simulate_maintenance_event_rest(
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_simulate_maintenance_event_rest_bad_request(
+    transport: str = "rest",
+    request_type=compute.SimulateMaintenanceEventInstanceRequest,
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.simulate_maintenance_event(request)
 
 
 def test_simulate_maintenance_event_rest_from_dict():
     test_simulate_maintenance_event_rest(request_type=dict)
 
 
-def test_simulate_maintenance_event_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_simulate_maintenance_event_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -4816,31 +5700,42 @@ def test_simulate_maintenance_event_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.simulate_maintenance_event(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value", zone="zone_value", instance="instance_value",
         )
+        mock_args.update(sample_request)
+        client.simulate_maintenance_event(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/simulateMaintenanceEvent"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_simulate_maintenance_event_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_simulate_maintenance_event_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4858,9 +5753,9 @@ def test_start_rest(transport: str = "rest", request_type=compute.StartInstanceR
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -4870,7 +5765,6 @@ def test_start_rest(transport: str = "rest", request_type=compute.StartInstanceR
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -4888,14 +5782,13 @@ def test_start_rest(transport: str = "rest", request_type=compute.StartInstanceR
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.start(request)
@@ -4906,7 +5799,6 @@ def test_start_rest(transport: str = "rest", request_type=compute.StartInstanceR
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -4924,18 +5816,40 @@ def test_start_rest(transport: str = "rest", request_type=compute.StartInstanceR
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_start_rest_bad_request(
+    transport: str = "rest", request_type=compute.StartInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.start(request)
 
 
 def test_start_rest_from_dict():
     test_start_rest(request_type=dict)
 
 
-def test_start_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_start_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -4943,31 +5857,42 @@ def test_start_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.start(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value", zone="zone_value", instance="instance_value",
         )
+        mock_args.update(sample_request)
+        client.start(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/start"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_start_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_start_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4987,9 +5912,20 @@ def test_start_with_encryption_key_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init[
+        "instances_start_with_encryption_key_request_resource"
+    ] = compute.InstancesStartWithEncryptionKeyRequest(
+        disks=[
+            compute.CustomerEncryptionKeyProtectedDisk(
+                disk_encryption_key=compute.CustomerEncryptionKey(
+                    kms_key_name="kms_key_name_value"
+                )
+            )
+        ]
+    )
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -4999,7 +5935,6 @@ def test_start_with_encryption_key_rest(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -5017,14 +5952,13 @@ def test_start_with_encryption_key_rest(
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.start_with_encryption_key(request)
@@ -5035,7 +5969,6 @@ def test_start_with_encryption_key_rest(
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -5053,18 +5986,51 @@ def test_start_with_encryption_key_rest(
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_start_with_encryption_key_rest_bad_request(
+    transport: str = "rest", request_type=compute.StartWithEncryptionKeyInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init[
+        "instances_start_with_encryption_key_request_resource"
+    ] = compute.InstancesStartWithEncryptionKeyRequest(
+        disks=[
+            compute.CustomerEncryptionKeyProtectedDisk(
+                disk_encryption_key=compute.CustomerEncryptionKey(
+                    kms_key_name="kms_key_name_value"
+                )
+            )
+        ]
+    )
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.start_with_encryption_key(request)
 
 
 def test_start_with_encryption_key_rest_from_dict():
     test_start_with_encryption_key_rest(request_type=dict)
 
 
-def test_start_with_encryption_key_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_start_with_encryption_key_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -5072,48 +6038,53 @@ def test_start_with_encryption_key_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        instances_start_with_encryption_key_request_resource = compute.InstancesStartWithEncryptionKeyRequest(
-            disks=[
-                compute.CustomerEncryptionKeyProtectedDisk(
-                    disk_encryption_key=compute.CustomerEncryptionKey(
-                        kms_key_name="kms_key_name_value"
-                    )
-                )
-            ]
-        )
-        client.start_with_encryption_key(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value",
             zone="zone_value",
             instance="instance_value",
-            instances_start_with_encryption_key_request_resource=instances_start_with_encryption_key_request_resource,
+            instances_start_with_encryption_key_request_resource=compute.InstancesStartWithEncryptionKeyRequest(
+                disks=[
+                    compute.CustomerEncryptionKeyProtectedDisk(
+                        disk_encryption_key=compute.CustomerEncryptionKey(
+                            kms_key_name="kms_key_name_value"
+                        )
+                    )
+                ]
+            ),
         )
+        mock_args.update(sample_request)
+        client.start_with_encryption_key(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
-        assert compute.InstancesStartWithEncryptionKeyRequest.to_json(
-            instances_start_with_encryption_key_request_resource,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        ) in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/startWithEncryptionKey"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_start_with_encryption_key_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_start_with_encryption_key_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -5140,9 +6111,9 @@ def test_stop_rest(transport: str = "rest", request_type=compute.StopInstanceReq
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -5152,7 +6123,6 @@ def test_stop_rest(transport: str = "rest", request_type=compute.StopInstanceReq
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -5170,14 +6140,13 @@ def test_stop_rest(transport: str = "rest", request_type=compute.StopInstanceReq
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.stop(request)
@@ -5188,7 +6157,6 @@ def test_stop_rest(transport: str = "rest", request_type=compute.StopInstanceReq
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -5206,18 +6174,40 @@ def test_stop_rest(transport: str = "rest", request_type=compute.StopInstanceReq
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_stop_rest_bad_request(
+    transport: str = "rest", request_type=compute.StopInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.stop(request)
 
 
 def test_stop_rest_from_dict():
     test_stop_rest(request_type=dict)
 
 
-def test_stop_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_stop_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -5225,31 +6215,42 @@ def test_stop_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.stop(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value", zone="zone_value", instance="instance_value",
         )
+        mock_args.update(sample_request)
+        client.stop(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/stop"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_stop_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_stop_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -5269,9 +6270,12 @@ def test_test_iam_permissions_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "resource": "sample3"}
+    request_init["test_permissions_request_resource"] = compute.TestPermissionsRequest(
+        permissions=["permissions_value"]
+    )
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -5281,9 +6285,9 @@ def test_test_iam_permissions_rest(
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.TestPermissionsResponse.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.TestPermissionsResponse.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.test_iam_permissions(request)
@@ -5293,12 +6297,40 @@ def test_test_iam_permissions_rest(
     assert response.permissions == ["permissions_value"]
 
 
+def test_test_iam_permissions_rest_bad_request(
+    transport: str = "rest", request_type=compute.TestIamPermissionsInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "resource": "sample3"}
+    request_init["test_permissions_request_resource"] = compute.TestPermissionsRequest(
+        permissions=["permissions_value"]
+    )
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.test_iam_permissions(request)
+
+
 def test_test_iam_permissions_rest_from_dict():
     test_test_iam_permissions_rest(request_type=dict)
 
 
-def test_test_iam_permissions_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_test_iam_permissions_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -5306,42 +6338,47 @@ def test_test_iam_permissions_rest_flattened():
         return_value = compute.TestPermissionsResponse()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.TestPermissionsResponse.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.TestPermissionsResponse.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        test_permissions_request_resource = compute.TestPermissionsRequest(
-            permissions=["permissions_value"]
-        )
-        client.test_iam_permissions(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "resource": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value",
             zone="zone_value",
             resource="resource_value",
-            test_permissions_request_resource=test_permissions_request_resource,
+            test_permissions_request_resource=compute.TestPermissionsRequest(
+                permissions=["permissions_value"]
+            ),
         )
+        mock_args.update(sample_request)
+        client.test_iam_permissions(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "resource_value" in http_call[1] + str(body) + str(params)
-        assert compute.TestPermissionsRequest.to_json(
-            test_permissions_request_resource,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        ) in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{resource}/testIamPermissions"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_test_iam_permissions_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_test_iam_permissions_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -5364,9 +6401,14 @@ def test_update_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init["instance_resource"] = compute.Instance(
+        advanced_machine_features=compute.AdvancedMachineFeatures(
+            enable_nested_virtualization=True
+        )
+    )
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -5376,7 +6418,6 @@ def test_update_rest(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -5394,14 +6435,13 @@ def test_update_rest(
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.update(request)
@@ -5412,7 +6452,6 @@ def test_update_rest(
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -5430,18 +6469,45 @@ def test_update_rest(
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_update_rest_bad_request(
+    transport: str = "rest", request_type=compute.UpdateInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init["instance_resource"] = compute.Instance(
+        advanced_machine_features=compute.AdvancedMachineFeatures(
+            enable_nested_virtualization=True
+        )
+    )
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update(request)
 
 
 def test_update_rest_from_dict():
     test_update_rest(request_type=dict)
 
 
-def test_update_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_update_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -5449,44 +6515,49 @@ def test_update_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        instance_resource = compute.Instance(
-            advanced_machine_features=compute.AdvancedMachineFeatures(
-                enable_nested_virtualization=True
-            )
-        )
-        client.update(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value",
             zone="zone_value",
             instance="instance_value",
-            instance_resource=instance_resource,
+            instance_resource=compute.Instance(
+                advanced_machine_features=compute.AdvancedMachineFeatures(
+                    enable_nested_virtualization=True
+                )
+            ),
         )
+        mock_args.update(sample_request)
+        client.update(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
-        assert compute.Instance.to_json(
-            instance_resource,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        ) in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_update_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_update_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -5511,9 +6582,12 @@ def test_update_access_config_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init["access_config_resource"] = compute.AccessConfig(
+        external_ipv6="external_ipv6_value"
+    )
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -5523,7 +6597,6 @@ def test_update_access_config_rest(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -5541,14 +6614,13 @@ def test_update_access_config_rest(
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.update_access_config(request)
@@ -5559,7 +6631,6 @@ def test_update_access_config_rest(
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -5577,18 +6648,43 @@ def test_update_access_config_rest(
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_update_access_config_rest_bad_request(
+    transport: str = "rest", request_type=compute.UpdateAccessConfigInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init["access_config_resource"] = compute.AccessConfig(
+        external_ipv6="external_ipv6_value"
+    )
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_access_config(request)
 
 
 def test_update_access_config_rest_from_dict():
     test_update_access_config_rest(request_type=dict)
 
 
-def test_update_access_config_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_update_access_config_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -5596,44 +6692,48 @@ def test_update_access_config_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        access_config_resource = compute.AccessConfig(
-            external_ipv6="external_ipv6_value"
-        )
-        client.update_access_config(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value",
             zone="zone_value",
             instance="instance_value",
             network_interface="network_interface_value",
-            access_config_resource=access_config_resource,
+            access_config_resource=compute.AccessConfig(
+                external_ipv6="external_ipv6_value"
+            ),
         )
+        mock_args.update(sample_request)
+        client.update_access_config(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
-        assert "network_interface_value" in http_call[1] + str(body) + str(params)
-        assert compute.AccessConfig.to_json(
-            access_config_resource,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        ) in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/updateAccessConfig"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_update_access_config_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_update_access_config_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -5657,9 +6757,10 @@ def test_update_display_device_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init["display_device_resource"] = compute.DisplayDevice(enable_display=True)
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -5669,7 +6770,6 @@ def test_update_display_device_rest(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -5687,14 +6787,13 @@ def test_update_display_device_rest(
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.update_display_device(request)
@@ -5705,7 +6804,6 @@ def test_update_display_device_rest(
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -5723,18 +6821,41 @@ def test_update_display_device_rest(
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_update_display_device_rest_bad_request(
+    transport: str = "rest", request_type=compute.UpdateDisplayDeviceInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init["display_device_resource"] = compute.DisplayDevice(enable_display=True)
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_display_device(request)
 
 
 def test_update_display_device_rest_from_dict():
     test_update_display_device_rest(request_type=dict)
 
 
-def test_update_display_device_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_update_display_device_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -5742,40 +6863,45 @@ def test_update_display_device_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        display_device_resource = compute.DisplayDevice(enable_display=True)
-        client.update_display_device(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value",
             zone="zone_value",
             instance="instance_value",
-            display_device_resource=display_device_resource,
+            display_device_resource=compute.DisplayDevice(enable_display=True),
         )
+        mock_args.update(sample_request)
+        client.update_display_device(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
-        assert compute.DisplayDevice.to_json(
-            display_device_resource,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        ) in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/updateDisplayDevice"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_update_display_device_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_update_display_device_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -5796,9 +6922,12 @@ def test_update_network_interface_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init["network_interface_resource"] = compute.NetworkInterface(
+        access_configs=[compute.AccessConfig(external_ipv6="external_ipv6_value")]
+    )
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -5808,7 +6937,6 @@ def test_update_network_interface_rest(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -5826,14 +6954,13 @@ def test_update_network_interface_rest(
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.update_network_interface(request)
@@ -5844,7 +6971,6 @@ def test_update_network_interface_rest(
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -5862,18 +6988,43 @@ def test_update_network_interface_rest(
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_update_network_interface_rest_bad_request(
+    transport: str = "rest", request_type=compute.UpdateNetworkInterfaceInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init["network_interface_resource"] = compute.NetworkInterface(
+        access_configs=[compute.AccessConfig(external_ipv6="external_ipv6_value")]
+    )
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_network_interface(request)
 
 
 def test_update_network_interface_rest_from_dict():
     test_update_network_interface_rest(request_type=dict)
 
 
-def test_update_network_interface_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_update_network_interface_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -5881,44 +7032,50 @@ def test_update_network_interface_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        network_interface_resource = compute.NetworkInterface(
-            access_configs=[compute.AccessConfig(external_ipv6="external_ipv6_value")]
-        )
-        client.update_network_interface(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value",
             zone="zone_value",
             instance="instance_value",
             network_interface="network_interface_value",
-            network_interface_resource=network_interface_resource,
+            network_interface_resource=compute.NetworkInterface(
+                access_configs=[
+                    compute.AccessConfig(external_ipv6="external_ipv6_value")
+                ]
+            ),
         )
+        mock_args.update(sample_request)
+        client.update_network_interface(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
-        assert "network_interface_value" in http_call[1] + str(body) + str(params)
-        assert compute.NetworkInterface.to_json(
-            network_interface_resource,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        ) in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/updateNetworkInterface"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_update_network_interface_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_update_network_interface_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -5945,9 +7102,12 @@ def test_update_shielded_instance_config_rest(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init["shielded_instance_config_resource"] = compute.ShieldedInstanceConfig(
+        enable_integrity_monitoring=True
+    )
+    request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -5957,7 +7117,6 @@ def test_update_shielded_instance_config_rest(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_time="end_time_value",
-            error=compute.Error(errors=[compute.Errors(code="code_value")]),
             http_error_message="http_error_message_value",
             http_error_status_code=2374,
             id=205,
@@ -5975,14 +7134,13 @@ def test_update_shielded_instance_config_rest(
             target_id=947,
             target_link="target_link_value",
             user="user_value",
-            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.update_shielded_instance_config(request)
@@ -5993,7 +7151,6 @@ def test_update_shielded_instance_config_rest(
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_time == "end_time_value"
-    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
     assert response.http_error_message == "http_error_message_value"
     assert response.http_error_status_code == 2374
     assert response.id == 205
@@ -6011,18 +7168,44 @@ def test_update_shielded_instance_config_rest(
     assert response.target_id == 947
     assert response.target_link == "target_link_value"
     assert response.user == "user_value"
-    assert response.warnings == [
-        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
-    ]
     assert response.zone == "zone_value"
+
+
+def test_update_shielded_instance_config_rest_bad_request(
+    transport: str = "rest",
+    request_type=compute.UpdateShieldedInstanceConfigInstanceRequest,
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
+    request_init["shielded_instance_config_resource"] = compute.ShieldedInstanceConfig(
+        enable_integrity_monitoring=True
+    )
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_shielded_instance_config(request)
 
 
 def test_update_shielded_instance_config_rest_from_dict():
     test_update_shielded_instance_config_rest(request_type=dict)
 
 
-def test_update_shielded_instance_config_rest_flattened():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_update_shielded_instance_config_rest_flattened(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -6030,42 +7213,47 @@ def test_update_shielded_instance_config_rest_flattened():
         return_value = compute.Operation()
 
         # Wrap the value into a proper Response obj
-        json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        shielded_instance_config_resource = compute.ShieldedInstanceConfig(
-            enable_integrity_monitoring=True
-        )
-        client.update_shielded_instance_config(
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "zone": "sample2",
+            "instance": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
             project="project_value",
             zone="zone_value",
             instance="instance_value",
-            shielded_instance_config_resource=shielded_instance_config_resource,
+            shielded_instance_config_resource=compute.ShieldedInstanceConfig(
+                enable_integrity_monitoring=True
+            ),
         )
+        mock_args.update(sample_request)
+        client.update_shielded_instance_config(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
-        _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("data")
-        params = http_params.get("params")
-        assert "project_value" in http_call[1] + str(body) + str(params)
-        assert "zone_value" in http_call[1] + str(body) + str(params)
-        assert "instance_value" in http_call[1] + str(body) + str(params)
-        assert compute.ShieldedInstanceConfig.to_json(
-            shielded_instance_config_resource,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        ) in http_call[1] + str(body) + str(params)
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "https://%s/compute/v1/projects/{project}/zones/{zone}/instances/{instance}/updateShieldedInstanceConfig"
+            % client.transport._host,
+            args[1],
+        )
 
 
-def test_update_shielded_instance_config_rest_flattened_error():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_update_shielded_instance_config_rest_flattened_error(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -6199,8 +7387,10 @@ def test_instances_base_transport():
         with pytest.raises(NotImplementedError):
             getattr(transport, method)(request=object())
 
+    with pytest.raises(NotImplementedError):
+        transport.close()
 
-@requires_google_auth_gte_1_25_0
+
 def test_instances_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
@@ -6224,29 +7414,6 @@ def test_instances_base_transport_with_credentials_file():
         )
 
 
-@requires_google_auth_lt_1_25_0
-def test_instances_base_transport_with_credentials_file_old_google_auth():
-    # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.compute_v1.services.instances.transports.InstancesTransport._prep_wrapped_messages"
-    ) as Transport:
-        Transport.return_value = None
-        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.InstancesTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
-        )
-        load_creds.assert_called_once_with(
-            "credentials.json",
-            scopes=(
-                "https://www.googleapis.com/auth/compute",
-                "https://www.googleapis.com/auth/cloud-platform",
-            ),
-            quota_project_id="octopus",
-        )
-
-
 def test_instances_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
@@ -6258,7 +7425,6 @@ def test_instances_base_transport_with_adc():
         adc.assert_called_once()
 
 
-@requires_google_auth_gte_1_25_0
 def test_instances_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
@@ -6267,21 +7433,6 @@ def test_instances_auth_adc():
         adc.assert_called_once_with(
             scopes=None,
             default_scopes=(
-                "https://www.googleapis.com/auth/compute",
-                "https://www.googleapis.com/auth/cloud-platform",
-            ),
-            quota_project_id=None,
-        )
-
-
-@requires_google_auth_lt_1_25_0
-def test_instances_auth_adc_old_google_auth():
-    # If no credentials are provided, we should use ADC credentials.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc:
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        InstancesClient()
-        adc.assert_called_once_with(
-            scopes=(
                 "https://www.googleapis.com/auth/compute",
                 "https://www.googleapis.com/auth/cloud-platform",
             ),
@@ -6435,3 +7586,36 @@ def test_client_withDEFAULT_CLIENT_INFO():
             credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
+
+
+def test_transport_close():
+    transports = {
+        "rest": "_session",
+    }
+
+    for transport, close_name in transports.items():
+        client = InstancesClient(
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
+        )
+        with mock.patch.object(
+            type(getattr(client.transport, close_name)), "close"
+        ) as close:
+            with client:
+                close.assert_not_called()
+            close.assert_called_once()
+
+
+def test_client_ctx():
+    transports = [
+        "rest",
+    ]
+    for transport in transports:
+        client = InstancesClient(
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
+        )
+        # Test client calls underlying transport.
+        with mock.patch.object(type(client.transport), "close") as close:
+            close.assert_not_called()
+            with client:
+                pass
+            close.assert_called()

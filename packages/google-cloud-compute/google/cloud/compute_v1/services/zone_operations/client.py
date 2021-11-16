@@ -14,21 +14,25 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from distutils import util
 import os
 import re
-from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.compute_v1.services.zone_operations import pagers
 from google.cloud.compute_v1.types import compute
@@ -263,8 +267,15 @@ class ZoneOperationsClient(metaclass=ZoneOperationsClientMeta):
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
         )
 
         client_cert_source_func = None
@@ -326,16 +337,17 @@ class ZoneOperationsClient(metaclass=ZoneOperationsClientMeta):
                 client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
+                always_use_jwt_access=True,
             )
 
     def delete(
         self,
-        request: compute.DeleteZoneOperationRequest = None,
+        request: Union[compute.DeleteZoneOperationRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         operation: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.DeleteZoneOperationResponse:
@@ -343,7 +355,7 @@ class ZoneOperationsClient(metaclass=ZoneOperationsClientMeta):
         resource.
 
         Args:
-            request (google.cloud.compute_v1.types.DeleteZoneOperationRequest):
+            request (Union[google.cloud.compute_v1.types.DeleteZoneOperationRequest, dict]):
                 The request object. A request message for
                 ZoneOperations.Delete. See the method description for
                 details.
@@ -414,12 +426,12 @@ class ZoneOperationsClient(metaclass=ZoneOperationsClientMeta):
 
     def get(
         self,
-        request: compute.GetZoneOperationRequest = None,
+        request: Union[compute.GetZoneOperationRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         operation: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -427,7 +439,7 @@ class ZoneOperationsClient(metaclass=ZoneOperationsClientMeta):
         resource.
 
         Args:
-            request (google.cloud.compute_v1.types.GetZoneOperationRequest):
+            request (Union[google.cloud.compute_v1.types.GetZoneOperationRequest, dict]):
                 The request object. A request message for
                 ZoneOperations.Get. See the method description for
                 details.
@@ -510,11 +522,11 @@ class ZoneOperationsClient(metaclass=ZoneOperationsClientMeta):
 
     def list(
         self,
-        request: compute.ListZoneOperationsRequest = None,
+        request: Union[compute.ListZoneOperationsRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPager:
@@ -522,7 +534,7 @@ class ZoneOperationsClient(metaclass=ZoneOperationsClientMeta):
         within the specified zone.
 
         Args:
-            request (google.cloud.compute_v1.types.ListZoneOperationsRequest):
+            request (Union[google.cloud.compute_v1.types.ListZoneOperationsRequest, dict]):
                 The request object. A request message for
                 ZoneOperations.List. See the method description for
                 details.
@@ -592,12 +604,12 @@ class ZoneOperationsClient(metaclass=ZoneOperationsClientMeta):
 
     def wait(
         self,
-        request: compute.WaitZoneOperationRequest = None,
+        request: Union[compute.WaitZoneOperationRequest, dict] = None,
         *,
         project: str = None,
         zone: str = None,
         operation: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
@@ -615,7 +627,7 @@ class ZoneOperationsClient(metaclass=ZoneOperationsClientMeta):
         the operation is not ``DONE``.
 
         Args:
-            request (google.cloud.compute_v1.types.WaitZoneOperationRequest):
+            request (Union[google.cloud.compute_v1.types.WaitZoneOperationRequest, dict]):
                 The request object. A request message for
                 ZoneOperations.Wait. See the method description for
                 details.
@@ -695,6 +707,19 @@ class ZoneOperationsClient(metaclass=ZoneOperationsClientMeta):
 
         # Done; return the response.
         return response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        """Releases underlying transport's resources.
+
+        .. warning::
+            ONLY use as a context manager if the transport is NOT shared
+            with other clients! Exiting the with block will CLOSE the transport
+            and may cause errors in other clients!
+        """
+        self.transport.close()
 
 
 try:
