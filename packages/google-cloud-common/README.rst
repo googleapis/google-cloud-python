@@ -13,7 +13,7 @@ This package contains generated Python types for `google.cloud.common`.
    :target: https://pypi.org/project/google-cloud-common/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-common.svg
    :target: https://pypi.org/project/google-cloud-common/
-.. _Client Library Documentation: https://googleapis.dev/python/common/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/common/latest
 
 Installation
 ------------
