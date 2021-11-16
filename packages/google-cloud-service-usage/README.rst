@@ -17,7 +17,7 @@ well as services created using Cloud Endpoints.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-service-usage.svg
    :target: https://pypi.org/project/google-cloud-service-usage/
 .. _Service Usage: https://cloud.google.com/service-usage
-.. _Client Library Documentation: https://googleapis.dev/python/serviceusage/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/serviceusage/latest
 .. _Product Documentation:  https://cloud.google.com/service-usage/docs
 
 Quick Start

@@ -2,7 +2,7 @@
     "name": "serviceusage",
     "name_pretty": "Service Usage",
     "product_documentation": "https://cloud.google.com/service-usage",
-    "client_documentation": "https://googleapis.dev/python/serviceusage/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/serviceusage/latest",
     "issue_tracker": "",
     "release_level": "ga",
     "language": "python",
