@@ -16,7 +16,7 @@ API services with serverless workflows.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-workflows.svg
    :target: https://pypi.org/project/google-cloud-workflows/
 .. _Cloud Workflows API: https://cloud.google.com/workflows/docs
-.. _Client Library Documentation: https://googleapis.dev/python/workflows/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/workflows/latest
 .. _Product Documentation:  https://cloud.google.com/workflows/docs
 
 Quick Start
