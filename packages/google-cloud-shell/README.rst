@@ -17,7 +17,7 @@ from your web browser.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-shell.svg
    :target: https://pypi.org/project/google-cloud-shell/
 .. _Cloud Shell: https://cloud.google.com/shell
-.. _Client Library Documentation: https://googleapis.dev/python/cloudshell/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudshell/latest
 .. _Product Documentation:  https://cloud.google.com/shell/docs
 
 Quick Start

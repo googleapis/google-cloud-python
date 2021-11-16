@@ -2,7 +2,7 @@
     "name": "cloudshell",
     "name_pretty": "Cloud Shell",
     "product_documentation": "https://cloud.google.com/shell/",
-    "client_documentation": "https://googleapis.dev/python/cloudshell/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/cloudshell/latest",
     "issue_tracker": "",
     "release_level": "ga",
     "language": "python",
