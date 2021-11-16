@@ -2,7 +2,7 @@
     "name": "containeranalysis",
     "name_pretty": "Cloud Container Analysis",
     "product_documentation": "https://cloud.google.com/container-registry/docs/container-analysis",
-    "client_documentation": "https://googleapis.dev/python/containeranalysis/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/containeranalysis/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/559777",
     "release_level": "ga",
     "language": "python",

@@ -16,7 +16,7 @@ and retrieval of critical metadata about all of your software artifacts.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-containeranalysis.svg
    :target: https://pypi.org/project/google-cloud-containeranalysis/
 .. _Container Analysis API: https://cloud.google.com/container-registry/docs/container-analysis
-.. _Client Library Documentation: https://googleapis.dev/python/containeranalysis/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/containeranalysis/latest
 .. _Product Documentation:  https://cloud.google.com/container-registry/docs/container-analysis
 
 Quick Start
