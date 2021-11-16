@@ -20,7 +20,7 @@ auditing, rate limiting, analytics, billing, logging, and monitoring.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-service-control.svg
    :target: https://pypi.org/project/google-cloud-service-control/
 .. _Service Control: https://cloud.google.com/service-infrastructure/docs/overview/
-.. _Client Library Documentation: https://googleapis.dev/python/servicecontrol/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/servicecontrol/latest
 .. _Product Documentation:  https://cloud.google.com/service-infrastructure/docs/overview/
 
 Quick Start
