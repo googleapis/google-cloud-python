@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.8.0](https://www.github.com/googleapis/python-monitoring/compare/v2.7.0...v2.8.0) (2021-11-16)
+
+
+### Features
+
+* Added support for auto-close configurations ([#253](https://www.github.com/googleapis/python-monitoring/issues/253)) ([0541c7a](https://www.github.com/googleapis/python-monitoring/commit/0541c7acc69465030077b5ce3b1d9c40cea7b634))
+
 ## [2.7.0](https://www.github.com/googleapis/python-monitoring/compare/v2.6.0...v2.7.0) (2021-11-09)
 
 
