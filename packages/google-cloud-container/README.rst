@@ -17,7 +17,7 @@ Kubernetes technology.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-container.svg
    :target: https://pypi.org/project/google-cloud-container/
 .. _Google Kubernetes Engine API: https://cloud.google.com/kubernetes-engine
-.. _Client Library Documentation: https://googleapis.dev/python/container/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/container/latest
 .. _Product Documentation:  https://cloud.google.com/kubernetes-engine
 
 Quick Start
@@ -87,4 +87,4 @@ Next Steps
 -  Read the `Product documentation`_ to learn more about the product and see
    How-to Guides.
 
-.. _Client API Documentation: https://googleapis.dev/python/container/latest
+.. _Client API Documentation: https://cloud.google.com/python/docs/reference/container/latest
