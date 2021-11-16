@@ -17,7 +17,7 @@ across the Cloud Resource Hierarchy.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-resource-settings.svg
    :target: https://pypi.org/project/google-cloud-resource-settings/
 .. _Resource Settings: https://cloud.google.com/resource-settings
-.. _Client Library Documentation: https://googleapis.dev/python/resourcesettings/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/resourcesettings/latest
 .. _Product Documentation:  https://cloud.google.com/resource-manager/docs/resource-settings/overview
 
 Quick Start
