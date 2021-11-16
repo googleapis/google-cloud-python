@@ -16,7 +16,7 @@ and automated account creation.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-recaptcha-enterprise.svg
    :target: https://pypi.org/project/google-cloud-recaptcha-enterprise/
 .. _reCAPTCHA Enterprise: https://cloud.google.com/recaptcha-enterprise/
-.. _Client Library Documentation: https://googleapis.dev/python/recaptchaenterprise/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/recaptchaenterprise/latest
 .. _Product Documentation:  https://cloud.google.com/recaptcha-enterprise/
 
 Quick Start
