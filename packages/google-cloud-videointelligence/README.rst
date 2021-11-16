@@ -23,7 +23,7 @@ relevant information at the video, shot or per frame.
    :target: https://pypi.org/project/google-cloud-videointelligence/
 .. _Google Cloud Video Intelligence: https://cloud.google.com/video-intelligence/
 .. _Google Cloud Storage: https://cloud.google.com/storage/
-.. _Client Library Documentation: https://googleapis.dev/python/videointelligence/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/videointelligence/latest
 .. _Product Documentation: https://cloud.google.com/video-intelligence/docs/
 
 Quick Start
