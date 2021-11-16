@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.2](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v1.3.1...v1.3.2) (2021-11-16)
+
+
+### Bug Fixes
+
+* gracefully handle format_code exceptions ([#152](https://www.github.com/googleapis/sphinx-docfx-yaml/issues/152)) ([a679ace](https://www.github.com/googleapis/sphinx-docfx-yaml/commit/a679ace42c88ac40d7336f6d8b6266191932a3ea))
+
 ### [1.3.1](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v1.3.0...v1.3.1) (2021-11-15)
 
 
