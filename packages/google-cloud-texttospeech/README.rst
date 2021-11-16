@@ -16,7 +16,7 @@ powerful neural network models.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-texttospeech.svg
    :target: https://pypi.org/project/google-cloud-texttospeech/
 .. _Cloud Text-to-Speech API: https://cloud.google.com/texttospeech
-.. _Client Library Documentation: https://googleapis.dev/python/texttospeech/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/texttospeech/latest
 .. _Product Documentation: https://cloud.google.com/texttospeech
 
 Quick Start

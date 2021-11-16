@@ -2,7 +2,7 @@
     "name": "texttospeech",
     "name_pretty": "Google Cloud Text-to-Speech",
     "product_documentation": "https://cloud.google.com/text-to-speech",
-    "client_documentation": "https://googleapis.dev/python/texttospeech/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/texttospeech/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/5235428",
     "release_level": "ga",
     "language": "python",
