@@ -16,7 +16,7 @@ schedule, and monitor pipelines.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-orchestration-airflow.svg
    :target: https://pypi.org/project/google-cloud-orchestration-airflow/
 .. _Cloud Composer: https://cloud.google.com/composer
-.. _Client Library Documentation: https://googleapis.dev/python/composer/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/composer/latest
 .. _Product Documentation:  https://cloud.google.com/composer/docs
 
 Quick Start
