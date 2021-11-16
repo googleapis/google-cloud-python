@@ -17,7 +17,7 @@ machine learning, recommendation system, or Google Cloud.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-retail.svg
    :target: https://pypi.org/project/google-cloud-retail/
 .. _Retail API: https://cloud.google.com/retail/docs
-.. _Client Library Documentation: https://googleapis.dev/python/retail/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/retail/latest
 .. _Product Documentation:  https://cloud.google.com/retail/docs
 
 Quick Start

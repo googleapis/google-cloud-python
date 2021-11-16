@@ -2,7 +2,7 @@
     "name": "retail",
     "name_pretty": "Retail API",
     "product_documentation": "https://cloud.google.com/retail/docs/",
-    "client_documentation": "https://googleapis.dev/python/retail/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/retail/latest",
     "issue_tracker": "",
     "release_level": "ga",
     "language": "python",
