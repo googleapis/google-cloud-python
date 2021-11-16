@@ -128,7 +128,7 @@ class TimeInterval(proto.Message):
        the end time of the previous interval.
 
     -  For ``CUMULATIVE`` metrics, the start time and end time must
-       specify a a non-zero interval, with subsequent points specifying
+       specify a non-zero interval, with subsequent points specifying
        the same start time and increasing end times, until an event
        resets the cumulative value to zero and sets a new start time for
        the following points. The new start time must be at least a

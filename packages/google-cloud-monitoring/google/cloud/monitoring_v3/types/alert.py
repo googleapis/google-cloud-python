@@ -527,6 +527,10 @@ class AlertPolicy(proto.Message):
 
                 This limit is not implemented for alert policies that are
                 not log-based.
+            auto_close (google.protobuf.duration_pb2.Duration):
+                If an alert policy that was active has no
+                data for this long, any open incidents will
+                close
         """
 
         class NotificationRateLimit(proto.Message):
@@ -546,6 +550,9 @@ class AlertPolicy(proto.Message):
             proto.MESSAGE,
             number=1,
             message="AlertPolicy.AlertStrategy.NotificationRateLimit",
+        )
+        auto_close = proto.Field(
+            proto.MESSAGE, number=3, message=duration_pb2.Duration,
         )
 
     name = proto.Field(proto.STRING, number=1,)
