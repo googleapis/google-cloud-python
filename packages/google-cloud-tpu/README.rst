@@ -16,7 +16,7 @@ integrated circuits (ASICs) used to accelerate machine learning workloads.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-tpu.svg
    :target: https://pypi.org/project/google-cloud-tpu/
 .. _Cloud TPU: https://cloud.google.com/tpu
-.. _Client Library Documentation: https://googleapis.dev/python/tpu/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/tpu/latest
 .. _Product Documentation:  https://cloud.google.com/tpu/docs
 
 Quick Start
