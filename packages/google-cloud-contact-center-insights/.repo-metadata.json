@@ -2,7 +2,7 @@
     "name": "contactcenterinsights",
     "name_pretty": "Contact Center AI Insights API",
     "product_documentation": "https://cloud.google.com/contact-center/insights/docs",
-    "client_documentation": "https://googleapis.dev/python/contactcenterinsights/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/contactcenterinsights/latest",
     "issue_tracker": "",
     "release_level": "ga",
     "language": "python",
