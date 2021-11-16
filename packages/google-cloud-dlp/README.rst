@@ -17,7 +17,7 @@ storage repositories.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dlp.svg
    :target: https://pypi.org/project/google-cloud-dlp/
 .. _Cloud Data Loss Prevention (DLP) API: https://cloud.google.com/dlp
-.. _Client Library Documentation: https://googleapis.dev/python/dlp/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/dlp/latest
 .. _Product Documentation:  https://cloud.google.com/dlp
 
 Quick Start
