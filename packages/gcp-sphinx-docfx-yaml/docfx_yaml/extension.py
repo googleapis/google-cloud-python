@@ -28,6 +28,7 @@ from pathlib import Path
 from functools import partial
 from itertools import zip_longest
 from typing import List
+from black import InvalidInput
 
 try:
     from subprocess import getoutput
@@ -984,7 +985,11 @@ def format_code(code):
 def process_signature(app, _type, name, obj, options, signature, return_annotation):
     if signature:
         short_name = name.split('.')[-1]
-        signature = format_code(short_name + signature)
+        signature = short_name + signature
+        try:
+            signature = format_code(signature)
+        except InvalidInput as e:
+            print(f"Could not format the given code: \n{e})")
         app.env.docfx_signature_funcs_methods[name] = signature
 
 
