@@ -55,7 +55,7 @@ class _ClientFactoryMixin(object):
     def from_service_account_info(cls, info, *args, **kwargs):
         """Factory to retrieve JSON credentials while creating client.
 
-        :type info: str
+        :type info: dict
         :param info:
             The JSON object with a private key and other credentials
             information (downloaded from the Google APIs console).
