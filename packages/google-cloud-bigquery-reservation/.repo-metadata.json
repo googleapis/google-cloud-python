@@ -2,7 +2,7 @@
     "name": "bigqueryreservation",
     "name_pretty": "Google BigQuery Reservation",
     "product_documentation": "https://cloud.google.com/bigquery/docs/reference/reservations",
-    "client_documentation": "https://googleapis.dev/python/bigqueryreservation/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/bigqueryreservation/latest",
     "issue_tracker": "",
     "release_level": "ga",
     "language": "python",

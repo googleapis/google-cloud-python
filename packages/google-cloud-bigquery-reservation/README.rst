@@ -15,7 +15,7 @@ Python Client for Cloud BigQuery Reservation
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigquery-reservation.svg
    :target: https://pypi.org/project/google-cloud-bigqyery-reservation/
 .. _BigQuery Reservation API: https://cloud.google.com/bigquery/docs/reference/reservations/rpc
-.. _Client Library Documentation: https://googleapis.dev/python/bigqueryreservation/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/bigqueryreservation/latest
 .. _Product Documentation: https://cloud.google.com/bigquery/docs/reservations-intro
 
 Quick Start
