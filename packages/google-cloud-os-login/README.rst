@@ -15,7 +15,7 @@ Python Client for Google Cloud OS Login API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-os-login.svg
    :target: https://pypi.org/project/google-cloud-os-login/
 .. _Google Cloud OS Login API: https://cloud.google.com/os-login
-.. _Client Library Documentation: https://googleapis.dev/python/oslogin/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/oslogin/latest
 .. _Product Documentation:  https://cloud.google.com/os-login
 
 Quick Start
