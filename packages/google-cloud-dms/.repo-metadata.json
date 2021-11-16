@@ -2,7 +2,7 @@
     "name": "datamigration",
     "name_pretty": "Cloud Database Migration Service",
     "product_documentation": "https://cloud.google.com/database-migration/",
-    "client_documentation": "https://googleapis.dev/python/datamigration/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/datamigration/latest",
     "issue_tracker": "",
     "release_level": "ga",
     "language": "python",
