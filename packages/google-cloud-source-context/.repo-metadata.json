@@ -1,7 +1,7 @@
 {
     "name": "source",
     "name_pretty": "Source Context",
-    "client_documentation": "https://googleapis.dev/python/source/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/source/latest",
     "issue_tracker": "http://github.com/googleapis/python-source-context/issues",
     "release_level": "ga",
     "language": "python",

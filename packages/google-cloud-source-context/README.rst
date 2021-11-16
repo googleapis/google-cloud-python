@@ -13,7 +13,7 @@ This package contains generated Python types for `google.cloud.source_context_v1
    :target: https://pypi.org/project/google-cloud-source-context/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-source-context.svg
    :target: https://pypi.org/project/google-cloud-source-context/
-.. _Client Library Documentation: https://googleapis.dev/python/source/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/source/latest
 
 Installation
 ------------
