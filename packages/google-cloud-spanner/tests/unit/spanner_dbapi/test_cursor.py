@@ -506,7 +506,7 @@ class TestCursor(unittest.TestCase):
 
         transaction = mock.Mock(committed=False, rolled_back=False)
         transaction.batch_update = mock.Mock(
-            return_value=(mock.Mock(code=UNKNOWN, details=err_details), [])
+            return_value=(mock.Mock(code=UNKNOWN, message=err_details), [])
         )
 
         with mock.patch(

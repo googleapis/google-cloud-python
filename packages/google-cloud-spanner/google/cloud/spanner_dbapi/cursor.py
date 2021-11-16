@@ -160,9 +160,9 @@ class Cursor(object):
         many_result_set.add_iter(res)
 
         if status.code == ABORTED:
-            raise Aborted(status.details)
+            raise Aborted(status.message)
         elif status.code != OK:
-            raise OperationalError(status.details)
+            raise OperationalError(status.message)
 
     def execute(self, sql, args=None):
         """Prepares and executes a Spanner database operation.
@@ -302,9 +302,9 @@ class Cursor(object):
 
                         if status.code == ABORTED:
                             self.connection._transaction = None
-                            raise Aborted(status.details)
+                            raise Aborted(status.message)
                         elif status.code != OK:
-                            raise OperationalError(status.details)
+                            raise OperationalError(status.message)
                         break
                     except Aborted:
                         self.connection.retry_transaction()
