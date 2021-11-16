@@ -14,7 +14,7 @@ This package contains generated Python types for ``google.cloud.bigquery.v1.logg
    :target: https://pypi.org/project/google-cloud-bigquery-logging/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigquery-logging.svg
    :target: https://pypi.org/project/google-cloud-bigquery-logging/
-.. _Client Library Documentation: https://googleapis.dev/python/bigquerylogging/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/bigquerylogging/latest
 .. _Product Documentation: https://cloud.google.com/bigquery/docs/reference/auditlogs
 
 
