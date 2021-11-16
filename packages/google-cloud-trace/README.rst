@@ -16,7 +16,7 @@ from applications and displays it in near real-time in the Google Cloud Console.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-trace.svg
    :target: https://pypi.org/project/google-cloud-trace/
 .. _Google Cloud Trace: https://cloud.google.com/trace
-.. _Client Library Documentation: https://googleapis.dev/python/cloudtrace/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudtrace/latest
 .. _Product Documentation:  https://cloud.google.com/trace/docs
 
 Quick Start

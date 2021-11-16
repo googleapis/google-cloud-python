@@ -2,7 +2,7 @@
     "name": "cloudtrace",
     "name_pretty": "Cloud Trace",
     "product_documentation": "https://cloud.google.com/trace/docs",
-    "client_documentation": "https://googleapis.dev/python/cloudtrace/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/cloudtrace/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/559776",
     "release_level": "ga",
     "language": "python",
