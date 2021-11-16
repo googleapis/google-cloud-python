@@ -26,7 +26,7 @@ Storage.
 .. _Vision: https://cloud.google.com/vision/
 
 .. _Google Cloud Vision: https://cloud.google.com/vision/
-.. _Client Library Documentation: https://googleapis.dev/python/vision/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/vision/latest
 .. _Product Documentation: https://cloud.google.com/vision/reference/rest/
 
 
