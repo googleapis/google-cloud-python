@@ -51,6 +51,8 @@ class AudioEncoding(proto.Enum):
     LINEAR16 = 1
     MP3 = 2
     OGG_OPUS = 3
+    MULAW = 5
+    ALAW = 6
 
 
 class ListVoicesRequest(proto.Message):

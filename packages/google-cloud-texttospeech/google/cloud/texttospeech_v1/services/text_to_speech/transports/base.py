@@ -122,34 +122,10 @@ class TextToSpeechTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_voices: gapic_v1.method.wrap_method(
-                self.list_voices,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=600.0,
-                ),
-                default_timeout=600.0,
-                client_info=client_info,
+                self.list_voices, default_timeout=None, client_info=client_info,
             ),
             self.synthesize_speech: gapic_v1.method.wrap_method(
-                self.synthesize_speech,
-                default_retry=retries.Retry(
-                    initial=0.1,
-                    maximum=60.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=600.0,
-                ),
-                default_timeout=600.0,
-                client_info=client_info,
+                self.synthesize_speech, default_timeout=None, client_info=client_info,
             ),
         }
 
