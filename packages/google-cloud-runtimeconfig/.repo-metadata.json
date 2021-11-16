@@ -2,7 +2,7 @@
     "name": "runtimeconfig",
     "name_pretty": "Google Cloud Runtime Configurator",
     "product_documentation": "https://cloud.google.com/deployment-manager/runtime-configurator/",
-    "client_documentation": "https://googleapis.dev/python/runtimeconfig/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/runtimeconfig/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/559663",
     "release_level": "beta",
     "language": "python",

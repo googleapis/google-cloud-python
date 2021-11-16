@@ -18,7 +18,7 @@ return based on certain conditions.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-runtimeconfig.svg
    :target: https://pypi.org/project/google-cloud-runtimeconfig/
 .. _Google Cloud RuntimeConfig: https://cloud.google.com/deployment-manager/runtime-configurator/
-.. _Client Library Documentation: https://googleapis.dev/python/runtimeconfig/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/runtimeconfig/latest
 .. _Product Documentation: https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/
 
 Quick Start
