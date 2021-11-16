@@ -22,7 +22,7 @@ workloads.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-spanner.svg
    :target: https://pypi.org/project/google-cloud-spanner/
 .. _Cloud Spanner: https://cloud.google.com/spanner/
-.. _Client Library Documentation: https://googleapis.dev/python/spanner/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/spanner/latest
 .. _Product Documentation:  https://cloud.google.com/spanner/docs
 
 Quick Start
