@@ -28,8 +28,8 @@ BLACK_VERSION = "black==19.10b0"
 BLACK_PATHS = ["docs", "pandas_gbq", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.8"
-SYSTEM_TEST_PYTHON_VERSIONS = ["3.7", "3.8", "3.9"]
-UNIT_TEST_PYTHON_VERSIONS = ["3.7", "3.8", "3.9"]
+SYSTEM_TEST_PYTHON_VERSIONS = ["3.7", "3.8", "3.9", "3.10"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.7", "3.8", "3.9", "3.10"]
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
@@ -146,7 +146,11 @@ def system(session):
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
     session.install("mock", "pytest", "google-cloud-testutils", "-c", constraints_path)
-    session.install("-e", ".[tqdm]", "-c", constraints_path)
+    if session.python == "3.9":
+        extras = "[tqdm,db-dtypes]"
+    else:
+        extras = "[tqdm]"
+    session.install("-e", f".{extras}", "-c", constraints_path)
 
     # Run py.test against the system tests.
     if system_test_exists:

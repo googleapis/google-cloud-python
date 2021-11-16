@@ -29,12 +29,16 @@ common = gcp.CommonTemplates()
 # ----------------------------------------------------------------------------
 
 extras = ["tqdm"]
+extras_by_python = {
+    "3.9": ["tqdm", "db-dtypes"],
+}
 templated_files = common.py_library(
-    unit_test_python_versions=["3.7", "3.8", "3.9"],
-    system_test_python_versions=["3.7", "3.8", "3.9"],
+    unit_test_python_versions=["3.7", "3.8", "3.9", "3.10"],
+    system_test_python_versions=["3.7", "3.8", "3.9", "3.10"],
     cov_level=86,
     unit_test_extras=extras,
     system_test_extras=extras,
+    system_test_extras_by_python=extras_by_python,
     intersphinx_dependencies={
         "pandas": "https://pandas.pydata.org/pandas-docs/stable/",
         "pydata-google-auth": "https://pydata-google-auth.readthedocs.io/en/latest/",
