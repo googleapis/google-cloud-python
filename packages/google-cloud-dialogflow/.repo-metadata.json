@@ -2,7 +2,7 @@
     "name": "dialogflow",
     "name_pretty": "Dialogflow",
     "product_documentation": "https://www.dialogflow.com/",
-    "client_documentation": "https://googleapis.dev/python/dialogflow/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/dialogflow/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/5300385",
     "release_level": "ga",
     "language": "python",

@@ -9,7 +9,7 @@ Dialogflow: Python Client
 developers to design and integrate conversational user interfaces into
 mobile apps, web applications, devices, and bots.
 
-* `Dialogflow ES Python Client API Reference <https://googleapis.dev/python/dialogflow/latest/index.html>`_
+* `Dialogflow ES Python Client API Reference <https://cloud.google.com/python/docs/reference/dialogflow/latest/index.html>`_
 * `Dialogflow ES Documentation <https://cloud.google.com/dialogflow/es/docs>`_
 
 Read more about the client libraries for Cloud APIs, including the older
@@ -65,7 +65,7 @@ The last version of this library compatible with Python 2.7 is dialogflow==1.1.0
 Usage
 -----
 
-View `usage documentation <https://googleapis.dev/python/dialogflow/latest/index.html>`_.
+View `usage documentation <https://cloud.google.com/python/docs/reference/dialogflow/latest/index.html>`_.
 
 
 Versioning
