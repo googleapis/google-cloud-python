@@ -15,7 +15,7 @@ Python Client for Recommendations AI
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-recommendations-ai.svg
    :target: https://pypi.org/project/google-cloud-recommendations-ai/
 .. _Cloud Recommendations AI API: https://cloud.google.com/recommendations-ai
-.. _Client Library Documentation: https://googleapis.dev/python/recommendationengine/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/recommendationengine/latest
 .. _Product Documentation:  https://cloud.google.com/recommendations-ai
 
 Quick Start

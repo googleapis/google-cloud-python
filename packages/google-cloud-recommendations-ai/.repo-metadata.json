@@ -2,7 +2,7 @@
     "name": "recommendationengine",
     "name_pretty": "Recommendations AI",
     "product_documentation": "https://cloud.google.com/recommendations-ai/",
-    "client_documentation": "https://googleapis.dev/python/recommendationengine/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/recommendationengine/latest",
     "issue_tracker": "",
     "release_level": "beta",
     "language": "python",
