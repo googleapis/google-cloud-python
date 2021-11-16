@@ -2,7 +2,7 @@
     "name": "dataproc",
     "name_pretty": "Google Cloud Dataproc",
     "product_documentation": "https://cloud.google.com/dataproc",
-    "client_documentation": "https://googleapis.dev/python/dataproc/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/dataproc/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/559745",
     "release_level": "ga",
     "language": "python",
