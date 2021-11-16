@@ -18,7 +18,7 @@ automate DevOps processes across all your clusters.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-gke-connect-gateway.svg
    :target: https://pypi.org/project/google-cloud-gke-connect-gateway/
 .. _GKE Connect Gateway: https://cloud.google.com/anthos/multicluster-management/gateway/
-.. _Client Library Documentation: https://googleapis.dev/python/connectgateway/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/connectgateway/latest
 .. _Product Documentation:  https://cloud.google.com/anthos/multicluster-management/gateway/
 
 Quick Start
