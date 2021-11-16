@@ -16,7 +16,7 @@ services, such as Cloud Billing, by providing your own list of contacts.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-essential-contacts.svg
    :target: https://pypi.org/project/google-cloud-essential-contacts/
 .. _Essential Contacts API: https://cloud.google.com/resource-manager/docs/managing-notification-contacts/
-.. _Client Library Documentation: https://googleapis.dev/python/essentialcontacts/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/essentialcontacts/latest
 .. _Product Documentation:  https://cloud.google.com/resource-manager/docs/managing-notification-contacts/
 
 Quick Start

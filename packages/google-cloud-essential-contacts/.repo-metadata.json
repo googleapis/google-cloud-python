@@ -2,7 +2,7 @@
     "name": "essentialcontacts",
     "name_pretty": "Essential Contacts API",
     "product_documentation": "https://cloud.google.com/resource-manager/docs/managing-notification-contacts/",
-    "client_documentation": "https://googleapis.dev/python/essentialcontacts/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/essentialcontacts/latest",
     "issue_tracker": "",
     "release_level": "ga",
     "language": "python",
