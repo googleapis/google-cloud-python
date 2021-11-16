@@ -584,7 +584,7 @@ def test_bigquery_magic_does_not_clear_display_in_verbose_mode():
 
 
 @pytest.mark.usefixtures("ipython_interactive")
-def test_bigquery_magic_clears_display_in_verbose_mode():
+def test_bigquery_magic_clears_display_in_non_verbose_mode():
     ip = IPython.get_ipython()
     ip.extension_manager.load_extension("google.cloud.bigquery")
     magics.context.credentials = mock.create_autospec(
@@ -1708,6 +1708,143 @@ def test_bigquery_magic_with_improperly_formatted_params():
 
     with pytest.raises(SyntaxError):
         ip.run_cell_magic("bigquery", "--params {17}", sql)
+
+
+@pytest.mark.parametrize(
+    "raw_sql", ("SELECT answer AS 42", " \t   SELECT answer AS 42  \t  ")
+)
+@pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_bigquery_magic_valid_query_in_existing_variable(ipython_ns_cleanup, raw_sql):
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context.credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+
+    ipython_ns_cleanup.append((ip, "custom_query"))
+    ipython_ns_cleanup.append((ip, "query_results_df"))
+
+    run_query_patch = mock.patch(
+        "google.cloud.bigquery.magics.magics._run_query", autospec=True
+    )
+    query_job_mock = mock.create_autospec(
+        google.cloud.bigquery.job.QueryJob, instance=True
+    )
+    mock_result = pandas.DataFrame([42], columns=["answer"])
+    query_job_mock.to_dataframe.return_value = mock_result
+
+    ip.user_ns["custom_query"] = raw_sql
+    cell_body = "$custom_query"  # Referring to an existing variable name (custom_query)
+    assert "query_results_df" not in ip.user_ns
+
+    with run_query_patch as run_query_mock:
+        run_query_mock.return_value = query_job_mock
+
+        ip.run_cell_magic("bigquery", "query_results_df", cell_body)
+
+        run_query_mock.assert_called_once_with(mock.ANY, raw_sql, mock.ANY)
+
+    assert "query_results_df" in ip.user_ns  # verify that the variable exists
+    df = ip.user_ns["query_results_df"]
+    assert len(df) == len(mock_result)  # verify row count
+    assert list(df) == list(mock_result)  # verify column names
+    assert list(df["answer"]) == [42]
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_bigquery_magic_nonexisting_query_variable():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context.credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+
+    run_query_patch = mock.patch(
+        "google.cloud.bigquery.magics.magics._run_query", autospec=True
+    )
+
+    ip.user_ns.pop("custom_query", None)  # Make sure the variable does NOT exist.
+    cell_body = "$custom_query"  # Referring to a non-existing variable name.
+
+    with pytest.raises(
+        NameError, match=r".*custom_query does not exist.*"
+    ), run_query_patch as run_query_mock:
+        ip.run_cell_magic("bigquery", "", cell_body)
+
+    run_query_mock.assert_not_called()
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_bigquery_magic_empty_query_variable_name():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context.credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+
+    run_query_patch = mock.patch(
+        "google.cloud.bigquery.magics.magics._run_query", autospec=True
+    )
+    cell_body = "$"  # Not referring to any variable (name omitted).
+
+    with pytest.raises(
+        NameError, match=r"(?i).*missing query variable name.*"
+    ), run_query_patch as run_query_mock:
+        ip.run_cell_magic("bigquery", "", cell_body)
+
+    run_query_mock.assert_not_called()
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_bigquery_magic_query_variable_non_string(ipython_ns_cleanup):
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context.credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+
+    run_query_patch = mock.patch(
+        "google.cloud.bigquery.magics.magics._run_query", autospec=True
+    )
+
+    ipython_ns_cleanup.append((ip, "custom_query"))
+
+    ip.user_ns["custom_query"] = object()
+    cell_body = "$custom_query"  # Referring to a non-string variable.
+
+    with pytest.raises(
+        TypeError, match=r".*must be a string or a bytes-like.*"
+    ), run_query_patch as run_query_mock:
+        ip.run_cell_magic("bigquery", "", cell_body)
+
+    run_query_mock.assert_not_called()
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_bigquery_magic_query_variable_not_identifier():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context.credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+
+    cell_body = "$123foo"  # 123foo is not valid Python identifier
+
+    with io.capture_output() as captured_io:
+        ip.run_cell_magic("bigquery", "", cell_body)
+
+    # If "$" prefixes a string that is not a Python identifier, we do not treat such
+    # cell_body as a variable reference and just treat is as any other cell body input.
+    # If at the same time the cell body does not contain any whitespace, it is
+    # considered a table name, thus we expect an error that the table ID is not valid.
+    output = captured_io.stderr
+    assert "ERROR:" in output
+    assert "must be a fully-qualified ID" in output
 
 
 @pytest.mark.usefixtures("ipython_interactive")
