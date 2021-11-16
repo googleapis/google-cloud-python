@@ -2,7 +2,7 @@
     "name": "dataflow",
     "name_pretty": "Dataflow",
     "product_documentation": "https://cloud.google.com/dataflow/",
-    "client_documentation": "https://googleapis.dev/python/dataflow/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/dataflow/latest",
     "issue_tracker": "",
     "release_level": "beta",
     "language": "python",
