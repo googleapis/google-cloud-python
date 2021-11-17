@@ -2,7 +2,7 @@
     "name": "cloudprivatecatalog",
     "name_pretty": "Private Catalog",
     "product_documentation": "https://cloud.google.com/private-catalog/",
-    "client_documentation": "https://googleapis.dev/python/cloudprivatecatalog/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/cloudprivatecatalog/latest",
     "issue_tracker": "",
     "release_level": "beta",
     "language": "python",

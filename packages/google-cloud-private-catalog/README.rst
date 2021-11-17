@@ -16,7 +16,7 @@ and increase discoverability for solutions within an enterprise.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-private-catalog.svg
    :target: https://pypi.org/project/google-cloud-private-catalog/
 .. _Private Catalog API: https://cloud.google.com/private-catalog/
-.. _Client Library Documentation: https://googleapis.dev/python/cloudprivatecatalog/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudprivatecatalog/latest
 .. _Product Documentation:  https://cloud.google.com/private-catalog/docs
 
 Quick Start
