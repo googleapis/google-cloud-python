@@ -15,7 +15,7 @@ Python Client for AI Platform Notebooks
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-notebooks.svg
    :target: https://pypi.org/project/google-cloud-notebooks/
 .. _AI Platform Notebooks: https://cloud.google.com/ai-platform/notebooks/
-.. _Client Library Documentation: https://googleapis.dev/python/notebooks/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/notebooks/latest
 .. _Product Documentation:  https://cloud.google.com/ai-platform/notebooks/
 
 Quick Start

@@ -2,7 +2,7 @@
     "name": "notebooks",
     "name_pretty": "AI Platform Notebooks",
     "product_documentation": "https://cloud.google.com/ai-platform/notebooks/",
-    "client_documentation": "https://googleapis.dev/python/notebooks/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/notebooks/latest",
     "issue_tracker": "",
     "release_level": "ga",
     "language": "python",
