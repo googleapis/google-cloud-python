@@ -17,7 +17,7 @@ with a few exceptions as noted on the individual method pages.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-monitoring.svg
    :target: https://pypi.org/project/google-cloud-monitoring/
 .. _Cloud Monitoring API: https://cloud.google.com/monitoring/api/ref_v3/rest/
-.. _Client Library Documentation: https://googleapis.dev/python/monitoring/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/monitoring/latest
 .. _Product Documentation:  https://cloud.google.com/monitoring/docs
 
 Quick Start
