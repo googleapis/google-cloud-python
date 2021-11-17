@@ -9,4 +9,4 @@ branchProtectionRules:
   requiredStatusCheckContexts:
     - 'tests'
     - 'cla/google'
-    - 'kokoro'
+    - 'Kokoro'
