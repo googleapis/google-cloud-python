@@ -16,7 +16,7 @@ compatible with OSS Memcached protocol.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-memcache.svg
    :target: https://pypi.org/project/google-cloud-memcache/
 .. _Cloud Memorystore for Memached API: https://cloud.google.com/memorystore/docs/memcached/
-.. _Client Library Documentation: https://googleapis.dev/python/memcache/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/memcache/latest
 .. _Product Documentation:  https://cloud.google.com/memorystore/docs/memcached/
 
 Quick Start

@@ -2,7 +2,7 @@
     "name": "memcache",
     "name_pretty": "Cloud Memorystore for Memcached",
     "product_documentation": "cloud.google.com/memorystore/docs/memcached/",
-    "client_documentation": "https://googleapis.dev/python/memcache/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/memcache/latest",
     "issue_tracker": "",
     "release_level": "ga",
     "language": "python",
