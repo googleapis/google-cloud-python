@@ -2,7 +2,7 @@
     "name": "managedidentities",
     "name_pretty": "Managed Service for Microsoft Active Directory",
     "product_documentation": "https://cloud.google.com/managed-microsoft-ad/",
-    "client_documentation": "https://googleapis.dev/python/managedidentities/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/managedidentities/latest",
     "issue_tracker": "",
     "release_level": "ga",
     "language": "python",
