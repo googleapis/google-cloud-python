@@ -15,7 +15,7 @@ Python Client for Network Security API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-network-security.svg
    :target: https://pypi.org/project/google-cloud-network-security/
 .. _Network Security API: https://cloud.google.com/traffic-director/docs/reference/network-security/rest
-.. _Client Library Documentation: https://googleapis.dev/python/networksecurity/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/networksecurity/latest
 .. _Product Documentation:  https://cloud.google.com/traffic-director/docs/reference/network-security/rest
 
 Quick Start
