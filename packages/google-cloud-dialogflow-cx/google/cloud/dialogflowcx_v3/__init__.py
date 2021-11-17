@@ -229,6 +229,8 @@ from .types.transition_route_group import TransitionRouteGroup
 from .types.transition_route_group import UpdateTransitionRouteGroupRequest
 from .types.validation_message import ResourceName
 from .types.validation_message import ValidationMessage
+from .types.version import CompareVersionsRequest
+from .types.version import CompareVersionsResponse
 from .types.version import CreateVersionOperationMetadata
 from .types.version import CreateVersionRequest
 from .types.version import DeleteVersionRequest
@@ -281,6 +283,8 @@ __all__ = (
     "CalculateCoverageResponse",
     "Changelog",
     "ChangelogsClient",
+    "CompareVersionsRequest",
+    "CompareVersionsResponse",
     "ContinuousTestResult",
     "ConversationTurn",
     "CreateAgentRequest",
