@@ -18,7 +18,7 @@ metastore and serves as a critical component towards enterprise data lakes.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dataproc-metastore.svg
    :target: https://pypi.org/project/google-cloud-dataproc-metastore/
 .. _Dataproc Metastore: https://cloud.google.com/dataproc-metastore/docs
-.. _Client Library Documentation: https://googleapis.dev/python/metastore/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/metastore/latest
 .. _Product Documentation:  https://cloud.google.com/dataproc-metastore/docs
 
 Quick Start
