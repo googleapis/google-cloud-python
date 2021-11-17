@@ -15,7 +15,7 @@ Python Client for Cloud Media Translation
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-media-translation.svg
    :target: https://pypi.org/project/google-cloud-media-translation/
 .. _Cloud Media Translation API: https://cloud.google.com/translate/media/docs
-.. _Client Library Documentation: https://googleapis.dev/python/mediatranslation/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/mediatranslation/latest
 .. _Product Documentation:  https://cloud.google.com/media-translation/
 
 Quick Start
