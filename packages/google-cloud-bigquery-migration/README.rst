@@ -15,7 +15,7 @@ Python client for `Google Cloud Bigquery Migration API`_.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigquery-migration.svg
    :target: https://pypi.org/project/google-cloud-bigquery-migration/
 .. _Google Cloud Bigquery Migration API: https://cloud.google.com/bigquery/docs/reference/migration/
-.. _Client Library Documentation: https://googleapis.dev/python/bigquerymigration/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/bigquerymigration/latest
 .. _Product Documentation:  https://cloud.google.com/bigquery/docs/reference/migration/
 
 Quick Start
