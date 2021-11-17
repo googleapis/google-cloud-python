@@ -15,7 +15,7 @@ Python Client for Service Directory
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-service-directory.svg
    :target: https://pypi.org/project/google-cloud-service-directory/
 .. _Cloud Service Directory API: https://cloud.google.com/service-directory
-.. _Client Library Documentation: https://googleapis.dev/python/servicedirectory/latest/
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/servicedirectory/latest/
 .. _Product Documentation:  https://cloud.google.com/service-directory
 
 Quick Start
