@@ -20,6 +20,7 @@ import pytest
 
 from google.api import field_behavior_pb2
 from google.api import resource_pb2
+from google.cloud import extended_operations_pb2 as ex_ops_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic.schema import naming
@@ -307,3 +308,76 @@ def test_required_fields():
     )
 
     assert set(request.required_fields) == {mass_kg, length_m, color}
+
+
+def test_is_diregapic_operation():
+    T = descriptor_pb2.FieldDescriptorProto.Type
+
+    # Canonical Operation
+
+    operation = make_message(
+        name="Operation",
+        fields=(
+            make_field(name=name, type=T.Value("TYPE_STRING"), number=i)
+            for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
+        )
+    )
+    for f in operation.field:
+        options = descriptor_pb2.FieldOptions()
+        # Note: The field numbers were carefully chosen to be the corresponding enum values.
+        options.Extensions[ex_ops_pb2.operation_field] = f.number
+        f.options.MergeFrom(options)
+
+    assert operation.is_diregapic_operation
+
+    # Missing a required field
+
+    missing = make_message(
+        name="Operation",
+        fields=(
+            make_field(name=name, type=T.Value("TYPE_STRING"), number=i)
+            # Missing error_message
+            for i, name in enumerate(("name", "status", "error_code"), start=1)
+        )
+    )
+    for f in missing.field:
+        options = descriptor_pb2.FieldOptions()
+        # Note: The field numbers were carefully chosen to be the corresponding enum values.
+        options.Extensions[ex_ops_pb2.operation_field] = f.number
+        f.options.MergeFrom(options)
+
+    assert not missing.is_diregapic_operation
+
+    # Named incorrectly
+
+    my_message = make_message(
+        name="MyMessage",
+        fields=(
+            make_field(name=name, type=T.Value("TYPE_STRING"), number=i)
+            for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
+        )
+    )
+    for f in my_message.field:
+        options = descriptor_pb2.FieldOptions()
+        options.Extensions[ex_ops_pb2.operation_field] = f.number
+        f.options.MergeFrom(options)
+
+    assert not my_message.is_diregapic_operation
+
+    # Duplicated annotation
+    for mapping in range(1, 5):
+        duplicate = make_message(
+            name="Operation",
+            fields=(
+                make_field(name=name, type=T.Value("TYPE_STRING"), number=i)
+                for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
+            )
+        )
+        for f in duplicate.field:
+            options = descriptor_pb2.FieldOptions()
+            # All set to the same value
+            options.Extensions[ex_ops_pb2.operation_field] = mapping
+            f.options.MergeFrom(options)
+
+        with pytest.raises(TypeError):
+            duplicate.is_diregapic_operation

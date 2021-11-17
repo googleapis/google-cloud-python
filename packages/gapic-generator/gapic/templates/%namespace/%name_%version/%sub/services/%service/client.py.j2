@@ -315,7 +315,11 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
 
     {% for method in service.methods.values() %}
+    {% if method.operation_service %}{# DIREGAPIC LRO #}
+    def {{ method.name|snake_case }}_unary(self,
+    {% else %}
     def {{ method.name|snake_case }}(self,
+    {% endif %}{# DIREGAPIC LRO #}
             {% if not method.client_streaming %}
             request: Union[{{ method.input.ident }}, dict] = None,
             *,

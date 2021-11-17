@@ -41,6 +41,7 @@ from google.api import http_pb2
 from google.api import resource_pb2
 from google.api_core import exceptions
 from google.api_core import path_template
+from google.cloud import extended_operations_pb2 as ex_ops_pb2
 from google.protobuf import descriptor_pb2  # type: ignore
 from google.protobuf.json_format import MessageToDict  # type: ignore
 
@@ -343,6 +344,39 @@ class MessageType:
                 oneof_fields[field.oneof].append(field)
 
         return oneof_fields
+
+    @utils.cached_property
+    def is_diregapic_operation(self) -> bool:
+        if not self.name == "Operation":
+            return False
+
+        name, status, error_code, error_message = False, False, False, False
+        duplicate_msg = f"Message '{self.name}' has multiple fields with the same operation response mapping: {{}}"
+        for f in self.field:
+            maybe_op_mapping = f.options.Extensions[ex_ops_pb2.operation_field]
+            OperationResponseMapping = ex_ops_pb2.OperationResponseMapping
+
+            if maybe_op_mapping == OperationResponseMapping.NAME:
+                if name:
+                    raise TypeError(duplicate_msg.format("name"))
+                name = True
+
+            if maybe_op_mapping == OperationResponseMapping.STATUS:
+                if status:
+                    raise TypeError(duplicate_msg.format("status"))
+                status = True
+
+            if maybe_op_mapping == OperationResponseMapping.ERROR_CODE:
+                if error_code:
+                    raise TypeError(duplicate_msg.format("error_code"))
+                error_code = True
+
+            if maybe_op_mapping == OperationResponseMapping.ERROR_MESSAGE:
+                if error_message:
+                    raise TypeError(duplicate_msg.format("error_message"))
+                error_message = True
+
+        return name and status and error_code and error_message
 
     @utils.cached_property
     def required_fields(self) -> Sequence['Field']:
@@ -765,6 +799,10 @@ class Method:
     def __getattr__(self, name):
         return getattr(self.method_pb, name)
 
+    @property
+    def is_operation_polling_method(self):
+        return self.output.is_diregapic_operation and self.options.Extensions[ex_ops_pb2.operation_polling_method]
+
     @utils.cached_property
     def client_output(self):
         return self._client_output(enable_asyncio=False)
@@ -837,6 +875,10 @@ class Method:
 
         # Return the usual output.
         return self.output
+
+    @property
+    def operation_service(self) -> Optional[str]:
+        return self.options.Extensions[ex_ops_pb2.operation_service]
 
     @property
     def is_deprecated(self) -> bool:
@@ -1171,6 +1213,10 @@ class Service:
 
     def __getattr__(self, name):
         return getattr(self.service_pb, name)
+
+    @property
+    def custom_polling_method(self) -> Optional[Method]:
+        return next((m for m in self.methods.values() if m.is_operation_polling_method), None)
 
     @property
     def client_name(self) -> str:

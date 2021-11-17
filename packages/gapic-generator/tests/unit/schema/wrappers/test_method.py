@@ -19,6 +19,7 @@ from typing import Sequence
 
 from google.api import field_behavior_pb2
 from google.api import http_pb2
+from google.cloud import extended_operations_pb2 as ex_ops_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic.schema import metadata
@@ -718,3 +719,60 @@ def test_flattened_oneof_fields():
     }
     actual = method.flattened_field_to_key
     assert expected == actual
+
+
+def test_is_operation_polling_method():
+    T = descriptor_pb2.FieldDescriptorProto.Type
+
+    operation = make_message(
+        name="Operation",
+        fields=(
+            make_field(name=name, type=T.Value("TYPE_STRING"), number=i)
+            for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
+        ),
+    )
+    for f in operation.field:
+        options = descriptor_pb2.FieldOptions()
+        # Note: The field numbers were carefully chosen to be the corresponding enum values.
+        options.Extensions[ex_ops_pb2.operation_field] = f.number
+        f.options.MergeFrom(options)
+
+    request = make_message(
+        name="GetOperation",
+        fields=[
+            make_field(name="name", type=T.Value("TYPE_STRING"), number=1)
+        ],
+    )
+
+    # Correct positive
+    options = descriptor_pb2.MethodOptions()
+    options.Extensions[ex_ops_pb2.operation_polling_method] = True
+    polling_method = make_method(
+        name="Get",
+        input_message=request,
+        output_message=operation,
+        options=options,
+    )
+
+    assert polling_method.is_operation_polling_method
+
+    # Normal method that returns operation
+    normal_method = make_method(
+        name="Get",
+        input_message=request,
+        output_message=operation,
+    )
+
+    assert not normal_method.is_operation_polling_method
+
+    # Method with invalid options combination
+    response = make_message(name="Response", fields=[make_field(name="name")])
+
+    invalid_method = make_method(
+        name="Get",
+        input_message=request,
+        output_message=response,
+        options=options,        # Reuse options from the actual polling method
+    )
+
+    assert not invalid_method.is_operation_polling_method

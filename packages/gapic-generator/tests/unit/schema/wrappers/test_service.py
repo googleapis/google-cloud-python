@@ -17,6 +17,7 @@ import itertools
 import typing
 
 from google.api import resource_pb2
+from google.cloud import extended_operations_pb2 as ex_ops_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic.schema import imp
@@ -524,3 +525,133 @@ def test_resource_response():
     expected = {squid_resource, clam_resource}
     actual = mollusc_service.resource_messages
     assert expected == actual
+
+
+def test_operation_polling_method():
+    T = descriptor_pb2.FieldDescriptorProto.Type
+
+    operation = make_message(
+        name="Operation",
+        fields=(
+            make_field(name=name, type=T.Value("TYPE_STRING"), number=i)
+            for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
+        ),
+    )
+    for f in operation.field:
+        options = descriptor_pb2.FieldOptions()
+        # Note: The field numbers were carefully chosen to be the corresponding enum values.
+        options.Extensions[ex_ops_pb2.operation_field] = f.number
+        f.options.MergeFrom(options)
+
+    request = make_message(
+        name="GetOperation",
+        fields=[
+            make_field(name="name", type=T.Value("TYPE_STRING"), number=1)
+        ],
+    )
+
+    options = descriptor_pb2.MethodOptions()
+    options.Extensions[ex_ops_pb2.operation_polling_method] = True
+    polling_method = make_method(
+        name="Get",
+        input_message=request,
+        output_message=operation,
+        options=options,
+    )
+
+    # Even though polling_method returns an Operation, it isn't an LRO
+    ops_service = make_service(
+        name="CustomOperations",
+        methods=[
+            polling_method,
+            make_method(
+                name="Delete",
+                input_message=make_message(name="Input"),
+                output_message=make_message("Output"),
+            ),
+        ],
+    )
+
+    assert ops_service.custom_polling_method == polling_method
+
+    # Methods are LROs, so they are not polling methods
+    user_service = make_service(
+        name="ComputationStarter",
+        methods=[
+            make_method(
+                name="Start",
+                input_message=make_message(name="StartRequest"),
+                output_message=operation,
+            ),
+        ],
+    )
+
+    assert not user_service.custom_polling_method
+
+
+def test_diregapic_lro_detection():
+    T = descriptor_pb2.FieldDescriptorProto.Type
+
+    operation = make_message(
+        name="Operation",
+        fields=(
+            make_field(name=name, type=T.Value("TYPE_STRING"), number=i)
+            for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
+        ),
+    )
+    for f in operation.field:
+        options = descriptor_pb2.FieldOptions()
+        # Note: The field numbers were carefully chosen to be the corresponding enum values.
+        options.Extensions[ex_ops_pb2.operation_field] = f.number
+        f.options.MergeFrom(options)
+
+    request = make_message(
+        name="GetOperation",
+        fields=[
+            make_field(name="name", type=T.Value("TYPE_STRING"), number=1)
+        ],
+    )
+
+    options = descriptor_pb2.MethodOptions()
+    options.Extensions[ex_ops_pb2.operation_polling_method] = True
+    polling_method = make_method(
+        name="Get",
+        input_message=request,
+        output_message=operation,
+        options=options,
+    )
+
+    ops_service = make_service(
+        name="CustomOperations",
+        methods=[
+            polling_method,
+            make_method(
+                name="Delete",
+                input_message=make_message(name="Input"),
+                output_message=make_message("Output"),
+            ),
+        ],
+    )
+
+    assert not polling_method.operation_service
+
+    # Methods are LROs, so they are not polling methods
+    lro_opts = descriptor_pb2.MethodOptions()
+    lro_opts.Extensions[ex_ops_pb2.operation_service] = "CustomOperations"
+    lro = make_method(
+        name="Start",
+        input_message=make_message(name="StartRequest"),
+        output_message=operation,
+        options=lro_opts,
+    )
+    user_service = make_service(
+        name="ComputationStarter",
+        methods=[
+            lro,
+        ],
+    )
+
+    # Note: we can't have the operation_serivce property point to the actual operation service
+    # because Service objects can't perform the lookup.
+    # Instead we kick that can to the API object and make it do the lookup and verification.
+    assert lro.operation_service == "CustomOperations"

@@ -430,8 +430,8 @@ def test_{{ service.client_name|snake_case }}_client_options_from_dict():
 {% endif %}
 
 
-{% for method in service.methods.values() if 'grpc' in opts.transport %}
-def test_{{ method.name|snake_case }}(transport: str = 'grpc', request_type={{ method.input.ident }}):
+{% for method in service.methods.values() if 'grpc' in opts.transport %}{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.name|snake_case %}
+def test_{{ method_name }}(transport: str = 'grpc', request_type={{ method.input.ident }}):
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -472,7 +472,7 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc', request_type={{ m
         {% if method.client_streaming %}
         response = client.{{ method.name|snake_case }}(iter(requests))
         {% else %}
-        response = client.{{ method.name|snake_case }}(request)
+        response = client.{{ method_name }}(request)
         {% endif %}
 
         # Establish that the underlying gRPC stub method was called.
@@ -512,12 +512,12 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc', request_type={{ m
     {% endif %}
 
 
-def test_{{ method.name|snake_case }}_from_dict():
-    test_{{ method.name|snake_case }}(request_type=dict)
+def test_{{ method_name }}_from_dict():
+    test_{{ method_name }}(request_type=dict)
 
 
 {% if not method.client_streaming %}
-def test_{{ method.name|snake_case }}_empty_call():
+def test_{{ method_name }}_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = {{ service.client_name }}(
@@ -529,7 +529,7 @@ def test_{{ method.name|snake_case }}_empty_call():
     with mock.patch.object(
             type(client.transport.{{ method.name|snake_case }}),
             '__call__') as call:
-        client.{{ method.name|snake_case }}()
+        client.{{ method_name }}()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         {% if method.client_streaming %}
@@ -541,7 +541,7 @@ def test_{{ method.name|snake_case }}_empty_call():
 
 
 @pytest.mark.asyncio
-async def test_{{ method.name|snake_case }}_async(transport: str = 'grpc_asyncio', request_type={{ method.input.ident }}):
+async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_type={{ method.input.ident }}):
     client = {{ service.async_client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -589,7 +589,7 @@ async def test_{{ method.name|snake_case }}_async(transport: str = 'grpc_asyncio
         {% elif method.client_streaming and not method.server_streaming %}
         response = await (await client.{{ method.name|snake_case }}(iter(requests)))
         {% else %}
-        response = await client.{{ method.name|snake_case }}(request)
+        response = await client.{{ method_name }}(request)
         {% endif %}
 
         # Establish that the underlying gRPC stub method was called.
@@ -626,12 +626,12 @@ async def test_{{ method.name|snake_case }}_async(transport: str = 'grpc_asyncio
 
 
 @pytest.mark.asyncio
-async def test_{{ method.name|snake_case }}_async_from_dict():
-    await test_{{ method.name|snake_case }}_async(request_type=dict)
+async def test_{{ method_name }}_async_from_dict():
+    await test_{{ method_name }}_async(request_type=dict)
 
 
 {% if method.field_headers and not method.client_streaming %}
-def test_{{ method.name|snake_case }}_field_headers():
+def test_{{ method_name }}_field_headers():
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -657,7 +657,7 @@ def test_{{ method.name|snake_case }}_field_headers():
         {% else %}
         call.return_value = {{ method.output.ident }}()
         {% endif %}
-        client.{{ method.name|snake_case }}(request)
+        client.{{ method_name }}(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -676,7 +676,7 @@ def test_{{ method.name|snake_case }}_field_headers():
 
 
 @pytest.mark.asyncio
-async def test_{{ method.name|snake_case }}_field_headers_async():
+async def test_{{ method_name }}_field_headers_async():
     client = {{ service.async_client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -703,7 +703,7 @@ async def test_{{ method.name|snake_case }}_field_headers_async():
         {% else %}
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall({{ method.output.ident }}())
         {% endif %}
-        await client.{{ method.name|snake_case }}(request)
+        await client.{{ method_name }}(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -722,7 +722,7 @@ async def test_{{ method.name|snake_case }}_field_headers_async():
 {% endif %}
 
 {% if method.ident.package != method.input.ident.package %}
-def test_{{ method.name|snake_case }}_from_dict_foreign():
+def test_{{ method_name }}_from_dict_foreign():
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -740,7 +740,7 @@ def test_{{ method.name|snake_case }}_from_dict_foreign():
         {% else %}
         call.return_value = {{ method.output.ident }}()
         {% endif %}
-        response = client.{{ method.name|snake_case }}(request={
+        response = client.{{ method_name }}(request={
             {% for field in method.input.fields.values() %}
             '{{ field.name }}': {{ field.mock_value }},
             {% endfor %}
@@ -751,7 +751,7 @@ def test_{{ method.name|snake_case }}_from_dict_foreign():
 {% endif %}
 
 {% if method.flattened_fields %}
-def test_{{ method.name|snake_case }}_flattened():
+def test_{{ method_name }}_flattened():
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -772,7 +772,7 @@ def test_{{ method.name|snake_case }}_flattened():
         {% endif %}
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.{{ method.name|snake_case }}(
+        client.{{ method_name }}(
             {% for field in method.flattened_fields.values() %}
             {{ field.name }}={{ field.mock_value }},
             {% endfor %}
@@ -807,7 +807,7 @@ def test_{{ method.name|snake_case }}_flattened():
 
 
 
-def test_{{ method.name|snake_case }}_flattened_error():
+def test_{{ method_name }}_flattened_error():
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -815,7 +815,7 @@ def test_{{ method.name|snake_case }}_flattened_error():
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.{{ method.name|snake_case }}(
+        client.{{ method_name }}(
             {{ method.input.ident }}(),
             {% for field in method.flattened_fields.values() %}
             {{ field.name }}={{ field.mock_value }},
@@ -824,7 +824,7 @@ def test_{{ method.name|snake_case }}_flattened_error():
 
 
 @pytest.mark.asyncio
-async def test_{{ method.name|snake_case }}_flattened_async():
+async def test_{{ method_name }}_flattened_async():
     client = {{ service.async_client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -865,7 +865,7 @@ async def test_{{ method.name|snake_case }}_flattened_async():
         {% endif %}
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.{{ method.name|snake_case }}(
+        response = await client.{{ method_name }}(
             {% for field in method.flattened_fields.values() %}
             {{ field.name }}={{ field.mock_value }},
             {% endfor %}
@@ -900,7 +900,7 @@ async def test_{{ method.name|snake_case }}_flattened_async():
 
 
 @pytest.mark.asyncio
-async def test_{{ method.name|snake_case }}_flattened_error_async():
+async def test_{{ method_name }}_flattened_error_async():
     client = {{ service.async_client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -908,7 +908,7 @@ async def test_{{ method.name|snake_case }}_flattened_error_async():
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        await client.{{ method.name|snake_case }}(
+        await client.{{ method_name }}(
             {{ method.input.ident }}(),
             {% for field in method.flattened_fields.values() %}
             {{ field.name }}={{ field.mock_value }},
@@ -918,7 +918,7 @@ async def test_{{ method.name|snake_case }}_flattened_error_async():
 
 
 {% if method.paged_result_field %}
-def test_{{ method.name|snake_case }}_pager():
+def test_{{ method_name }}_pager():
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials,
     )
@@ -968,7 +968,7 @@ def test_{{ method.name|snake_case }}_pager():
             )),
         )
         {% endif %}
-        pager = client.{{ method.name|snake_case }}(request={})
+        pager = client.{{ method_name }}(request={})
 
         assert pager._metadata == metadata
 
@@ -977,7 +977,7 @@ def test_{{ method.name|snake_case }}_pager():
         assert all(isinstance(i, {{ method.paged_result_field.type.ident }})
                    for i in results)
 
-def test_{{ method.name|snake_case }}_pages():
+def test_{{ method_name }}_pages():
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials,
     )
@@ -1014,12 +1014,12 @@ def test_{{ method.name|snake_case }}_pages():
             ),
             RuntimeError,
         )
-        pages = list(client.{{ method.name|snake_case }}(request={}).pages)
+        pages = list(client.{{ method_name }}(request={}).pages)
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
 
 @pytest.mark.asyncio
-async def test_{{ method.name|snake_case }}_async_pager():
+async def test_{{ method_name }}_async_pager():
     client = {{ service.async_client_name }}(
         credentials=ga_credentials.AnonymousCredentials,
     )
@@ -1056,7 +1056,7 @@ async def test_{{ method.name|snake_case }}_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.{{ method.name|snake_case }}(request={},)
+        async_pager = await client.{{ method_name }}(request={},)
         assert async_pager.next_page_token == 'abc'
         responses = []
         async for response in async_pager:
@@ -1067,7 +1067,7 @@ async def test_{{ method.name|snake_case }}_async_pager():
                    for i in responses)
 
 @pytest.mark.asyncio
-async def test_{{ method.name|snake_case }}_async_pages():
+async def test_{{ method_name }}_async_pages():
     client = {{ service.async_client_name }}(
         credentials=ga_credentials.AnonymousCredentials,
     )
@@ -1105,23 +1105,23 @@ async def test_{{ method.name|snake_case }}_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (await client.{{ method.name|snake_case }}(request={})).pages:
+        async for page_ in (await client.{{ method_name }}(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
 {% elif method.lro and "next_page_token" in method.lro.response_type.fields.keys() %}
-def test_{{ method.name|snake_case }}_raw_page_lro():
+def test_{{ method_name }}_raw_page_lro():
     response = {{ method.lro.response_type.ident }}()
     assert response.raw_page is response
-{% endif %} {# method.paged_result_field #}
+{% endif %}{# method.paged_result_field #}{% endwith %}{# method_name #}
 
 {% endfor %} {# method in methods for grpc #}
 
 {% for method in service.methods.values() if 'rest' in opts.transport and
-    method.http_options %}
+    method.http_options %}{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.name|snake_case %}
 {# TODO(kbandes): remove this if condition when lro and streaming are supported. #}
 {% if not method.lro and not (method.server_streaming or method.client_streaming) %}
-def test_{{ method.name|snake_case }}_rest(transport: str = 'rest', request_type={{ method.input.ident }}):
+def test_{{ method_name }}_rest(transport: str = 'rest', request_type={{ method.input.ident }}):
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -1177,7 +1177,7 @@ def test_{{ method.name|snake_case }}_rest(transport: str = 'rest', request_type
         {% if method.client_streaming %}
         response = client.{{ method.name|snake_case }}(iter(requests))
         {% else %}
-        response = client.{{ method.name|snake_case }}(request)
+        response = client.{{ method_name }}(request)
         {% endif %}
 
     {% if "next_page_token" in method.output.fields.values()|map(attribute='name') and not method.paged_result_field %}
@@ -1204,7 +1204,7 @@ def test_{{ method.name|snake_case }}_rest(transport: str = 'rest', request_type
     {% endif %}
 
 
-def test_{{ method.name|snake_case }}_rest_bad_request(transport: str = 'rest', request_type={{ method.input.ident }}):
+def test_{{ method_name }}_rest_bad_request(transport: str = 'rest', request_type={{ method.input.ident }}):
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -1233,16 +1233,16 @@ def test_{{ method.name|snake_case }}_rest_bad_request(transport: str = 'rest', 
         {% if method.client_streaming %}
         client.{{ method.name|snake_case }}(iter(requests))
         {% else %}
-        client.{{ method.name|snake_case }}(request)
+        client.{{ method_name }}(request)
         {% endif %}
 
 
-def test_{{ method.name|snake_case }}_rest_from_dict():
-    test_{{ method.name|snake_case }}_rest(request_type=dict)
+def test_{{ method_name }}_rest_from_dict():
+    test_{{ method_name }}_rest(request_type=dict)
 
 
 {% if method.flattened_fields %}
-def test_{{ method.name|snake_case }}_rest_flattened(transport: str = 'rest'):
+def test_{{ method_name }}_rest_flattened(transport: str = 'rest'):
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -1286,7 +1286,7 @@ def test_{{ method.name|snake_case }}_rest_flattened(transport: str = 'rest'):
             {% endfor %}
         )
         mock_args.update(sample_request)
-        client.{{ method.name|snake_case }}(**mock_args)
+        client.{{ method_name }}(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1298,7 +1298,7 @@ def test_{{ method.name|snake_case }}_rest_flattened(transport: str = 'rest'):
         {# TODO(kbandes) - reverse-transcode request args to check all request fields #}
 
 
-def test_{{ method.name|snake_case }}_rest_flattened_error(transport: str = 'rest'):
+def test_{{ method_name }}_rest_flattened_error(transport: str = 'rest'):
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -1307,7 +1307,7 @@ def test_{{ method.name|snake_case }}_rest_flattened_error(transport: str = 'res
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.{{ method.name|snake_case }}(
+        client.{{ method_name }}(
             {{ method.input.ident }}(),
             {% for field in method.flattened_fields.values() %}
             {{ field.name }}={{ field.mock_value }},
@@ -1317,7 +1317,7 @@ def test_{{ method.name|snake_case }}_rest_flattened_error(transport: str = 'res
 
 
 {% if method.paged_result_field %}
-def test_{{ method.name|snake_case }}_rest_pager():
+def test_{{ method_name }}_rest_pager():
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
     )
@@ -1401,7 +1401,7 @@ def test_{{ method.name|snake_case }}_rest_pager():
             {% endif %}
             {% endfor %}
 
-            pager = client.{{ method.name|snake_case }}(request=sample_request)
+            pager = client.{{ method_name }}(request=sample_request)
 
             {% if method.paged_result_field.map %}
             assert isinstance(pager.get('a'), {{ method.paged_result_field.type.fields.get('value').ident }})
@@ -1425,7 +1425,7 @@ def test_{{ method.name|snake_case }}_rest_pager():
                     for i in results)
             {% endif %}
 
-            pages = list(client.{{ method.name|snake_case }}(request=sample_request).pages)
+            pages = list(client.{{ method_name }}(request=sample_request).pages)
             for page_, token in zip(pages, ['abc','def','ghi', '']):
                 assert page_.raw_page.next_page_token == token
 
@@ -1433,7 +1433,7 @@ def test_{{ method.name|snake_case }}_rest_pager():
 {% endif %} {# paged methods #}
 {%- else %}
 
-def test_{{ method.name|snake_case }}_rest_error():
+def test_{{ method_name }}_rest_error():
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='rest'
@@ -1442,7 +1442,7 @@ def test_{{ method.name|snake_case }}_rest_error():
     # Since a `google.api.http` annotation is required for using a rest transport
     # method, this should error.
     with pytest.raises(RuntimeError) as runtime_error:
-        client.{{ method.name|snake_case }}({})
+        client.{{ method_name }}({})
     assert ('Cannot define a method without a valid `google.api.http` annotation.'
         in str(runtime_error.value))
     {%- else %}
@@ -1450,11 +1450,10 @@ def test_{{ method.name|snake_case }}_rest_error():
     # TODO(yon-mg): Remove when this method has a working implementation
     #               or testing straegy
     with pytest.raises(NotImplementedError):
-        client.{{ method.name|snake_case }}({})
+        client.{{ method_name }}({})
 
     {%- endif %}
-{% endif %}
-
+{% endif %}{% endwith %}{# method_name #}
 
 {% endfor -%} {#- method in methods for rest #}
 def test_credentials_transport_error():
