@@ -20,7 +20,7 @@ inconsistencies, etc.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-network-connectivity.svg
    :target: https://pypi.org/project/google-cloud-network-connectivity/
 .. _Network Connectivity Center: https://cloud.google.com/network-connectivity/
-.. _Client Library Documentation: https://googleapis.dev/python/networkconnectivity/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/networkconnectivity/latest
 .. _Product Documentation:  https://cloud.google.com/network-connectivity/
 
 Quick Start
