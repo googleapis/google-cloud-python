@@ -15,7 +15,7 @@ Python Client for Cloud Life Sciences API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-life-sciences.svg
    :target: https://pypi.org/project/google-cloud-life-sciences/
 .. _Cloud Life Sciences: https://cloud.google.com/life-sciences/
-.. _Client Library Documentation: https://googleapis.dev/python/lifesciences/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/lifesciences/latest
 .. _Product Documentation:  https://cloud.google.com/life-sciences/docs
 
 Quick Start
