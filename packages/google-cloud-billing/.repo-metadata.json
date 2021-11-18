@@ -2,7 +2,7 @@
     "name": "cloudbilling",
     "name_pretty": "Cloud Billing",
     "product_documentation": "https://cloud.google.com/billing",
-    "client_documentation": "https://googleapis.dev/python/cloudbilling/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/cloudbilling/latest",
     "issue_tracker": "",
     "release_level": "ga",
     "language": "python",

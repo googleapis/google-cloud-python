@@ -16,7 +16,7 @@ projects programmatically.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-billing.svg
    :target: https://pypi.org/project/google-cloud-billing/
 .. _Cloud Billing API: https://cloud.google.com/billing
-.. _Client Library Documentation: https://googleapis.dev/python/cloudbilling/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudbilling/latest
 .. _Product Documentation:  https://cloud.google.com/billing
 
 Quick Start
