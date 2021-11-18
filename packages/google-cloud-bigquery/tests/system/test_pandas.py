@@ -20,6 +20,7 @@ import decimal
 import json
 import io
 import operator
+import warnings
 
 import google.api_core.retry
 import pkg_resources
@@ -976,9 +977,17 @@ def test_to_geodataframe(bigquery_client, dataset_id):
     assert df["geog"][2] == wkt.loads("point(0 0)")
     assert isinstance(df, geopandas.GeoDataFrame)
     assert isinstance(df["geog"], geopandas.GeoSeries)
-    assert df.area[0] == 0.5
-    assert pandas.isna(df.area[1])
-    assert df.area[2] == 0.0
+
+    with warnings.catch_warnings():
+        # Computing the area on a GeoDataFrame that uses a geographic Coordinate
+        # Reference System (CRS) produces a warning that we are not interested in.
+        # We do not mind if the computed area is incorrect with respect to the
+        # GeoDataFrame data, as long as it matches the expected "incorrect" value.
+        warnings.filterwarnings("ignore", category=UserWarning)
+        assert df.area[0] == 0.5
+        assert pandas.isna(df.area[1])
+        assert df.area[2] == 0.0
+
     assert df.crs.srs == "EPSG:4326"
     assert df.crs.name == "WGS 84"
     assert df.geog.crs.srs == "EPSG:4326"
