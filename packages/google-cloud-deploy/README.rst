@@ -17,7 +17,7 @@ Scale pipelines across your organization, while having  a cross-project, central
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-deploy.svg
    :target: https://pypi.org/project/google-cloud-deploy/
 .. _Google Cloud Deploy: https://cloud.google.com/deploy
-.. _Client Library Documentation: https://googleapis.dev/python/clouddeploy/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/clouddeploy/latest
 .. _Product Documentation:  https://cloud.google.com/deploy/docs
 
 Quick Start
