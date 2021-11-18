@@ -17,4 +17,4 @@ import platform
 
 PY_VERSION = platform.python_version()
 VERSION = pkg_resources.get_distribution("google-cloud-spanner").version
-DEFAULT_USER_AGENT = "dbapi/" + VERSION
+DEFAULT_USER_AGENT = "gl-dbapi/" + VERSION

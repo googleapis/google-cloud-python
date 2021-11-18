@@ -409,7 +409,11 @@ def test_user_agent(shared_instance, dbapi_database):
     conn = connect(shared_instance.name, dbapi_database.name)
     assert (
         conn.instance._client._client_info.user_agent
-        == "dbapi/" + pkg_resources.get_distribution("google-cloud-spanner").version
+        == "gl-dbapi/" + pkg_resources.get_distribution("google-cloud-spanner").version
+    )
+    assert (
+        conn.instance._client._client_info.client_library_version
+        == pkg_resources.get_distribution("google-cloud-spanner").version
     )
 
 
