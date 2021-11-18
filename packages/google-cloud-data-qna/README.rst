@@ -21,7 +21,7 @@ and answer service for BigQuery data.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-data-qna.svg
    :target: https://pypi.org/project/google-cloud-data-qna/
 .. _Data QnA: https://cloud.google.com/bigquery/docs/dataqna
-.. _Client Library Documentation: https://googleapis.dev/python/dataqna/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/dataqna/latest
 .. _Product Documentation: https://cloud.google.com/bigquery/docs/dataqna
 
 Quick Start
