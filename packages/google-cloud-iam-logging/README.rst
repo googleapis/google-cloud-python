@@ -14,7 +14,7 @@ This package contains generated Python types for ``google.iam.v1.logging``.
    :target: https://pypi.org/project/google-cloud-iam-logging/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-iam-logging.svg
    :target: https://pypi.org/project/google-cloud-iam-logging/
-.. _Client Library Documentation: https://googleapis.dev/python/iamlogging/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/iamlogging/latest
 .. _Product Documentation: https://cloud.google.com/iam/docs/audit-logging
 
 

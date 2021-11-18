@@ -2,7 +2,7 @@
     "name": "iamlogging",
     "name_pretty": "IAM Logging Protos",
     "product_documentation": "https://cloud.google.com/iam/docs/audit-logging",
-    "client_documentation": "https://googleapis.dev/python/iamlogging/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/iamlogging/latest",
     "issue_tracker": "https://github.com/googleapis/python-iamlogging/issues",
     "release_level": "ga",
     "language": "python",
