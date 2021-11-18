@@ -18,7 +18,7 @@ and an authorized DNS certificate.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-apigee-connect.svg
    :target: https://pypi.org/project/google-cloud-apigee-connect/
 .. _Apigee Connect: https://cloud.google.com/apigee/docs/hybrid/v1.4/apigee-connect
-.. _Client Library Documentation: https://googleapis.dev/python/apigeeconnect/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/apigeeconnect/latest
 .. _Product Documentation:  https://cloud.google.com/apigee/docs/hybrid/v1.4/apigee-connect
 
 Quick Start
