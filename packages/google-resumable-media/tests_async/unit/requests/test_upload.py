@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import aiohttp
 import http.client
 import io
 import json
-import pytest
 
-import mock
+import aiohttp  # type: ignore
+import mock  # type: ignore
+import pytest  # type: ignore
 
 import google._async_resumable_media.requests.upload as upload_mod
 from tests.unit.requests import test_upload as sync_test

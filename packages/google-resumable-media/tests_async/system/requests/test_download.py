@@ -20,10 +20,10 @@ import io
 import os
 
 import asyncio
-from google.auth._default_async import default_async
-import google.auth.transport._aiohttp_requests as tr_requests
-import multidict
-import pytest
+from google.auth._default_async import default_async  # type: ignore
+import google.auth.transport._aiohttp_requests as tr_requests  # type: ignore
+import multidict  # type: ignore
+import pytest  # type: ignore
 
 import google._async_resumable_media.requests as resumable_requests
 from google.resumable_media import _helpers

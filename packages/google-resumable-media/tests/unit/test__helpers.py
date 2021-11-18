@@ -18,7 +18,7 @@ import hashlib
 import http.client
 
 import mock
-import pytest
+import pytest  # type: ignore
 
 from google.resumable_media import _helpers
 from google.resumable_media import common

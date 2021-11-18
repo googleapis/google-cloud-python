@@ -15,9 +15,9 @@
 import http.client
 import io
 
-import google.auth.transport._aiohttp_requests as aiohttp_requests
+import google.auth.transport._aiohttp_requests as aiohttp_requests  # type: ignore
 import mock
-import pytest
+import pytest  # type: ignore
 
 from google._async_resumable_media import _download
 from google.resumable_media import common

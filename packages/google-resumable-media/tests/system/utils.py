@@ -16,7 +16,7 @@ import base64
 import hashlib
 import time
 
-from test_utils.retry import RetryResult
+from test_utils.retry import RetryResult  # type: ignore
 
 
 BUCKET_NAME = "grpm-systest-{}".format(int(1000 * time.time()))

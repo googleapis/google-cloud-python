@@ -15,9 +15,9 @@
 import http.client
 import io
 
-import aiohttp
+import aiohttp  # type: ignore
 import mock
-import pytest
+import pytest  # type: ignore
 
 from google._async_resumable_media.requests import _request_helpers as _helpers
 

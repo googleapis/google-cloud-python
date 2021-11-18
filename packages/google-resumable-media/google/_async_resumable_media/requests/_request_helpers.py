@@ -23,8 +23,8 @@ import functools
 from google._async_resumable_media import _helpers
 from google.resumable_media import common
 
-import google.auth.transport._aiohttp_requests as aiohttp_requests
-import aiohttp
+from google.auth.transport import _aiohttp_requests as aiohttp_requests  # type: ignore
+import aiohttp  # type: ignore
 
 _DEFAULT_RETRY_STRATEGY = common.RetryStrategy()
 _SINGLE_GET_CHUNK_SIZE = 8192

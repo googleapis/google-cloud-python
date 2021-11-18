@@ -647,7 +647,7 @@ class ResumableUpload(UploadBase):
         """
         self._invalid = True
 
-    def _process_response(self, response, bytes_sent):
+    def _process_resumable_response(self, response, bytes_sent):
         """Process the response from an HTTP request.
 
         This is everything that must be done after a request that doesn't

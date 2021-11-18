@@ -17,7 +17,7 @@ import io
 import sys
 
 import mock
-import pytest
+import pytest  # type: ignore
 
 from google.resumable_media import _helpers
 from google.resumable_media import _upload
@@ -705,7 +705,7 @@ class TestResumableUpload(object):
         upload._make_invalid()
         assert upload.invalid
 
-    def test__process_response_bad_status(self):
+    def test__process_resumable_response_bad_status(self):
         upload = _upload.ResumableUpload(RESUMABLE_URL, ONE_MB)
         _fix_up_virtual(upload)
 
@@ -713,7 +713,7 @@ class TestResumableUpload(object):
         assert not upload.invalid
         response = _make_response(status_code=http.client.NOT_FOUND)
         with pytest.raises(common.InvalidResponse) as exc_info:
-            upload._process_response(response, None)
+            upload._process_resumable_response(response, None)
 
         error = exc_info.value
         assert error.response is response
@@ -724,7 +724,7 @@ class TestResumableUpload(object):
         # Make sure the upload is invalid after the failure.
         assert upload.invalid
 
-    def test__process_response_success(self):
+    def test__process_resumable_response_success(self):
         upload = _upload.ResumableUpload(RESUMABLE_URL, ONE_MB)
         _fix_up_virtual(upload)
 
@@ -743,13 +743,13 @@ class TestResumableUpload(object):
             status_code=http.client.OK,
             spec=["content", "status_code"],
         )
-        ret_val = upload._process_response(response, bytes_sent)
+        ret_val = upload._process_resumable_response(response, bytes_sent)
         assert ret_val is None
         # Check status after.
         assert upload._bytes_uploaded == total_bytes
         assert upload._finished
 
-    def test__process_response_partial_no_range(self):
+    def test__process_resumable_response_partial_no_range(self):
         upload = _upload.ResumableUpload(RESUMABLE_URL, ONE_MB)
         _fix_up_virtual(upload)
 
@@ -757,7 +757,7 @@ class TestResumableUpload(object):
         # Make sure the upload is valid before the failure.
         assert not upload.invalid
         with pytest.raises(common.InvalidResponse) as exc_info:
-            upload._process_response(response, None)
+            upload._process_resumable_response(response, None)
         # Make sure the upload is invalid after the failure.
         assert upload.invalid
 
@@ -767,7 +767,7 @@ class TestResumableUpload(object):
         assert len(error.args) == 2
         assert error.args[1] == "range"
 
-    def test__process_response_partial_bad_range(self):
+    def test__process_resumable_response_partial_bad_range(self):
         upload = _upload.ResumableUpload(RESUMABLE_URL, ONE_MB)
         _fix_up_virtual(upload)
 
@@ -778,7 +778,7 @@ class TestResumableUpload(object):
             status_code=http.client.PERMANENT_REDIRECT, headers=headers
         )
         with pytest.raises(common.InvalidResponse) as exc_info:
-            upload._process_response(response, 81)
+            upload._process_resumable_response(response, 81)
 
         # Check the error response.
         error = exc_info.value
@@ -788,7 +788,7 @@ class TestResumableUpload(object):
         # Make sure the upload is invalid after the failure.
         assert upload.invalid
 
-    def test__process_response_partial(self):
+    def test__process_resumable_response_partial(self):
         upload = _upload.ResumableUpload(RESUMABLE_URL, ONE_MB)
         _fix_up_virtual(upload)
 
@@ -798,7 +798,7 @@ class TestResumableUpload(object):
         response = _make_response(
             status_code=http.client.PERMANENT_REDIRECT, headers=headers
         )
-        ret_val = upload._process_response(response, 172)
+        ret_val = upload._process_resumable_response(response, 172)
         assert ret_val is None
         # Check status after.
         assert upload._bytes_uploaded == 172

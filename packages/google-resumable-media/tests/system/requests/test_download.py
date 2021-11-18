@@ -19,9 +19,9 @@ import http.client
 import io
 import os
 
-import google.auth
-import google.auth.transport.requests as tr_requests
-import pytest
+import google.auth  # type: ignore
+import google.auth.transport.requests as tr_requests  # type: ignore
+import pytest  # type: ignore
 
 from google.resumable_media import common
 import google.resumable_media.requests as resumable_requests

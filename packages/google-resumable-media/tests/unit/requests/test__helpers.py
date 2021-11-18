@@ -15,10 +15,10 @@
 import http.client
 
 import mock
-import pytest
+import pytest  # type: ignore
 
 import requests.exceptions
-import urllib3.exceptions
+import urllib3.exceptions  # type: ignore
 
 from google.resumable_media import common
 from google.resumable_media.requests import _request_helpers

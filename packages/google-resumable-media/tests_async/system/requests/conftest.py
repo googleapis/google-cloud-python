@@ -15,9 +15,9 @@
 
 from tests.system import utils
 
-from google.auth._default_async import default_async
-import google.auth.transport._aiohttp_requests as tr_requests
-import pytest
+from google.auth._default_async import default_async  # type: ignore
+import google.auth.transport._aiohttp_requests as tr_requests  # type: ignore
+import pytest  # type: ignore
 
 
 async def ensure_bucket(transport):

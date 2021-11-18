@@ -18,7 +18,7 @@ This utilities are explicitly catered to ``requests``-like transports.
 """
 
 import requests.exceptions
-import urllib3.exceptions
+import urllib3.exceptions  # type: ignore
 
 import time
 

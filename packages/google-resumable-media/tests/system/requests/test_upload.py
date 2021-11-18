@@ -19,7 +19,7 @@ import io
 import os
 import urllib.parse
 
-import pytest
+import pytest  # type: ignore
 import mock
 
 from google.resumable_media import common

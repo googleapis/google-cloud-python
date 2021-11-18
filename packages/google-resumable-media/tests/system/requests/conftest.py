@@ -13,9 +13,9 @@
 # limitations under the License.
 """py.test fixtures to be shared across multiple system test modules."""
 
-import google.auth
-import google.auth.transport.requests as tr_requests
-import pytest
+import google.auth  # type: ignore
+import google.auth.transport.requests as tr_requests  # type: ignore
+import pytest  # type: ignore
 
 from tests.system import utils
 

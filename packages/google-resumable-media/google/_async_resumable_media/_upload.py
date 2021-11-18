@@ -612,7 +612,7 @@ class ResumableUpload(UploadBase, sync_upload.ResumableUpload):
         """
         self._invalid = True
 
-    async def _process_response(self, response, bytes_sent):
+    async def _process_resumable_response(self, response, bytes_sent):
         """Process the response from an HTTP request.
 
         This is everything that must be done after a request that doesn't

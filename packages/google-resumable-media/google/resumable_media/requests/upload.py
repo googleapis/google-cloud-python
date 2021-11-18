@@ -508,7 +508,7 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
                 method, url, data=payload, headers=headers, timeout=timeout
             )
 
-            self._process_response(result, len(payload))
+            self._process_resumable_response(result, len(payload))
 
             return result
 

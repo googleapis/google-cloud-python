@@ -26,7 +26,7 @@ _SLEEP_RETRY_ERROR_MSG = (
 UPLOAD_CHUNK_SIZE = 262144  # 256 * 1024
 """int: Chunks in a resumable upload must come in multiples of 256 KB."""
 
-PERMANENT_REDIRECT = http.client.PERMANENT_REDIRECT
+PERMANENT_REDIRECT = http.client.PERMANENT_REDIRECT  # type: ignore
 """int: Permanent redirect status code.
 
 .. note::

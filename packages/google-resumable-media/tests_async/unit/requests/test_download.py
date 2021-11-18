@@ -15,9 +15,9 @@
 import http.client
 import io
 
-import aiohttp
+import aiohttp  # type: ignore
 import mock
-import pytest
+import pytest  # type: ignore
 
 
 from google.resumable_media import common

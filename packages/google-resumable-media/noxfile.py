@@ -188,6 +188,19 @@ def blacken(session):
     )
 
 
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def mypy(session):
+    """Verify type hints are mypy compatible."""
+    session.install("-e", ".")
+    session.install(
+        "mypy",
+        "types-setuptools",
+        "types-requests",
+        "types-mock",
+    )
+    session.run("mypy", "google/", "tests/", "tests_async/")
+
+
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def system(session):
     """Run the system test suite."""

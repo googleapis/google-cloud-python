@@ -481,7 +481,7 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
             retry_strategy=self._retry_strategy,
             timeout=timeout,
         )
-        await self._process_response(response, len(payload))
+        await self._process_resumable_response(response, len(payload))
         return response
 
     async def recover(self, transport):
