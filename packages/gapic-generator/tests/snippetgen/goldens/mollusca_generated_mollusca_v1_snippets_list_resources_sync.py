@@ -38,8 +38,13 @@ def sample_list_resources():
     part_id = "part_id_value"
     parent = f"items/{item_id}/parts/{part_id}"
 
+    item_id = "item_id_value"
+    part_id = "part_id_value"
+    resource_with_wildcard = f"items/{item_id}/parts/{part_id}"
+
     request = mollusca_v1.ListResourcesRequest(
         parent=parent,
+        resource_with_wildcard=resource_with_wildcard,
     )
 
     # Make the request

@@ -110,7 +110,7 @@ class TransformedRequest:
 
     # Resource patterns look something like
     # kingdom/{kingdom}/phylum/{phylum}/class/{class}
-    RESOURCE_RE = re.compile(r"\{([^}/]+)\}")
+    RESOURCE_RE = wrappers.MessageType.PATH_ARG_RE
 
     @classmethod
     def build(
@@ -198,6 +198,11 @@ class TransformedRequest:
                 raise types.NoSuchResourcePattern(
                     f"Resource {resource_typestr} has no pattern with params: {attr_name_str}"
                 )
+            # This re-writes
+            # patterns like: 'projects/{project}/metricDescriptors/{metric_descriptor=**}'
+            # to 'projects/{project}/metricDescriptors/{metric_descriptor}
+            # so it can be used in sample code as an f-string.
+            pattern = cls.RESOURCE_RE.sub(r"{\g<1>}", pattern)
 
             return cls(base=base, body=attrs, single=None, pattern=pattern,)
 

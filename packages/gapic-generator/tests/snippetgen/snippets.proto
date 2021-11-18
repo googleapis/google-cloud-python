@@ -67,9 +67,15 @@ message ListResourcesRequest {
     (google.api.resource_reference) = {
       type: "snippets.example.com/Resource"
     }];
+  
+  string resource_with_wildcard = 2 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "snippets.example.com/ResourceWithWildcardSegment"
+    }];
 
-  int32 page_size = 2;
-  string page_token = 3;
+  int32 page_size = 3;
+  string page_token = 4;
 }
 
 message ListResourcesResponse {
@@ -91,9 +97,16 @@ message Resource {
     pattern: "items/{item_id}/parts/{part_id}"
   };
   string name = 1;
-
-
 }
+
+message ResourceWithWildcardSegment {
+  option (google.api.resource) = {
+    type: "snippets.example.com/ResourceWithWildcardSegment"
+    pattern: "items/{item_id}/parts/{part_id=**}"
+  };
+  string name = 1;
+}
+
 
 message MessageWithNesting {
   message NestedMessage {

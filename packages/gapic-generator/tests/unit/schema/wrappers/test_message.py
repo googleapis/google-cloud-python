@@ -201,6 +201,27 @@ def test_resource_path():
     assert message.resource_type == "Class"
 
 
+def test_resource_path_with_wildcard():
+    options = descriptor_pb2.MessageOptions()
+    resource = options.Extensions[resource_pb2.resource]
+    resource.pattern.append(
+        "kingdoms/{kingdom}/phyla/{phylum}/classes/{klass=**}")
+    resource.pattern.append(
+        "kingdoms/{kingdom}/divisions/{division}/classes/{klass}")
+    resource.type = "taxonomy.biology.com/Class"
+    message = make_message('Squid', options=options)
+
+    assert message.resource_path == "kingdoms/{kingdom}/phyla/{phylum}/classes/{klass=**}"
+    assert message.resource_path_args == ["kingdom", "phylum", "klass"]
+    assert message.resource_type == "Class"
+    assert re.match(message.path_regex_str,
+                    "kingdoms/my-kingdom/phyla/my-phylum/classes/my-klass")
+    assert re.match(message.path_regex_str,
+                    "kingdoms/my-kingdom/phyla/my-phylum/classes/my-klass/additional-segment")
+    assert re.match(message.path_regex_str,
+                    "kingdoms/my-kingdom/phyla/my-phylum/classes/") is None
+
+
 def test_parse_resource_path():
     options = descriptor_pb2.MessageOptions()
     resource = options.Extensions[resource_pb2.resource]
