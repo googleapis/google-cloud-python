@@ -17,7 +17,7 @@ Python Client for Cloud Build API (`GA`_)
 
 .. _GA: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
 .. _Cloud Build API: https://cloud.google.com/cloud-build
-.. _Client Library Documentation: https://googleapis.dev/python/cloudbuild/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudbuild/latest
 .. _Product Documentation:  https://cloud.google.com/cloud-build
 
 Quick Start

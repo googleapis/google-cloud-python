@@ -2,7 +2,7 @@
     "name": "cloudbuild",
     "name_pretty": "Cloud Build",
     "product_documentation": "https://cloud.google.com/cloud-build/docs/",
-    "client_documentation": "https://googleapis.dev/python/cloudbuild/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/cloudbuild/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/5226584",
     "release_level": "ga",
     "language": "python",
