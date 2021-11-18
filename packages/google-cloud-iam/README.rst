@@ -18,7 +18,7 @@ creation of service accounts, which you can use to authenticate to Google and ma
 
 .. _IAM API: https://cloud.google.com/iam
 
-.. _Client Library Documentation: https://googleapis.dev/python/iam/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/iam/latest
 .. _Product Documentation:  https://cloud.google.com/iam
 
 Quick Start
