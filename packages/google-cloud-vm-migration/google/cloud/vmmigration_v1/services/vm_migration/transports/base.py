@@ -24,7 +24,7 @@ from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account # type: ignore
+from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.vmmigration_v1.types import vmmigration
 from google.longrunning import operations_pb2  # type: ignore
@@ -32,7 +32,7 @@ from google.longrunning import operations_pb2  # type: ignore
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution(
-            'google-cloud-vmmigration',
+            "google-cloud-vm-migration",
         ).version,
     )
 except pkg_resources.DistributionNotFound:
@@ -42,22 +42,22 @@ except pkg_resources.DistributionNotFound:
 class VmMigrationTransport(abc.ABC):
     """Abstract transport class for VmMigration."""
 
-    AUTH_SCOPES = (
-        'https://www.googleapis.com/auth/cloud-platform',
-    )
+    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
-    DEFAULT_HOST: str = 'vmmigration.googleapis.com'
+    DEFAULT_HOST: str = "vmmigration.googleapis.com"
+
     def __init__(
-            self, *,
-            host: str = DEFAULT_HOST,
-            credentials: ga_credentials.Credentials = None,
-            credentials_file: Optional[str] = None,
-            scopes: Optional[Sequence[str]] = None,
-            quota_project_id: Optional[str] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool] = False,
-            **kwargs,
-            ) -> None:
+        self,
+        *,
+        host: str = DEFAULT_HOST,
+        credentials: ga_credentials.Credentials = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
+        **kwargs,
+    ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -83,8 +83,8 @@ class VmMigrationTransport(abc.ABC):
                 be used for service account credentials.
         """
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
-        if ':' not in host:
-            host += ':443'
+        if ":" not in host:
+            host += ":443"
         self._host = host
 
         scopes_kwargs = {"scopes": scopes, "default_scopes": self.AUTH_SCOPES}
@@ -95,20 +95,26 @@ class VmMigrationTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
+            raise core_exceptions.DuplicateCredentialArgs(
+                "'credentials_file' and 'credentials' are mutually exclusive"
+            )
 
         if credentials_file is not None:
             credentials, _ = google.auth.load_credentials_from_file(
-                                credentials_file,
-                                **scopes_kwargs,
-                                quota_project_id=quota_project_id
-                            )
+                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
+            )
 
         elif credentials is None:
-            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
+            credentials, _ = google.auth.default(
+                **scopes_kwargs, quota_project_id=quota_project_id
+            )
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
-        if always_use_jwt_access and isinstance(credentials, service_account.Credentials) and hasattr(service_account.Credentials, "with_always_use_jwt_access"):
+        if (
+            always_use_jwt_access
+            and isinstance(credentials, service_account.Credentials)
+            and hasattr(service_account.Credentials, "with_always_use_jwt_access")
+        ):
             credentials = credentials.with_always_use_jwt_access(True)
 
         # Save the credentials.
@@ -118,34 +124,22 @@ class VmMigrationTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_sources: gapic_v1.method.wrap_method(
-                self.list_sources,
-                default_timeout=None,
-                client_info=client_info,
+                self.list_sources, default_timeout=None, client_info=client_info,
             ),
             self.get_source: gapic_v1.method.wrap_method(
-                self.get_source,
-                default_timeout=None,
-                client_info=client_info,
+                self.get_source, default_timeout=None, client_info=client_info,
             ),
             self.create_source: gapic_v1.method.wrap_method(
-                self.create_source,
-                default_timeout=900.0,
-                client_info=client_info,
+                self.create_source, default_timeout=900.0, client_info=client_info,
             ),
             self.update_source: gapic_v1.method.wrap_method(
-                self.update_source,
-                default_timeout=None,
-                client_info=client_info,
+                self.update_source, default_timeout=None, client_info=client_info,
             ),
             self.delete_source: gapic_v1.method.wrap_method(
-                self.delete_source,
-                default_timeout=None,
-                client_info=client_info,
+                self.delete_source, default_timeout=None, client_info=client_info,
             ),
             self.fetch_inventory: gapic_v1.method.wrap_method(
-                self.fetch_inventory,
-                default_timeout=300.0,
-                client_info=client_info,
+                self.fetch_inventory, default_timeout=300.0, client_info=client_info,
             ),
             self.list_utilization_reports: gapic_v1.method.wrap_method(
                 self.list_utilization_reports,
@@ -188,119 +182,73 @@ class VmMigrationTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_migrating_vm: gapic_v1.method.wrap_method(
-                self.create_migrating_vm,
-                default_timeout=None,
-                client_info=client_info,
+                self.create_migrating_vm, default_timeout=None, client_info=client_info,
             ),
             self.list_migrating_vms: gapic_v1.method.wrap_method(
-                self.list_migrating_vms,
-                default_timeout=None,
-                client_info=client_info,
+                self.list_migrating_vms, default_timeout=None, client_info=client_info,
             ),
             self.get_migrating_vm: gapic_v1.method.wrap_method(
-                self.get_migrating_vm,
-                default_timeout=None,
-                client_info=client_info,
+                self.get_migrating_vm, default_timeout=None, client_info=client_info,
             ),
             self.update_migrating_vm: gapic_v1.method.wrap_method(
-                self.update_migrating_vm,
-                default_timeout=None,
-                client_info=client_info,
+                self.update_migrating_vm, default_timeout=None, client_info=client_info,
             ),
             self.delete_migrating_vm: gapic_v1.method.wrap_method(
-                self.delete_migrating_vm,
-                default_timeout=None,
-                client_info=client_info,
+                self.delete_migrating_vm, default_timeout=None, client_info=client_info,
             ),
             self.start_migration: gapic_v1.method.wrap_method(
-                self.start_migration,
-                default_timeout=None,
-                client_info=client_info,
+                self.start_migration, default_timeout=None, client_info=client_info,
             ),
             self.resume_migration: gapic_v1.method.wrap_method(
-                self.resume_migration,
-                default_timeout=None,
-                client_info=client_info,
+                self.resume_migration, default_timeout=None, client_info=client_info,
             ),
             self.pause_migration: gapic_v1.method.wrap_method(
-                self.pause_migration,
-                default_timeout=None,
-                client_info=client_info,
+                self.pause_migration, default_timeout=None, client_info=client_info,
             ),
             self.finalize_migration: gapic_v1.method.wrap_method(
-                self.finalize_migration,
-                default_timeout=None,
-                client_info=client_info,
+                self.finalize_migration, default_timeout=None, client_info=client_info,
             ),
             self.create_clone_job: gapic_v1.method.wrap_method(
-                self.create_clone_job,
-                default_timeout=None,
-                client_info=client_info,
+                self.create_clone_job, default_timeout=None, client_info=client_info,
             ),
             self.cancel_clone_job: gapic_v1.method.wrap_method(
-                self.cancel_clone_job,
-                default_timeout=None,
-                client_info=client_info,
+                self.cancel_clone_job, default_timeout=None, client_info=client_info,
             ),
             self.list_clone_jobs: gapic_v1.method.wrap_method(
-                self.list_clone_jobs,
-                default_timeout=None,
-                client_info=client_info,
+                self.list_clone_jobs, default_timeout=None, client_info=client_info,
             ),
             self.get_clone_job: gapic_v1.method.wrap_method(
-                self.get_clone_job,
-                default_timeout=None,
-                client_info=client_info,
+                self.get_clone_job, default_timeout=None, client_info=client_info,
             ),
             self.create_cutover_job: gapic_v1.method.wrap_method(
-                self.create_cutover_job,
-                default_timeout=None,
-                client_info=client_info,
+                self.create_cutover_job, default_timeout=None, client_info=client_info,
             ),
             self.cancel_cutover_job: gapic_v1.method.wrap_method(
-                self.cancel_cutover_job,
-                default_timeout=None,
-                client_info=client_info,
+                self.cancel_cutover_job, default_timeout=None, client_info=client_info,
             ),
             self.list_cutover_jobs: gapic_v1.method.wrap_method(
-                self.list_cutover_jobs,
-                default_timeout=None,
-                client_info=client_info,
+                self.list_cutover_jobs, default_timeout=None, client_info=client_info,
             ),
             self.get_cutover_job: gapic_v1.method.wrap_method(
-                self.get_cutover_job,
-                default_timeout=None,
-                client_info=client_info,
+                self.get_cutover_job, default_timeout=None, client_info=client_info,
             ),
             self.list_groups: gapic_v1.method.wrap_method(
-                self.list_groups,
-                default_timeout=None,
-                client_info=client_info,
+                self.list_groups, default_timeout=None, client_info=client_info,
             ),
             self.get_group: gapic_v1.method.wrap_method(
-                self.get_group,
-                default_timeout=None,
-                client_info=client_info,
+                self.get_group, default_timeout=None, client_info=client_info,
             ),
             self.create_group: gapic_v1.method.wrap_method(
-                self.create_group,
-                default_timeout=None,
-                client_info=client_info,
+                self.create_group, default_timeout=None, client_info=client_info,
             ),
             self.update_group: gapic_v1.method.wrap_method(
-                self.update_group,
-                default_timeout=None,
-                client_info=client_info,
+                self.update_group, default_timeout=None, client_info=client_info,
             ),
             self.delete_group: gapic_v1.method.wrap_method(
-                self.delete_group,
-                default_timeout=None,
-                client_info=client_info,
+                self.delete_group, default_timeout=None, client_info=client_info,
             ),
             self.add_group_migration: gapic_v1.method.wrap_method(
-                self.add_group_migration,
-                default_timeout=None,
-                client_info=client_info,
+                self.add_group_migration, default_timeout=None, client_info=client_info,
             ),
             self.remove_group_migration: gapic_v1.method.wrap_method(
                 self.remove_group_migration,
@@ -313,9 +261,7 @@ class VmMigrationTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.get_target_project: gapic_v1.method.wrap_method(
-                self.get_target_project,
-                default_timeout=None,
-                client_info=client_info,
+                self.get_target_project, default_timeout=None, client_info=client_info,
             ),
             self.create_target_project: gapic_v1.method.wrap_method(
                 self.create_target_project,
@@ -332,7 +278,7 @@ class VmMigrationTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
-         }
+        }
 
     def close(self):
         """Closes resources associated with the transport.
@@ -349,393 +295,418 @@ class VmMigrationTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def list_sources(self) -> Callable[
-            [vmmigration.ListSourcesRequest],
-            Union[
-                vmmigration.ListSourcesResponse,
-                Awaitable[vmmigration.ListSourcesResponse]
-            ]]:
+    def list_sources(
+        self,
+    ) -> Callable[
+        [vmmigration.ListSourcesRequest],
+        Union[
+            vmmigration.ListSourcesResponse, Awaitable[vmmigration.ListSourcesResponse]
+        ],
+    ]:
         raise NotImplementedError()
 
     @property
-    def get_source(self) -> Callable[
-            [vmmigration.GetSourceRequest],
-            Union[
-                vmmigration.Source,
-                Awaitable[vmmigration.Source]
-            ]]:
+    def get_source(
+        self,
+    ) -> Callable[
+        [vmmigration.GetSourceRequest],
+        Union[vmmigration.Source, Awaitable[vmmigration.Source]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def create_source(self) -> Callable[
-            [vmmigration.CreateSourceRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def create_source(
+        self,
+    ) -> Callable[
+        [vmmigration.CreateSourceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def update_source(self) -> Callable[
-            [vmmigration.UpdateSourceRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def update_source(
+        self,
+    ) -> Callable[
+        [vmmigration.UpdateSourceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def delete_source(self) -> Callable[
-            [vmmigration.DeleteSourceRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def delete_source(
+        self,
+    ) -> Callable[
+        [vmmigration.DeleteSourceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def fetch_inventory(self) -> Callable[
-            [vmmigration.FetchInventoryRequest],
-            Union[
-                vmmigration.FetchInventoryResponse,
-                Awaitable[vmmigration.FetchInventoryResponse]
-            ]]:
+    def fetch_inventory(
+        self,
+    ) -> Callable[
+        [vmmigration.FetchInventoryRequest],
+        Union[
+            vmmigration.FetchInventoryResponse,
+            Awaitable[vmmigration.FetchInventoryResponse],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property
-    def list_utilization_reports(self) -> Callable[
-            [vmmigration.ListUtilizationReportsRequest],
-            Union[
-                vmmigration.ListUtilizationReportsResponse,
-                Awaitable[vmmigration.ListUtilizationReportsResponse]
-            ]]:
+    def list_utilization_reports(
+        self,
+    ) -> Callable[
+        [vmmigration.ListUtilizationReportsRequest],
+        Union[
+            vmmigration.ListUtilizationReportsResponse,
+            Awaitable[vmmigration.ListUtilizationReportsResponse],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property
-    def get_utilization_report(self) -> Callable[
-            [vmmigration.GetUtilizationReportRequest],
-            Union[
-                vmmigration.UtilizationReport,
-                Awaitable[vmmigration.UtilizationReport]
-            ]]:
+    def get_utilization_report(
+        self,
+    ) -> Callable[
+        [vmmigration.GetUtilizationReportRequest],
+        Union[vmmigration.UtilizationReport, Awaitable[vmmigration.UtilizationReport]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def create_utilization_report(self) -> Callable[
-            [vmmigration.CreateUtilizationReportRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def create_utilization_report(
+        self,
+    ) -> Callable[
+        [vmmigration.CreateUtilizationReportRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def delete_utilization_report(self) -> Callable[
-            [vmmigration.DeleteUtilizationReportRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def delete_utilization_report(
+        self,
+    ) -> Callable[
+        [vmmigration.DeleteUtilizationReportRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def list_datacenter_connectors(self) -> Callable[
-            [vmmigration.ListDatacenterConnectorsRequest],
-            Union[
-                vmmigration.ListDatacenterConnectorsResponse,
-                Awaitable[vmmigration.ListDatacenterConnectorsResponse]
-            ]]:
+    def list_datacenter_connectors(
+        self,
+    ) -> Callable[
+        [vmmigration.ListDatacenterConnectorsRequest],
+        Union[
+            vmmigration.ListDatacenterConnectorsResponse,
+            Awaitable[vmmigration.ListDatacenterConnectorsResponse],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property
-    def get_datacenter_connector(self) -> Callable[
-            [vmmigration.GetDatacenterConnectorRequest],
-            Union[
-                vmmigration.DatacenterConnector,
-                Awaitable[vmmigration.DatacenterConnector]
-            ]]:
+    def get_datacenter_connector(
+        self,
+    ) -> Callable[
+        [vmmigration.GetDatacenterConnectorRequest],
+        Union[
+            vmmigration.DatacenterConnector, Awaitable[vmmigration.DatacenterConnector]
+        ],
+    ]:
         raise NotImplementedError()
 
     @property
-    def create_datacenter_connector(self) -> Callable[
-            [vmmigration.CreateDatacenterConnectorRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def create_datacenter_connector(
+        self,
+    ) -> Callable[
+        [vmmigration.CreateDatacenterConnectorRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def delete_datacenter_connector(self) -> Callable[
-            [vmmigration.DeleteDatacenterConnectorRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def delete_datacenter_connector(
+        self,
+    ) -> Callable[
+        [vmmigration.DeleteDatacenterConnectorRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def create_migrating_vm(self) -> Callable[
-            [vmmigration.CreateMigratingVmRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def create_migrating_vm(
+        self,
+    ) -> Callable[
+        [vmmigration.CreateMigratingVmRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def list_migrating_vms(self) -> Callable[
-            [vmmigration.ListMigratingVmsRequest],
-            Union[
-                vmmigration.ListMigratingVmsResponse,
-                Awaitable[vmmigration.ListMigratingVmsResponse]
-            ]]:
+    def list_migrating_vms(
+        self,
+    ) -> Callable[
+        [vmmigration.ListMigratingVmsRequest],
+        Union[
+            vmmigration.ListMigratingVmsResponse,
+            Awaitable[vmmigration.ListMigratingVmsResponse],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property
-    def get_migrating_vm(self) -> Callable[
-            [vmmigration.GetMigratingVmRequest],
-            Union[
-                vmmigration.MigratingVm,
-                Awaitable[vmmigration.MigratingVm]
-            ]]:
+    def get_migrating_vm(
+        self,
+    ) -> Callable[
+        [vmmigration.GetMigratingVmRequest],
+        Union[vmmigration.MigratingVm, Awaitable[vmmigration.MigratingVm]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def update_migrating_vm(self) -> Callable[
-            [vmmigration.UpdateMigratingVmRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def update_migrating_vm(
+        self,
+    ) -> Callable[
+        [vmmigration.UpdateMigratingVmRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def delete_migrating_vm(self) -> Callable[
-            [vmmigration.DeleteMigratingVmRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def delete_migrating_vm(
+        self,
+    ) -> Callable[
+        [vmmigration.DeleteMigratingVmRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def start_migration(self) -> Callable[
-            [vmmigration.StartMigrationRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def start_migration(
+        self,
+    ) -> Callable[
+        [vmmigration.StartMigrationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def resume_migration(self) -> Callable[
-            [vmmigration.ResumeMigrationRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def resume_migration(
+        self,
+    ) -> Callable[
+        [vmmigration.ResumeMigrationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def pause_migration(self) -> Callable[
-            [vmmigration.PauseMigrationRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def pause_migration(
+        self,
+    ) -> Callable[
+        [vmmigration.PauseMigrationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def finalize_migration(self) -> Callable[
-            [vmmigration.FinalizeMigrationRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def finalize_migration(
+        self,
+    ) -> Callable[
+        [vmmigration.FinalizeMigrationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def create_clone_job(self) -> Callable[
-            [vmmigration.CreateCloneJobRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def create_clone_job(
+        self,
+    ) -> Callable[
+        [vmmigration.CreateCloneJobRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def cancel_clone_job(self) -> Callable[
-            [vmmigration.CancelCloneJobRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def cancel_clone_job(
+        self,
+    ) -> Callable[
+        [vmmigration.CancelCloneJobRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def list_clone_jobs(self) -> Callable[
-            [vmmigration.ListCloneJobsRequest],
-            Union[
-                vmmigration.ListCloneJobsResponse,
-                Awaitable[vmmigration.ListCloneJobsResponse]
-            ]]:
+    def list_clone_jobs(
+        self,
+    ) -> Callable[
+        [vmmigration.ListCloneJobsRequest],
+        Union[
+            vmmigration.ListCloneJobsResponse,
+            Awaitable[vmmigration.ListCloneJobsResponse],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property
-    def get_clone_job(self) -> Callable[
-            [vmmigration.GetCloneJobRequest],
-            Union[
-                vmmigration.CloneJob,
-                Awaitable[vmmigration.CloneJob]
-            ]]:
+    def get_clone_job(
+        self,
+    ) -> Callable[
+        [vmmigration.GetCloneJobRequest],
+        Union[vmmigration.CloneJob, Awaitable[vmmigration.CloneJob]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def create_cutover_job(self) -> Callable[
-            [vmmigration.CreateCutoverJobRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def create_cutover_job(
+        self,
+    ) -> Callable[
+        [vmmigration.CreateCutoverJobRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def cancel_cutover_job(self) -> Callable[
-            [vmmigration.CancelCutoverJobRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def cancel_cutover_job(
+        self,
+    ) -> Callable[
+        [vmmigration.CancelCutoverJobRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def list_cutover_jobs(self) -> Callable[
-            [vmmigration.ListCutoverJobsRequest],
-            Union[
-                vmmigration.ListCutoverJobsResponse,
-                Awaitable[vmmigration.ListCutoverJobsResponse]
-            ]]:
+    def list_cutover_jobs(
+        self,
+    ) -> Callable[
+        [vmmigration.ListCutoverJobsRequest],
+        Union[
+            vmmigration.ListCutoverJobsResponse,
+            Awaitable[vmmigration.ListCutoverJobsResponse],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property
-    def get_cutover_job(self) -> Callable[
-            [vmmigration.GetCutoverJobRequest],
-            Union[
-                vmmigration.CutoverJob,
-                Awaitable[vmmigration.CutoverJob]
-            ]]:
+    def get_cutover_job(
+        self,
+    ) -> Callable[
+        [vmmigration.GetCutoverJobRequest],
+        Union[vmmigration.CutoverJob, Awaitable[vmmigration.CutoverJob]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def list_groups(self) -> Callable[
-            [vmmigration.ListGroupsRequest],
-            Union[
-                vmmigration.ListGroupsResponse,
-                Awaitable[vmmigration.ListGroupsResponse]
-            ]]:
+    def list_groups(
+        self,
+    ) -> Callable[
+        [vmmigration.ListGroupsRequest],
+        Union[
+            vmmigration.ListGroupsResponse, Awaitable[vmmigration.ListGroupsResponse]
+        ],
+    ]:
         raise NotImplementedError()
 
     @property
-    def get_group(self) -> Callable[
-            [vmmigration.GetGroupRequest],
-            Union[
-                vmmigration.Group,
-                Awaitable[vmmigration.Group]
-            ]]:
+    def get_group(
+        self,
+    ) -> Callable[
+        [vmmigration.GetGroupRequest],
+        Union[vmmigration.Group, Awaitable[vmmigration.Group]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def create_group(self) -> Callable[
-            [vmmigration.CreateGroupRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def create_group(
+        self,
+    ) -> Callable[
+        [vmmigration.CreateGroupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def update_group(self) -> Callable[
-            [vmmigration.UpdateGroupRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def update_group(
+        self,
+    ) -> Callable[
+        [vmmigration.UpdateGroupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def delete_group(self) -> Callable[
-            [vmmigration.DeleteGroupRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def delete_group(
+        self,
+    ) -> Callable[
+        [vmmigration.DeleteGroupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def add_group_migration(self) -> Callable[
-            [vmmigration.AddGroupMigrationRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def add_group_migration(
+        self,
+    ) -> Callable[
+        [vmmigration.AddGroupMigrationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def remove_group_migration(self) -> Callable[
-            [vmmigration.RemoveGroupMigrationRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def remove_group_migration(
+        self,
+    ) -> Callable[
+        [vmmigration.RemoveGroupMigrationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def list_target_projects(self) -> Callable[
-            [vmmigration.ListTargetProjectsRequest],
-            Union[
-                vmmigration.ListTargetProjectsResponse,
-                Awaitable[vmmigration.ListTargetProjectsResponse]
-            ]]:
+    def list_target_projects(
+        self,
+    ) -> Callable[
+        [vmmigration.ListTargetProjectsRequest],
+        Union[
+            vmmigration.ListTargetProjectsResponse,
+            Awaitable[vmmigration.ListTargetProjectsResponse],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property
-    def get_target_project(self) -> Callable[
-            [vmmigration.GetTargetProjectRequest],
-            Union[
-                vmmigration.TargetProject,
-                Awaitable[vmmigration.TargetProject]
-            ]]:
+    def get_target_project(
+        self,
+    ) -> Callable[
+        [vmmigration.GetTargetProjectRequest],
+        Union[vmmigration.TargetProject, Awaitable[vmmigration.TargetProject]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def create_target_project(self) -> Callable[
-            [vmmigration.CreateTargetProjectRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def create_target_project(
+        self,
+    ) -> Callable[
+        [vmmigration.CreateTargetProjectRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def update_target_project(self) -> Callable[
-            [vmmigration.UpdateTargetProjectRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def update_target_project(
+        self,
+    ) -> Callable[
+        [vmmigration.UpdateTargetProjectRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
-    def delete_target_project(self) -> Callable[
-            [vmmigration.DeleteTargetProjectRequest],
-            Union[
-                operations_pb2.Operation,
-                Awaitable[operations_pb2.Operation]
-            ]]:
+    def delete_target_project(
+        self,
+    ) -> Callable[
+        [vmmigration.DeleteTargetProjectRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
 
-__all__ = (
-    'VmMigrationTransport',
-)
+__all__ = ("VmMigrationTransport",)

@@ -13,7 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import Any, AsyncIterator, Awaitable, Callable, Sequence, Tuple, Optional, Iterator
+from typing import (
+    Any,
+    AsyncIterator,
+    Awaitable,
+    Callable,
+    Sequence,
+    Tuple,
+    Optional,
+    Iterator,
+)
 
 from google.cloud.vmmigration_v1.types import vmmigration
 
@@ -35,12 +44,15 @@ class ListSourcesPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., vmmigration.ListSourcesResponse],
-            request: vmmigration.ListSourcesRequest,
-            response: vmmigration.ListSourcesResponse,
-            *,
-            metadata: Sequence[Tuple[str, str]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., vmmigration.ListSourcesResponse],
+        request: vmmigration.ListSourcesRequest,
+        response: vmmigration.ListSourcesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
         """Instantiate the pager.
 
         Args:
@@ -74,7 +86,7 @@ class ListSourcesPager:
             yield from page.sources
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListSourcesAsyncPager:
@@ -94,12 +106,15 @@ class ListSourcesAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., Awaitable[vmmigration.ListSourcesResponse]],
-            request: vmmigration.ListSourcesRequest,
-            response: vmmigration.ListSourcesResponse,
-            *,
-            metadata: Sequence[Tuple[str, str]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[vmmigration.ListSourcesResponse]],
+        request: vmmigration.ListSourcesRequest,
+        response: vmmigration.ListSourcesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
         """Instantiates the pager.
 
         Args:
@@ -137,7 +152,7 @@ class ListSourcesAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListUtilizationReportsPager:
@@ -157,12 +172,15 @@ class ListUtilizationReportsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., vmmigration.ListUtilizationReportsResponse],
-            request: vmmigration.ListUtilizationReportsRequest,
-            response: vmmigration.ListUtilizationReportsResponse,
-            *,
-            metadata: Sequence[Tuple[str, str]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., vmmigration.ListUtilizationReportsResponse],
+        request: vmmigration.ListUtilizationReportsRequest,
+        response: vmmigration.ListUtilizationReportsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
         """Instantiate the pager.
 
         Args:
@@ -196,7 +214,7 @@ class ListUtilizationReportsPager:
             yield from page.utilization_reports
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListUtilizationReportsAsyncPager:
@@ -216,12 +234,15 @@ class ListUtilizationReportsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., Awaitable[vmmigration.ListUtilizationReportsResponse]],
-            request: vmmigration.ListUtilizationReportsRequest,
-            response: vmmigration.ListUtilizationReportsResponse,
-            *,
-            metadata: Sequence[Tuple[str, str]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[vmmigration.ListUtilizationReportsResponse]],
+        request: vmmigration.ListUtilizationReportsRequest,
+        response: vmmigration.ListUtilizationReportsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
         """Instantiates the pager.
 
         Args:
@@ -259,7 +280,7 @@ class ListUtilizationReportsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListDatacenterConnectorsPager:
@@ -279,12 +300,15 @@ class ListDatacenterConnectorsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., vmmigration.ListDatacenterConnectorsResponse],
-            request: vmmigration.ListDatacenterConnectorsRequest,
-            response: vmmigration.ListDatacenterConnectorsResponse,
-            *,
-            metadata: Sequence[Tuple[str, str]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., vmmigration.ListDatacenterConnectorsResponse],
+        request: vmmigration.ListDatacenterConnectorsRequest,
+        response: vmmigration.ListDatacenterConnectorsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
         """Instantiate the pager.
 
         Args:
@@ -318,7 +342,7 @@ class ListDatacenterConnectorsPager:
             yield from page.datacenter_connectors
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListDatacenterConnectorsAsyncPager:
@@ -338,12 +362,15 @@ class ListDatacenterConnectorsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., Awaitable[vmmigration.ListDatacenterConnectorsResponse]],
-            request: vmmigration.ListDatacenterConnectorsRequest,
-            response: vmmigration.ListDatacenterConnectorsResponse,
-            *,
-            metadata: Sequence[Tuple[str, str]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[vmmigration.ListDatacenterConnectorsResponse]],
+        request: vmmigration.ListDatacenterConnectorsRequest,
+        response: vmmigration.ListDatacenterConnectorsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
         """Instantiates the pager.
 
         Args:
@@ -365,7 +392,9 @@ class ListDatacenterConnectorsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterator[vmmigration.ListDatacenterConnectorsResponse]:
+    async def pages(
+        self,
+    ) -> AsyncIterator[vmmigration.ListDatacenterConnectorsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
@@ -381,7 +410,7 @@ class ListDatacenterConnectorsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListMigratingVmsPager:
@@ -401,12 +430,15 @@ class ListMigratingVmsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., vmmigration.ListMigratingVmsResponse],
-            request: vmmigration.ListMigratingVmsRequest,
-            response: vmmigration.ListMigratingVmsResponse,
-            *,
-            metadata: Sequence[Tuple[str, str]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., vmmigration.ListMigratingVmsResponse],
+        request: vmmigration.ListMigratingVmsRequest,
+        response: vmmigration.ListMigratingVmsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
         """Instantiate the pager.
 
         Args:
@@ -440,7 +472,7 @@ class ListMigratingVmsPager:
             yield from page.migrating_vms
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListMigratingVmsAsyncPager:
@@ -460,12 +492,15 @@ class ListMigratingVmsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., Awaitable[vmmigration.ListMigratingVmsResponse]],
-            request: vmmigration.ListMigratingVmsRequest,
-            response: vmmigration.ListMigratingVmsResponse,
-            *,
-            metadata: Sequence[Tuple[str, str]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[vmmigration.ListMigratingVmsResponse]],
+        request: vmmigration.ListMigratingVmsRequest,
+        response: vmmigration.ListMigratingVmsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
         """Instantiates the pager.
 
         Args:
@@ -503,7 +538,7 @@ class ListMigratingVmsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListCloneJobsPager:
@@ -523,12 +558,15 @@ class ListCloneJobsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., vmmigration.ListCloneJobsResponse],
-            request: vmmigration.ListCloneJobsRequest,
-            response: vmmigration.ListCloneJobsResponse,
-            *,
-            metadata: Sequence[Tuple[str, str]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., vmmigration.ListCloneJobsResponse],
+        request: vmmigration.ListCloneJobsRequest,
+        response: vmmigration.ListCloneJobsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
         """Instantiate the pager.
 
         Args:
@@ -562,7 +600,7 @@ class ListCloneJobsPager:
             yield from page.clone_jobs
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListCloneJobsAsyncPager:
@@ -582,12 +620,15 @@ class ListCloneJobsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., Awaitable[vmmigration.ListCloneJobsResponse]],
-            request: vmmigration.ListCloneJobsRequest,
-            response: vmmigration.ListCloneJobsResponse,
-            *,
-            metadata: Sequence[Tuple[str, str]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[vmmigration.ListCloneJobsResponse]],
+        request: vmmigration.ListCloneJobsRequest,
+        response: vmmigration.ListCloneJobsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
         """Instantiates the pager.
 
         Args:
@@ -625,7 +666,7 @@ class ListCloneJobsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListCutoverJobsPager:
@@ -645,12 +686,15 @@ class ListCutoverJobsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., vmmigration.ListCutoverJobsResponse],
-            request: vmmigration.ListCutoverJobsRequest,
-            response: vmmigration.ListCutoverJobsResponse,
-            *,
-            metadata: Sequence[Tuple[str, str]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., vmmigration.ListCutoverJobsResponse],
+        request: vmmigration.ListCutoverJobsRequest,
+        response: vmmigration.ListCutoverJobsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
         """Instantiate the pager.
 
         Args:
@@ -684,7 +728,7 @@ class ListCutoverJobsPager:
             yield from page.cutover_jobs
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListCutoverJobsAsyncPager:
@@ -704,12 +748,15 @@ class ListCutoverJobsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., Awaitable[vmmigration.ListCutoverJobsResponse]],
-            request: vmmigration.ListCutoverJobsRequest,
-            response: vmmigration.ListCutoverJobsResponse,
-            *,
-            metadata: Sequence[Tuple[str, str]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[vmmigration.ListCutoverJobsResponse]],
+        request: vmmigration.ListCutoverJobsRequest,
+        response: vmmigration.ListCutoverJobsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
         """Instantiates the pager.
 
         Args:
@@ -747,7 +794,7 @@ class ListCutoverJobsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListGroupsPager:
@@ -767,12 +814,15 @@ class ListGroupsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., vmmigration.ListGroupsResponse],
-            request: vmmigration.ListGroupsRequest,
-            response: vmmigration.ListGroupsResponse,
-            *,
-            metadata: Sequence[Tuple[str, str]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., vmmigration.ListGroupsResponse],
+        request: vmmigration.ListGroupsRequest,
+        response: vmmigration.ListGroupsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
         """Instantiate the pager.
 
         Args:
@@ -806,7 +856,7 @@ class ListGroupsPager:
             yield from page.groups
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListGroupsAsyncPager:
@@ -826,12 +876,15 @@ class ListGroupsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., Awaitable[vmmigration.ListGroupsResponse]],
-            request: vmmigration.ListGroupsRequest,
-            response: vmmigration.ListGroupsResponse,
-            *,
-            metadata: Sequence[Tuple[str, str]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[vmmigration.ListGroupsResponse]],
+        request: vmmigration.ListGroupsRequest,
+        response: vmmigration.ListGroupsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
         """Instantiates the pager.
 
         Args:
@@ -869,7 +922,7 @@ class ListGroupsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListTargetProjectsPager:
@@ -889,12 +942,15 @@ class ListTargetProjectsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., vmmigration.ListTargetProjectsResponse],
-            request: vmmigration.ListTargetProjectsRequest,
-            response: vmmigration.ListTargetProjectsResponse,
-            *,
-            metadata: Sequence[Tuple[str, str]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., vmmigration.ListTargetProjectsResponse],
+        request: vmmigration.ListTargetProjectsRequest,
+        response: vmmigration.ListTargetProjectsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
         """Instantiate the pager.
 
         Args:
@@ -928,7 +984,7 @@ class ListTargetProjectsPager:
             yield from page.target_projects
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListTargetProjectsAsyncPager:
@@ -948,12 +1004,15 @@ class ListTargetProjectsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., Awaitable[vmmigration.ListTargetProjectsResponse]],
-            request: vmmigration.ListTargetProjectsRequest,
-            response: vmmigration.ListTargetProjectsResponse,
-            *,
-            metadata: Sequence[Tuple[str, str]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[vmmigration.ListTargetProjectsResponse]],
+        request: vmmigration.ListTargetProjectsRequest,
+        response: vmmigration.ListTargetProjectsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
         """Instantiates the pager.
 
         Args:
@@ -991,4 +1050,4 @@ class ListTargetProjectsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)

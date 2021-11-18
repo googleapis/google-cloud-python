@@ -16,7 +16,7 @@
 set -eo pipefail
 
 if [[ -z "${PROJECT_ROOT:-}" ]]; then
-    PROJECT_ROOT="github/python-vmmigration"
+    PROJECT_ROOT="github/python-vm-migration"
 fi
 
 cd "${PROJECT_ROOT}"

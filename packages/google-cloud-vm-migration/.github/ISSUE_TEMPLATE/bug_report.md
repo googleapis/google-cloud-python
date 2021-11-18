@@ -10,7 +10,7 @@ Thanks for stopping by to let us know something could be better!
 
 Please run down the following list and make sure you've tried the usual "quick fixes":
 
-  - Search the issues already opened: https://github.com/googleapis/python-vmmigration/issues
+  - Search the issues already opened: https://github.com/googleapis/python-vm-migration/issues
   - Search StackOverflow: https://stackoverflow.com/questions/tagged/google-cloud-platform+python
 
 If you are still having issues, please be sure to include as much information as possible:
@@ -20,7 +20,7 @@ If you are still having issues, please be sure to include as much information as
   - OS type and version:
   - Python version: `python --version`
   - pip version: `pip --version`
-  - `google-cloud-vmmigration` version: `pip show google-cloud-vmmigration`
+  - `google-cloud-vm-migration` version: `pip show google-cloud-vm-migration`
 
 #### Steps to reproduce
 

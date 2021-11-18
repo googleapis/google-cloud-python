@@ -35,21 +35,21 @@ Using a Development Checkout
 You'll have to create a development environment using a Git checkout:
 
 - While logged into your GitHub account, navigate to the
-  ``python-vmmigration`` `repo`_ on GitHub.
+  ``python-vm-migration`` `repo`_ on GitHub.
 
-- Fork and clone the ``python-vmmigration`` repository to your GitHub account by
+- Fork and clone the ``python-vm-migration`` repository to your GitHub account by
   clicking the "Fork" button.
 
-- Clone your fork of ``python-vmmigration`` from your GitHub account to your local
+- Clone your fork of ``python-vm-migration`` from your GitHub account to your local
   computer, substituting your account username and specifying the destination
-  as ``hack-on-python-vmmigration``.  E.g.::
+  as ``hack-on-python-vm-migration``.  E.g.::
 
    $ cd ${HOME}
-   $ git clone git@github.com:USERNAME/python-vmmigration.git hack-on-python-vmmigration
-   $ cd hack-on-python-vmmigration
-   # Configure remotes such that you can pull changes from the googleapis/python-vmmigration
+   $ git clone git@github.com:USERNAME/python-vm-migration.git hack-on-python-vm-migration
+   $ cd hack-on-python-vm-migration
+   # Configure remotes such that you can pull changes from the googleapis/python-vm-migration
    # repository into your local repository.
-   $ git remote add upstream git@github.com:googleapis/python-vmmigration.git
+   $ git remote add upstream git@github.com:googleapis/python-vm-migration.git
    # fetch and merge changes from upstream into main
    $ git fetch upstream
    $ git merge upstream/main
@@ -60,7 +60,7 @@ repo, from which you can submit a pull request.
 To work on the codebase and run the tests, we recommend using ``nox``,
 but you can also use a ``virtualenv`` of your own creation.
 
-.. _repo: https://github.com/googleapis/python-vmmigration
+.. _repo: https://github.com/googleapis/python-vm-migration
 
 Using ``nox``
 =============
@@ -113,7 +113,7 @@ Coding Style
    export GOOGLE_CLOUD_TESTING_BRANCH="main"
 
   By doing this, you are specifying the location of the most up-to-date
-  version of ``python-vmmigration``. The
+  version of ``python-vm-migration``. The
   remote name ``upstream`` should point to the official ``googleapis``
   checkout and the branch should be the default branch on that remote (``main``).
 
@@ -209,10 +209,10 @@ The `description on PyPI`_ for the project comes directly from the
 ``README``. Due to the reStructuredText (``rst``) parser used by
 PyPI, relative links which will work on GitHub (e.g. ``CONTRIBUTING.rst``
 instead of
-``https://github.com/googleapis/python-vmmigration/blob/main/CONTRIBUTING.rst``)
+``https://github.com/googleapis/python-vm-migration/blob/main/CONTRIBUTING.rst``)
 may cause problems creating links or rendering the description.
 
-.. _description on PyPI: https://pypi.org/project/google-cloud-vmmigration
+.. _description on PyPI: https://pypi.org/project/google-cloud-vm-migration
 
 
 *************************
@@ -236,7 +236,7 @@ We support:
 
 Supported versions can be found in our ``noxfile.py`` `config`_.
 
-.. _config: https://github.com/googleapis/python-vmmigration/blob/main/noxfile.py
+.. _config: https://github.com/googleapis/python-vm-migration/blob/main/noxfile.py
 
 
 We also explicitly decided to support Python 3 beginning with version 3.6.

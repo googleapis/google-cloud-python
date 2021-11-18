@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# google-cloud-vmmigration documentation build configuration file
+# google-cloud-vm-migration documentation build configuration file
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -80,7 +80,7 @@ source_suffix = [".rst", ".md"]
 root_doc = "index"
 
 # General information about the project.
-project = "google-cloud-vmmigration"
+project = "google-cloud-vm-migration"
 copyright = "2019, Google"
 author = "Google APIs"
 
@@ -154,9 +154,9 @@ html_theme = "alabaster"
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "description": "Google Cloud Client Libraries for google-cloud-vmmigration",
+    "description": "Google Cloud Client Libraries for google-cloud-vm-migration",
     "github_user": "googleapis",
-    "github_repo": "python-vmmigration",
+    "github_repo": "python-vm-migration",
     "github_banner": True,
     "font_family": "'Roboto', Georgia, sans",
     "head_font_family": "'Roboto', Georgia, serif",
@@ -248,7 +248,7 @@ html_static_path = ["_static"]
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "google-cloud-vmmigration-doc"
+htmlhelp_basename = "google-cloud-vm-migration-doc"
 
 # -- Options for warnings ------------------------------------------------------
 
@@ -281,8 +281,8 @@ latex_elements = {
 latex_documents = [
     (
         root_doc,
-        "google-cloud-vmmigration.tex",
-        "google-cloud-vmmigration Documentation",
+        "google-cloud-vm-migration.tex",
+        "google-cloud-vm-migration Documentation",
         author,
         "manual",
     )
@@ -316,8 +316,8 @@ latex_documents = [
 man_pages = [
     (
         root_doc,
-        "google-cloud-vmmigration",
-        "google-cloud-vmmigration Documentation",
+        "google-cloud-vm-migration",
+        "google-cloud-vm-migration Documentation",
         [author],
         1,
     )
@@ -335,11 +335,11 @@ man_pages = [
 texinfo_documents = [
     (
         root_doc,
-        "google-cloud-vmmigration",
-        "google-cloud-vmmigration Documentation",
+        "google-cloud-vm-migration",
+        "google-cloud-vm-migration Documentation",
         author,
-        "google-cloud-vmmigration",
-        "google-cloud-vmmigration Library",
+        "google-cloud-vm-migration",
+        "google-cloud-vm-migration Library",
         "APIs",
     )
 ]
@@ -361,14 +361,10 @@ texinfo_documents = [
 intersphinx_mapping = {
     "python": ("https://python.readthedocs.org/en/latest/", None),
     "google-auth": ("https://googleapis.dev/python/google-auth/latest/", None),
-    "google.api_core": (
-        "https://googleapis.dev/python/google-api-core/latest/",
-        None,
-    ),
+    "google.api_core": ("https://googleapis.dev/python/google-api-core/latest/", None,),
     "grpc": ("https://grpc.github.io/grpc/python/", None),
     "proto-plus": ("https://proto-plus-python.readthedocs.io/en/latest/", None),
     "protobuf": ("https://googleapis.dev/python/protobuf/latest/", None),
-    
 }
 
 

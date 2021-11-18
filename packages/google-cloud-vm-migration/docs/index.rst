@@ -15,7 +15,7 @@ API Reference
 Changelog
 ---------
 
-For a list of all ``google-cloud-vmmigration`` releases:
+For a list of all ``google-cloud-vm-migration`` releases:
 
 .. toctree::
     :maxdepth: 2

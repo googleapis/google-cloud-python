@@ -19,7 +19,7 @@ from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 from google.api_core import grpc_helpers
 from google.api_core import operations_v1
 from google.api_core import gapic_v1
-import google.auth                         # type: ignore
+import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
@@ -42,22 +42,25 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
     It sends protocol buffers over the wire using gRPC (which is built on
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
+
     _stubs: Dict[str, Callable]
 
-    def __init__(self, *,
-            host: str = 'vmmigration.googleapis.com',
-            credentials: ga_credentials.Credentials = None,
-            credentials_file: str = None,
-            scopes: Sequence[str] = None,
-            channel: grpc.Channel = None,
-            api_mtls_endpoint: str = None,
-            client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
-            ssl_channel_credentials: grpc.ChannelCredentials = None,
-            client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
-            quota_project_id: Optional[str] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool] = False,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        host: str = "vmmigration.googleapis.com",
+        credentials: ga_credentials.Credentials = None,
+        credentials_file: str = None,
+        scopes: Sequence[str] = None,
+        channel: grpc.Channel = None,
+        api_mtls_endpoint: str = None,
+        client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
+        ssl_channel_credentials: grpc.ChannelCredentials = None,
+        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
+        quota_project_id: Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
+    ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -173,13 +176,15 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         self._prep_wrapped_messages(client_info)
 
     @classmethod
-    def create_channel(cls,
-                       host: str = 'vmmigration.googleapis.com',
-                       credentials: ga_credentials.Credentials = None,
-                       credentials_file: str = None,
-                       scopes: Optional[Sequence[str]] = None,
-                       quota_project_id: Optional[str] = None,
-                       **kwargs) -> grpc.Channel:
+    def create_channel(
+        cls,
+        host: str = "vmmigration.googleapis.com",
+        credentials: ga_credentials.Credentials = None,
+        credentials_file: str = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> grpc.Channel:
         """Create and return a gRPC channel object.
         Args:
             host (Optional[str]): The host for the channel to use.
@@ -214,7 +219,7 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
             default_scopes=cls.AUTH_SCOPES,
             scopes=scopes,
             default_host=cls.DEFAULT_HOST,
-            **kwargs
+            **kwargs,
         )
 
     @property
@@ -232,17 +237,15 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         """
         # Sanity check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self.grpc_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_sources(self) -> Callable[
-            [vmmigration.ListSourcesRequest],
-            vmmigration.ListSourcesResponse]:
+    def list_sources(
+        self,
+    ) -> Callable[[vmmigration.ListSourcesRequest], vmmigration.ListSourcesResponse]:
         r"""Return a callable for the list sources method over gRPC.
 
         Lists Sources in a given project and location.
@@ -257,18 +260,18 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'list_sources' not in self._stubs:
-            self._stubs['list_sources'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/ListSources',
+        if "list_sources" not in self._stubs:
+            self._stubs["list_sources"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/ListSources",
                 request_serializer=vmmigration.ListSourcesRequest.serialize,
                 response_deserializer=vmmigration.ListSourcesResponse.deserialize,
             )
-        return self._stubs['list_sources']
+        return self._stubs["list_sources"]
 
     @property
-    def get_source(self) -> Callable[
-            [vmmigration.GetSourceRequest],
-            vmmigration.Source]:
+    def get_source(
+        self,
+    ) -> Callable[[vmmigration.GetSourceRequest], vmmigration.Source]:
         r"""Return a callable for the get source method over gRPC.
 
         Gets details of a single Source.
@@ -283,18 +286,18 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'get_source' not in self._stubs:
-            self._stubs['get_source'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/GetSource',
+        if "get_source" not in self._stubs:
+            self._stubs["get_source"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/GetSource",
                 request_serializer=vmmigration.GetSourceRequest.serialize,
                 response_deserializer=vmmigration.Source.deserialize,
             )
-        return self._stubs['get_source']
+        return self._stubs["get_source"]
 
     @property
-    def create_source(self) -> Callable[
-            [vmmigration.CreateSourceRequest],
-            operations_pb2.Operation]:
+    def create_source(
+        self,
+    ) -> Callable[[vmmigration.CreateSourceRequest], operations_pb2.Operation]:
         r"""Return a callable for the create source method over gRPC.
 
         Creates a new Source in a given project and location.
@@ -309,18 +312,18 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'create_source' not in self._stubs:
-            self._stubs['create_source'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/CreateSource',
+        if "create_source" not in self._stubs:
+            self._stubs["create_source"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/CreateSource",
                 request_serializer=vmmigration.CreateSourceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['create_source']
+        return self._stubs["create_source"]
 
     @property
-    def update_source(self) -> Callable[
-            [vmmigration.UpdateSourceRequest],
-            operations_pb2.Operation]:
+    def update_source(
+        self,
+    ) -> Callable[[vmmigration.UpdateSourceRequest], operations_pb2.Operation]:
         r"""Return a callable for the update source method over gRPC.
 
         Updates the parameters of a single Source.
@@ -335,18 +338,18 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'update_source' not in self._stubs:
-            self._stubs['update_source'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/UpdateSource',
+        if "update_source" not in self._stubs:
+            self._stubs["update_source"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/UpdateSource",
                 request_serializer=vmmigration.UpdateSourceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['update_source']
+        return self._stubs["update_source"]
 
     @property
-    def delete_source(self) -> Callable[
-            [vmmigration.DeleteSourceRequest],
-            operations_pb2.Operation]:
+    def delete_source(
+        self,
+    ) -> Callable[[vmmigration.DeleteSourceRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete source method over gRPC.
 
         Deletes a single Source.
@@ -361,18 +364,20 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'delete_source' not in self._stubs:
-            self._stubs['delete_source'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/DeleteSource',
+        if "delete_source" not in self._stubs:
+            self._stubs["delete_source"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/DeleteSource",
                 request_serializer=vmmigration.DeleteSourceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['delete_source']
+        return self._stubs["delete_source"]
 
     @property
-    def fetch_inventory(self) -> Callable[
-            [vmmigration.FetchInventoryRequest],
-            vmmigration.FetchInventoryResponse]:
+    def fetch_inventory(
+        self,
+    ) -> Callable[
+        [vmmigration.FetchInventoryRequest], vmmigration.FetchInventoryResponse
+    ]:
         r"""Return a callable for the fetch inventory method over gRPC.
 
         List remote source's inventory of VMs.
@@ -393,18 +398,21 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'fetch_inventory' not in self._stubs:
-            self._stubs['fetch_inventory'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/FetchInventory',
+        if "fetch_inventory" not in self._stubs:
+            self._stubs["fetch_inventory"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/FetchInventory",
                 request_serializer=vmmigration.FetchInventoryRequest.serialize,
                 response_deserializer=vmmigration.FetchInventoryResponse.deserialize,
             )
-        return self._stubs['fetch_inventory']
+        return self._stubs["fetch_inventory"]
 
     @property
-    def list_utilization_reports(self) -> Callable[
-            [vmmigration.ListUtilizationReportsRequest],
-            vmmigration.ListUtilizationReportsResponse]:
+    def list_utilization_reports(
+        self,
+    ) -> Callable[
+        [vmmigration.ListUtilizationReportsRequest],
+        vmmigration.ListUtilizationReportsResponse,
+    ]:
         r"""Return a callable for the list utilization reports method over gRPC.
 
         Lists Utilization Reports of the given Source.
@@ -419,18 +427,20 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'list_utilization_reports' not in self._stubs:
-            self._stubs['list_utilization_reports'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/ListUtilizationReports',
+        if "list_utilization_reports" not in self._stubs:
+            self._stubs["list_utilization_reports"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/ListUtilizationReports",
                 request_serializer=vmmigration.ListUtilizationReportsRequest.serialize,
                 response_deserializer=vmmigration.ListUtilizationReportsResponse.deserialize,
             )
-        return self._stubs['list_utilization_reports']
+        return self._stubs["list_utilization_reports"]
 
     @property
-    def get_utilization_report(self) -> Callable[
-            [vmmigration.GetUtilizationReportRequest],
-            vmmigration.UtilizationReport]:
+    def get_utilization_report(
+        self,
+    ) -> Callable[
+        [vmmigration.GetUtilizationReportRequest], vmmigration.UtilizationReport
+    ]:
         r"""Return a callable for the get utilization report method over gRPC.
 
         Gets a single Utilization Report.
@@ -445,18 +455,20 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'get_utilization_report' not in self._stubs:
-            self._stubs['get_utilization_report'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/GetUtilizationReport',
+        if "get_utilization_report" not in self._stubs:
+            self._stubs["get_utilization_report"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/GetUtilizationReport",
                 request_serializer=vmmigration.GetUtilizationReportRequest.serialize,
                 response_deserializer=vmmigration.UtilizationReport.deserialize,
             )
-        return self._stubs['get_utilization_report']
+        return self._stubs["get_utilization_report"]
 
     @property
-    def create_utilization_report(self) -> Callable[
-            [vmmigration.CreateUtilizationReportRequest],
-            operations_pb2.Operation]:
+    def create_utilization_report(
+        self,
+    ) -> Callable[
+        [vmmigration.CreateUtilizationReportRequest], operations_pb2.Operation
+    ]:
         r"""Return a callable for the create utilization report method over gRPC.
 
         Creates a new UtilizationReport.
@@ -471,18 +483,20 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'create_utilization_report' not in self._stubs:
-            self._stubs['create_utilization_report'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/CreateUtilizationReport',
+        if "create_utilization_report" not in self._stubs:
+            self._stubs["create_utilization_report"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/CreateUtilizationReport",
                 request_serializer=vmmigration.CreateUtilizationReportRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['create_utilization_report']
+        return self._stubs["create_utilization_report"]
 
     @property
-    def delete_utilization_report(self) -> Callable[
-            [vmmigration.DeleteUtilizationReportRequest],
-            operations_pb2.Operation]:
+    def delete_utilization_report(
+        self,
+    ) -> Callable[
+        [vmmigration.DeleteUtilizationReportRequest], operations_pb2.Operation
+    ]:
         r"""Return a callable for the delete utilization report method over gRPC.
 
         Deletes a single Utilization Report.
@@ -497,18 +511,21 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'delete_utilization_report' not in self._stubs:
-            self._stubs['delete_utilization_report'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/DeleteUtilizationReport',
+        if "delete_utilization_report" not in self._stubs:
+            self._stubs["delete_utilization_report"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/DeleteUtilizationReport",
                 request_serializer=vmmigration.DeleteUtilizationReportRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['delete_utilization_report']
+        return self._stubs["delete_utilization_report"]
 
     @property
-    def list_datacenter_connectors(self) -> Callable[
-            [vmmigration.ListDatacenterConnectorsRequest],
-            vmmigration.ListDatacenterConnectorsResponse]:
+    def list_datacenter_connectors(
+        self,
+    ) -> Callable[
+        [vmmigration.ListDatacenterConnectorsRequest],
+        vmmigration.ListDatacenterConnectorsResponse,
+    ]:
         r"""Return a callable for the list datacenter connectors method over gRPC.
 
         Lists DatacenterConnectors in a given Source.
@@ -523,18 +540,20 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'list_datacenter_connectors' not in self._stubs:
-            self._stubs['list_datacenter_connectors'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/ListDatacenterConnectors',
+        if "list_datacenter_connectors" not in self._stubs:
+            self._stubs["list_datacenter_connectors"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/ListDatacenterConnectors",
                 request_serializer=vmmigration.ListDatacenterConnectorsRequest.serialize,
                 response_deserializer=vmmigration.ListDatacenterConnectorsResponse.deserialize,
             )
-        return self._stubs['list_datacenter_connectors']
+        return self._stubs["list_datacenter_connectors"]
 
     @property
-    def get_datacenter_connector(self) -> Callable[
-            [vmmigration.GetDatacenterConnectorRequest],
-            vmmigration.DatacenterConnector]:
+    def get_datacenter_connector(
+        self,
+    ) -> Callable[
+        [vmmigration.GetDatacenterConnectorRequest], vmmigration.DatacenterConnector
+    ]:
         r"""Return a callable for the get datacenter connector method over gRPC.
 
         Gets details of a single DatacenterConnector.
@@ -549,18 +568,20 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'get_datacenter_connector' not in self._stubs:
-            self._stubs['get_datacenter_connector'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/GetDatacenterConnector',
+        if "get_datacenter_connector" not in self._stubs:
+            self._stubs["get_datacenter_connector"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/GetDatacenterConnector",
                 request_serializer=vmmigration.GetDatacenterConnectorRequest.serialize,
                 response_deserializer=vmmigration.DatacenterConnector.deserialize,
             )
-        return self._stubs['get_datacenter_connector']
+        return self._stubs["get_datacenter_connector"]
 
     @property
-    def create_datacenter_connector(self) -> Callable[
-            [vmmigration.CreateDatacenterConnectorRequest],
-            operations_pb2.Operation]:
+    def create_datacenter_connector(
+        self,
+    ) -> Callable[
+        [vmmigration.CreateDatacenterConnectorRequest], operations_pb2.Operation
+    ]:
         r"""Return a callable for the create datacenter connector method over gRPC.
 
         Creates a new DatacenterConnector in a given Source.
@@ -575,18 +596,20 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'create_datacenter_connector' not in self._stubs:
-            self._stubs['create_datacenter_connector'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/CreateDatacenterConnector',
+        if "create_datacenter_connector" not in self._stubs:
+            self._stubs["create_datacenter_connector"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/CreateDatacenterConnector",
                 request_serializer=vmmigration.CreateDatacenterConnectorRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['create_datacenter_connector']
+        return self._stubs["create_datacenter_connector"]
 
     @property
-    def delete_datacenter_connector(self) -> Callable[
-            [vmmigration.DeleteDatacenterConnectorRequest],
-            operations_pb2.Operation]:
+    def delete_datacenter_connector(
+        self,
+    ) -> Callable[
+        [vmmigration.DeleteDatacenterConnectorRequest], operations_pb2.Operation
+    ]:
         r"""Return a callable for the delete datacenter connector method over gRPC.
 
         Deletes a single DatacenterConnector.
@@ -601,18 +624,18 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'delete_datacenter_connector' not in self._stubs:
-            self._stubs['delete_datacenter_connector'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/DeleteDatacenterConnector',
+        if "delete_datacenter_connector" not in self._stubs:
+            self._stubs["delete_datacenter_connector"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/DeleteDatacenterConnector",
                 request_serializer=vmmigration.DeleteDatacenterConnectorRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['delete_datacenter_connector']
+        return self._stubs["delete_datacenter_connector"]
 
     @property
-    def create_migrating_vm(self) -> Callable[
-            [vmmigration.CreateMigratingVmRequest],
-            operations_pb2.Operation]:
+    def create_migrating_vm(
+        self,
+    ) -> Callable[[vmmigration.CreateMigratingVmRequest], operations_pb2.Operation]:
         r"""Return a callable for the create migrating vm method over gRPC.
 
         Creates a new MigratingVm in a given Source.
@@ -627,18 +650,20 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'create_migrating_vm' not in self._stubs:
-            self._stubs['create_migrating_vm'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/CreateMigratingVm',
+        if "create_migrating_vm" not in self._stubs:
+            self._stubs["create_migrating_vm"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/CreateMigratingVm",
                 request_serializer=vmmigration.CreateMigratingVmRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['create_migrating_vm']
+        return self._stubs["create_migrating_vm"]
 
     @property
-    def list_migrating_vms(self) -> Callable[
-            [vmmigration.ListMigratingVmsRequest],
-            vmmigration.ListMigratingVmsResponse]:
+    def list_migrating_vms(
+        self,
+    ) -> Callable[
+        [vmmigration.ListMigratingVmsRequest], vmmigration.ListMigratingVmsResponse
+    ]:
         r"""Return a callable for the list migrating vms method over gRPC.
 
         Lists MigratingVms in a given Source.
@@ -653,18 +678,18 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'list_migrating_vms' not in self._stubs:
-            self._stubs['list_migrating_vms'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/ListMigratingVms',
+        if "list_migrating_vms" not in self._stubs:
+            self._stubs["list_migrating_vms"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/ListMigratingVms",
                 request_serializer=vmmigration.ListMigratingVmsRequest.serialize,
                 response_deserializer=vmmigration.ListMigratingVmsResponse.deserialize,
             )
-        return self._stubs['list_migrating_vms']
+        return self._stubs["list_migrating_vms"]
 
     @property
-    def get_migrating_vm(self) -> Callable[
-            [vmmigration.GetMigratingVmRequest],
-            vmmigration.MigratingVm]:
+    def get_migrating_vm(
+        self,
+    ) -> Callable[[vmmigration.GetMigratingVmRequest], vmmigration.MigratingVm]:
         r"""Return a callable for the get migrating vm method over gRPC.
 
         Gets details of a single MigratingVm.
@@ -679,18 +704,18 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'get_migrating_vm' not in self._stubs:
-            self._stubs['get_migrating_vm'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/GetMigratingVm',
+        if "get_migrating_vm" not in self._stubs:
+            self._stubs["get_migrating_vm"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/GetMigratingVm",
                 request_serializer=vmmigration.GetMigratingVmRequest.serialize,
                 response_deserializer=vmmigration.MigratingVm.deserialize,
             )
-        return self._stubs['get_migrating_vm']
+        return self._stubs["get_migrating_vm"]
 
     @property
-    def update_migrating_vm(self) -> Callable[
-            [vmmigration.UpdateMigratingVmRequest],
-            operations_pb2.Operation]:
+    def update_migrating_vm(
+        self,
+    ) -> Callable[[vmmigration.UpdateMigratingVmRequest], operations_pb2.Operation]:
         r"""Return a callable for the update migrating vm method over gRPC.
 
         Updates the parameters of a single MigratingVm.
@@ -705,18 +730,18 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'update_migrating_vm' not in self._stubs:
-            self._stubs['update_migrating_vm'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/UpdateMigratingVm',
+        if "update_migrating_vm" not in self._stubs:
+            self._stubs["update_migrating_vm"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/UpdateMigratingVm",
                 request_serializer=vmmigration.UpdateMigratingVmRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['update_migrating_vm']
+        return self._stubs["update_migrating_vm"]
 
     @property
-    def delete_migrating_vm(self) -> Callable[
-            [vmmigration.DeleteMigratingVmRequest],
-            operations_pb2.Operation]:
+    def delete_migrating_vm(
+        self,
+    ) -> Callable[[vmmigration.DeleteMigratingVmRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete migrating vm method over gRPC.
 
         Deletes a single MigratingVm.
@@ -731,18 +756,18 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'delete_migrating_vm' not in self._stubs:
-            self._stubs['delete_migrating_vm'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/DeleteMigratingVm',
+        if "delete_migrating_vm" not in self._stubs:
+            self._stubs["delete_migrating_vm"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/DeleteMigratingVm",
                 request_serializer=vmmigration.DeleteMigratingVmRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['delete_migrating_vm']
+        return self._stubs["delete_migrating_vm"]
 
     @property
-    def start_migration(self) -> Callable[
-            [vmmigration.StartMigrationRequest],
-            operations_pb2.Operation]:
+    def start_migration(
+        self,
+    ) -> Callable[[vmmigration.StartMigrationRequest], operations_pb2.Operation]:
         r"""Return a callable for the start migration method over gRPC.
 
         Starts migration for a VM. Starts the process of
@@ -759,18 +784,18 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'start_migration' not in self._stubs:
-            self._stubs['start_migration'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/StartMigration',
+        if "start_migration" not in self._stubs:
+            self._stubs["start_migration"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/StartMigration",
                 request_serializer=vmmigration.StartMigrationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['start_migration']
+        return self._stubs["start_migration"]
 
     @property
-    def resume_migration(self) -> Callable[
-            [vmmigration.ResumeMigrationRequest],
-            operations_pb2.Operation]:
+    def resume_migration(
+        self,
+    ) -> Callable[[vmmigration.ResumeMigrationRequest], operations_pb2.Operation]:
         r"""Return a callable for the resume migration method over gRPC.
 
         Resumes a migration for a VM. When called on a paused
@@ -790,18 +815,18 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'resume_migration' not in self._stubs:
-            self._stubs['resume_migration'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/ResumeMigration',
+        if "resume_migration" not in self._stubs:
+            self._stubs["resume_migration"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/ResumeMigration",
                 request_serializer=vmmigration.ResumeMigrationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['resume_migration']
+        return self._stubs["resume_migration"]
 
     @property
-    def pause_migration(self) -> Callable[
-            [vmmigration.PauseMigrationRequest],
-            operations_pb2.Operation]:
+    def pause_migration(
+        self,
+    ) -> Callable[[vmmigration.PauseMigrationRequest], operations_pb2.Operation]:
         r"""Return a callable for the pause migration method over gRPC.
 
         Pauses a migration for a VM. If cycle tasks are
@@ -819,18 +844,18 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'pause_migration' not in self._stubs:
-            self._stubs['pause_migration'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/PauseMigration',
+        if "pause_migration" not in self._stubs:
+            self._stubs["pause_migration"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/PauseMigration",
                 request_serializer=vmmigration.PauseMigrationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['pause_migration']
+        return self._stubs["pause_migration"]
 
     @property
-    def finalize_migration(self) -> Callable[
-            [vmmigration.FinalizeMigrationRequest],
-            operations_pb2.Operation]:
+    def finalize_migration(
+        self,
+    ) -> Callable[[vmmigration.FinalizeMigrationRequest], operations_pb2.Operation]:
         r"""Return a callable for the finalize migration method over gRPC.
 
         Marks a migration as completed, deleting migration
@@ -847,18 +872,18 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'finalize_migration' not in self._stubs:
-            self._stubs['finalize_migration'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/FinalizeMigration',
+        if "finalize_migration" not in self._stubs:
+            self._stubs["finalize_migration"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/FinalizeMigration",
                 request_serializer=vmmigration.FinalizeMigrationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['finalize_migration']
+        return self._stubs["finalize_migration"]
 
     @property
-    def create_clone_job(self) -> Callable[
-            [vmmigration.CreateCloneJobRequest],
-            operations_pb2.Operation]:
+    def create_clone_job(
+        self,
+    ) -> Callable[[vmmigration.CreateCloneJobRequest], operations_pb2.Operation]:
         r"""Return a callable for the create clone job method over gRPC.
 
         Initiates a Clone of a specific migrating VM.
@@ -873,18 +898,18 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'create_clone_job' not in self._stubs:
-            self._stubs['create_clone_job'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/CreateCloneJob',
+        if "create_clone_job" not in self._stubs:
+            self._stubs["create_clone_job"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/CreateCloneJob",
                 request_serializer=vmmigration.CreateCloneJobRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['create_clone_job']
+        return self._stubs["create_clone_job"]
 
     @property
-    def cancel_clone_job(self) -> Callable[
-            [vmmigration.CancelCloneJobRequest],
-            operations_pb2.Operation]:
+    def cancel_clone_job(
+        self,
+    ) -> Callable[[vmmigration.CancelCloneJobRequest], operations_pb2.Operation]:
         r"""Return a callable for the cancel clone job method over gRPC.
 
         Initiates the cancellation of a running clone job.
@@ -899,18 +924,20 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'cancel_clone_job' not in self._stubs:
-            self._stubs['cancel_clone_job'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/CancelCloneJob',
+        if "cancel_clone_job" not in self._stubs:
+            self._stubs["cancel_clone_job"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/CancelCloneJob",
                 request_serializer=vmmigration.CancelCloneJobRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['cancel_clone_job']
+        return self._stubs["cancel_clone_job"]
 
     @property
-    def list_clone_jobs(self) -> Callable[
-            [vmmigration.ListCloneJobsRequest],
-            vmmigration.ListCloneJobsResponse]:
+    def list_clone_jobs(
+        self,
+    ) -> Callable[
+        [vmmigration.ListCloneJobsRequest], vmmigration.ListCloneJobsResponse
+    ]:
         r"""Return a callable for the list clone jobs method over gRPC.
 
         Lists CloneJobs of a given migrating VM.
@@ -925,18 +952,18 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'list_clone_jobs' not in self._stubs:
-            self._stubs['list_clone_jobs'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/ListCloneJobs',
+        if "list_clone_jobs" not in self._stubs:
+            self._stubs["list_clone_jobs"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/ListCloneJobs",
                 request_serializer=vmmigration.ListCloneJobsRequest.serialize,
                 response_deserializer=vmmigration.ListCloneJobsResponse.deserialize,
             )
-        return self._stubs['list_clone_jobs']
+        return self._stubs["list_clone_jobs"]
 
     @property
-    def get_clone_job(self) -> Callable[
-            [vmmigration.GetCloneJobRequest],
-            vmmigration.CloneJob]:
+    def get_clone_job(
+        self,
+    ) -> Callable[[vmmigration.GetCloneJobRequest], vmmigration.CloneJob]:
         r"""Return a callable for the get clone job method over gRPC.
 
         Gets details of a single CloneJob.
@@ -951,18 +978,18 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'get_clone_job' not in self._stubs:
-            self._stubs['get_clone_job'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/GetCloneJob',
+        if "get_clone_job" not in self._stubs:
+            self._stubs["get_clone_job"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/GetCloneJob",
                 request_serializer=vmmigration.GetCloneJobRequest.serialize,
                 response_deserializer=vmmigration.CloneJob.deserialize,
             )
-        return self._stubs['get_clone_job']
+        return self._stubs["get_clone_job"]
 
     @property
-    def create_cutover_job(self) -> Callable[
-            [vmmigration.CreateCutoverJobRequest],
-            operations_pb2.Operation]:
+    def create_cutover_job(
+        self,
+    ) -> Callable[[vmmigration.CreateCutoverJobRequest], operations_pb2.Operation]:
         r"""Return a callable for the create cutover job method over gRPC.
 
         Initiates a Cutover of a specific migrating VM.
@@ -979,18 +1006,18 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'create_cutover_job' not in self._stubs:
-            self._stubs['create_cutover_job'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/CreateCutoverJob',
+        if "create_cutover_job" not in self._stubs:
+            self._stubs["create_cutover_job"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/CreateCutoverJob",
                 request_serializer=vmmigration.CreateCutoverJobRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['create_cutover_job']
+        return self._stubs["create_cutover_job"]
 
     @property
-    def cancel_cutover_job(self) -> Callable[
-            [vmmigration.CancelCutoverJobRequest],
-            operations_pb2.Operation]:
+    def cancel_cutover_job(
+        self,
+    ) -> Callable[[vmmigration.CancelCutoverJobRequest], operations_pb2.Operation]:
         r"""Return a callable for the cancel cutover job method over gRPC.
 
         Initiates the cancellation of a running cutover job.
@@ -1005,18 +1032,20 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'cancel_cutover_job' not in self._stubs:
-            self._stubs['cancel_cutover_job'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/CancelCutoverJob',
+        if "cancel_cutover_job" not in self._stubs:
+            self._stubs["cancel_cutover_job"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/CancelCutoverJob",
                 request_serializer=vmmigration.CancelCutoverJobRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['cancel_cutover_job']
+        return self._stubs["cancel_cutover_job"]
 
     @property
-    def list_cutover_jobs(self) -> Callable[
-            [vmmigration.ListCutoverJobsRequest],
-            vmmigration.ListCutoverJobsResponse]:
+    def list_cutover_jobs(
+        self,
+    ) -> Callable[
+        [vmmigration.ListCutoverJobsRequest], vmmigration.ListCutoverJobsResponse
+    ]:
         r"""Return a callable for the list cutover jobs method over gRPC.
 
         Lists CutoverJobs of a given migrating VM.
@@ -1031,18 +1060,18 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'list_cutover_jobs' not in self._stubs:
-            self._stubs['list_cutover_jobs'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/ListCutoverJobs',
+        if "list_cutover_jobs" not in self._stubs:
+            self._stubs["list_cutover_jobs"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/ListCutoverJobs",
                 request_serializer=vmmigration.ListCutoverJobsRequest.serialize,
                 response_deserializer=vmmigration.ListCutoverJobsResponse.deserialize,
             )
-        return self._stubs['list_cutover_jobs']
+        return self._stubs["list_cutover_jobs"]
 
     @property
-    def get_cutover_job(self) -> Callable[
-            [vmmigration.GetCutoverJobRequest],
-            vmmigration.CutoverJob]:
+    def get_cutover_job(
+        self,
+    ) -> Callable[[vmmigration.GetCutoverJobRequest], vmmigration.CutoverJob]:
         r"""Return a callable for the get cutover job method over gRPC.
 
         Gets details of a single CutoverJob.
@@ -1057,18 +1086,18 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'get_cutover_job' not in self._stubs:
-            self._stubs['get_cutover_job'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/GetCutoverJob',
+        if "get_cutover_job" not in self._stubs:
+            self._stubs["get_cutover_job"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/GetCutoverJob",
                 request_serializer=vmmigration.GetCutoverJobRequest.serialize,
                 response_deserializer=vmmigration.CutoverJob.deserialize,
             )
-        return self._stubs['get_cutover_job']
+        return self._stubs["get_cutover_job"]
 
     @property
-    def list_groups(self) -> Callable[
-            [vmmigration.ListGroupsRequest],
-            vmmigration.ListGroupsResponse]:
+    def list_groups(
+        self,
+    ) -> Callable[[vmmigration.ListGroupsRequest], vmmigration.ListGroupsResponse]:
         r"""Return a callable for the list groups method over gRPC.
 
         Lists Groups in a given project and location.
@@ -1083,18 +1112,16 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'list_groups' not in self._stubs:
-            self._stubs['list_groups'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/ListGroups',
+        if "list_groups" not in self._stubs:
+            self._stubs["list_groups"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/ListGroups",
                 request_serializer=vmmigration.ListGroupsRequest.serialize,
                 response_deserializer=vmmigration.ListGroupsResponse.deserialize,
             )
-        return self._stubs['list_groups']
+        return self._stubs["list_groups"]
 
     @property
-    def get_group(self) -> Callable[
-            [vmmigration.GetGroupRequest],
-            vmmigration.Group]:
+    def get_group(self) -> Callable[[vmmigration.GetGroupRequest], vmmigration.Group]:
         r"""Return a callable for the get group method over gRPC.
 
         Gets details of a single Group.
@@ -1109,18 +1136,18 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'get_group' not in self._stubs:
-            self._stubs['get_group'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/GetGroup',
+        if "get_group" not in self._stubs:
+            self._stubs["get_group"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/GetGroup",
                 request_serializer=vmmigration.GetGroupRequest.serialize,
                 response_deserializer=vmmigration.Group.deserialize,
             )
-        return self._stubs['get_group']
+        return self._stubs["get_group"]
 
     @property
-    def create_group(self) -> Callable[
-            [vmmigration.CreateGroupRequest],
-            operations_pb2.Operation]:
+    def create_group(
+        self,
+    ) -> Callable[[vmmigration.CreateGroupRequest], operations_pb2.Operation]:
         r"""Return a callable for the create group method over gRPC.
 
         Creates a new Group in a given project and location.
@@ -1135,18 +1162,18 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'create_group' not in self._stubs:
-            self._stubs['create_group'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/CreateGroup',
+        if "create_group" not in self._stubs:
+            self._stubs["create_group"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/CreateGroup",
                 request_serializer=vmmigration.CreateGroupRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['create_group']
+        return self._stubs["create_group"]
 
     @property
-    def update_group(self) -> Callable[
-            [vmmigration.UpdateGroupRequest],
-            operations_pb2.Operation]:
+    def update_group(
+        self,
+    ) -> Callable[[vmmigration.UpdateGroupRequest], operations_pb2.Operation]:
         r"""Return a callable for the update group method over gRPC.
 
         Updates the parameters of a single Group.
@@ -1161,18 +1188,18 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'update_group' not in self._stubs:
-            self._stubs['update_group'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/UpdateGroup',
+        if "update_group" not in self._stubs:
+            self._stubs["update_group"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/UpdateGroup",
                 request_serializer=vmmigration.UpdateGroupRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['update_group']
+        return self._stubs["update_group"]
 
     @property
-    def delete_group(self) -> Callable[
-            [vmmigration.DeleteGroupRequest],
-            operations_pb2.Operation]:
+    def delete_group(
+        self,
+    ) -> Callable[[vmmigration.DeleteGroupRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete group method over gRPC.
 
         Deletes a single Group.
@@ -1187,18 +1214,18 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'delete_group' not in self._stubs:
-            self._stubs['delete_group'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/DeleteGroup',
+        if "delete_group" not in self._stubs:
+            self._stubs["delete_group"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/DeleteGroup",
                 request_serializer=vmmigration.DeleteGroupRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['delete_group']
+        return self._stubs["delete_group"]
 
     @property
-    def add_group_migration(self) -> Callable[
-            [vmmigration.AddGroupMigrationRequest],
-            operations_pb2.Operation]:
+    def add_group_migration(
+        self,
+    ) -> Callable[[vmmigration.AddGroupMigrationRequest], operations_pb2.Operation]:
         r"""Return a callable for the add group migration method over gRPC.
 
         Adds a MigratingVm to a Group.
@@ -1213,18 +1240,18 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'add_group_migration' not in self._stubs:
-            self._stubs['add_group_migration'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/AddGroupMigration',
+        if "add_group_migration" not in self._stubs:
+            self._stubs["add_group_migration"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/AddGroupMigration",
                 request_serializer=vmmigration.AddGroupMigrationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['add_group_migration']
+        return self._stubs["add_group_migration"]
 
     @property
-    def remove_group_migration(self) -> Callable[
-            [vmmigration.RemoveGroupMigrationRequest],
-            operations_pb2.Operation]:
+    def remove_group_migration(
+        self,
+    ) -> Callable[[vmmigration.RemoveGroupMigrationRequest], operations_pb2.Operation]:
         r"""Return a callable for the remove group migration method over gRPC.
 
         Removes a MigratingVm from a Group.
@@ -1239,18 +1266,20 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'remove_group_migration' not in self._stubs:
-            self._stubs['remove_group_migration'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/RemoveGroupMigration',
+        if "remove_group_migration" not in self._stubs:
+            self._stubs["remove_group_migration"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/RemoveGroupMigration",
                 request_serializer=vmmigration.RemoveGroupMigrationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['remove_group_migration']
+        return self._stubs["remove_group_migration"]
 
     @property
-    def list_target_projects(self) -> Callable[
-            [vmmigration.ListTargetProjectsRequest],
-            vmmigration.ListTargetProjectsResponse]:
+    def list_target_projects(
+        self,
+    ) -> Callable[
+        [vmmigration.ListTargetProjectsRequest], vmmigration.ListTargetProjectsResponse
+    ]:
         r"""Return a callable for the list target projects method over gRPC.
 
         Lists TargetProjects in a given project.
@@ -1268,18 +1297,18 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'list_target_projects' not in self._stubs:
-            self._stubs['list_target_projects'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/ListTargetProjects',
+        if "list_target_projects" not in self._stubs:
+            self._stubs["list_target_projects"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/ListTargetProjects",
                 request_serializer=vmmigration.ListTargetProjectsRequest.serialize,
                 response_deserializer=vmmigration.ListTargetProjectsResponse.deserialize,
             )
-        return self._stubs['list_target_projects']
+        return self._stubs["list_target_projects"]
 
     @property
-    def get_target_project(self) -> Callable[
-            [vmmigration.GetTargetProjectRequest],
-            vmmigration.TargetProject]:
+    def get_target_project(
+        self,
+    ) -> Callable[[vmmigration.GetTargetProjectRequest], vmmigration.TargetProject]:
         r"""Return a callable for the get target project method over gRPC.
 
         Gets details of a single TargetProject.
@@ -1297,18 +1326,18 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'get_target_project' not in self._stubs:
-            self._stubs['get_target_project'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/GetTargetProject',
+        if "get_target_project" not in self._stubs:
+            self._stubs["get_target_project"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/GetTargetProject",
                 request_serializer=vmmigration.GetTargetProjectRequest.serialize,
                 response_deserializer=vmmigration.TargetProject.deserialize,
             )
-        return self._stubs['get_target_project']
+        return self._stubs["get_target_project"]
 
     @property
-    def create_target_project(self) -> Callable[
-            [vmmigration.CreateTargetProjectRequest],
-            operations_pb2.Operation]:
+    def create_target_project(
+        self,
+    ) -> Callable[[vmmigration.CreateTargetProjectRequest], operations_pb2.Operation]:
         r"""Return a callable for the create target project method over gRPC.
 
         Creates a new TargetProject in a given project.
@@ -1326,18 +1355,18 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'create_target_project' not in self._stubs:
-            self._stubs['create_target_project'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/CreateTargetProject',
+        if "create_target_project" not in self._stubs:
+            self._stubs["create_target_project"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/CreateTargetProject",
                 request_serializer=vmmigration.CreateTargetProjectRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['create_target_project']
+        return self._stubs["create_target_project"]
 
     @property
-    def update_target_project(self) -> Callable[
-            [vmmigration.UpdateTargetProjectRequest],
-            operations_pb2.Operation]:
+    def update_target_project(
+        self,
+    ) -> Callable[[vmmigration.UpdateTargetProjectRequest], operations_pb2.Operation]:
         r"""Return a callable for the update target project method over gRPC.
 
         Updates the parameters of a single TargetProject.
@@ -1355,18 +1384,18 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'update_target_project' not in self._stubs:
-            self._stubs['update_target_project'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/UpdateTargetProject',
+        if "update_target_project" not in self._stubs:
+            self._stubs["update_target_project"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/UpdateTargetProject",
                 request_serializer=vmmigration.UpdateTargetProjectRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['update_target_project']
+        return self._stubs["update_target_project"]
 
     @property
-    def delete_target_project(self) -> Callable[
-            [vmmigration.DeleteTargetProjectRequest],
-            operations_pb2.Operation]:
+    def delete_target_project(
+        self,
+    ) -> Callable[[vmmigration.DeleteTargetProjectRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete target project method over gRPC.
 
         Deletes a single TargetProject.
@@ -1384,17 +1413,16 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'delete_target_project' not in self._stubs:
-            self._stubs['delete_target_project'] = self.grpc_channel.unary_unary(
-                '/google.cloud.vmmigration.v1.VmMigration/DeleteTargetProject',
+        if "delete_target_project" not in self._stubs:
+            self._stubs["delete_target_project"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmmigration.v1.VmMigration/DeleteTargetProject",
                 request_serializer=vmmigration.DeleteTargetProjectRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['delete_target_project']
+        return self._stubs["delete_target_project"]
 
     def close(self):
         self.grpc_channel.close()
 
-__all__ = (
-    'VmMigrationGrpcTransport',
-)
+
+__all__ = ("VmMigrationGrpcTransport",)

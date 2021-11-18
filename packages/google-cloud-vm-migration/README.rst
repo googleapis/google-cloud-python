@@ -10,10 +10,10 @@ Python Client for Cloud VM Migration
 
 .. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
-.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-vmmigration.svg
-   :target: https://pypi.org/project/google-cloud-vmmigration/
-.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-vmmigration.svg
-   :target: https://pypi.org/project/google-cloud-vmmigration/
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-vm-migration.svg
+   :target: https://pypi.org/project/google-cloud-vm-migration/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-vm-migration.svg
+   :target: https://pypi.org/project/google-cloud-vm-migration/
 .. _Cloud VM Migration: https://cloud.google.com/migrate/compute-engine
 .. _Client Library Documentation: https://googleapis.dev/python/vmmigration/latest
 .. _Product Documentation:  https://cloud.google.com/migrate/compute-engine/docs
@@ -55,7 +55,7 @@ Mac/Linux
     pip install virtualenv
     virtualenv <your-env>
     source <your-env>/bin/activate
-    <your-env>/bin/pip install google-cloud-vmmigration
+    <your-env>/bin/pip install google-cloud-vm-migration
 
 
 Windows
@@ -66,7 +66,7 @@ Windows
     pip install virtualenv
     virtualenv <your-env>
     <your-env>\Scripts\activate
-    <your-env>\Scripts\pip.exe install google-cloud-vmmigration
+    <your-env>\Scripts\pip.exe install google-cloud-vm-migration
 
 Next Steps
 ~~~~~~~~~~

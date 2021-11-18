@@ -20,10 +20,10 @@ import os
 import setuptools
 
 
-name = "google-cloud-vmmigration"
+name = "google-cloud-vm-migration"
 description = "Cloud VM Migration API client library"
 version = "0.1.0"
-url = "https://github.com/googleapis/python-vmmigration"
+url = "https://github.com/googleapis/python-vm-migration"
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x

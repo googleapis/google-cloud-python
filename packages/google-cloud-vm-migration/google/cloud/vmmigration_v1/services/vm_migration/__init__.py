@@ -17,6 +17,6 @@ from .client import VmMigrationClient
 from .async_client import VmMigrationAsyncClient
 
 __all__ = (
-    'VmMigrationClient',
-    'VmMigrationAsyncClient',
+    "VmMigrationClient",
+    "VmMigrationAsyncClient",
 )

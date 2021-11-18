@@ -23,11 +23,11 @@ from .grpc_asyncio import VmMigrationGrpcAsyncIOTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[VmMigrationTransport]]
-_transport_registry['grpc'] = VmMigrationGrpcTransport
-_transport_registry['grpc_asyncio'] = VmMigrationGrpcAsyncIOTransport
+_transport_registry["grpc"] = VmMigrationGrpcTransport
+_transport_registry["grpc_asyncio"] = VmMigrationGrpcAsyncIOTransport
 
 __all__ = (
-    'VmMigrationTransport',
-    'VmMigrationGrpcTransport',
-    'VmMigrationGrpcAsyncIOTransport',
+    "VmMigrationTransport",
+    "VmMigrationGrpcTransport",
+    "VmMigrationGrpcAsyncIOTransport",
 )

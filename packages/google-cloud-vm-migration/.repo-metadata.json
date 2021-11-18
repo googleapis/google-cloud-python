@@ -7,8 +7,8 @@
     "release_level": "beta",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-vmmigration",
-    "distribution_name": "google-cloud-vmmigration",
+    "repo": "googleapis/python-vm-migration",
+    "distribution_name": "google-cloud-vm-migration",
     "api_id": "vmmigration.googleapis.com",
     "default_version": "v1",
     "codeowner_team": "@googleapis/api-compute"

@@ -27,9 +27,9 @@ import nox
 BLACK_VERSION = "black==19.10b0"
 BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
-DEFAULT_PYTHON_VERSION="3.8"
-SYSTEM_TEST_PYTHON_VERSIONS=["3.8"]
-UNIT_TEST_PYTHON_VERSIONS=["3.6","3.7","3.8","3.9","3.10"]
+DEFAULT_PYTHON_VERSION = "3.8"
+SYSTEM_TEST_PYTHON_VERSIONS = ["3.8"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.6", "3.7", "3.8", "3.9", "3.10"]
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
@@ -57,9 +57,7 @@ def lint(session):
     """
     session.install("flake8", BLACK_VERSION)
     session.run(
-        "black",
-        "--check",
-        *BLACK_PATHS,
+        "black", "--check", *BLACK_PATHS,
     )
     session.run("flake8", "google", "tests")
 
@@ -69,8 +67,7 @@ def blacken(session):
     """Run black. Format code to uniform standard."""
     session.install(BLACK_VERSION)
     session.run(
-        "black",
-        *BLACK_PATHS,
+        "black", *BLACK_PATHS,
     )
 
 
@@ -87,12 +84,17 @@ def default(session):
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
-    session.install("mock", "asyncmock", "pytest", "pytest-cov", "pytest-asyncio", "-c", constraints_path)
-    
-    
-    
+    session.install(
+        "mock",
+        "asyncmock",
+        "pytest",
+        "pytest-cov",
+        "pytest-asyncio",
+        "-c",
+        constraints_path,
+    )
+
     session.install("-e", ".", "-c", constraints_path)
-    
 
     # Run py.test against the unit tests.
     session.run(
@@ -108,6 +110,7 @@ def default(session):
         os.path.join("tests", "unit"),
         *session.posargs,
     )
+
 
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 def unit(session):
@@ -125,7 +128,7 @@ def system(session):
     system_test_folder_path = os.path.join("tests", "system")
 
     # Check the value of `RUN_SYSTEM_TESTS` env var. It defaults to true.
-    if os.environ.get("RUN_SYSTEM_TESTS", "true") == 'false':
+    if os.environ.get("RUN_SYSTEM_TESTS", "true") == "false":
         session.skip("RUN_SYSTEM_TESTS is set to false, skipping")
     # Install pyopenssl for mTLS testing.
     if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true":
@@ -144,7 +147,6 @@ def system(session):
     # virtualenv's dist-packages.
     session.install("mock", "pytest", "google-cloud-testutils", "-c", constraints_path)
     session.install("-e", ".", "-c", constraints_path)
-    
 
     # Run py.test against the system tests.
     if system_test_exists:
@@ -153,7 +155,7 @@ def system(session):
             "--quiet",
             f"--junitxml=system_{session.python}_sponge_log.xml",
             system_test_path,
-            *session.posargs
+            *session.posargs,
         )
     if system_test_folder_exists:
         session.run(
@@ -161,8 +163,9 @@ def system(session):
             "--quiet",
             f"--junitxml=system_{session.python}_sponge_log.xml",
             system_test_folder_path,
-            *session.posargs
+            *session.posargs,
         )
+
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def cover(session):
@@ -175,6 +178,7 @@ def cover(session):
     session.run("coverage", "report", "--show-missing", "--fail-under=100")
 
     session.run("coverage", "erase")
+
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def docs(session):
@@ -189,8 +193,10 @@ def docs(session):
         "-W",  # warnings as errors
         "-T",  # show full traceback on exception
         "-N",  # no colors
-        "-b", "html",
-        "-d", os.path.join("docs", "_build", "doctrees", ""),
+        "-b",
+        "html",
+        "-d",
+        os.path.join("docs", "_build", "doctrees", ""),
         os.path.join("docs", ""),
         os.path.join("docs", "_build", "html", ""),
     )
@@ -201,7 +207,9 @@ def docfx(session):
     """Build the docfx yaml files for this library."""
 
     session.install("-e", ".")
-    session.install("sphinx==4.0.1", "alabaster", "recommonmark", "gcp-sphinx-docfx-yaml")
+    session.install(
+        "sphinx==4.0.1", "alabaster", "recommonmark", "gcp-sphinx-docfx-yaml"
+    )
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(

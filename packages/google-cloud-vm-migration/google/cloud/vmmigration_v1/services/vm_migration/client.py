@@ -23,11 +23,11 @@ from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
-from google.auth import credentials as ga_credentials             # type: ignore
-from google.auth.transport import mtls                            # type: ignore
-from google.auth.transport.grpc import SslCredentials             # type: ignore
-from google.auth.exceptions import MutualTLSChannelError          # type: ignore
-from google.oauth2 import service_account                         # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport import mtls  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
+from google.oauth2 import service_account  # type: ignore
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -54,13 +54,12 @@ class VmMigrationClientMeta(type):
     support objects (e.g. transport) without polluting the client instance
     objects.
     """
+
     _transport_registry = OrderedDict()  # type: Dict[str, Type[VmMigrationTransport]]
     _transport_registry["grpc"] = VmMigrationGrpcTransport
     _transport_registry["grpc_asyncio"] = VmMigrationGrpcAsyncIOTransport
 
-    def get_transport_class(cls,
-            label: str = None,
-        ) -> Type[VmMigrationTransport]:
+    def get_transport_class(cls, label: str = None,) -> Type[VmMigrationTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -148,8 +147,7 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         Returns:
             VmMigrationClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(
-            filename)
+        credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
         return cls(*args, **kwargs)
 
@@ -166,154 +164,227 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         return self._transport
 
     @staticmethod
-    def clone_job_path(project: str,location: str,source: str,migrating_vm: str,clone_job: str,) -> str:
+    def clone_job_path(
+        project: str, location: str, source: str, migrating_vm: str, clone_job: str,
+    ) -> str:
         """Returns a fully-qualified clone_job string."""
-        return "projects/{project}/locations/{location}/sources/{source}/migratingVms/{migrating_vm}/cloneJobs/{clone_job}".format(project=project, location=location, source=source, migrating_vm=migrating_vm, clone_job=clone_job, )
+        return "projects/{project}/locations/{location}/sources/{source}/migratingVms/{migrating_vm}/cloneJobs/{clone_job}".format(
+            project=project,
+            location=location,
+            source=source,
+            migrating_vm=migrating_vm,
+            clone_job=clone_job,
+        )
 
     @staticmethod
-    def parse_clone_job_path(path: str) -> Dict[str,str]:
+    def parse_clone_job_path(path: str) -> Dict[str, str]:
         """Parses a clone_job path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/sources/(?P<source>.+?)/migratingVms/(?P<migrating_vm>.+?)/cloneJobs/(?P<clone_job>.+?)$", path)
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/sources/(?P<source>.+?)/migratingVms/(?P<migrating_vm>.+?)/cloneJobs/(?P<clone_job>.+?)$",
+            path,
+        )
         return m.groupdict() if m else {}
 
     @staticmethod
-    def cutover_job_path(project: str,location: str,source: str,migrating_vm: str,cutover_job: str,) -> str:
+    def cutover_job_path(
+        project: str, location: str, source: str, migrating_vm: str, cutover_job: str,
+    ) -> str:
         """Returns a fully-qualified cutover_job string."""
-        return "projects/{project}/locations/{location}/sources/{source}/migratingVms/{migrating_vm}/cutoverJobs/{cutover_job}".format(project=project, location=location, source=source, migrating_vm=migrating_vm, cutover_job=cutover_job, )
+        return "projects/{project}/locations/{location}/sources/{source}/migratingVms/{migrating_vm}/cutoverJobs/{cutover_job}".format(
+            project=project,
+            location=location,
+            source=source,
+            migrating_vm=migrating_vm,
+            cutover_job=cutover_job,
+        )
 
     @staticmethod
-    def parse_cutover_job_path(path: str) -> Dict[str,str]:
+    def parse_cutover_job_path(path: str) -> Dict[str, str]:
         """Parses a cutover_job path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/sources/(?P<source>.+?)/migratingVms/(?P<migrating_vm>.+?)/cutoverJobs/(?P<cutover_job>.+?)$", path)
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/sources/(?P<source>.+?)/migratingVms/(?P<migrating_vm>.+?)/cutoverJobs/(?P<cutover_job>.+?)$",
+            path,
+        )
         return m.groupdict() if m else {}
 
     @staticmethod
-    def datacenter_connector_path(project: str,location: str,source: str,datacenter_connector: str,) -> str:
+    def datacenter_connector_path(
+        project: str, location: str, source: str, datacenter_connector: str,
+    ) -> str:
         """Returns a fully-qualified datacenter_connector string."""
-        return "projects/{project}/locations/{location}/sources/{source}/datacenterConnectors/{datacenter_connector}".format(project=project, location=location, source=source, datacenter_connector=datacenter_connector, )
+        return "projects/{project}/locations/{location}/sources/{source}/datacenterConnectors/{datacenter_connector}".format(
+            project=project,
+            location=location,
+            source=source,
+            datacenter_connector=datacenter_connector,
+        )
 
     @staticmethod
-    def parse_datacenter_connector_path(path: str) -> Dict[str,str]:
+    def parse_datacenter_connector_path(path: str) -> Dict[str, str]:
         """Parses a datacenter_connector path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/sources/(?P<source>.+?)/datacenterConnectors/(?P<datacenter_connector>.+?)$", path)
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/sources/(?P<source>.+?)/datacenterConnectors/(?P<datacenter_connector>.+?)$",
+            path,
+        )
         return m.groupdict() if m else {}
 
     @staticmethod
-    def group_path(project: str,location: str,group: str,) -> str:
+    def group_path(project: str, location: str, group: str,) -> str:
         """Returns a fully-qualified group string."""
-        return "projects/{project}/locations/{location}/groups/{group}".format(project=project, location=location, group=group, )
+        return "projects/{project}/locations/{location}/groups/{group}".format(
+            project=project, location=location, group=group,
+        )
 
     @staticmethod
-    def parse_group_path(path: str) -> Dict[str,str]:
+    def parse_group_path(path: str) -> Dict[str, str]:
         """Parses a group path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/groups/(?P<group>.+?)$", path)
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/groups/(?P<group>.+?)$",
+            path,
+        )
         return m.groupdict() if m else {}
 
     @staticmethod
-    def migrating_vm_path(project: str,location: str,source: str,migrating_vm: str,) -> str:
+    def migrating_vm_path(
+        project: str, location: str, source: str, migrating_vm: str,
+    ) -> str:
         """Returns a fully-qualified migrating_vm string."""
-        return "projects/{project}/locations/{location}/sources/{source}/migratingVms/{migrating_vm}".format(project=project, location=location, source=source, migrating_vm=migrating_vm, )
+        return "projects/{project}/locations/{location}/sources/{source}/migratingVms/{migrating_vm}".format(
+            project=project,
+            location=location,
+            source=source,
+            migrating_vm=migrating_vm,
+        )
 
     @staticmethod
-    def parse_migrating_vm_path(path: str) -> Dict[str,str]:
+    def parse_migrating_vm_path(path: str) -> Dict[str, str]:
         """Parses a migrating_vm path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/sources/(?P<source>.+?)/migratingVms/(?P<migrating_vm>.+?)$", path)
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/sources/(?P<source>.+?)/migratingVms/(?P<migrating_vm>.+?)$",
+            path,
+        )
         return m.groupdict() if m else {}
 
     @staticmethod
-    def source_path(project: str,location: str,source: str,) -> str:
+    def source_path(project: str, location: str, source: str,) -> str:
         """Returns a fully-qualified source string."""
-        return "projects/{project}/locations/{location}/sources/{source}".format(project=project, location=location, source=source, )
+        return "projects/{project}/locations/{location}/sources/{source}".format(
+            project=project, location=location, source=source,
+        )
 
     @staticmethod
-    def parse_source_path(path: str) -> Dict[str,str]:
+    def parse_source_path(path: str) -> Dict[str, str]:
         """Parses a source path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/sources/(?P<source>.+?)$", path)
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/sources/(?P<source>.+?)$",
+            path,
+        )
         return m.groupdict() if m else {}
 
     @staticmethod
-    def target_project_path(project: str,location: str,target_project: str,) -> str:
+    def target_project_path(project: str, location: str, target_project: str,) -> str:
         """Returns a fully-qualified target_project string."""
-        return "projects/{project}/locations/{location}/targetProjects/{target_project}".format(project=project, location=location, target_project=target_project, )
+        return "projects/{project}/locations/{location}/targetProjects/{target_project}".format(
+            project=project, location=location, target_project=target_project,
+        )
 
     @staticmethod
-    def parse_target_project_path(path: str) -> Dict[str,str]:
+    def parse_target_project_path(path: str) -> Dict[str, str]:
         """Parses a target_project path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/targetProjects/(?P<target_project>.+?)$", path)
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/targetProjects/(?P<target_project>.+?)$",
+            path,
+        )
         return m.groupdict() if m else {}
 
     @staticmethod
-    def utilization_report_path(project: str,location: str,source: str,utilization_report: str,) -> str:
+    def utilization_report_path(
+        project: str, location: str, source: str, utilization_report: str,
+    ) -> str:
         """Returns a fully-qualified utilization_report string."""
-        return "projects/{project}/locations/{location}/sources/{source}/utilizationReports/{utilization_report}".format(project=project, location=location, source=source, utilization_report=utilization_report, )
+        return "projects/{project}/locations/{location}/sources/{source}/utilizationReports/{utilization_report}".format(
+            project=project,
+            location=location,
+            source=source,
+            utilization_report=utilization_report,
+        )
 
     @staticmethod
-    def parse_utilization_report_path(path: str) -> Dict[str,str]:
+    def parse_utilization_report_path(path: str) -> Dict[str, str]:
         """Parses a utilization_report path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/sources/(?P<source>.+?)/utilizationReports/(?P<utilization_report>.+?)$", path)
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/sources/(?P<source>.+?)/utilizationReports/(?P<utilization_report>.+?)$",
+            path,
+        )
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str, ) -> str:
+    def common_billing_account_path(billing_account: str,) -> str:
         """Returns a fully-qualified billing_account string."""
-        return "billingAccounts/{billing_account}".format(billing_account=billing_account, )
+        return "billingAccounts/{billing_account}".format(
+            billing_account=billing_account,
+        )
 
     @staticmethod
-    def parse_common_billing_account_path(path: str) -> Dict[str,str]:
+    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
         """Parse a billing_account path into its component segments."""
         m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str, ) -> str:
+    def common_folder_path(folder: str,) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder, )
+        return "folders/{folder}".format(folder=folder,)
 
     @staticmethod
-    def parse_common_folder_path(path: str) -> Dict[str,str]:
+    def parse_common_folder_path(path: str) -> Dict[str, str]:
         """Parse a folder path into its component segments."""
         m = re.match(r"^folders/(?P<folder>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str, ) -> str:
+    def common_organization_path(organization: str,) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization, )
+        return "organizations/{organization}".format(organization=organization,)
 
     @staticmethod
-    def parse_common_organization_path(path: str) -> Dict[str,str]:
+    def parse_common_organization_path(path: str) -> Dict[str, str]:
         """Parse a organization path into its component segments."""
         m = re.match(r"^organizations/(?P<organization>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str, ) -> str:
+    def common_project_path(project: str,) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project, )
+        return "projects/{project}".format(project=project,)
 
     @staticmethod
-    def parse_common_project_path(path: str) -> Dict[str,str]:
+    def parse_common_project_path(path: str) -> Dict[str, str]:
         """Parse a project path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str, ) -> str:
+    def common_location_path(project: str, location: str,) -> str:
         """Returns a fully-qualified location string."""
-        return "projects/{project}/locations/{location}".format(project=project, location=location, )
+        return "projects/{project}/locations/{location}".format(
+            project=project, location=location,
+        )
 
     @staticmethod
-    def parse_common_location_path(path: str) -> Dict[str,str]:
+    def parse_common_location_path(path: str) -> Dict[str, str]:
         """Parse a location path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
         return m.groupdict() if m else {}
 
-    def __init__(self, *,
-            credentials: Optional[ga_credentials.Credentials] = None,
-            transport: Union[str, VmMigrationTransport, None] = None,
-            client_options: Optional[client_options_lib.ClientOptions] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        credentials: Optional[ga_credentials.Credentials] = None,
+        transport: Union[str, VmMigrationTransport, None] = None,
+        client_options: Optional[client_options_lib.ClientOptions] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+    ) -> None:
         """Instantiates the vm migration client.
 
         Args:
@@ -357,9 +428,16 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in ("true", "false"):
-            raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`")
-        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
+        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
+            "true",
+            "false",
+        ):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        use_client_cert = (
+            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
+        )
 
         client_cert_source_func = None
         is_mtls = False
@@ -400,8 +478,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         if isinstance(transport, VmMigrationTransport):
             # transport is a VmMigrationTransport instance.
             if credentials or client_options.credentials_file:
-                raise ValueError("When providing a transport instance, "
-                                 "provide its credentials directly.")
+                raise ValueError(
+                    "When providing a transport instance, "
+                    "provide its credentials directly."
+                )
             if client_options.scopes:
                 raise ValueError(
                     "When providing a transport instance, provide its scopes "
@@ -421,14 +501,15 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
                 always_use_jwt_access=True,
             )
 
-    def list_sources(self,
-            request: Union[vmmigration.ListSourcesRequest, dict] = None,
-            *,
-            parent: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> pagers.ListSourcesPager:
+    def list_sources(
+        self,
+        request: Union[vmmigration.ListSourcesRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListSourcesPager:
         r"""Lists Sources in a given project and location.
 
         Args:
@@ -462,8 +543,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.ListSourcesRequest.
@@ -483,39 +566,30 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListSourcesPager(
-            method=rpc,
-            request=request,
-            response=response,
-            metadata=metadata,
+            method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    def get_source(self,
-            request: Union[vmmigration.GetSourceRequest, dict] = None,
-            *,
-            name: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> vmmigration.Source:
+    def get_source(
+        self,
+        request: Union[vmmigration.GetSourceRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> vmmigration.Source:
         r"""Gets details of a single Source.
 
         Args:
@@ -546,8 +620,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.GetSourceRequest.
@@ -567,32 +643,26 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    def create_source(self,
-            request: Union[vmmigration.CreateSourceRequest, dict] = None,
-            *,
-            parent: str = None,
-            source: vmmigration.Source = None,
-            source_id: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> operation.Operation:
+    def create_source(
+        self,
+        request: Union[vmmigration.CreateSourceRequest, dict] = None,
+        *,
+        parent: str = None,
+        source: vmmigration.Source = None,
+        source_id: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
         r"""Creates a new Source in a given project and location.
 
         Args:
@@ -633,8 +703,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, source, source_id])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.CreateSourceRequest.
@@ -658,18 +730,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -682,15 +747,16 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Done; return the response.
         return response
 
-    def update_source(self,
-            request: Union[vmmigration.UpdateSourceRequest, dict] = None,
-            *,
-            source: vmmigration.Source = None,
-            update_mask: field_mask_pb2.FieldMask = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> operation.Operation:
+    def update_source(
+        self,
+        request: Union[vmmigration.UpdateSourceRequest, dict] = None,
+        *,
+        source: vmmigration.Source = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
         r"""Updates the parameters of a single Source.
 
         Args:
@@ -732,8 +798,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([source, update_mask])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.UpdateSourceRequest.
@@ -755,18 +823,13 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("source.name", request.source.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("source.name", request.source.name),)
+            ),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -779,14 +842,15 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Done; return the response.
         return response
 
-    def delete_source(self,
-            request: Union[vmmigration.DeleteSourceRequest, dict] = None,
-            *,
-            name: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> operation.Operation:
+    def delete_source(
+        self,
+        request: Union[vmmigration.DeleteSourceRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
         r"""Deletes a single Source.
 
         Args:
@@ -828,8 +892,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.DeleteSourceRequest.
@@ -849,18 +915,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -873,14 +932,15 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Done; return the response.
         return response
 
-    def fetch_inventory(self,
-            request: Union[vmmigration.FetchInventoryRequest, dict] = None,
-            *,
-            source: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> vmmigration.FetchInventoryResponse:
+    def fetch_inventory(
+        self,
+        request: Union[vmmigration.FetchInventoryRequest, dict] = None,
+        *,
+        source: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> vmmigration.FetchInventoryResponse:
         r"""List remote source's inventory of VMs.
         The remote source is the onprem vCenter (remote in the
         sense it's not in Compute Engine). The inventory
@@ -915,8 +975,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([source])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.FetchInventoryRequest.
@@ -936,30 +998,24 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("source", request.source),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("source", request.source),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    def list_utilization_reports(self,
-            request: Union[vmmigration.ListUtilizationReportsRequest, dict] = None,
-            *,
-            parent: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> pagers.ListUtilizationReportsPager:
+    def list_utilization_reports(
+        self,
+        request: Union[vmmigration.ListUtilizationReportsRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListUtilizationReportsPager:
         r"""Lists Utilization Reports of the given Source.
 
         Args:
@@ -993,8 +1049,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.ListUtilizationReportsRequest.
@@ -1014,39 +1072,30 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListUtilizationReportsPager(
-            method=rpc,
-            request=request,
-            response=response,
-            metadata=metadata,
+            method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    def get_utilization_report(self,
-            request: Union[vmmigration.GetUtilizationReportRequest, dict] = None,
-            *,
-            name: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> vmmigration.UtilizationReport:
+    def get_utilization_report(
+        self,
+        request: Union[vmmigration.GetUtilizationReportRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> vmmigration.UtilizationReport:
         r"""Gets a single Utilization Report.
 
         Args:
@@ -1078,8 +1127,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.GetUtilizationReportRequest.
@@ -1099,32 +1150,26 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    def create_utilization_report(self,
-            request: Union[vmmigration.CreateUtilizationReportRequest, dict] = None,
-            *,
-            parent: str = None,
-            utilization_report: vmmigration.UtilizationReport = None,
-            utilization_report_id: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> operation.Operation:
+    def create_utilization_report(
+        self,
+        request: Union[vmmigration.CreateUtilizationReportRequest, dict] = None,
+        *,
+        parent: str = None,
+        utilization_report: vmmigration.UtilizationReport = None,
+        utilization_report_id: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
         r"""Creates a new UtilizationReport.
 
         Args:
@@ -1174,8 +1219,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, utilization_report, utilization_report_id])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.CreateUtilizationReportRequest.
@@ -1194,23 +1241,18 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_utilization_report]
+        rpc = self._transport._wrapped_methods[
+            self._transport.create_utilization_report
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1223,14 +1265,15 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Done; return the response.
         return response
 
-    def delete_utilization_report(self,
-            request: Union[vmmigration.DeleteUtilizationReportRequest, dict] = None,
-            *,
-            name: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> operation.Operation:
+    def delete_utilization_report(
+        self,
+        request: Union[vmmigration.DeleteUtilizationReportRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
         r"""Deletes a single Utilization Report.
 
         Args:
@@ -1274,8 +1317,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.DeleteUtilizationReportRequest.
@@ -1290,23 +1335,18 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_utilization_report]
+        rpc = self._transport._wrapped_methods[
+            self._transport.delete_utilization_report
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1319,14 +1359,15 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Done; return the response.
         return response
 
-    def list_datacenter_connectors(self,
-            request: Union[vmmigration.ListDatacenterConnectorsRequest, dict] = None,
-            *,
-            parent: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> pagers.ListDatacenterConnectorsPager:
+    def list_datacenter_connectors(
+        self,
+        request: Union[vmmigration.ListDatacenterConnectorsRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListDatacenterConnectorsPager:
         r"""Lists DatacenterConnectors in a given Source.
 
         Args:
@@ -1360,8 +1401,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.ListDatacenterConnectorsRequest.
@@ -1376,44 +1419,37 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_datacenter_connectors]
+        rpc = self._transport._wrapped_methods[
+            self._transport.list_datacenter_connectors
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListDatacenterConnectorsPager(
-            method=rpc,
-            request=request,
-            response=response,
-            metadata=metadata,
+            method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    def get_datacenter_connector(self,
-            request: Union[vmmigration.GetDatacenterConnectorRequest, dict] = None,
-            *,
-            name: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> vmmigration.DatacenterConnector:
+    def get_datacenter_connector(
+        self,
+        request: Union[vmmigration.GetDatacenterConnectorRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> vmmigration.DatacenterConnector:
         r"""Gets details of a single DatacenterConnector.
 
         Args:
@@ -1448,8 +1484,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.GetDatacenterConnectorRequest.
@@ -1469,32 +1507,26 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    def create_datacenter_connector(self,
-            request: Union[vmmigration.CreateDatacenterConnectorRequest, dict] = None,
-            *,
-            parent: str = None,
-            datacenter_connector: vmmigration.DatacenterConnector = None,
-            datacenter_connector_id: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> operation.Operation:
+    def create_datacenter_connector(
+        self,
+        request: Union[vmmigration.CreateDatacenterConnectorRequest, dict] = None,
+        *,
+        parent: str = None,
+        datacenter_connector: vmmigration.DatacenterConnector = None,
+        datacenter_connector_id: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
         r"""Creates a new DatacenterConnector in a given Source.
 
         Args:
@@ -1541,10 +1573,14 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, datacenter_connector, datacenter_connector_id])
+        has_flattened_params = any(
+            [parent, datacenter_connector, datacenter_connector_id]
+        )
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.CreateDatacenterConnectorRequest.
@@ -1563,23 +1599,18 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_datacenter_connector]
+        rpc = self._transport._wrapped_methods[
+            self._transport.create_datacenter_connector
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1592,14 +1623,15 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Done; return the response.
         return response
 
-    def delete_datacenter_connector(self,
-            request: Union[vmmigration.DeleteDatacenterConnectorRequest, dict] = None,
-            *,
-            name: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> operation.Operation:
+    def delete_datacenter_connector(
+        self,
+        request: Union[vmmigration.DeleteDatacenterConnectorRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
         r"""Deletes a single DatacenterConnector.
 
         Args:
@@ -1643,8 +1675,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.DeleteDatacenterConnectorRequest.
@@ -1659,23 +1693,18 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_datacenter_connector]
+        rpc = self._transport._wrapped_methods[
+            self._transport.delete_datacenter_connector
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1688,16 +1717,17 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Done; return the response.
         return response
 
-    def create_migrating_vm(self,
-            request: Union[vmmigration.CreateMigratingVmRequest, dict] = None,
-            *,
-            parent: str = None,
-            migrating_vm: vmmigration.MigratingVm = None,
-            migrating_vm_id: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> operation.Operation:
+    def create_migrating_vm(
+        self,
+        request: Union[vmmigration.CreateMigratingVmRequest, dict] = None,
+        *,
+        parent: str = None,
+        migrating_vm: vmmigration.MigratingVm = None,
+        migrating_vm_id: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
         r"""Creates a new MigratingVm in a given Source.
 
         Args:
@@ -1738,8 +1768,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, migrating_vm, migrating_vm_id])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.CreateMigratingVmRequest.
@@ -1763,18 +1795,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1787,14 +1812,15 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Done; return the response.
         return response
 
-    def list_migrating_vms(self,
-            request: Union[vmmigration.ListMigratingVmsRequest, dict] = None,
-            *,
-            parent: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> pagers.ListMigratingVmsPager:
+    def list_migrating_vms(
+        self,
+        request: Union[vmmigration.ListMigratingVmsRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListMigratingVmsPager:
         r"""Lists MigratingVms in a given Source.
 
         Args:
@@ -1828,8 +1854,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.ListMigratingVmsRequest.
@@ -1849,39 +1877,30 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListMigratingVmsPager(
-            method=rpc,
-            request=request,
-            response=response,
-            metadata=metadata,
+            method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    def get_migrating_vm(self,
-            request: Union[vmmigration.GetMigratingVmRequest, dict] = None,
-            *,
-            name: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> vmmigration.MigratingVm:
+    def get_migrating_vm(
+        self,
+        request: Union[vmmigration.GetMigratingVmRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> vmmigration.MigratingVm:
         r"""Gets details of a single MigratingVm.
 
         Args:
@@ -1913,8 +1932,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.GetMigratingVmRequest.
@@ -1934,31 +1955,25 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    def update_migrating_vm(self,
-            request: Union[vmmigration.UpdateMigratingVmRequest, dict] = None,
-            *,
-            migrating_vm: vmmigration.MigratingVm = None,
-            update_mask: field_mask_pb2.FieldMask = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> operation.Operation:
+    def update_migrating_vm(
+        self,
+        request: Union[vmmigration.UpdateMigratingVmRequest, dict] = None,
+        *,
+        migrating_vm: vmmigration.MigratingVm = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
         r"""Updates the parameters of a single MigratingVm.
 
         Args:
@@ -2000,8 +2015,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([migrating_vm, update_mask])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.UpdateMigratingVmRequest.
@@ -2023,18 +2040,13 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("migrating_vm.name", request.migrating_vm.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("migrating_vm.name", request.migrating_vm.name),)
+            ),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2047,14 +2059,15 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Done; return the response.
         return response
 
-    def delete_migrating_vm(self,
-            request: Union[vmmigration.DeleteMigratingVmRequest, dict] = None,
-            *,
-            name: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> operation.Operation:
+    def delete_migrating_vm(
+        self,
+        request: Union[vmmigration.DeleteMigratingVmRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
         r"""Deletes a single MigratingVm.
 
         Args:
@@ -2098,8 +2111,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.DeleteMigratingVmRequest.
@@ -2119,18 +2134,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2143,14 +2151,15 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Done; return the response.
         return response
 
-    def start_migration(self,
-            request: Union[vmmigration.StartMigrationRequest, dict] = None,
-            *,
-            migrating_vm: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> operation.Operation:
+    def start_migration(
+        self,
+        request: Union[vmmigration.StartMigrationRequest, dict] = None,
+        *,
+        migrating_vm: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
         r"""Starts migration for a VM. Starts the process of
         uploading data and creating snapshots, in replication
         cycles scheduled by the policy.
@@ -2186,8 +2195,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([migrating_vm])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.StartMigrationRequest.
@@ -2207,18 +2218,13 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("migrating_vm", request.migrating_vm),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("migrating_vm", request.migrating_vm),)
+            ),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2231,13 +2237,14 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Done; return the response.
         return response
 
-    def resume_migration(self,
-            request: Union[vmmigration.ResumeMigrationRequest, dict] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> operation.Operation:
+    def resume_migration(
+        self,
+        request: Union[vmmigration.ResumeMigrationRequest, dict] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
         r"""Resumes a migration for a VM. When called on a paused
         migration, will start the process of uploading data and
         creating snapshots; when called on a completed cut-over
@@ -2279,18 +2286,13 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("migrating_vm", request.migrating_vm),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("migrating_vm", request.migrating_vm),)
+            ),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2303,13 +2305,14 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Done; return the response.
         return response
 
-    def pause_migration(self,
-            request: Union[vmmigration.PauseMigrationRequest, dict] = None,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> operation.Operation:
+    def pause_migration(
+        self,
+        request: Union[vmmigration.PauseMigrationRequest, dict] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
         r"""Pauses a migration for a VM. If cycle tasks are
         running they will be cancelled, preserving source task
         data. Further replication cycles will not be triggered
@@ -2349,18 +2352,13 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("migrating_vm", request.migrating_vm),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("migrating_vm", request.migrating_vm),)
+            ),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2373,14 +2371,15 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Done; return the response.
         return response
 
-    def finalize_migration(self,
-            request: Union[vmmigration.FinalizeMigrationRequest, dict] = None,
-            *,
-            migrating_vm: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> operation.Operation:
+    def finalize_migration(
+        self,
+        request: Union[vmmigration.FinalizeMigrationRequest, dict] = None,
+        *,
+        migrating_vm: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
         r"""Marks a migration as completed, deleting migration
         resources that are no longer being used. Only applicable
         after cutover is done.
@@ -2416,8 +2415,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([migrating_vm])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.FinalizeMigrationRequest.
@@ -2437,18 +2438,13 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("migrating_vm", request.migrating_vm),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("migrating_vm", request.migrating_vm),)
+            ),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2461,16 +2457,17 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Done; return the response.
         return response
 
-    def create_clone_job(self,
-            request: Union[vmmigration.CreateCloneJobRequest, dict] = None,
-            *,
-            parent: str = None,
-            clone_job: vmmigration.CloneJob = None,
-            clone_job_id: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> operation.Operation:
+    def create_clone_job(
+        self,
+        request: Union[vmmigration.CreateCloneJobRequest, dict] = None,
+        *,
+        parent: str = None,
+        clone_job: vmmigration.CloneJob = None,
+        clone_job_id: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
         r"""Initiates a Clone of a specific migrating VM.
 
         Args:
@@ -2523,8 +2520,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, clone_job, clone_job_id])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.CreateCloneJobRequest.
@@ -2548,18 +2547,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2572,14 +2564,15 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Done; return the response.
         return response
 
-    def cancel_clone_job(self,
-            request: Union[vmmigration.CancelCloneJobRequest, dict] = None,
-            *,
-            name: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> operation.Operation:
+    def cancel_clone_job(
+        self,
+        request: Union[vmmigration.CancelCloneJobRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
         r"""Initiates the cancellation of a running clone job.
 
         Args:
@@ -2611,8 +2604,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.CancelCloneJobRequest.
@@ -2632,18 +2627,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2656,14 +2644,15 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Done; return the response.
         return response
 
-    def list_clone_jobs(self,
-            request: Union[vmmigration.ListCloneJobsRequest, dict] = None,
-            *,
-            parent: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> pagers.ListCloneJobsPager:
+    def list_clone_jobs(
+        self,
+        request: Union[vmmigration.ListCloneJobsRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListCloneJobsPager:
         r"""Lists CloneJobs of a given migrating VM.
 
         Args:
@@ -2697,8 +2686,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.ListCloneJobsRequest.
@@ -2718,39 +2709,30 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListCloneJobsPager(
-            method=rpc,
-            request=request,
-            response=response,
-            metadata=metadata,
+            method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    def get_clone_job(self,
-            request: Union[vmmigration.GetCloneJobRequest, dict] = None,
-            *,
-            name: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> vmmigration.CloneJob:
+    def get_clone_job(
+        self,
+        request: Union[vmmigration.GetCloneJobRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> vmmigration.CloneJob:
         r"""Gets details of a single CloneJob.
 
         Args:
@@ -2791,8 +2773,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.GetCloneJobRequest.
@@ -2812,32 +2796,26 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    def create_cutover_job(self,
-            request: Union[vmmigration.CreateCutoverJobRequest, dict] = None,
-            *,
-            parent: str = None,
-            cutover_job: vmmigration.CutoverJob = None,
-            cutover_job_id: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> operation.Operation:
+    def create_cutover_job(
+        self,
+        request: Union[vmmigration.CreateCutoverJobRequest, dict] = None,
+        *,
+        parent: str = None,
+        cutover_job: vmmigration.CutoverJob = None,
+        cutover_job_id: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
         r"""Initiates a Cutover of a specific migrating VM.
         The returned LRO is completed when the cutover job
         resource is created and the job is initiated.
@@ -2882,8 +2860,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, cutover_job, cutover_job_id])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.CreateCutoverJobRequest.
@@ -2907,18 +2887,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2931,14 +2904,15 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Done; return the response.
         return response
 
-    def cancel_cutover_job(self,
-            request: Union[vmmigration.CancelCutoverJobRequest, dict] = None,
-            *,
-            name: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> operation.Operation:
+    def cancel_cutover_job(
+        self,
+        request: Union[vmmigration.CancelCutoverJobRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
         r"""Initiates the cancellation of a running cutover job.
 
         Args:
@@ -2970,8 +2944,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.CancelCutoverJobRequest.
@@ -2991,18 +2967,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -3015,14 +2984,15 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Done; return the response.
         return response
 
-    def list_cutover_jobs(self,
-            request: Union[vmmigration.ListCutoverJobsRequest, dict] = None,
-            *,
-            parent: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> pagers.ListCutoverJobsPager:
+    def list_cutover_jobs(
+        self,
+        request: Union[vmmigration.ListCutoverJobsRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListCutoverJobsPager:
         r"""Lists CutoverJobs of a given migrating VM.
 
         Args:
@@ -3056,8 +3026,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.ListCutoverJobsRequest.
@@ -3077,39 +3049,30 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListCutoverJobsPager(
-            method=rpc,
-            request=request,
-            response=response,
-            metadata=metadata,
+            method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    def get_cutover_job(self,
-            request: Union[vmmigration.GetCutoverJobRequest, dict] = None,
-            *,
-            name: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> vmmigration.CutoverJob:
+    def get_cutover_job(
+        self,
+        request: Union[vmmigration.GetCutoverJobRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> vmmigration.CutoverJob:
         r"""Gets details of a single CutoverJob.
 
         Args:
@@ -3142,8 +3105,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.GetCutoverJobRequest.
@@ -3163,30 +3128,24 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    def list_groups(self,
-            request: Union[vmmigration.ListGroupsRequest, dict] = None,
-            *,
-            parent: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> pagers.ListGroupsPager:
+    def list_groups(
+        self,
+        request: Union[vmmigration.ListGroupsRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListGroupsPager:
         r"""Lists Groups in a given project and location.
 
         Args:
@@ -3220,8 +3179,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.ListGroupsRequest.
@@ -3241,39 +3202,30 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListGroupsPager(
-            method=rpc,
-            request=request,
-            response=response,
-            metadata=metadata,
+            method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    def get_group(self,
-            request: Union[vmmigration.GetGroupRequest, dict] = None,
-            *,
-            name: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> vmmigration.Group:
+    def get_group(
+        self,
+        request: Union[vmmigration.GetGroupRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> vmmigration.Group:
         r"""Gets details of a single Group.
 
         Args:
@@ -3303,8 +3255,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.GetGroupRequest.
@@ -3324,32 +3278,26 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    def create_group(self,
-            request: Union[vmmigration.CreateGroupRequest, dict] = None,
-            *,
-            parent: str = None,
-            group: vmmigration.Group = None,
-            group_id: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> operation.Operation:
+    def create_group(
+        self,
+        request: Union[vmmigration.CreateGroupRequest, dict] = None,
+        *,
+        parent: str = None,
+        group: vmmigration.Group = None,
+        group_id: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
         r"""Creates a new Group in a given project and location.
 
         Args:
@@ -3390,8 +3338,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, group, group_id])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.CreateGroupRequest.
@@ -3415,18 +3365,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -3439,15 +3382,16 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Done; return the response.
         return response
 
-    def update_group(self,
-            request: Union[vmmigration.UpdateGroupRequest, dict] = None,
-            *,
-            group: vmmigration.Group = None,
-            update_mask: field_mask_pb2.FieldMask = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> operation.Operation:
+    def update_group(
+        self,
+        request: Union[vmmigration.UpdateGroupRequest, dict] = None,
+        *,
+        group: vmmigration.Group = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
         r"""Updates the parameters of a single Group.
 
         Args:
@@ -3489,8 +3433,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([group, update_mask])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.UpdateGroupRequest.
@@ -3512,18 +3458,13 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("group.name", request.group.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("group.name", request.group.name),)
+            ),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -3536,14 +3477,15 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Done; return the response.
         return response
 
-    def delete_group(self,
-            request: Union[vmmigration.DeleteGroupRequest, dict] = None,
-            *,
-            name: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> operation.Operation:
+    def delete_group(
+        self,
+        request: Union[vmmigration.DeleteGroupRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
         r"""Deletes a single Group.
 
         Args:
@@ -3585,8 +3527,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.DeleteGroupRequest.
@@ -3606,18 +3550,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -3630,14 +3567,15 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Done; return the response.
         return response
 
-    def add_group_migration(self,
-            request: Union[vmmigration.AddGroupMigrationRequest, dict] = None,
-            *,
-            group: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> operation.Operation:
+    def add_group_migration(
+        self,
+        request: Union[vmmigration.AddGroupMigrationRequest, dict] = None,
+        *,
+        group: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
         r"""Adds a MigratingVm to a Group.
 
         Args:
@@ -3671,8 +3609,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([group])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.AddGroupMigrationRequest.
@@ -3692,18 +3632,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("group", request.group),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("group", request.group),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -3716,14 +3649,15 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Done; return the response.
         return response
 
-    def remove_group_migration(self,
-            request: Union[vmmigration.RemoveGroupMigrationRequest, dict] = None,
-            *,
-            group: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> operation.Operation:
+    def remove_group_migration(
+        self,
+        request: Union[vmmigration.RemoveGroupMigrationRequest, dict] = None,
+        *,
+        group: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
         r"""Removes a MigratingVm from a Group.
 
         Args:
@@ -3755,8 +3689,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([group])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.RemoveGroupMigrationRequest.
@@ -3776,18 +3712,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("group", request.group),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("group", request.group),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -3800,14 +3729,15 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Done; return the response.
         return response
 
-    def list_target_projects(self,
-            request: Union[vmmigration.ListTargetProjectsRequest, dict] = None,
-            *,
-            parent: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> pagers.ListTargetProjectsPager:
+    def list_target_projects(
+        self,
+        request: Union[vmmigration.ListTargetProjectsRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListTargetProjectsPager:
         r"""Lists TargetProjects in a given project.
 
         NOTE: TargetProject is a global resource; hence the only
@@ -3844,8 +3774,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.ListTargetProjectsRequest.
@@ -3865,39 +3797,30 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListTargetProjectsPager(
-            method=rpc,
-            request=request,
-            response=response,
-            metadata=metadata,
+            method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    def get_target_project(self,
-            request: Union[vmmigration.GetTargetProjectRequest, dict] = None,
-            *,
-            name: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> vmmigration.TargetProject:
+    def get_target_project(
+        self,
+        request: Union[vmmigration.GetTargetProjectRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> vmmigration.TargetProject:
         r"""Gets details of a single TargetProject.
 
         NOTE: TargetProject is a global resource; hence the only
@@ -3930,8 +3853,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.GetTargetProjectRequest.
@@ -3951,32 +3876,26 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    def create_target_project(self,
-            request: Union[vmmigration.CreateTargetProjectRequest, dict] = None,
-            *,
-            parent: str = None,
-            target_project: vmmigration.TargetProject = None,
-            target_project_id: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> operation.Operation:
+    def create_target_project(
+        self,
+        request: Union[vmmigration.CreateTargetProjectRequest, dict] = None,
+        *,
+        parent: str = None,
+        target_project: vmmigration.TargetProject = None,
+        target_project_id: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
         r"""Creates a new TargetProject in a given project.
 
         NOTE: TargetProject is a global resource; hence the only
@@ -4020,8 +3939,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, target_project, target_project_id])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.CreateTargetProjectRequest.
@@ -4045,18 +3966,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("parent", request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -4069,15 +3983,16 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Done; return the response.
         return response
 
-    def update_target_project(self,
-            request: Union[vmmigration.UpdateTargetProjectRequest, dict] = None,
-            *,
-            target_project: vmmigration.TargetProject = None,
-            update_mask: field_mask_pb2.FieldMask = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> operation.Operation:
+    def update_target_project(
+        self,
+        request: Union[vmmigration.UpdateTargetProjectRequest, dict] = None,
+        *,
+        target_project: vmmigration.TargetProject = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
         r"""Updates the parameters of a single TargetProject.
 
         NOTE: TargetProject is a global resource; hence the only
@@ -4122,8 +4037,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([target_project, update_mask])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.UpdateTargetProjectRequest.
@@ -4145,18 +4062,13 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("target_project.name", request.target_project.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("target_project.name", request.target_project.name),)
+            ),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -4169,14 +4081,15 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Done; return the response.
         return response
 
-    def delete_target_project(self,
-            request: Union[vmmigration.DeleteTargetProjectRequest, dict] = None,
-            *,
-            name: str = None,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> operation.Operation:
+    def delete_target_project(
+        self,
+        request: Union[vmmigration.DeleteTargetProjectRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
         r"""Deletes a single TargetProject.
 
         NOTE: TargetProject is a global resource; hence the only
@@ -4221,8 +4134,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a vmmigration.DeleteTargetProjectRequest.
@@ -4242,18 +4157,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ("name", request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -4280,17 +4188,14 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         self.transport.close()
 
 
-
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution(
-            "google-cloud-vmmigration",
+            "google-cloud-vm-migration",
         ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
-__all__ = (
-    "VmMigrationClient",
-)
+__all__ = ("VmMigrationClient",)

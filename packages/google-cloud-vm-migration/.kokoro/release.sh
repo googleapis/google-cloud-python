@@ -27,6 +27,6 @@ export PYTHONUNBUFFERED=1
 
 # Move into the package, build the distribution and upload.
 TWINE_PASSWORD=$(cat "${KOKORO_GFILE_DIR}/secret_manager/google-cloud-pypi-token")
-cd github/python-vmmigration
+cd github/python-vm-migration
 python3 setup.py sdist bdist_wheel
 twine upload --username __token__ --password "${TWINE_PASSWORD}" dist/*
