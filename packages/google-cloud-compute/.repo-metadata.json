@@ -2,7 +2,7 @@
     "name": "compute",
     "name_pretty": "Compute Engine",
     "product_documentation": "https://cloud.google.com/compute/",
-    "client_documentation": "https://googleapis.dev/python/compute/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/compute/latest",
     "issue_tracker": "https://issuetracker.google.com/issues/new?component=187134&template=0",
     "release_level": "alpha",
     "language": "python",

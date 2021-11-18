@@ -15,7 +15,7 @@ Python Client for Compute Engine
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-compute.svg
    :target: https://pypi.org/project/google-cloud-compute/
 .. _Compute Engine API: https://cloud.google.com/compute/
-.. _Client Library Documentation: https://googleapis.dev/python/compute/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/compute/latest
 .. _Product Documentation:  https://cloud.google.com/compute/
 
 Quick Start
