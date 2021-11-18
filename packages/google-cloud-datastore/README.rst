@@ -20,7 +20,7 @@ all other queries.
    :target: https://pypi.org/project/google-cloud-datastore/
 .. _Google Cloud Datastore API: https://cloud.google.com/datastore/docs
 .. _Product Documentation:  https://cloud.google.com/datastore/docs
-.. _Client Library Documentation: https://googleapis.dev/python/datastore/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/datastore/latest
 
 Quick Start
 -----------
