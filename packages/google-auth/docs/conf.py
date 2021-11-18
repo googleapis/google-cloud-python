@@ -363,7 +363,10 @@ intersphinx_mapping = {
     "python": ("https://docs.python.org/3.5", None),
     "urllib3": ("https://urllib3.readthedocs.io/en/stable", None),
     "requests": ("https://requests.kennethreitz.org/en/master/", None),
-    "requests-oauthlib": ("https://requests-oauthlib.readthedocs.io/en/stable/", None),
+    "requests-oauthlib": (
+        "https://requests-oauthlib.readthedocs.io/en/v1.3.0-docs/",
+        None,
+    ),
 }
 
 # Autodoc config
