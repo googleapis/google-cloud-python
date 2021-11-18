@@ -22,7 +22,7 @@ including Cloud Functions.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-firestore.svg
 .. _Google Cloud Firestore: https://cloud.google.com/firestore/
 .. _Product Documentation: https://cloud.google.com/firestore/docs/
-.. _Client Library Documentation: https://googleapis.dev/python/firestore/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/firestore/latest
 
 Quick Start
 -----------
