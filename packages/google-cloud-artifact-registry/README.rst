@@ -19,7 +19,7 @@ CI/CD tooling to set up automated pipelines.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-artifact-registry.svg
    :target: https://pypi.org/project/google-cloud-artifact-registry/
 .. _Artifact Registry: https://cloud.google.com/artifact-registry
-.. _Client Library Documentation: https://googleapis.dev/python/artifactregistry/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/artifactregistry/latest
 .. _Product Documentation:  https://cloud.google.com/artifact-registry
 
 Quick Start

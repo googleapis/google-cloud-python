@@ -2,7 +2,7 @@
     "name": "artifactregistry",
     "name_pretty": "Artifact Registry",
     "product_documentation": "https://cloud.google.com/artifact-registry",
-    "client_documentation": "https://googleapis.dev/python/artifactregistry/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/artifactregistry/latest",
     "issue_tracker": "",
     "release_level": "ga",
     "language": "python",
