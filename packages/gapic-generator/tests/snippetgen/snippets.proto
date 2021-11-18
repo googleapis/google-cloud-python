@@ -55,6 +55,8 @@ service Snippets {
   rpc MethodBidiStreaming(stream SignatureRequestOneRequiredField) returns (stream Response);
 
   rpc OneOfMethod(OneOfRequest) returns (Response);
+
+  rpc OneOfMethodRequiredField(OneOfRequestWithRequiredField) returns (Response);
 }
 
 enum Enum {
@@ -147,5 +149,16 @@ message OneOfRequest {
   oneof my_one_of {
     string my_string = 2;
     int32 my_number = 3;
+  }
+}
+
+
+message OneOfRequestWithRequiredField {
+  string non_one_of_string = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // Some APIs mark every field in a "required" oneof as required
+  oneof my_one_of {
+    string my_string = 2 [(google.api.field_behavior) = REQUIRED];
+    int32 my_number = 3 [(google.api.field_behavior) = REQUIRED];
   }
 }

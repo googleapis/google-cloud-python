@@ -30,7 +30,7 @@ from gapic.schema import api
 from gapic.schema import wrappers
 
 from collections import defaultdict, namedtuple, ChainMap as chainmap
-from typing import Any, ChainMap, Dict, FrozenSet, Generator, List, Mapping, Optional, Tuple, Sequence
+from typing import Any, ChainMap, Dict, FrozenSet, Generator, List, Mapping, Optional, Sequence
 
 # There is no library stub file for this module, so ignore it.
 from google.api import resource_pb2  # type: ignore
@@ -981,10 +981,16 @@ def generate_request_object(api_schema: api.API, service: wrappers.Service, mess
 
     request_fields: List[wrappers.Field] = []
 
-    # Choose the first option for each oneof
+    # There is no standard syntax to mark a oneof as "required" in protos.
+    # Assume every oneof is required and pick the first option
+    # in each oneof.
     selected_oneofs: List[wrappers.Field] = [oneof_fields[0]
         for oneof_fields in message.oneof_fields().values()]
-    request_fields = selected_oneofs + message.required_fields
+
+    # Don't add required fields if they're also marked as oneof
+    required_fields = [
+        field for field in message.required_fields if not field.oneof]
+    request_fields = selected_oneofs + required_fields
 
     for field in request_fields:
         # TransformedRequest expects nested fields to be referenced like
