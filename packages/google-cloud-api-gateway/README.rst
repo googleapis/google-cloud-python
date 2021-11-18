@@ -19,7 +19,7 @@ means you can better manage cost.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-api-gateway.svg
    :target: https://pypi.org/project/google-cloud-api-gateway/
 .. _API Gateway: https://cloud.google.com/api-gateway
-.. _Client Library Documentation: https://googleapis.dev/python/apigateway/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/apigateway/latest
 .. _Product Documentation:  https://cloud.google.com/api-gateway
 
 Quick Start
