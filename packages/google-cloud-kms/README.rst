@@ -17,7 +17,7 @@ cloud resources and applications.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-kms.svg
    :target: https://pypi.org/project/google-cloud-kms/
 .. _Cloud Key Management Service (KMS) API: https://cloud.google.com/kms
-.. _Client Library Documentation: https://googleapis.dev/python/cloudkms/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudkms/latest
 .. _Product Documentation:  https://cloud.google.com/kms
 
 Quick Start

@@ -2,7 +2,7 @@
     "name": "cloudkms",
     "name_pretty": "Google Cloud Key Management Service",
     "product_documentation": "https://cloud.google.com/kms",
-    "client_documentation": "https://googleapis.dev/python/cloudkms/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/cloudkms/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/5264932",
     "release_level": "ga",
     "language": "python",
