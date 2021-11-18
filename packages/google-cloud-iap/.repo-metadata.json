@@ -2,7 +2,7 @@
     "name": "iap",
     "name_pretty": "Identity-Aware Proxy",
     "product_documentation": "https://cloud.google.com/iap",
-    "client_documentation": "https://googleapis.dev/python/iap/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/iap/latest",
     "issue_tracker": "",
     "release_level": "ga",
     "language": "python",

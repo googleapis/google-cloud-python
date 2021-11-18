@@ -16,7 +16,7 @@ access to Google Cloud hosted resources and applications hosted on Google Cloud.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-iap.svg
    :target: https://pypi.org/project/google-cloud-iap/
 .. _Identity-Aware Proxy: https://cloud.google.com/iap
-.. _Client Library Documentation: https://googleapis.dev/python/iap/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/iap/latest
 .. _Product Documentation:  https://cloud.google.com/iap/docs
 
 Quick Start
