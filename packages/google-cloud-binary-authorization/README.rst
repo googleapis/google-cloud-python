@@ -17,7 +17,7 @@ policy control for images deployed to Kubernetes Engine clusters.
    :target: https://pypi.org/project/google-cloud-binary-authorization/
 
 .. _Binary Authorization API: https://cloud.google.com/binary-authorization
-.. _Client Library Documentation: https://googleapis.dev/python/binaryauthorization/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/binaryauthorization/latest
 .. _Product Documentation:  https://cloud.google.com/binary-authorization
 
 Quick Start
