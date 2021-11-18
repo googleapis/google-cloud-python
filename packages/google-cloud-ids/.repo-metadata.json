@@ -2,7 +2,7 @@
     "name": "ids",
     "name_pretty": "Cloud IDS",
     "product_documentation": "https://cloud.google.com/intrusion-detection-system/",
-    "client_documentation": "https://googleapis.dev/python/ids/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/ids/latest",
     "issue_tracker": "",
     "release_level": "beta",
     "language": "python",

@@ -19,7 +19,7 @@ threat detection.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-ids.svg
    :target: https://pypi.org/project/google-cloud-ids/
 .. _Cloud IDS: https://cloud.google.com/intrusion-detection-system
-.. _Client Library Documentation: https://googleapis.dev/python/ids/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/ids/latest
 .. _Product Documentation:  https://cloud.google.com/intrusion-detection-system/docs
 
 Quick Start
