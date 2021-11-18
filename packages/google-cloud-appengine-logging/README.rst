@@ -14,7 +14,7 @@ This package contains generated Python types for ``google.appengine.logging.v1.r
    :target: https://pypi.org/project/google-cloud-appengine-logging/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-appengine-logging.svg
    :target: https://pypi.org/project/google-cloud-appengine-logging/
-.. _Client Library Documentation: https://googleapis.dev/python/appenginelogging/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/appenginelogging/latest
 .. _Product Documentation:  https://cloud.google.com/logging/docs/reference/v2/rpc/google.appengine.logging.v1
 
 
