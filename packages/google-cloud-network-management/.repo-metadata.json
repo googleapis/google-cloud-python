@@ -2,7 +2,7 @@
     "name": "networkmanagement",
     "name_pretty": "Network Management API",
     "product_documentation": "https://cloud.google.com/network-management",
-    "client_documentation": "https://googleapis.dev/python/networkmanagement/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/networkmanagement/latest",
     "issue_tracker": "",
     "release_level": "ga",
     "language": "python",

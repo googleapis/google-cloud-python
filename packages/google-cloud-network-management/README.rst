@@ -15,7 +15,7 @@ Python Client for Network Management API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-network-management.svg
    :target: https://pypi.org/project/google-cloud-network-management/
 .. _Network Management API: https://cloud.google.com/network-intelligence-center/docs/connectivity-tests/reference/networkmanagement/rest
-.. _Client Library Documentation: https://googleapis.dev/python/networkmanagement/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/networkmanagement/latest
 .. _Product Documentation:  https://cloud.google.com/network-intelligence-center/docs/connectivity-tests/reference/networkmanagement/rest
 
 Quick Start
