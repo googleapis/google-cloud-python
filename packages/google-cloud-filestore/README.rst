@@ -16,7 +16,7 @@ running on Compute Engine virtual machines (VMs) instances or Google Kubernetes 
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-filestore.svg
    :target: https://pypi.org/project/google-cloud-filestore/
 .. _Filestore: https://cloud.google.com/filestore/
-.. _Client Library Documentation: https://googleapis.dev/python/file/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/file/latest
 .. _Product Documentation:  https://cloud.google.com/filestore/docs
 
 Quick Start

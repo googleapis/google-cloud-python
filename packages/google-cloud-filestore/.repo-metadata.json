@@ -2,7 +2,7 @@
     "name": "file",
     "name_pretty": "Filestore",
     "product_documentation": "https://cloud.google.com/filestore/",
-    "client_documentation": "https://googleapis.dev/python/file/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/file/latest",
     "issue_tracker": "",
     "release_level": "ga",
     "language": "python",
