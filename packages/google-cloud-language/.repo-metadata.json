@@ -2,7 +2,7 @@
     "name": "language",
     "name_pretty": "Natural Language",
     "product_documentation": "https://cloud.google.com/natural-language/docs/",
-    "client_documentation": "https://googleapis.dev/python/language/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/language/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/559753",
     "release_level": "ga",
     "language": "python",

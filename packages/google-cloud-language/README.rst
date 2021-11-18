@@ -24,7 +24,7 @@ with your document storage on Google Cloud Storage.
    :target: https://pypi.org/project/google-cloud-language/
 .. _Google Cloud Natural Language: https://cloud.google.com/natural-language/
 .. _Product Documentation:  https://cloud.google.com/natural-language/docs
-.. _Client Library Documentation: https://googleapis.dev/python/language/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/language/latest
 
 .. note::
 
@@ -101,4 +101,4 @@ Next Steps
 -  Read the `Product documentation`_ to learn
    more about the product and see How-to Guides.
 
-.. _Usage documentation: https://googleapis.dev/python/language/latest
+.. _Usage documentation: https://cloud.google.com/python/docs/reference/language/latest
