@@ -15,7 +15,7 @@ Python Client for Cloud Asset API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-asset.svg
    :target: https://pypi.org/project/google-cloud-asset/
 .. _Cloud Asset API: https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/reference/rest/
-.. _Client Library Documentation: https://googleapis.dev/python/cloudasset/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudasset/latest
 .. _Product Documentation:  https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/overview
 
 Quick Start
