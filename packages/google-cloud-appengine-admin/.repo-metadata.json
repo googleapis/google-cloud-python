@@ -2,7 +2,7 @@
     "name": "appengine",
     "name_pretty": "App Engine Admin API",
     "product_documentation": "https://cloud.google.com/appengine/docs/admin-api/",
-    "client_documentation": "https://googleapis.dev/python/appengine/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/appengine/latest",
     "issue_tracker": "",
     "release_level": "ga",
     "language": "python",
