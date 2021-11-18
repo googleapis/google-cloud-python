@@ -19,7 +19,7 @@ multiple public clouds.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-gke-hub.svg
    :target: https://pypi.org/project/google-cloud-gke-hub/
 .. _GKE Hub: https://cloud.google.com/anthos/gke/docs/
-.. _Client Library Documentation: https://googleapis.dev/python/gkehub/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/gkehub/latest
 .. _Product Documentation:  https://cloud.google.com/anthos/gke/docs/
 
 Quick Start
