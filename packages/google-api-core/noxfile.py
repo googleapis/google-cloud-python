@@ -170,7 +170,9 @@ def pytype(session):
 def mypy(session):
     """Run type-checking."""
     session.install(".[grpc, grpcgcp]", "mypy")
-    session.install("types-setuptools", "types-requests", "types-mock")
+    session.install(
+        "types-setuptools", "types-requests", "types-protobuf", "types-mock"
+    )
     session.run("mypy", "google", "tests")
 
 
