@@ -2,7 +2,7 @@
     "name": "assuredworkloads",
     "name_pretty": "Assured Workloads for Government",
     "product_documentation": "https://cloud.google.com/assured-workloads/",
-    "client_documentation": "https://googleapis.dev/python/assuredworkloads/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/assuredworkloads/latest",
     "issue_tracker": "",
     "release_level": "ga",
     "language": "python",
