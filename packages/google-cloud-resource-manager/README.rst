@@ -17,7 +17,7 @@ With this API, you can do the following:
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-resource-manager.svg
    :target: https://pypi.org/project/google-cloud-resource-manager/
 .. _Google Cloud Resource Manager: https://cloud.google.com/resource-manager
-.. _Client Library Documentation: https://googleapis.dev/python/cloudresourcemanager/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudresourcemanager/latest
 .. _Product Documentation:  https://cloud.google.com/resource-manager
 
 Quick Start
