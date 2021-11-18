@@ -17,7 +17,7 @@ order management, billing management, policy and authorization management, and c
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-channel.svg
    :target: https://pypi.org/project/google-cloud-channel/
 .. _Cloud Channel API: https://cloud.google.com/channel/docs
-.. _Client Library Documentation: https://googleapis.dev/python/cloudchannel/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudchannel/latest
 .. _Product Documentation:  https://cloud.google.com/channel/docs
 
 Quick Start

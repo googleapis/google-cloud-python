@@ -2,7 +2,7 @@
     "name": "cloudchannel",
     "name_pretty": "Channel Services",
     "product_documentation": "https://cloud.google.com/channel/",
-    "client_documentation": "https://googleapis.dev/python/cloudchannel/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/cloudchannel/latest",
     "issue_tracker": "",
     "release_level": "ga",
     "language": "python",
