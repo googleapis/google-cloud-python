@@ -2,7 +2,7 @@
     "name": "eventarc",
     "name_pretty": "Eventarc",
     "product_documentation": "https://cloud.google.com/eventarc/",
-    "client_documentation": "https://googleapis.dev/python/eventarc/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/eventarc/latest",
     "issue_tracker": "",
     "release_level": "ga",
     "language": "python",

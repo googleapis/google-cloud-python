@@ -16,7 +16,7 @@ management — you can optimize productivity and costs while building a modern, 
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-eventarc.svg
    :target: https://pypi.org/project/google-cloud-eventarc/
 .. _Eventarc: https://cloud.google.com/eventarc
-.. _Client Library Documentation: https://googleapis.dev/python/eventarc/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/eventarc/latest
 .. _Product Documentation:  https://cloud.google.com/eventarc/docs
 
 Quick Start
