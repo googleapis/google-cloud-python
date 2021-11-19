@@ -25,7 +25,9 @@ from alembic.ddl.base import (
 from sqlalchemy import ForeignKeyConstraint, types, util
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.engine.default import DefaultDialect, DefaultExecutionContext
+from sqlalchemy.event import listens_for
 from sqlalchemy.ext.compiler import compiles
+from sqlalchemy.pool import Pool
 from sqlalchemy.sql.compiler import (
     selectable,
     DDLCompiler,
@@ -37,6 +39,13 @@ from sqlalchemy.sql.compiler import (
 
 from google.cloud import spanner_dbapi
 from google.cloud.sqlalchemy_spanner._opentelemetry_tracing import trace_call
+
+
+@listens_for(Pool, "reset")
+def reset_connection(dbapi_conn, connection_record):
+    """An event of returning a connection back to a pool."""
+    dbapi_conn.connection.staleness = None
+
 
 # Spanner-to-SQLAlchemy types map
 _type_map = {
@@ -127,6 +136,10 @@ class SpannerExecutionContext(DefaultExecutionContext):
         read_only = self.execution_options.get("read_only", None)
         if read_only is not None:
             self._dbapi_connection.connection.read_only = read_only
+
+        staleness = self.execution_options.get("staleness", None)
+        if staleness is not None:
+            self._dbapi_connection.connection.staleness = staleness
 
 
 class SpannerIdentifierPreparer(IdentifierPreparer):

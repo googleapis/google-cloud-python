@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from datetime import timezone
+import datetime
 import decimal
 import operator
 import os
@@ -975,7 +975,9 @@ class RowFetchTest(_RowFetchTest):
 
         eq_(
             row["somelabel"],
-            DatetimeWithNanoseconds(2006, 5, 12, 12, 0, 0, tzinfo=timezone.utc),
+            DatetimeWithNanoseconds(
+                2006, 5, 12, 12, 0, 0, tzinfo=datetime.timezone.utc
+            ),
         )
 
 
@@ -1578,7 +1580,7 @@ class ExecutionOptionsTest(fixtures.TestBase):
     """
 
     def setUp(self):
-        self._engine = create_engine(get_db_url())
+        self._engine = create_engine(get_db_url(), pool_size=1)
         self._metadata = MetaData(bind=self._engine)
 
         self._table = Table(
@@ -1594,3 +1596,15 @@ class ExecutionOptionsTest(fixtures.TestBase):
         with self._engine.connect().execution_options(read_only=True) as connection:
             connection.execute(select(["*"], from_obj=self._table)).fetchall()
             assert connection.connection.read_only is True
+
+    def test_staleness(self):
+        with self._engine.connect().execution_options(
+            read_only=True, staleness={"max_staleness": datetime.timedelta(seconds=5)}
+        ) as connection:
+            connection.execute(select(["*"], from_obj=self._table)).fetchall()
+            assert connection.connection.staleness == {
+                "max_staleness": datetime.timedelta(seconds=5)
+            }
+
+        with self._engine.connect() as connection:
+            assert connection.connection.staleness is None
