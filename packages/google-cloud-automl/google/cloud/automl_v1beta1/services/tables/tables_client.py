@@ -38,12 +38,12 @@ _LOGGER = logging.getLogger(__name__)
 def to_proto_value(value):
     """translates a Python value to a google.protobuf.Value.
 
-  Args:
-  value: The Python value to be translated.
+    Args:
+        value: The Python value to be translated.
 
-  Returns:
-  Tuple of the translated google.protobuf.Value and error if any.
-  """
+    Returns:
+        Tuple of the translated google.protobuf.Value and error if any.
+    """
     # possible Python types (this is a Python3 module):
     # https://simplejson.readthedocs.io/en/latest/#encoders-and-decoders
     #   JSON              Python 2        Python 3
@@ -158,8 +158,8 @@ class TablesClient(object):
                 to use for requests.
             client_options (Union[dict, google.api_core.client_options.ClientOptions]):
                 Custom options for the client.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
-                The client info used to send a user-agent string along with	
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
                 API requests.
         """
         version = _GAPIC_LIBRARY_VERSION
@@ -1247,7 +1247,8 @@ class TablesClient(object):
             ...     project='my-project', region='us-central1')
             ...
             >>> client.update_column_spec(dataset_display_name='my_dataset',
-            ...     column_spec_display_name='Outcome', type_code='CATEGORY')
+            ...     column_spec_display_name='Outcome',
+            ...     type_code=automl_v1beta1.TypeCode.CATEGORY)
             ...
 
         Args:
