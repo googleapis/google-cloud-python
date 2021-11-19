@@ -133,6 +133,7 @@ def unit(session):
     session.install("opentelemetry-api==1.1.0")
     session.install("opentelemetry-sdk==1.1.0")
     session.install("opentelemetry-instrumentation==0.20b0")
+    session.run("python", "create_test_config.py", "my-project", "my-instance")
     session.run("py.test", "--quiet", os.path.join("test/unit"), *session.posargs)
 
 
@@ -146,6 +147,8 @@ def migration_test(session):
     session.install("pytest")
     session.install("-e", ".")
     session.install("alembic")
+
+    session.run("python", "create_test_database.py")
 
     project = os.getenv(
         "GOOGLE_CLOUD_PROJECT", os.getenv("PROJECT_ID", "emulator-test-project"),
