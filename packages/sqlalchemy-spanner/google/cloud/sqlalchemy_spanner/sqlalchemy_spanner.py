@@ -267,6 +267,13 @@ class SpannerSQLCompiler(SQLCompiler):
 class SpannerDDLCompiler(DDLCompiler):
     """Spanner DDL statements compiler."""
 
+    def visit_computed_column(self, generated, **kw):
+        """Computed column operator."""
+        text = "AS (%s) STORED" % self.sql_compiler.process(
+            generated.sqltext, include_table=False, literal_binds=True
+        )
+        return text
+
     def visit_drop_table(self, drop_table):
         """
         Cloud Spanner doesn't drop tables which have indexes
@@ -492,7 +499,7 @@ class SpannerDialect(DefaultDialect):
             list: The table every column dict-like description.
         """
         sql = """
-SELECT column_name, spanner_type, is_nullable
+SELECT column_name, spanner_type, is_nullable, generation_expression
 FROM information_schema.columns
 WHERE
     table_catalog = ''
@@ -512,14 +519,20 @@ ORDER BY
             columns = snap.execute_sql(sql)
 
             for col in columns:
-                cols_desc.append(
-                    {
-                        "name": col[0],
-                        "type": self._designate_type(col[1]),
-                        "nullable": col[2] == "YES",
-                        "default": None,
+                col_desc = {
+                    "name": col[0],
+                    "type": self._designate_type(col[1]),
+                    "nullable": col[2] == "YES",
+                    "default": None,
+                }
+
+                if col[3] is not None:
+                    col_desc["computed"] = {
+                        "persisted": True,
+                        "sqltext": col[3],
                     }
-                )
+                cols_desc.append(col_desc)
+
         return cols_desc
 
     def _designate_type(self, str_repr):
