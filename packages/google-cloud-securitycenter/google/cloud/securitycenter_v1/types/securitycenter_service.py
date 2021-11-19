@@ -18,6 +18,7 @@ import proto  # type: ignore
 from google.cloud.securitycenter_v1.types import asset as gcs_asset
 from google.cloud.securitycenter_v1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1.types import folder
+from google.cloud.securitycenter_v1.types import mute_config as gcs_mute_config
 from google.cloud.securitycenter_v1.types import (
     notification_config as gcs_notification_config,
 )
@@ -35,10 +36,15 @@ from google.protobuf import timestamp_pb2  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.securitycenter.v1",
     manifest={
+        "BulkMuteFindingsRequest",
+        "BulkMuteFindingsResponse",
         "CreateFindingRequest",
+        "CreateMuteConfigRequest",
         "CreateNotificationConfigRequest",
         "CreateSourceRequest",
+        "DeleteMuteConfigRequest",
         "DeleteNotificationConfigRequest",
+        "GetMuteConfigRequest",
         "GetNotificationConfigRequest",
         "GetOrganizationSettingsRequest",
         "GetSourceRequest",
@@ -47,6 +53,8 @@ __protobuf__ = proto.module(
         "GroupFindingsRequest",
         "GroupFindingsResponse",
         "GroupResult",
+        "ListMuteConfigsRequest",
+        "ListMuteConfigsResponse",
         "ListNotificationConfigsRequest",
         "ListNotificationConfigsResponse",
         "ListSourcesRequest",
@@ -56,14 +64,69 @@ __protobuf__ = proto.module(
         "ListFindingsRequest",
         "ListFindingsResponse",
         "SetFindingStateRequest",
+        "SetMuteRequest",
         "RunAssetDiscoveryRequest",
         "UpdateFindingRequest",
+        "UpdateMuteConfigRequest",
         "UpdateNotificationConfigRequest",
         "UpdateOrganizationSettingsRequest",
         "UpdateSourceRequest",
         "UpdateSecurityMarksRequest",
     },
 )
+
+
+class BulkMuteFindingsRequest(proto.Message):
+    r"""Request message for bulk findings update.
+    Note:
+    1. If multiple bulk update requests match the same resource, the
+    order in which they get executed is not defined.
+    2. Once a bulk operation is started, there is no way to stop it.
+
+    Attributes:
+        parent (str):
+            Required. The parent, at which bulk action needs to be
+            applied. Its format is "organizations/[organization_id]",
+            "folders/[folder_id]", "projects/[project_id]".
+        filter (str):
+            Expression that identifies findings that should be updated.
+            The expression is a list of zero or more restrictions
+            combined via logical operators ``AND`` and ``OR``.
+            Parentheses are supported, and ``OR`` has higher precedence
+            than ``AND``.
+
+            Restrictions have the form ``<field> <operator> <value>``
+            and may have a ``-`` character in front of them to indicate
+            negation. The fields map to those defined in the
+            corresponding resource.
+
+            The supported operators are:
+
+            -  ``=`` for all value types.
+            -  ``>``, ``<``, ``>=``, ``<=`` for integer values.
+            -  ``:``, meaning substring matching, for strings.
+
+            The supported value types are:
+
+            -  string literals in quotes.
+            -  integer literals without quotes.
+            -  boolean literals ``true`` and ``false`` without quotes.
+        mute_annotation (str):
+            This can be a mute configuration name or any
+            identifier for mute/unmute of findings based on
+            the filter.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    filter = proto.Field(proto.STRING, number=2,)
+    mute_annotation = proto.Field(proto.STRING, number=3,)
+
+
+class BulkMuteFindingsResponse(proto.Message):
+    r"""The response to a BulkMute request. Contains the LRO
+    information.
+
+    """
 
 
 class CreateFindingRequest(proto.Message):
@@ -89,6 +152,31 @@ class CreateFindingRequest(proto.Message):
     parent = proto.Field(proto.STRING, number=1,)
     finding_id = proto.Field(proto.STRING, number=2,)
     finding = proto.Field(proto.MESSAGE, number=3, message=gcs_finding.Finding,)
+
+
+class CreateMuteConfigRequest(proto.Message):
+    r"""Request message for creating a mute config.
+
+    Attributes:
+        parent (str):
+            Required. Resource name of the new mute configs's parent.
+            Its format is "organizations/[organization_id]",
+            "folders/[folder_id]", or "projects/[project_id]".
+        mute_config (google.cloud.securitycenter_v1.types.MuteConfig):
+            Required. The mute config being created.
+        mute_config_id (str):
+            Required. Unique identifier provided by the
+            client within the parent scope. It must consist
+            of lower case letters, numbers, and hyphen, with
+            the first character a letter, the last a letter
+            or a number, and a 63 character maximum.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    mute_config = proto.Field(
+        proto.MESSAGE, number=2, message=gcs_mute_config.MuteConfig,
+    )
+    mute_config_id = proto.Field(proto.STRING, number=3,)
 
 
 class CreateNotificationConfigRequest(proto.Message):
@@ -135,6 +223,20 @@ class CreateSourceRequest(proto.Message):
     source = proto.Field(proto.MESSAGE, number=2, message=gcs_source.Source,)
 
 
+class DeleteMuteConfigRequest(proto.Message):
+    r"""Request message for deleting a mute config.
+
+    Attributes:
+        name (str):
+            Required. Name of the mute config to delete. Its format is
+            organizations/{organization}/muteConfigs/{config_id},
+            folders/{folder}/muteConfigs/{config_id}, or
+            projects/{project}/muteConfigs/{config_id}
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
 class DeleteNotificationConfigRequest(proto.Message):
     r"""Request message for deleting a notification config.
 
@@ -143,6 +245,20 @@ class DeleteNotificationConfigRequest(proto.Message):
             Required. Name of the notification config to delete. Its
             format is
             "organizations/[organization_id]/notificationConfigs/[config_id]".
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class GetMuteConfigRequest(proto.Message):
+    r"""Request message for retrieving a mute config.
+
+    Attributes:
+        name (str):
+            Required. Name of the mute config to retrieve. Its format is
+            organizations/{organization}/muteConfigs/{config_id},
+            folders/{folder}/muteConfigs/{config_id}, or
+            projects/{project}/muteConfigs/{config_id}
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -610,6 +726,57 @@ class GroupResult(proto.Message):
         proto.STRING, proto.MESSAGE, number=1, message=struct_pb2.Value,
     )
     count = proto.Field(proto.INT64, number=2,)
+
+
+class ListMuteConfigsRequest(proto.Message):
+    r"""Request message for listing  mute configs at a given scope
+    e.g. organization, folder or project.
+
+    Attributes:
+        parent (str):
+            Required. The parent, which owns the collection of mute
+            configs. Its format is "organizations/[organization_id]",
+            "folders/[folder_id]", "projects/[project_id]".
+        page_size (int):
+            The maximum number of configs to return. The
+            service may return fewer than this value.
+            If unspecified, at most 10 configs will be
+            returned. The maximum value is 1000; values
+            above 1000 will be coerced to 1000.
+        page_token (str):
+            A page token, received from a previous ``ListMuteConfigs``
+            call. Provide this to retrieve the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListMuteConfigs`` must match the call that provided the
+            page token.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
+
+
+class ListMuteConfigsResponse(proto.Message):
+    r"""Response message for listing mute configs.
+
+    Attributes:
+        mute_configs (Sequence[google.cloud.securitycenter_v1.types.MuteConfig]):
+            The mute configs from the specified parent.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    mute_configs = proto.RepeatedField(
+        proto.MESSAGE, number=1, message=gcs_mute_config.MuteConfig,
+    )
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class ListNotificationConfigsRequest(proto.Message):
@@ -1237,6 +1404,25 @@ class SetFindingStateRequest(proto.Message):
     start_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
 
 
+class SetMuteRequest(proto.Message):
+    r"""Request message for updating a finding's mute status.
+
+    Attributes:
+        name (str):
+            Required. The relative resource name of the finding. See:
+            https://cloud.google.com/apis/design/resource_names#relative_resource_name
+            Example:
+            "organizations/{organization_id}/sources/{source_id}/finding/{finding_id}",
+            "folders/{folder_id}/sources/{source_id}/finding/{finding_id}",
+            "projects/{project_id}/sources/{source_id}/finding/{finding_id}".
+        mute (google.cloud.securitycenter_v1.types.Finding.Mute):
+            Required. The desired state of the Mute.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+    mute = proto.Field(proto.ENUM, number=2, enum=gcs_finding.Finding.Mute,)
+
+
 class RunAssetDiscoveryRequest(proto.Message):
     r"""Request message for running asset discovery for an
     organization.
@@ -1278,6 +1464,25 @@ class UpdateFindingRequest(proto.Message):
     )
 
 
+class UpdateMuteConfigRequest(proto.Message):
+    r"""Request message for updating a mute config.
+
+    Attributes:
+        mute_config (google.cloud.securitycenter_v1.types.MuteConfig):
+            Required. The mute config being updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            The list of fields to be updated.
+            If empty all mutable fields will be updated.
+    """
+
+    mute_config = proto.Field(
+        proto.MESSAGE, number=1, message=gcs_mute_config.MuteConfig,
+    )
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
+
+
 class UpdateNotificationConfigRequest(proto.Message):
     r"""Request message for updating a notification config.
 
@@ -1308,7 +1513,6 @@ class UpdateOrganizationSettingsRequest(proto.Message):
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The FieldMask to use when updating the
             settings resource.
-
             If empty all mutable fields will be updated.
     """
 

@@ -102,6 +102,9 @@ class Finding(proto.Message):
             "projects/{project_number}/sources/{source_id}/findings/{finding_id}",
             depending on the closest CRM ancestor of the resource
             associated with the finding.
+        mute (google.cloud.securitycenter_v1.types.Finding.Mute):
+            Indicates the mute state of a finding (either
+            unspecified, muted, unmuted or undefined).
         finding_class (google.cloud.securitycenter_v1.types.Finding.FindingClass):
             The class of the finding.
         indicator (google.cloud.securitycenter_v1.types.Indicator):
@@ -115,6 +118,13 @@ class Finding(proto.Message):
             cve, cvss scores etc. CVE stands for Common
             Vulnerabilities and Exposures
             (https://cve.mitre.org/about/)
+        mute_update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The most recent time this
+            finding was muted or unmuted.
+        mute_initiator (str):
+            First known as mute_annotation. Records additional
+            information about the mute operation e.g. mute config that
+            muted the finding, user who muted the finding, etc.
     """
 
     class State(proto.Enum):
@@ -130,6 +140,13 @@ class Finding(proto.Message):
         HIGH = 2
         MEDIUM = 3
         LOW = 4
+
+    class Mute(proto.Enum):
+        r"""Mute state a finding can be in."""
+        MUTE_UNSPECIFIED = 0
+        MUTED = 1
+        UNMUTED = 2
+        UNDEFINED = 4
 
     class FindingClass(proto.Enum):
         r"""Represents what kind of Finding it is."""
@@ -157,11 +174,16 @@ class Finding(proto.Message):
     )
     severity = proto.Field(proto.ENUM, number=12, enum=Severity,)
     canonical_name = proto.Field(proto.STRING, number=14,)
+    mute = proto.Field(proto.ENUM, number=15, enum=Mute,)
     finding_class = proto.Field(proto.ENUM, number=17, enum=FindingClass,)
     indicator = proto.Field(proto.MESSAGE, number=18, message=gcs_indicator.Indicator,)
     vulnerability = proto.Field(
         proto.MESSAGE, number=20, message=gcs_vulnerability.Vulnerability,
     )
+    mute_update_time = proto.Field(
+        proto.MESSAGE, number=21, message=timestamp_pb2.Timestamp,
+    )
+    mute_initiator = proto.Field(proto.STRING, number=28,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

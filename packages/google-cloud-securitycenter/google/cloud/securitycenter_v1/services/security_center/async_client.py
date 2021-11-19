@@ -37,6 +37,8 @@ from google.cloud.securitycenter_v1.services.security_center import pagers
 from google.cloud.securitycenter_v1.types import finding
 from google.cloud.securitycenter_v1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1.types import indicator
+from google.cloud.securitycenter_v1.types import mute_config
+from google.cloud.securitycenter_v1.types import mute_config as gcs_mute_config
 from google.cloud.securitycenter_v1.types import notification_config
 from google.cloud.securitycenter_v1.types import (
     notification_config as gcs_notification_config,
@@ -74,6 +76,8 @@ class SecurityCenterAsyncClient:
     parse_asset_path = staticmethod(SecurityCenterClient.parse_asset_path)
     finding_path = staticmethod(SecurityCenterClient.finding_path)
     parse_finding_path = staticmethod(SecurityCenterClient.parse_finding_path)
+    mute_config_path = staticmethod(SecurityCenterClient.mute_config_path)
+    parse_mute_config_path = staticmethod(SecurityCenterClient.parse_mute_config_path)
     notification_config_path = staticmethod(
         SecurityCenterClient.notification_config_path
     )
@@ -211,6 +215,100 @@ class SecurityCenterAsyncClient:
             client_options=client_options,
             client_info=client_info,
         )
+
+    async def bulk_mute_findings(
+        self,
+        request: Union[securitycenter_service.BulkMuteFindingsRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Kicks off an LRO to bulk mute findings for a parent
+        based on a filter. The parent can be either an
+        organization, folder or project. The findings matched by
+        the filter will be muted after the LRO is done.
+
+        Args:
+            request (Union[google.cloud.securitycenter_v1.types.BulkMuteFindingsRequest, dict]):
+                The request object. Request message for bulk findings
+                update.
+                Note:
+                1. If multiple bulk update requests match the same
+                resource, the order in which they get executed is not
+                defined.
+                2. Once a bulk operation is started, there is no way to
+                stop it.
+            parent (:class:`str`):
+                Required. The parent, at which bulk action needs to be
+                applied. Its format is
+                "organizations/[organization_id]",
+                "folders/[folder_id]", "projects/[project_id]".
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.securitycenter_v1.types.BulkMuteFindingsResponse`
+                The response to a BulkMute request. Contains the LRO
+                information.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = securitycenter_service.BulkMuteFindingsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.bulk_mute_findings,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            securitycenter_service.BulkMuteFindingsResponse,
+            metadata_type=empty_pb2.Empty,
+        )
+
+        # Done; return the response.
+        return response
 
     async def create_source(
         self,
@@ -402,6 +500,103 @@ class SecurityCenterAsyncClient:
         # Done; return the response.
         return response
 
+    async def create_mute_config(
+        self,
+        request: Union[securitycenter_service.CreateMuteConfigRequest, dict] = None,
+        *,
+        parent: str = None,
+        mute_config: gcs_mute_config.MuteConfig = None,
+        mute_config_id: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gcs_mute_config.MuteConfig:
+        r"""Creates a mute config.
+
+        Args:
+            request (Union[google.cloud.securitycenter_v1.types.CreateMuteConfigRequest, dict]):
+                The request object. Request message for creating a mute
+                config.
+            parent (:class:`str`):
+                Required. Resource name of the new mute configs's
+                parent. Its format is "organizations/[organization_id]",
+                "folders/[folder_id]", or "projects/[project_id]".
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            mute_config (:class:`google.cloud.securitycenter_v1.types.MuteConfig`):
+                Required. The mute config being
+                created.
+
+                This corresponds to the ``mute_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            mute_config_id (:class:`str`):
+                Required. Unique identifier provided
+                by the client within the parent scope.
+                It must consist of lower case letters,
+                numbers, and hyphen, with the first
+                character a letter, the last a letter or
+                a number, and a 63 character maximum.
+
+                This corresponds to the ``mute_config_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycenter_v1.types.MuteConfig:
+                A mute config is a Cloud SCC resource
+                that contains the configuration to mute
+                create/update events of findings.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, mute_config, mute_config_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = securitycenter_service.CreateMuteConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if mute_config is not None:
+            request.mute_config = mute_config
+        if mute_config_id is not None:
+            request.mute_config_id = mute_config_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_mute_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
     async def create_notification_config(
         self,
         request: Union[
@@ -504,6 +699,72 @@ class SecurityCenterAsyncClient:
 
         # Done; return the response.
         return response
+
+    async def delete_mute_config(
+        self,
+        request: Union[securitycenter_service.DeleteMuteConfigRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes an existing mute config.
+
+        Args:
+            request (Union[google.cloud.securitycenter_v1.types.DeleteMuteConfigRequest, dict]):
+                The request object. Request message for deleting a mute
+                config.
+            name (:class:`str`):
+                Required. Name of the mute config to delete. Its format
+                is organizations/{organization}/muteConfigs/{config_id},
+                folders/{folder}/muteConfigs/{config_id}, or
+                projects/{project}/muteConfigs/{config_id}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = securitycenter_service.DeleteMuteConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_mute_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request, retry=retry, timeout=timeout, metadata=metadata,
+        )
 
     async def delete_notification_config(
         self,
@@ -701,6 +962,81 @@ class SecurityCenterAsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def get_mute_config(
+        self,
+        request: Union[securitycenter_service.GetMuteConfigRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> mute_config.MuteConfig:
+        r"""Gets a mute config.
+
+        Args:
+            request (Union[google.cloud.securitycenter_v1.types.GetMuteConfigRequest, dict]):
+                The request object. Request message for retrieving a
+                mute config.
+            name (:class:`str`):
+                Required. Name of the mute config to retrieve. Its
+                format is
+                organizations/{organization}/muteConfigs/{config_id},
+                folders/{folder}/muteConfigs/{config_id}, or
+                projects/{project}/muteConfigs/{config_id}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycenter_v1.types.MuteConfig:
+                A mute config is a Cloud SCC resource
+                that contains the configuration to mute
+                create/update events of findings.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = securitycenter_service.GetMuteConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_mute_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
@@ -1301,6 +1637,89 @@ class SecurityCenterAsyncClient:
         # Done; return the response.
         return response
 
+    async def list_mute_configs(
+        self,
+        request: Union[securitycenter_service.ListMuteConfigsRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListMuteConfigsAsyncPager:
+        r"""Lists mute configs.
+
+        Args:
+            request (Union[google.cloud.securitycenter_v1.types.ListMuteConfigsRequest, dict]):
+                The request object. Request message for listing  mute
+                configs at a given scope e.g. organization, folder or
+                project.
+            parent (:class:`str`):
+                Required. The parent, which owns the collection of mute
+                configs. Its format is
+                "organizations/[organization_id]",
+                "folders/[folder_id]", "projects/[project_id]".
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycenter_v1.services.security_center.pagers.ListMuteConfigsAsyncPager:
+                Response message for listing mute
+                configs.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = securitycenter_service.ListMuteConfigsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_mute_configs,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListMuteConfigsAsyncPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def list_notification_configs(
         self,
         request: Union[
@@ -1673,6 +2092,99 @@ class SecurityCenterAsyncClient:
         # Done; return the response.
         return response
 
+    async def set_mute(
+        self,
+        request: Union[securitycenter_service.SetMuteRequest, dict] = None,
+        *,
+        name: str = None,
+        mute: finding.Finding.Mute = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> finding.Finding:
+        r"""Updates the mute state of a finding.
+
+        Args:
+            request (Union[google.cloud.securitycenter_v1.types.SetMuteRequest, dict]):
+                The request object. Request message for updating a
+                finding's mute status.
+            name (:class:`str`):
+                Required. The relative resource name of the finding.
+                See:
+                https://cloud.google.com/apis/design/resource_names#relative_resource_name
+                Example:
+                "organizations/{organization_id}/sources/{source_id}/finding/{finding_id}",
+                "folders/{folder_id}/sources/{source_id}/finding/{finding_id}",
+                "projects/{project_id}/sources/{source_id}/finding/{finding_id}".
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            mute (:class:`google.cloud.securitycenter_v1.types.Finding.Mute`):
+                Required. The desired state of the
+                Mute.
+
+                This corresponds to the ``mute`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycenter_v1.types.Finding:
+                Security Command Center finding.
+                A finding is a record of assessment data
+                like security, risk, health, or privacy,
+                that is ingested into Security Command
+                Center for presentation, notification,
+                analysis, policy testing, and
+                enforcement. For example, a cross-site
+                scripting (XSS) vulnerability in an App
+                Engine application is a finding.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name, mute])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = securitycenter_service.SetMuteRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+        if mute is not None:
+            request.mute = mute
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.set_mute,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
     async def set_iam_policy(
         self,
         request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
@@ -1971,6 +2483,91 @@ class SecurityCenterAsyncClient:
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
                 (("finding.name", request.finding.name),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def update_mute_config(
+        self,
+        request: Union[securitycenter_service.UpdateMuteConfigRequest, dict] = None,
+        *,
+        mute_config: gcs_mute_config.MuteConfig = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gcs_mute_config.MuteConfig:
+        r"""Updates a mute config.
+
+        Args:
+            request (Union[google.cloud.securitycenter_v1.types.UpdateMuteConfigRequest, dict]):
+                The request object. Request message for updating a mute
+                config.
+            mute_config (:class:`google.cloud.securitycenter_v1.types.MuteConfig`):
+                Required. The mute config being
+                updated.
+
+                This corresponds to the ``mute_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                The list of fields to be updated.
+                If empty all mutable fields will be
+                updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycenter_v1.types.MuteConfig:
+                A mute config is a Cloud SCC resource
+                that contains the configuration to mute
+                create/update events of findings.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([mute_config, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = securitycenter_service.UpdateMuteConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if mute_config is not None:
+            request.mute_config = mute_config
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_mute_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("mute_config.name", request.mute_config.name),)
             ),
         )
 

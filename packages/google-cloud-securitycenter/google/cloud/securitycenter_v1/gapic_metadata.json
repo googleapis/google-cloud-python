@@ -10,9 +10,19 @@
         "grpc": {
           "libraryClient": "SecurityCenterClient",
           "rpcs": {
+            "BulkMuteFindings": {
+              "methods": [
+                "bulk_mute_findings"
+              ]
+            },
             "CreateFinding": {
               "methods": [
                 "create_finding"
+              ]
+            },
+            "CreateMuteConfig": {
+              "methods": [
+                "create_mute_config"
               ]
             },
             "CreateNotificationConfig": {
@@ -25,6 +35,11 @@
                 "create_source"
               ]
             },
+            "DeleteMuteConfig": {
+              "methods": [
+                "delete_mute_config"
+              ]
+            },
             "DeleteNotificationConfig": {
               "methods": [
                 "delete_notification_config"
@@ -33,6 +48,11 @@
             "GetIamPolicy": {
               "methods": [
                 "get_iam_policy"
+              ]
+            },
+            "GetMuteConfig": {
+              "methods": [
+                "get_mute_config"
               ]
             },
             "GetNotificationConfig": {
@@ -70,6 +90,11 @@
                 "list_findings"
               ]
             },
+            "ListMuteConfigs": {
+              "methods": [
+                "list_mute_configs"
+              ]
+            },
             "ListNotificationConfigs": {
               "methods": [
                 "list_notification_configs"
@@ -95,6 +120,11 @@
                 "set_iam_policy"
               ]
             },
+            "SetMute": {
+              "methods": [
+                "set_mute"
+              ]
+            },
             "TestIamPermissions": {
               "methods": [
                 "test_iam_permissions"
@@ -103,6 +133,11 @@
             "UpdateFinding": {
               "methods": [
                 "update_finding"
+              ]
+            },
+            "UpdateMuteConfig": {
+              "methods": [
+                "update_mute_config"
               ]
             },
             "UpdateNotificationConfig": {
@@ -130,9 +165,19 @@
         "grpc-async": {
           "libraryClient": "SecurityCenterAsyncClient",
           "rpcs": {
+            "BulkMuteFindings": {
+              "methods": [
+                "bulk_mute_findings"
+              ]
+            },
             "CreateFinding": {
               "methods": [
                 "create_finding"
+              ]
+            },
+            "CreateMuteConfig": {
+              "methods": [
+                "create_mute_config"
               ]
             },
             "CreateNotificationConfig": {
@@ -145,6 +190,11 @@
                 "create_source"
               ]
             },
+            "DeleteMuteConfig": {
+              "methods": [
+                "delete_mute_config"
+              ]
+            },
             "DeleteNotificationConfig": {
               "methods": [
                 "delete_notification_config"
@@ -153,6 +203,11 @@
             "GetIamPolicy": {
               "methods": [
                 "get_iam_policy"
+              ]
+            },
+            "GetMuteConfig": {
+              "methods": [
+                "get_mute_config"
               ]
             },
             "GetNotificationConfig": {
@@ -190,6 +245,11 @@
                 "list_findings"
               ]
             },
+            "ListMuteConfigs": {
+              "methods": [
+                "list_mute_configs"
+              ]
+            },
             "ListNotificationConfigs": {
               "methods": [
                 "list_notification_configs"
@@ -215,6 +275,11 @@
                 "set_iam_policy"
               ]
             },
+            "SetMute": {
+              "methods": [
+                "set_mute"
+              ]
+            },
             "TestIamPermissions": {
               "methods": [
                 "test_iam_permissions"
@@ -223,6 +288,11 @@
             "UpdateFinding": {
               "methods": [
                 "update_finding"
+              ]
+            },
+            "UpdateMuteConfig": {
+              "methods": [
+                "update_mute_config"
               ]
             },
             "UpdateNotificationConfig": {

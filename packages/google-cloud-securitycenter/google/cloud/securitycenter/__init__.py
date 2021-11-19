@@ -25,6 +25,7 @@ from google.cloud.securitycenter_v1.types.asset import Asset
 from google.cloud.securitycenter_v1.types.finding import Finding
 from google.cloud.securitycenter_v1.types.folder import Folder
 from google.cloud.securitycenter_v1.types.indicator import Indicator
+from google.cloud.securitycenter_v1.types.mute_config import MuteConfig
 from google.cloud.securitycenter_v1.types.notification_config import NotificationConfig
 from google.cloud.securitycenter_v1.types.notification_message import (
     NotificationMessage,
@@ -38,7 +39,16 @@ from google.cloud.securitycenter_v1.types.run_asset_discovery_response import (
 )
 from google.cloud.securitycenter_v1.types.security_marks import SecurityMarks
 from google.cloud.securitycenter_v1.types.securitycenter_service import (
+    BulkMuteFindingsRequest,
+)
+from google.cloud.securitycenter_v1.types.securitycenter_service import (
+    BulkMuteFindingsResponse,
+)
+from google.cloud.securitycenter_v1.types.securitycenter_service import (
     CreateFindingRequest,
+)
+from google.cloud.securitycenter_v1.types.securitycenter_service import (
+    CreateMuteConfigRequest,
 )
 from google.cloud.securitycenter_v1.types.securitycenter_service import (
     CreateNotificationConfigRequest,
@@ -47,7 +57,13 @@ from google.cloud.securitycenter_v1.types.securitycenter_service import (
     CreateSourceRequest,
 )
 from google.cloud.securitycenter_v1.types.securitycenter_service import (
+    DeleteMuteConfigRequest,
+)
+from google.cloud.securitycenter_v1.types.securitycenter_service import (
     DeleteNotificationConfigRequest,
+)
+from google.cloud.securitycenter_v1.types.securitycenter_service import (
+    GetMuteConfigRequest,
 )
 from google.cloud.securitycenter_v1.types.securitycenter_service import (
     GetNotificationConfigRequest,
@@ -82,6 +98,12 @@ from google.cloud.securitycenter_v1.types.securitycenter_service import (
     ListFindingsResponse,
 )
 from google.cloud.securitycenter_v1.types.securitycenter_service import (
+    ListMuteConfigsRequest,
+)
+from google.cloud.securitycenter_v1.types.securitycenter_service import (
+    ListMuteConfigsResponse,
+)
+from google.cloud.securitycenter_v1.types.securitycenter_service import (
     ListNotificationConfigsRequest,
 )
 from google.cloud.securitycenter_v1.types.securitycenter_service import (
@@ -99,8 +121,12 @@ from google.cloud.securitycenter_v1.types.securitycenter_service import (
 from google.cloud.securitycenter_v1.types.securitycenter_service import (
     SetFindingStateRequest,
 )
+from google.cloud.securitycenter_v1.types.securitycenter_service import SetMuteRequest
 from google.cloud.securitycenter_v1.types.securitycenter_service import (
     UpdateFindingRequest,
+)
+from google.cloud.securitycenter_v1.types.securitycenter_service import (
+    UpdateMuteConfigRequest,
 )
 from google.cloud.securitycenter_v1.types.securitycenter_service import (
     UpdateNotificationConfigRequest,
@@ -127,16 +153,22 @@ __all__ = (
     "Finding",
     "Folder",
     "Indicator",
+    "MuteConfig",
     "NotificationConfig",
     "NotificationMessage",
     "OrganizationSettings",
     "Resource",
     "RunAssetDiscoveryResponse",
     "SecurityMarks",
+    "BulkMuteFindingsRequest",
+    "BulkMuteFindingsResponse",
     "CreateFindingRequest",
+    "CreateMuteConfigRequest",
     "CreateNotificationConfigRequest",
     "CreateSourceRequest",
+    "DeleteMuteConfigRequest",
     "DeleteNotificationConfigRequest",
+    "GetMuteConfigRequest",
     "GetNotificationConfigRequest",
     "GetOrganizationSettingsRequest",
     "GetSourceRequest",
@@ -149,13 +181,17 @@ __all__ = (
     "ListAssetsResponse",
     "ListFindingsRequest",
     "ListFindingsResponse",
+    "ListMuteConfigsRequest",
+    "ListMuteConfigsResponse",
     "ListNotificationConfigsRequest",
     "ListNotificationConfigsResponse",
     "ListSourcesRequest",
     "ListSourcesResponse",
     "RunAssetDiscoveryRequest",
     "SetFindingStateRequest",
+    "SetMuteRequest",
     "UpdateFindingRequest",
+    "UpdateMuteConfigRequest",
     "UpdateNotificationConfigRequest",
     "UpdateOrganizationSettingsRequest",
     "UpdateSecurityMarksRequest",

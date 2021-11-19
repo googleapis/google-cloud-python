@@ -27,6 +27,8 @@ import grpc  # type: ignore
 
 from google.cloud.securitycenter_v1.types import finding
 from google.cloud.securitycenter_v1.types import finding as gcs_finding
+from google.cloud.securitycenter_v1.types import mute_config
+from google.cloud.securitycenter_v1.types import mute_config as gcs_mute_config
 from google.cloud.securitycenter_v1.types import notification_config
 from google.cloud.securitycenter_v1.types import (
     notification_config as gcs_notification_config,
@@ -259,6 +261,37 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         return self._operations_client
 
     @property
+    def bulk_mute_findings(
+        self,
+    ) -> Callable[
+        [securitycenter_service.BulkMuteFindingsRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the bulk mute findings method over gRPC.
+
+        Kicks off an LRO to bulk mute findings for a parent
+        based on a filter. The parent can be either an
+        organization, folder or project. The findings matched by
+        the filter will be muted after the LRO is done.
+
+        Returns:
+            Callable[[~.BulkMuteFindingsRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "bulk_mute_findings" not in self._stubs:
+            self._stubs["bulk_mute_findings"] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/BulkMuteFindings",
+                request_serializer=securitycenter_service.BulkMuteFindingsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["bulk_mute_findings"]
+
+    @property
     def create_source(
         self,
     ) -> Callable[[securitycenter_service.CreateSourceRequest], gcs_source.Source]:
@@ -312,6 +345,34 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         return self._stubs["create_finding"]
 
     @property
+    def create_mute_config(
+        self,
+    ) -> Callable[
+        [securitycenter_service.CreateMuteConfigRequest], gcs_mute_config.MuteConfig
+    ]:
+        r"""Return a callable for the create mute config method over gRPC.
+
+        Creates a mute config.
+
+        Returns:
+            Callable[[~.CreateMuteConfigRequest],
+                    ~.MuteConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_mute_config" not in self._stubs:
+            self._stubs["create_mute_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/CreateMuteConfig",
+                request_serializer=securitycenter_service.CreateMuteConfigRequest.serialize,
+                response_deserializer=gcs_mute_config.MuteConfig.deserialize,
+            )
+        return self._stubs["create_mute_config"]
+
+    @property
     def create_notification_config(
         self,
     ) -> Callable[
@@ -339,6 +400,32 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
                 response_deserializer=gcs_notification_config.NotificationConfig.deserialize,
             )
         return self._stubs["create_notification_config"]
+
+    @property
+    def delete_mute_config(
+        self,
+    ) -> Callable[[securitycenter_service.DeleteMuteConfigRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete mute config method over gRPC.
+
+        Deletes an existing mute config.
+
+        Returns:
+            Callable[[~.DeleteMuteConfigRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_mute_config" not in self._stubs:
+            self._stubs["delete_mute_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/DeleteMuteConfig",
+                request_serializer=securitycenter_service.DeleteMuteConfigRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_mute_config"]
 
     @property
     def delete_notification_config(
@@ -394,6 +481,34 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
                 response_deserializer=policy_pb2.Policy.FromString,
             )
         return self._stubs["get_iam_policy"]
+
+    @property
+    def get_mute_config(
+        self,
+    ) -> Callable[
+        [securitycenter_service.GetMuteConfigRequest], mute_config.MuteConfig
+    ]:
+        r"""Return a callable for the get mute config method over gRPC.
+
+        Gets a mute config.
+
+        Returns:
+            Callable[[~.GetMuteConfigRequest],
+                    ~.MuteConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_mute_config" not in self._stubs:
+            self._stubs["get_mute_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/GetMuteConfig",
+                request_serializer=securitycenter_service.GetMuteConfigRequest.serialize,
+                response_deserializer=mute_config.MuteConfig.deserialize,
+            )
+        return self._stubs["get_mute_config"]
 
     @property
     def get_notification_config(
@@ -606,6 +721,35 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         return self._stubs["list_findings"]
 
     @property
+    def list_mute_configs(
+        self,
+    ) -> Callable[
+        [securitycenter_service.ListMuteConfigsRequest],
+        securitycenter_service.ListMuteConfigsResponse,
+    ]:
+        r"""Return a callable for the list mute configs method over gRPC.
+
+        Lists mute configs.
+
+        Returns:
+            Callable[[~.ListMuteConfigsRequest],
+                    ~.ListMuteConfigsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_mute_configs" not in self._stubs:
+            self._stubs["list_mute_configs"] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/ListMuteConfigs",
+                request_serializer=securitycenter_service.ListMuteConfigsRequest.serialize,
+                response_deserializer=securitycenter_service.ListMuteConfigsResponse.deserialize,
+            )
+        return self._stubs["list_mute_configs"]
+
+    @property
     def list_notification_configs(
         self,
     ) -> Callable[
@@ -723,6 +867,32 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         return self._stubs["set_finding_state"]
 
     @property
+    def set_mute(
+        self,
+    ) -> Callable[[securitycenter_service.SetMuteRequest], finding.Finding]:
+        r"""Return a callable for the set mute method over gRPC.
+
+        Updates the mute state of a finding.
+
+        Returns:
+            Callable[[~.SetMuteRequest],
+                    ~.Finding]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "set_mute" not in self._stubs:
+            self._stubs["set_mute"] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/SetMute",
+                request_serializer=securitycenter_service.SetMuteRequest.serialize,
+                response_deserializer=finding.Finding.deserialize,
+            )
+        return self._stubs["set_mute"]
+
+    @property
     def set_iam_policy(
         self,
     ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
@@ -805,6 +975,34 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
                 response_deserializer=gcs_finding.Finding.deserialize,
             )
         return self._stubs["update_finding"]
+
+    @property
+    def update_mute_config(
+        self,
+    ) -> Callable[
+        [securitycenter_service.UpdateMuteConfigRequest], gcs_mute_config.MuteConfig
+    ]:
+        r"""Return a callable for the update mute config method over gRPC.
+
+        Updates a mute config.
+
+        Returns:
+            Callable[[~.UpdateMuteConfigRequest],
+                    ~.MuteConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_mute_config" not in self._stubs:
+            self._stubs["update_mute_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/UpdateMuteConfig",
+                request_serializer=securitycenter_service.UpdateMuteConfigRequest.serialize,
+                response_deserializer=gcs_mute_config.MuteConfig.deserialize,
+            )
+        return self._stubs["update_mute_config"]
 
     @property
     def update_notification_config(
