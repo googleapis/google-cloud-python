@@ -71,12 +71,4 @@ s.move(templated_files)
 
 python.py_samples(skip_readmes=True)
 
-# This is being added to AutoML because the proto comments are long and
-# regex replaces are a brittle temporary solution.
-s.replace(
-"noxfile.py",
-""""-W",  # warnings as errors
-\s+"-T",  \# show full traceback on exception""",
-""""-T",  # show full traceback on exception""")
-
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
