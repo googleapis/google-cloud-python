@@ -1840,6 +1840,25 @@ class Test_EmptyRowIterator(unittest.TestCase):
         self.assertIsInstance(tbl, pyarrow.Table)
         self.assertEqual(tbl.num_rows, 0)
 
+    @mock.patch("google.cloud.bigquery.table.pyarrow", new=None)
+    def test_to_arrow_iterable_error_if_pyarrow_is_none(self):
+        row_iterator = self._make_one()
+        with self.assertRaises(ValueError):
+            row_iterator.to_arrow_iterable()
+
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_to_arrow_iterable(self):
+        row_iterator = self._make_one()
+        arrow_iter = row_iterator.to_arrow_iterable()
+
+        result = list(arrow_iter)
+
+        self.assertEqual(len(result), 1)
+        record_batch = result[0]
+        self.assertIsInstance(record_batch, pyarrow.RecordBatch)
+        self.assertEqual(record_batch.num_rows, 0)
+        self.assertEqual(record_batch.num_columns, 0)
+
     @mock.patch("google.cloud.bigquery.table.pandas", new=None)
     def test_to_dataframe_error_if_pandas_is_none(self):
         row_iterator = self._make_one()
@@ -2150,6 +2169,205 @@ class TestRowIterator(unittest.TestCase):
             warning for warning in warned if "BQ Storage too old" in str(warning)
         ]
         assert matching_warnings, "Obsolete dependency warning not raised."
+
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_to_arrow_iterable(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        schema = [
+            SchemaField("name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INTEGER", mode="REQUIRED"),
+            SchemaField(
+                "child",
+                "RECORD",
+                mode="REPEATED",
+                fields=[
+                    SchemaField("name", "STRING", mode="REQUIRED"),
+                    SchemaField("age", "INTEGER", mode="REQUIRED"),
+                ],
+            ),
+        ]
+        rows = [
+            {
+                "f": [
+                    {"v": "Bharney Rhubble"},
+                    {"v": "33"},
+                    {
+                        "v": [
+                            {"v": {"f": [{"v": "Whamm-Whamm Rhubble"}, {"v": "3"}]}},
+                            {"v": {"f": [{"v": "Hoppy"}, {"v": "1"}]}},
+                        ]
+                    },
+                ]
+            },
+            {
+                "f": [
+                    {"v": "Wylma Phlyntstone"},
+                    {"v": "29"},
+                    {
+                        "v": [
+                            {"v": {"f": [{"v": "Bepples Phlyntstone"}, {"v": "0"}]}},
+                            {"v": {"f": [{"v": "Dino"}, {"v": "4"}]}},
+                        ]
+                    },
+                ]
+            },
+        ]
+        path = "/foo"
+        api_request = mock.Mock(
+            side_effect=[
+                {"rows": [rows[0]], "pageToken": "NEXTPAGE"},
+                {"rows": [rows[1]]},
+            ]
+        )
+        row_iterator = self._make_one(
+            _mock_client(), api_request, path, schema, page_size=1, max_results=5
+        )
+
+        record_batches = row_iterator.to_arrow_iterable()
+        self.assertIsInstance(record_batches, types.GeneratorType)
+        record_batches = list(record_batches)
+        self.assertEqual(len(record_batches), 2)
+
+        # Check the schema.
+        for record_batch in record_batches:
+            self.assertIsInstance(record_batch, pyarrow.RecordBatch)
+            self.assertEqual(record_batch.schema[0].name, "name")
+            self.assertTrue(pyarrow.types.is_string(record_batch.schema[0].type))
+            self.assertEqual(record_batch.schema[1].name, "age")
+            self.assertTrue(pyarrow.types.is_int64(record_batch.schema[1].type))
+            child_field = record_batch.schema[2]
+            self.assertEqual(child_field.name, "child")
+            self.assertTrue(pyarrow.types.is_list(child_field.type))
+            self.assertTrue(pyarrow.types.is_struct(child_field.type.value_type))
+            self.assertEqual(child_field.type.value_type[0].name, "name")
+            self.assertEqual(child_field.type.value_type[1].name, "age")
+
+        # Check the data.
+        record_batch_1 = record_batches[0].to_pydict()
+        names = record_batch_1["name"]
+        ages = record_batch_1["age"]
+        children = record_batch_1["child"]
+        self.assertEqual(names, ["Bharney Rhubble"])
+        self.assertEqual(ages, [33])
+        self.assertEqual(
+            children,
+            [
+                [
+                    {"name": "Whamm-Whamm Rhubble", "age": 3},
+                    {"name": "Hoppy", "age": 1},
+                ],
+            ],
+        )
+
+        record_batch_2 = record_batches[1].to_pydict()
+        names = record_batch_2["name"]
+        ages = record_batch_2["age"]
+        children = record_batch_2["child"]
+        self.assertEqual(names, ["Wylma Phlyntstone"])
+        self.assertEqual(ages, [29])
+        self.assertEqual(
+            children,
+            [[{"name": "Bepples Phlyntstone", "age": 0}, {"name": "Dino", "age": 4}]],
+        )
+
+    @mock.patch("google.cloud.bigquery.table.pyarrow", new=None)
+    def test_to_arrow_iterable_error_if_pyarrow_is_none(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        schema = [
+            SchemaField("name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INTEGER", mode="REQUIRED"),
+        ]
+        rows = [
+            {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
+            {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]},
+        ]
+        path = "/foo"
+        api_request = mock.Mock(return_value={"rows": rows})
+        row_iterator = self._make_one(_mock_client(), api_request, path, schema)
+
+        with pytest.raises(ValueError, match="pyarrow"):
+            row_iterator.to_arrow_iterable()
+
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    @unittest.skipIf(
+        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
+    )
+    def test_to_arrow_iterable_w_bqstorage(self):
+        from google.cloud.bigquery import schema
+        from google.cloud.bigquery import table as mut
+        from google.cloud.bigquery_storage_v1 import reader
+
+        bqstorage_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
+        bqstorage_client._transport = mock.create_autospec(
+            big_query_read_grpc_transport.BigQueryReadGrpcTransport
+        )
+        streams = [
+            # Use two streams we want to check frames are read from each stream.
+            {"name": "/projects/proj/dataset/dset/tables/tbl/streams/1234"},
+            {"name": "/projects/proj/dataset/dset/tables/tbl/streams/5678"},
+        ]
+        session = bigquery_storage.types.ReadSession(streams=streams)
+        arrow_schema = pyarrow.schema(
+            [
+                pyarrow.field("colA", pyarrow.int64()),
+                # Not alphabetical to test column order.
+                pyarrow.field("colC", pyarrow.float64()),
+                pyarrow.field("colB", pyarrow.string()),
+            ]
+        )
+        session.arrow_schema.serialized_schema = arrow_schema.serialize().to_pybytes()
+        bqstorage_client.create_read_session.return_value = session
+
+        mock_rowstream = mock.create_autospec(reader.ReadRowsStream)
+        bqstorage_client.read_rows.return_value = mock_rowstream
+
+        mock_rows = mock.create_autospec(reader.ReadRowsIterable)
+        mock_rowstream.rows.return_value = mock_rows
+        page_items = [
+            pyarrow.array([1, -1]),
+            pyarrow.array([2.0, 4.0]),
+            pyarrow.array(["abc", "def"]),
+        ]
+
+        expected_record_batch = pyarrow.RecordBatch.from_arrays(
+            page_items, schema=arrow_schema
+        )
+        expected_num_record_batches = 3
+
+        mock_page = mock.create_autospec(reader.ReadRowsPage)
+        mock_page.to_arrow.return_value = expected_record_batch
+        mock_pages = (mock_page,) * expected_num_record_batches
+        type(mock_rows).pages = mock.PropertyMock(return_value=mock_pages)
+
+        schema = [
+            schema.SchemaField("colA", "INTEGER"),
+            schema.SchemaField("colC", "FLOAT"),
+            schema.SchemaField("colB", "STRING"),
+        ]
+
+        row_iterator = mut.RowIterator(
+            _mock_client(),
+            None,  # api_request: ignored
+            None,  # path: ignored
+            schema,
+            table=mut.TableReference.from_string("proj.dset.tbl"),
+            selected_fields=schema,
+        )
+
+        record_batches = list(
+            row_iterator.to_arrow_iterable(bqstorage_client=bqstorage_client)
+        )
+        total_record_batches = len(streams) * len(mock_pages)
+        self.assertEqual(len(record_batches), total_record_batches)
+
+        for record_batch in record_batches:
+            # Are the record batches return as expected?
+            self.assertEqual(record_batch, expected_record_batch)
+
+        # Don't close the client if it was passed in.
+        bqstorage_client._transport.grpc_channel.close.assert_not_called()
 
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_arrow(self):

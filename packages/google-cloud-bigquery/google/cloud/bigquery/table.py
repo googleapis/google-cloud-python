@@ -1629,8 +1629,49 @@ class RowIterator(HTTPIterator):
         )
         yield from result_pages
 
-    def _to_arrow_iterable(self, bqstorage_client=None):
-        """Create an iterable of arrow RecordBatches, to process the table as a stream."""
+    def to_arrow_iterable(
+        self,
+        bqstorage_client: "bigquery_storage.BigQueryReadClient" = None,
+        max_queue_size: int = _pandas_helpers._MAX_QUEUE_SIZE_DEFAULT,  # type: ignore
+    ) -> Iterator["pyarrow.RecordBatch"]:
+        """[Beta] Create an iterable of class:`pyarrow.RecordBatch`, to process the table as a stream.
+
+        Args:
+            bqstorage_client (Optional[google.cloud.bigquery_storage_v1.BigQueryReadClient]):
+                A BigQuery Storage API client. If supplied, use the faster
+                BigQuery Storage API to fetch rows from BigQuery.
+
+                This method requires the ``pyarrow`` and
+                ``google-cloud-bigquery-storage`` libraries.
+
+                This method only exposes a subset of the capabilities of the
+                BigQuery Storage API. For full access to all features
+                (projections, filters, snapshots) use the Storage API directly.
+
+            max_queue_size (Optional[int]):
+                The maximum number of result pages to hold in the internal queue when
+                streaming query results over the BigQuery Storage API. Ignored if
+                Storage API is not used.
+
+                By default, the max queue size is set to the number of BQ Storage streams
+                created by the server. If ``max_queue_size`` is :data:`None`, the queue
+                size is infinite.
+
+        Returns:
+            pyarrow.RecordBatch:
+                A generator of :class:`~pyarrow.RecordBatch`.
+
+        Raises:
+            ValueError:
+                If the :mod:`pyarrow` library cannot be imported.
+
+        .. versionadded:: 2.31.0
+        """
+        if pyarrow is None:
+            raise ValueError(_NO_PYARROW_ERROR)
+
+        self._maybe_warn_max_results(bqstorage_client)
+
         bqstorage_download = functools.partial(
             _pandas_helpers.download_arrow_bqstorage,
             self._project,
@@ -1638,6 +1679,7 @@ class RowIterator(HTTPIterator):
             bqstorage_client,
             preserve_order=self._preserve_order,
             selected_fields=self._selected_fields,
+            max_queue_size=max_queue_size,
         )
         tabledata_list_download = functools.partial(
             _pandas_helpers.download_arrow_row_iterator, iter(self.pages), self.schema
@@ -1729,7 +1771,7 @@ class RowIterator(HTTPIterator):
             )
 
             record_batches = []
-            for record_batch in self._to_arrow_iterable(
+            for record_batch in self.to_arrow_iterable(
                 bqstorage_client=bqstorage_client
             ):
                 record_batches.append(record_batch)
@@ -2224,6 +2266,33 @@ class _EmptyRowIterator(RowIterator):
         if pandas is None:
             raise ValueError(_NO_PANDAS_ERROR)
         return iter((pandas.DataFrame(),))
+
+    def to_arrow_iterable(
+        self,
+        bqstorage_client: Optional["bigquery_storage.BigQueryReadClient"] = None,
+        max_queue_size: Optional[int] = None,
+    ) -> Iterator["pyarrow.RecordBatch"]:
+        """Create an iterable of pandas DataFrames, to process the table as a stream.
+
+        .. versionadded:: 2.31.0
+
+        Args:
+            bqstorage_client:
+                Ignored. Added for compatibility with RowIterator.
+
+            max_queue_size:
+                Ignored. Added for compatibility with RowIterator.
+
+        Returns:
+            An iterator yielding a single empty :class:`~pyarrow.RecordBatch`.
+
+        Raises:
+            ValueError:
+                If the :mod:`pyarrow` library cannot be imported.
+        """
+        if pyarrow is None:
+            raise ValueError(_NO_PYARROW_ERROR)
+        return iter((pyarrow.record_batch([]),))
 
     def __iter__(self):
         return iter(())
