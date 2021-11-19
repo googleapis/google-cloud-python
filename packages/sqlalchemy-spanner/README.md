@@ -157,6 +157,29 @@ eng = create_engine("spanner:///projects/project-id/instances/instance-id/databa
 autocommit_engine = eng.execution_options(isolation_level="AUTOCOMMIT")
 ```
 
+### Query hints  
+Spanner dialect supports [query hints](https://cloud.google.com/spanner/docs/query-syntax#table_hints), which give the ability to set additional query execution parameters. Usage example:
+```python
+session = Session(engine)
+
+Base = declarative_base()
+
+class User(Base):
+    """Data model."""
+
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50))
+
+
+query = session.query(User)
+query = query.with_hint(
+    selectable=User, text="@{FORCE_INDEX=index_name}"
+)
+query = query.filter(User.name.in_(["val1", "val2"]))
+query.statement.compile(session.bind)
+```
+
 ### ReadOnly transactions 
 By default, transactions produced by a Spanner connection are in ReadWrite mode. However, some applications require an ability to grant ReadOnly access to users/methods; for these cases Spanner dialect supports the `read_only` execution option, which switches a connection into ReadOnly mode:
 ```python
