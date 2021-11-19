@@ -40,6 +40,8 @@ from google.cloud.securitycenter_v1.services.security_center import (
 from google.cloud.securitycenter_v1.services.security_center import SecurityCenterClient
 from google.cloud.securitycenter_v1.services.security_center import pagers
 from google.cloud.securitycenter_v1.services.security_center import transports
+from google.cloud.securitycenter_v1.types import external_system
+from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v1.types import finding
 from google.cloud.securitycenter_v1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1.types import indicator
@@ -7032,6 +7034,266 @@ async def test_test_iam_permissions_flattened_error_async():
         )
 
 
+def test_update_external_system(
+    transport: str = "grpc",
+    request_type=securitycenter_service.UpdateExternalSystemRequest,
+):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_external_system), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcs_external_system.ExternalSystem(
+            name="name_value",
+            assignees=["assignees_value"],
+            external_uid="external_uid_value",
+            status="status_value",
+        )
+        response = client.update_external_system(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.UpdateExternalSystemRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcs_external_system.ExternalSystem)
+    assert response.name == "name_value"
+    assert response.assignees == ["assignees_value"]
+    assert response.external_uid == "external_uid_value"
+    assert response.status == "status_value"
+
+
+def test_update_external_system_from_dict():
+    test_update_external_system(request_type=dict)
+
+
+def test_update_external_system_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_external_system), "__call__"
+    ) as call:
+        client.update_external_system()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.UpdateExternalSystemRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_external_system_async(
+    transport: str = "grpc_asyncio",
+    request_type=securitycenter_service.UpdateExternalSystemRequest,
+):
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_external_system), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_external_system.ExternalSystem(
+                name="name_value",
+                assignees=["assignees_value"],
+                external_uid="external_uid_value",
+                status="status_value",
+            )
+        )
+        response = await client.update_external_system(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.UpdateExternalSystemRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcs_external_system.ExternalSystem)
+    assert response.name == "name_value"
+    assert response.assignees == ["assignees_value"]
+    assert response.external_uid == "external_uid_value"
+    assert response.status == "status_value"
+
+
+@pytest.mark.asyncio
+async def test_update_external_system_async_from_dict():
+    await test_update_external_system_async(request_type=dict)
+
+
+def test_update_external_system_field_headers():
+    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.UpdateExternalSystemRequest()
+
+    request.external_system.name = "external_system.name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_external_system), "__call__"
+    ) as call:
+        call.return_value = gcs_external_system.ExternalSystem()
+        client.update_external_system(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "external_system.name=external_system.name/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_external_system_field_headers_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = securitycenter_service.UpdateExternalSystemRequest()
+
+    request.external_system.name = "external_system.name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_external_system), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_external_system.ExternalSystem()
+        )
+        await client.update_external_system(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "external_system.name=external_system.name/value",
+    ) in kw["metadata"]
+
+
+def test_update_external_system_flattened():
+    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_external_system), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcs_external_system.ExternalSystem()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_external_system(
+            external_system=gcs_external_system.ExternalSystem(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].external_system
+        mock_val = gcs_external_system.ExternalSystem(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_external_system_flattened_error():
+    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_external_system(
+            securitycenter_service.UpdateExternalSystemRequest(),
+            external_system=gcs_external_system.ExternalSystem(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_external_system_flattened_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_external_system), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcs_external_system.ExternalSystem()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_external_system.ExternalSystem()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_external_system(
+            external_system=gcs_external_system.ExternalSystem(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].external_system
+        mock_val = gcs_external_system.ExternalSystem(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_external_system_flattened_error_async():
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_external_system(
+            securitycenter_service.UpdateExternalSystemRequest(),
+            external_system=gcs_external_system.ExternalSystem(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
 def test_update_finding(
     transport: str = "grpc", request_type=securitycenter_service.UpdateFindingRequest
 ):
@@ -8651,6 +8913,7 @@ def test_security_center_base_transport():
         "set_mute",
         "set_iam_policy",
         "test_iam_permissions",
+        "update_external_system",
         "update_finding",
         "update_mute_config",
         "update_notification_config",
@@ -9006,10 +9269,41 @@ def test_parse_asset_path():
     assert expected == actual
 
 
-def test_finding_path():
+def test_external_system_path():
     organization = "oyster"
     source = "nudibranch"
     finding = "cuttlefish"
+    externalsystem = "mussel"
+    expected = "organizations/{organization}/sources/{source}/findings/{finding}/externalSystems/{externalsystem}".format(
+        organization=organization,
+        source=source,
+        finding=finding,
+        externalsystem=externalsystem,
+    )
+    actual = SecurityCenterClient.external_system_path(
+        organization, source, finding, externalsystem
+    )
+    assert expected == actual
+
+
+def test_parse_external_system_path():
+    expected = {
+        "organization": "winkle",
+        "source": "nautilus",
+        "finding": "scallop",
+        "externalsystem": "abalone",
+    }
+    path = SecurityCenterClient.external_system_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SecurityCenterClient.parse_external_system_path(path)
+    assert expected == actual
+
+
+def test_finding_path():
+    organization = "squid"
+    source = "clam"
+    finding = "whelk"
     expected = "organizations/{organization}/sources/{source}/findings/{finding}".format(
         organization=organization, source=source, finding=finding,
     )
@@ -9019,9 +9313,9 @@ def test_finding_path():
 
 def test_parse_finding_path():
     expected = {
-        "organization": "mussel",
-        "source": "winkle",
-        "finding": "nautilus",
+        "organization": "octopus",
+        "source": "oyster",
+        "finding": "nudibranch",
     }
     path = SecurityCenterClient.finding_path(**expected)
 
@@ -9031,8 +9325,8 @@ def test_parse_finding_path():
 
 
 def test_mute_config_path():
-    organization = "scallop"
-    mute_config = "abalone"
+    organization = "cuttlefish"
+    mute_config = "mussel"
     expected = "organizations/{organization}/muteConfigs/{mute_config}".format(
         organization=organization, mute_config=mute_config,
     )
@@ -9042,8 +9336,8 @@ def test_mute_config_path():
 
 def test_parse_mute_config_path():
     expected = {
-        "organization": "squid",
-        "mute_config": "clam",
+        "organization": "winkle",
+        "mute_config": "nautilus",
     }
     path = SecurityCenterClient.mute_config_path(**expected)
 
@@ -9053,8 +9347,8 @@ def test_parse_mute_config_path():
 
 
 def test_notification_config_path():
-    organization = "whelk"
-    notification_config = "octopus"
+    organization = "scallop"
+    notification_config = "abalone"
     expected = "organizations/{organization}/notificationConfigs/{notification_config}".format(
         organization=organization, notification_config=notification_config,
     )
@@ -9066,8 +9360,8 @@ def test_notification_config_path():
 
 def test_parse_notification_config_path():
     expected = {
-        "organization": "oyster",
-        "notification_config": "nudibranch",
+        "organization": "squid",
+        "notification_config": "clam",
     }
     path = SecurityCenterClient.notification_config_path(**expected)
 
@@ -9077,7 +9371,7 @@ def test_parse_notification_config_path():
 
 
 def test_organization_settings_path():
-    organization = "cuttlefish"
+    organization = "whelk"
     expected = "organizations/{organization}/organizationSettings".format(
         organization=organization,
     )
@@ -9087,7 +9381,7 @@ def test_organization_settings_path():
 
 def test_parse_organization_settings_path():
     expected = {
-        "organization": "mussel",
+        "organization": "octopus",
     }
     path = SecurityCenterClient.organization_settings_path(**expected)
 
@@ -9097,8 +9391,8 @@ def test_parse_organization_settings_path():
 
 
 def test_security_marks_path():
-    organization = "winkle"
-    asset = "nautilus"
+    organization = "oyster"
+    asset = "nudibranch"
     expected = "organizations/{organization}/assets/{asset}/securityMarks".format(
         organization=organization, asset=asset,
     )
@@ -9108,8 +9402,8 @@ def test_security_marks_path():
 
 def test_parse_security_marks_path():
     expected = {
-        "organization": "scallop",
-        "asset": "abalone",
+        "organization": "cuttlefish",
+        "asset": "mussel",
     }
     path = SecurityCenterClient.security_marks_path(**expected)
 
@@ -9119,8 +9413,8 @@ def test_parse_security_marks_path():
 
 
 def test_source_path():
-    organization = "squid"
-    source = "clam"
+    organization = "winkle"
+    source = "nautilus"
     expected = "organizations/{organization}/sources/{source}".format(
         organization=organization, source=source,
     )
@@ -9130,8 +9424,8 @@ def test_source_path():
 
 def test_parse_source_path():
     expected = {
-        "organization": "whelk",
-        "source": "octopus",
+        "organization": "scallop",
+        "source": "abalone",
     }
     path = SecurityCenterClient.source_path(**expected)
 
@@ -9141,8 +9435,8 @@ def test_parse_source_path():
 
 
 def test_topic_path():
-    project = "oyster"
-    topic = "nudibranch"
+    project = "squid"
+    topic = "clam"
     expected = "projects/{project}/topics/{topic}".format(project=project, topic=topic,)
     actual = SecurityCenterClient.topic_path(project, topic)
     assert expected == actual
@@ -9150,8 +9444,8 @@ def test_topic_path():
 
 def test_parse_topic_path():
     expected = {
-        "project": "cuttlefish",
-        "topic": "mussel",
+        "project": "whelk",
+        "topic": "octopus",
     }
     path = SecurityCenterClient.topic_path(**expected)
 
@@ -9161,7 +9455,7 @@ def test_parse_topic_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -9171,7 +9465,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "nudibranch",
     }
     path = SecurityCenterClient.common_billing_account_path(**expected)
 
@@ -9181,7 +9475,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(folder=folder,)
     actual = SecurityCenterClient.common_folder_path(folder)
     assert expected == actual
@@ -9189,7 +9483,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "mussel",
     }
     path = SecurityCenterClient.common_folder_path(**expected)
 
@@ -9199,7 +9493,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "winkle"
     expected = "organizations/{organization}".format(organization=organization,)
     actual = SecurityCenterClient.common_organization_path(organization)
     assert expected == actual
@@ -9207,7 +9501,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "nautilus",
     }
     path = SecurityCenterClient.common_organization_path(**expected)
 
@@ -9217,7 +9511,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "scallop"
     expected = "projects/{project}".format(project=project,)
     actual = SecurityCenterClient.common_project_path(project)
     assert expected == actual
@@ -9225,7 +9519,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "abalone",
     }
     path = SecurityCenterClient.common_project_path(**expected)
 
@@ -9235,8 +9529,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -9246,8 +9540,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = SecurityCenterClient.common_location_path(**expected)
 

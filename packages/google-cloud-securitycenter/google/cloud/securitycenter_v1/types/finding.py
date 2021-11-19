@@ -15,6 +15,7 @@
 #
 import proto  # type: ignore
 
+from google.cloud.securitycenter_v1.types import external_system
 from google.cloud.securitycenter_v1.types import indicator as gcs_indicator
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
 from google.cloud.securitycenter_v1.types import vulnerability as gcs_vulnerability
@@ -121,6 +122,10 @@ class Finding(proto.Message):
         mute_update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The most recent time this
             finding was muted or unmuted.
+        external_systems (Sequence[google.cloud.securitycenter_v1.types.Finding.ExternalSystemsEntry]):
+            Output only. Third party SIEM/SOAR fields
+            within SCC, contains external system information
+            and external system finding fields.
         mute_initiator (str):
             First known as mute_annotation. Records additional
             information about the mute operation e.g. mute config that
@@ -182,6 +187,9 @@ class Finding(proto.Message):
     )
     mute_update_time = proto.Field(
         proto.MESSAGE, number=21, message=timestamp_pb2.Timestamp,
+    )
+    external_systems = proto.MapField(
+        proto.STRING, proto.MESSAGE, number=22, message=external_system.ExternalSystem,
     )
     mute_initiator = proto.Field(proto.STRING, number=28,)
 

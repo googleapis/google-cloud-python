@@ -25,6 +25,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
+from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v1.types import finding
 from google.cloud.securitycenter_v1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1.types import mute_config
@@ -964,6 +965,35 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
                 response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
             )
         return self._stubs["test_iam_permissions"]
+
+    @property
+    def update_external_system(
+        self,
+    ) -> Callable[
+        [securitycenter_service.UpdateExternalSystemRequest],
+        Awaitable[gcs_external_system.ExternalSystem],
+    ]:
+        r"""Return a callable for the update external system method over gRPC.
+
+        Updates external system. This is for a given finding.
+
+        Returns:
+            Callable[[~.UpdateExternalSystemRequest],
+                    Awaitable[~.ExternalSystem]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_external_system" not in self._stubs:
+            self._stubs["update_external_system"] = self.grpc_channel.unary_unary(
+                "/google.cloud.securitycenter.v1.SecurityCenter/UpdateExternalSystem",
+                request_serializer=securitycenter_service.UpdateExternalSystemRequest.serialize,
+                response_deserializer=gcs_external_system.ExternalSystem.deserialize,
+            )
+        return self._stubs["update_external_system"]
 
     @property
     def update_finding(

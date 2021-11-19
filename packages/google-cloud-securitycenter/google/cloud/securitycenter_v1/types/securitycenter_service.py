@@ -16,6 +16,7 @@
 import proto  # type: ignore
 
 from google.cloud.securitycenter_v1.types import asset as gcs_asset
+from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1.types import folder
 from google.cloud.securitycenter_v1.types import mute_config as gcs_mute_config
@@ -66,6 +67,7 @@ __protobuf__ = proto.module(
         "SetFindingStateRequest",
         "SetMuteRequest",
         "RunAssetDiscoveryRequest",
+        "UpdateExternalSystemRequest",
         "UpdateFindingRequest",
         "UpdateMuteConfigRequest",
         "UpdateNotificationConfigRequest",
@@ -1434,6 +1436,27 @@ class RunAssetDiscoveryRequest(proto.Message):
     """
 
     parent = proto.Field(proto.STRING, number=1,)
+
+
+class UpdateExternalSystemRequest(proto.Message):
+    r"""Request message for updating a ExternalSystem resource.
+
+    Attributes:
+        external_system (google.cloud.securitycenter_v1.types.ExternalSystem):
+            Required. The external system resource to
+            update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            The FieldMask to use when updating the
+            external system resource.
+            If empty all mutable fields will be updated.
+    """
+
+    external_system = proto.Field(
+        proto.MESSAGE, number=1, message=gcs_external_system.ExternalSystem,
+    )
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
 
 
 class UpdateFindingRequest(proto.Message):

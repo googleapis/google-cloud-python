@@ -130,6 +130,11 @@
                 "test_iam_permissions"
               ]
             },
+            "UpdateExternalSystem": {
+              "methods": [
+                "update_external_system"
+              ]
+            },
             "UpdateFinding": {
               "methods": [
                 "update_finding"
@@ -283,6 +288,11 @@
             "TestIamPermissions": {
               "methods": [
                 "test_iam_permissions"
+              ]
+            },
+            "UpdateExternalSystem": {
+              "methods": [
+                "update_external_system"
               ]
             },
             "UpdateFinding": {

@@ -18,6 +18,7 @@ from .services.security_center import SecurityCenterClient
 from .services.security_center import SecurityCenterAsyncClient
 
 from .types.asset import Asset
+from .types.external_system import ExternalSystem
 from .types.finding import Finding
 from .types.folder import Folder
 from .types.indicator import Indicator
@@ -58,6 +59,7 @@ from .types.securitycenter_service import ListSourcesResponse
 from .types.securitycenter_service import RunAssetDiscoveryRequest
 from .types.securitycenter_service import SetFindingStateRequest
 from .types.securitycenter_service import SetMuteRequest
+from .types.securitycenter_service import UpdateExternalSystemRequest
 from .types.securitycenter_service import UpdateFindingRequest
 from .types.securitycenter_service import UpdateMuteConfigRequest
 from .types.securitycenter_service import UpdateNotificationConfigRequest
@@ -83,6 +85,7 @@ __all__ = (
     "Cvssv3",
     "DeleteMuteConfigRequest",
     "DeleteNotificationConfigRequest",
+    "ExternalSystem",
     "Finding",
     "Folder",
     "GetMuteConfigRequest",
@@ -118,6 +121,7 @@ __all__ = (
     "SetFindingStateRequest",
     "SetMuteRequest",
     "Source",
+    "UpdateExternalSystemRequest",
     "UpdateFindingRequest",
     "UpdateMuteConfigRequest",
     "UpdateNotificationConfigRequest",

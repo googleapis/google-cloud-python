@@ -34,6 +34,7 @@ except AttributeError:  # pragma: NO COVER
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.securitycenter_v1.services.security_center import pagers
+from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v1.types import finding
 from google.cloud.securitycenter_v1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1.types import indicator
@@ -74,6 +75,10 @@ class SecurityCenterAsyncClient:
 
     asset_path = staticmethod(SecurityCenterClient.asset_path)
     parse_asset_path = staticmethod(SecurityCenterClient.parse_asset_path)
+    external_system_path = staticmethod(SecurityCenterClient.external_system_path)
+    parse_external_system_path = staticmethod(
+        SecurityCenterClient.parse_external_system_path
+    )
     finding_path = staticmethod(SecurityCenterClient.finding_path)
     parse_finding_path = staticmethod(SecurityCenterClient.parse_finding_path)
     mute_config_path = staticmethod(SecurityCenterClient.mute_config_path)
@@ -2398,6 +2403,91 @@ class SecurityCenterAsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def update_external_system(
+        self,
+        request: Union[securitycenter_service.UpdateExternalSystemRequest, dict] = None,
+        *,
+        external_system: gcs_external_system.ExternalSystem = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gcs_external_system.ExternalSystem:
+        r"""Updates external system. This is for a given finding.
+
+        Args:
+            request (Union[google.cloud.securitycenter_v1.types.UpdateExternalSystemRequest, dict]):
+                The request object. Request message for updating a
+                ExternalSystem resource.
+            external_system (:class:`google.cloud.securitycenter_v1.types.ExternalSystem`):
+                Required. The external system
+                resource to update.
+
+                This corresponds to the ``external_system`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                The FieldMask to use when updating
+                the external system resource.
+                If empty all mutable fields will be
+                updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.securitycenter_v1.types.ExternalSystem:
+                Representation of third party
+                SIEM/SOAR fields within SCC.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([external_system, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = securitycenter_service.UpdateExternalSystemRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if external_system is not None:
+            request.external_system = external_system
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_external_system,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("external_system.name", request.external_system.name),)
+            ),
         )
 
         # Send the request.

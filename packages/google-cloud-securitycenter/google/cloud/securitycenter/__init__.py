@@ -22,6 +22,7 @@ from google.cloud.securitycenter_v1.services.security_center.async_client import
 )
 
 from google.cloud.securitycenter_v1.types.asset import Asset
+from google.cloud.securitycenter_v1.types.external_system import ExternalSystem
 from google.cloud.securitycenter_v1.types.finding import Finding
 from google.cloud.securitycenter_v1.types.folder import Folder
 from google.cloud.securitycenter_v1.types.indicator import Indicator
@@ -123,6 +124,9 @@ from google.cloud.securitycenter_v1.types.securitycenter_service import (
 )
 from google.cloud.securitycenter_v1.types.securitycenter_service import SetMuteRequest
 from google.cloud.securitycenter_v1.types.securitycenter_service import (
+    UpdateExternalSystemRequest,
+)
+from google.cloud.securitycenter_v1.types.securitycenter_service import (
     UpdateFindingRequest,
 )
 from google.cloud.securitycenter_v1.types.securitycenter_service import (
@@ -150,6 +154,7 @@ __all__ = (
     "SecurityCenterClient",
     "SecurityCenterAsyncClient",
     "Asset",
+    "ExternalSystem",
     "Finding",
     "Folder",
     "Indicator",
@@ -190,6 +195,7 @@ __all__ = (
     "RunAssetDiscoveryRequest",
     "SetFindingStateRequest",
     "SetMuteRequest",
+    "UpdateExternalSystemRequest",
     "UpdateFindingRequest",
     "UpdateMuteConfigRequest",
     "UpdateNotificationConfigRequest",

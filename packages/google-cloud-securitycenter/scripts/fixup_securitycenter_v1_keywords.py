@@ -63,6 +63,7 @@ class securitycenterCallTransformer(cst.CSTTransformer):
         'set_iam_policy': ('resource', 'policy', ),
         'set_mute': ('name', 'mute', ),
         'test_iam_permissions': ('resource', 'permissions', ),
+        'update_external_system': ('external_system', 'update_mask', ),
         'update_finding': ('finding', 'update_mask', ),
         'update_mute_config': ('mute_config', 'update_mask', ),
         'update_notification_config': ('notification_config', 'update_mask', ),
