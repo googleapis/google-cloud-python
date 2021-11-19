@@ -1,7 +1,7 @@
  {
   "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
   "language": "python",
-  "libraryPackage": "google.container_v1",
+  "libraryPackage": "google.cloud.container_v1",
   "protoPackage": "google.container.v1",
   "schema": "1.0",
   "services": {

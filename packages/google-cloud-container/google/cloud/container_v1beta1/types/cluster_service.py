@@ -215,18 +215,17 @@ class NodeKubeletConfig(proto.Message):
 
     Attributes:
         cpu_manager_policy (str):
-            Control the CPU management policy on the
-            node. See
-            https://kubernetes.io/docs/tasks/administer-
-            cluster/cpu-management-policies/
+            Control the CPU management policy on the node. See
+            https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/
+
             The following values are allowed.
-              - "none": the default, which represents the
-            existing scheduling behavior.   - "static":
-            allows pods with certain resource
-            characteristics to be               granted
-            increased CPU affinity and exclusivity on the
-            node.  The default value is 'none' if
-            unspecified.
+
+            -  "none": the default, which represents the existing
+               scheduling behavior.
+            -  "static": allows pods with certain resource
+               characteristics to be granted increased CPU affinity and
+               exclusivity on the node. The default value is 'none' if
+               unspecified.
         cpu_cfs_quota (google.protobuf.wrappers_pb2.BoolValue):
             Enable CPU CFS quota enforcement for
             containers that specify CPU limits.
