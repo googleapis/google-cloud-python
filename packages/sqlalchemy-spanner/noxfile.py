@@ -197,10 +197,9 @@ def migration_test(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def snippets(session):
     """Run the documentation example snippets."""
-    # Sanity check: Only run snippets system tests if the environment variable
-    # is set.
-    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
-        session.skip("Credentials must be set via environment variable.")
+    # Sanity check: Snippets tests can't be run against the emulator.
+    if os.environ.get("SPANNER_EMULATOR_HOST"):
+        session.skip("Snippets can't be run against the emulator.")
 
     session.install("pytest")
     session.install("sqlalchemy")
