@@ -236,9 +236,9 @@ class ContactCenterInsightsAsyncClient:
                 resource name. If no ID is specified, a server-generated
                 ID will be used.
 
-                This value should be 4-32 characters and must match the
-                regular expression /^[a-z0-9-]{4,32}$/. Valid characters
-                are /[a-z][0-9]-/
+                This value should be 4-64 characters and must match the
+                regular expression ``^[a-z0-9-]{4,64}$``. Valid
+                characters are ``[a-z][0-9]-``
 
                 This corresponds to the ``conversation_id`` field
                 on the ``request`` instance; if ``request`` is provided, this

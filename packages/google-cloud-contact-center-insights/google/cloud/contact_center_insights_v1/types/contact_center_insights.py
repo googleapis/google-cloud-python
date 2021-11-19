@@ -123,13 +123,13 @@ class CalculateStatsResponse(proto.Message):
             A map associating each issue resource name with its
             respective number of matches in the set of conversations.
             Key has the format:
-            ``projects/<Project ID>/locations/<Location ID>/issueModels/<Issue Model ID>/issues/<Issue ID>``
+            ``projects/<Project-ID>/locations/<Location-ID>/issueModels/<Issue-Model-ID>/issues/<Issue-ID>``
             Deprecated, use ``issue_matches_stats`` field instead.
         issue_matches_stats (Sequence[google.cloud.contact_center_insights_v1.types.CalculateStatsResponse.IssueMatchesStatsEntry]):
             A map associating each issue resource name with its
             respective number of matches in the set of conversations.
             Key has the format:
-            ``projects/<ProjectID>/locations/<LocationID>/issueModels/<IssueModelID>/issues/<IssueID>``
+            ``projects/<Project-ID>/locations/<Location-ID>/issueModels/<Issue-Model-ID>/issues/<Issue-ID>``
         conversation_count_time_series (google.cloud.contact_center_insights_v1.types.CalculateStatsResponse.TimeSeries):
             A time series representing the count of
             conversations created over time that match that
@@ -228,9 +228,9 @@ class CreateConversationRequest(proto.Message):
             the final component of the conversation's resource name. If
             no ID is specified, a server-generated ID will be used.
 
-            This value should be 4-32 characters and must match the
-            regular expression /^[a-z0-9-]{4,32}$/. Valid characters are
-            /[a-z][0-9]-/
+            This value should be 4-64 characters and must match the
+            regular expression ``^[a-z0-9-]{4,64}$``. Valid characters
+            are ``[a-z][0-9]-``
     """
 
     parent = proto.Field(proto.STRING, number=1,)
