@@ -251,8 +251,8 @@ class AppEngineHttpRequest(proto.Message):
             The headers below cannot be set or overridden:
 
             -  ``Host``
-            -  ``X-Google-\*``
-            -  ``X-AppEngine-\*``
+            -  ``X-Google-*``
+            -  ``X-AppEngine-*``
 
             In addition, Cloud Tasks sets some headers when the task is
             dispatched, such as headers containing information about the
