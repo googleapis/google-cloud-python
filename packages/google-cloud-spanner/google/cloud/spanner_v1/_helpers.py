@@ -17,7 +17,6 @@
 import datetime
 import decimal
 import math
-import json
 
 from google.protobuf.struct_pb2 import ListValue
 from google.protobuf.struct_pb2 import Value
@@ -166,9 +165,8 @@ def _make_value_pb(value):
         _assert_numeric_precision_and_scale(value)
         return Value(string_value=str(value))
     if isinstance(value, JsonObject):
-        return Value(
-            string_value=json.dumps(value, sort_keys=True, separators=(",", ":"),)
-        )
+        return Value(string_value=value.serialize())
+
     raise ValueError("Unknown type: %s" % (value,))
 
 
@@ -243,7 +241,7 @@ def _parse_value_pb(value_pb, field_type):
     elif type_code == TypeCode.NUMERIC:
         return decimal.Decimal(value_pb.string_value)
     elif type_code == TypeCode.JSON:
-        return value_pb.string_value
+        return JsonObject.from_str(value_pb.string_value)
     else:
         raise ValueError("Unknown type: %s" % (field_type,))
 

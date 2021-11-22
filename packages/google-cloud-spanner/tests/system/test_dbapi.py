@@ -364,7 +364,7 @@ def test_autocommit_with_json_data(shared_instance, dbapi_database):
     # Assert the response
     assert len(got_rows) == 1
     assert got_rows[0][0] == 123
-    assert got_rows[0][1] == '{"age":"26","name":"Jakob"}'
+    assert got_rows[0][1] == {"age": "26", "name": "Jakob"}
 
     # Drop the table
     cur.execute("DROP TABLE JsonDetails")

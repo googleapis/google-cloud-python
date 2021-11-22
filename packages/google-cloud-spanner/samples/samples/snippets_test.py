@@ -50,13 +50,13 @@ def sample_name():
 
 @pytest.fixture(scope="module")
 def create_instance_id():
-    """ Id for the low-cost instance. """
+    """Id for the low-cost instance."""
     return f"create-instance-{uuid.uuid4().hex[:10]}"
 
 
 @pytest.fixture(scope="module")
 def lci_instance_id():
-    """ Id for the low-cost instance. """
+    """Id for the low-cost instance."""
     return f"lci-instance-{uuid.uuid4().hex[:10]}"
 
 
@@ -91,7 +91,7 @@ def database_ddl():
 
 @pytest.fixture(scope="module")
 def default_leader():
-    """ Default leader for multi-region instances. """
+    """Default leader for multi-region instances."""
     return "us-east4"
 
 
@@ -582,7 +582,7 @@ def test_update_data_with_json(capsys, instance_id, sample_database):
 def test_query_data_with_json_parameter(capsys, instance_id, sample_database):
     snippets.query_data_with_json_parameter(instance_id, sample_database.database_id)
     out, _ = capsys.readouterr()
-    assert "VenueId: 19, VenueDetails: {\"open\":true,\"rating\":9}" in out
+    assert "VenueId: 19, VenueDetails: {'open': True, 'rating': 9}" in out
 
 
 @pytest.mark.dependency(depends=["insert_datatypes_data"])

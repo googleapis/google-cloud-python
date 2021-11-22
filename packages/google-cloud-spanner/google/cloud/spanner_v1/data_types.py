@@ -14,6 +14,8 @@
 
 """Custom data types for spanner."""
 
+import json
+
 
 class JsonObject(dict):
     """
@@ -22,4 +24,33 @@ class JsonObject(dict):
     normal parameters and JSON parameters.
     """
 
-    pass
+    def __init__(self, *args, **kwargs):
+        self._is_null = (args, kwargs) == ((), {}) or args == (None,)
+        if not self._is_null:
+            super(JsonObject, self).__init__(*args, **kwargs)
+
+    @classmethod
+    def from_str(cls, str_repr):
+        """Initiate an object from its `str` representation.
+
+        Args:
+            str_repr (str): JSON text representation.
+
+        Returns:
+            JsonObject: JSON object.
+        """
+        if str_repr == "null":
+            return cls()
+
+        return cls(json.loads(str_repr))
+
+    def serialize(self):
+        """Return the object text representation.
+
+        Returns:
+            str: JSON object text representation.
+        """
+        if self._is_null:
+            return None
+
+        return json.dumps(self, sort_keys=True, separators=(",", ":"))

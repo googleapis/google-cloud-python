@@ -19,7 +19,6 @@ import math
 import struct
 import threading
 import time
-import json
 import pytest
 
 import grpc
@@ -28,6 +27,7 @@ from google.api_core import datetime_helpers
 from google.api_core import exceptions
 from google.cloud import spanner_v1
 from google.cloud._helpers import UTC
+from google.cloud.spanner_v1.data_types import JsonObject
 from tests import _helpers as ot_helpers
 from . import _helpers
 from . import _sample_data
@@ -43,7 +43,7 @@ BYTES_1 = b"Ymlu"
 BYTES_2 = b"Ym9vdHM="
 NUMERIC_1 = decimal.Decimal("0.123456789")
 NUMERIC_2 = decimal.Decimal("1234567890")
-JSON_1 = json.dumps(
+JSON_1 = JsonObject(
     {
         "sample_boolean": True,
         "sample_int": 872163,
@@ -51,15 +51,9 @@ JSON_1 = json.dumps(
         "sample_null": None,
         "sample_string": "abcdef",
         "sample_array": [23, 76, 19],
-    },
-    sort_keys=True,
-    separators=(",", ":"),
+    }
 )
-JSON_2 = json.dumps(
-    {"sample_object": {"name": "Anamika", "id": 2635}},
-    sort_keys=True,
-    separators=(",", ":"),
-)
+JSON_2 = JsonObject({"sample_object": {"name": "Anamika", "id": 2635}},)
 
 COUNTERS_TABLE = "counters"
 COUNTERS_COLUMNS = ("name", "value")
