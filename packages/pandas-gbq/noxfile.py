@@ -146,11 +146,7 @@ def system(session):
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
     session.install("mock", "pytest", "google-cloud-testutils", "-c", constraints_path)
-    if session.python == "3.9":
-        extras = "[tqdm,db-dtypes]"
-    else:
-        extras = "[tqdm]"
-    session.install("-e", f".{extras}", "-c", constraints_path)
+    session.install("-e", ".[tqdm]", "-c", constraints_path)
 
     # Run py.test against the system tests.
     if system_test_exists:
@@ -179,7 +175,7 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.install("coverage", "pytest-cov")
-    session.run("coverage", "report", "--show-missing", "--fail-under=86")
+    session.run("coverage", "report", "--show-missing", "--fail-under=88")
 
     session.run("coverage", "erase")
 

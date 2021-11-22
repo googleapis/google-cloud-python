@@ -26,8 +26,6 @@ import pandas_gbq.schema
 
 TABLE_ID = "new_test"
 PANDAS_VERSION = pkg_resources.parse_version(pandas.__version__)
-NULLABLE_INT_PANDAS_VERSION = pkg_resources.parse_version("0.24.0")
-NULLABLE_INT_MESSAGE = "Require pandas 0.24+ in order to use nullable integer type."
 
 
 def test_imports():
@@ -173,9 +171,6 @@ class TestReadGBQIntegration(object):
         tm.assert_frame_equal(df, DataFrame({"valid_integer": [3]}))
 
     def test_should_properly_handle_nullable_integers(self, project_id):
-        if PANDAS_VERSION < NULLABLE_INT_PANDAS_VERSION:
-            pytest.skip(msg=NULLABLE_INT_MESSAGE)
-
         query = """SELECT * FROM
                     UNNEST([1, NULL]) AS nullable_integer
                 """
@@ -188,9 +183,7 @@ class TestReadGBQIntegration(object):
         )
         tm.assert_frame_equal(
             df,
-            DataFrame(
-                {"nullable_integer": pandas.Series([1, pandas.NA], dtype="Int64")}
-            ),
+            DataFrame({"nullable_integer": pandas.Series([1, None], dtype="Int64")}),
         )
 
     def test_should_properly_handle_valid_longs(self, project_id):
@@ -204,9 +197,6 @@ class TestReadGBQIntegration(object):
         tm.assert_frame_equal(df, DataFrame({"valid_long": [1 << 62]}))
 
     def test_should_properly_handle_nullable_longs(self, project_id):
-        if PANDAS_VERSION < NULLABLE_INT_PANDAS_VERSION:
-            pytest.skip(msg=NULLABLE_INT_MESSAGE)
-
         query = """SELECT * FROM
                     UNNEST([1 << 62, NULL]) AS nullable_long
                 """
@@ -219,15 +209,10 @@ class TestReadGBQIntegration(object):
         )
         tm.assert_frame_equal(
             df,
-            DataFrame(
-                {"nullable_long": pandas.Series([1 << 62, pandas.NA], dtype="Int64")}
-            ),
+            DataFrame({"nullable_long": pandas.Series([1 << 62, None], dtype="Int64")}),
         )
 
     def test_should_properly_handle_null_integers(self, project_id):
-        if PANDAS_VERSION < NULLABLE_INT_PANDAS_VERSION:
-            pytest.skip(msg=NULLABLE_INT_MESSAGE)
-
         query = "SELECT CAST(NULL AS INT64) AS null_integer"
         df = gbq.read_gbq(
             query,
@@ -237,7 +222,7 @@ class TestReadGBQIntegration(object):
             dtypes={"null_integer": "Int64"},
         )
         tm.assert_frame_equal(
-            df, DataFrame({"null_integer": pandas.Series([pandas.NA], dtype="Int64")}),
+            df, DataFrame({"null_integer": pandas.Series([None], dtype="Int64")}),
         )
 
     def test_should_properly_handle_valid_floats(self, project_id):

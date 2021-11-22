@@ -10,7 +10,7 @@ jobs:
       - image: continuumio/miniconda3
     environment:
       PYTHON: "3.7"
-      PANDAS: "0.23.2"
+      PANDAS: "0.24.2"
     steps:
       - checkout
       - run: ci/config_auth.sh

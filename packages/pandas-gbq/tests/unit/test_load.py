@@ -4,12 +4,16 @@
 
 # -*- coding: utf-8 -*-
 
-import textwrap
+import datetime
+import decimal
 from io import StringIO
+import textwrap
 from unittest import mock
 
+import db_dtypes
 import numpy
 import pandas
+import pandas.testing
 import pytest
 
 from pandas_gbq.features import FEATURES
@@ -137,3 +141,117 @@ def test_load_chunks_omits_policy_tags(
 def test_load_chunks_with_invalid_api_method():
     with pytest.raises(ValueError, match="Got unexpected api_method:"):
         load.load_chunks(None, None, None, api_method="not_a_thing")
+
+
+@pytest.mark.parametrize(
+    ("numeric_type",),
+    (
+        ("NUMERIC",),
+        ("DECIMAL",),
+        ("BIGNUMERIC",),
+        ("BIGDECIMAL",),
+        ("numeric",),
+        ("decimal",),
+        ("bignumeric",),
+        ("bigdecimal",),
+    ),
+)
+def test_cast_dataframe_for_parquet_w_float_numeric(numeric_type):
+    dataframe = pandas.DataFrame(
+        {
+            "row_num": [0, 1, 2],
+            "num_col": pandas.Series(
+                # Very much not recommend as the whole point of NUMERIC is to
+                # be more accurate than a floating point number, but tested to
+                # keep compatibility with CSV-based uploads. See:
+                # https://github.com/googleapis/python-bigquery-pandas/issues/421
+                [1.25, -1.25, 42.5],
+                dtype="float64",
+            ),
+            "row_num_2": [0, 1, 2],
+        },
+        # Use multiple columns to ensure column order is maintained.
+        columns=["row_num", "num_col", "row_num_2"],
+    )
+    schema = {
+        "fields": [
+            {"name": "num_col", "type": numeric_type},
+            {"name": "not_in_df", "type": "IGNORED"},
+        ]
+    }
+    result = load.cast_dataframe_for_parquet(dataframe, schema)
+    expected = pandas.DataFrame(
+        {
+            "row_num": [0, 1, 2],
+            "num_col": pandas.Series(
+                [decimal.Decimal(1.25), decimal.Decimal(-1.25), decimal.Decimal(42.5)],
+                dtype="object",
+            ),
+            "row_num_2": [0, 1, 2],
+        },
+        columns=["row_num", "num_col", "row_num_2"],
+    )
+    pandas.testing.assert_frame_equal(result, expected)
+
+
+def test_cast_dataframe_for_parquet_w_string_date():
+    dataframe = pandas.DataFrame(
+        {
+            "row_num": [0, 1, 2],
+            "date_col": pandas.Series(
+                ["2021-04-17", "1999-12-31", "2038-01-19"], dtype="object",
+            ),
+            "row_num_2": [0, 1, 2],
+        },
+        # Use multiple columns to ensure column order is maintained.
+        columns=["row_num", "date_col", "row_num_2"],
+    )
+    schema = {
+        "fields": [
+            {"name": "date_col", "type": "DATE"},
+            {"name": "not_in_df", "type": "IGNORED"},
+        ]
+    }
+    result = load.cast_dataframe_for_parquet(dataframe, schema)
+    expected = pandas.DataFrame(
+        {
+            "row_num": [0, 1, 2],
+            "date_col": pandas.Series(
+                ["2021-04-17", "1999-12-31", "2038-01-19"], dtype=db_dtypes.DateDtype(),
+            ),
+            "row_num_2": [0, 1, 2],
+        },
+        columns=["row_num", "date_col", "row_num_2"],
+    )
+    pandas.testing.assert_frame_equal(result, expected)
+
+
+def test_cast_dataframe_for_parquet_ignores_repeated_fields():
+    dataframe = pandas.DataFrame(
+        {
+            "row_num": [0, 1, 2],
+            "repeated_col": pandas.Series(
+                [
+                    [datetime.date(2021, 4, 17)],
+                    [datetime.date(199, 12, 31)],
+                    [datetime.date(2038, 1, 19)],
+                ],
+                dtype="object",
+            ),
+            "row_num_2": [0, 1, 2],
+        },
+        # Use multiple columns to ensure column order is maintained.
+        columns=["row_num", "repeated_col", "row_num_2"],
+    )
+    expected = dataframe.copy()
+    schema = {"fields": [{"name": "repeated_col", "type": "DATE", "mode": "REPEATED"}]}
+    result = load.cast_dataframe_for_parquet(dataframe, schema)
+    pandas.testing.assert_frame_equal(result, expected)
+
+
+def test_cast_dataframe_for_parquet_w_null_fields():
+    dataframe = pandas.DataFrame({"int_col": [0, 1, 2], "str_col": ["a", "b", "c"]})
+    expected = dataframe.copy()
+    schema = {"fields": None}
+    result = load.cast_dataframe_for_parquet(dataframe, schema)
+    pandas.testing.assert_frame_equal(result, expected)

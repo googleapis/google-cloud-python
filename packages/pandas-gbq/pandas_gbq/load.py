@@ -4,9 +4,11 @@
 
 """Helper methods for loading data into BigQuery"""
 
+import decimal
 import io
 from typing import Any, Callable, Dict, List, Optional
 
+import db_dtypes
 import pandas
 import pyarrow.lib
 from google.cloud import bigquery
@@ -56,6 +58,55 @@ def split_dataframe(dataframe, chunksize=None):
         yield remaining_rows, chunk
 
 
+def cast_dataframe_for_parquet(
+    dataframe: pandas.DataFrame, schema: Optional[Dict[str, Any]],
+) -> pandas.DataFrame:
+    """Cast columns to needed dtype when writing parquet files.
+
+    See: https://github.com/googleapis/python-bigquery-pandas/issues/421
+    """
+
+    columns = schema.get("fields", [])
+
+    # Protect against an explicit None in the dictionary.
+    columns = columns if columns is not None else []
+
+    for column in columns:
+        # Schema can be a superset of the columns in the dataframe, so ignore
+        # columns that aren't present.
+        column_name = column.get("name")
+        if column_name not in dataframe.columns:
+            continue
+
+        # Skip array columns for now. Potentially casting the elements of the
+        # array would be possible, but not worth the effort until there is
+        # demand for it.
+        if column.get("mode", "NULLABLE").upper() == "REPEATED":
+            continue
+
+        column_type = column.get("type", "").upper()
+        if (
+            column_type == "DATE"
+            # Use extension dtype first so that it uses the correct equality operator.
+            and db_dtypes.DateDtype() != dataframe[column_name].dtype
+        ):
+            # Construct converted column manually, because I can't use
+            # .astype() with DateDtype. With .astype(), I get the error:
+            #
+            # TypeError: Cannot interpret '<db_dtypes.DateDtype ...>' as a data type
+            cast_column = pandas.Series(
+                dataframe[column_name], dtype=db_dtypes.DateDtype()
+            )
+        elif column_type in {"NUMERIC", "DECIMAL", "BIGNUMERIC", "BIGDECIMAL"}:
+            cast_column = dataframe[column_name].map(decimal.Decimal)
+        else:
+            cast_column = None
+
+        if cast_column is not None:
+            dataframe = dataframe.assign(**{column_name: cast_column})
+    return dataframe
+
+
 def load_parquet(
     client: bigquery.Client,
     dataframe: pandas.DataFrame,
@@ -70,6 +121,7 @@ def load_parquet(
     if schema is not None:
         schema = pandas_gbq.schema.remove_policy_tags(schema)
         job_config.schema = pandas_gbq.schema.to_google_cloud_bigquery(schema)
+        dataframe = cast_dataframe_for_parquet(dataframe, schema)
 
     try:
         client.load_table_from_dataframe(

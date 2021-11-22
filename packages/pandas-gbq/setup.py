@@ -23,8 +23,9 @@ description = "Google BigQuery connector for pandas"
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
     "setuptools",
+    "db-dtypes >=0.3.0,<2.0.0",
     "numpy>=1.16.6",
-    "pandas>=0.23.2",
+    "pandas>=0.24.2",
     "pyarrow >=3.0.0, <7.0dev",
     "pydata-google-auth",
     "google-auth",
@@ -35,7 +36,6 @@ dependencies = [
 ]
 extras = {
     "tqdm": "tqdm>=4.23.0",
-    "db-dtypes": "db-dtypes >=0.3.0,<2.0.0",
 }
 
 # Setup boilerplate below this line.
