@@ -18,7 +18,7 @@ transfer learning, and Neural Architecture Search technology.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-automl.svg
    :target: https://pypi.org/project/google-cloud-automl/
 .. _Cloud AutoML API: https://cloud.google.com/automl
-.. _Client Library Documentation: https://googleapis.dev/python/automl/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/automl/latest
 .. _Product Documentation:  https://cloud.google.com/automl
 
 Quick Start
