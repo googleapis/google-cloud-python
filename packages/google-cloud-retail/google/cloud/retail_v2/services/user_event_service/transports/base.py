@@ -156,9 +156,9 @@ class UserEventServiceTransport(abc.ABC):
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
-                    deadline=300.0,
+                    deadline=600.0,
                 ),
-                default_timeout=300.0,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.rejoin_user_events: gapic_v1.method.wrap_method(

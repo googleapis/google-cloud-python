@@ -173,7 +173,10 @@ class SearchRequest(proto.Message):
             -  price
             -  originalPrice
             -  discount
+            -  variantId
             -  inventory(place_id,price)
+            -  inventory(place_id,attributes.key), where key is any key
+               in the [Product.inventories.attributes][] map.
             -  attributes.key, where key is any key in the
                [Product.attributes][google.cloud.retail.v2.Product.attributes]
                map.
@@ -357,6 +360,7 @@ class SearchRequest(proto.Message):
                        -  "customFulfillment3"
                        -  "customFulfillment4"
                        -  "customFulfillment5"
+                       -  "inventory(place_id,attributes.key)"
 
                     -  numerical_field =
 
@@ -365,7 +369,8 @@ class SearchRequest(proto.Message):
                        -  "rating"
                        -  "ratingCount"
                        -  "attributes.key"
-                       -  "inventory(place_id,price)".
+                       -  "inventory(place_id,price)"
+                       -  "inventory(place_id,attributes.key)".
                 intervals (Sequence[google.cloud.retail_v2.types.Interval]):
                     Set only if values should be bucketized into
                     intervals. Must be set for facets with numerical
