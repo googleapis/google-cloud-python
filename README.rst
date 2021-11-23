@@ -427,9 +427,9 @@ Libraries
    * - `Spanner Django <https://github.com/googleapis/python-spanner-django>`_
      - |beta|
      - |PyPI-django-google-spanner|
-   * - `VM Migration <https://github.com/googleapis/python-vmmigration>`_
+   * - `VM Migration <https://github.com/googleapis/python-vm-migration>`_
      - |beta|
-     - |PyPI-google-cloud-vmmigration|
+     - |PyPI-google-cloud-vm-migration|
    * - `Analytics Admin <https://github.com/googleapis/python-analytics-admin>`_
      - |alpha|
      - |PyPI-google-analytics-admin|
@@ -690,8 +690,8 @@ Libraries
      :target: https://pypi.org/project/sqlalchemy-bigquery
 .. |PyPI-django-google-spanner| image:: https://img.shields.io/pypi/v/django-google-spanner.svg
      :target: https://pypi.org/project/django-google-spanner
-.. |PyPI-google-cloud-vmmigration| image:: https://img.shields.io/pypi/v/google-cloud-vmmigration.svg
-     :target: https://pypi.org/project/google-cloud-vmmigration
+.. |PyPI-google-cloud-vm-migration| image:: https://img.shields.io/pypi/v/google-cloud-vm-migration.svg
+     :target: https://pypi.org/project/google-cloud-vm-migration
 .. |PyPI-google-analytics-admin| image:: https://img.shields.io/pypi/v/google-analytics-admin.svg
      :target: https://pypi.org/project/google-analytics-admin
 .. |PyPI-google-area120-tables| image:: https://img.shields.io/pypi/v/google-area120-tables.svg
