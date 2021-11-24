@@ -116,6 +116,18 @@ def lint_setup_py(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def compliance_test(session):
     """Run SQLAlchemy dialect compliance test suite."""
+
+    # Check the value of `RUN_COMPLIANCE_TESTS` env var. It defaults to true.
+    if os.environ.get("RUN_COMPLIANCE_TESTS", "true") == "false":
+        session.skip("RUN_COMPLIANCE_TESTS is set to false, skipping")
+    # Sanity check: Only run tests if the environment variable is set.
+    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "") and not os.environ.get(
+        "SPANNER_EMULATOR_HOST", ""
+    ):
+        session.skip(
+            "Credentials or emulator host must be set via environment variable"
+        )
+
     session.install("pytest")
     session.install("mock")
     session.install("-e", ".")
