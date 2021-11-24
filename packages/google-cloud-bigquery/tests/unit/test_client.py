@@ -8235,6 +8235,22 @@ class TestClientUpload(object):
         assert initiation_url is not None
         assert "projects/custom-project" in initiation_url
 
+    def test__do_resumable_upload_custom_timeout(self):
+        file_obj = self._make_file_obj()
+        file_obj_len = len(file_obj.getvalue())
+        transport = self._make_transport(
+            self._make_resumable_upload_responses(file_obj_len)
+        )
+        client = self._make_client(transport)
+
+        client._do_resumable_upload(
+            file_obj, self.EXPECTED_CONFIGURATION, num_retries=0, timeout=3.14
+        )
+
+        # The timeout should be applied to all underlying calls.
+        for call_args in transport.request.call_args_list:
+            assert call_args.kwargs.get("timeout") == 3.14
+
     def test__do_multipart_upload(self):
         transport = self._make_transport([self._make_response(http.client.OK)])
         client = self._make_client(transport)
@@ -8442,7 +8458,7 @@ def test_upload_chunksize(client):
 
         upload.finished = False
 
-        def transmit_next_chunk(transport):
+        def transmit_next_chunk(transport, *args, **kwargs):
             upload.finished = True
             result = mock.MagicMock()
             result.json.return_value = {}
