@@ -1560,3 +1560,38 @@ def test_gapic_metadata():
     expected = MessageToJson(expected, sort_keys=True)
     actual = api_schema.gapic_metadata_json(opts)
     assert expected == actual
+
+
+def test_http_options(fs):
+    fd = (
+        make_file_pb2(
+            name='example.proto',
+            package='google.example.v1',
+            messages=(make_message_pb2(name='ExampleRequest', fields=()),),
+        ),)
+
+    opts = Options(service_yaml_config={
+        'http': {
+            'rules': [
+                {
+                    'selector': 'Cancel',
+                    'post': '/v3/{name=projects/*/locations/*/operations/*}:cancel',
+                    'body': '*'
+                },
+                {
+                    'selector': 'Get',
+                    'get': '/v3/{name=projects/*/locations/*/operations/*}',
+                    'additional_bindings': [{'get': '/v3/{name=/locations/*/operations/*}'}],
+                }, ]
+        }
+    })
+
+    api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
+    http_options = api_schema.http_options
+    assert http_options == {
+        'Cancel': [wrappers.HttpRule(method='post', uri='/v3/{name=projects/*/locations/*/operations/*}:cancel', body='*')],
+        'Get': [
+            wrappers.HttpRule(
+                method='get', uri='/v3/{name=projects/*/locations/*/operations/*}', body=None),
+            wrappers.HttpRule(method='get', uri='/v3/{name=/locations/*/operations/*}', body=None)]
+    }

@@ -10,6 +10,7 @@ from google.api_core import path_template
 from google.api_core import gapic_v1
 {% if service.has_lro %}
 from google.api_core import operations_v1
+from google.protobuf import json_format
 {% endif %}
 from requests import __version__ as requests_version
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
@@ -23,10 +24,6 @@ except AttributeError:  # pragma: NO COVER
 {% extends '_base.py.j2' %}
 
 {% block content %}
-
-
-{% if service.has_lro %}
-{% endif %}
 
 
 {# TODO(yon-mg): re-add python_import/ python_modules from removed diff/current grpc template code #}
@@ -134,31 +131,41 @@ class {{service.name}}RestTransport({{service.name}}Transport):
         This property caches on the instance; repeated calls return the same
         client.
         """
-        # Sanity check: Only create a new client if we do not already have one.
+        # Only create a new client if we do not already have one.
         if self._operations_client is None:
-            from google.api_core import grpc_helpers
+            http_options = {
+            {% for selector, rules in api.http_options.items() %}
+            {% if selector.startswith('google.longrunning.Operations') %}
+                '{{ selector }}': [
+                    {% for rule in rules %}
+                    {
+                        'method': '{{ rule.method }}',
+                        'uri': '{{ rule.uri }}',
+                        {% if rule.body %}
+                        'body': '{{ rule.body }}',
+                        {% endif %}
+                    },
+                    {% endfor %}{# rules #}
+                ],
+            {% endif %}{# longrunning.Operations #}
+            {% endfor %}{# http_options #}
+            }
 
-            self._operations_client = operations_v1.OperationsClient(
-                grpc_helpers.create_channel(
-                    self._host,
+            rest_transport = operations_v1.OperationsRestTransport(
+                    host=self._host,
                     credentials=self._credentials,
-                    default_scopes=cls.AUTH_SCOPES,
                     scopes=self._scopes,
-                    default_host=cls.DEFAULT_HOST,
-                    options=[
-                        ("grpc.max_send_message_length", -1),
-                        ("grpc.max_receive_message_length", -1),
-                    ],
-                )
-            )
+                    http_options=http_options)
+
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
 
-    {% endif %}
+    {% endif %}{# service.has_lro #}
     {% for method in service.methods.values() %}
-    {%- if method.http_options and not method.lro and not (method.server_streaming or method.client_streaming) %}
+    {%- if method.http_options and not (method.server_streaming or method.client_streaming) %}
     def _{{method.name | snake_case}}(self,
             request: {{method.input.ident}}, *,
             retry: OptionalRetry=gapic_v1.method.DEFAULT,
@@ -279,10 +286,16 @@ class {{service.name}}RestTransport({{service.name}}Transport):
         {% if not method.void %}
 
         # Return the response
+        {% if method.lro %}
+        return_op = operations_pb2.Operation()
+        json_format.Parse(response.content, return_op, ignore_unknown_fields=True)
+        return return_op
+        {% else %}
         return {{method.output.ident}}.from_json(
             response.content,
             ignore_unknown_fields=True
         )
+        {% endif %}
         {% endif %}
     {% else %}
 
@@ -296,10 +309,6 @@ class {{service.name}}RestTransport({{service.name}}Transport):
 
         raise RuntimeError(
             "Cannot define a method without a valid 'google.api.http' annotation.")
-        {%- elif method.lro %}
-
-        raise NotImplementedError(
-            "LRO over REST is not yet defined for python client.")
         {%- elif method.server_streaming or method.client_streaming %}
 
         raise NotImplementedError(

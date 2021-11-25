@@ -140,6 +140,36 @@ def test_options_service_config(fs):
     assert opts.retry == expected_cfg
 
 
+def test_options_service_yaml_config(fs):
+    opts = Options.build("")
+    assert opts.service_yaml_config == {}
+
+    service_yaml_fpath = "testapi_v1.yaml"
+    fs.create_file(service_yaml_fpath,
+                   contents=("type: google.api.Service\n"
+                             "config_version: 3\n"
+                             "name: testapi.googleapis.com\n"))
+    opt_string = f"service-yaml={service_yaml_fpath}"
+    opts = Options.build(opt_string)
+    expected_config = {
+        "config_version": 3,
+        "name": "testapi.googleapis.com"
+    }
+    assert opts.service_yaml_config == expected_config
+
+    service_yaml_fpath = "testapi_v2.yaml"
+    fs.create_file(service_yaml_fpath,
+                   contents=("config_version: 3\n"
+                             "name: testapi.googleapis.com\n"))
+    opt_string = f"service-yaml={service_yaml_fpath}"
+    opts = Options.build(opt_string)
+    expected_config = {
+        "config_version": 3,
+        "name": "testapi.googleapis.com"
+    }
+    assert opts.service_yaml_config == expected_config
+
+
 def test_options_bool_flags():
     # All these options are default False.
     # If new options violate this assumption,

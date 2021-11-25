@@ -19,6 +19,7 @@ from unittest import mock
 import jinja2
 import pytest
 
+from google.api import service_pb2
 from google.protobuf import descriptor_pb2
 from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 
@@ -767,9 +768,17 @@ def make_proto(
     ).proto
 
 
-def make_api(*protos, naming: naming.Naming = None, **kwargs) -> api.API:
+def make_api(
+    *protos,
+    naming: naming.Naming = None,
+    service_yaml_config: service_pb2.Service = None,
+    **kwargs
+) -> api.API:
     return api.API(
-        naming=naming or make_naming(), all_protos={i.name: i for i in protos}, **kwargs
+        naming=naming or make_naming(),
+        service_yaml_config=service_yaml_config or service_pb2.Service(),
+        all_protos={i.name: i for i in protos},
+        **kwargs
     )
 
 

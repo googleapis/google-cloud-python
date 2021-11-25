@@ -20,6 +20,7 @@ import dataclasses
 import json
 import os
 import warnings
+import yaml
 
 from gapic.samplegen_utils import utils as samplegen_utils
 
@@ -45,6 +46,8 @@ class Options:
     metadata: bool = False
     # TODO(yon-mg): should there be an enum for transport type?
     transport: List[str] = dataclasses.field(default_factory=lambda: [])
+    service_yaml_config: Dict[str, Any] = dataclasses.field(
+        default_factory=dict)
 
     # Class constants
     PYTHON_GAPIC_PREFIX: str = 'python-gapic-'
@@ -54,6 +57,7 @@ class Options:
         'metadata',             # generate GAPIC metadata JSON file
         'old-naming',           # TODO(dovs): Come up with a better comment
         'retry-config',         # takes a path
+        'service-yaml',         # takes a path
         'samples',              # output dir
         'autogen-snippets',     # produce auto-generated snippets
         # transport type(s) delineated by '+' (i.e. grpc, rest, custom.[something], etc?)
@@ -129,6 +133,16 @@ class Options:
             with open(retry_paths[-1]) as f:
                 retry_cfg = json.load(f)
 
+        service_yaml_config = {}
+        service_yaml_paths = opts.pop('service-yaml', None)
+        if service_yaml_paths:
+            # Just use the last file specified.
+            with open(service_yaml_paths[-1]) as f:
+                service_yaml_config = yaml.load(f, Loader=yaml.Loader)
+        # The yaml service files typically have this field,
+        # but it is not a field in the gogle.api.Service proto.
+        service_yaml_config.pop('type', None)
+
         # Build the options instance.
         sample_paths = opts.pop('samples', [])
 
@@ -150,7 +164,8 @@ class Options:
             add_iam_methods=bool(opts.pop('add-iam-methods', False)),
             metadata=bool(opts.pop('metadata', False)),
             # transport should include desired transports delimited by '+', e.g. transport='grpc+rest'
-            transport=opts.pop('transport', ['grpc'])[0].split('+')
+            transport=opts.pop('transport', ['grpc'])[0].split('+'),
+            service_yaml_config=service_yaml_config,
         )
 
         # Note: if we ever need to recursively check directories for sample

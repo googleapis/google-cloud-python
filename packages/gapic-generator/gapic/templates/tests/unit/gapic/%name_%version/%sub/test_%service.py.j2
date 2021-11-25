@@ -36,8 +36,10 @@ from google.api_core import grpc_helpers_async
 from google.api_core import path_template
 {% if service.has_lro %}
 from google.api_core import future
+from google.api_core import operation
 from google.api_core import operations_v1
 from google.longrunning import operations_pb2
+from google.protobuf import json_format
 {% endif %}
 from google.api_core import gapic_v1
 {% for method in service.methods.values() %}
@@ -1119,8 +1121,8 @@ def test_{{ method_name }}_raw_page_lro():
 
 {% for method in service.methods.values() if 'rest' in opts.transport and
     method.http_options %}{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.name|snake_case %}
-{# TODO(kbandes): remove this if condition when lro and streaming are supported. #}
-{% if not method.lro and not (method.server_streaming or method.client_streaming) %}
+{# TODO(kbandes): remove this if condition when streaming is supported in rest. #}
+{% if not (method.server_streaming or method.client_streaming) %}
 def test_{{ method_name }}_rest(transport: str = 'rest', request_type={{ method.input.ident }}):
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1167,11 +1169,13 @@ def test_{{ method_name }}_rest(transport: str = 'rest', request_type={{ method.
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-    {% if method.void %}
+        {% if method.void %}
         json_return_value = ''
-    {% else %}
+        {% elif method.lro %}
+        json_return_value = json_format.MessageToJson(return_value)
+        {% else %}
         json_return_value = {{ method.output.ident }}.to_json(return_value)
-    {% endif %}
+        {% endif %}
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         {% if method.client_streaming %}
@@ -1188,6 +1192,8 @@ def test_{{ method_name }}_rest(transport: str = 'rest', request_type={{ method.
     # Establish that the response is the type that we expect.
     {% if method.void %}
     assert response is None
+    {% elif method.lro %}
+    assert response.operation.name == "operations/spam"
     {% else %}
     assert isinstance(response, {{ method.client_output.ident }})
     {% for field in method.output.fields.values() | rejectattr('message') %}
@@ -1264,11 +1270,13 @@ def test_{{ method_name }}_rest_flattened(transport: str = 'rest'):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-    {% if method.void %}
+        {% if method.void %}
         json_return_value = ''
-    {% else %}
+        {% elif method.lro %}
+        json_return_value = json_format.MessageToJson(return_value)
+        {% else %}
         json_return_value = {{ method.output.ident }}.to_json(return_value)
-    {% endif %}
+        {% endif %}
 
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
@@ -1453,6 +1461,7 @@ def test_{{ method_name }}_rest_error():
         client.{{ method_name }}({})
 
     {%- endif %}
+
 {% endif %}{% endwith %}{# method_name #}
 
 {% endfor -%} {#- method in methods for rest #}

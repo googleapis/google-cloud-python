@@ -27,11 +27,14 @@ from typing import Callable, Container, Dict, FrozenSet, Mapping, Optional, Sequ
 from types import MappingProxyType
 
 from google.api_core import exceptions
+from google.api import http_pb2  # type: ignore
 from google.api import resource_pb2  # type: ignore
+from google.api import service_pb2  # type: ignore
 from google.gapic.metadata import gapic_metadata_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import descriptor_pb2
 from google.protobuf.json_format import MessageToJson
+from google.protobuf.json_format import ParseDict
 
 import grpc  # type: ignore
 
@@ -226,6 +229,7 @@ class API:
     """
     naming: api_naming.Naming
     all_protos: Mapping[str, Proto]
+    service_yaml_config: service_pb2.Service
     subpackage_view: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
 
     @classmethod
@@ -318,8 +322,14 @@ class API:
             for name, proto in pre_protos.items()
         }
 
+        # Parse the google.api.Service proto from the service_yaml data.
+        service_yaml_config = service_pb2.Service()
+        ParseDict(opts.service_yaml_config, service_yaml_config)
+
         # Done; return the API.
-        return cls(naming=naming, all_protos=protos)
+        return cls(naming=naming,
+                   all_protos=protos,
+                   service_yaml_config=service_yaml_config)
 
     @cached_property
     def enums(self) -> Mapping[str, wrappers.EnumType]:
@@ -373,6 +383,24 @@ class API:
         return collections.ChainMap({},
                                     *[p.services for p in self.protos.values()],
                                     )
+
+    @cached_property
+    def http_options(self) -> Mapping[str, Sequence[wrappers.HttpRule]]:
+        """Return a map of API-wide http rules."""
+
+        def make_http_options(rule: http_pb2.HttpRule
+                              ) -> Sequence[wrappers.HttpRule]:
+            http_options = [rule] + list(rule.additional_bindings)
+            opt_gen = (wrappers.HttpRule.try_parse_http_rule(http_rule)
+                       for http_rule in http_options)
+            return [rule for rule in opt_gen if rule]
+
+        result: Mapping[str, Sequence[http_pb2.HttpRule]] = {
+            rule.selector: make_http_options(rule)
+            for rule in self.service_yaml_config.http.rules
+        }
+
+        return result
 
     @cached_property
     def subpackages(self) -> Mapping[str, 'API']:
