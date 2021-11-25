@@ -82,6 +82,7 @@ def create_test_instance():
 
     instance = CLIENT.instance(instance_id, instance_config, labels=labels)
 
+
     try:
       created_op = instance.create()
       created_op.result(1800)  # block until completion

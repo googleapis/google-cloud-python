@@ -16,6 +16,7 @@
 A test suite to check Spanner dialect for SQLAlchemy performance
 in comparison with the original Spanner client.
 """
+import base64
 import datetime
 import random
 from scipy.stats import sem
@@ -23,6 +24,8 @@ import statistics
 import time
 
 from google.api_core.exceptions import Aborted
+from google.api_core.exceptions import NotFound
+from google.cloud import spanner
 from google.cloud import spanner_dbapi
 from google.cloud.spanner_v1 import Client, KeySet
 from sqlalchemy import (
@@ -64,26 +67,42 @@ class BenchmarkTestBase:
     Organizes testing data preparation and cleanup.
     """
 
+    _many_rows_ids = []
+    _many_rows2_ids = []
+
     def __init__(self):
+        self._cleanup()
         self._create_table()
 
-        self._one_row = (
-            1,
-            "Pete",
-            "Allison",
-            datetime.datetime(1998, 10, 6).strftime("%Y-%m-%d"),
-            b"123",
-        )
+        self._one_row = {
+            "id": 1,
+            "first_name": "Pete",
+            "last_name": "Allison",
+            "birth_date": datetime.date(1998, 10, 6),
+            "picture": b"123",
+        }
+        self.keys = set([1])
+        if not self._many_rows_ids:
+            for i in range(99):
+                self._many_rows_ids.append(self._generate_id())
+                self._many_rows2_ids.append(self._generate_id())
 
     def _cleanup(self):
         """Drop the test table."""
         conn = spanner_dbapi.connect(INSTANCE, DATABASE)
-        conn.database.update_ddl(["DROP TABLE Singers"])
+        try:
+            conn.database.update_ddl(["DROP TABLE Singers"])
+        except NotFound:
+            pass
         conn.close()
 
     def _create_table(self):
         """Create a table for performace testing."""
         conn = spanner_dbapi.connect(INSTANCE, DATABASE)
+        try:
+            conn.database.update_ddl(["DROP TABLE Singers"])
+        except NotFound:
+            pass
         conn.database.update_ddl(
             [
                 """
@@ -96,9 +115,16 @@ CREATE TABLE Singers (
 ) PRIMARY KEY (id)
         """
             ]
-        ).result(120)
+        ).result()
 
         conn.close()
+
+    def _generate_id(self):
+        num = 1
+        while num in self.keys:
+            num = round(random.random() * 1000000)
+        self.keys.add(num)
+        return num
 
     def run(self):
         """Execute every test case."""
@@ -117,7 +143,7 @@ CREATE TABLE Singers (
 
 
 class SpannerBenchmarkTest(BenchmarkTestBase):
-    """The original Spanner performace testing class."""
+    """The original Spanner performance testing class."""
 
     def __init__(self):
         super().__init__()
@@ -127,12 +153,20 @@ class SpannerBenchmarkTest(BenchmarkTestBase):
 
         self._many_rows = []
         self._many_rows2 = []
-        birth_date = datetime.datetime(1998, 10, 6).strftime("%Y-%m-%d")
-        for i in range(99):
-            num = round(random.random() * 1000000)
-            self._many_rows.append((num, "Pete", "Allison", birth_date, b"123"))
-            num2 = round(random.random() * 1000000)
-            self._many_rows2.append((num2, "Pete", "Allison", birth_date, b"123"))
+        birth_date = datetime.date(1998, 10, 6)
+        picture = base64.b64encode(u"123".encode())
+        for num in self._many_rows_ids:
+            self._many_rows.append(
+                {
+                    "id": num,
+                    "first_name": "Pete",
+                    "last_name": "Allison",
+                    "birth_date": birth_date,
+                    "picture": picture,
+                }
+            )
+        for num in self._many_rows2_ids:
+            self._many_rows2.append((num, "Pete", "Allison", birth_date, picture))
 
         # initiate a session
         with self._database.snapshot():
@@ -192,9 +226,8 @@ class SQLAlchemyBenchmarkTest(BenchmarkTestBase):
 
         self._many_rows = []
         self._many_rows2 = []
-        birth_date = datetime.datetime(1998, 10, 6).strftime("%Y-%m-%d")
-        for i in range(99):
-            num = round(random.random() * 1000000)
+        birth_date = datetime.date(1998, 10, 6)
+        for num in self._many_rows_ids:
             self._many_rows.append(
                 {
                     "id": num,
@@ -204,10 +237,10 @@ class SQLAlchemyBenchmarkTest(BenchmarkTestBase):
                     "picture": b"123",
                 }
             )
-            num2 = round(random.random() * 1000000)
+        for num in self._many_rows2_ids:
             self._many_rows2.append(
                 {
-                    "id": num2,
+                    "id": num,
                     "first_name": "Pete",
                     "last_name": "Allison",
                     "birth_date": birth_date,
@@ -255,8 +288,16 @@ def insert_one_row(transaction, one_row):
     Inserts a single row into a database and then fetches it back.
     """
     transaction.execute_update(
-        "INSERT Singers (id, first_name, last_name, birth_date, picture) "
-        " VALUES {}".format(str(one_row))
+        "INSERT INTO `Singers` (id, first_name, last_name, birth_date, picture)"
+        " VALUES (@id, @first_name, @last_name, @birth_date, @picture)",
+        params=one_row,
+        param_types={
+            "id": spanner.param_types.INT64,
+            "first_name": spanner.param_types.STRING,
+            "last_name": spanner.param_types.STRING,
+            "birth_date": spanner.param_types.DATE,
+            "picture": spanner.param_types.BYTES,
+        },
     )
     last_name = transaction.execute_sql(
         "SELECT last_name FROM Singers WHERE id=1"
@@ -273,8 +314,18 @@ def insert_many_rows(transaction, many_rows):
     statements = []
     for row in many_rows:
         statements.append(
-            "INSERT Singers (id, first_name, last_name, birth_date, picture) "
-            " VALUES {}".format(str(row))
+            (
+                "INSERT INTO `Singers` (id, first_name, last_name, birth_date, picture)"
+                " VALUES (@id, @first_name, @last_name, @birth_date, @picture)",
+                row,
+                {
+                    "id": spanner.param_types.INT64,
+                    "first_name": spanner.param_types.STRING,
+                    "last_name": spanner.param_types.STRING,
+                    "birth_date": spanner.param_types.DATE,
+                    "picture": spanner.param_types.BYTES,
+                },
+            )
         )
     _, count = transaction.batch_update(statements)
     if sum(count) != 99:
