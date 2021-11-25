@@ -24,7 +24,7 @@ from google.cloud import spanner_v1 as spanner
 from google.cloud.spanner_v1 import JsonObject
 
 from .exceptions import Error, ProgrammingError
-from .parser import parse_values
+from .parser import expect, VALUES
 from .types import DateStr, TimestampStr
 from .utils import sanitize_literals_for_upload
 
@@ -302,8 +302,7 @@ def parse_insert(insert_sql, params):
         # Params: None
         return {"sql_params_list": [(insert_sql, None)]}
 
-    values_str = after_values_sql[0]
-    _, values = parse_values(values_str)
+    _, values = expect(after_values_sql[0], VALUES)
 
     if values.homogenous():
         # Case c)
@@ -336,7 +335,7 @@ def parse_insert(insert_sql, params):
             % (args_len, len(params))
         )
 
-    trim_index = insert_sql.find(values_str)
+    trim_index = insert_sql.find(after_values_sql[0])
     before_values_sql = insert_sql[:trim_index]
 
     sql_param_tuples = []

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Database cursor for Google Cloud Spanner DB-API."""
+"""Database cursor for Google Cloud Spanner DB API."""
 
 import warnings
 from collections import namedtuple
@@ -49,6 +49,28 @@ ColumnDetails = namedtuple("column_details", ["null_ok", "spanner_type"])
 Statement = namedtuple("Statement", "sql, params, param_types, checksum, is_insert")
 
 
+def check_not_closed(function):
+    """`Cursor` class methods decorator.
+
+    Raise an exception if the cursor is closed, or not bound to a
+    connection, or the parent connection is closed.
+
+    :raises: :class:`InterfaceError` if this cursor is closed.
+    :raises: :class:`ProgrammingError` if this cursor is not bound to a connection.
+    """
+
+    def wrapper(cursor, *args, **kwargs):
+        if not cursor.connection:
+            raise ProgrammingError("Cursor is not connected to the database")
+
+        if cursor.is_closed:
+            raise InterfaceError("Cursor and/or connection is already closed.")
+
+        return function(cursor, *args, **kwargs)
+
+    return wrapper
+
+
 class Cursor(object):
     """Database cursor to manage the context of a fetch operation.
 
@@ -64,7 +86,6 @@ class Cursor(object):
         self._is_closed = False
         # the currently running SQL statement results checksum
         self._checksum = None
-
         # the number of rows to fetch at a time with fetchmany()
         self.arraysize = 1
 
@@ -126,30 +147,31 @@ class Cursor(object):
             stacklevel=2,
         )
 
-    def _raise_if_closed(self):
-        """Raise an exception if this cursor is closed.
-
-        Helper to check this cursor's state before running a
-        SQL/DDL/DML query. If the parent connection is
-        already closed it also raises an error.
-
-        :raises: :class:`InterfaceError` if this cursor is closed.
-        """
-        if self.is_closed:
-            raise InterfaceError("Cursor and/or connection is already closed.")
-
+    @check_not_closed
     def callproc(self, procname, args=None):
         """A no-op, raising an error if the cursor or connection is closed."""
-        self._raise_if_closed()
+        pass
+
+    @check_not_closed
+    def nextset(self):
+        """A no-op, raising an error if the cursor or connection is closed."""
+        pass
+
+    @check_not_closed
+    def setinputsizes(self, sizes):
+        """A no-op, raising an error if the cursor or connection is closed."""
+        pass
+
+    @check_not_closed
+    def setoutputsize(self, size, column=None):
+        """A no-op, raising an error if the cursor or connection is closed."""
+        pass
 
     def close(self):
         """Closes this cursor."""
         self._is_closed = True
 
     def _do_execute_update(self, transaction, sql, params):
-        sql = parse_utils.ensure_where_clause(sql)
-        sql, params = parse_utils.sql_pyformat_args_to_spanner(sql, params)
-
         result = transaction.execute_update(
             sql, params=params, param_types=get_param_types(params)
         )
@@ -164,6 +186,30 @@ class Cursor(object):
         elif status.code != OK:
             raise OperationalError(status.message)
 
+    def _batch_DDLs(self, sql):
+        """
+        Check that the given operation contains only DDL
+        statements and batch them into an internal list.
+
+        :type sql: str
+        :param sql: A SQL query statement.
+
+        :raises: :class:`ValueError` in case not a DDL statement
+                 present in the operation.
+        """
+        statements = []
+        for ddl in sqlparse.split(sql):
+            if ddl:
+                ddl = ddl.rstrip(";")
+                if parse_utils.classify_stmt(ddl) != parse_utils.STMT_DDL:
+                    raise ValueError("Only DDL statements may be batched.")
+
+                statements.append(ddl)
+
+        # Only queue DDL statements if they are all correctly classified.
+        self.connection._ddl_statements.extend(statements)
+
+    @check_not_closed
     def execute(self, sql, args=None):
         """Prepares and executes a Spanner database operation.
 
@@ -173,31 +219,16 @@ class Cursor(object):
         :type args: list
         :param args: Additional parameters to supplement the SQL query.
         """
-        if not self.connection:
-            raise ProgrammingError("Cursor is not connected to the database")
-
-        self._raise_if_closed()
-
         self._result_set = None
 
-        # Classify whether this is a read-only SQL statement.
         try:
             if self.connection.read_only:
                 self._handle_DQL(sql, args or None)
                 return
 
-            classification = parse_utils.classify_stmt(sql)
-            if classification == parse_utils.STMT_DDL:
-                ddl_statements = []
-                for ddl in sqlparse.split(sql):
-                    if ddl:
-                        if ddl[-1] == ";":
-                            ddl = ddl[:-1]
-                        if parse_utils.classify_stmt(ddl) != parse_utils.STMT_DDL:
-                            raise ValueError("Only DDL statements may be batched.")
-                        ddl_statements.append(ddl)
-                # Only queue DDL statements if they are all correctly classified.
-                self.connection._ddl_statements.extend(ddl_statements)
+            class_ = parse_utils.classify_stmt(sql)
+            if class_ == parse_utils.STMT_DDL:
+                self._batch_DDLs(sql)
                 if self.connection.autocommit:
                     self.connection.run_prior_DDL_statements()
                 return
@@ -207,21 +238,21 @@ class Cursor(object):
             # self._run_prior_DDL_statements()
             self.connection.run_prior_DDL_statements()
 
+            if class_ == parse_utils.STMT_UPDATING:
+                sql = parse_utils.ensure_where_clause(sql)
+
+            if class_ != parse_utils.STMT_INSERT:
+                sql, args = sql_pyformat_args_to_spanner(sql, args or None)
+
             if not self.connection.autocommit:
-                if classification == parse_utils.STMT_UPDATING:
-                    sql = parse_utils.ensure_where_clause(sql)
-
-                if classification != parse_utils.STMT_INSERT:
-                    sql, args = sql_pyformat_args_to_spanner(sql, args or None)
-
                 statement = Statement(
                     sql,
                     args,
                     get_param_types(args or None)
-                    if classification != parse_utils.STMT_INSERT
+                    if class_ != parse_utils.STMT_INSERT
                     else {},
                     ResultsChecksum(),
-                    classification == parse_utils.STMT_INSERT,
+                    class_ == parse_utils.STMT_INSERT,
                 )
 
                 (self._result_set, self._checksum,) = self.connection.run_statement(
@@ -235,21 +266,22 @@ class Cursor(object):
                         self.connection.retry_transaction()
                 return
 
-            if classification == parse_utils.STMT_NON_UPDATING:
+            if class_ == parse_utils.STMT_NON_UPDATING:
                 self._handle_DQL(sql, args or None)
-            elif classification == parse_utils.STMT_INSERT:
+            elif class_ == parse_utils.STMT_INSERT:
                 _helpers.handle_insert(self.connection, sql, args or None)
             else:
                 self.connection.database.run_in_transaction(
                     self._do_execute_update, sql, args or None
                 )
         except (AlreadyExists, FailedPrecondition, OutOfRange) as e:
-            raise IntegrityError(e.details if hasattr(e, "details") else e)
+            raise IntegrityError(getattr(e, "details", e))
         except InvalidArgument as e:
-            raise ProgrammingError(e.details if hasattr(e, "details") else e)
+            raise ProgrammingError(getattr(e, "details", e))
         except InternalServerError as e:
-            raise OperationalError(e.details if hasattr(e, "details") else e)
+            raise OperationalError(getattr(e, "details", e))
 
+    @check_not_closed
     def executemany(self, operation, seq_of_params):
         """Execute the given SQL with every parameters set
         from the given sequence of parameters.
@@ -261,17 +293,15 @@ class Cursor(object):
         :param seq_of_params: Sequence of additional parameters to run
                               the query with.
         """
-        self._raise_if_closed()
-
-        classification = parse_utils.classify_stmt(operation)
-        if classification == parse_utils.STMT_DDL:
+        class_ = parse_utils.classify_stmt(operation)
+        if class_ == parse_utils.STMT_DDL:
             raise ProgrammingError(
                 "Executing DDL statements with executemany() method is not allowed."
             )
 
         many_result_set = StreamedManyResultSets()
 
-        if classification in (parse_utils.STMT_INSERT, parse_utils.STMT_UPDATING):
+        if class_ in (parse_utils.STMT_INSERT, parse_utils.STMT_UPDATING):
             statements = []
 
             for params in seq_of_params:
@@ -319,11 +349,10 @@ class Cursor(object):
         self._result_set = many_result_set
         self._itr = many_result_set
 
+    @check_not_closed
     def fetchone(self):
         """Fetch the next row of a query result set, returning a single
         sequence, or None when no more data is available."""
-        self._raise_if_closed()
-
         try:
             res = next(self)
             if not self.connection.autocommit and not self.connection.read_only:
@@ -336,12 +365,11 @@ class Cursor(object):
                 self.connection.retry_transaction()
                 return self.fetchone()
 
+    @check_not_closed
     def fetchall(self):
         """Fetch all (remaining) rows of a query result, returning them as
         a sequence of sequences.
         """
-        self._raise_if_closed()
-
         res = []
         try:
             for row in self:
@@ -355,6 +383,7 @@ class Cursor(object):
 
         return res
 
+    @check_not_closed
     def fetchmany(self, size=None):
         """Fetch the next set of rows of a query result, returning a sequence
         of sequences. An empty sequence is returned when no more rows are available.
@@ -366,13 +395,11 @@ class Cursor(object):
             if the previous call to .execute*() did not produce any result set
             or if no call was issued yet.
         """
-        self._raise_if_closed()
-
         if size is None:
             size = self.arraysize
 
         items = []
-        for i in range(size):
+        for _ in range(size):
             try:
                 res = next(self)
                 if not self.connection.autocommit and not self.connection.read_only:
@@ -387,39 +414,14 @@ class Cursor(object):
 
         return items
 
-    def nextset(self):
-        """A no-op, raising an error if the cursor or connection is closed."""
-        self._raise_if_closed()
-
-    def setinputsizes(self, sizes):
-        """A no-op, raising an error if the cursor or connection is closed."""
-        self._raise_if_closed()
-
-    def setoutputsize(self, size, column=None):
-        """A no-op, raising an error if the cursor or connection is closed."""
-        self._raise_if_closed()
-
     def _handle_DQL_with_snapshot(self, snapshot, sql, params):
-        # Reference
-        #  https://googleapis.dev/python/spanner/latest/session-api.html#google.cloud.spanner_v1.session.Session.execute_sql
-        sql, params = parse_utils.sql_pyformat_args_to_spanner(sql, params)
-        res = snapshot.execute_sql(
-            sql, params=params, param_types=get_param_types(params)
-        )
-        # Immediately using:
-        #   iter(response)
-        # here, because this Spanner API doesn't provide
-        # easy mechanisms to detect when only a single item
-        # is returned or many, yet mixing results that
-        # are for .fetchone() with those that would result in
-        # many items returns a RuntimeError if .fetchone() is
-        # invoked and vice versa.
-        self._result_set = res
+        self._result_set = snapshot.execute_sql(sql, params, get_param_types(params))
         # Read the first element so that the StreamedResultSet can
-        # return the metadata after a DQL statement. See issue #155.
+        # return the metadata after a DQL statement.
         self._itr = PeekIterator(self._result_set)
 
     def _handle_DQL(self, sql, params):
+        sql, params = parse_utils.sql_pyformat_args_to_spanner(sql, params)
         if self.connection.read_only and not self.connection.autocommit:
             # initiate or use the existing multi-use snapshot
             self._handle_DQL_with_snapshot(
@@ -462,8 +464,7 @@ class Cursor(object):
         self.connection.run_prior_DDL_statements()
 
         with self.connection.database.snapshot() as snapshot:
-            res = snapshot.execute_sql(sql, params=params, param_types=param_types)
-            return list(res)
+            return list(snapshot.execute_sql(sql, params, param_types))
 
     def get_table_column_schema(self, table_name):
         rows = self.run_sql_in_snapshot(

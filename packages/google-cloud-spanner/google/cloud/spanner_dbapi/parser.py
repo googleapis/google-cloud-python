@@ -36,7 +36,6 @@ thus given:
 from .exceptions import ProgrammingError
 
 ARGS = "ARGS"
-EXPR = "EXPR"
 FUNC = "FUNC"
 VALUES = "VALUES"
 
@@ -159,10 +158,6 @@ class values(a_args):
         return "VALUES%s" % super().__str__()
 
 
-def parse_values(stmt):
-    return expect(stmt, VALUES)
-
-
 pyfmt_str = terminal("%s")
 
 
@@ -186,6 +181,7 @@ def expect(word, token):
     if token == VALUES:
         if not word.startswith("VALUES"):
             raise ProgrammingError("VALUES: `%s` does not start with VALUES" % word)
+
         word = word[len("VALUES") :].lstrip()
 
         all_args = []
@@ -259,25 +255,4 @@ def expect(word, token):
         word = word[1:]
         return word, a_args(terms)
 
-    elif token == EXPR:
-        if word == "%s":
-            # Terminal symbol.
-            return "", pyfmt_str
-
-        # Otherwise we expect a function.
-        return expect(word, FUNC)
-
     raise ProgrammingError("Unknown token `%s`" % token)
-
-
-def as_values(values_stmt):
-    """Return the parsed values.
-
-    :type values_stmt: str
-    :param values_stmt: Raw values.
-
-    :rtype: Any
-    :returns: A tree of the already parsed expression.
-    """
-    _, _values = parse_values(values_stmt)
-    return _values

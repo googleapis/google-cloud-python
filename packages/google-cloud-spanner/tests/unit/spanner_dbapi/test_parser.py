@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import mock
 import sys
 import unittest
 
@@ -199,10 +198,7 @@ class TestParser(unittest.TestCase):
 
     def test_expect(self):
         from google.cloud.spanner_dbapi.parser import ARGS
-        from google.cloud.spanner_dbapi.parser import EXPR
-        from google.cloud.spanner_dbapi.parser import FUNC
         from google.cloud.spanner_dbapi.parser import expect
-        from google.cloud.spanner_dbapi.parser import pyfmt_str
         from google.cloud.spanner_dbapi import exceptions
 
         with self.assertRaises(exceptions.ProgrammingError):
@@ -211,12 +207,6 @@ class TestParser(unittest.TestCase):
             expect(word="ABC", token=ARGS)
         with self.assertRaises(exceptions.ProgrammingError):
             expect(word="(", token=ARGS)
-
-        expected = "", pyfmt_str
-        self.assertEqual(expect("%s", EXPR), expected)
-
-        expected = expect("function()", FUNC)
-        self.assertEqual(expect("function()", EXPR), expected)
 
         with self.assertRaises(exceptions.ProgrammingError):
             expect(word="", token="ABC")
@@ -286,12 +276,3 @@ class TestParser(unittest.TestCase):
                 self.assertRaisesRegex(
                     ProgrammingError, wantException, lambda: expect(text, VALUES)
                 )
-
-    def test_as_values(self):
-        from google.cloud.spanner_dbapi.parser import as_values
-
-        values = (1, 2)
-        with mock.patch(
-            "google.cloud.spanner_dbapi.parser.parse_values", return_value=values
-        ):
-            self.assertEqual(as_values(None), values[1])
