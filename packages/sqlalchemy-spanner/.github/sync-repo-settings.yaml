@@ -13,3 +13,4 @@ branchProtectionRules:
     - 'migration_tests'
     - 'cla/google'
     - 'Kokoro'
+    - 'Kokoro Compliance Tests'
