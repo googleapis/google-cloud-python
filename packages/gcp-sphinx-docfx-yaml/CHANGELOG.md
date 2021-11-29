@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.3](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v1.3.2...v1.3.3) (2021-11-29)
+
+
+### Bug Fixes
+
+* expand entry names in Overview page to be more descriptive ([#159](https://www.github.com/googleapis/sphinx-docfx-yaml/issues/159)) ([7bd6416](https://www.github.com/googleapis/sphinx-docfx-yaml/commit/7bd64160cda8a84cdbd14f61bd39d5594b048bd2))
+
 ### [1.3.2](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v1.3.1...v1.3.2) (2021-11-16)
 
 
