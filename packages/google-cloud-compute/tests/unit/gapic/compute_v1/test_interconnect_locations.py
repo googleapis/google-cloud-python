@@ -458,7 +458,7 @@ def test_get_rest(
             address="address_value",
             availability_zone="availability_zone_value",
             city="city_value",
-            continent=compute.InterconnectLocation.Continent.AFRICA,
+            continent="continent_value",
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             facility_provider="facility_provider_value",
@@ -468,7 +468,7 @@ def test_get_rest(
             name="name_value",
             peeringdb_facility_id="peeringdb_facility_id_value",
             self_link="self_link_value",
-            status=compute.InterconnectLocation.Status.AVAILABLE,
+            status="status_value",
             supports_pzs=True,
         )
 
@@ -485,7 +485,7 @@ def test_get_rest(
     assert response.address == "address_value"
     assert response.availability_zone == "availability_zone_value"
     assert response.city == "city_value"
-    assert response.continent == compute.InterconnectLocation.Continent.AFRICA
+    assert response.continent == "continent_value"
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.facility_provider == "facility_provider_value"
@@ -497,7 +497,7 @@ def test_get_rest(
     assert response.name == "name_value"
     assert response.peeringdb_facility_id == "peeringdb_facility_id_value"
     assert response.self_link == "self_link_value"
-    assert response.status == compute.InterconnectLocation.Status.AVAILABLE
+    assert response.status == "status_value"
     assert response.supports_pzs is True
 
 

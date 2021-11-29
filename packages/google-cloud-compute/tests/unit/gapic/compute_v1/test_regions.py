@@ -413,7 +413,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetRegionRequest
             kind="kind_value",
             name="name_value",
             self_link="self_link_value",
-            status=compute.Region.Status.DOWN,
+            status="status_value",
             supports_pzs=True,
             zones=["zones_value"],
         )
@@ -434,7 +434,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetRegionRequest
     assert response.kind == "kind_value"
     assert response.name == "name_value"
     assert response.self_link == "self_link_value"
-    assert response.status == compute.Region.Status.DOWN
+    assert response.status == "status_value"
     assert response.supports_pzs is True
     assert response.zones == ["zones_value"]
 

@@ -581,19 +581,19 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetInterconnectR
             google_reference_id="google_reference_id_value",
             id=205,
             interconnect_attachments=["interconnect_attachments_value"],
-            interconnect_type=compute.Interconnect.InterconnectType.DEDICATED,
+            interconnect_type="interconnect_type_value",
             kind="kind_value",
-            link_type=compute.Interconnect.LinkType.LINK_TYPE_ETHERNET_100G_LR,
+            link_type="link_type_value",
             location="location_value",
             name="name_value",
             noc_contact_email="noc_contact_email_value",
-            operational_status=compute.Interconnect.OperationalStatus.OS_ACTIVE,
+            operational_status="operational_status_value",
             peer_ip_address="peer_ip_address_value",
             provisioned_link_count=2375,
             requested_link_count=2151,
             satisfies_pzs=True,
             self_link="self_link_value",
-            state=compute.Interconnect.State.ACTIVE,
+            state="state_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -614,23 +614,19 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetInterconnectR
     assert response.google_reference_id == "google_reference_id_value"
     assert response.id == 205
     assert response.interconnect_attachments == ["interconnect_attachments_value"]
-    assert response.interconnect_type == compute.Interconnect.InterconnectType.DEDICATED
+    assert response.interconnect_type == "interconnect_type_value"
     assert response.kind == "kind_value"
-    assert (
-        response.link_type == compute.Interconnect.LinkType.LINK_TYPE_ETHERNET_100G_LR
-    )
+    assert response.link_type == "link_type_value"
     assert response.location == "location_value"
     assert response.name == "name_value"
     assert response.noc_contact_email == "noc_contact_email_value"
-    assert (
-        response.operational_status == compute.Interconnect.OperationalStatus.OS_ACTIVE
-    )
+    assert response.operational_status == "operational_status_value"
     assert response.peer_ip_address == "peer_ip_address_value"
     assert response.provisioned_link_count == 2375
     assert response.requested_link_count == 2151
     assert response.satisfies_pzs is True
     assert response.self_link == "self_link_value"
-    assert response.state == compute.Interconnect.State.ACTIVE
+    assert response.state == "state_value"
 
 
 def test_get_rest_bad_request(

@@ -1442,7 +1442,7 @@ def test_list_instances_rest(
     request_init[
         "instance_groups_list_instances_request_resource"
     ] = compute.InstanceGroupsListInstancesRequest(
-        instance_state=compute.InstanceGroupsListInstancesRequest.InstanceState.ALL
+        instance_state="instance_state_value"
     )
     request = request_type(request_init)
 
@@ -1488,7 +1488,7 @@ def test_list_instances_rest_bad_request(
     request_init[
         "instance_groups_list_instances_request_resource"
     ] = compute.InstanceGroupsListInstancesRequest(
-        instance_state=compute.InstanceGroupsListInstancesRequest.InstanceState.ALL
+        instance_state="instance_state_value"
     )
     request = request_type(request_init)
 
@@ -1539,7 +1539,7 @@ def test_list_instances_rest_flattened(transport: str = "rest"):
             zone="zone_value",
             instance_group="instance_group_value",
             instance_groups_list_instances_request_resource=compute.InstanceGroupsListInstancesRequest(
-                instance_state=compute.InstanceGroupsListInstancesRequest.InstanceState.ALL
+                instance_state="instance_state_value"
             ),
         )
         mock_args.update(sample_request)
@@ -1570,7 +1570,7 @@ def test_list_instances_rest_flattened_error(transport: str = "rest"):
             zone="zone_value",
             instance_group="instance_group_value",
             instance_groups_list_instances_request_resource=compute.InstanceGroupsListInstancesRequest(
-                instance_state=compute.InstanceGroupsListInstancesRequest.InstanceState.ALL
+                instance_state="instance_state_value"
             ),
         )
 
@@ -1624,7 +1624,7 @@ def test_list_instances_rest_pager():
         sample_request[
             "instance_groups_list_instances_request_resource"
         ] = compute.InstanceGroupsListInstancesRequest(
-            instance_state=compute.InstanceGroupsListInstancesRequest.InstanceState.ALL
+            instance_state="instance_state_value"
         )
 
         pager = client.list_instances(request=sample_request)

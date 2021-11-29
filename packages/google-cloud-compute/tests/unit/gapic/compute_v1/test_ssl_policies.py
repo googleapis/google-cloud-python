@@ -573,9 +573,9 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetSslPolicyRequ
             fingerprint="fingerprint_value",
             id=205,
             kind="kind_value",
-            min_tls_version=compute.SslPolicy.MinTlsVersion.TLS_1_0,
+            min_tls_version="min_tls_version_value",
             name="name_value",
-            profile=compute.SslPolicy.Profile.COMPATIBLE,
+            profile="profile_value",
             self_link="self_link_value",
         )
 
@@ -596,9 +596,9 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetSslPolicyRequ
     assert response.fingerprint == "fingerprint_value"
     assert response.id == 205
     assert response.kind == "kind_value"
-    assert response.min_tls_version == compute.SslPolicy.MinTlsVersion.TLS_1_0
+    assert response.min_tls_version == "min_tls_version_value"
     assert response.name == "name_value"
-    assert response.profile == compute.SslPolicy.Profile.COMPATIBLE
+    assert response.profile == "profile_value"
     assert response.self_link == "self_link_value"
 
 

@@ -419,7 +419,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetLicenseCodeRe
             kind="kind_value",
             name="name_value",
             self_link="self_link_value",
-            state=compute.LicenseCode.State.DISABLED,
+            state="state_value",
             transferable=True,
         )
 
@@ -439,7 +439,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetLicenseCodeRe
     assert response.kind == "kind_value"
     assert response.name == "name_value"
     assert response.self_link == "self_link_value"
-    assert response.state == compute.LicenseCode.State.DISABLED
+    assert response.state == "state_value"
     assert response.transferable is True
 
 

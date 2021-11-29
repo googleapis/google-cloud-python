@@ -761,7 +761,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetAutoscalerReq
             recommended_size=1693,
             region="region_value",
             self_link="self_link_value",
-            status=compute.Autoscaler.Status.ACTIVE,
+            status="status_value",
             target="target_value",
             zone="zone_value",
         )
@@ -784,7 +784,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetAutoscalerReq
     assert response.recommended_size == 1693
     assert response.region == "region_value"
     assert response.self_link == "self_link_value"
-    assert response.status == compute.Autoscaler.Status.ACTIVE
+    assert response.status == "status_value"
     assert response.target == "target_value"
     assert response.zone == "zone_value"
 

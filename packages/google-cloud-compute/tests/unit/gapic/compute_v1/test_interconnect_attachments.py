@@ -823,15 +823,15 @@ def test_get_rest(
         # Designate an appropriate value for the returned response.
         return_value = compute.InterconnectAttachment(
             admin_enabled=True,
-            bandwidth=compute.InterconnectAttachment.Bandwidth.BPS_100M,
+            bandwidth="bandwidth_value",
             candidate_subnets=["candidate_subnets_value"],
             cloud_router_ip_address="cloud_router_ip_address_value",
             creation_timestamp="creation_timestamp_value",
             customer_router_ip_address="customer_router_ip_address_value",
             dataplane_version=1807,
             description="description_value",
-            edge_availability_domain=compute.InterconnectAttachment.EdgeAvailabilityDomain.AVAILABILITY_DOMAIN_1,
-            encryption=compute.InterconnectAttachment.Encryption.IPSEC,
+            edge_availability_domain="edge_availability_domain_value",
+            encryption="encryption_value",
             google_reference_id="google_reference_id_value",
             id=205,
             interconnect="interconnect_value",
@@ -839,15 +839,15 @@ def test_get_rest(
             kind="kind_value",
             mtu=342,
             name="name_value",
-            operational_status=compute.InterconnectAttachment.OperationalStatus.OS_ACTIVE,
+            operational_status="operational_status_value",
             pairing_key="pairing_key_value",
             partner_asn=1181,
             region="region_value",
             router="router_value",
             satisfies_pzs=True,
             self_link="self_link_value",
-            state=compute.InterconnectAttachment.State.ACTIVE,
-            type_=compute.InterconnectAttachment.Type.DEDICATED,
+            state="state_value",
+            type_="type__value",
             vlan_tag8021q=1160,
         )
 
@@ -862,18 +862,15 @@ def test_get_rest(
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.InterconnectAttachment)
     assert response.admin_enabled is True
-    assert response.bandwidth == compute.InterconnectAttachment.Bandwidth.BPS_100M
+    assert response.bandwidth == "bandwidth_value"
     assert response.candidate_subnets == ["candidate_subnets_value"]
     assert response.cloud_router_ip_address == "cloud_router_ip_address_value"
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.customer_router_ip_address == "customer_router_ip_address_value"
     assert response.dataplane_version == 1807
     assert response.description == "description_value"
-    assert (
-        response.edge_availability_domain
-        == compute.InterconnectAttachment.EdgeAvailabilityDomain.AVAILABILITY_DOMAIN_1
-    )
-    assert response.encryption == compute.InterconnectAttachment.Encryption.IPSEC
+    assert response.edge_availability_domain == "edge_availability_domain_value"
+    assert response.encryption == "encryption_value"
     assert response.google_reference_id == "google_reference_id_value"
     assert response.id == 205
     assert response.interconnect == "interconnect_value"
@@ -881,18 +878,15 @@ def test_get_rest(
     assert response.kind == "kind_value"
     assert response.mtu == 342
     assert response.name == "name_value"
-    assert (
-        response.operational_status
-        == compute.InterconnectAttachment.OperationalStatus.OS_ACTIVE
-    )
+    assert response.operational_status == "operational_status_value"
     assert response.pairing_key == "pairing_key_value"
     assert response.partner_asn == 1181
     assert response.region == "region_value"
     assert response.router == "router_value"
     assert response.satisfies_pzs is True
     assert response.self_link == "self_link_value"
-    assert response.state == compute.InterconnectAttachment.State.ACTIVE
-    assert response.type_ == compute.InterconnectAttachment.Type.DEDICATED
+    assert response.state == "state_value"
+    assert response.type_ == "type__value"
     assert response.vlan_tag8021q == 1160
 
 

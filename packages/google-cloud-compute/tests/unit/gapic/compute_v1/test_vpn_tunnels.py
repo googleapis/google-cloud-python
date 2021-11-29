@@ -770,7 +770,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetVpnTunnelRequ
             self_link="self_link_value",
             shared_secret="shared_secret_value",
             shared_secret_hash="shared_secret_hash_value",
-            status=compute.VpnTunnel.Status.ALLOCATING_RESOURCES,
+            status="status_value",
             target_vpn_gateway="target_vpn_gateway_value",
             vpn_gateway="vpn_gateway_value",
             vpn_gateway_interface=2229,
@@ -804,7 +804,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetVpnTunnelRequ
     assert response.self_link == "self_link_value"
     assert response.shared_secret == "shared_secret_value"
     assert response.shared_secret_hash == "shared_secret_hash_value"
-    assert response.status == compute.VpnTunnel.Status.ALLOCATING_RESOURCES
+    assert response.status == "status_value"
     assert response.target_vpn_gateway == "target_vpn_gateway_value"
     assert response.vpn_gateway == "vpn_gateway_value"
     assert response.vpn_gateway_interface == 2229

@@ -930,7 +930,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetRegionDiskReq
             source_snapshot="source_snapshot_value",
             source_snapshot_id="source_snapshot_id_value",
             source_storage_object="source_storage_object_value",
-            status=compute.Disk.Status.CREATING,
+            status="status_value",
             type_="type__value",
             users=["users_value"],
             zone="zone_value",
@@ -973,7 +973,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetRegionDiskReq
     assert response.source_snapshot == "source_snapshot_value"
     assert response.source_snapshot_id == "source_snapshot_id_value"
     assert response.source_storage_object == "source_storage_object_value"
-    assert response.status == compute.Disk.Status.CREATING
+    assert response.status == "status_value"
     assert response.type_ == "type__value"
     assert response.users == ["users_value"]
     assert response.zone == "zone_value"

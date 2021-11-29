@@ -597,7 +597,7 @@ def test_get_rest(
             kind="kind_value",
             label_fingerprint="label_fingerprint_value",
             name="name_value",
-            redundancy_type=compute.ExternalVpnGateway.RedundancyType.FOUR_IPS_REDUNDANCY,
+            redundancy_type="redundancy_type_value",
             self_link="self_link_value",
         )
 
@@ -617,10 +617,7 @@ def test_get_rest(
     assert response.kind == "kind_value"
     assert response.label_fingerprint == "label_fingerprint_value"
     assert response.name == "name_value"
-    assert (
-        response.redundancy_type
-        == compute.ExternalVpnGateway.RedundancyType.FOUR_IPS_REDUNDANCY
-    )
+    assert response.redundancy_type == "redundancy_type_value"
     assert response.self_link == "self_link_value"
 
 

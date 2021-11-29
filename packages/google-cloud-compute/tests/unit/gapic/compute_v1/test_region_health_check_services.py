@@ -638,7 +638,7 @@ def test_get_rest(
             description="description_value",
             fingerprint="fingerprint_value",
             health_checks=["health_checks_value"],
-            health_status_aggregation_policy=compute.HealthCheckService.HealthStatusAggregationPolicy.AND,
+            health_status_aggregation_policy="health_status_aggregation_policy_value",
             id=205,
             kind="kind_value",
             name="name_value",
@@ -664,7 +664,7 @@ def test_get_rest(
     assert response.health_checks == ["health_checks_value"]
     assert (
         response.health_status_aggregation_policy
-        == compute.HealthCheckService.HealthStatusAggregationPolicy.AND
+        == "health_status_aggregation_policy_value"
     )
     assert response.id == 205
     assert response.kind == "kind_value"

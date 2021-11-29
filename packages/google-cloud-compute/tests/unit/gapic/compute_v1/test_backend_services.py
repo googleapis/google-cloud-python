@@ -1103,17 +1103,17 @@ def test_get_rest(
             health_checks=["health_checks_value"],
             id=205,
             kind="kind_value",
-            load_balancing_scheme=compute.BackendService.LoadBalancingScheme.EXTERNAL,
-            locality_lb_policy=compute.BackendService.LocalityLbPolicy.INVALID_LB_POLICY,
+            load_balancing_scheme="load_balancing_scheme_value",
+            locality_lb_policy="locality_lb_policy_value",
             name="name_value",
             network="network_value",
             port=453,
             port_name="port_name_value",
-            protocol=compute.BackendService.Protocol.GRPC,
+            protocol="protocol_value",
             region="region_value",
             security_policy="security_policy_value",
             self_link="self_link_value",
-            session_affinity=compute.BackendService.SessionAffinity.CLIENT_IP,
+            session_affinity="session_affinity_value",
             timeout_sec=1185,
         )
 
@@ -1137,23 +1137,17 @@ def test_get_rest(
     assert response.health_checks == ["health_checks_value"]
     assert response.id == 205
     assert response.kind == "kind_value"
-    assert (
-        response.load_balancing_scheme
-        == compute.BackendService.LoadBalancingScheme.EXTERNAL
-    )
-    assert (
-        response.locality_lb_policy
-        == compute.BackendService.LocalityLbPolicy.INVALID_LB_POLICY
-    )
+    assert response.load_balancing_scheme == "load_balancing_scheme_value"
+    assert response.locality_lb_policy == "locality_lb_policy_value"
     assert response.name == "name_value"
     assert response.network == "network_value"
     assert response.port == 453
     assert response.port_name == "port_name_value"
-    assert response.protocol == compute.BackendService.Protocol.GRPC
+    assert response.protocol == "protocol_value"
     assert response.region == "region_value"
     assert response.security_policy == "security_policy_value"
     assert response.self_link == "self_link_value"
-    assert response.session_affinity == compute.BackendService.SessionAffinity.CLIENT_IP
+    assert response.session_affinity == "session_affinity_value"
     assert response.timeout_sec == 1185
 
 

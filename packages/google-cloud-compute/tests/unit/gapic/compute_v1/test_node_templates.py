@@ -776,7 +776,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetNodeTemplateR
     with mock.patch.object(Session, "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.NodeTemplate(
-            cpu_overcommit_type=compute.NodeTemplate.CpuOvercommitType.CPU_OVERCOMMIT_TYPE_UNSPECIFIED,
+            cpu_overcommit_type="cpu_overcommit_type_value",
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             id=205,
@@ -785,7 +785,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetNodeTemplateR
             node_type="node_type_value",
             region="region_value",
             self_link="self_link_value",
-            status=compute.NodeTemplate.Status.CREATING,
+            status="status_value",
             status_message="status_message_value",
         )
 
@@ -799,10 +799,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetNodeTemplateR
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.NodeTemplate)
-    assert (
-        response.cpu_overcommit_type
-        == compute.NodeTemplate.CpuOvercommitType.CPU_OVERCOMMIT_TYPE_UNSPECIFIED
-    )
+    assert response.cpu_overcommit_type == "cpu_overcommit_type_value"
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.id == 205
@@ -811,7 +808,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetNodeTemplateR
     assert response.node_type == "node_type_value"
     assert response.region == "region_value"
     assert response.self_link == "self_link_value"
-    assert response.status == compute.NodeTemplate.Status.CREATING
+    assert response.status == "status_value"
     assert response.status_message == "status_message_value"
 
 

@@ -1563,7 +1563,7 @@ class AccessConfig(proto.Message):
             same region as the zone of the instance.
 
             This field is a member of `oneof`_ ``_nat_i_p``.
-        network_tier (google.cloud.compute_v1.types.AccessConfig.NetworkTier):
+        network_tier (str):
             This signifies the networking tier used for
             configuring this access configuration and can
             only take the following values: PREMIUM,
@@ -1573,7 +1573,9 @@ class AccessConfig(proto.Message):
             networkTier. If an AccessConfig with a valid
             external IP address is specified, it must match
             that of the networkTier associated with the
-            Address resource owning that IP.
+            Address resource owning that IP. Check the
+            NetworkTier enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_network_tier``.
         public_ptr_domain_name (str):
@@ -1587,9 +1589,10 @@ class AccessConfig(proto.Message):
             of the instance to a DNS domain name.
 
             This field is a member of `oneof`_ ``_set_public_ptr``.
-        type_ (google.cloud.compute_v1.types.AccessConfig.Type):
+        type_ (str):
             The type of configuration. The default and only option is
-            ONE_TO_ONE_NAT.
+            ONE_TO_ONE_NAT. Check the Type enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_type``.
     """
@@ -1622,12 +1625,10 @@ class AccessConfig(proto.Message):
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     nat_i_p = proto.Field(proto.STRING, number=117634556, optional=True,)
-    network_tier = proto.Field(
-        proto.ENUM, number=517397843, optional=True, enum=NetworkTier,
-    )
+    network_tier = proto.Field(proto.STRING, number=517397843, optional=True,)
     public_ptr_domain_name = proto.Field(proto.STRING, number=316599167, optional=True,)
     set_public_ptr = proto.Field(proto.BOOL, number=523870229, optional=True,)
-    type_ = proto.Field(proto.ENUM, number=3575610, optional=True, enum=Type,)
+    type_ = proto.Field(proto.STRING, number=3575610, optional=True,)
 
 
 class AddAccessConfigInstanceRequest(proto.Message):
@@ -2215,10 +2216,11 @@ class Address(proto.Message):
             resource.
 
             This field is a member of `oneof`_ ``_address``.
-        address_type (google.cloud.compute_v1.types.Address.AddressType):
+        address_type (str):
             The type of address to reserve, either
             INTERNAL or EXTERNAL. If unspecified, defaults
-            to EXTERNAL.
+            to EXTERNAL. Check the AddressType enum for the
+            list of possible values.
 
             This field is a member of `oneof`_ ``_address_type``.
         creation_timestamp (str):
@@ -2235,10 +2237,12 @@ class Address(proto.Message):
             identifier is defined by the server.
 
             This field is a member of `oneof`_ ``_id``.
-        ip_version (google.cloud.compute_v1.types.Address.IpVersion):
+        ip_version (str):
             The IP version that will be used by this
             address. Valid options are IPV4 or IPV6. This
             can only be specified for a global address.
+            Check the IpVersion enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_ip_version``.
         kind (str):
@@ -2264,7 +2268,7 @@ class Address(proto.Message):
             VPC_PEERING purpose.
 
             This field is a member of `oneof`_ ``_network``.
-        network_tier (google.cloud.compute_v1.types.Address.NetworkTier):
+        network_tier (str):
             This signifies the networking tier used for
             configuring this address and can only take the
             following values: PREMIUM or STANDARD. Internal
@@ -2272,7 +2276,9 @@ class Address(proto.Message):
             external IP addresses are always Premium Tier;
             regional external IP addresses can be either
             Standard or Premium Tier. If this field is not
-            specified, it is assumed to be PREMIUM.
+            specified, it is assumed to be PREMIUM. Check
+            the NetworkTier enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_network_tier``.
         prefix_length (int):
@@ -2280,7 +2286,7 @@ class Address(proto.Message):
             an IP range.
 
             This field is a member of `oneof`_ ``_prefix_length``.
-        purpose (google.cloud.compute_v1.types.Address.Purpose):
+        purpose (str):
             The purpose of this resource, which can be one of the
             following values: - GCE_ENDPOINT for addresses that are used
             by VM instances, alias IP ranges, load balancers, and
@@ -2299,7 +2305,8 @@ class Address(proto.Message):
             is assigned to multiple internal forwarding rules. -
             ``PRIVATE_SERVICE_CONNECT`` for a private network address
             that is used to configure Private Service Connect. Only
-            global internal addresses can use this purpose.
+            global internal addresses can use this purpose. Check the
+            Purpose enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_purpose``.
         region (str):
@@ -2313,13 +2320,14 @@ class Address(proto.Message):
             [Output Only] Server-defined URL for the resource.
 
             This field is a member of `oneof`_ ``_self_link``.
-        status (google.cloud.compute_v1.types.Address.Status):
+        status (str):
             [Output Only] The status of the address, which can be one of
             RESERVING, RESERVED, or IN_USE. An address that is RESERVING
             is currently in the process of being reserved. A RESERVED
             address is currently reserved and available to use. An
             IN_USE address is currently being used by another resource
-            and is not available.
+            and is not available. Check the Status enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_status``.
         subnetwork (str):
@@ -2406,26 +2414,20 @@ class Address(proto.Message):
         RESERVING = 514587225
 
     address = proto.Field(proto.STRING, number=462920692, optional=True,)
-    address_type = proto.Field(
-        proto.ENUM, number=264307877, optional=True, enum=AddressType,
-    )
+    address_type = proto.Field(proto.STRING, number=264307877, optional=True,)
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     id = proto.Field(proto.UINT64, number=3355, optional=True,)
-    ip_version = proto.Field(
-        proto.ENUM, number=294959552, optional=True, enum=IpVersion,
-    )
+    ip_version = proto.Field(proto.STRING, number=294959552, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     network = proto.Field(proto.STRING, number=232872494, optional=True,)
-    network_tier = proto.Field(
-        proto.ENUM, number=517397843, optional=True, enum=NetworkTier,
-    )
+    network_tier = proto.Field(proto.STRING, number=517397843, optional=True,)
     prefix_length = proto.Field(proto.INT32, number=453565747, optional=True,)
-    purpose = proto.Field(proto.ENUM, number=316407070, optional=True, enum=Purpose,)
+    purpose = proto.Field(proto.STRING, number=316407070, optional=True,)
     region = proto.Field(proto.STRING, number=138946292, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
-    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    status = proto.Field(proto.STRING, number=181260274, optional=True,)
     subnetwork = proto.Field(proto.STRING, number=307827694, optional=True,)
     users = proto.RepeatedField(proto.STRING, number=111578632,)
 
@@ -5702,12 +5704,13 @@ class AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk(
             Specifies the size of the disk in base-2 GB.
 
             This field is a member of `oneof`_ ``_disk_size_gb``.
-        interface (google.cloud.compute_v1.types.AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk.Interface):
+        interface (str):
             Specifies the disk interface to use for
             attaching this disk, which is either SCSI or
             NVME. The default is SCSI. For performance
             characteristics of SCSI over NVMe, see Local SSD
-            performance.
+            performance. Check the Interface enum for the
+            list of possible values.
 
             This field is a member of `oneof`_ ``_interface``.
     """
@@ -5723,9 +5726,7 @@ class AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk(
         SCSI = 2539686
 
     disk_size_gb = proto.Field(proto.INT64, number=316263735, optional=True,)
-    interface = proto.Field(
-        proto.ENUM, number=502623545, optional=True, enum=Interface,
-    )
+    interface = proto.Field(proto.STRING, number=502623545, optional=True,)
 
 
 class AllocationSpecificSKUAllocationReservedInstanceProperties(proto.Message):
@@ -6101,7 +6102,7 @@ class AttachedDisk(proto.Message):
             or the other, but not both.
 
             This field is a member of `oneof`_ ``_initialize_params``.
-        interface (google.cloud.compute_v1.types.AttachedDisk.Interface):
+        interface (str):
             Specifies the disk interface to use for
             attaching this disk, which is either SCSI or
             NVME. The default is SCSI. Persistent disks must
@@ -6109,7 +6110,8 @@ class AttachedDisk(proto.Message):
             attempt to attach a persistent disk in any other
             format than SCSI. Local SSDs can use either NVME
             or SCSI. For performance characteristics of SCSI
-            over NVMe, see Local SSD performance.
+            over NVMe, see Local SSD performance. Check the
+            Interface enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_interface``.
         kind (str):
@@ -6119,10 +6121,11 @@ class AttachedDisk(proto.Message):
             This field is a member of `oneof`_ ``_kind``.
         licenses (Sequence[str]):
             [Output Only] Any valid publicly visible licenses.
-        mode (google.cloud.compute_v1.types.AttachedDisk.Mode):
+        mode (str):
             The mode in which to attach this disk, either READ_WRITE or
             READ_ONLY. If not specified, the default is to attach the
-            disk in READ_WRITE mode.
+            disk in READ_WRITE mode. Check the Mode enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_mode``.
         shielded_instance_initial_state (google.cloud.compute_v1.types.InitialStateConfig):
@@ -6143,10 +6146,11 @@ class AttachedDisk(proto.Message):
             URL for the disk.
 
             This field is a member of `oneof`_ ``_source``.
-        type_ (google.cloud.compute_v1.types.AttachedDisk.Type):
+        type_ (str):
             Specifies the type of the disk, either
             SCRATCH or PERSISTENT. If not specified, the
-            default is PERSISTENT.
+            default is PERSISTENT. Check the Type enum for
+            the list of possible values.
 
             This field is a member of `oneof`_ ``_type``.
     """
@@ -6197,17 +6201,15 @@ class AttachedDisk(proto.Message):
         optional=True,
         message="AttachedDiskInitializeParams",
     )
-    interface = proto.Field(
-        proto.ENUM, number=502623545, optional=True, enum=Interface,
-    )
+    interface = proto.Field(proto.STRING, number=502623545, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     licenses = proto.RepeatedField(proto.STRING, number=337642578,)
-    mode = proto.Field(proto.ENUM, number=3357091, optional=True, enum=Mode,)
+    mode = proto.Field(proto.STRING, number=3357091, optional=True,)
     shielded_instance_initial_state = proto.Field(
         proto.MESSAGE, number=192356867, optional=True, message="InitialStateConfig",
     )
     source = proto.Field(proto.STRING, number=177235995, optional=True,)
-    type_ = proto.Field(proto.ENUM, number=3575610, optional=True, enum=Type,)
+    type_ = proto.Field(proto.STRING, number=3575610, optional=True,)
 
 
 class AttachedDiskInitializeParams(proto.Message):
@@ -6265,10 +6267,11 @@ class AttachedDiskInitializeParams(proto.Message):
             later modified by the disks.setLabels method.
             This field is only applicable for persistent
             disks.
-        on_update_action (google.cloud.compute_v1.types.AttachedDiskInitializeParams.OnUpdateAction):
+        on_update_action (str):
             Specifies which action to take on instance
             update with this disk. Default is to use the
-            existing disk.
+            existing disk. Check the OnUpdateAction enum for
+            the list of possible values.
 
             This field is a member of `oneof`_ ``_on_update_action``.
         provisioned_iops (int):
@@ -6354,9 +6357,7 @@ class AttachedDiskInitializeParams(proto.Message):
     disk_size_gb = proto.Field(proto.INT64, number=316263735, optional=True,)
     disk_type = proto.Field(proto.STRING, number=93009052, optional=True,)
     labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
-    on_update_action = proto.Field(
-        proto.ENUM, number=202451980, optional=True, enum=OnUpdateAction,
-    )
+    on_update_action = proto.Field(proto.STRING, number=202451980, optional=True,)
     provisioned_iops = proto.Field(proto.INT64, number=186769108, optional=True,)
     resource_policies = proto.RepeatedField(proto.STRING, number=22220385,)
     source_image = proto.Field(proto.STRING, number=50443319, optional=True,)
@@ -6429,8 +6430,10 @@ class AuditLogConfig(proto.Message):
             use.
 
             This field is a member of `oneof`_ ``_ignore_child_exemptions``.
-        log_type (google.cloud.compute_v1.types.AuditLogConfig.LogType):
+        log_type (str):
             The log type that this config enables.
+            Check the LogType enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_log_type``.
     """
@@ -6445,16 +6448,17 @@ class AuditLogConfig(proto.Message):
 
     exempted_members = proto.RepeatedField(proto.STRING, number=232615576,)
     ignore_child_exemptions = proto.Field(proto.BOOL, number=70141850, optional=True,)
-    log_type = proto.Field(proto.ENUM, number=403115861, optional=True, enum=LogType,)
+    log_type = proto.Field(proto.STRING, number=403115861, optional=True,)
 
 
 class AuthorizationLoggingOptions(proto.Message):
     r"""This is deprecated and has no effect. Do not use.
 
     Attributes:
-        permission_type (google.cloud.compute_v1.types.AuthorizationLoggingOptions.PermissionType):
+        permission_type (str):
             This is deprecated and has no effect. Do not
-            use.
+            use. Check the PermissionType enum for the list
+            of possible values.
 
             This field is a member of `oneof`_ ``_permission_type``.
     """
@@ -6468,9 +6472,7 @@ class AuthorizationLoggingOptions(proto.Message):
         DATA_WRITE = 340181738
         PERMISSION_TYPE_UNSPECIFIED = 440313346
 
-    permission_type = proto.Field(
-        proto.ENUM, number=525978538, optional=True, enum=PermissionType,
-    )
+    permission_type = proto.Field(proto.STRING, number=525978538, optional=True,)
 
 
 class Autoscaler(proto.Message):
@@ -6548,7 +6550,7 @@ class Autoscaler(proto.Message):
             [Output Only] Server-defined URL for the resource.
 
             This field is a member of `oneof`_ ``_self_link``.
-        status (google.cloud.compute_v1.types.Autoscaler.Status):
+        status (str):
             [Output Only] The status of the autoscaler configuration.
             Current set of possible values: - PENDING: Autoscaler
             backend hasn't read new/updated configuration. - DELETING:
@@ -6557,7 +6559,8 @@ class Autoscaler(proto.Message):
             in the statusDetails field. - ERROR: Configuration has
             errors. Actionable for users. Details are present in the
             statusDetails field. New values might be added in the
-            future.
+            future. Check the Status enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_status``.
         status_details (Sequence[google.cloud.compute_v1.types.AutoscalerStatusDetails]):
@@ -6607,7 +6610,7 @@ class Autoscaler(proto.Message):
         proto.STRING, proto.MESSAGE, number=465950178, message="ScalingScheduleStatus",
     )
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
-    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    status = proto.Field(proto.STRING, number=181260274, optional=True,)
     status_details = proto.RepeatedField(
         proto.MESSAGE, number=363353845, message="AutoscalerStatusDetails",
     )
@@ -6728,7 +6731,7 @@ class AutoscalerStatusDetails(proto.Message):
             The status message.
 
             This field is a member of `oneof`_ ``_message``.
-        type_ (google.cloud.compute_v1.types.AutoscalerStatusDetails.Type):
+        type_ (str):
             The type of error, warning, or notice returned. Current set
             of possible values: - ALL_INSTANCES_UNHEALTHY (WARNING): All
             instances in the instance group are unhealthy (not in
@@ -6770,7 +6773,8 @@ class AutoscalerStatusDetails(proto.Message):
             in the chosen zone. For regional autoscalers: in at least
             one of the zones you're using there is a resource stockout.
             New values might be added in the future. Some of the values
-            might not be available in all API versions.
+            might not be available in all API versions. Check the Type
+            enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_type``.
     """
@@ -6838,7 +6842,7 @@ class AutoscalerStatusDetails(proto.Message):
         ZONE_RESOURCE_STOCKOUT = 210200502
 
     message = proto.Field(proto.STRING, number=418054151, optional=True,)
-    type_ = proto.Field(proto.ENUM, number=3575610, optional=True, enum=Type,)
+    type_ = proto.Field(proto.STRING, number=3575610, optional=True,)
 
 
 class AutoscalersScopedList(proto.Message):
@@ -6912,8 +6916,10 @@ class AutoscalingPolicy(proto.Message):
             instances allowed.
 
             This field is a member of `oneof`_ ``_min_num_replicas``.
-        mode (google.cloud.compute_v1.types.AutoscalingPolicy.Mode):
+        mode (str):
             Defines operating mode for this policy.
+            Check the Mode enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_mode``.
         scale_in_control (google.cloud.compute_v1.types.AutoscalingPolicyScaleInControl):
@@ -6955,7 +6961,7 @@ class AutoscalingPolicy(proto.Message):
     )
     max_num_replicas = proto.Field(proto.INT32, number=62327375, optional=True,)
     min_num_replicas = proto.Field(proto.INT32, number=535329825, optional=True,)
-    mode = proto.Field(proto.ENUM, number=3357091, optional=True, enum=Mode,)
+    mode = proto.Field(proto.STRING, number=3357091, optional=True,)
     scale_in_control = proto.Field(
         proto.MESSAGE,
         number=527670872,
@@ -6974,14 +6980,15 @@ class AutoscalingPolicyCpuUtilization(proto.Message):
     r"""CPU utilization policy.
 
     Attributes:
-        predictive_method (google.cloud.compute_v1.types.AutoscalingPolicyCpuUtilization.PredictiveMethod):
+        predictive_method (str):
             Indicates whether predictive autoscaling based on CPU metric
             is enabled. Valid values are: \* NONE (default). No
             predictive method is used. The autoscaler scales the group
             to meet current demand based on real-time metrics. \*
             OPTIMIZE_AVAILABILITY. Predictive autoscaling improves
             availability by monitoring daily and weekly load patterns
-            and scaling out ahead of anticipated demand.
+            and scaling out ahead of anticipated demand. Check the
+            PredictiveMethod enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_predictive_method``.
         utilization_target (float):
@@ -7012,9 +7019,7 @@ class AutoscalingPolicyCpuUtilization(proto.Message):
         NONE = 2402104
         OPTIMIZE_AVAILABILITY = 11629437
 
-    predictive_method = proto.Field(
-        proto.ENUM, number=390220737, optional=True, enum=PredictiveMethod,
-    )
+    predictive_method = proto.Field(proto.STRING, number=390220737, optional=True,)
     utilization_target = proto.Field(proto.DOUBLE, number=215905870, optional=True,)
 
 
@@ -7087,10 +7092,11 @@ class AutoscalingPolicyCustomMetricUtilization(proto.Message):
             the instances.
 
             This field is a member of `oneof`_ ``_utilization_target``.
-        utilization_target_type (google.cloud.compute_v1.types.AutoscalingPolicyCustomMetricUtilization.UtilizationTargetType):
+        utilization_target_type (str):
             Defines how target utilization value is expressed for a
             Stackdriver Monitoring metric. Either GAUGE,
-            DELTA_PER_SECOND, or DELTA_PER_MINUTE.
+            DELTA_PER_SECOND, or DELTA_PER_MINUTE. Check the
+            UtilizationTargetType enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_utilization_target_type``.
     """
@@ -7112,7 +7118,7 @@ class AutoscalingPolicyCustomMetricUtilization(proto.Message):
     )
     utilization_target = proto.Field(proto.DOUBLE, number=215905870, optional=True,)
     utilization_target_type = proto.Field(
-        proto.ENUM, number=340169355, optional=True, enum=UtilizationTargetType,
+        proto.STRING, number=340169355, optional=True,
     )
 
 
@@ -7229,7 +7235,7 @@ class Backend(proto.Message):
     r"""Message containing information of one individual backend.
 
     Attributes:
-        balancing_mode (google.cloud.compute_v1.types.Backend.BalancingMode):
+        balancing_mode (str):
             Specifies how to determine whether the
             backend of a load balancer can handle additional
             traffic or is fully loaded. For usage
@@ -7245,6 +7251,8 @@ class Backend(proto.Message):
             Backend.maxUtilization is ignored when
             Backend.balancingMode is RATE. In the future,
             this incompatible combination will be rejected.
+            Check the BalancingMode enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_balancing_mode``.
         capacity_scaler (float):
@@ -7355,9 +7363,7 @@ class Backend(proto.Message):
         RATE = 2508000
         UTILIZATION = 157008386
 
-    balancing_mode = proto.Field(
-        proto.ENUM, number=430286217, optional=True, enum=BalancingMode,
-    )
+    balancing_mode = proto.Field(proto.STRING, number=430286217, optional=True,)
     capacity_scaler = proto.Field(proto.FLOAT, number=315958157, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     failover = proto.Field(proto.BOOL, number=138892530, optional=True,)
@@ -7462,7 +7468,7 @@ class BackendBucketCdnPolicy(proto.Message):
             Authorization headers. Up to 5 headers can be
             specified. The cache is bypassed for all
             cdnPolicy.cacheMode settings.
-        cache_mode (google.cloud.compute_v1.types.BackendBucketCdnPolicy.CacheMode):
+        cache_mode (str):
             Specifies the cache setting for all responses from this
             backend. The possible values are: USE_ORIGIN_HEADERS
             Requires the origin to set valid caching headers to cache
@@ -7478,7 +7484,8 @@ class BackendBucketCdnPolicy(proto.Message):
             formats, media (video and audio), and web assets (JavaScript
             and CSS). Requests and responses that are marked as
             uncacheable, as well as dynamic content (including HTML),
-            will not be cached.
+            will not be cached. Check the CacheMode enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_cache_mode``.
         client_ttl (int):
@@ -7620,9 +7627,7 @@ class BackendBucketCdnPolicy(proto.Message):
         number=486203082,
         message="BackendBucketCdnPolicyBypassCacheOnRequestHeader",
     )
-    cache_mode = proto.Field(
-        proto.ENUM, number=28877888, optional=True, enum=CacheMode,
-    )
+    cache_mode = proto.Field(proto.STRING, number=28877888, optional=True,)
     client_ttl = proto.Field(proto.INT32, number=29034360, optional=True,)
     default_ttl = proto.Field(proto.INT32, number=100253422, optional=True,)
     max_ttl = proto.Field(proto.INT32, number=307578001, optional=True,)
@@ -7867,14 +7872,16 @@ class BackendService(proto.Message):
             compute#backendService for backend services.
 
             This field is a member of `oneof`_ ``_kind``.
-        load_balancing_scheme (google.cloud.compute_v1.types.BackendService.LoadBalancingScheme):
+        load_balancing_scheme (str):
             Specifies the load balancer type. A backend
             service created for one type of load balancer
             cannot be used with another. For more
             information, refer to Choosing a load balancer.
+            Check the LoadBalancingScheme enum for the list
+            of possible values.
 
             This field is a member of `oneof`_ ``_load_balancing_scheme``.
-        locality_lb_policy (google.cloud.compute_v1.types.BackendService.LocalityLbPolicy):
+        locality_lb_policy (str):
             The load balancing algorithm used within the scope of the
             locality. The possible values are: - ROUND_ROBIN: This is a
             simple policy in which each healthy backend is selected in
@@ -7904,7 +7911,8 @@ class BackendService(proto.Message):
             affinity settings will not take effect. Only the default
             ROUND_ROBIN policy is supported when the backend service is
             referenced by a URL map that is bound to target gRPC proxy
-            that has validateForProxyless field set to true.
+            that has validateForProxyless field set to true. Check the
+            LocalityLbPolicy enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_locality_lb_policy``.
         log_config (google.cloud.compute_v1.types.BackendServiceLogConfig):
@@ -7975,7 +7983,7 @@ class BackendService(proto.Message):
             omit port_name.
 
             This field is a member of `oneof`_ ``_port_name``.
-        protocol (google.cloud.compute_v1.types.BackendService.Protocol):
+        protocol (str):
             The protocol this BackendService uses to
             communicate with backends. Possible values are
             HTTP, HTTPS, HTTP2, TCP, SSL, UDP or GRPC.
@@ -7985,7 +7993,8 @@ class BackendService(proto.Message):
             Traffic Director for more information. Must be
             set to GRPC when the backend service is
             referenced by a URL map that is bound to target
-            gRPC proxy.
+            gRPC proxy. Check the Protocol enum for the list
+            of possible values.
 
             This field is a member of `oneof`_ ``_protocol``.
         region (str):
@@ -8014,14 +8023,15 @@ class BackendService(proto.Message):
             [Output Only] Server-defined URL for the resource.
 
             This field is a member of `oneof`_ ``_self_link``.
-        session_affinity (google.cloud.compute_v1.types.BackendService.SessionAffinity):
+        session_affinity (str):
             Type of session affinity to use. The default is NONE. For a
             detailed description of session affinity options, see:
             `Session
             affinity <https://cloud.google.com/load-balancing/docs/backend-service#session_affinity>`__.
             Not supported when the backend service is referenced by a
             URL map that is bound to target gRPC proxy that has
-            validateForProxyless field set to true.
+            validateForProxyless field set to true. Check the
+            SessionAffinity enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_session_affinity``.
         subsetting (google.cloud.compute_v1.types.Subsetting):
@@ -8160,12 +8170,8 @@ class BackendService(proto.Message):
     )
     id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
-    load_balancing_scheme = proto.Field(
-        proto.ENUM, number=363890244, optional=True, enum=LoadBalancingScheme,
-    )
-    locality_lb_policy = proto.Field(
-        proto.ENUM, number=131431487, optional=True, enum=LocalityLbPolicy,
-    )
+    load_balancing_scheme = proto.Field(proto.STRING, number=363890244, optional=True,)
+    locality_lb_policy = proto.Field(proto.STRING, number=131431487, optional=True,)
     log_config = proto.Field(
         proto.MESSAGE,
         number=351299741,
@@ -8182,16 +8188,14 @@ class BackendService(proto.Message):
     )
     port = proto.Field(proto.INT32, number=3446913, optional=True,)
     port_name = proto.Field(proto.STRING, number=41534345, optional=True,)
-    protocol = proto.Field(proto.ENUM, number=84577944, optional=True, enum=Protocol,)
+    protocol = proto.Field(proto.STRING, number=84577944, optional=True,)
     region = proto.Field(proto.STRING, number=138946292, optional=True,)
     security_policy = proto.Field(proto.STRING, number=171082513, optional=True,)
     security_settings = proto.Field(
         proto.MESSAGE, number=478649922, optional=True, message="SecuritySettings",
     )
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
-    session_affinity = proto.Field(
-        proto.ENUM, number=463888561, optional=True, enum=SessionAffinity,
-    )
+    session_affinity = proto.Field(proto.STRING, number=463888561, optional=True,)
     subsetting = proto.Field(
         proto.MESSAGE, number=450283536, optional=True, message="Subsetting",
     )
@@ -8270,7 +8274,7 @@ class BackendServiceCdnPolicy(proto.Message):
             The CacheKeyPolicy for this CdnPolicy.
 
             This field is a member of `oneof`_ ``_cache_key_policy``.
-        cache_mode (google.cloud.compute_v1.types.BackendServiceCdnPolicy.CacheMode):
+        cache_mode (str):
             Specifies the cache setting for all responses from this
             backend. The possible values are: USE_ORIGIN_HEADERS
             Requires the origin to set valid caching headers to cache
@@ -8286,7 +8290,8 @@ class BackendServiceCdnPolicy(proto.Message):
             formats, media (video and audio), and web assets (JavaScript
             and CSS). Requests and responses that are marked as
             uncacheable, as well as dynamic content (including HTML),
-            will not be cached.
+            will not be cached. Check the CacheMode enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_cache_mode``.
         client_ttl (int):
@@ -8431,9 +8436,7 @@ class BackendServiceCdnPolicy(proto.Message):
     cache_key_policy = proto.Field(
         proto.MESSAGE, number=159263727, optional=True, message="CacheKeyPolicy",
     )
-    cache_mode = proto.Field(
-        proto.ENUM, number=28877888, optional=True, enum=CacheMode,
-    )
+    cache_mode = proto.Field(proto.STRING, number=28877888, optional=True,)
     client_ttl = proto.Field(proto.INT32, number=29034360, optional=True,)
     default_ttl = proto.Field(proto.INT32, number=100253422, optional=True,)
     max_ttl = proto.Field(proto.INT32, number=307578001, optional=True,)
@@ -9138,7 +9141,7 @@ class Commitment(proto.Message):
     Committed Use Discounts.
 
     Attributes:
-        category (google.cloud.compute_v1.types.Commitment.Category):
+        category (str):
             The category of the commitment. Category
             MACHINE specifies commitments composed of
             machine resources such as VCPU or MEMORY, listed
@@ -9146,7 +9149,8 @@ class Commitment(proto.Message):
             commitments composed of software licenses,
             listed in licenseResources. Note that only
             MACHINE commitments should have a Type
-            specified.
+            specified. Check the Category enum for the list
+            of possible values.
 
             This field is a member of `oneof`_ ``_category``.
         creation_timestamp (str):
@@ -9189,10 +9193,11 @@ class Commitment(proto.Message):
             except the last character, which cannot be a dash.
 
             This field is a member of `oneof`_ ``_name``.
-        plan (google.cloud.compute_v1.types.Commitment.Plan):
+        plan (str):
             The plan for this commitment, which determines duration and
             discount rate. The currently supported plans are
-            TWELVE_MONTH (1 year), and THIRTY_SIX_MONTH (3 years).
+            TWELVE_MONTH (1 year), and THIRTY_SIX_MONTH (3 years). Check
+            the Plan enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_plan``.
         region (str):
@@ -9214,11 +9219,12 @@ class Commitment(proto.Message):
             [Output Only] Commitment start time in RFC3339 text format.
 
             This field is a member of `oneof`_ ``_start_timestamp``.
-        status (google.cloud.compute_v1.types.Commitment.Status):
+        status (str):
             [Output Only] Status of the commitment with regards to
             eventual expiration (each commitment has an end date
             defined). One of the following values: NOT_YET_ACTIVE,
-            ACTIVE, EXPIRED.
+            ACTIVE, EXPIRED. Check the Status enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_status``.
         status_message (str):
@@ -9226,12 +9232,13 @@ class Commitment(proto.Message):
             status.
 
             This field is a member of `oneof`_ ``_status_message``.
-        type_ (google.cloud.compute_v1.types.Commitment.Type):
+        type_ (str):
             The type of commitment, which affects the discount rate and
             the eligible resources. Type MEMORY_OPTIMIZED specifies a
             commitment that will only apply to memory optimized
             machines. Type ACCELERATOR_OPTIMIZED specifies a commitment
             that will only apply to accelerator optimized machines.
+            Check the Type enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_type``.
     """
@@ -9287,7 +9294,7 @@ class Commitment(proto.Message):
         MEMORY_OPTIMIZED = 281753417
         TYPE_UNSPECIFIED = 437714322
 
-    category = proto.Field(proto.ENUM, number=50511102, optional=True, enum=Category,)
+    category = proto.Field(proto.STRING, number=50511102, optional=True,)
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     end_timestamp = proto.Field(proto.STRING, number=468096690, optional=True,)
@@ -9300,7 +9307,7 @@ class Commitment(proto.Message):
         message="LicenseResourceCommitment",
     )
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
-    plan = proto.Field(proto.ENUM, number=3443497, optional=True, enum=Plan,)
+    plan = proto.Field(proto.STRING, number=3443497, optional=True,)
     region = proto.Field(proto.STRING, number=138946292, optional=True,)
     reservations = proto.RepeatedField(
         proto.MESSAGE, number=399717927, message="Reservation",
@@ -9310,9 +9317,9 @@ class Commitment(proto.Message):
     )
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     start_timestamp = proto.Field(proto.STRING, number=83645817, optional=True,)
-    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    status = proto.Field(proto.STRING, number=181260274, optional=True,)
     status_message = proto.Field(proto.STRING, number=297428154, optional=True,)
-    type_ = proto.Field(proto.ENUM, number=3575610, optional=True, enum=Type,)
+    type_ = proto.Field(proto.STRING, number=3575610, optional=True,)
 
 
 class CommitmentAggregatedList(proto.Message):
@@ -12657,7 +12664,7 @@ class DeprecationStatus(proto.Message):
             the deprecated resource.
 
             This field is a member of `oneof`_ ``_replacement``.
-        state (google.cloud.compute_v1.types.DeprecationStatus.State):
+        state (str):
             The deprecation state of this resource. This
             can be ACTIVE, DEPRECATED, OBSOLETE, or DELETED.
             Operations which communicate the end of life
@@ -12667,7 +12674,8 @@ class DeprecationStatus(proto.Message):
             warning indicating the deprecated resource and
             recommending its replacement. Operations which
             use OBSOLETE or DELETED resources will be
-            rejected and result in an error.
+            rejected and result in an error. Check the State
+            enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_state``.
     """
@@ -12692,7 +12700,7 @@ class DeprecationStatus(proto.Message):
     deprecated = proto.Field(proto.STRING, number=515138995, optional=True,)
     obsolete = proto.Field(proto.STRING, number=357647769, optional=True,)
     replacement = proto.Field(proto.STRING, number=430919186, optional=True,)
-    state = proto.Field(proto.ENUM, number=109757585, optional=True, enum=State,)
+    state = proto.Field(proto.STRING, number=109757585, optional=True,)
 
 
 class DetachDiskInstanceRequest(proto.Message):
@@ -13164,11 +13172,12 @@ class Disk(proto.Message):
             images import instead.
 
             This field is a member of `oneof`_ ``_source_storage_object``.
-        status (google.cloud.compute_v1.types.Disk.Status):
+        status (str):
             [Output Only] The status of disk creation. - CREATING: Disk
             is provisioning. - RESTORING: Source data is being copied
             into the disk. - FAILED: Disk creation failed. - READY: Disk
-            is ready for use. - DELETING: Disk is deleting.
+            is ready for use. - DELETING: Disk is deleting. Check the
+            Status enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_status``.
         type_ (str):
@@ -13247,7 +13256,7 @@ class Disk(proto.Message):
     )
     source_snapshot_id = proto.Field(proto.STRING, number=98962258, optional=True,)
     source_storage_object = proto.Field(proto.STRING, number=233052711, optional=True,)
-    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    status = proto.Field(proto.STRING, number=181260274, optional=True,)
     type_ = proto.Field(proto.STRING, number=3575610, optional=True,)
     users = proto.RepeatedField(proto.STRING, number=111578632,)
     zone = proto.Field(proto.STRING, number=3744684, optional=True,)
@@ -13330,7 +13339,7 @@ class DiskInstantiationConfig(proto.Message):
             which the configurations apply to.
 
             This field is a member of `oneof`_ ``_device_name``.
-        instantiate_from (google.cloud.compute_v1.types.DiskInstantiationConfig.InstantiateFrom):
+        instantiate_from (str):
             Specifies whether to include the disk and
             what image to use. Possible values are: -
             source-image: to use the same image that was
@@ -13348,7 +13357,8 @@ class DiskInstantiationConfig(proto.Message):
             only disks. - do-not-include: to exclude a disk
             from the template. Applicable to additional
             read-write disks, local SSDs, and read-only
-            disks.
+            disks. Check the InstantiateFrom enum for the
+            list of possible values.
 
             This field is a member of `oneof`_ ``_instantiate_from``.
     """
@@ -13380,9 +13390,7 @@ class DiskInstantiationConfig(proto.Message):
     auto_delete = proto.Field(proto.BOOL, number=464761403, optional=True,)
     custom_image = proto.Field(proto.STRING, number=184123149, optional=True,)
     device_name = proto.Field(proto.STRING, number=67541716, optional=True,)
-    instantiate_from = proto.Field(
-        proto.ENUM, number=393383903, optional=True, enum=InstantiateFrom,
-    )
+    instantiate_from = proto.Field(proto.STRING, number=393383903, optional=True,)
 
 
 class DiskList(proto.Message):
@@ -13746,11 +13754,13 @@ class DistributionPolicy(proto.Message):
     r"""
 
     Attributes:
-        target_shape (google.cloud.compute_v1.types.DistributionPolicy.TargetShape):
+        target_shape (str):
             The distribution shape to which the group
             converges either proactively or on resize events
             (depending on the value set in
-            updatePolicy.instanceRedistributionType).
+            updatePolicy.instanceRedistributionType). Check
+            the TargetShape enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_target_shape``.
         zones (Sequence[google.cloud.compute_v1.types.DistributionPolicyZoneConfiguration]):
@@ -13768,9 +13778,7 @@ class DistributionPolicy(proto.Message):
         BALANCED = 468409608
         EVEN = 2140442
 
-    target_shape = proto.Field(
-        proto.ENUM, number=338621299, optional=True, enum=TargetShape,
-    )
+    target_shape = proto.Field(proto.STRING, number=338621299, optional=True,)
     zones = proto.RepeatedField(
         proto.MESSAGE, number=116085319, message="DistributionPolicyZoneConfiguration",
     )
@@ -13949,8 +13957,10 @@ class ExchangedPeeringRoute(proto.Message):
             The priority of the peering route.
 
             This field is a member of `oneof`_ ``_priority``.
-        type_ (google.cloud.compute_v1.types.ExchangedPeeringRoute.Type):
+        type_ (str):
             The type of the peering route.
+            Check the Type enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_type``.
     """
@@ -13966,7 +13976,7 @@ class ExchangedPeeringRoute(proto.Message):
     imported = proto.Field(proto.BOOL, number=114502404, optional=True,)
     next_hop_region = proto.Field(proto.STRING, number=122577014, optional=True,)
     priority = proto.Field(proto.UINT32, number=445151652, optional=True,)
-    type_ = proto.Field(proto.ENUM, number=3575610, optional=True, enum=Type,)
+    type_ = proto.Field(proto.STRING, number=3575610, optional=True,)
 
 
 class ExchangedPeeringRoutesList(proto.Message):
@@ -14188,9 +14198,11 @@ class ExternalVpnGateway(proto.Message):
             except the last character, which cannot be a dash.
 
             This field is a member of `oneof`_ ``_name``.
-        redundancy_type (google.cloud.compute_v1.types.ExternalVpnGateway.RedundancyType):
+        redundancy_type (str):
             Indicates the user-supplied redundancy type
-            of this external VPN gateway.
+            of this external VPN gateway. Check the
+            RedundancyType enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_redundancy_type``.
         self_link (str):
@@ -14218,9 +14230,7 @@ class ExternalVpnGateway(proto.Message):
     label_fingerprint = proto.Field(proto.STRING, number=178124825, optional=True,)
     labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
-    redundancy_type = proto.Field(
-        proto.ENUM, number=271443740, optional=True, enum=RedundancyType,
-    )
+    redundancy_type = proto.Field(proto.STRING, number=271443740, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
 
 
@@ -14315,8 +14325,10 @@ class FileContentBuffer(proto.Message):
             The raw content in the secure keys file.
 
             This field is a member of `oneof`_ ``_content``.
-        file_type (google.cloud.compute_v1.types.FileContentBuffer.FileType):
+        file_type (str):
             The file type of source file.
+            Check the FileType enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_file_type``.
     """
@@ -14329,7 +14341,7 @@ class FileContentBuffer(proto.Message):
         X509 = 2674086
 
     content = proto.Field(proto.STRING, number=414659705, optional=True,)
-    file_type = proto.Field(proto.ENUM, number=294346781, optional=True, enum=FileType,)
+    file_type = proto.Field(proto.STRING, number=294346781, optional=True,)
 
 
 class Firewall(proto.Message):
@@ -14363,12 +14375,13 @@ class Firewall(proto.Message):
             destination IP address in these ranges. These
             ranges must be expressed in CIDR format. Both
             IPv4 and IPv6 are supported.
-        direction (google.cloud.compute_v1.types.Firewall.Direction):
+        direction (str):
             Direction of traffic to which this firewall applies, either
             ``INGRESS`` or ``EGRESS``. The default is ``INGRESS``. For
             ``INGRESS`` traffic, you cannot specify the
             destinationRanges field, and for ``EGRESS`` traffic, you
-            cannot specify the sourceRanges or sourceTags fields.
+            cannot specify the sourceRanges or sourceTags fields. Check
+            the Direction enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_direction``.
         disabled (bool):
@@ -14519,9 +14532,7 @@ class Firewall(proto.Message):
     denied = proto.RepeatedField(proto.MESSAGE, number=275217307, message="Denied",)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     destination_ranges = proto.RepeatedField(proto.STRING, number=305699879,)
-    direction = proto.Field(
-        proto.ENUM, number=111150975, optional=True, enum=Direction,
-    )
+    direction = proto.Field(proto.STRING, number=111150975, optional=True,)
     disabled = proto.Field(proto.BOOL, number=270940796, optional=True,)
     id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
@@ -14597,11 +14608,13 @@ class FirewallLogConfig(proto.Message):
             for a particular firewall rule.
 
             This field is a member of `oneof`_ ``_enable``.
-        metadata (google.cloud.compute_v1.types.FirewallLogConfig.Metadata):
+        metadata (str):
             This field can only be specified for a
             particular firewall rule if logging is enabled
             for that rule. This field denotes whether to
             include or exclude metadata for firewall logs.
+            Check the Metadata enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_metadata``.
     """
@@ -14616,7 +14629,7 @@ class FirewallLogConfig(proto.Message):
         INCLUDE_ALL_METADATA = 164619908
 
     enable = proto.Field(proto.BOOL, number=311764355, optional=True,)
-    metadata = proto.Field(proto.ENUM, number=86866735, optional=True, enum=Metadata,)
+    metadata = proto.Field(proto.STRING, number=86866735, optional=True,)
 
 
 class FirewallPoliciesListAssociationsResponse(proto.Message):
@@ -14859,8 +14872,10 @@ class FirewallPolicyRule(proto.Message):
             An optional description for this resource.
 
             This field is a member of `oneof`_ ``_description``.
-        direction (google.cloud.compute_v1.types.FirewallPolicyRule.Direction):
+        direction (str):
             The direction in which this rule applies.
+            Check the Direction enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_direction``.
         disabled (bool):
@@ -14924,9 +14939,7 @@ class FirewallPolicyRule(proto.Message):
 
     action = proto.Field(proto.STRING, number=187661878, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
-    direction = proto.Field(
-        proto.ENUM, number=111150975, optional=True, enum=Direction,
-    )
+    direction = proto.Field(proto.STRING, number=111150975, optional=True,)
     disabled = proto.Field(proto.BOOL, number=270940796, optional=True,)
     enable_logging = proto.Field(proto.BOOL, number=295396515, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
@@ -15062,13 +15075,14 @@ class ForwardingRule(proto.Message):
             forward traffic to Google APIs, IP address must be provided.
 
             This field is a member of `oneof`_ ``_I_p_address``.
-        I_p_protocol (google.cloud.compute_v1.types.ForwardingRule.IPProtocol):
+        I_p_protocol (str):
             The IP protocol to which this rule applies. For protocol
             forwarding, valid options are TCP, UDP, ESP, AH, SCTP, ICMP
             and L3_DEFAULT. The valid IP protocols are different for
             different load balancing products as described in `Load
             balancing
             features <https://cloud.google.com/load-balancing/docs/features#protocols_from_the_load_balancer_to_the_backends>`__.
+            Check the IPProtocol enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_I_p_protocol``.
         all_ports (bool):
@@ -15125,11 +15139,12 @@ class ForwardingRule(proto.Message):
             identifier is defined by the server.
 
             This field is a member of `oneof`_ ``_id``.
-        ip_version (google.cloud.compute_v1.types.ForwardingRule.IpVersion):
+        ip_version (str):
             The IP Version that will be used by this
             forwarding rule. Valid options are IPV4 or IPV6.
             This can only be specified for an external
-            global forwarding rule.
+            global forwarding rule. Check the IpVersion enum
+            for the list of possible values.
 
             This field is a member of `oneof`_ ``_ip_version``.
         is_mirroring_collector (bool):
@@ -15167,10 +15182,12 @@ class ForwardingRule(proto.Message):
             added or modified by the setLabels method. Each
             label key/value pair must comply with RFC1035.
             Label values may be empty.
-        load_balancing_scheme (google.cloud.compute_v1.types.ForwardingRule.LoadBalancingScheme):
+        load_balancing_scheme (str):
             Specifies the forwarding rule type. For more
             information about forwarding rules, refer to
-            Forwarding rule concepts.
+            Forwarding rule concepts. Check the
+            LoadBalancingScheme enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_load_balancing_scheme``.
         metadata_filters (Sequence[google.cloud.compute_v1.types.MetadataFilter]):
@@ -15220,7 +15237,7 @@ class ForwardingRule(proto.Message):
             provided.
 
             This field is a member of `oneof`_ ``_network``.
-        network_tier (google.cloud.compute_v1.types.ForwardingRule.NetworkTier):
+        network_tier (str):
             This signifies the networking tier used for
             configuring this load balancer and can only take
             the following values: PREMIUM, STANDARD. For
@@ -15229,7 +15246,9 @@ class ForwardingRule(proto.Message):
             the valid value is PREMIUM. If this field is not
             specified, it is assumed to be PREMIUM. If
             IPAddress is specified, this value must be equal
-            to the networkTier of the Address.
+            to the networkTier of the Address. Check the
+            NetworkTier enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_network_tier``.
         port_range (str):
@@ -15263,7 +15282,9 @@ class ForwardingRule(proto.Message):
             Rule.
 
             This field is a member of `oneof`_ ``_psc_connection_id``.
-        psc_connection_status (google.cloud.compute_v1.types.ForwardingRule.PscConnectionStatus):
+        psc_connection_status (str):
+            Check the PscConnectionStatus enum for the
+            list of possible values.
 
             This field is a member of `oneof`_ ``_psc_connection_status``.
         region (str):
@@ -15378,9 +15399,7 @@ class ForwardingRule(proto.Message):
         STATUS_UNSPECIFIED = 42133066
 
     I_p_address = proto.Field(proto.STRING, number=42976943, optional=True,)
-    I_p_protocol = proto.Field(
-        proto.ENUM, number=488094525, optional=True, enum=IPProtocol,
-    )
+    I_p_protocol = proto.Field(proto.STRING, number=488094525, optional=True,)
     all_ports = proto.Field(proto.BOOL, number=445175796, optional=True,)
     allow_global_access = proto.Field(proto.BOOL, number=499409674, optional=True,)
     backend_service = proto.Field(proto.STRING, number=306946058, optional=True,)
@@ -15388,30 +15407,22 @@ class ForwardingRule(proto.Message):
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
     id = proto.Field(proto.UINT64, number=3355, optional=True,)
-    ip_version = proto.Field(
-        proto.ENUM, number=294959552, optional=True, enum=IpVersion,
-    )
+    ip_version = proto.Field(proto.STRING, number=294959552, optional=True,)
     is_mirroring_collector = proto.Field(proto.BOOL, number=119255164, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     label_fingerprint = proto.Field(proto.STRING, number=178124825, optional=True,)
     labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
-    load_balancing_scheme = proto.Field(
-        proto.ENUM, number=363890244, optional=True, enum=LoadBalancingScheme,
-    )
+    load_balancing_scheme = proto.Field(proto.STRING, number=363890244, optional=True,)
     metadata_filters = proto.RepeatedField(
         proto.MESSAGE, number=464725739, message="MetadataFilter",
     )
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     network = proto.Field(proto.STRING, number=232872494, optional=True,)
-    network_tier = proto.Field(
-        proto.ENUM, number=517397843, optional=True, enum=NetworkTier,
-    )
+    network_tier = proto.Field(proto.STRING, number=517397843, optional=True,)
     port_range = proto.Field(proto.STRING, number=217518079, optional=True,)
     ports = proto.RepeatedField(proto.STRING, number=106854418,)
     psc_connection_id = proto.Field(proto.UINT64, number=292082397, optional=True,)
-    psc_connection_status = proto.Field(
-        proto.ENUM, number=184149172, optional=True, enum=PscConnectionStatus,
-    )
+    psc_connection_status = proto.Field(proto.STRING, number=184149172, optional=True,)
     region = proto.Field(proto.STRING, number=138946292, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     service_directory_registrations = proto.RepeatedField(
@@ -15629,7 +15640,7 @@ class GRPCHealthCheck(proto.Message):
             The port_name should conform to RFC1035.
 
             This field is a member of `oneof`_ ``_port_name``.
-        port_specification (google.cloud.compute_v1.types.GRPCHealthCheck.PortSpecification):
+        port_specification (str):
             Specifies how port is selected for health checking, can be
             one of following values: USE_FIXED_PORT: The port number in
             port is used for health checking. USE_NAMED_PORT: The
@@ -15639,7 +15650,8 @@ class GRPCHealthCheck(proto.Message):
             the port or named port specified in the Backend Service is
             used for health checking. If not specified, gRPC health
             check follows behavior specified in port and portName
-            fields.
+            fields. Check the PortSpecification enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_port_specification``.
     """
@@ -15662,9 +15674,7 @@ class GRPCHealthCheck(proto.Message):
     grpc_service_name = proto.Field(proto.STRING, number=136533078, optional=True,)
     port = proto.Field(proto.INT32, number=3446913, optional=True,)
     port_name = proto.Field(proto.STRING, number=41534345, optional=True,)
-    port_specification = proto.Field(
-        proto.ENUM, number=51590597, optional=True, enum=PortSpecification,
-    )
+    port_specification = proto.Field(proto.STRING, number=51590597, optional=True,)
 
 
 class GetAcceleratorTypeRequest(proto.Message):
@@ -18065,10 +18075,11 @@ class GuestOsFeature(proto.Message):
     r"""Guest OS features.
 
     Attributes:
-        type_ (google.cloud.compute_v1.types.GuestOsFeature.Type):
+        type_ (str):
             The ID of a supported feature. Read Enabling
             guest operating system features to see a list of
-            available options.
+            available options. Check the Type enum for the
+            list of possible values.
 
             This field is a member of `oneof`_ ``_type``.
     """
@@ -18087,7 +18098,7 @@ class GuestOsFeature(proto.Message):
         VIRTIO_SCSI_MULTIQUEUE = 201597069
         WINDOWS = 456863331
 
-    type_ = proto.Field(proto.ENUM, number=3575610, optional=True, enum=Type,)
+    type_ = proto.Field(proto.STRING, number=3575610, optional=True,)
 
 
 class HTTP2HealthCheck(proto.Message):
@@ -18112,7 +18123,7 @@ class HTTP2HealthCheck(proto.Message):
             both port and port_name are defined, port takes precedence.
 
             This field is a member of `oneof`_ ``_port_name``.
-        port_specification (google.cloud.compute_v1.types.HTTP2HealthCheck.PortSpecification):
+        port_specification (str):
             Specifies how port is selected for health checking, can be
             one of following values: USE_FIXED_PORT: The port number in
             port is used for health checking. USE_NAMED_PORT: The
@@ -18122,13 +18133,15 @@ class HTTP2HealthCheck(proto.Message):
             the port or named port specified in the Backend Service is
             used for health checking. If not specified, HTTP2 health
             check follows behavior specified in port and portName
-            fields.
+            fields. Check the PortSpecification enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_port_specification``.
-        proxy_header (google.cloud.compute_v1.types.HTTP2HealthCheck.ProxyHeader):
+        proxy_header (str):
             Specifies the type of proxy header to append before sending
             data to the backend, either NONE or PROXY_V1. The default is
-            NONE.
+            NONE. Check the ProxyHeader enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_proxy_header``.
         request_path (str):
@@ -18171,12 +18184,8 @@ class HTTP2HealthCheck(proto.Message):
     host = proto.Field(proto.STRING, number=3208616, optional=True,)
     port = proto.Field(proto.INT32, number=3446913, optional=True,)
     port_name = proto.Field(proto.STRING, number=41534345, optional=True,)
-    port_specification = proto.Field(
-        proto.ENUM, number=51590597, optional=True, enum=PortSpecification,
-    )
-    proxy_header = proto.Field(
-        proto.ENUM, number=160374142, optional=True, enum=ProxyHeader,
-    )
+    port_specification = proto.Field(proto.STRING, number=51590597, optional=True,)
+    proxy_header = proto.Field(proto.STRING, number=160374142, optional=True,)
     request_path = proto.Field(proto.STRING, number=229403605, optional=True,)
     response = proto.Field(proto.STRING, number=196547649, optional=True,)
 
@@ -18203,7 +18212,7 @@ class HTTPHealthCheck(proto.Message):
             both port and port_name are defined, port takes precedence.
 
             This field is a member of `oneof`_ ``_port_name``.
-        port_specification (google.cloud.compute_v1.types.HTTPHealthCheck.PortSpecification):
+        port_specification (str):
             Specifies how port is selected for health checking, can be
             one of following values: USE_FIXED_PORT: The port number in
             port is used for health checking. USE_NAMED_PORT: The
@@ -18213,13 +18222,15 @@ class HTTPHealthCheck(proto.Message):
             the port or named port specified in the Backend Service is
             used for health checking. If not specified, HTTP health
             check follows behavior specified in port and portName
-            fields.
+            fields. Check the PortSpecification enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_port_specification``.
-        proxy_header (google.cloud.compute_v1.types.HTTPHealthCheck.ProxyHeader):
+        proxy_header (str):
             Specifies the type of proxy header to append before sending
             data to the backend, either NONE or PROXY_V1. The default is
-            NONE.
+            NONE. Check the ProxyHeader enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_proxy_header``.
         request_path (str):
@@ -18262,12 +18273,8 @@ class HTTPHealthCheck(proto.Message):
     host = proto.Field(proto.STRING, number=3208616, optional=True,)
     port = proto.Field(proto.INT32, number=3446913, optional=True,)
     port_name = proto.Field(proto.STRING, number=41534345, optional=True,)
-    port_specification = proto.Field(
-        proto.ENUM, number=51590597, optional=True, enum=PortSpecification,
-    )
-    proxy_header = proto.Field(
-        proto.ENUM, number=160374142, optional=True, enum=ProxyHeader,
-    )
+    port_specification = proto.Field(proto.STRING, number=51590597, optional=True,)
+    proxy_header = proto.Field(proto.STRING, number=160374142, optional=True,)
     request_path = proto.Field(proto.STRING, number=229403605, optional=True,)
     response = proto.Field(proto.STRING, number=196547649, optional=True,)
 
@@ -18294,7 +18301,7 @@ class HTTPSHealthCheck(proto.Message):
             both port and port_name are defined, port takes precedence.
 
             This field is a member of `oneof`_ ``_port_name``.
-        port_specification (google.cloud.compute_v1.types.HTTPSHealthCheck.PortSpecification):
+        port_specification (str):
             Specifies how port is selected for health checking, can be
             one of following values: USE_FIXED_PORT: The port number in
             port is used for health checking. USE_NAMED_PORT: The
@@ -18304,13 +18311,15 @@ class HTTPSHealthCheck(proto.Message):
             the port or named port specified in the Backend Service is
             used for health checking. If not specified, HTTPS health
             check follows behavior specified in port and portName
-            fields.
+            fields. Check the PortSpecification enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_port_specification``.
-        proxy_header (google.cloud.compute_v1.types.HTTPSHealthCheck.ProxyHeader):
+        proxy_header (str):
             Specifies the type of proxy header to append before sending
             data to the backend, either NONE or PROXY_V1. The default is
-            NONE.
+            NONE. Check the ProxyHeader enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_proxy_header``.
         request_path (str):
@@ -18353,12 +18362,8 @@ class HTTPSHealthCheck(proto.Message):
     host = proto.Field(proto.STRING, number=3208616, optional=True,)
     port = proto.Field(proto.INT32, number=3446913, optional=True,)
     port_name = proto.Field(proto.STRING, number=41534345, optional=True,)
-    port_specification = proto.Field(
-        proto.ENUM, number=51590597, optional=True, enum=PortSpecification,
-    )
-    proxy_header = proto.Field(
-        proto.ENUM, number=160374142, optional=True, enum=ProxyHeader,
-    )
+    port_specification = proto.Field(proto.STRING, number=51590597, optional=True,)
+    proxy_header = proto.Field(proto.STRING, number=160374142, optional=True,)
     request_path = proto.Field(proto.STRING, number=229403605, optional=True,)
     response = proto.Field(proto.STRING, number=196547649, optional=True,)
 
@@ -18463,12 +18468,13 @@ class HealthCheck(proto.Message):
             than checkIntervalSec.
 
             This field is a member of `oneof`_ ``_timeout_sec``.
-        type_ (google.cloud.compute_v1.types.HealthCheck.Type):
+        type_ (str):
             Specifies the type of the healthCheck, either
             TCP, SSL, HTTP, HTTPS or HTTP2. If not
             specified, the default is TCP. Exactly one of
             the protocol-specific health check field must be
-            specified, which must match type field.
+            specified, which must match type field. Check
+            the Type enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_type``.
         unhealthy_threshold (int):
@@ -18525,7 +18531,7 @@ class HealthCheck(proto.Message):
         proto.MESSAGE, number=469980419, optional=True, message="TCPHealthCheck",
     )
     timeout_sec = proto.Field(proto.INT32, number=79994995, optional=True,)
-    type_ = proto.Field(proto.ENUM, number=3575610, optional=True, enum=Type,)
+    type_ = proto.Field(proto.STRING, number=3575610, optional=True,)
     unhealthy_threshold = proto.Field(proto.INT32, number=227958480, optional=True,)
 
 
@@ -18648,7 +18654,7 @@ class HealthCheckService(proto.Message):
             not supported. Multiple regional HealthChecks must belong to
             the same region. Regional HealthChecks must belong to the
             same region as zones of NEGs.
-        health_status_aggregation_policy (google.cloud.compute_v1.types.HealthCheckService.HealthStatusAggregationPolicy):
+        health_status_aggregation_policy (str):
             Optional. Policy for how the results from multiple health
             checks for the same endpoint are aggregated. Defaults to
             NO_AGGREGATION if unspecified. - NO_AGGREGATION. An
@@ -18656,7 +18662,9 @@ class HealthCheckService(proto.Message):
             health check service. - AND. If any health check of an
             endpoint reports UNHEALTHY, then UNHEALTHY is the
             HealthState of the endpoint. If all health checks report
-            HEALTHY, the HealthState of the endpoint is HEALTHY. .
+            HEALTHY, the HealthState of the endpoint is HEALTHY. . Check
+            the HealthStatusAggregationPolicy enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_health_status_aggregation_policy``.
         id (int):
@@ -18725,7 +18733,7 @@ class HealthCheckService(proto.Message):
     fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
     health_checks = proto.RepeatedField(proto.STRING, number=448370606,)
     health_status_aggregation_policy = proto.Field(
-        proto.ENUM, number=253163129, optional=True, enum=HealthStatusAggregationPolicy,
+        proto.STRING, number=253163129, optional=True,
     )
     id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
@@ -18898,8 +18906,10 @@ class HealthStatus(proto.Message):
             instance.
 
             This field is a member of `oneof`_ ``_forwarding_rule_ip``.
-        health_state (google.cloud.compute_v1.types.HealthStatus.HealthState):
+        health_state (str):
             Health state of the instance.
+            Check the HealthState enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_health_state``.
         instance (str):
@@ -18922,7 +18932,9 @@ class HealthStatus(proto.Message):
         weight (str):
 
             This field is a member of `oneof`_ ``_weight``.
-        weight_error (google.cloud.compute_v1.types.HealthStatus.WeightError):
+        weight_error (str):
+            Check the WeightError enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_weight_error``.
     """
@@ -18944,16 +18956,12 @@ class HealthStatus(proto.Message):
     annotations = proto.MapField(proto.STRING, proto.STRING, number=112032548,)
     forwarding_rule = proto.Field(proto.STRING, number=269964030, optional=True,)
     forwarding_rule_ip = proto.Field(proto.STRING, number=172250632, optional=True,)
-    health_state = proto.Field(
-        proto.ENUM, number=324007150, optional=True, enum=HealthState,
-    )
+    health_state = proto.Field(proto.STRING, number=324007150, optional=True,)
     instance = proto.Field(proto.STRING, number=18257045, optional=True,)
     ip_address = proto.Field(proto.STRING, number=406272220, optional=True,)
     port = proto.Field(proto.INT32, number=3446913, optional=True,)
     weight = proto.Field(proto.STRING, number=282149496, optional=True,)
-    weight_error = proto.Field(
-        proto.ENUM, number=522501505, optional=True, enum=WeightError,
-    )
+    weight_error = proto.Field(proto.STRING, number=522501505, optional=True,)
 
 
 class HealthStatusForNetworkEndpoint(proto.Message):
@@ -18980,10 +18988,11 @@ class HealthStatusForNetworkEndpoint(proto.Message):
             with the health state of the network endpoint.
 
             This field is a member of `oneof`_ ``_health_check_service``.
-        health_state (google.cloud.compute_v1.types.HealthStatusForNetworkEndpoint.HealthState):
+        health_state (str):
             Health state of the network endpoint
             determined based on the health checks
-            configured.
+            configured. Check the HealthState enum for the
+            list of possible values.
 
             This field is a member of `oneof`_ ``_health_state``.
     """
@@ -19019,9 +19028,7 @@ class HealthStatusForNetworkEndpoint(proto.Message):
         optional=True,
         message="HealthCheckServiceReference",
     )
-    health_state = proto.Field(
-        proto.ENUM, number=324007150, optional=True, enum=HealthState,
-    )
+    health_state = proto.Field(proto.STRING, number=324007150, optional=True,)
 
 
 class HostRule(proto.Message):
@@ -19387,7 +19394,7 @@ class HttpRedirectAction(proto.Message):
             and 1024 characters.
 
             This field is a member of `oneof`_ ``_prefix_redirect``.
-        redirect_response_code (google.cloud.compute_v1.types.HttpRedirectAction.RedirectResponseCode):
+        redirect_response_code (str):
             The HTTP Status code to use for this RedirectAction.
             Supported values are: - MOVED_PERMANENTLY_DEFAULT, which is
             the default value and corresponds to 301. - FOUND, which
@@ -19395,7 +19402,8 @@ class HttpRedirectAction(proto.Message):
             TEMPORARY_REDIRECT, which corresponds to 307. In this case,
             the request method will be retained. - PERMANENT_REDIRECT,
             which corresponds to 308. In this case, the request method
-            will be retained.
+            will be retained. Check the RedirectResponseCode enum for
+            the list of possible values.
 
             This field is a member of `oneof`_ ``_redirect_response_code``.
         strip_query (bool):
@@ -19428,9 +19436,7 @@ class HttpRedirectAction(proto.Message):
     https_redirect = proto.Field(proto.BOOL, number=170260656, optional=True,)
     path_redirect = proto.Field(proto.STRING, number=272342710, optional=True,)
     prefix_redirect = proto.Field(proto.STRING, number=446184169, optional=True,)
-    redirect_response_code = proto.Field(
-        proto.ENUM, number=436710408, optional=True, enum=RedirectResponseCode,
-    )
+    redirect_response_code = proto.Field(proto.STRING, number=436710408, optional=True,)
     strip_query = proto.Field(proto.BOOL, number=52284641, optional=True,)
 
 
@@ -20013,16 +20019,19 @@ class Image(proto.Message):
             of a given snapshot name.
 
             This field is a member of `oneof`_ ``_source_snapshot_id``.
-        source_type (google.cloud.compute_v1.types.Image.SourceType):
+        source_type (str):
             The type of the image used to create this
-            disk. The default and only value is RAW
+            disk. The default and only value is RAW Check
+            the SourceType enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_source_type``.
-        status (google.cloud.compute_v1.types.Image.Status):
+        status (str):
             [Output Only] The status of the image. An image can be used
             to create other resources, such as instances, only after the
             image has been successfully created and the status is set to
-            READY. Possible values are FAILED, PENDING, or READY.
+            READY. Possible values are FAILED, PENDING, or READY. Check
+            the Status enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_status``.
         storage_locations (Sequence[str]):
@@ -20093,10 +20102,8 @@ class Image(proto.Message):
         proto.MESSAGE, number=303679322, optional=True, message="CustomerEncryptionKey",
     )
     source_snapshot_id = proto.Field(proto.STRING, number=98962258, optional=True,)
-    source_type = proto.Field(
-        proto.ENUM, number=452245726, optional=True, enum=SourceType,
-    )
-    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    source_type = proto.Field(proto.STRING, number=452245726, optional=True,)
+    status = proto.Field(proto.STRING, number=181260274, optional=True,)
     storage_locations = proto.RepeatedField(proto.STRING, number=328005274,)
 
 
@@ -22694,9 +22701,11 @@ class Instance(proto.Message):
             configured to interact with other network
             services, such as connecting to the internet.
             Multiple interfaces are supported per instance.
-        private_ipv6_google_access (google.cloud.compute_v1.types.Instance.PrivateIpv6GoogleAccess):
+        private_ipv6_google_access (str):
             The private IPv6 google access type for the VM. If not
-            specified, use INHERIT_FROM_SUBNETWORK as default.
+            specified, use INHERIT_FROM_SUBNETWORK as default. Check the
+            PrivateIpv6GoogleAccess enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_private_ipv6_google_access``.
         reservation_affinity (google.cloud.compute_v1.types.ReservationAffinity):
@@ -22739,12 +22748,13 @@ class Instance(proto.Message):
             because Compute Engine has detected suspicious activity.
 
             This field is a member of `oneof`_ ``_start_restricted``.
-        status (google.cloud.compute_v1.types.Instance.Status):
+        status (str):
             [Output Only] The status of the instance. One of the
             following values: PROVISIONING, STAGING, RUNNING, STOPPING,
             SUSPENDING, SUSPENDED, REPAIRING, and TERMINATED. For more
             information about the status of the instance, see Instance
-            life cycle.
+            life cycle. Check the Status enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_status``.
         status_message (str):
@@ -22842,7 +22852,7 @@ class Instance(proto.Message):
         proto.MESSAGE, number=52735243, message="NetworkInterface",
     )
     private_ipv6_google_access = proto.Field(
-        proto.ENUM, number=48277006, optional=True, enum=PrivateIpv6GoogleAccess,
+        proto.STRING, number=48277006, optional=True,
     )
     reservation_affinity = proto.Field(
         proto.MESSAGE, number=157850683, optional=True, message="ReservationAffinity",
@@ -22866,7 +22876,7 @@ class Instance(proto.Message):
         message="ShieldedInstanceIntegrityPolicy",
     )
     start_restricted = proto.Field(proto.BOOL, number=123693144, optional=True,)
-    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    status = proto.Field(proto.STRING, number=181260274, optional=True,)
     status_message = proto.Field(proto.STRING, number=297428154, optional=True,)
     tags = proto.Field(proto.MESSAGE, number=3552281, optional=True, message="Tags",)
     zone = proto.Field(proto.STRING, number=3744684, optional=True,)
@@ -24203,12 +24213,13 @@ class InstanceGroupsListInstancesRequest(proto.Message):
     r"""
 
     Attributes:
-        instance_state (google.cloud.compute_v1.types.InstanceGroupsListInstancesRequest.InstanceState):
+        instance_state (str):
             A filter for the state of the instances in
             the instance group. Valid options are ALL or
             RUNNING. If you do not specify this parameter
             the list includes all instances regardless of
-            their state.
+            their state. Check the InstanceState enum for
+            the list of possible values.
 
             This field is a member of `oneof`_ ``_instance_state``.
     """
@@ -24223,9 +24234,7 @@ class InstanceGroupsListInstancesRequest(proto.Message):
         ALL = 64897
         RUNNING = 121282975
 
-    instance_state = proto.Field(
-        proto.ENUM, number=92223591, optional=True, enum=InstanceState,
-    )
+    instance_state = proto.Field(proto.STRING, number=92223591, optional=True,)
 
 
 class InstanceGroupsRemoveInstancesRequest(proto.Message):
@@ -24432,10 +24441,11 @@ class InstanceManagedByIgmErrorInstanceActionDetails(proto.Message):
     r"""
 
     Attributes:
-        action (google.cloud.compute_v1.types.InstanceManagedByIgmErrorInstanceActionDetails.Action):
+        action (str):
             [Output Only] Action that managed instance group was
             executing on the instance when the error occurred. Possible
-            values:
+            values: Check the Action enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_action``.
         instance (str):
@@ -24468,7 +24478,7 @@ class InstanceManagedByIgmErrorInstanceActionDetails(proto.Message):
         RESTARTING = 320534387
         VERIFYING = 16982185
 
-    action = proto.Field(proto.ENUM, number=187661878, optional=True, enum=Action,)
+    action = proto.Field(proto.STRING, number=187661878, optional=True,)
     instance = proto.Field(proto.STRING, number=18257045, optional=True,)
     version = proto.Field(
         proto.MESSAGE,
@@ -24594,9 +24604,11 @@ class InstanceProperties(proto.Message):
         network_interfaces (Sequence[google.cloud.compute_v1.types.NetworkInterface]):
             An array of network access configurations for
             this interface.
-        private_ipv6_google_access (google.cloud.compute_v1.types.InstanceProperties.PrivateIpv6GoogleAccess):
+        private_ipv6_google_access (str):
             The private IPv6 google access type for VMs. If not
-            specified, use INHERIT_FROM_SUBNETWORK as default.
+            specified, use INHERIT_FROM_SUBNETWORK as default. Check the
+            PrivateIpv6GoogleAccess enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_private_ipv6_google_access``.
         reservation_affinity (google.cloud.compute_v1.types.ReservationAffinity):
@@ -24670,7 +24682,7 @@ class InstanceProperties(proto.Message):
         proto.MESSAGE, number=52735243, message="NetworkInterface",
     )
     private_ipv6_google_access = proto.Field(
-        proto.ENUM, number=48277006, optional=True, enum=PrivateIpv6GoogleAccess,
+        proto.STRING, number=48277006, optional=True,
     )
     reservation_affinity = proto.Field(
         proto.MESSAGE, number=157850683, optional=True, message="ReservationAffinity",
@@ -24845,8 +24857,9 @@ class InstanceWithNamedPorts(proto.Message):
         named_ports (Sequence[google.cloud.compute_v1.types.NamedPort]):
             [Output Only] The named ports that belong to this instance
             group.
-        status (google.cloud.compute_v1.types.InstanceWithNamedPorts.Status):
-            [Output Only] The status of the instance.
+        status (str):
+            [Output Only] The status of the instance. Check the Status
+            enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_status``.
     """
@@ -24869,7 +24882,7 @@ class InstanceWithNamedPorts(proto.Message):
     named_ports = proto.RepeatedField(
         proto.MESSAGE, number=427598732, message="NamedPort",
     )
-    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    status = proto.Field(proto.STRING, number=181260274, optional=True,)
 
 
 class InstancesAddResourcePoliciesRequest(proto.Message):
@@ -24923,8 +24936,9 @@ class InstancesGetEffectiveFirewallsResponseEffectiveFirewallPolicy(proto.Messag
             [Output Only] The short name of the firewall policy.
 
             This field is a member of `oneof`_ ``_short_name``.
-        type_ (google.cloud.compute_v1.types.InstancesGetEffectiveFirewallsResponseEffectiveFirewallPolicy.Type):
-            [Output Only] The type of the firewall policy.
+        type_ (str):
+            [Output Only] The type of the firewall policy. Check the
+            Type enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_type``.
     """
@@ -24941,7 +24955,7 @@ class InstancesGetEffectiveFirewallsResponseEffectiveFirewallPolicy(proto.Messag
         proto.MESSAGE, number=108873975, message="FirewallPolicyRule",
     )
     short_name = proto.Field(proto.STRING, number=492051566, optional=True,)
-    type_ = proto.Field(proto.ENUM, number=3575610, optional=True, enum=Type,)
+    type_ = proto.Field(proto.STRING, number=3575610, optional=True,)
 
 
 class InstancesRemoveResourcePoliciesRequest(proto.Message):
@@ -25152,12 +25166,14 @@ class Interconnect(proto.Message):
         interconnect_attachments (Sequence[str]):
             [Output Only] A list of the URLs of all
             InterconnectAttachments configured to use this Interconnect.
-        interconnect_type (google.cloud.compute_v1.types.Interconnect.InterconnectType):
+        interconnect_type (str):
             Type of interconnect, which can take one of the following
             values: - PARTNER: A partner-managed interconnection shared
             between customers though a partner. - DEDICATED: A dedicated
             physical interconnection with the customer. Note that a
             value IT_PRIVATE has been deprecated in favor of DEDICATED.
+            Check the InterconnectType enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_interconnect_type``.
         kind (str):
@@ -25165,12 +25181,13 @@ class Interconnect(proto.Message):
             compute#interconnect for interconnects.
 
             This field is a member of `oneof`_ ``_kind``.
-        link_type (google.cloud.compute_v1.types.Interconnect.LinkType):
+        link_type (str):
             Type of link requested, which can take one of the following
             values: - LINK_TYPE_ETHERNET_10G_LR: A 10G Ethernet with LR
             optics - LINK_TYPE_ETHERNET_100G_LR: A 100G Ethernet with LR
             optics. Note that this field indicates the speed of each of
             the links in the bundle, not the speed of the entire bundle.
+            Check the LinkType enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_link_type``.
         location (str):
@@ -25199,7 +25216,7 @@ class Interconnect(proto.Message):
             logs alerting and Cloud Notifications.
 
             This field is a member of `oneof`_ ``_noc_contact_email``.
-        operational_status (google.cloud.compute_v1.types.Interconnect.OperationalStatus):
+        operational_status (str):
             [Output Only] The current status of this Interconnect's
             functionality, which can take one of the following values: -
             OS_ACTIVE: A valid Interconnect, which is turned up and is
@@ -25208,7 +25225,8 @@ class Interconnect(proto.Message):
             not completed turnup. No attachments may be provisioned on
             this Interconnect. - OS_UNDER_MAINTENANCE: An Interconnect
             that is undergoing internal maintenance. No attachments may
-            be provisioned or updated on this Interconnect.
+            be provisioned or updated on this Interconnect. Check the
+            OperationalStatus enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_operational_status``.
         peer_ip_address (str):
@@ -25238,7 +25256,7 @@ class Interconnect(proto.Message):
             [Output Only] Server-defined URL for the resource.
 
             This field is a member of `oneof`_ ``_self_link``.
-        state (google.cloud.compute_v1.types.Interconnect.State):
+        state (str):
             [Output Only] The current state of Interconnect
             functionality, which can take one of the following values: -
             ACTIVE: The Interconnect is valid, turned up and ready to
@@ -25247,7 +25265,8 @@ class Interconnect(proto.Message):
             attachments may be provisioned on this Interconnect. -
             UNDER_MAINTENANCE: The Interconnect is undergoing internal
             maintenance. No attachments may be provisioned or updated on
-            this Interconnect.
+            this Interconnect. Check the State enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_state``.
     """
@@ -25318,23 +25337,19 @@ class Interconnect(proto.Message):
     google_reference_id = proto.Field(proto.STRING, number=534944469, optional=True,)
     id = proto.Field(proto.UINT64, number=3355, optional=True,)
     interconnect_attachments = proto.RepeatedField(proto.STRING, number=425388415,)
-    interconnect_type = proto.Field(
-        proto.ENUM, number=515165259, optional=True, enum=InterconnectType,
-    )
+    interconnect_type = proto.Field(proto.STRING, number=515165259, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
-    link_type = proto.Field(proto.ENUM, number=523207775, optional=True, enum=LinkType,)
+    link_type = proto.Field(proto.STRING, number=523207775, optional=True,)
     location = proto.Field(proto.STRING, number=290430901, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     noc_contact_email = proto.Field(proto.STRING, number=14072832, optional=True,)
-    operational_status = proto.Field(
-        proto.ENUM, number=201070847, optional=True, enum=OperationalStatus,
-    )
+    operational_status = proto.Field(proto.STRING, number=201070847, optional=True,)
     peer_ip_address = proto.Field(proto.STRING, number=207735769, optional=True,)
     provisioned_link_count = proto.Field(proto.INT32, number=410888565, optional=True,)
     requested_link_count = proto.Field(proto.INT32, number=45051387, optional=True,)
     satisfies_pzs = proto.Field(proto.BOOL, number=480964267, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
-    state = proto.Field(proto.ENUM, number=109757585, optional=True, enum=State,)
+    state = proto.Field(proto.STRING, number=109757585, optional=True,)
 
 
 class InterconnectAttachment(proto.Message):
@@ -25350,7 +25365,7 @@ class InterconnectAttachment(proto.Message):
             present for PARTNER_PROVIDER.
 
             This field is a member of `oneof`_ ``_admin_enabled``.
-        bandwidth (google.cloud.compute_v1.types.InterconnectAttachment.Bandwidth):
+        bandwidth (str):
             Provisioned bandwidth capacity for the interconnect
             attachment. For attachments of type DEDICATED, the user can
             set the bandwidth. For attachments of type PARTNER, the
@@ -25361,7 +25376,8 @@ class InterconnectAttachment(proto.Message):
             Mbit/s - BPS_200M: 200 Mbit/s - BPS_300M: 300 Mbit/s -
             BPS_400M: 400 Mbit/s - BPS_500M: 500 Mbit/s - BPS_1G: 1
             Gbit/s - BPS_2G: 2 Gbit/s - BPS_5G: 5 Gbit/s - BPS_10G: 10
-            Gbit/s - BPS_20G: 20 Gbit/s - BPS_50G: 50 Gbit/s
+            Gbit/s - BPS_20G: 20 Gbit/s - BPS_50G: 50 Gbit/s Check the
+            Bandwidth enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_bandwidth``.
         candidate_subnets (Sequence[str]):
@@ -25401,7 +25417,7 @@ class InterconnectAttachment(proto.Message):
             An optional description of this resource.
 
             This field is a member of `oneof`_ ``_description``.
-        edge_availability_domain (google.cloud.compute_v1.types.InterconnectAttachment.EdgeAvailabilityDomain):
+        edge_availability_domain (str):
             Desired availability domain for the attachment. Only
             available for type PARTNER, at creation time, and can take
             one of the following values: - AVAILABILITY_DOMAIN_ANY -
@@ -25411,10 +25427,11 @@ class InterconnectAttachment(proto.Message):
             availability domain will be provided to the Partner via the
             pairing key, so that the provisioned circuit will lie in the
             specified domain. If not specified, the value will default
-            to AVAILABILITY_DOMAIN_ANY.
+            to AVAILABILITY_DOMAIN_ANY. Check the EdgeAvailabilityDomain
+            enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_edge_availability_domain``.
-        encryption (google.cloud.compute_v1.types.InterconnectAttachment.Encryption):
+        encryption (str):
             Indicates the user-supplied encryption option of this VLAN
             attachment (interconnectAttachment). Can only be specified
             at attachment creation for PARTNER or DEDICATED attachments.
@@ -25427,7 +25444,8 @@ class InterconnectAttachment(proto.Message):
             VMs cannot directly send traffic to, or receive traffic
             from, such a VLAN attachment. To use *IPsec-encrypted Cloud
             Interconnect*, the VLAN attachment must be created with this
-            option. Not currently available publicly.
+            option. Not currently available publicly. Check the
+            Encryption enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_encryption``.
         google_reference_id (str):
@@ -25491,13 +25509,14 @@ class InterconnectAttachment(proto.Message):
             except the last character, which cannot be a dash.
 
             This field is a member of `oneof`_ ``_name``.
-        operational_status (google.cloud.compute_v1.types.InterconnectAttachment.OperationalStatus):
+        operational_status (str):
             [Output Only] The current status of whether or not this
             interconnect attachment is functional, which can take one of
             the following values: - OS_ACTIVE: The attachment has been
             turned up and is ready to use. - OS_UNPROVISIONED: The
             attachment is not ready to use yet, because turnup is not
-            complete.
+            complete. Check the OperationalStatus enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_operational_status``.
         pairing_key (str):
@@ -25554,7 +25573,7 @@ class InterconnectAttachment(proto.Message):
             [Output Only] Server-defined URL for the resource.
 
             This field is a member of `oneof`_ ``_self_link``.
-        state (google.cloud.compute_v1.types.InterconnectAttachment.State):
+        state (str):
             [Output Only] The current state of this attachment's
             functionality. Enum values ACTIVE and UNPROVISIONED are
             shared by DEDICATED/PRIVATE, PARTNER, and PARTNER_PROVIDER
@@ -25574,16 +25593,18 @@ class InterconnectAttachment(proto.Message):
             DEFUNCT: The attachment was deleted externally and is no
             longer functional. This could be because the associated
             Interconnect was removed, or because the other side of a
-            Partner attachment was deleted.
+            Partner attachment was deleted. Check the State enum for the
+            list of possible values.
 
             This field is a member of `oneof`_ ``_state``.
-        type_ (google.cloud.compute_v1.types.InterconnectAttachment.Type):
+        type_ (str):
             The type of interconnect attachment this is, which can take
             one of the following values: - DEDICATED: an attachment to a
             Dedicated Interconnect. - PARTNER: an attachment to a
             Partner Interconnect, created by the customer. -
             PARTNER_PROVIDER: an attachment to a Partner Interconnect,
-            created by the partner.
+            created by the partner. Check the Type enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_type``.
         vlan_tag8021q (int):
@@ -25707,9 +25728,7 @@ class InterconnectAttachment(proto.Message):
         PARTNER_PROVIDER = 483261352
 
     admin_enabled = proto.Field(proto.BOOL, number=445675089, optional=True,)
-    bandwidth = proto.Field(
-        proto.ENUM, number=181715121, optional=True, enum=Bandwidth,
-    )
+    bandwidth = proto.Field(proto.STRING, number=181715121, optional=True,)
     candidate_subnets = proto.RepeatedField(proto.STRING, number=237842938,)
     cloud_router_ip_address = proto.Field(
         proto.STRING, number=287392776, optional=True,
@@ -25721,11 +25740,9 @@ class InterconnectAttachment(proto.Message):
     dataplane_version = proto.Field(proto.INT32, number=34920075, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     edge_availability_domain = proto.Field(
-        proto.ENUM, number=71289510, optional=True, enum=EdgeAvailabilityDomain,
+        proto.STRING, number=71289510, optional=True,
     )
-    encryption = proto.Field(
-        proto.ENUM, number=97980291, optional=True, enum=Encryption,
-    )
+    encryption = proto.Field(proto.STRING, number=97980291, optional=True,)
     google_reference_id = proto.Field(proto.STRING, number=534944469, optional=True,)
     id = proto.Field(proto.UINT64, number=3355, optional=True,)
     interconnect = proto.Field(proto.STRING, number=224601230, optional=True,)
@@ -25733,9 +25750,7 @@ class InterconnectAttachment(proto.Message):
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     mtu = proto.Field(proto.INT32, number=108462, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
-    operational_status = proto.Field(
-        proto.ENUM, number=201070847, optional=True, enum=OperationalStatus,
-    )
+    operational_status = proto.Field(proto.STRING, number=201070847, optional=True,)
     pairing_key = proto.Field(proto.STRING, number=439695464, optional=True,)
     partner_asn = proto.Field(proto.INT64, number=438166149, optional=True,)
     partner_metadata = proto.Field(
@@ -25754,8 +25769,8 @@ class InterconnectAttachment(proto.Message):
     router = proto.Field(proto.STRING, number=148608841, optional=True,)
     satisfies_pzs = proto.Field(proto.BOOL, number=480964267, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
-    state = proto.Field(proto.ENUM, number=109757585, optional=True, enum=State,)
-    type_ = proto.Field(proto.ENUM, number=3575610, optional=True, enum=Type,)
+    state = proto.Field(proto.STRING, number=109757585, optional=True,)
+    type_ = proto.Field(proto.STRING, number=3575610, optional=True,)
     vlan_tag8021q = proto.Field(proto.INT32, number=119927836, optional=True,)
 
 
@@ -26037,13 +26052,14 @@ class InterconnectDiagnosticsLinkLACPStatus(proto.Message):
             of the LACP exchange.
 
             This field is a member of `oneof`_ ``_neighbor_system_id``.
-        state (google.cloud.compute_v1.types.InterconnectDiagnosticsLinkLACPStatus.State):
+        state (str):
             The state of a LACP link, which can take one
             of the following values: - ACTIVE: The link is
             configured and active within the bundle. -
             DETACHED: The link is not configured within the
             bundle. This means that the rest of the object
-            should be empty.
+            should be empty. Check the State enum for the
+            list of possible values.
 
             This field is a member of `oneof`_ ``_state``.
     """
@@ -26060,14 +26076,14 @@ class InterconnectDiagnosticsLinkLACPStatus(proto.Message):
 
     google_system_id = proto.Field(proto.STRING, number=91210405, optional=True,)
     neighbor_system_id = proto.Field(proto.STRING, number=343821342, optional=True,)
-    state = proto.Field(proto.ENUM, number=109757585, optional=True, enum=State,)
+    state = proto.Field(proto.STRING, number=109757585, optional=True,)
 
 
 class InterconnectDiagnosticsLinkOpticalPower(proto.Message):
     r"""
 
     Attributes:
-        state (google.cloud.compute_v1.types.InterconnectDiagnosticsLinkOpticalPower.State):
+        state (str):
             The status of the current value when compared to the warning
             and alarm levels for the receiving or transmitting
             transceiver. Possible states include: - OK: The value has
@@ -26076,7 +26092,8 @@ class InterconnectDiagnosticsLinkOpticalPower(proto.Message):
             The value has crossed above the high warning threshold. -
             LOW_ALARM: The value has crossed below the low alarm
             threshold. - HIGH_ALARM: The value has crossed above the
-            high alarm threshold.
+            high alarm threshold. Check the State enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_state``.
         value (float):
@@ -26107,7 +26124,7 @@ class InterconnectDiagnosticsLinkOpticalPower(proto.Message):
         LOW_WARNING = 338793841
         OK = 2524
 
-    state = proto.Field(proto.ENUM, number=109757585, optional=True, enum=State,)
+    state = proto.Field(proto.STRING, number=109757585, optional=True,)
     value = proto.Field(proto.FLOAT, number=111972721, optional=True,)
 
 
@@ -26250,10 +26267,11 @@ class InterconnectLocation(proto.Message):
             "Chicago, IL", "Amsterdam, Netherlands".
 
             This field is a member of `oneof`_ ``_city``.
-        continent (google.cloud.compute_v1.types.InterconnectLocation.Continent):
+        continent (str):
             [Output Only] Continent for this location, which can take
             one of the following values: - AFRICA - ASIA_PAC - EUROPE -
-            NORTH_AMERICA - SOUTH_AMERICA
+            NORTH_AMERICA - SOUTH_AMERICA Check the Continent enum for
+            the list of possible values.
 
             This field is a member of `oneof`_ ``_continent``.
         creation_timestamp (str):
@@ -26302,13 +26320,14 @@ class InterconnectLocation(proto.Message):
             [Output Only] Server-defined URL for the resource.
 
             This field is a member of `oneof`_ ``_self_link``.
-        status (google.cloud.compute_v1.types.InterconnectLocation.Status):
+        status (str):
             [Output Only] The status of this InterconnectLocation, which
             can take one of the following values: - CLOSED: The
             InterconnectLocation is closed and is unavailable for
             provisioning new Interconnects. - AVAILABLE: The
             InterconnectLocation is available for provisioning new
-            Interconnects.
+            Interconnects. Check the Status enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_status``.
         supports_pzs (bool):
@@ -26350,9 +26369,7 @@ class InterconnectLocation(proto.Message):
     address = proto.Field(proto.STRING, number=462920692, optional=True,)
     availability_zone = proto.Field(proto.STRING, number=158459920, optional=True,)
     city = proto.Field(proto.STRING, number=3053931, optional=True,)
-    continent = proto.Field(
-        proto.ENUM, number=133442996, optional=True, enum=Continent,
-    )
+    continent = proto.Field(proto.STRING, number=133442996, optional=True,)
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     facility_provider = proto.Field(proto.STRING, number=533303309, optional=True,)
@@ -26367,7 +26384,7 @@ class InterconnectLocation(proto.Message):
         proto.MESSAGE, number=312194170, message="InterconnectLocationRegionInfo",
     )
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
-    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    status = proto.Field(proto.STRING, number=181260274, optional=True,)
     supports_pzs = proto.Field(proto.BOOL, number=83983214, optional=True,)
 
 
@@ -26436,9 +26453,10 @@ class InterconnectLocationRegionInfo(proto.Message):
             region.
 
             This field is a member of `oneof`_ ``_expected_rtt_ms``.
-        location_presence (google.cloud.compute_v1.types.InterconnectLocationRegionInfo.LocationPresence):
+        location_presence (str):
             Identifies the network presence of this
-            location.
+            location. Check the LocationPresence enum for
+            the list of possible values.
 
             This field is a member of `oneof`_ ``_location_presence``.
         region (str):
@@ -26456,9 +26474,7 @@ class InterconnectLocationRegionInfo(proto.Message):
         LP_LOCAL_REGION = 488598851
 
     expected_rtt_ms = proto.Field(proto.INT64, number=422543866, optional=True,)
-    location_presence = proto.Field(
-        proto.ENUM, number=101517893, optional=True, enum=LocationPresence,
-    )
+    location_presence = proto.Field(proto.STRING, number=101517893, optional=True,)
     region = proto.Field(proto.STRING, number=138946292, optional=True,)
 
 
@@ -26479,7 +26495,7 @@ class InterconnectOutageNotification(proto.Message):
             (milliseconds since Unix epoch).
 
             This field is a member of `oneof`_ ``_end_time``.
-        issue_type (google.cloud.compute_v1.types.InterconnectOutageNotification.IssueType):
+        issue_type (str):
             Form this outage is expected to take, which can take one of
             the following values: - OUTAGE: The Interconnect may be
             completely out of service for some or all of the specified
@@ -26487,6 +26503,7 @@ class InterconnectOutageNotification(proto.Message):
             Interconnect as a whole should remain up, but with reduced
             bandwidth. Note that the versions of this enum prefixed with
             `IT_` have been deprecated in favor of the unprefixed
+            values. Check the IssueType enum for the list of possible
             values.
 
             This field is a member of `oneof`_ ``_issue_type``.
@@ -26495,11 +26512,12 @@ class InterconnectOutageNotification(proto.Message):
             notification.
 
             This field is a member of `oneof`_ ``_name``.
-        source (google.cloud.compute_v1.types.InterconnectOutageNotification.Source):
+        source (str):
             The party that generated this notification, which can take
             the following value: - GOOGLE: this notification as
             generated by Google. Note that the value of NSRC_GOOGLE has
-            been deprecated in favor of GOOGLE.
+            been deprecated in favor of GOOGLE. Check the Source enum
+            for the list of possible values.
 
             This field is a member of `oneof`_ ``_source``.
         start_time (int):
@@ -26507,7 +26525,7 @@ class InterconnectOutageNotification(proto.Message):
             (milliseconds since Unix epoch).
 
             This field is a member of `oneof`_ ``_start_time``.
-        state (google.cloud.compute_v1.types.InterconnectOutageNotification.State):
+        state (str):
             State of this notification, which can take one of the
             following values: - ACTIVE: This outage notification is
             active. The event could be in the past, present, or future.
@@ -26516,7 +26534,8 @@ class InterconnectOutageNotification(proto.Message):
             before the outage was due to start. - COMPLETED: The outage
             associated with this notification is complete. Note that the
             versions of this enum prefixed with `NS_` have been
-            deprecated in favor of the unprefixed values.
+            deprecated in favor of the unprefixed values. Check the
+            State enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_state``.
     """
@@ -26566,13 +26585,11 @@ class InterconnectOutageNotification(proto.Message):
     affected_circuits = proto.RepeatedField(proto.STRING, number=177717013,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     end_time = proto.Field(proto.INT64, number=114938801, optional=True,)
-    issue_type = proto.Field(
-        proto.ENUM, number=369639136, optional=True, enum=IssueType,
-    )
+    issue_type = proto.Field(proto.STRING, number=369639136, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
-    source = proto.Field(proto.ENUM, number=177235995, optional=True, enum=Source,)
+    source = proto.Field(proto.STRING, number=177235995, optional=True,)
     start_time = proto.Field(proto.INT64, number=37467274, optional=True,)
-    state = proto.Field(proto.ENUM, number=109757585, optional=True, enum=State,)
+    state = proto.Field(proto.STRING, number=109757585, optional=True,)
 
 
 class InterconnectsGetDiagnosticsResponse(proto.Message):
@@ -26770,8 +26787,9 @@ class LicenseCode(proto.Message):
             [Output Only] Server-defined URL for the resource.
 
             This field is a member of `oneof`_ ``_self_link``.
-        state (google.cloud.compute_v1.types.LicenseCode.State):
-            [Output Only] Current state of this License Code.
+        state (str):
+            [Output Only] Current state of this License Code. Check the
+            State enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_state``.
         transferable (bool):
@@ -26800,7 +26818,7 @@ class LicenseCode(proto.Message):
     )
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
-    state = proto.Field(proto.ENUM, number=109757585, optional=True, enum=State,)
+    state = proto.Field(proto.STRING, number=109757585, optional=True,)
     transferable = proto.Field(proto.BOOL, number=4349893, optional=True,)
 
 
@@ -30340,8 +30358,10 @@ class ListPeeringRoutesNetworksRequest(proto.Message):
     method description for details.
 
     Attributes:
-        direction (google.cloud.compute_v1.types.ListPeeringRoutesNetworksRequest.Direction):
+        direction (str):
             The direction of the exchanged routes.
+            Check the Direction enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_direction``.
         filter (str):
@@ -30424,9 +30444,7 @@ class ListPeeringRoutesNetworksRequest(proto.Message):
         INCOMING = 338552870
         OUTGOING = 307438444
 
-    direction = proto.Field(
-        proto.ENUM, number=111150975, optional=True, enum=Direction,
-    )
+    direction = proto.Field(proto.STRING, number=111150975, optional=True,)
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
     max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
     network = proto.Field(proto.STRING, number=232872494,)
@@ -34158,9 +34176,10 @@ class LocationPolicyLocation(proto.Message):
     r"""
 
     Attributes:
-        preference (google.cloud.compute_v1.types.LocationPolicyLocation.Preference):
+        preference (str):
             Preference for a given location: ALLOW or
-            DENY.
+            DENY. Check the Preference enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_preference``.
     """
@@ -34172,9 +34191,7 @@ class LocationPolicyLocation(proto.Message):
         DENY = 2094604
         PREFERENCE_UNSPECIFIED = 496219571
 
-    preference = proto.Field(
-        proto.ENUM, number=150781147, optional=True, enum=Preference,
-    )
+    preference = proto.Field(proto.STRING, number=150781147, optional=True,)
 
 
 class LogConfig(proto.Message):
@@ -34227,9 +34244,10 @@ class LogConfigCloudAuditOptions(proto.Message):
             use.
 
             This field is a member of `oneof`_ ``_authorization_logging_options``.
-        log_name (google.cloud.compute_v1.types.LogConfigCloudAuditOptions.LogName):
+        log_name (str):
             This is deprecated and has no effect. Do not
-            use.
+            use. Check the LogName enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_log_name``.
     """
@@ -34247,7 +34265,7 @@ class LogConfigCloudAuditOptions(proto.Message):
         optional=True,
         message="AuthorizationLoggingOptions",
     )
-    log_name = proto.Field(proto.ENUM, number=402913958, optional=True, enum=LogName,)
+    log_name = proto.Field(proto.STRING, number=402913958, optional=True,)
 
 
 class LogConfigCounterOptions(proto.Message):
@@ -34300,9 +34318,10 @@ class LogConfigDataAccessOptions(proto.Message):
     r"""This is deprecated and has no effect. Do not use.
 
     Attributes:
-        log_mode (google.cloud.compute_v1.types.LogConfigDataAccessOptions.LogMode):
+        log_mode (str):
             This is deprecated and has no effect. Do not
-            use.
+            use. Check the LogMode enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_log_mode``.
     """
@@ -34313,7 +34332,7 @@ class LogConfigDataAccessOptions(proto.Message):
         LOG_FAIL_CLOSED = 360469778
         LOG_MODE_UNSPECIFIED = 88160822
 
-    log_mode = proto.Field(proto.ENUM, number=402897342, optional=True, enum=LogMode,)
+    log_mode = proto.Field(proto.STRING, number=402897342, optional=True,)
 
 
 class MachineType(proto.Message):
@@ -34555,7 +34574,7 @@ class ManagedInstance(proto.Message):
     r"""A Managed Instance resource.
 
     Attributes:
-        current_action (google.cloud.compute_v1.types.ManagedInstance.CurrentAction):
+        current_action (str):
             [Output Only] The current action that the managed instance
             group has scheduled for the instance. Possible values: -
             NONE The instance is running, and the managed instance group
@@ -34579,7 +34598,8 @@ class ManagedInstance(proto.Message):
             update the target pool list for an instance without stopping
             that instance. - VERIFYING The managed instance group has
             created the instance and it is in the process of being
-            verified.
+            verified. Check the CurrentAction enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_current_action``.
         id (int):
@@ -34594,9 +34614,10 @@ class ManagedInstance(proto.Message):
             This field is a member of `oneof`_ ``_instance``.
         instance_health (Sequence[google.cloud.compute_v1.types.ManagedInstanceInstanceHealth]):
             [Output Only] Health state of the instance per health-check.
-        instance_status (google.cloud.compute_v1.types.ManagedInstance.InstanceStatus):
+        instance_status (str):
             [Output Only] The status of the instance. This field is
-            empty when the instance does not exist.
+            empty when the instance does not exist. Check the
+            InstanceStatus enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_instance_status``.
         last_attempt (google.cloud.compute_v1.types.ManagedInstanceLastAttempt):
@@ -34669,17 +34690,13 @@ class ManagedInstance(proto.Message):
         SUSPENDING = 514206246
         TERMINATED = 250018339
 
-    current_action = proto.Field(
-        proto.ENUM, number=178475964, optional=True, enum=CurrentAction,
-    )
+    current_action = proto.Field(proto.STRING, number=178475964, optional=True,)
     id = proto.Field(proto.UINT64, number=3355, optional=True,)
     instance = proto.Field(proto.STRING, number=18257045, optional=True,)
     instance_health = proto.RepeatedField(
         proto.MESSAGE, number=382667078, message="ManagedInstanceInstanceHealth",
     )
-    instance_status = proto.Field(
-        proto.ENUM, number=174577372, optional=True, enum=InstanceStatus,
-    )
+    instance_status = proto.Field(proto.STRING, number=174577372, optional=True,)
     last_attempt = proto.Field(
         proto.MESSAGE,
         number=434771492,
@@ -34704,8 +34721,10 @@ class ManagedInstanceInstanceHealth(proto.Message):
     r"""
 
     Attributes:
-        detailed_health_state (google.cloud.compute_v1.types.ManagedInstanceInstanceHealth.DetailedHealthState):
+        detailed_health_state (str):
             [Output Only] The current detailed instance health state.
+            Check the DetailedHealthState enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_detailed_health_state``.
         health_check (str):
@@ -34724,9 +34743,7 @@ class ManagedInstanceInstanceHealth(proto.Message):
         UNHEALTHY = 462118084
         UNKNOWN = 433141802
 
-    detailed_health_state = proto.Field(
-        proto.ENUM, number=510470173, optional=True, enum=DetailedHealthState,
-    )
+    detailed_health_state = proto.Field(proto.STRING, number=510470173, optional=True,)
     health_check = proto.Field(proto.STRING, number=308876645, optional=True,)
 
 
@@ -34821,13 +34838,14 @@ class MetadataFilter(proto.Message):
             labels in the provided metadata based on
             filterMatchCriteria This list must not be empty
             and can have at the most 64 entries.
-        filter_match_criteria (google.cloud.compute_v1.types.MetadataFilter.FilterMatchCriteria):
+        filter_match_criteria (str):
             Specifies how individual filterLabel matches within the list
             of filterLabels contribute towards the overall
             metadataFilter match. Supported values are: - MATCH_ANY: At
             least one of the filterLabels must have a matching label in
             the provided metadata. - MATCH_ALL: All filterLabels must
-            have matching labels in the provided metadata.
+            have matching labels in the provided metadata. Check the
+            FilterMatchCriteria enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_filter_match_criteria``.
     """
@@ -34847,9 +34865,7 @@ class MetadataFilter(proto.Message):
     filter_labels = proto.RepeatedField(
         proto.MESSAGE, number=307903142, message="MetadataFilterLabelMatch",
     )
-    filter_match_criteria = proto.Field(
-        proto.ENUM, number=239970368, optional=True, enum=FilterMatchCriteria,
-    )
+    filter_match_criteria = proto.Field(proto.STRING, number=239970368, optional=True,)
 
 
 class MetadataFilterLabelMatch(proto.Message):
@@ -35233,11 +35249,12 @@ class NetworkEndpointGroup(proto.Message):
             project network if unspecified.
 
             This field is a member of `oneof`_ ``_network``.
-        network_endpoint_type (google.cloud.compute_v1.types.NetworkEndpointGroup.NetworkEndpointType):
+        network_endpoint_type (str):
             Type of network endpoints in this network endpoint group.
             Can be one of GCE_VM_IP_PORT, NON_GCP_PRIVATE_IP_PORT,
             INTERNET_FQDN_PORT, INTERNET_IP_PORT, SERVERLESS,
-            PRIVATE_SERVICE_CONNECT.
+            PRIVATE_SERVICE_CONNECT. Check the NetworkEndpointType enum
+            for the list of possible values.
 
             This field is a member of `oneof`_ ``_network_endpoint_type``.
         region (str):
@@ -35305,9 +35322,7 @@ class NetworkEndpointGroup(proto.Message):
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     network = proto.Field(proto.STRING, number=232872494, optional=True,)
-    network_endpoint_type = proto.Field(
-        proto.ENUM, number=118301523, optional=True, enum=NetworkEndpointType,
-    )
+    network_endpoint_type = proto.Field(proto.STRING, number=118301523, optional=True,)
     region = proto.Field(proto.STRING, number=138946292, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     size = proto.Field(proto.INT32, number=3530753, optional=True,)
@@ -35575,12 +35590,14 @@ class NetworkEndpointGroupsListEndpointsRequest(proto.Message):
     r"""
 
     Attributes:
-        health_status (google.cloud.compute_v1.types.NetworkEndpointGroupsListEndpointsRequest.HealthStatus):
+        health_status (str):
             Optional query parameter for showing the
             health status of each network endpoint. Valid
             options are SKIP or SHOW. If you don't specify
             this parameter, the health status of network
-            endpoints will not be provided.
+            endpoints will not be provided. Check the
+            HealthStatus enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_health_status``.
     """
@@ -35595,9 +35612,7 @@ class NetworkEndpointGroupsListEndpointsRequest(proto.Message):
         SHOW = 2544381
         SKIP = 2547071
 
-    health_status = proto.Field(
-        proto.ENUM, number=380545845, optional=True, enum=HealthStatus,
-    )
+    health_status = proto.Field(proto.STRING, number=380545845, optional=True,)
 
 
 class NetworkEndpointGroupsListNetworkEndpoints(proto.Message):
@@ -35721,11 +35736,12 @@ class NetworkInterface(proto.Message):
             Currently, only one IPv6 access config, DIRECT_IPV6, is
             supported. If there is no ipv6AccessConfig specified, then
             this instance will have no external IPv6 Internet access.
-        ipv6_access_type (google.cloud.compute_v1.types.NetworkInterface.Ipv6AccessType):
+        ipv6_access_type (str):
             [Output Only] One of EXTERNAL, INTERNAL to indicate whether
             the IP can be accessed from the Internet. This field is
             always inherited from its subnetwork. Valid only if
-            stackType is IPV4_IPV6.
+            stackType is IPV4_IPV6. Check the Ipv6AccessType enum for
+            the list of possible values.
 
             This field is a member of `oneof`_ ``_ipv6_access_type``.
         ipv6_address (str):
@@ -35767,9 +35783,11 @@ class NetworkInterface(proto.Message):
             assigned by the system.
 
             This field is a member of `oneof`_ ``_network_i_p``.
-        nic_type (google.cloud.compute_v1.types.NetworkInterface.NicType):
+        nic_type (str):
             The type of vNIC to be used on this
-            interface. This may be gVNIC or VirtioNet.
+            interface. This may be gVNIC or VirtioNet. Check
+            the NicType enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_nic_type``.
         queue_count (int):
@@ -35779,12 +35797,13 @@ class NetworkInterface(proto.Message):
             empty if not specified by the users.
 
             This field is a member of `oneof`_ ``_queue_count``.
-        stack_type (google.cloud.compute_v1.types.NetworkInterface.StackType):
+        stack_type (str):
             The stack type for this network interface to identify
             whether the IPv6 feature is enabled or not. If not
             specified, IPV4_ONLY will be used. This field can be both
             set at instance creation and update network interface
-            operations.
+            operations. Check the StackType enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_stack_type``.
         subnetwork (str):
@@ -35843,19 +35862,15 @@ class NetworkInterface(proto.Message):
     ipv6_access_configs = proto.RepeatedField(
         proto.MESSAGE, number=483472110, message="AccessConfig",
     )
-    ipv6_access_type = proto.Field(
-        proto.ENUM, number=504658653, optional=True, enum=Ipv6AccessType,
-    )
+    ipv6_access_type = proto.Field(proto.STRING, number=504658653, optional=True,)
     ipv6_address = proto.Field(proto.STRING, number=341563804, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     network = proto.Field(proto.STRING, number=232872494, optional=True,)
     network_i_p = proto.Field(proto.STRING, number=207181961, optional=True,)
-    nic_type = proto.Field(proto.ENUM, number=59810577, optional=True, enum=NicType,)
+    nic_type = proto.Field(proto.STRING, number=59810577, optional=True,)
     queue_count = proto.Field(proto.INT32, number=503708769, optional=True,)
-    stack_type = proto.Field(
-        proto.ENUM, number=425908881, optional=True, enum=StackType,
-    )
+    stack_type = proto.Field(proto.STRING, number=425908881, optional=True,)
     subnetwork = proto.Field(proto.STRING, number=307827694, optional=True,)
 
 
@@ -35983,10 +35998,11 @@ class NetworkPeering(proto.Message):
             Maximum Transmission Unit in bytes.
 
             This field is a member of `oneof`_ ``_peer_mtu``.
-        state (google.cloud.compute_v1.types.NetworkPeering.State):
+        state (str):
             [Output Only] State for the peering, either ``ACTIVE`` or
             ``INACTIVE``. The peering is ``ACTIVE`` when there's a
-            matching configuration in the peer network.
+            matching configuration in the peer network. Check the State
+            enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_state``.
         state_details (str):
@@ -36018,7 +36034,7 @@ class NetworkPeering(proto.Message):
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     network = proto.Field(proto.STRING, number=232872494, optional=True,)
     peer_mtu = proto.Field(proto.INT32, number=69584721, optional=True,)
-    state = proto.Field(proto.ENUM, number=109757585, optional=True, enum=State,)
+    state = proto.Field(proto.STRING, number=109757585, optional=True,)
     state_details = proto.Field(proto.STRING, number=95566996, optional=True,)
 
 
@@ -36029,14 +36045,15 @@ class NetworkRoutingConfig(proto.Message):
     enforce network-wide.
 
     Attributes:
-        routing_mode (google.cloud.compute_v1.types.NetworkRoutingConfig.RoutingMode):
+        routing_mode (str):
             The network-wide routing mode to use. If set
             to REGIONAL, this network's Cloud Routers will
             only advertise routes with subnets of this
             network in the same region as the router. If set
             to GLOBAL, this network's Cloud Routers will
             advertise routes with all subnets of this
-            network, across regions.
+            network, across regions. Check the RoutingMode
+            enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_routing_mode``.
     """
@@ -36052,9 +36069,7 @@ class NetworkRoutingConfig(proto.Message):
         GLOBAL = 494663587
         REGIONAL = 92288543
 
-    routing_mode = proto.Field(
-        proto.ENUM, number=475143548, optional=True, enum=RoutingMode,
-    )
+    routing_mode = proto.Field(proto.STRING, number=475143548, optional=True,)
 
 
 class NetworksAddPeeringRequest(proto.Message):
@@ -36143,8 +36158,9 @@ class NetworksGetEffectiveFirewallsResponseEffectiveFirewallPolicy(proto.Message
             [Output Only] The short name of the firewall policy.
 
             This field is a member of `oneof`_ ``_short_name``.
-        type_ (google.cloud.compute_v1.types.NetworksGetEffectiveFirewallsResponseEffectiveFirewallPolicy.Type):
-            [Output Only] The type of the firewall policy.
+        type_ (str):
+            [Output Only] The type of the firewall policy. Check the
+            Type enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_type``.
     """
@@ -36162,7 +36178,7 @@ class NetworksGetEffectiveFirewallsResponseEffectiveFirewallPolicy(proto.Message
         proto.MESSAGE, number=108873975, message="FirewallPolicyRule",
     )
     short_name = proto.Field(proto.STRING, number=492051566, optional=True,)
-    type_ = proto.Field(proto.ENUM, number=3575610, optional=True, enum=Type,)
+    type_ = proto.Field(proto.STRING, number=3575610, optional=True,)
 
 
 class NetworksRemovePeeringRequest(proto.Message):
@@ -36237,12 +36253,13 @@ class NodeGroup(proto.Message):
             NodeTemplate.
 
             This field is a member of `oneof`_ ``_location_hint``.
-        maintenance_policy (google.cloud.compute_v1.types.NodeGroup.MaintenancePolicy):
+        maintenance_policy (str):
             Specifies how to handle instances when a node in the group
             undergoes maintenance. Set to one of: DEFAULT,
             RESTART_IN_PLACE, or MIGRATE_WITHIN_NODE_GROUP. The default
             value is DEFAULT. For more information, see Maintenance
-            policies.
+            policies. Check the MaintenancePolicy enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_maintenance_policy``.
         maintenance_window (google.cloud.compute_v1.types.NodeGroupMaintenanceWindow):
@@ -36272,7 +36289,9 @@ class NodeGroup(proto.Message):
             [Output Only] The total number of nodes in the node group.
 
             This field is a member of `oneof`_ ``_size``.
-        status (google.cloud.compute_v1.types.NodeGroup.Status):
+        status (str):
+            Check the Status enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_status``.
         zone (str):
@@ -36314,9 +36333,7 @@ class NodeGroup(proto.Message):
     id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     location_hint = proto.Field(proto.STRING, number=350519505, optional=True,)
-    maintenance_policy = proto.Field(
-        proto.ENUM, number=528327646, optional=True, enum=MaintenancePolicy,
-    )
+    maintenance_policy = proto.Field(proto.STRING, number=528327646, optional=True,)
     maintenance_window = proto.Field(
         proto.MESSAGE,
         number=186374812,
@@ -36327,7 +36344,7 @@ class NodeGroup(proto.Message):
     node_template = proto.Field(proto.STRING, number=323154455, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     size = proto.Field(proto.INT32, number=3530753, optional=True,)
-    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    status = proto.Field(proto.STRING, number=181260274, optional=True,)
     zone = proto.Field(proto.STRING, number=3744684, optional=True,)
 
 
@@ -36401,9 +36418,10 @@ class NodeGroupAutoscalingPolicy(proto.Message):
             should have.
 
             This field is a member of `oneof`_ ``_min_nodes``.
-        mode (google.cloud.compute_v1.types.NodeGroupAutoscalingPolicy.Mode):
+        mode (str):
             The autoscaling mode. Set to one of: ON, OFF, or
             ONLY_SCALE_OUT. For more information, see Autoscaler modes.
+            Check the Mode enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_mode``.
     """
@@ -36420,7 +36438,7 @@ class NodeGroupAutoscalingPolicy(proto.Message):
 
     max_nodes = proto.Field(proto.INT32, number=297762838, optional=True,)
     min_nodes = proto.Field(proto.INT32, number=533370500, optional=True,)
-    mode = proto.Field(proto.ENUM, number=3357091, optional=True, enum=Mode,)
+    mode = proto.Field(proto.STRING, number=3357091, optional=True,)
 
 
 class NodeGroupList(proto.Message):
@@ -36504,8 +36522,10 @@ class NodeGroupNode(proto.Message):
     Attributes:
         accelerators (Sequence[google.cloud.compute_v1.types.AcceleratorConfig]):
             Accelerators for this node.
-        cpu_overcommit_type (google.cloud.compute_v1.types.NodeGroupNode.CpuOvercommitType):
+        cpu_overcommit_type (str):
             CPU overcommit.
+            Check the CpuOvercommitType enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_cpu_overcommit_type``.
         disks (Sequence[google.cloud.compute_v1.types.LocalDisk]):
@@ -36532,7 +36552,9 @@ class NodeGroupNode(proto.Message):
             Server ID associated with this node.
 
             This field is a member of `oneof`_ ``_server_id``.
-        status (google.cloud.compute_v1.types.NodeGroupNode.Status):
+        status (str):
+            Check the Status enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_status``.
     """
@@ -36556,9 +36578,7 @@ class NodeGroupNode(proto.Message):
     accelerators = proto.RepeatedField(
         proto.MESSAGE, number=269577064, message="AcceleratorConfig",
     )
-    cpu_overcommit_type = proto.Field(
-        proto.ENUM, number=247727959, optional=True, enum=CpuOvercommitType,
-    )
+    cpu_overcommit_type = proto.Field(proto.STRING, number=247727959, optional=True,)
     disks = proto.RepeatedField(proto.MESSAGE, number=95594102, message="LocalDisk",)
     instances = proto.RepeatedField(proto.STRING, number=29097598,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
@@ -36568,7 +36588,7 @@ class NodeGroupNode(proto.Message):
         proto.MESSAGE, number=208179593, optional=True, message="ServerBinding",
     )
     server_id = proto.Field(proto.STRING, number=339433367, optional=True,)
-    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    status = proto.Field(proto.STRING, number=181260274, optional=True,)
 
 
 class NodeGroupsAddNodesRequest(proto.Message):
@@ -36691,8 +36711,10 @@ class NodeTemplate(proto.Message):
     Attributes:
         accelerators (Sequence[google.cloud.compute_v1.types.AcceleratorConfig]):
 
-        cpu_overcommit_type (google.cloud.compute_v1.types.NodeTemplate.CpuOvercommitType):
+        cpu_overcommit_type (str):
             CPU overcommit.
+            Check the CpuOvercommitType enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_cpu_overcommit_type``.
         creation_timestamp (str):
@@ -36762,9 +36784,10 @@ class NodeTemplate(proto.Message):
             options for more information.
 
             This field is a member of `oneof`_ ``_server_binding``.
-        status (google.cloud.compute_v1.types.NodeTemplate.Status):
+        status (str):
             [Output Only] The status of the node template. One of the
-            following values: CREATING, READY, and DELETING.
+            following values: CREATING, READY, and DELETING. Check the
+            Status enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_status``.
         status_message (str):
@@ -36794,9 +36817,7 @@ class NodeTemplate(proto.Message):
     accelerators = proto.RepeatedField(
         proto.MESSAGE, number=269577064, message="AcceleratorConfig",
     )
-    cpu_overcommit_type = proto.Field(
-        proto.ENUM, number=247727959, optional=True, enum=CpuOvercommitType,
-    )
+    cpu_overcommit_type = proto.Field(proto.STRING, number=247727959, optional=True,)
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     disks = proto.RepeatedField(proto.MESSAGE, number=95594102, message="LocalDisk",)
@@ -36816,7 +36837,7 @@ class NodeTemplate(proto.Message):
     server_binding = proto.Field(
         proto.MESSAGE, number=208179593, optional=True, message="ServerBinding",
     )
-    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    status = proto.Field(proto.STRING, number=181260274, optional=True,)
     status_message = proto.Field(proto.STRING, number=297428154, optional=True,)
 
 
@@ -37808,11 +37829,12 @@ class PacketMirroring(proto.Message):
             resource.
 
             This field is a member of `oneof`_ ``_description``.
-        enable (google.cloud.compute_v1.types.PacketMirroring.Enable):
+        enable (str):
             Indicates whether or not this packet
             mirroring takes effect. If set to FALSE, this
             packet mirroring policy will not be enforced on
-            the network. The default is TRUE.
+            the network. The default is TRUE. Check the
+            Enable enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_enable``.
         filter (google.cloud.compute_v1.types.PacketMirroringFilter):
@@ -37895,7 +37917,7 @@ class PacketMirroring(proto.Message):
     )
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
-    enable = proto.Field(proto.ENUM, number=311764355, optional=True, enum=Enable,)
+    enable = proto.Field(proto.STRING, number=311764355, optional=True,)
     filter = proto.Field(
         proto.MESSAGE, number=336120696, optional=True, message="PacketMirroringFilter",
     )
@@ -37994,9 +38016,11 @@ class PacketMirroringFilter(proto.Message):
             the specified IPProtocols is mirrored. If
             neither cidrRanges nor IPProtocols is specified,
             all traffic is mirrored.
-        direction (google.cloud.compute_v1.types.PacketMirroringFilter.Direction):
+        direction (str):
             Direction of traffic to mirror, either
             INGRESS, EGRESS, or BOTH. The default is BOTH.
+            Check the Direction enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_direction``.
     """
@@ -38012,9 +38036,7 @@ class PacketMirroringFilter(proto.Message):
 
     I_p_protocols = proto.RepeatedField(proto.STRING, number=98544854,)
     cidr_ranges = proto.RepeatedField(proto.STRING, number=487901697,)
-    direction = proto.Field(
-        proto.ENUM, number=111150975, optional=True, enum=Direction,
-    )
+    direction = proto.Field(proto.STRING, number=111150975, optional=True,)
 
 
 class PacketMirroringForwardingRuleInfo(proto.Message):
@@ -39912,9 +39934,11 @@ class PerInstanceConfig(proto.Message):
             generated from a stateful policy.
 
             This field is a member of `oneof`_ ``_preserved_state``.
-        status (google.cloud.compute_v1.types.PerInstanceConfig.Status):
+        status (str):
             The status of applying this per-instance
             config on the corresponding managed instance.
+            Check the Status enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_status``.
     """
@@ -39936,7 +39960,7 @@ class PerInstanceConfig(proto.Message):
     preserved_state = proto.Field(
         proto.MESSAGE, number=2634026, optional=True, message="PreservedState",
     )
-    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    status = proto.Field(proto.STRING, number=181260274, optional=True,)
 
 
 class Policy(proto.Message):
@@ -40084,19 +40108,21 @@ class PreservedStatePreservedDisk(proto.Message):
     r"""
 
     Attributes:
-        auto_delete (google.cloud.compute_v1.types.PreservedStatePreservedDisk.AutoDelete):
+        auto_delete (str):
             These stateful disks will never be deleted during
             autohealing, update, instance recreate operations. This flag
             is used to configure if the disk should be deleted after it
             is no longer used by the group, e.g. when the given instance
             or the whole MIG is deleted. Note: disks attached in
-            READ_ONLY mode cannot be auto-deleted.
+            READ_ONLY mode cannot be auto-deleted. Check the AutoDelete
+            enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_auto_delete``.
-        mode (google.cloud.compute_v1.types.PreservedStatePreservedDisk.Mode):
+        mode (str):
             The mode in which to attach this disk, either READ_WRITE or
             READ_ONLY. If not specified, the default is to attach the
-            disk in READ_WRITE mode.
+            disk in READ_WRITE mode. Check the Mode enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_mode``.
         source (str):
@@ -40126,10 +40152,8 @@ class PreservedStatePreservedDisk(proto.Message):
         READ_ONLY = 91950261
         READ_WRITE = 173607894
 
-    auto_delete = proto.Field(
-        proto.ENUM, number=464761403, optional=True, enum=AutoDelete,
-    )
-    mode = proto.Field(proto.ENUM, number=3357091, optional=True, enum=Mode,)
+    auto_delete = proto.Field(proto.STRING, number=464761403, optional=True,)
+    mode = proto.Field(proto.STRING, number=3357091, optional=True,)
     source = proto.Field(proto.STRING, number=177235995, optional=True,)
 
 
@@ -40170,12 +40194,13 @@ class Project(proto.Message):
             [Output Only] Creation timestamp in RFC3339 text format.
 
             This field is a member of `oneof`_ ``_creation_timestamp``.
-        default_network_tier (google.cloud.compute_v1.types.Project.DefaultNetworkTier):
+        default_network_tier (str):
             This signifies the default network tier used
             for configuring resources of the project and can
             only take the following values: PREMIUM,
             STANDARD. Initially the default network tier is
-            PREMIUM.
+            PREMIUM. Check the DefaultNetworkTier enum for
+            the list of possible values.
 
             This field is a member of `oneof`_ ``_default_network_tier``.
         default_service_account (str):
@@ -40221,10 +40246,12 @@ class Project(proto.Message):
             stored.
 
             This field is a member of `oneof`_ ``_usage_export_location``.
-        xpn_project_status (google.cloud.compute_v1.types.Project.XpnProjectStatus):
+        xpn_project_status (str):
             [Output Only] The role this project has in a shared VPC
             configuration. Currently, only projects with the host role,
             which is specified by the value HOST, are differentiated.
+            Check the XpnProjectStatus enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_xpn_project_status``.
     """
@@ -40252,9 +40279,7 @@ class Project(proto.Message):
         proto.MESSAGE, number=185794117, optional=True, message="Metadata",
     )
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
-    default_network_tier = proto.Field(
-        proto.ENUM, number=471753361, optional=True, enum=DefaultNetworkTier,
-    )
+    default_network_tier = proto.Field(proto.STRING, number=471753361, optional=True,)
     default_service_account = proto.Field(
         proto.STRING, number=298712229, optional=True,
     )
@@ -40268,9 +40293,7 @@ class Project(proto.Message):
     usage_export_location = proto.Field(
         proto.MESSAGE, number=347543874, optional=True, message="UsageExportLocation",
     )
-    xpn_project_status = proto.Field(
-        proto.ENUM, number=228419265, optional=True, enum=XpnProjectStatus,
-    )
+    xpn_project_status = proto.Field(proto.STRING, number=228419265, optional=True,)
 
 
 class ProjectsDisableXpnResourceRequest(proto.Message):
@@ -40359,8 +40382,10 @@ class ProjectsSetDefaultNetworkTierRequest(proto.Message):
     r"""
 
     Attributes:
-        network_tier (google.cloud.compute_v1.types.ProjectsSetDefaultNetworkTierRequest.NetworkTier):
+        network_tier (str):
             Default network tier to be set.
+            Check the NetworkTier enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_network_tier``.
     """
@@ -40371,9 +40396,7 @@ class ProjectsSetDefaultNetworkTierRequest(proto.Message):
         PREMIUM = 399530551
         STANDARD = 484642493
 
-    network_tier = proto.Field(
-        proto.ENUM, number=517397843, optional=True, enum=NetworkTier,
-    )
+    network_tier = proto.Field(proto.STRING, number=517397843, optional=True,)
 
 
 class PublicAdvertisedPrefix(proto.Message):
@@ -40451,8 +40474,10 @@ class PublicAdvertisedPrefix(proto.Message):
             verification.
 
             This field is a member of `oneof`_ ``_shared_secret``.
-        status (google.cloud.compute_v1.types.PublicAdvertisedPrefix.Status):
+        status (str):
             The status of the public advertised prefix.
+            Check the Status enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_status``.
     """
@@ -40483,7 +40508,7 @@ class PublicAdvertisedPrefix(proto.Message):
     )
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     shared_secret = proto.Field(proto.STRING, number=381932490, optional=True,)
-    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    status = proto.Field(proto.STRING, number=181260274, optional=True,)
 
 
 class PublicAdvertisedPrefixList(proto.Message):
@@ -40661,8 +40686,9 @@ class PublicDelegatedPrefix(proto.Message):
             [Output Only] Server-defined URL for the resource.
 
             This field is a member of `oneof`_ ``_self_link``.
-        status (google.cloud.compute_v1.types.PublicDelegatedPrefix.Status):
+        status (str):
             [Output Only] The status of the public delegated prefix.
+            Check the Status enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_status``.
     """
@@ -40691,7 +40717,7 @@ class PublicDelegatedPrefix(proto.Message):
     )
     region = proto.Field(proto.STRING, number=138946292, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
-    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    status = proto.Field(proto.STRING, number=181260274, optional=True,)
 
 
 class PublicDelegatedPrefixAggregatedList(proto.Message):
@@ -40839,8 +40865,9 @@ class PublicDelegatedPrefixPublicDelegatedSubPrefix(proto.Message):
             if it is regional. If absent, the sub prefix is global.
 
             This field is a member of `oneof`_ ``_region``.
-        status (google.cloud.compute_v1.types.PublicDelegatedPrefixPublicDelegatedSubPrefix.Status):
+        status (str):
             [Output Only] The status of the sub public delegated prefix.
+            Check the Status enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_status``.
     """
@@ -40857,7 +40884,7 @@ class PublicDelegatedPrefixPublicDelegatedSubPrefix(proto.Message):
     is_address = proto.Field(proto.BOOL, number=352617951, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     region = proto.Field(proto.STRING, number=138946292, optional=True,)
-    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    status = proto.Field(proto.STRING, number=181260274, optional=True,)
 
 
 class PublicDelegatedPrefixesScopedList(proto.Message):
@@ -40890,8 +40917,9 @@ class Quota(proto.Message):
             [Output Only] Quota limit for this metric.
 
             This field is a member of `oneof`_ ``_limit``.
-        metric (google.cloud.compute_v1.types.Quota.Metric):
-            [Output Only] Name of the quota metric.
+        metric (str):
+            [Output Only] Name of the quota metric. Check the Metric
+            enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_metric``.
         owner (str):
@@ -41033,7 +41061,7 @@ class Quota(proto.Message):
         XPN_SERVICE_PROJECTS = 95191981
 
     limit = proto.Field(proto.DOUBLE, number=102976443, optional=True,)
-    metric = proto.Field(proto.ENUM, number=533067184, optional=True, enum=Metric,)
+    metric = proto.Field(proto.STRING, number=533067184, optional=True,)
     owner = proto.Field(proto.STRING, number=106164915, optional=True,)
     usage = proto.Field(proto.DOUBLE, number=111574433, optional=True,)
 
@@ -41042,12 +41070,13 @@ class RawDisk(proto.Message):
     r"""The parameters of the raw disk image.
 
     Attributes:
-        container_type (google.cloud.compute_v1.types.RawDisk.ContainerType):
+        container_type (str):
             The format used to encode and transmit the
             block device, which should be TAR. This is just
             a container and transmission format and not a
             runtime format. Provided by the client when the
-            disk image is created.
+            disk image is created. Check the ContainerType
+            enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_container_type``.
         sha1_checksum (str):
@@ -41079,9 +41108,7 @@ class RawDisk(proto.Message):
         UNDEFINED_CONTAINER_TYPE = 0
         TAR = 82821
 
-    container_type = proto.Field(
-        proto.ENUM, number=318809144, optional=True, enum=ContainerType,
-    )
+    container_type = proto.Field(proto.STRING, number=318809144, optional=True,)
     sha1_checksum = proto.Field(proto.STRING, number=314444349, optional=True,)
     source = proto.Field(proto.STRING, number=177235995, optional=True,)
 
@@ -41248,8 +41275,9 @@ class Region(proto.Message):
             [Output Only] Server-defined URL for the resource.
 
             This field is a member of `oneof`_ ``_self_link``.
-        status (google.cloud.compute_v1.types.Region.Status):
-            [Output Only] Status of the region, either UP or DOWN.
+        status (str):
+            [Output Only] Status of the region, either UP or DOWN. Check
+            the Status enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_status``.
         supports_pzs (bool):
@@ -41277,7 +41305,7 @@ class Region(proto.Message):
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     quotas = proto.RepeatedField(proto.MESSAGE, number=125341947, message="Quota",)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
-    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    status = proto.Field(proto.STRING, number=181260274, optional=True,)
     supports_pzs = proto.Field(proto.BOOL, number=83983214, optional=True,)
     zones = proto.RepeatedField(proto.STRING, number=116085319,)
 
@@ -41856,10 +41884,11 @@ class RegionInstanceGroupsListInstancesRequest(proto.Message):
     r"""
 
     Attributes:
-        instance_state (google.cloud.compute_v1.types.RegionInstanceGroupsListInstancesRequest.InstanceState):
+        instance_state (str):
             Instances in which state should be returned.
             Valid options are: 'ALL', 'RUNNING'. By default,
-            it lists all instances.
+            it lists all instances. Check the InstanceState
+            enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_instance_state``.
         port_name (str):
@@ -41880,9 +41909,7 @@ class RegionInstanceGroupsListInstancesRequest(proto.Message):
         ALL = 64897
         RUNNING = 121282975
 
-    instance_state = proto.Field(
-        proto.ENUM, number=92223591, optional=True, enum=InstanceState,
-    )
+    instance_state = proto.Field(proto.STRING, number=92223591, optional=True,)
     port_name = proto.Field(proto.STRING, number=41534345, optional=True,)
 
 
@@ -42523,8 +42550,9 @@ class Reservation(proto.Message):
             from this reservation.
 
             This field is a member of `oneof`_ ``_specific_reservation_required``.
-        status (google.cloud.compute_v1.types.Reservation.Status):
-            [Output Only] The status of the reservation.
+        status (str):
+            [Output Only] The status of the reservation. Check the
+            Status enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_status``.
         zone (str):
@@ -42561,7 +42589,7 @@ class Reservation(proto.Message):
     specific_reservation_required = proto.Field(
         proto.BOOL, number=226550687, optional=True,
     )
-    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    status = proto.Field(proto.STRING, number=181260274, optional=True,)
     zone = proto.Field(proto.STRING, number=3744684, optional=True,)
 
 
@@ -42570,11 +42598,12 @@ class ReservationAffinity(proto.Message):
     from.
 
     Attributes:
-        consume_reservation_type (google.cloud.compute_v1.types.ReservationAffinity.ConsumeReservationType):
+        consume_reservation_type (str):
             Specifies the type of reservation from which this instance
             can consume resources: ANY_RESERVATION (default),
             SPECIFIC_RESERVATION, or NO_RESERVATION. See Consuming
-            reserved instances for examples.
+            reserved instances for examples. Check the
+            ConsumeReservationType enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_consume_reservation_type``.
         key (str):
@@ -42605,7 +42634,7 @@ class ReservationAffinity(proto.Message):
         UNSPECIFIED = 526786327
 
     consume_reservation_type = proto.Field(
-        proto.ENUM, number=300736944, optional=True, enum=ConsumeReservationType,
+        proto.STRING, number=300736944, optional=True,
     )
     key = proto.Field(proto.STRING, number=106079, optional=True,)
     values = proto.RepeatedField(proto.STRING, number=249928994,)
@@ -43017,9 +43046,11 @@ class ResourceCommitment(proto.Message):
             per every vCPU.
 
             This field is a member of `oneof`_ ``_amount``.
-        type_ (google.cloud.compute_v1.types.ResourceCommitment.Type):
+        type_ (str):
             Type of resource for which this commitment
             applies. Possible values are VCPU and MEMORY
+            Check the Type enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_type``.
     """
@@ -43037,7 +43068,7 @@ class ResourceCommitment(proto.Message):
 
     accelerator_type = proto.Field(proto.STRING, number=138031246, optional=True,)
     amount = proto.Field(proto.INT64, number=196759640, optional=True,)
-    type_ = proto.Field(proto.ENUM, number=3575610, optional=True, enum=Type,)
+    type_ = proto.Field(proto.STRING, number=3575610, optional=True,)
 
 
 class ResourceGroupReference(proto.Message):
@@ -43139,8 +43170,9 @@ class ResourcePolicy(proto.Message):
             creating snapshots.
 
             This field is a member of `oneof`_ ``_snapshot_schedule_policy``.
-        status (google.cloud.compute_v1.types.ResourcePolicy.Status):
-            [Output Only] The status of resource policy creation.
+        status (str):
+            [Output Only] The status of resource policy creation. Check
+            the Status enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_status``.
     """
@@ -43185,7 +43217,7 @@ class ResourcePolicy(proto.Message):
         optional=True,
         message="ResourcePolicySnapshotSchedulePolicy",
     )
-    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    status = proto.Field(proto.STRING, number=181260274, optional=True,)
 
 
 class ResourcePolicyAggregatedList(proto.Message):
@@ -43291,8 +43323,10 @@ class ResourcePolicyGroupPlacementPolicy(proto.Message):
             put in the same low latency network
 
             This field is a member of `oneof`_ ``_availability_domain_count``.
-        collocation (google.cloud.compute_v1.types.ResourcePolicyGroupPlacementPolicy.Collocation):
+        collocation (str):
             Specifies network collocation
+            Check the Collocation enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_collocation``.
         vm_count (int):
@@ -43310,9 +43344,7 @@ class ResourcePolicyGroupPlacementPolicy(proto.Message):
     availability_domain_count = proto.Field(
         proto.INT32, number=12453432, optional=True,
     )
-    collocation = proto.Field(
-        proto.ENUM, number=511156533, optional=True, enum=Collocation,
-    )
+    collocation = proto.Field(proto.STRING, number=511156533, optional=True,)
     vm_count = proto.Field(proto.INT32, number=261463431, optional=True,)
 
 
@@ -43562,9 +43594,11 @@ class ResourcePolicySnapshotSchedulePolicyRetentionPolicy(proto.Message):
             to be kept.
 
             This field is a member of `oneof`_ ``_max_retention_days``.
-        on_source_disk_delete (google.cloud.compute_v1.types.ResourcePolicySnapshotSchedulePolicyRetentionPolicy.OnSourceDiskDelete):
+        on_source_disk_delete (str):
             Specifies the behavior to apply to scheduled
-            snapshots when the source disk is deleted.
+            snapshots when the source disk is deleted. Check
+            the OnSourceDiskDelete enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_on_source_disk_delete``.
     """
@@ -43579,9 +43613,7 @@ class ResourcePolicySnapshotSchedulePolicyRetentionPolicy(proto.Message):
         UNSPECIFIED_ON_SOURCE_DISK_DELETE = 239140769
 
     max_retention_days = proto.Field(proto.INT32, number=324296979, optional=True,)
-    on_source_disk_delete = proto.Field(
-        proto.ENUM, number=321955529, optional=True, enum=OnSourceDiskDelete,
-    )
+    on_source_disk_delete = proto.Field(proto.STRING, number=321955529, optional=True,)
 
 
 class ResourcePolicySnapshotSchedulePolicySchedule(proto.Message):
@@ -43667,12 +43699,13 @@ class ResourcePolicyWeeklyCycleDayOfWeek(proto.Message):
     r"""
 
     Attributes:
-        day (google.cloud.compute_v1.types.ResourcePolicyWeeklyCycleDayOfWeek.Day):
+        day (str):
             Defines a schedule that runs on specific days
             of the week. Specify one or more days. The
             following options are available: MONDAY,
             TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY,
-            SUNDAY.
+            SUNDAY. Check the Day enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_day``.
         duration (str):
@@ -43702,7 +43735,7 @@ class ResourcePolicyWeeklyCycleDayOfWeek(proto.Message):
         TUESDAY = 277509677
         WEDNESDAY = 422029110
 
-    day = proto.Field(proto.ENUM, number=99228, optional=True, enum=Day,)
+    day = proto.Field(proto.STRING, number=99228, optional=True,)
     duration = proto.Field(proto.STRING, number=155471252, optional=True,)
     start_time = proto.Field(proto.STRING, number=37467274, optional=True,)
 
@@ -43814,13 +43847,14 @@ class Route(proto.Message):
             priority value must be from ``0`` to ``65535``, inclusive.
 
             This field is a member of `oneof`_ ``_priority``.
-        route_type (google.cloud.compute_v1.types.Route.RouteType):
+        route_type (str):
             [Output Only] The type of this route, which can be one of
             the following values: - 'TRANSIT' for a transit route that
             this router learned from another Cloud Router and will
             readvertise to one of its BGP peers - 'SUBNET' for a route
             from a subnet of the VPC - 'BGP' for a route learned from a
-            BGP peer of this router - 'STATIC' for a static route
+            BGP peer of this router - 'STATIC' for a static route Check
+            the RouteType enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_route_type``.
         self_link (str):
@@ -43869,9 +43903,7 @@ class Route(proto.Message):
     next_hop_peering = proto.Field(proto.STRING, number=412682750, optional=True,)
     next_hop_vpn_tunnel = proto.Field(proto.STRING, number=519844501, optional=True,)
     priority = proto.Field(proto.UINT32, number=445151652, optional=True,)
-    route_type = proto.Field(
-        proto.ENUM, number=375888752, optional=True, enum=RouteType,
-    )
+    route_type = proto.Field(proto.STRING, number=375888752, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     tags = proto.RepeatedField(proto.STRING, number=3552281,)
     warnings = proto.RepeatedField(proto.MESSAGE, number=498091095, message="Warnings",)
@@ -43883,7 +43915,7 @@ class RouteAsPath(proto.Message):
     Attributes:
         as_lists (Sequence[int]):
             [Output Only] The AS numbers of the AS Path.
-        path_segment_type (google.cloud.compute_v1.types.RouteAsPath.PathSegmentType):
+        path_segment_type (str):
             [Output Only] The type of the AS Path, which can be one of
             the following values: - 'AS_SET': unordered set of
             autonomous systems that the route in has traversed -
@@ -43892,7 +43924,8 @@ class RouteAsPath(proto.Message):
             Member Autonomous Systems in the local confederation that
             the route has traversed - 'AS_CONFED_SET': unordered set of
             Member Autonomous Systems in the local confederation that
-            the route has traversed
+            the route has traversed Check the PathSegmentType enum for
+            the list of possible values.
 
             This field is a member of `oneof`_ ``_path_segment_type``.
     """
@@ -43914,9 +43947,7 @@ class RouteAsPath(proto.Message):
         AS_SET = 329846453
 
     as_lists = proto.RepeatedField(proto.UINT32, number=134112584,)
-    path_segment_type = proto.Field(
-        proto.ENUM, number=513464992, optional=True, enum=PathSegmentType,
-    )
+    path_segment_type = proto.Field(proto.STRING, number=513464992, optional=True,)
 
 
 class RouteList(proto.Message):
@@ -44142,19 +44173,21 @@ class RouterBgp(proto.Message):
     r"""
 
     Attributes:
-        advertise_mode (google.cloud.compute_v1.types.RouterBgp.AdvertiseMode):
+        advertise_mode (str):
             User-specified flag to indicate which mode to
             use for advertisement. The options are DEFAULT
-            or CUSTOM.
+            or CUSTOM. Check the AdvertiseMode enum for the
+            list of possible values.
 
             This field is a member of `oneof`_ ``_advertise_mode``.
-        advertised_groups (Sequence[google.cloud.compute_v1.types.RouterBgp.AdvertisedGroups]):
+        advertised_groups (Sequence[str]):
             User-specified list of prefix groups to advertise in custom
             mode. This field can only be populated if advertise_mode is
             CUSTOM and is advertised to all peers of the router. These
             groups will be advertised in addition to any specified
             prefixes. Leave this field blank to advertise no custom
-            groups.
+            groups. Check the AdvertisedGroups enum for the list of
+            possible values.
         advertised_ip_ranges (Sequence[google.cloud.compute_v1.types.RouterAdvertisedIpRange]):
             User-specified list of individual IP ranges to advertise in
             custom mode. This field can only be populated if
@@ -44200,12 +44233,8 @@ class RouterBgp(proto.Message):
         UNDEFINED_ADVERTISED_GROUPS = 0
         ALL_SUBNETS = 3622872
 
-    advertise_mode = proto.Field(
-        proto.ENUM, number=312134331, optional=True, enum=AdvertiseMode,
-    )
-    advertised_groups = proto.RepeatedField(
-        proto.ENUM, number=21065526, enum=AdvertisedGroups,
-    )
+    advertise_mode = proto.Field(proto.STRING, number=312134331, optional=True,)
+    advertised_groups = proto.RepeatedField(proto.STRING, number=21065526,)
     advertised_ip_ranges = proto.RepeatedField(
         proto.MESSAGE, number=35449932, message="RouterAdvertisedIpRange",
     )
@@ -44217,12 +44246,13 @@ class RouterBgpPeer(proto.Message):
     r"""
 
     Attributes:
-        advertise_mode (google.cloud.compute_v1.types.RouterBgpPeer.AdvertiseMode):
+        advertise_mode (str):
             User-specified flag to indicate which mode to
-            use for advertisement.
+            use for advertisement. Check the AdvertiseMode
+            enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_advertise_mode``.
-        advertised_groups (Sequence[google.cloud.compute_v1.types.RouterBgpPeer.AdvertisedGroups]):
+        advertised_groups (Sequence[str]):
             User-specified list of prefix groups to advertise in custom
             mode, which can take one of the following options: -
             ALL_SUBNETS: Advertises all available subnets, including
@@ -44231,7 +44261,8 @@ class RouterBgpPeer(proto.Message):
             if advertise_mode is CUSTOM and overrides the list defined
             for the router (in the "bgp" message). These groups are
             advertised in addition to any specified prefixes. Leave this
-            field blank to advertise no custom groups.
+            field blank to advertise no custom groups. Check the
+            AdvertisedGroups enum for the list of possible values.
         advertised_ip_ranges (Sequence[google.cloud.compute_v1.types.RouterAdvertisedIpRange]):
             User-specified list of individual IP ranges to advertise in
             custom mode. This field can only be populated if
@@ -44250,13 +44281,14 @@ class RouterBgpPeer(proto.Message):
             BFD configuration for the BGP peering.
 
             This field is a member of `oneof`_ ``_bfd``.
-        enable (google.cloud.compute_v1.types.RouterBgpPeer.Enable):
+        enable (str):
             The status of the BGP peer connection. If set
             to FALSE, any active session with the peer is
             terminated and all associated routing
             information is removed. If set to TRUE, the peer
             connection can be established with routing
-            information. The default is TRUE.
+            information. The default is TRUE. Check the
+            Enable enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_enable``.
         interface_name (str):
@@ -44269,7 +44301,7 @@ class RouterBgpPeer(proto.Message):
             Cloud Platform. Only IPv4 is supported.
 
             This field is a member of `oneof`_ ``_ip_address``.
-        management_type (google.cloud.compute_v1.types.RouterBgpPeer.ManagementType):
+        management_type (str):
             [Output Only] The resource that configures and manages this
             BGP peer. - MANAGED_BY_USER is the default value and can be
             managed by you or other users - MANAGED_BY_ATTACHMENT is a
@@ -44278,6 +44310,8 @@ class RouterBgpPeer(proto.Message):
             type PARTNER. Google automatically creates, updates, and
             deletes this type of BGP peer when the PARTNER
             InterconnectAttachment is created, updated, or deleted.
+            Check the ManagementType enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_management_type``.
         name (str):
@@ -44349,12 +44383,8 @@ class RouterBgpPeer(proto.Message):
         MANAGED_BY_ATTACHMENT = 458926411
         MANAGED_BY_USER = 317294067
 
-    advertise_mode = proto.Field(
-        proto.ENUM, number=312134331, optional=True, enum=AdvertiseMode,
-    )
-    advertised_groups = proto.RepeatedField(
-        proto.ENUM, number=21065526, enum=AdvertisedGroups,
-    )
+    advertise_mode = proto.Field(proto.STRING, number=312134331, optional=True,)
+    advertised_groups = proto.RepeatedField(proto.STRING, number=21065526,)
     advertised_ip_ranges = proto.RepeatedField(
         proto.MESSAGE, number=35449932, message="RouterAdvertisedIpRange",
     )
@@ -44364,12 +44394,10 @@ class RouterBgpPeer(proto.Message):
     bfd = proto.Field(
         proto.MESSAGE, number=97440, optional=True, message="RouterBgpPeerBfd",
     )
-    enable = proto.Field(proto.ENUM, number=311764355, optional=True, enum=Enable,)
+    enable = proto.Field(proto.STRING, number=311764355, optional=True,)
     interface_name = proto.Field(proto.STRING, number=437854673, optional=True,)
     ip_address = proto.Field(proto.STRING, number=406272220, optional=True,)
-    management_type = proto.Field(
-        proto.ENUM, number=173703606, optional=True, enum=ManagementType,
-    )
+    management_type = proto.Field(proto.STRING, number=173703606, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     peer_asn = proto.Field(proto.UINT32, number=69573151, optional=True,)
     peer_ip_address = proto.Field(proto.STRING, number=207735769, optional=True,)
@@ -44410,7 +44438,7 @@ class RouterBgpPeerBfd(proto.Message):
             value between 5 and 16. The default is 5.
 
             This field is a member of `oneof`_ ``_multiplier``.
-        session_initialization_mode (google.cloud.compute_v1.types.RouterBgpPeerBfd.SessionInitializationMode):
+        session_initialization_mode (str):
             The BFD session initialization mode for this
             BGP peer. If set to ACTIVE, the Cloud Router
             will initiate the BFD session for this BGP peer.
@@ -44418,7 +44446,8 @@ class RouterBgpPeerBfd(proto.Message):
             for the peer router to initiate the BFD session
             for this BGP peer. If set to DISABLED, BFD is
             disabled for this BGP peer. The default is
-            PASSIVE.
+            PASSIVE. Check the SessionInitializationMode
+            enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_session_initialization_mode``.
     """
@@ -44440,7 +44469,7 @@ class RouterBgpPeerBfd(proto.Message):
     min_transmit_interval = proto.Field(proto.UINT32, number=523282631, optional=True,)
     multiplier = proto.Field(proto.UINT32, number=191331777, optional=True,)
     session_initialization_mode = proto.Field(
-        proto.ENUM, number=105957049, optional=True, enum=SessionInitializationMode,
+        proto.STRING, number=105957049, optional=True,
     )
 
 
@@ -44473,7 +44502,7 @@ class RouterInterface(proto.Message):
             machine instance.
 
             This field is a member of `oneof`_ ``_linked_vpn_tunnel``.
-        management_type (google.cloud.compute_v1.types.RouterInterface.ManagementType):
+        management_type (str):
             [Output Only] The resource that configures and manages this
             interface. - MANAGED_BY_USER is the default value and can be
             managed directly by users. - MANAGED_BY_ATTACHMENT is an
@@ -44482,6 +44511,8 @@ class RouterInterface(proto.Message):
             type PARTNER. Google automatically creates, updates, and
             deletes this type of interface when the PARTNER
             InterconnectAttachment is created, updated, or deleted.
+            Check the ManagementType enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_management_type``.
         name (str):
@@ -44548,9 +44579,7 @@ class RouterInterface(proto.Message):
         proto.STRING, number=501085518, optional=True,
     )
     linked_vpn_tunnel = proto.Field(proto.STRING, number=352296953, optional=True,)
-    management_type = proto.Field(
-        proto.ENUM, number=173703606, optional=True, enum=ManagementType,
-    )
+    management_type = proto.Field(proto.STRING, number=173703606, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     private_ip_address = proto.Field(proto.STRING, number=100854040, optional=True,)
     redundant_interface = proto.Field(proto.STRING, number=523187303, optional=True,)
@@ -44648,14 +44677,15 @@ class RouterNat(proto.Message):
             RFC1035.
 
             This field is a member of `oneof`_ ``_name``.
-        nat_ip_allocate_option (google.cloud.compute_v1.types.RouterNat.NatIpAllocateOption):
+        nat_ip_allocate_option (str):
             Specify the NatIpAllocateOption, which can take one of the
             following values: - MANUAL_ONLY: Uses only Nat IP addresses
             provided by customers. When there are not enough specified
             Nat IPs, the Nat service fails for new VMs. - AUTO_ONLY: Nat
             IPs are allocated by Google Cloud Platform; customers can't
             specify any Nat IPs. When choosing AUTO_ONLY, then nat_ip
-            should be empty.
+            should be empty. Check the NatIpAllocateOption enum for the
+            list of possible values.
 
             This field is a member of `oneof`_ ``_nat_ip_allocate_option``.
         nat_ips (Sequence[str]):
@@ -44665,7 +44695,7 @@ class RouterNat(proto.Message):
             the project.
         rules (Sequence[google.cloud.compute_v1.types.RouterNatRule]):
             A list of rules associated with this NAT.
-        source_subnetwork_ip_ranges_to_nat (google.cloud.compute_v1.types.RouterNat.SourceSubnetworkIpRangesToNat):
+        source_subnetwork_ip_ranges_to_nat (str):
             Specify the Nat option, which can take one of the following
             values: - ALL_SUBNETWORKS_ALL_IP_RANGES: All of the IP
             ranges in every Subnetwork are allowed to Nat. -
@@ -44677,7 +44707,9 @@ class RouterNat(proto.Message):
             this field contains ALL_SUBNETWORKS_ALL_IP_RANGES or
             ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES, then there should not
             be any other Router.Nat section in any Router for this
-            network in this region.
+            network in this region. Check the
+            SourceSubnetworkIpRangesToNat enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_source_subnetwork_ip_ranges_to_nat``.
         subnetworks (Sequence[google.cloud.compute_v1.types.RouterNatSubnetworkToNat]):
@@ -44748,15 +44780,13 @@ class RouterNat(proto.Message):
     )
     min_ports_per_vm = proto.Field(proto.INT32, number=186193587, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
-    nat_ip_allocate_option = proto.Field(
-        proto.ENUM, number=429726845, optional=True, enum=NatIpAllocateOption,
-    )
+    nat_ip_allocate_option = proto.Field(proto.STRING, number=429726845, optional=True,)
     nat_ips = proto.RepeatedField(proto.STRING, number=117635086,)
     rules = proto.RepeatedField(
         proto.MESSAGE, number=108873975, message="RouterNatRule",
     )
     source_subnetwork_ip_ranges_to_nat = proto.Field(
-        proto.ENUM, number=252213211, optional=True, enum=SourceSubnetworkIpRangesToNat,
+        proto.STRING, number=252213211, optional=True,
     )
     subnetworks = proto.RepeatedField(
         proto.MESSAGE, number=415853125, message="RouterNatSubnetworkToNat",
@@ -44782,14 +44812,15 @@ class RouterNatLogConfig(proto.Message):
             is false by default.
 
             This field is a member of `oneof`_ ``_enable``.
-        filter (google.cloud.compute_v1.types.RouterNatLogConfig.Filter):
+        filter (str):
             Specify the desired filtering of logs on this NAT. If
             unspecified, logs are exported for all connections handled
             by this NAT. This option can take one of the following
             values: - ERRORS_ONLY: Export logs only for connection
             failures. - TRANSLATIONS_ONLY: Export logs only for
             successful connections. - ALL: Export logs for all
-            connections, successful and unsuccessful.
+            connections, successful and unsuccessful. Check the Filter
+            enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_filter``.
     """
@@ -44808,7 +44839,7 @@ class RouterNatLogConfig(proto.Message):
         TRANSLATIONS_ONLY = 357212649
 
     enable = proto.Field(proto.BOOL, number=311764355, optional=True,)
-    filter = proto.Field(proto.ENUM, number=336120696, optional=True, enum=Filter,)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
 
 
 class RouterNatRule(proto.Message):
@@ -44888,12 +44919,14 @@ class RouterNatSubnetworkToNat(proto.Message):
             allowed to use NAT. This can be populated only if
             "LIST_OF_SECONDARY_IP_RANGES" is one of the values in
             source_ip_ranges_to_nat.
-        source_ip_ranges_to_nat (Sequence[google.cloud.compute_v1.types.RouterNatSubnetworkToNat.SourceIpRangesToNat]):
+        source_ip_ranges_to_nat (Sequence[str]):
             Specify the options for NAT ranges in the Subnetwork. All
             options of a single value are valid except
             NAT_IP_RANGE_OPTION_UNSPECIFIED. The only valid option with
             multiple values is: ["PRIMARY_IP_RANGE",
             "LIST_OF_SECONDARY_IP_RANGES"] Default: [ALL_IP_RANGES]
+            Check the SourceIpRangesToNat enum for the list of possible
+            values.
     """
 
     class SourceIpRangesToNat(proto.Enum):
@@ -44905,9 +44938,7 @@ class RouterNatSubnetworkToNat(proto.Message):
 
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     secondary_ip_range_names = proto.RepeatedField(proto.STRING, number=264315097,)
-    source_ip_ranges_to_nat = proto.RepeatedField(
-        proto.ENUM, number=388310386, enum=SourceIpRangesToNat,
-    )
+    source_ip_ranges_to_nat = proto.RepeatedField(proto.STRING, number=388310386,)
 
 
 class RouterStatus(proto.Message):
@@ -44983,8 +45014,10 @@ class RouterStatusBgpPeerStatus(proto.Message):
             BGP state as specified in RFC1771.
 
             This field is a member of `oneof`_ ``_state``.
-        status (google.cloud.compute_v1.types.RouterStatusBgpPeerStatus.Status):
+        status (str):
             Status of the BGP peer: {UP, DOWN}
+            Check the Status enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_status``.
         uptime (str):
@@ -45019,7 +45052,7 @@ class RouterStatusBgpPeerStatus(proto.Message):
         proto.STRING, number=468312989, optional=True,
     )
     state = proto.Field(proto.STRING, number=109757585, optional=True,)
-    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    status = proto.Field(proto.STRING, number=181260274, optional=True,)
     uptime = proto.Field(proto.STRING, number=235379688, optional=True,)
     uptime_seconds = proto.Field(proto.STRING, number=104736040, optional=True,)
 
@@ -45176,9 +45209,10 @@ class Rule(proto.Message):
     r"""This is deprecated and has no effect. Do not use.
 
     Attributes:
-        action (google.cloud.compute_v1.types.Rule.Action):
+        action (str):
             This is deprecated and has no effect. Do not
-            use.
+            use. Check the Action enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_action``.
         conditions (Sequence[google.cloud.compute_v1.types.Condition]):
@@ -45213,7 +45247,7 @@ class Rule(proto.Message):
         LOG = 75556
         NO_ACTION = 260643444
 
-    action = proto.Field(proto.ENUM, number=187661878, optional=True, enum=Action,)
+    action = proto.Field(proto.STRING, number=187661878, optional=True,)
     conditions = proto.RepeatedField(
         proto.MESSAGE, number=142882488, message="Condition",
     )
@@ -45241,7 +45275,7 @@ class SSLHealthCheck(proto.Message):
             both port and port_name are defined, port takes precedence.
 
             This field is a member of `oneof`_ ``_port_name``.
-        port_specification (google.cloud.compute_v1.types.SSLHealthCheck.PortSpecification):
+        port_specification (str):
             Specifies how port is selected for health checking, can be
             one of following values: USE_FIXED_PORT: The port number in
             port is used for health checking. USE_NAMED_PORT: The
@@ -45251,12 +45285,15 @@ class SSLHealthCheck(proto.Message):
             the port or named port specified in the Backend Service is
             used for health checking. If not specified, SSL health check
             follows behavior specified in port and portName fields.
+            Check the PortSpecification enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_port_specification``.
-        proxy_header (google.cloud.compute_v1.types.SSLHealthCheck.ProxyHeader):
+        proxy_header (str):
             Specifies the type of proxy header to append before sending
             data to the backend, either NONE or PROXY_V1. The default is
-            NONE.
+            NONE. Check the ProxyHeader enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_proxy_header``.
         request (str):
@@ -45302,12 +45339,8 @@ class SSLHealthCheck(proto.Message):
 
     port = proto.Field(proto.INT32, number=3446913, optional=True,)
     port_name = proto.Field(proto.STRING, number=41534345, optional=True,)
-    port_specification = proto.Field(
-        proto.ENUM, number=51590597, optional=True, enum=PortSpecification,
-    )
-    proxy_header = proto.Field(
-        proto.ENUM, number=160374142, optional=True, enum=ProxyHeader,
-    )
+    port_specification = proto.Field(proto.STRING, number=51590597, optional=True,)
+    proxy_header = proto.Field(proto.STRING, number=160374142, optional=True,)
     request = proto.Field(proto.STRING, number=21951119, optional=True,)
     response = proto.Field(proto.STRING, number=196547649, optional=True,)
 
@@ -45330,8 +45363,9 @@ class ScalingScheduleStatus(proto.Message):
             different. The timestamp is in RFC3339 text format.
 
             This field is a member of `oneof`_ ``_next_start_time``.
-        state (google.cloud.compute_v1.types.ScalingScheduleStatus.State):
-            [Output Only] The current state of a scaling schedule.
+        state (str):
+            [Output Only] The current state of a scaling schedule. Check
+            the State enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_state``.
     """
@@ -45346,7 +45380,7 @@ class ScalingScheduleStatus(proto.Message):
 
     last_start_time = proto.Field(proto.STRING, number=34545107, optional=True,)
     next_start_time = proto.Field(proto.STRING, number=97270102, optional=True,)
-    state = proto.Field(proto.ENUM, number=109757585, optional=True, enum=State,)
+    state = proto.Field(proto.STRING, number=109757585, optional=True,)
 
 
 class Scheduling(proto.Message):
@@ -45382,13 +45416,15 @@ class Scheduling(proto.Message):
             configurations. Refer to Configuring node
             affinity for more information. Overrides
             reservationAffinity.
-        on_host_maintenance (google.cloud.compute_v1.types.Scheduling.OnHostMaintenance):
+        on_host_maintenance (str):
             Defines the maintenance behavior for this
             instance. For standard instances, the default
             behavior is MIGRATE. For preemptible instances,
             the default and only possible behavior is
             TERMINATE. For more information, see Setting
-            Instance Scheduling Options.
+            Instance Scheduling Options. Check the
+            OnHostMaintenance enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_on_host_maintenance``.
         preemptible (bool):
@@ -45418,9 +45454,7 @@ class Scheduling(proto.Message):
     node_affinities = proto.RepeatedField(
         proto.MESSAGE, number=461799971, message="SchedulingNodeAffinity",
     )
-    on_host_maintenance = proto.Field(
-        proto.ENUM, number=64616796, optional=True, enum=OnHostMaintenance,
-    )
+    on_host_maintenance = proto.Field(proto.STRING, number=64616796, optional=True,)
     preemptible = proto.Field(proto.BOOL, number=324203169, optional=True,)
 
 
@@ -45434,9 +45468,10 @@ class SchedulingNodeAffinity(proto.Message):
             resource.
 
             This field is a member of `oneof`_ ``_key``.
-        operator (google.cloud.compute_v1.types.SchedulingNodeAffinity.Operator):
+        operator (str):
             Defines the operation of node selection. Valid operators are
-            IN for affinity and NOT_IN for anti-affinity.
+            IN for affinity and NOT_IN for anti-affinity. Check the
+            Operator enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_operator``.
         values (Sequence[str]):
@@ -45454,7 +45489,7 @@ class SchedulingNodeAffinity(proto.Message):
         OPERATOR_UNSPECIFIED = 128892924
 
     key = proto.Field(proto.STRING, number=106079, optional=True,)
-    operator = proto.Field(proto.ENUM, number=36317348, optional=True, enum=Operator,)
+    operator = proto.Field(proto.STRING, number=36317348, optional=True,)
     values = proto.RepeatedField(proto.STRING, number=249928994,)
 
 
@@ -45644,10 +45679,11 @@ class SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig(proto.Messag
             detection.
 
             This field is a member of `oneof`_ ``_enable``.
-        rule_visibility (google.cloud.compute_v1.types.SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig.RuleVisibility):
+        rule_visibility (str):
             Rule visibility can be one of the following:
             STANDARD - opaque rules. (default) PREMIUM -
-            transparent rules.
+            transparent rules. Check the RuleVisibility enum
+            for the list of possible values.
 
             This field is a member of `oneof`_ ``_rule_visibility``.
     """
@@ -45661,19 +45697,21 @@ class SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig(proto.Messag
         STANDARD = 484642493
 
     enable = proto.Field(proto.BOOL, number=311764355, optional=True,)
-    rule_visibility = proto.Field(
-        proto.ENUM, number=453258293, optional=True, enum=RuleVisibility,
-    )
+    rule_visibility = proto.Field(proto.STRING, number=453258293, optional=True,)
 
 
 class SecurityPolicyAdvancedOptionsConfig(proto.Message):
     r"""
 
     Attributes:
-        json_parsing (google.cloud.compute_v1.types.SecurityPolicyAdvancedOptionsConfig.JsonParsing):
+        json_parsing (str):
+            Check the JsonParsing enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_json_parsing``.
-        log_level (google.cloud.compute_v1.types.SecurityPolicyAdvancedOptionsConfig.LogLevel):
+        log_level (str):
+            Check the LogLevel enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_log_level``.
     """
@@ -45690,10 +45728,8 @@ class SecurityPolicyAdvancedOptionsConfig(proto.Message):
         NORMAL = 161067239
         VERBOSE = 532219234
 
-    json_parsing = proto.Field(
-        proto.ENUM, number=282493529, optional=True, enum=JsonParsing,
-    )
-    log_level = proto.Field(proto.ENUM, number=140582601, optional=True, enum=LogLevel,)
+    json_parsing = proto.Field(proto.STRING, number=282493529, optional=True,)
+    log_level = proto.Field(proto.STRING, number=140582601, optional=True,)
 
 
 class SecurityPolicyList(proto.Message):
@@ -45831,12 +45867,13 @@ class SecurityPolicyRuleMatcher(proto.Message):
             and contents in the request header.
 
             This field is a member of `oneof`_ ``_expr``.
-        versioned_expr (google.cloud.compute_v1.types.SecurityPolicyRuleMatcher.VersionedExpr):
+        versioned_expr (str):
             Preconfigured versioned expression. If this field is
             specified, config must also be specified. Available
             preconfigured expressions along with their requirements are:
             SRC_IPS_V1 - must specify the corresponding src_ip_range
-            field in config.
+            field in config. Check the VersionedExpr enum for the list
+            of possible values.
 
             This field is a member of `oneof`_ ``_versioned_expr``.
     """
@@ -45857,9 +45894,7 @@ class SecurityPolicyRuleMatcher(proto.Message):
         message="SecurityPolicyRuleMatcherConfig",
     )
     expr = proto.Field(proto.MESSAGE, number=3127797, optional=True, message="Expr",)
-    versioned_expr = proto.Field(
-        proto.ENUM, number=322286013, optional=True, enum=VersionedExpr,
-    )
+    versioned_expr = proto.Field(proto.STRING, number=322286013, optional=True,)
 
 
 class SecurityPolicyRuleMatcherConfig(proto.Message):
@@ -45984,7 +46019,9 @@ class ServerBinding(proto.Message):
     r"""
 
     Attributes:
-        type_ (google.cloud.compute_v1.types.ServerBinding.Type):
+        type_ (str):
+            Check the Type enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_type``.
     """
@@ -45996,7 +46033,7 @@ class ServerBinding(proto.Message):
         RESTART_NODE_ON_MINIMAL_SERVERS = 204166495
         SERVER_BINDING_TYPE_UNSPECIFIED = 180825512
 
-    type_ = proto.Field(proto.ENUM, number=3575610, optional=True, enum=Type,)
+    type_ = proto.Field(proto.STRING, number=3575610, optional=True,)
 
 
 class ServiceAccount(proto.Message):
@@ -46027,11 +46064,12 @@ class ServiceAttachment(proto.Message):
         connected_endpoints (Sequence[google.cloud.compute_v1.types.ServiceAttachmentConnectedEndpoint]):
             [Output Only] An array of connections for all the consumers
             connected to this service attachment.
-        connection_preference (google.cloud.compute_v1.types.ServiceAttachment.ConnectionPreference):
+        connection_preference (str):
             The connection preference of service attachment. The value
             can be set to ACCEPT_AUTOMATIC. An ACCEPT_AUTOMATIC service
             attachment is one that always accepts the connection from
-            consumer forwarding rules.
+            consumer forwarding rules. Check the ConnectionPreference
+            enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_connection_preference``.
         consumer_accept_lists (Sequence[google.cloud.compute_v1.types.ServiceAttachmentConsumerProjectLimit]):
@@ -46139,9 +46177,7 @@ class ServiceAttachment(proto.Message):
     connected_endpoints = proto.RepeatedField(
         proto.MESSAGE, number=72223688, message="ServiceAttachmentConnectedEndpoint",
     )
-    connection_preference = proto.Field(
-        proto.ENUM, number=285818076, optional=True, enum=ConnectionPreference,
-    )
+    connection_preference = proto.Field(proto.STRING, number=285818076, optional=True,)
     consumer_accept_lists = proto.RepeatedField(
         proto.MESSAGE,
         number=402725703,
@@ -46237,9 +46273,10 @@ class ServiceAttachmentConnectedEndpoint(proto.Message):
             endpoint.
 
             This field is a member of `oneof`_ ``_psc_connection_id``.
-        status (google.cloud.compute_v1.types.ServiceAttachmentConnectedEndpoint.Status):
+        status (str):
             The status of a connected endpoint to this
-            service attachment.
+            service attachment. Check the Status enum for
+            the list of possible values.
 
             This field is a member of `oneof`_ ``_status``.
     """
@@ -46257,7 +46294,7 @@ class ServiceAttachmentConnectedEndpoint(proto.Message):
 
     endpoint = proto.Field(proto.STRING, number=130489749, optional=True,)
     psc_connection_id = proto.Field(proto.UINT64, number=292082397, optional=True,)
-    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    status = proto.Field(proto.STRING, number=181260274, optional=True,)
 
 
 class ServiceAttachmentConsumerProjectLimit(proto.Message):
@@ -48876,9 +48913,10 @@ class Snapshot(proto.Message):
             of a given disk name.
 
             This field is a member of `oneof`_ ``_source_disk_id``.
-        status (google.cloud.compute_v1.types.Snapshot.Status):
+        status (str):
             [Output Only] The status of the snapshot. This can be
-            CREATING, DELETING, FAILED, READY, or UPLOADING.
+            CREATING, DELETING, FAILED, READY, or UPLOADING. Check the
+            Status enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_status``.
         storage_bytes (int):
@@ -48887,12 +48925,14 @@ class Snapshot(proto.Message):
             with snapshot creation/deletion.
 
             This field is a member of `oneof`_ ``_storage_bytes``.
-        storage_bytes_status (google.cloud.compute_v1.types.Snapshot.StorageBytesStatus):
+        storage_bytes_status (str):
             [Output Only] An indicator whether storageBytes is in a
             stable state or it is being adjusted as a result of shared
             storage reallocation. This status can either be UPDATING,
             meaning the size of the snapshot is being updated, or
             UP_TO_DATE, meaning the size of the snapshot is up-to-date.
+            Check the StorageBytesStatus enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_storage_bytes_status``.
         storage_locations (Sequence[str]):
@@ -48946,11 +48986,9 @@ class Snapshot(proto.Message):
         proto.MESSAGE, number=531501153, optional=True, message="CustomerEncryptionKey",
     )
     source_disk_id = proto.Field(proto.STRING, number=454190809, optional=True,)
-    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    status = proto.Field(proto.STRING, number=181260274, optional=True,)
     storage_bytes = proto.Field(proto.INT64, number=424631719, optional=True,)
-    storage_bytes_status = proto.Field(
-        proto.ENUM, number=490739082, optional=True, enum=StorageBytesStatus,
-    )
+    storage_bytes_status = proto.Field(proto.STRING, number=490739082, optional=True,)
     storage_locations = proto.RepeatedField(proto.STRING, number=328005274,)
 
 
@@ -49110,11 +49148,12 @@ class SslCertificate(proto.Message):
         subject_alternative_names (Sequence[str]):
             [Output Only] Domains associated with the certificate via
             Subject Alternative Name.
-        type_ (google.cloud.compute_v1.types.SslCertificate.Type):
+        type_ (str):
             (Optional) Specifies the type of SSL certificate, either
             "SELF_MANAGED" or "MANAGED". If not specified, the
             certificate is self-managed and the fields certificate and
-            private_key are used.
+            private_key are used. Check the Type enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_type``.
     """
@@ -49152,7 +49191,7 @@ class SslCertificate(proto.Message):
         message="SslCertificateSelfManagedSslCertificate",
     )
     subject_alternative_names = proto.RepeatedField(proto.STRING, number=528807907,)
-    type_ = proto.Field(proto.ENUM, number=3575610, optional=True, enum=Type,)
+    type_ = proto.Field(proto.STRING, number=3575610, optional=True,)
 
 
 class SslCertificateAggregatedList(proto.Message):
@@ -49276,8 +49315,9 @@ class SslCertificateManagedSslCertificate(proto.Message):
             generated. Each Google-managed SSL certificate supports up
             to the `maximum number of domains per Google-managed SSL
             certificate </load-balancing/docs/quotas#ssl_certificates>`__.
-        status (google.cloud.compute_v1.types.SslCertificateManagedSslCertificate.Status):
+        status (str):
             [Output only] Status of the managed certificate resource.
+            Check the Status enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_status``.
     """
@@ -49294,7 +49334,7 @@ class SslCertificateManagedSslCertificate(proto.Message):
 
     domain_status = proto.MapField(proto.STRING, proto.STRING, number=360305613,)
     domains = proto.RepeatedField(proto.STRING, number=226935855,)
-    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    status = proto.Field(proto.STRING, number=181260274, optional=True,)
 
 
 class SslCertificateSelfManagedSslCertificate(proto.Message):
@@ -49449,10 +49489,11 @@ class SslPolicy(proto.Message):
             compute#sslPolicyfor SSL policies.
 
             This field is a member of `oneof`_ ``_kind``.
-        min_tls_version (google.cloud.compute_v1.types.SslPolicy.MinTlsVersion):
+        min_tls_version (str):
             The minimum version of SSL protocol that can be used by the
             clients to establish a connection with the load balancer.
-            This can be one of TLS_1_0, TLS_1_1, TLS_1_2.
+            This can be one of TLS_1_0, TLS_1_1, TLS_1_2. Check the
+            MinTlsVersion enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_min_tls_version``.
         name (str):
@@ -49465,13 +49506,15 @@ class SslPolicy(proto.Message):
             except the last character, which cannot be a dash.
 
             This field is a member of `oneof`_ ``_name``.
-        profile (google.cloud.compute_v1.types.SslPolicy.Profile):
+        profile (str):
             Profile specifies the set of SSL features
             that can be used by the load balancer when
             negotiating SSL with clients. This can be one of
             COMPATIBLE, MODERN, RESTRICTED, or CUSTOM. If
             using CUSTOM, the set of SSL features to enable
             must be specified in the customFeatures field.
+            Check the Profile enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_profile``.
         self_link (str):
@@ -49514,11 +49557,9 @@ class SslPolicy(proto.Message):
     fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
     id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
-    min_tls_version = proto.Field(
-        proto.ENUM, number=8155943, optional=True, enum=MinTlsVersion,
-    )
+    min_tls_version = proto.Field(proto.STRING, number=8155943, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
-    profile = proto.Field(proto.ENUM, number=227445161, optional=True, enum=Profile,)
+    profile = proto.Field(proto.STRING, number=227445161, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     warnings = proto.RepeatedField(proto.MESSAGE, number=498091095, message="Warnings",)
 
@@ -49658,13 +49699,14 @@ class StatefulPolicyPreservedStateDiskDevice(proto.Message):
     r"""
 
     Attributes:
-        auto_delete (google.cloud.compute_v1.types.StatefulPolicyPreservedStateDiskDevice.AutoDelete):
+        auto_delete (str):
             These stateful disks will never be deleted during
             autohealing, update or VM instance recreate operations. This
             flag is used to configure if the disk should be deleted
             after it is no longer used by the group, e.g. when the given
             instance or the whole group is deleted. Note: disks attached
-            in READ_ONLY mode cannot be auto-deleted.
+            in READ_ONLY mode cannot be auto-deleted. Check the
+            AutoDelete enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_auto_delete``.
     """
@@ -49681,9 +49723,7 @@ class StatefulPolicyPreservedStateDiskDevice(proto.Message):
         NEVER = 74175084
         ON_PERMANENT_INSTANCE_DELETION = 95727719
 
-    auto_delete = proto.Field(
-        proto.ENUM, number=464761403, optional=True, enum=AutoDelete,
-    )
+    auto_delete = proto.Field(proto.STRING, number=464761403, optional=True,)
 
 
 class StopInstanceRequest(proto.Message):
@@ -49790,12 +49830,13 @@ class Subnetwork(proto.Message):
             expandIpCidrRange.
 
             This field is a member of `oneof`_ ``_ip_cidr_range``.
-        ipv6_access_type (google.cloud.compute_v1.types.Subnetwork.Ipv6AccessType):
+        ipv6_access_type (str):
             The access type of IPv6 address this subnet holds. It's
             immutable and can only be specified during creation or the
             first time the subnet is updated into IPV4_IPV6 dual stack.
             If the ipv6_type is EXTERNAL then this subnet cannot enable
-            direct path.
+            direct path. Check the Ipv6AccessType enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_ipv6_access_type``.
         ipv6_cidr_range (str):
@@ -49840,16 +49881,18 @@ class Subnetwork(proto.Message):
             setPrivateIpGoogleAccess.
 
             This field is a member of `oneof`_ ``_private_ip_google_access``.
-        private_ipv6_google_access (google.cloud.compute_v1.types.Subnetwork.PrivateIpv6GoogleAccess):
+        private_ipv6_google_access (str):
             The private IPv6 google access type for the
             VMs in this subnet. This is an expanded field of
             enablePrivateV6Access. If both fields are set,
             privateIpv6GoogleAccess will take priority. This
             field can be both set at resource creation time
-            and updated using patch.
+            and updated using patch. Check the
+            PrivateIpv6GoogleAccess enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_private_ipv6_google_access``.
-        purpose (google.cloud.compute_v1.types.Subnetwork.Purpose):
+        purpose (str):
             The purpose of the resource. This field can be either
             PRIVATE_RFC_1918 or INTERNAL_HTTPS_LOAD_BALANCER. A
             subnetwork with purpose set to INTERNAL_HTTPS_LOAD_BALANCER
@@ -49857,7 +49900,8 @@ class Subnetwork(proto.Message):
             HTTP(S) Load Balancing. If unspecified, the purpose defaults
             to PRIVATE_RFC_1918. The enableFlowLogs field isn't
             supported with the purpose field set to
-            INTERNAL_HTTPS_LOAD_BALANCER.
+            INTERNAL_HTTPS_LOAD_BALANCER. Check the Purpose enum for the
+            list of possible values.
 
             This field is a member of `oneof`_ ``_purpose``.
         region (str):
@@ -49866,14 +49910,15 @@ class Subnetwork(proto.Message):
             creation time.
 
             This field is a member of `oneof`_ ``_region``.
-        role (google.cloud.compute_v1.types.Subnetwork.Role):
+        role (str):
             The role of subnetwork. Currently, this field is only used
             when purpose = INTERNAL_HTTPS_LOAD_BALANCER. The value can
             be set to ACTIVE or BACKUP. An ACTIVE subnetwork is one that
             is currently being used for Internal HTTP(S) Load Balancing.
             A BACKUP subnetwork is one that is ready to be promoted to
             ACTIVE or is currently draining. This field can be updated
-            with a patch request.
+            with a patch request. Check the Role enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_role``.
         secondary_ip_ranges (Sequence[google.cloud.compute_v1.types.SubnetworkSecondaryRange]):
@@ -49888,21 +49933,23 @@ class Subnetwork(proto.Message):
             [Output Only] Server-defined URL for the resource.
 
             This field is a member of `oneof`_ ``_self_link``.
-        stack_type (google.cloud.compute_v1.types.Subnetwork.StackType):
+        stack_type (str):
             The stack type for this subnet to identify whether the IPv6
             feature is enabled or not. If not specified IPV4_ONLY will
             be used. This field can be both set at resource creation
-            time and updated using patch.
+            time and updated using patch. Check the StackType enum for
+            the list of possible values.
 
             This field is a member of `oneof`_ ``_stack_type``.
-        state (google.cloud.compute_v1.types.Subnetwork.State):
+        state (str):
             [Output Only] The state of the subnetwork, which can be one
             of the following values: READY: Subnetwork is created and
             ready to use DRAINING: only applicable to subnetworks that
             have the purpose set to INTERNAL_HTTPS_LOAD_BALANCER and
             indicates that connections to the load balancer are being
             drained. A subnetwork that is draining cannot be used or
-            modified until it reaches a status of READY
+            modified until it reaches a status of READY Check the State
+            enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_state``.
     """
@@ -49987,9 +50034,7 @@ class Subnetwork(proto.Message):
     gateway_address = proto.Field(proto.STRING, number=459867385, optional=True,)
     id = proto.Field(proto.UINT64, number=3355, optional=True,)
     ip_cidr_range = proto.Field(proto.STRING, number=98117322, optional=True,)
-    ipv6_access_type = proto.Field(
-        proto.ENUM, number=504658653, optional=True, enum=Ipv6AccessType,
-    )
+    ipv6_access_type = proto.Field(proto.STRING, number=504658653, optional=True,)
     ipv6_cidr_range = proto.Field(proto.STRING, number=273141258, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     log_config = proto.Field(
@@ -49999,19 +50044,17 @@ class Subnetwork(proto.Message):
     network = proto.Field(proto.STRING, number=232872494, optional=True,)
     private_ip_google_access = proto.Field(proto.BOOL, number=421491790, optional=True,)
     private_ipv6_google_access = proto.Field(
-        proto.ENUM, number=48277006, optional=True, enum=PrivateIpv6GoogleAccess,
+        proto.STRING, number=48277006, optional=True,
     )
-    purpose = proto.Field(proto.ENUM, number=316407070, optional=True, enum=Purpose,)
+    purpose = proto.Field(proto.STRING, number=316407070, optional=True,)
     region = proto.Field(proto.STRING, number=138946292, optional=True,)
-    role = proto.Field(proto.ENUM, number=3506294, optional=True, enum=Role,)
+    role = proto.Field(proto.STRING, number=3506294, optional=True,)
     secondary_ip_ranges = proto.RepeatedField(
         proto.MESSAGE, number=136658915, message="SubnetworkSecondaryRange",
     )
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
-    stack_type = proto.Field(
-        proto.ENUM, number=425908881, optional=True, enum=StackType,
-    )
-    state = proto.Field(proto.ENUM, number=109757585, optional=True, enum=State,)
+    stack_type = proto.Field(proto.STRING, number=425908881, optional=True,)
+    state = proto.Field(proto.STRING, number=109757585, optional=True,)
 
 
 class SubnetworkAggregatedList(proto.Message):
@@ -50122,14 +50165,15 @@ class SubnetworkLogConfig(proto.Message):
     r"""The available logging options for this subnetwork.
 
     Attributes:
-        aggregation_interval (google.cloud.compute_v1.types.SubnetworkLogConfig.AggregationInterval):
+        aggregation_interval (str):
             Can only be specified if VPC flow logging for
             this subnetwork is enabled. Toggles the
             aggregation interval for collecting flow logs.
             Increasing the interval time will reduce the
             amount of generated flow logs for long lasting
             connections. Default is an interval of 5 seconds
-            per connection.
+            per connection. Check the AggregationInterval
+            enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_aggregation_interval``.
         enable (bool):
@@ -50154,11 +50198,12 @@ class SubnetworkLogConfig(proto.Message):
             means half of all collected logs are reported.
 
             This field is a member of `oneof`_ ``_flow_sampling``.
-        metadata (google.cloud.compute_v1.types.SubnetworkLogConfig.Metadata):
+        metadata (str):
             Can only be specified if VPC flow logs for this subnetwork
             is enabled. Configures whether all, none or a subset of
             metadata fields should be added to the reported VPC flow
-            logs. Default is EXCLUDE_ALL_METADATA.
+            logs. Default is EXCLUDE_ALL_METADATA. Check the Metadata
+            enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_metadata``.
         metadata_fields (Sequence[str]):
@@ -50192,13 +50237,11 @@ class SubnetworkLogConfig(proto.Message):
         EXCLUDE_ALL_METADATA = 334519954
         INCLUDE_ALL_METADATA = 164619908
 
-    aggregation_interval = proto.Field(
-        proto.ENUM, number=174919042, optional=True, enum=AggregationInterval,
-    )
+    aggregation_interval = proto.Field(proto.STRING, number=174919042, optional=True,)
     enable = proto.Field(proto.BOOL, number=311764355, optional=True,)
     filter_expr = proto.Field(proto.STRING, number=183374428, optional=True,)
     flow_sampling = proto.Field(proto.FLOAT, number=530150360, optional=True,)
-    metadata = proto.Field(proto.ENUM, number=86866735, optional=True, enum=Metadata,)
+    metadata = proto.Field(proto.STRING, number=86866735, optional=True,)
     metadata_fields = proto.RepeatedField(proto.STRING, number=378461641,)
 
 
@@ -50289,7 +50332,9 @@ class Subsetting(proto.Message):
     Internal HTTP(S) load balancing and Traffic Director.
 
     Attributes:
-        policy (google.cloud.compute_v1.types.Subsetting.Policy):
+        policy (str):
+            Check the Policy enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_policy``.
     """
@@ -50300,7 +50345,7 @@ class Subsetting(proto.Message):
         CONSISTENT_HASH_SUBSETTING = 108989492
         NONE = 2402104
 
-    policy = proto.Field(proto.ENUM, number=91071794, optional=True, enum=Policy,)
+    policy = proto.Field(proto.STRING, number=91071794, optional=True,)
 
 
 class SwitchToCustomModeNetworkRequest(proto.Message):
@@ -50352,7 +50397,7 @@ class TCPHealthCheck(proto.Message):
             both port and port_name are defined, port takes precedence.
 
             This field is a member of `oneof`_ ``_port_name``.
-        port_specification (google.cloud.compute_v1.types.TCPHealthCheck.PortSpecification):
+        port_specification (str):
             Specifies how port is selected for health checking, can be
             one of following values: USE_FIXED_PORT: The port number in
             port is used for health checking. USE_NAMED_PORT: The
@@ -50362,12 +50407,15 @@ class TCPHealthCheck(proto.Message):
             the port or named port specified in the Backend Service is
             used for health checking. If not specified, TCP health check
             follows behavior specified in port and portName fields.
+            Check the PortSpecification enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_port_specification``.
-        proxy_header (google.cloud.compute_v1.types.TCPHealthCheck.ProxyHeader):
+        proxy_header (str):
             Specifies the type of proxy header to append before sending
             data to the backend, either NONE or PROXY_V1. The default is
-            NONE.
+            NONE. Check the ProxyHeader enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_proxy_header``.
         request (str):
@@ -50413,12 +50461,8 @@ class TCPHealthCheck(proto.Message):
 
     port = proto.Field(proto.INT32, number=3446913, optional=True,)
     port_name = proto.Field(proto.STRING, number=41534345, optional=True,)
-    port_specification = proto.Field(
-        proto.ENUM, number=51590597, optional=True, enum=PortSpecification,
-    )
-    proxy_header = proto.Field(
-        proto.ENUM, number=160374142, optional=True, enum=ProxyHeader,
-    )
+    port_specification = proto.Field(proto.STRING, number=51590597, optional=True,)
+    proxy_header = proto.Field(proto.STRING, number=160374142, optional=True,)
     request = proto.Field(proto.STRING, number=21951119, optional=True,)
     response = proto.Field(proto.STRING, number=196547649, optional=True,)
 
@@ -50848,9 +50892,10 @@ class TargetHttpsProxiesSetQuicOverrideRequest(proto.Message):
     r"""
 
     Attributes:
-        quic_override (google.cloud.compute_v1.types.TargetHttpsProxiesSetQuicOverrideRequest.QuicOverride):
+        quic_override (str):
             QUIC policy for the TargetHttpsProxy
-            resource.
+            resource. Check the QuicOverride enum for the
+            list of possible values.
 
             This field is a member of `oneof`_ ``_quic_override``.
     """
@@ -50862,9 +50907,7 @@ class TargetHttpsProxiesSetQuicOverrideRequest(proto.Message):
         ENABLE = 438835587
         NONE = 2402104
 
-    quic_override = proto.Field(
-        proto.ENUM, number=456577197, optional=True, enum=QuicOverride,
-    )
+    quic_override = proto.Field(proto.STRING, number=456577197, optional=True,)
 
 
 class TargetHttpsProxiesSetSslCertificatesRequest(proto.Message):
@@ -50964,7 +51007,7 @@ class TargetHttpsProxy(proto.Message):
             The default is false.
 
             This field is a member of `oneof`_ ``_proxy_bind``.
-        quic_override (google.cloud.compute_v1.types.TargetHttpsProxy.QuicOverride):
+        quic_override (str):
             Specifies the QUIC override policy for this
             TargetHttpsProxy resource. This setting
             determines whether the load balancer attempts to
@@ -50976,6 +51019,8 @@ class TargetHttpsProxy(proto.Message):
             quic-override is set to DISABLE, the load
             balancer doesn't use QUIC. - If the quic-
             override flag is not specified, NONE is implied.
+            Check the QuicOverride enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_quic_override``.
         region (str):
@@ -51049,9 +51094,7 @@ class TargetHttpsProxy(proto.Message):
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     proxy_bind = proto.Field(proto.BOOL, number=286025582, optional=True,)
-    quic_override = proto.Field(
-        proto.ENUM, number=456577197, optional=True, enum=QuicOverride,
-    )
+    quic_override = proto.Field(proto.STRING, number=456577197, optional=True,)
     region = proto.Field(proto.STRING, number=138946292, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     server_tls_policy = proto.Field(proto.STRING, number=295825266, optional=True,)
@@ -51223,9 +51266,10 @@ class TargetInstance(proto.Message):
             except the last character, which cannot be a dash.
 
             This field is a member of `oneof`_ ``_name``.
-        nat_policy (google.cloud.compute_v1.types.TargetInstance.NatPolicy):
+        nat_policy (str):
             NAT option controlling how IPs are NAT'ed to the instance.
-            Currently only NO_NAT (default value) is supported.
+            Currently only NO_NAT (default value) is supported. Check
+            the NatPolicy enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_nat_policy``.
         network (str):
@@ -51261,9 +51305,7 @@ class TargetInstance(proto.Message):
     instance = proto.Field(proto.STRING, number=18257045, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
-    nat_policy = proto.Field(
-        proto.ENUM, number=509780496, optional=True, enum=NatPolicy,
-    )
+    nat_policy = proto.Field(proto.STRING, number=509780496, optional=True,)
     network = proto.Field(proto.STRING, number=232872494, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     zone = proto.Field(proto.STRING, number=3744684, optional=True,)
@@ -51490,7 +51532,7 @@ class TargetPool(proto.Message):
             [Output Only] Server-defined URL for the resource.
 
             This field is a member of `oneof`_ ``_self_link``.
-        session_affinity (google.cloud.compute_v1.types.TargetPool.SessionAffinity):
+        session_affinity (str):
             Session affinity option, must be one of the following
             values: NONE: Connections from the same client IP may go to
             any instance in the pool. CLIENT_IP: Connections from the
@@ -51498,7 +51540,8 @@ class TargetPool(proto.Message):
             while that instance remains healthy. CLIENT_IP_PROTO:
             Connections from the same client IP with the same IP
             protocol will go to the same instance in the pool while that
-            instance remains healthy.
+            instance remains healthy. Check the SessionAffinity enum for
+            the list of possible values.
 
             This field is a member of `oneof`_ ``_session_affinity``.
     """
@@ -51533,9 +51576,7 @@ class TargetPool(proto.Message):
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     region = proto.Field(proto.STRING, number=138946292, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
-    session_affinity = proto.Field(
-        proto.ENUM, number=463888561, optional=True, enum=SessionAffinity,
-    )
+    session_affinity = proto.Field(proto.STRING, number=463888561, optional=True,)
 
 
 class TargetPoolAggregatedList(proto.Message):
@@ -51782,9 +51823,10 @@ class TargetSslProxiesSetProxyHeaderRequest(proto.Message):
     r"""
 
     Attributes:
-        proxy_header (google.cloud.compute_v1.types.TargetSslProxiesSetProxyHeaderRequest.ProxyHeader):
+        proxy_header (str):
             The new type of proxy header to append before sending data
-            to the backend. NONE or PROXY_V1 are allowed.
+            to the backend. NONE or PROXY_V1 are allowed. Check the
+            ProxyHeader enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_proxy_header``.
     """
@@ -51797,9 +51839,7 @@ class TargetSslProxiesSetProxyHeaderRequest(proto.Message):
         NONE = 2402104
         PROXY_V1 = 334352940
 
-    proxy_header = proto.Field(
-        proto.ENUM, number=160374142, optional=True, enum=ProxyHeader,
-    )
+    proxy_header = proto.Field(proto.STRING, number=160374142, optional=True,)
 
 
 class TargetSslProxiesSetSslCertificatesRequest(proto.Message):
@@ -51856,10 +51896,11 @@ class TargetSslProxy(proto.Message):
             except the last character, which cannot be a dash.
 
             This field is a member of `oneof`_ ``_name``.
-        proxy_header (google.cloud.compute_v1.types.TargetSslProxy.ProxyHeader):
+        proxy_header (str):
             Specifies the type of proxy header to append before sending
             data to the backend, either NONE or PROXY_V1. The default is
-            NONE.
+            NONE. Check the ProxyHeader enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_proxy_header``.
         self_link (str):
@@ -51898,9 +51939,7 @@ class TargetSslProxy(proto.Message):
     id = proto.Field(proto.UINT64, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
-    proxy_header = proto.Field(
-        proto.ENUM, number=160374142, optional=True, enum=ProxyHeader,
-    )
+    proxy_header = proto.Field(proto.STRING, number=160374142, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     service = proto.Field(proto.STRING, number=373540533, optional=True,)
     ssl_certificates = proto.RepeatedField(proto.STRING, number=366006543,)
@@ -51975,9 +52014,10 @@ class TargetTcpProxiesSetProxyHeaderRequest(proto.Message):
     r"""
 
     Attributes:
-        proxy_header (google.cloud.compute_v1.types.TargetTcpProxiesSetProxyHeaderRequest.ProxyHeader):
+        proxy_header (str):
             The new type of proxy header to append before sending data
-            to the backend. NONE or PROXY_V1 are allowed.
+            to the backend. NONE or PROXY_V1 are allowed. Check the
+            ProxyHeader enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_proxy_header``.
     """
@@ -51990,9 +52030,7 @@ class TargetTcpProxiesSetProxyHeaderRequest(proto.Message):
         NONE = 2402104
         PROXY_V1 = 334352940
 
-    proxy_header = proto.Field(
-        proto.ENUM, number=160374142, optional=True, enum=ProxyHeader,
-    )
+    proxy_header = proto.Field(proto.STRING, number=160374142, optional=True,)
 
 
 class TargetTcpProxy(proto.Message):
@@ -52047,10 +52085,11 @@ class TargetTcpProxy(proto.Message):
             The default is false.
 
             This field is a member of `oneof`_ ``_proxy_bind``.
-        proxy_header (google.cloud.compute_v1.types.TargetTcpProxy.ProxyHeader):
+        proxy_header (str):
             Specifies the type of proxy header to append before sending
             data to the backend, either NONE or PROXY_V1. The default is
-            NONE.
+            NONE. Check the ProxyHeader enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_proxy_header``.
         self_link (str):
@@ -52077,9 +52116,7 @@ class TargetTcpProxy(proto.Message):
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     proxy_bind = proto.Field(proto.BOOL, number=286025582, optional=True,)
-    proxy_header = proto.Field(
-        proto.ENUM, number=160374142, optional=True, enum=ProxyHeader,
-    )
+    proxy_header = proto.Field(proto.STRING, number=160374142, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     service = proto.Field(proto.STRING, number=373540533, optional=True,)
 
@@ -52193,9 +52230,10 @@ class TargetVpnGateway(proto.Message):
             [Output Only] Server-defined URL for the resource.
 
             This field is a member of `oneof`_ ``_self_link``.
-        status (google.cloud.compute_v1.types.TargetVpnGateway.Status):
+        status (str):
             [Output Only] The status of the VPN gateway, which can be
             one of the following: CREATING, READY, FAILED, or DELETING.
+            Check the Status enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_status``.
         tunnels (Sequence[str]):
@@ -52223,7 +52261,7 @@ class TargetVpnGateway(proto.Message):
     network = proto.Field(proto.STRING, number=232872494, optional=True,)
     region = proto.Field(proto.STRING, number=138946292, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
-    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    status = proto.Field(proto.STRING, number=181260274, optional=True,)
     tunnels = proto.RepeatedField(proto.STRING, number=104561931,)
 
 
@@ -54692,16 +54730,18 @@ class VpnGatewayStatusHighAvailabilityRequirementState(proto.Message):
     connection between this Cloud VPN gateway and a peer gateway.
 
     Attributes:
-        state (google.cloud.compute_v1.types.VpnGatewayStatusHighAvailabilityRequirementState.State):
+        state (str):
             Indicates the high availability requirement state for the
             VPN connection. Valid values are CONNECTION_REDUNDANCY_MET,
-            CONNECTION_REDUNDANCY_NOT_MET.
+            CONNECTION_REDUNDANCY_NOT_MET. Check the State enum for the
+            list of possible values.
 
             This field is a member of `oneof`_ ``_state``.
-        unsatisfied_reason (google.cloud.compute_v1.types.VpnGatewayStatusHighAvailabilityRequirementState.UnsatisfiedReason):
+        unsatisfied_reason (str):
             Indicates the reason why the VPN connection does not meet
             the high availability redundancy criteria/requirement. Valid
-            values is INCOMPLETE_TUNNELS_COVERAGE.
+            values is INCOMPLETE_TUNNELS_COVERAGE. Check the
+            UnsatisfiedReason enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_unsatisfied_reason``.
     """
@@ -54723,10 +54763,8 @@ class VpnGatewayStatusHighAvailabilityRequirementState(proto.Message):
         UNDEFINED_UNSATISFIED_REASON = 0
         INCOMPLETE_TUNNELS_COVERAGE = 55917437
 
-    state = proto.Field(proto.ENUM, number=109757585, optional=True, enum=State,)
-    unsatisfied_reason = proto.Field(
-        proto.ENUM, number=55016330, optional=True, enum=UnsatisfiedReason,
-    )
+    state = proto.Field(proto.STRING, number=109757585, optional=True,)
+    unsatisfied_reason = proto.Field(proto.STRING, number=55016330, optional=True,)
 
 
 class VpnGatewayStatusTunnel(proto.Message):
@@ -54994,7 +55032,7 @@ class VpnTunnel(proto.Message):
             Hash of the shared secret.
 
             This field is a member of `oneof`_ ``_shared_secret_hash``.
-        status (google.cloud.compute_v1.types.VpnTunnel.Status):
+        status (str):
             [Output Only] The status of the VPN tunnel, which can be one
             of the following: - PROVISIONING: Resource is being
             allocated for the VPN tunnel. - WAITING_FOR_FULL_CONFIG:
@@ -55018,7 +55056,8 @@ class VpnTunnel(proto.Message):
             Classic VPN tunnels or the project is in frozen state. -
             PEER_IDENTITY_MISMATCH: Peer identity does not match peer
             IP, probably behind NAT. - TS_NARROWING_NOT_ALLOWED: Traffic
-            selector narrowing not allowed for an HA-VPN tunnel.
+            selector narrowing not allowed for an HA-VPN tunnel. Check
+            the Status enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_status``.
         target_vpn_gateway (str):
@@ -55099,7 +55138,7 @@ class VpnTunnel(proto.Message):
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     shared_secret = proto.Field(proto.STRING, number=381932490, optional=True,)
     shared_secret_hash = proto.Field(proto.STRING, number=398881891, optional=True,)
-    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    status = proto.Field(proto.STRING, number=181260274, optional=True,)
     target_vpn_gateway = proto.Field(proto.STRING, number=532512843, optional=True,)
     vpn_gateway = proto.Field(proto.STRING, number=406684153, optional=True,)
     vpn_gateway_interface = proto.Field(proto.INT32, number=95979123, optional=True,)
@@ -55332,10 +55371,11 @@ class Warning(proto.Message):
     r"""[Output Only] Informational warning message.
 
     Attributes:
-        code (google.cloud.compute_v1.types.Warning.Code):
+        code (str):
             [Output Only] A warning code, if applicable. For example,
             Compute Engine returns NO_RESULTS_ON_PAGE if there are no
-            results in the response.
+            results in the response. Check the Code enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_code``.
         data (Sequence[google.cloud.compute_v1.types.Data]):
@@ -55381,7 +55421,7 @@ class Warning(proto.Message):
         UNDECLARED_PROPERTIES = 390513439
         UNREACHABLE = 13328052
 
-    code = proto.Field(proto.ENUM, number=3059181, optional=True, enum=Code,)
+    code = proto.Field(proto.STRING, number=3059181, optional=True,)
     data = proto.RepeatedField(proto.MESSAGE, number=3076010, message="Data",)
     message = proto.Field(proto.STRING, number=418054151, optional=True,)
 
@@ -55390,10 +55430,11 @@ class Warnings(proto.Message):
     r"""
 
     Attributes:
-        code (google.cloud.compute_v1.types.Warnings.Code):
+        code (str):
             [Output Only] A warning code, if applicable. For example,
             Compute Engine returns NO_RESULTS_ON_PAGE if there are no
-            results in the response.
+            results in the response. Check the Code enum for the list of
+            possible values.
 
             This field is a member of `oneof`_ ``_code``.
         data (Sequence[google.cloud.compute_v1.types.Data]):
@@ -55439,7 +55480,7 @@ class Warnings(proto.Message):
         UNDECLARED_PROPERTIES = 390513439
         UNREACHABLE = 13328052
 
-    code = proto.Field(proto.ENUM, number=3059181, optional=True, enum=Code,)
+    code = proto.Field(proto.STRING, number=3059181, optional=True,)
     data = proto.RepeatedField(proto.MESSAGE, number=3076010, message="Data",)
     message = proto.Field(proto.STRING, number=418054151, optional=True,)
 
@@ -55557,8 +55598,10 @@ class XpnResourceId(proto.Message):
             12345678).
 
             This field is a member of `oneof`_ ``_id``.
-        type_ (google.cloud.compute_v1.types.XpnResourceId.Type):
+        type_ (str):
             The type of the service resource.
+            Check the Type enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_type``.
     """
@@ -55570,7 +55613,7 @@ class XpnResourceId(proto.Message):
         XPN_RESOURCE_TYPE_UNSPECIFIED = 151607034
 
     id = proto.Field(proto.STRING, number=3355, optional=True,)
-    type_ = proto.Field(proto.ENUM, number=3575610, optional=True, enum=Type,)
+    type_ = proto.Field(proto.STRING, number=3575610, optional=True,)
 
 
 class Zone(proto.Message):
@@ -55619,8 +55662,9 @@ class Zone(proto.Message):
             [Output Only] Server-defined URL for the resource.
 
             This field is a member of `oneof`_ ``_self_link``.
-        status (google.cloud.compute_v1.types.Zone.Status):
-            [Output Only] Status of the zone, either UP or DOWN.
+        status (str):
+            [Output Only] Status of the zone, either UP or DOWN. Check
+            the Status enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_status``.
         supports_pzs (bool):
@@ -55646,7 +55690,7 @@ class Zone(proto.Message):
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     region = proto.Field(proto.STRING, number=138946292, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
-    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    status = proto.Field(proto.STRING, number=181260274, optional=True,)
     supports_pzs = proto.Field(proto.BOOL, number=83983214, optional=True,)
 
 

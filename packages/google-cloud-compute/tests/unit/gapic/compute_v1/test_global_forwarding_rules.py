@@ -610,7 +610,7 @@ def test_get_rest(
         # Designate an appropriate value for the returned response.
         return_value = compute.ForwardingRule(
             I_p_address="I_p_address_value",
-            I_p_protocol=compute.ForwardingRule.IPProtocol.AH,
+            I_p_protocol="I_p_protocol_value",
             all_ports=True,
             allow_global_access=True,
             backend_service="backend_service_value",
@@ -618,18 +618,18 @@ def test_get_rest(
             description="description_value",
             fingerprint="fingerprint_value",
             id=205,
-            ip_version=compute.ForwardingRule.IpVersion.IPV4,
+            ip_version="ip_version_value",
             is_mirroring_collector=True,
             kind="kind_value",
             label_fingerprint="label_fingerprint_value",
-            load_balancing_scheme=compute.ForwardingRule.LoadBalancingScheme.EXTERNAL,
+            load_balancing_scheme="load_balancing_scheme_value",
             name="name_value",
             network="network_value",
-            network_tier=compute.ForwardingRule.NetworkTier.PREMIUM,
+            network_tier="network_tier_value",
             port_range="port_range_value",
             ports=["ports_value"],
             psc_connection_id=1793,
-            psc_connection_status=compute.ForwardingRule.PscConnectionStatus.ACCEPTED,
+            psc_connection_status="psc_connection_status_value",
             region="region_value",
             self_link="self_link_value",
             service_label="service_label_value",
@@ -649,7 +649,7 @@ def test_get_rest(
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.ForwardingRule)
     assert response.I_p_address == "I_p_address_value"
-    assert response.I_p_protocol == compute.ForwardingRule.IPProtocol.AH
+    assert response.I_p_protocol == "I_p_protocol_value"
     assert response.all_ports is True
     assert response.allow_global_access is True
     assert response.backend_service == "backend_service_value"
@@ -657,24 +657,18 @@ def test_get_rest(
     assert response.description == "description_value"
     assert response.fingerprint == "fingerprint_value"
     assert response.id == 205
-    assert response.ip_version == compute.ForwardingRule.IpVersion.IPV4
+    assert response.ip_version == "ip_version_value"
     assert response.is_mirroring_collector is True
     assert response.kind == "kind_value"
     assert response.label_fingerprint == "label_fingerprint_value"
-    assert (
-        response.load_balancing_scheme
-        == compute.ForwardingRule.LoadBalancingScheme.EXTERNAL
-    )
+    assert response.load_balancing_scheme == "load_balancing_scheme_value"
     assert response.name == "name_value"
     assert response.network == "network_value"
-    assert response.network_tier == compute.ForwardingRule.NetworkTier.PREMIUM
+    assert response.network_tier == "network_tier_value"
     assert response.port_range == "port_range_value"
     assert response.ports == ["ports_value"]
     assert response.psc_connection_id == 1793
-    assert (
-        response.psc_connection_status
-        == compute.ForwardingRule.PscConnectionStatus.ACCEPTED
-    )
+    assert response.psc_connection_status == "psc_connection_status_value"
     assert response.region == "region_value"
     assert response.self_link == "self_link_value"
     assert response.service_label == "service_label_value"

@@ -773,7 +773,7 @@ def test_list_instances_rest(
     request_init[
         "region_instance_groups_list_instances_request_resource"
     ] = compute.RegionInstanceGroupsListInstancesRequest(
-        instance_state=compute.RegionInstanceGroupsListInstancesRequest.InstanceState.ALL
+        instance_state="instance_state_value"
     )
     request = request_type(request_init)
 
@@ -822,7 +822,7 @@ def test_list_instances_rest_bad_request(
     request_init[
         "region_instance_groups_list_instances_request_resource"
     ] = compute.RegionInstanceGroupsListInstancesRequest(
-        instance_state=compute.RegionInstanceGroupsListInstancesRequest.InstanceState.ALL
+        instance_state="instance_state_value"
     )
     request = request_type(request_init)
 
@@ -875,7 +875,7 @@ def test_list_instances_rest_flattened(transport: str = "rest"):
             region="region_value",
             instance_group="instance_group_value",
             region_instance_groups_list_instances_request_resource=compute.RegionInstanceGroupsListInstancesRequest(
-                instance_state=compute.RegionInstanceGroupsListInstancesRequest.InstanceState.ALL
+                instance_state="instance_state_value"
             ),
         )
         mock_args.update(sample_request)
@@ -906,7 +906,7 @@ def test_list_instances_rest_flattened_error(transport: str = "rest"):
             region="region_value",
             instance_group="instance_group_value",
             region_instance_groups_list_instances_request_resource=compute.RegionInstanceGroupsListInstancesRequest(
-                instance_state=compute.RegionInstanceGroupsListInstancesRequest.InstanceState.ALL
+                instance_state="instance_state_value"
             ),
         )
 
@@ -962,7 +962,7 @@ def test_list_instances_rest_pager():
         sample_request[
             "region_instance_groups_list_instances_request_resource"
         ] = compute.RegionInstanceGroupsListInstancesRequest(
-            instance_state=compute.RegionInstanceGroupsListInstancesRequest.InstanceState.ALL
+            instance_state="instance_state_value"
         )
 
         pager = client.list_instances(request=sample_request)

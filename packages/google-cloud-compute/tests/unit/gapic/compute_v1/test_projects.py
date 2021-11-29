@@ -1049,7 +1049,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetProjectReques
         # Designate an appropriate value for the returned response.
         return_value = compute.Project(
             creation_timestamp="creation_timestamp_value",
-            default_network_tier=compute.Project.DefaultNetworkTier.PREMIUM,
+            default_network_tier="default_network_tier_value",
             default_service_account="default_service_account_value",
             description="description_value",
             enabled_features=["enabled_features_value"],
@@ -1057,7 +1057,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetProjectReques
             kind="kind_value",
             name="name_value",
             self_link="self_link_value",
-            xpn_project_status=compute.Project.XpnProjectStatus.HOST,
+            xpn_project_status="xpn_project_status_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -1071,7 +1071,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetProjectReques
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Project)
     assert response.creation_timestamp == "creation_timestamp_value"
-    assert response.default_network_tier == compute.Project.DefaultNetworkTier.PREMIUM
+    assert response.default_network_tier == "default_network_tier_value"
     assert response.default_service_account == "default_service_account_value"
     assert response.description == "description_value"
     assert response.enabled_features == ["enabled_features_value"]
@@ -1079,7 +1079,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetProjectReques
     assert response.kind == "kind_value"
     assert response.name == "name_value"
     assert response.self_link == "self_link_value"
-    assert response.xpn_project_status == compute.Project.XpnProjectStatus.HOST
+    assert response.xpn_project_status == "xpn_project_status_value"
 
 
 def test_get_rest_bad_request(
@@ -1173,7 +1173,7 @@ def test_get_xpn_host_rest(
         # Designate an appropriate value for the returned response.
         return_value = compute.Project(
             creation_timestamp="creation_timestamp_value",
-            default_network_tier=compute.Project.DefaultNetworkTier.PREMIUM,
+            default_network_tier="default_network_tier_value",
             default_service_account="default_service_account_value",
             description="description_value",
             enabled_features=["enabled_features_value"],
@@ -1181,7 +1181,7 @@ def test_get_xpn_host_rest(
             kind="kind_value",
             name="name_value",
             self_link="self_link_value",
-            xpn_project_status=compute.Project.XpnProjectStatus.HOST,
+            xpn_project_status="xpn_project_status_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -1195,7 +1195,7 @@ def test_get_xpn_host_rest(
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Project)
     assert response.creation_timestamp == "creation_timestamp_value"
-    assert response.default_network_tier == compute.Project.DefaultNetworkTier.PREMIUM
+    assert response.default_network_tier == "default_network_tier_value"
     assert response.default_service_account == "default_service_account_value"
     assert response.description == "description_value"
     assert response.enabled_features == ["enabled_features_value"]
@@ -1203,7 +1203,7 @@ def test_get_xpn_host_rest(
     assert response.kind == "kind_value"
     assert response.name == "name_value"
     assert response.self_link == "self_link_value"
-    assert response.xpn_project_status == compute.Project.XpnProjectStatus.HOST
+    assert response.xpn_project_status == "xpn_project_status_value"
 
 
 def test_get_xpn_host_rest_bad_request(
@@ -2118,9 +2118,7 @@ def test_set_default_network_tier_rest(
     request_init = {"project": "sample1"}
     request_init[
         "projects_set_default_network_tier_request_resource"
-    ] = compute.ProjectsSetDefaultNetworkTierRequest(
-        network_tier=compute.ProjectsSetDefaultNetworkTierRequest.NetworkTier.PREMIUM
-    )
+    ] = compute.ProjectsSetDefaultNetworkTierRequest(network_tier="network_tier_value")
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -2196,9 +2194,7 @@ def test_set_default_network_tier_rest_bad_request(
     request_init = {"project": "sample1"}
     request_init[
         "projects_set_default_network_tier_request_resource"
-    ] = compute.ProjectsSetDefaultNetworkTierRequest(
-        network_tier=compute.ProjectsSetDefaultNetworkTierRequest.NetworkTier.PREMIUM
-    )
+    ] = compute.ProjectsSetDefaultNetworkTierRequest(network_tier="network_tier_value")
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -2242,7 +2238,7 @@ def test_set_default_network_tier_rest_flattened(transport: str = "rest"):
         mock_args = dict(
             project="project_value",
             projects_set_default_network_tier_request_resource=compute.ProjectsSetDefaultNetworkTierRequest(
-                network_tier=compute.ProjectsSetDefaultNetworkTierRequest.NetworkTier.PREMIUM
+                network_tier="network_tier_value"
             ),
         )
         mock_args.update(sample_request)
@@ -2271,7 +2267,7 @@ def test_set_default_network_tier_rest_flattened_error(transport: str = "rest"):
             compute.SetDefaultNetworkTierProjectRequest(),
             project="project_value",
             projects_set_default_network_tier_request_resource=compute.ProjectsSetDefaultNetworkTierRequest(
-                network_tier=compute.ProjectsSetDefaultNetworkTierRequest.NetworkTier.PREMIUM
+                network_tier="network_tier_value"
             ),
         )
 

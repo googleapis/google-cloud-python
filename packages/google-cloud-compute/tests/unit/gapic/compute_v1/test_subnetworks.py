@@ -936,19 +936,19 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetSubnetworkReq
             gateway_address="gateway_address_value",
             id=205,
             ip_cidr_range="ip_cidr_range_value",
-            ipv6_access_type=compute.Subnetwork.Ipv6AccessType.EXTERNAL,
+            ipv6_access_type="ipv6_access_type_value",
             ipv6_cidr_range="ipv6_cidr_range_value",
             kind="kind_value",
             name="name_value",
             network="network_value",
             private_ip_google_access=True,
-            private_ipv6_google_access=compute.Subnetwork.PrivateIpv6GoogleAccess.DISABLE_GOOGLE_ACCESS,
-            purpose=compute.Subnetwork.Purpose.INTERNAL_HTTPS_LOAD_BALANCER,
+            private_ipv6_google_access="private_ipv6_google_access_value",
+            purpose="purpose_value",
             region="region_value",
-            role=compute.Subnetwork.Role.ACTIVE,
+            role="role_value",
             self_link="self_link_value",
-            stack_type=compute.Subnetwork.StackType.IPV4_IPV6,
-            state=compute.Subnetwork.State.DRAINING,
+            stack_type="stack_type_value",
+            state="state_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -969,22 +969,19 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetSubnetworkReq
     assert response.gateway_address == "gateway_address_value"
     assert response.id == 205
     assert response.ip_cidr_range == "ip_cidr_range_value"
-    assert response.ipv6_access_type == compute.Subnetwork.Ipv6AccessType.EXTERNAL
+    assert response.ipv6_access_type == "ipv6_access_type_value"
     assert response.ipv6_cidr_range == "ipv6_cidr_range_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
     assert response.network == "network_value"
     assert response.private_ip_google_access is True
-    assert (
-        response.private_ipv6_google_access
-        == compute.Subnetwork.PrivateIpv6GoogleAccess.DISABLE_GOOGLE_ACCESS
-    )
-    assert response.purpose == compute.Subnetwork.Purpose.INTERNAL_HTTPS_LOAD_BALANCER
+    assert response.private_ipv6_google_access == "private_ipv6_google_access_value"
+    assert response.purpose == "purpose_value"
     assert response.region == "region_value"
-    assert response.role == compute.Subnetwork.Role.ACTIVE
+    assert response.role == "role_value"
     assert response.self_link == "self_link_value"
-    assert response.stack_type == compute.Subnetwork.StackType.IPV4_IPV6
-    assert response.state == compute.Subnetwork.State.DRAINING
+    assert response.stack_type == "stack_type_value"
+    assert response.state == "state_value"
 
 
 def test_get_rest_bad_request(

@@ -793,7 +793,7 @@ def test_get_rest(
         return_value = compute.PacketMirroring(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
-            enable=compute.PacketMirroring.Enable.FALSE,
+            enable="enable_value",
             id=205,
             kind="kind_value",
             name="name_value",
@@ -814,7 +814,7 @@ def test_get_rest(
     assert isinstance(response, compute.PacketMirroring)
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
-    assert response.enable == compute.PacketMirroring.Enable.FALSE
+    assert response.enable == "enable_value"
     assert response.id == 205
     assert response.kind == "kind_value"
     assert response.name == "name_value"

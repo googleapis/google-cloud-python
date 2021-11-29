@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from pathlib import Path
 import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
@@ -57,7 +58,8 @@ s.move(templated_files, excludes=[".coveragerc"]) # the microgenerator has a goo
 python.py_samples(skip_readmes=True)
 
 # ----------------------------------------------------------------------------
-# Run blacken session
+# Run blacken session for all directories with a noxfile
 # ----------------------------------------------------------------------------
 
-s.shell.run(["nox", "-s", "blacken"], hide_output=False)
+for noxfile in Path(".").glob("**/noxfile.py"):
+    s.shell.run(["nox", "-s", "blacken"], cwd=noxfile.parent, hide_output=False)

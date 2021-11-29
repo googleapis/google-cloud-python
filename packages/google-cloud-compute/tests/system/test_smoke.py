@@ -96,7 +96,7 @@ class TestComputeSmoke(TestBase):
             if time.time() > timeout:
                 self.fail("Instance was not stopped")
             instance = self.get_instance()
-            if instance.status == Instance.Status.TERMINATED:
+            if instance.status == "TERMINATED":
                 break
             else:
                 time.sleep(10)
@@ -173,7 +173,7 @@ class TestComputeSmoke(TestBase):
         disk = AttachedDisk(
             auto_delete=True,
             boot=True,
-            type_=AttachedDisk.Type.PERSISTENT,
+            type_="PERSISTENT",
             initialize_params=initialize_params,
         )
         network_interface = NetworkInterface(name="default")

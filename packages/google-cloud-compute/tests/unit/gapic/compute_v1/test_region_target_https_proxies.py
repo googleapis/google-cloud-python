@@ -640,7 +640,7 @@ def test_get_rest(
             kind="kind_value",
             name="name_value",
             proxy_bind=True,
-            quic_override=compute.TargetHttpsProxy.QuicOverride.DISABLE,
+            quic_override="quic_override_value",
             region="region_value",
             self_link="self_link_value",
             server_tls_policy="server_tls_policy_value",
@@ -667,7 +667,7 @@ def test_get_rest(
     assert response.kind == "kind_value"
     assert response.name == "name_value"
     assert response.proxy_bind is True
-    assert response.quic_override == compute.TargetHttpsProxy.QuicOverride.DISABLE
+    assert response.quic_override == "quic_override_value"
     assert response.region == "region_value"
     assert response.self_link == "self_link_value"
     assert response.server_tls_policy == "server_tls_policy_value"

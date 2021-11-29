@@ -800,7 +800,7 @@ def test_get_rest(
             network="network_value",
             region="region_value",
             self_link="self_link_value",
-            status=compute.TargetVpnGateway.Status.CREATING,
+            status="status_value",
             tunnels=["tunnels_value"],
         )
 
@@ -823,7 +823,7 @@ def test_get_rest(
     assert response.network == "network_value"
     assert response.region == "region_value"
     assert response.self_link == "self_link_value"
-    assert response.status == compute.TargetVpnGateway.Status.CREATING
+    assert response.status == "status_value"
     assert response.tunnels == ["tunnels_value"]
 
 

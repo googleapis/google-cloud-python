@@ -624,7 +624,7 @@ def test_get_rest(
             name="name_value",
             self_link="self_link_value",
             shared_secret="shared_secret_value",
-            status=compute.PublicAdvertisedPrefix.Status.INITIAL,
+            status="status_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -647,7 +647,7 @@ def test_get_rest(
     assert response.name == "name_value"
     assert response.self_link == "self_link_value"
     assert response.shared_secret == "shared_secret_value"
-    assert response.status == compute.PublicAdvertisedPrefix.Status.INITIAL
+    assert response.status == "status_value"
 
 
 def test_get_rest_bad_request(

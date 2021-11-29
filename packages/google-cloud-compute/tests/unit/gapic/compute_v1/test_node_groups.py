@@ -1102,12 +1102,12 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetNodeGroupRequ
             id=205,
             kind="kind_value",
             location_hint="location_hint_value",
-            maintenance_policy=compute.NodeGroup.MaintenancePolicy.DEFAULT,
+            maintenance_policy="maintenance_policy_value",
             name="name_value",
             node_template="node_template_value",
             self_link="self_link_value",
             size=443,
-            status=compute.NodeGroup.Status.CREATING,
+            status="status_value",
             zone="zone_value",
         )
 
@@ -1127,12 +1127,12 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetNodeGroupRequ
     assert response.id == 205
     assert response.kind == "kind_value"
     assert response.location_hint == "location_hint_value"
-    assert response.maintenance_policy == compute.NodeGroup.MaintenancePolicy.DEFAULT
+    assert response.maintenance_policy == "maintenance_policy_value"
     assert response.name == "name_value"
     assert response.node_template == "node_template_value"
     assert response.self_link == "self_link_value"
     assert response.size == 443
-    assert response.status == compute.NodeGroup.Status.CREATING
+    assert response.status == "status_value"
     assert response.zone == "zone_value"
 
 

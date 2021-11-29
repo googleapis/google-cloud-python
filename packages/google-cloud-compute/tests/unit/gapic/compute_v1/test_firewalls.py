@@ -565,7 +565,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetFirewallReque
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             destination_ranges=["destination_ranges_value"],
-            direction=compute.Firewall.Direction.EGRESS,
+            direction="direction_value",
             disabled=True,
             id=205,
             kind="kind_value",
@@ -593,7 +593,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetFirewallReque
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.destination_ranges == ["destination_ranges_value"]
-    assert response.direction == compute.Firewall.Direction.EGRESS
+    assert response.direction == "direction_value"
     assert response.disabled is True
     assert response.id == 205
     assert response.kind == "kind_value"

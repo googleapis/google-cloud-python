@@ -987,7 +987,7 @@ def test_get_rest(
             kind="kind_value",
             name="name_value",
             network="network_value",
-            network_endpoint_type=compute.NetworkEndpointGroup.NetworkEndpointType.GCE_VM_IP,
+            network_endpoint_type="network_endpoint_type_value",
             region="region_value",
             self_link="self_link_value",
             size=443,
@@ -1012,10 +1012,7 @@ def test_get_rest(
     assert response.kind == "kind_value"
     assert response.name == "name_value"
     assert response.network == "network_value"
-    assert (
-        response.network_endpoint_type
-        == compute.NetworkEndpointGroup.NetworkEndpointType.GCE_VM_IP
-    )
+    assert response.network_endpoint_type == "network_endpoint_type_value"
     assert response.region == "region_value"
     assert response.self_link == "self_link_value"
     assert response.size == 443

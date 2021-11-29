@@ -1774,12 +1774,12 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetInstanceReque
             machine_type="machine_type_value",
             min_cpu_platform="min_cpu_platform_value",
             name="name_value",
-            private_ipv6_google_access=compute.Instance.PrivateIpv6GoogleAccess.ENABLE_BIDIRECTIONAL_ACCESS_TO_GOOGLE,
+            private_ipv6_google_access="private_ipv6_google_access_value",
             resource_policies=["resource_policies_value"],
             satisfies_pzs=True,
             self_link="self_link_value",
             start_restricted=True,
-            status=compute.Instance.Status.DEPROVISIONING,
+            status="status_value",
             status_message="status_message_value",
             zone="zone_value",
         )
@@ -1810,15 +1810,12 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetInstanceReque
     assert response.machine_type == "machine_type_value"
     assert response.min_cpu_platform == "min_cpu_platform_value"
     assert response.name == "name_value"
-    assert (
-        response.private_ipv6_google_access
-        == compute.Instance.PrivateIpv6GoogleAccess.ENABLE_BIDIRECTIONAL_ACCESS_TO_GOOGLE
-    )
+    assert response.private_ipv6_google_access == "private_ipv6_google_access_value"
     assert response.resource_policies == ["resource_policies_value"]
     assert response.satisfies_pzs is True
     assert response.self_link == "self_link_value"
     assert response.start_restricted is True
-    assert response.status == compute.Instance.Status.DEPROVISIONING
+    assert response.status == "status_value"
     assert response.status_message == "status_message_value"
     assert response.zone == "zone_value"
 

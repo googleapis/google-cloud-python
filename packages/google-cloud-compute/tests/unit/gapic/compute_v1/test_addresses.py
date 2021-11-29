@@ -747,20 +747,20 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetAddressReques
         # Designate an appropriate value for the returned response.
         return_value = compute.Address(
             address="address_value",
-            address_type=compute.Address.AddressType.EXTERNAL,
+            address_type="address_type_value",
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             id=205,
-            ip_version=compute.Address.IpVersion.IPV4,
+            ip_version="ip_version_value",
             kind="kind_value",
             name="name_value",
             network="network_value",
-            network_tier=compute.Address.NetworkTier.PREMIUM,
+            network_tier="network_tier_value",
             prefix_length=1391,
-            purpose=compute.Address.Purpose.DNS_RESOLVER,
+            purpose="purpose_value",
             region="region_value",
             self_link="self_link_value",
-            status=compute.Address.Status.IN_USE,
+            status="status_value",
             subnetwork="subnetwork_value",
             users=["users_value"],
         )
@@ -776,20 +776,20 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetAddressReques
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Address)
     assert response.address == "address_value"
-    assert response.address_type == compute.Address.AddressType.EXTERNAL
+    assert response.address_type == "address_type_value"
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.id == 205
-    assert response.ip_version == compute.Address.IpVersion.IPV4
+    assert response.ip_version == "ip_version_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
     assert response.network == "network_value"
-    assert response.network_tier == compute.Address.NetworkTier.PREMIUM
+    assert response.network_tier == "network_tier_value"
     assert response.prefix_length == 1391
-    assert response.purpose == compute.Address.Purpose.DNS_RESOLVER
+    assert response.purpose == "purpose_value"
     assert response.region == "region_value"
     assert response.self_link == "self_link_value"
-    assert response.status == compute.Address.Status.IN_USE
+    assert response.status == "status_value"
     assert response.subnetwork == "subnetwork_value"
     assert response.users == ["users_value"]
 

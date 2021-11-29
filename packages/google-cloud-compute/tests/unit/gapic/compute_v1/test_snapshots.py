@@ -579,9 +579,9 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetSnapshotReque
             self_link="self_link_value",
             source_disk="source_disk_value",
             source_disk_id="source_disk_id_value",
-            status=compute.Snapshot.Status.CREATING,
+            status="status_value",
             storage_bytes=1403,
-            storage_bytes_status=compute.Snapshot.StorageBytesStatus.UPDATING,
+            storage_bytes_status="storage_bytes_status_value",
             storage_locations=["storage_locations_value"],
         )
 
@@ -612,9 +612,9 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetSnapshotReque
     assert response.self_link == "self_link_value"
     assert response.source_disk == "source_disk_value"
     assert response.source_disk_id == "source_disk_id_value"
-    assert response.status == compute.Snapshot.Status.CREATING
+    assert response.status == "status_value"
     assert response.storage_bytes == 1403
-    assert response.storage_bytes_status == compute.Snapshot.StorageBytesStatus.UPDATING
+    assert response.storage_bytes_status == "storage_bytes_status_value"
     assert response.storage_locations == ["storage_locations_value"]
 
 

@@ -786,7 +786,7 @@ def test_get_rest(
             kind="kind_value",
             name="name_value",
             proxy_bind=True,
-            quic_override=compute.TargetHttpsProxy.QuicOverride.DISABLE,
+            quic_override="quic_override_value",
             region="region_value",
             self_link="self_link_value",
             server_tls_policy="server_tls_policy_value",
@@ -813,7 +813,7 @@ def test_get_rest(
     assert response.kind == "kind_value"
     assert response.name == "name_value"
     assert response.proxy_bind is True
-    assert response.quic_override == compute.TargetHttpsProxy.QuicOverride.DISABLE
+    assert response.quic_override == "quic_override_value"
     assert response.region == "region_value"
     assert response.self_link == "self_link_value"
     assert response.server_tls_policy == "server_tls_policy_value"
@@ -1412,7 +1412,7 @@ def test_set_quic_override_rest(
     request_init[
         "target_https_proxies_set_quic_override_request_resource"
     ] = compute.TargetHttpsProxiesSetQuicOverrideRequest(
-        quic_override=compute.TargetHttpsProxiesSetQuicOverrideRequest.QuicOverride.DISABLE
+        quic_override="quic_override_value"
     )
     request = request_type(request_init)
 
@@ -1490,7 +1490,7 @@ def test_set_quic_override_rest_bad_request(
     request_init[
         "target_https_proxies_set_quic_override_request_resource"
     ] = compute.TargetHttpsProxiesSetQuicOverrideRequest(
-        quic_override=compute.TargetHttpsProxiesSetQuicOverrideRequest.QuicOverride.DISABLE
+        quic_override="quic_override_value"
     )
     request = request_type(request_init)
 
@@ -1536,7 +1536,7 @@ def test_set_quic_override_rest_flattened(transport: str = "rest"):
             project="project_value",
             target_https_proxy="target_https_proxy_value",
             target_https_proxies_set_quic_override_request_resource=compute.TargetHttpsProxiesSetQuicOverrideRequest(
-                quic_override=compute.TargetHttpsProxiesSetQuicOverrideRequest.QuicOverride.DISABLE
+                quic_override="quic_override_value"
             ),
         )
         mock_args.update(sample_request)
@@ -1566,7 +1566,7 @@ def test_set_quic_override_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             target_https_proxy="target_https_proxy_value",
             target_https_proxies_set_quic_override_request_resource=compute.TargetHttpsProxiesSetQuicOverrideRequest(
-                quic_override=compute.TargetHttpsProxiesSetQuicOverrideRequest.QuicOverride.DISABLE
+                quic_override="quic_override_value"
             ),
         )
 

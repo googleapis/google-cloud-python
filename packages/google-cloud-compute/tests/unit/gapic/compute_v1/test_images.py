@@ -741,8 +741,8 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetImageRequest)
             source_image_id="source_image_id_value",
             source_snapshot="source_snapshot_value",
             source_snapshot_id="source_snapshot_id_value",
-            source_type=compute.Image.SourceType.RAW,
-            status=compute.Image.Status.DELETING,
+            source_type="source_type_value",
+            status="status_value",
             storage_locations=["storage_locations_value"],
         )
 
@@ -775,8 +775,8 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetImageRequest)
     assert response.source_image_id == "source_image_id_value"
     assert response.source_snapshot == "source_snapshot_value"
     assert response.source_snapshot_id == "source_snapshot_id_value"
-    assert response.source_type == compute.Image.SourceType.RAW
-    assert response.status == compute.Image.Status.DELETING
+    assert response.source_type == "source_type_value"
+    assert response.status == "status_value"
     assert response.storage_locations == ["storage_locations_value"]
 
 
@@ -891,8 +891,8 @@ def test_get_from_family_rest(
             source_image_id="source_image_id_value",
             source_snapshot="source_snapshot_value",
             source_snapshot_id="source_snapshot_id_value",
-            source_type=compute.Image.SourceType.RAW,
-            status=compute.Image.Status.DELETING,
+            source_type="source_type_value",
+            status="status_value",
             storage_locations=["storage_locations_value"],
         )
 
@@ -925,8 +925,8 @@ def test_get_from_family_rest(
     assert response.source_image_id == "source_image_id_value"
     assert response.source_snapshot == "source_snapshot_value"
     assert response.source_snapshot_id == "source_snapshot_id_value"
-    assert response.source_type == compute.Image.SourceType.RAW
-    assert response.status == compute.Image.Status.DELETING
+    assert response.source_type == "source_type_value"
+    assert response.status == "status_value"
     assert response.storage_locations == ["storage_locations_value"]
 
 

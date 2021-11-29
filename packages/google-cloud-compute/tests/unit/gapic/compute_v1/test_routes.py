@@ -570,7 +570,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetRouteRequest)
             next_hop_peering="next_hop_peering_value",
             next_hop_vpn_tunnel="next_hop_vpn_tunnel_value",
             priority=898,
-            route_type=compute.Route.RouteType.BGP,
+            route_type="route_type_value",
             self_link="self_link_value",
             tags=["tags_value"],
         )
@@ -600,7 +600,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetRouteRequest)
     assert response.next_hop_peering == "next_hop_peering_value"
     assert response.next_hop_vpn_tunnel == "next_hop_vpn_tunnel_value"
     assert response.priority == 898
-    assert response.route_type == compute.Route.RouteType.BGP
+    assert response.route_type == "route_type_value"
     assert response.self_link == "self_link_value"
     assert response.tags == ["tags_value"]
 

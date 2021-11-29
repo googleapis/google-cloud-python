@@ -801,7 +801,7 @@ def test_get_rest(
     with mock.patch.object(Session, "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.ServiceAttachment(
-            connection_preference=compute.ServiceAttachment.ConnectionPreference.ACCEPT_AUTOMATIC,
+            connection_preference="connection_preference_value",
             consumer_reject_lists=["consumer_reject_lists_value"],
             creation_timestamp="creation_timestamp_value",
             description="description_value",
@@ -827,10 +827,7 @@ def test_get_rest(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.ServiceAttachment)
-    assert (
-        response.connection_preference
-        == compute.ServiceAttachment.ConnectionPreference.ACCEPT_AUTOMATIC
-    )
+    assert response.connection_preference == "connection_preference_value"
     assert response.consumer_reject_lists == ["consumer_reject_lists_value"]
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"

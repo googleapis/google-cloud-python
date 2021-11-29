@@ -762,7 +762,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetReservationRe
             satisfies_pzs=True,
             self_link="self_link_value",
             specific_reservation_required=True,
-            status=compute.Reservation.Status.CREATING,
+            status="status_value",
             zone="zone_value",
         )
 
@@ -785,7 +785,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetReservationRe
     assert response.satisfies_pzs is True
     assert response.self_link == "self_link_value"
     assert response.specific_reservation_required is True
-    assert response.status == compute.Reservation.Status.CREATING
+    assert response.status == "status_value"
     assert response.zone == "zone_value"
 
 

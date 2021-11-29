@@ -1219,7 +1219,7 @@ def test_get_rest(
             kind="kind_value",
             name="name_value",
             network="network_value",
-            network_endpoint_type=compute.NetworkEndpointGroup.NetworkEndpointType.GCE_VM_IP,
+            network_endpoint_type="network_endpoint_type_value",
             region="region_value",
             self_link="self_link_value",
             size=443,
@@ -1244,10 +1244,7 @@ def test_get_rest(
     assert response.kind == "kind_value"
     assert response.name == "name_value"
     assert response.network == "network_value"
-    assert (
-        response.network_endpoint_type
-        == compute.NetworkEndpointGroup.NetworkEndpointType.GCE_VM_IP
-    )
+    assert response.network_endpoint_type == "network_endpoint_type_value"
     assert response.region == "region_value"
     assert response.self_link == "self_link_value"
     assert response.size == 443
@@ -1698,7 +1695,7 @@ def test_list_network_endpoints_rest(
     request_init[
         "network_endpoint_groups_list_endpoints_request_resource"
     ] = compute.NetworkEndpointGroupsListEndpointsRequest(
-        health_status=compute.NetworkEndpointGroupsListEndpointsRequest.HealthStatus.SHOW
+        health_status="health_status_value"
     )
     request = request_type(request_init)
 
@@ -1743,7 +1740,7 @@ def test_list_network_endpoints_rest_bad_request(
     request_init[
         "network_endpoint_groups_list_endpoints_request_resource"
     ] = compute.NetworkEndpointGroupsListEndpointsRequest(
-        health_status=compute.NetworkEndpointGroupsListEndpointsRequest.HealthStatus.SHOW
+        health_status="health_status_value"
     )
     request = request_type(request_init)
 
@@ -1796,7 +1793,7 @@ def test_list_network_endpoints_rest_flattened(transport: str = "rest"):
             zone="zone_value",
             network_endpoint_group="network_endpoint_group_value",
             network_endpoint_groups_list_endpoints_request_resource=compute.NetworkEndpointGroupsListEndpointsRequest(
-                health_status=compute.NetworkEndpointGroupsListEndpointsRequest.HealthStatus.SHOW
+                health_status="health_status_value"
             ),
         )
         mock_args.update(sample_request)
@@ -1827,7 +1824,7 @@ def test_list_network_endpoints_rest_flattened_error(transport: str = "rest"):
             zone="zone_value",
             network_endpoint_group="network_endpoint_group_value",
             network_endpoint_groups_list_endpoints_request_resource=compute.NetworkEndpointGroupsListEndpointsRequest(
-                health_status=compute.NetworkEndpointGroupsListEndpointsRequest.HealthStatus.SHOW
+                health_status="health_status_value"
             ),
         )
 
@@ -1887,7 +1884,7 @@ def test_list_network_endpoints_rest_pager():
         sample_request[
             "network_endpoint_groups_list_endpoints_request_resource"
         ] = compute.NetworkEndpointGroupsListEndpointsRequest(
-            health_status=compute.NetworkEndpointGroupsListEndpointsRequest.HealthStatus.SHOW
+            health_status="health_status_value"
         )
 
         pager = client.list_network_endpoints(request=sample_request)

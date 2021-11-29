@@ -1124,7 +1124,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetTargetPoolReq
             name="name_value",
             region="region_value",
             self_link="self_link_value",
-            session_affinity=compute.TargetPool.SessionAffinity.CLIENT_IP,
+            session_affinity="session_affinity_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -1148,7 +1148,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetTargetPoolReq
     assert response.name == "name_value"
     assert response.region == "region_value"
     assert response.self_link == "self_link_value"
-    assert response.session_affinity == compute.TargetPool.SessionAffinity.CLIENT_IP
+    assert response.session_affinity == "session_affinity_value"
 
 
 def test_get_rest_bad_request(
