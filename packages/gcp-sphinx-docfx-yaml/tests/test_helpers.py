@@ -3,6 +3,7 @@ from docfx_yaml.extension import indent_code_left
 from docfx_yaml.extension import convert_cross_references
 from docfx_yaml.extension import search_cross_references
 from docfx_yaml.extension import format_code
+from docfx_yaml.extension import extract_product_name
 
 import unittest
 from parameterized import parameterized
@@ -168,6 +169,26 @@ for i in range(10):
 
         code_got = format_code(code)
         self.assertEqual(code_want, code_got)
+
+
+    def test_extract_product_name(self):
+        # Test to ensure different name formats extract product name properly.
+        name_want = "scheduler_v1.types.Digest"
+        name = "google.cloud.scheduler_v1.types.Digest"
+        product_name = extract_product_name(name)
+
+        self.assertEqual(name_want, product_name)
+
+        non_cloud_name = "google.scheduler_v1.types.Digest"
+        non_cloud_product_name = extract_product_name(non_cloud_name)
+
+        self.assertEqual(name_want, non_cloud_product_name)
+
+        short_name_want = "Digest"
+        short_name = "scheduler_v1.types.Digest"
+        short_product_name = extract_product_name(short_name)
+
+        self.assertEqual(short_name_want, short_product_name)
 
 if __name__ == '__main__':
     unittest.main()

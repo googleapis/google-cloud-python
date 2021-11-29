@@ -676,6 +676,19 @@ def _extract_docstring_info(summary_info, summary, name):
     return top_summary
 
 
+# Returns appropriate product name to display for given full name of entry.
+def extract_product_name(name):
+    if 'google.cloud' in name:
+        product_name = '.'.join(name.split('.')[2:])
+    elif 'google' in name:
+        product_name = '.'.join(name.split('.')[1:])
+    else:
+        # Use the short name for other formats.
+        product_name = name.split('.')[-1]
+
+    return product_name
+
+
 def _create_datam(app, cls, module, name, _type, obj, lines=None):
     """
     Build the data structure for an autodoc class
@@ -866,7 +879,8 @@ def _create_datam(app, cls, module, name, _type, obj, lines=None):
 
     # If there is no summary, add a short snippet.
     else:
-        datam['summary'] = f"API documentation for `{short_name}` {_type}."
+        product_name = extract_product_name(name)
+        datam['summary'] = f"API documentation for `{product_name}` {_type}."
 
     if args or sig or summary_info:
         datam['syntax'] = {}
@@ -1432,7 +1446,8 @@ def build_finished(app, exception):
         if 'source' in obj and 'path' in obj['source'] and obj['source']['path']:
             if obj['source']['path'].endswith(INITPY):
                 obj['type'] = 'subPackage'
-                obj['summary'] = "API documentation for `{}` package.".format(obj['name'])
+                product_name = extract_product_name(obj['fullName'])
+                obj['summary'] = f"API documentation for `{product_name}` package."
                 return
 
         for child_uid in obj['children']:
