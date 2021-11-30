@@ -22,7 +22,7 @@ from google.pubsub_v1 import types as gapic_types
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     from concurrent import futures
-    from google.api_core import retry
+    from google.pubsub_v1.services.publisher.client import OptionalRetry
 
 
 class Sequencer(metaclass=abc.ABCMeta):
@@ -30,7 +30,6 @@ class Sequencer(metaclass=abc.ABCMeta):
        sequences messages to be published.
     """
 
-    @staticmethod
     @abc.abstractmethod
     def is_finished(self) -> bool:  # pragma: NO COVER
         """ Whether the sequencer is finished and should be cleaned up.
@@ -40,7 +39,6 @@ class Sequencer(metaclass=abc.ABCMeta):
         """
         raise NotImplementedError
 
-    @staticmethod
     @abc.abstractmethod
     def unpause(self) -> None:  # pragma: NO COVER
         """ Unpauses this sequencer.
@@ -51,12 +49,11 @@ class Sequencer(metaclass=abc.ABCMeta):
         """
         raise NotImplementedError
 
-    @staticmethod
     @abc.abstractmethod
     def publish(
         self,
         message: gapic_types.PubsubMessage,
-        retry: "retry.Retry" = None,
+        retry: "OptionalRetry" = gapic_v1.method.DEFAULT,
         timeout: gapic_types.TimeoutType = gapic_v1.method.DEFAULT,
     ) -> "futures.Future":  # pragma: NO COVER
         """ Publish message for this ordering key.

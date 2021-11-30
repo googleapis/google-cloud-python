@@ -15,7 +15,7 @@
 from collections import OrderedDict
 import logging
 import threading
-from typing import Optional
+from typing import Dict, Optional, Type
 import warnings
 
 from google.cloud.pubsub_v1 import types
@@ -23,6 +23,9 @@ from google.cloud.pubsub_v1.publisher import exceptions
 
 
 _LOGGER = logging.getLogger(__name__)
+
+
+MessageType = Type[types.PubsubMessage]  # type: ignore  # pytype: disable=module-attr
 
 
 class _QuantityReservation:
@@ -60,7 +63,7 @@ class FlowController(object):
         # A FIFO queue of threads blocked on adding a message that also tracks their
         # reservations of available flow control bytes and message slots.
         # Only relevant if the configured limit exceeded behavior is BLOCK.
-        self._waiting = OrderedDict()
+        self._waiting: Dict[threading.Thread, _QuantityReservation] = OrderedDict()
 
         self._reserved_bytes = 0
         self._reserved_slots = 0
@@ -72,7 +75,7 @@ class FlowController(object):
         # The condition for blocking the flow if capacity is exceeded.
         self._has_capacity = threading.Condition(lock=self._operational_lock)
 
-    def add(self, message: types.PubsubMessage) -> None:  # pytype: disable=module-attr
+    def add(self, message: MessageType) -> None:
         """Add a message to flow control.
 
         Adding a message updates the internal load statistics, and an action is
@@ -166,9 +169,7 @@ class FlowController(object):
             self._reserved_slots -= 1
             del self._waiting[current_thread]
 
-    def release(
-        self, message: types.PubsubMessage  # pytype: disable=module-attr
-    ) -> None:
+    def release(self, message: MessageType) -> None:
         """Release a mesage from flow control.
 
         Args:
@@ -255,9 +256,7 @@ class FlowController(object):
 
         return False
 
-    def _would_overflow(
-        self, message: types.PubsubMessage  # pytype: disable=module-attr
-    ) -> bool:
+    def _would_overflow(self, message: MessageType) -> bool:
         """Determine if accepting a message would exceed flow control limits.
 
         The method assumes that the caller has obtained ``_operational_lock``.

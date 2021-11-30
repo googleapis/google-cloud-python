@@ -27,6 +27,7 @@ import nox
 BLACK_VERSION = "black==19.10b0"
 BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
+MYPY_VERSION = "mypy==0.910"
 PYTYPE_VERSION = "pytype==2021.4.9"
 
 
@@ -44,6 +45,7 @@ nox.options.sessions = [
     "lint",
     "lint_setup_py",
     "blacken",
+    "mypy",
     "pytype",
     "docs",
 ]
@@ -53,9 +55,23 @@ nox.options.error_on_missing_interpreters = True
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
+def mypy(session):
+    """Run type checks with mypy."""
+    session.install("-e", ".")
+    session.install(MYPY_VERSION)
+
+    # Just install the type info directly, since "mypy --install-types" might require
+    # an additional pass.
+    session.install("types-protobuf", "types-setuptools")
+
+    # Check the hand-written layer.
+    session.run("mypy", "google/cloud")
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def pytype(session):
     """Run type checks."""
-    session.install("-e", ".[all]")
+    session.install("-e", ".")
     session.install(PYTYPE_VERSION)
     session.run("pytype")
 

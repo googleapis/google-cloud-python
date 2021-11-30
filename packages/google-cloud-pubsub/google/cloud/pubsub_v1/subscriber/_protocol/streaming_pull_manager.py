@@ -20,10 +20,10 @@ import itertools
 import logging
 import threading
 import typing
-from typing import Any, Callable, Iterable
+from typing import Any, Callable, Iterable, List, Optional, Union
 import uuid
 
-import grpc
+import grpc  # type: ignore
 
 from google.api_core import bidi
 from google.api_core import exceptions
@@ -35,12 +35,11 @@ from google.cloud.pubsub_v1.subscriber._protocol import leaser
 from google.cloud.pubsub_v1.subscriber._protocol import messages_on_hold
 from google.cloud.pubsub_v1.subscriber._protocol import requests
 import google.cloud.pubsub_v1.subscriber.message
-import google.cloud.pubsub_v1.subscriber.scheduler
+from google.cloud.pubsub_v1.subscriber.scheduler import ThreadScheduler
 from google.pubsub_v1 import types as gapic_types
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.pubsub_v1 import subscriber
-    from google.cloud.pubsub_v1.subscriber.scheduler import Scheduler
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -143,7 +142,7 @@ class StreamingPullManager(object):
         client: "subscriber.Client",
         subscription: str,
         flow_control: types.FlowControl = types.FlowControl(),
-        scheduler: "Scheduler" = None,
+        scheduler: ThreadScheduler = None,
         use_legacy_flow_control: bool = False,
         await_callbacks_on_shutdown: bool = False,
     ):
@@ -154,13 +153,15 @@ class StreamingPullManager(object):
         self._await_callbacks_on_shutdown = await_callbacks_on_shutdown
         self._ack_histogram = histogram.Histogram()
         self._last_histogram_size = 0
-        self._ack_deadline = histogram.MIN_ACK_DEADLINE
-        self._rpc = None
-        self._callback = None
+        self._ack_deadline: Union[int, float] = histogram.MIN_ACK_DEADLINE
+        self._rpc: Optional[bidi.ResumableBidiRpc] = None
+        self._callback: Optional[functools.partial] = None
         self._closing = threading.Lock()
         self._closed = False
-        self._close_callbacks = []
-        self._regular_shutdown_thread = None  # Created on intentional shutdown.
+        self._close_callbacks: List[Callable[["StreamingPullManager", Any], Any]] = []
+
+        # A shutdown thread is created on intentional shutdown.
+        self._regular_shutdown_thread: Optional[threading.Thread] = None
 
         # Generate a random client id tied to this object. All streaming pull
         # connections (initial and re-connects) will then use the same client
@@ -169,9 +170,7 @@ class StreamingPullManager(object):
         self._client_id = str(uuid.uuid4())
 
         if scheduler is None:
-            self._scheduler = (
-                google.cloud.pubsub_v1.subscriber.scheduler.ThreadScheduler()
-            )
+            self._scheduler: Optional[ThreadScheduler] = ThreadScheduler()
         else:
             self._scheduler = scheduler
 
@@ -196,10 +195,10 @@ class StreamingPullManager(object):
         self._ack_deadline_lock = threading.Lock()
 
         # The threads created in ``.open()``.
-        self._dispatcher = None
-        self._leaser = None
-        self._consumer = None
-        self._heartbeater = None
+        self._dispatcher: Optional[dispatcher.Dispatcher] = None
+        self._leaser: Optional[leaser.Leaser] = None
+        self._consumer: Optional[bidi.BackgroundConsumer] = None
+        self._heartbeater: Optional[heartbeater.Heartbeater] = None
 
     @property
     def is_active(self) -> bool:
@@ -216,12 +215,12 @@ class StreamingPullManager(object):
         return self._flow_control
 
     @property
-    def dispatcher(self) -> dispatcher.Dispatcher:
+    def dispatcher(self) -> Optional[dispatcher.Dispatcher]:
         """The dispatcher helper."""
         return self._dispatcher
 
     @property
-    def leaser(self) -> leaser.Leaser:
+    def leaser(self) -> Optional[leaser.Leaser]:
         """The leaser helper."""
         return self._leaser
 
@@ -401,6 +400,8 @@ class StreamingPullManager(object):
 
             self._schedule_message_on_hold(msg)
             released_ack_ids.append(msg.ack_id)
+
+        assert self._leaser is not None
         self._leaser.start_lease_expiry_timer(released_ack_ids)
 
     def _schedule_message_on_hold(
@@ -430,6 +431,8 @@ class StreamingPullManager(object):
             self._messages_on_hold.size,
             self._on_hold_bytes,
         )
+        assert self._scheduler is not None
+        assert self._callback is not None
         self._scheduler.schedule(self._callback, msg)
 
     def _send_unary_request(self, request: gapic_types.StreamingPullRequest) -> None:
@@ -439,7 +442,7 @@ class StreamingPullManager(object):
             request: The stream request to be mapped into unary requests.
         """
         if request.ack_ids:
-            self._client.acknowledge(
+            self._client.acknowledge(  # type: ignore
                 subscription=self._subscription, ack_ids=list(request.ack_ids)
             )
 
@@ -452,7 +455,7 @@ class StreamingPullManager(object):
                 deadline_to_ack_ids[deadline].append(ack_id)
 
             for deadline, ack_ids in deadline_to_ack_ids.items():
-                self._client.modify_ack_deadline(
+                self._client.modify_ack_deadline(  # type: ignore
                     subscription=self._subscription,
                     ack_ids=ack_ids,
                     ack_deadline_seconds=deadline,
@@ -544,9 +547,11 @@ class StreamingPullManager(object):
         )
 
         # Create references to threads
+        assert self._scheduler is not None
         # pytype: disable=wrong-arg-types
         # (pytype incorrectly complains about "self" not being the right argument type)
-        self._dispatcher = dispatcher.Dispatcher(self, self._scheduler.queue)
+        scheduler_queue = self._scheduler.queue
+        self._dispatcher = dispatcher.Dispatcher(self, scheduler_queue)
         self._consumer = bidi.BackgroundConsumer(self._rpc, self._on_response)
         self._leaser = leaser.Leaser(self)
         self._heartbeater = heartbeater.Heartbeater(self)
@@ -601,11 +606,13 @@ class StreamingPullManager(object):
             # Stop consuming messages.
             if self.is_active:
                 _LOGGER.debug("Stopping consumer.")
+                assert self._consumer is not None
                 self._consumer.stop()
             self._consumer = None
 
             # Shutdown all helper threads
             _LOGGER.debug("Stopping scheduler.")
+            assert self._scheduler is not None
             dropped_messages = self._scheduler.shutdown(
                 await_msg_callbacks=self._await_callbacks_on_shutdown
             )
@@ -621,6 +628,7 @@ class StreamingPullManager(object):
             # for the manager's maybe_resume_consumer() / maybe_pause_consumer(),
             # because the consumer gets shut down first.
             _LOGGER.debug("Stopping leaser.")
+            assert self._leaser is not None
             self._leaser.stop()
 
             total = len(dropped_messages) + len(
@@ -634,12 +642,14 @@ class StreamingPullManager(object):
                 msg.nack()
 
             _LOGGER.debug("Stopping dispatcher.")
+            assert self._dispatcher is not None
             self._dispatcher.stop()
             self._dispatcher = None
             # dispatcher terminated, OK to dispose the leaser reference now
             self._leaser = None
 
             _LOGGER.debug("Stopping heartbeater.")
+            assert self._heartbeater is not None
             self._heartbeater.stop()
             self._heartbeater = None
 
@@ -730,9 +740,13 @@ class StreamingPullManager(object):
             requests.ModAckRequest(message.ack_id, self.ack_deadline)
             for message in received_messages
         ]
+        assert self._dispatcher is not None
         self._dispatcher.modify_ack_deadline(items)
 
         with self._pause_resume_lock:
+            assert self._scheduler is not None
+            assert self._leaser is not None
+
             for received_message in received_messages:
                 message = google.cloud.pubsub_v1.subscriber.message.Message(
                     received_message.message,
@@ -747,13 +761,13 @@ class StreamingPullManager(object):
                     byte_size=message.size,
                     ordering_key=message.ordering_key,
                 )
-                self.leaser.add([req])
+                self._leaser.add([req])
 
             self._maybe_release_messages()
 
         self.maybe_pause_consumer()
 
-    def _should_recover(self, exception: Exception) -> bool:
+    def _should_recover(self, exception: BaseException) -> bool:
         """Determine if an error on the RPC stream should be recovered.
 
         If the exception is one of the retryable exceptions, this will signal
@@ -775,7 +789,7 @@ class StreamingPullManager(object):
         _LOGGER.info("Observed non-recoverable stream error %s", exception)
         return False
 
-    def _should_terminate(self, exception: Exception) -> bool:
+    def _should_terminate(self, exception: BaseException) -> bool:
         """Determine if an error on the RPC stream should be terminated.
 
         If the exception is one of the terminating exceptions, this will signal

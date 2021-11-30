@@ -17,6 +17,7 @@ from __future__ import absolute_import
 import logging
 import threading
 import typing
+from typing import Optional
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.pubsub_v1.subscriber._protocol.streaming_pull_manager import (
@@ -34,7 +35,7 @@ _DEFAULT_PERIOD = 30
 
 class Heartbeater(object):
     def __init__(self, manager: "StreamingPullManager", period: int = _DEFAULT_PERIOD):
-        self._thread = None
+        self._thread: Optional[threading.Thread] = None
         self._operational_lock = threading.Lock()
         self._manager = manager
         self._stop_event = threading.Event()

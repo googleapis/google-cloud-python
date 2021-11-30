@@ -15,13 +15,13 @@
 from __future__ import absolute_import
 from __future__ import division
 
-import collections
 import itertools
 import logging
 import math
 import threading
 import typing
-from typing import Sequence, Union
+from typing import List, Optional, Sequence, Union
+import warnings
 
 from google.cloud.pubsub_v1.subscriber._protocol import helper_threads
 from google.cloud.pubsub_v1.subscriber._protocol import requests
@@ -71,7 +71,7 @@ class Dispatcher(object):
     def __init__(self, manager: "StreamingPullManager", queue: "queue.Queue"):
         self._manager = manager
         self._queue = queue
-        self._thread = None
+        self._thread: Optional[threading.Thread] = None
         self._operational_lock = threading.Lock()
 
     def start(self) -> None:
@@ -112,25 +112,47 @@ class Dispatcher(object):
             items:
                 Queued requests to dispatch.
         """
-        batched_commands = collections.defaultdict(list)
+        lease_requests: List[requests.LeaseRequest] = []
+        modack_requests: List[requests.ModAckRequest] = []
+        ack_requests: List[requests.AckRequest] = []
+        nack_requests: List[requests.NackRequest] = []
+        drop_requests: List[requests.DropRequest] = []
 
         for item in items:
-            batched_commands[item.__class__].append(item)
+            if isinstance(item, requests.LeaseRequest):
+                lease_requests.append(item)
+            elif isinstance(item, requests.ModAckRequest):
+                modack_requests.append(item)
+            elif isinstance(item, requests.AckRequest):
+                ack_requests.append(item)
+            elif isinstance(item, requests.NackRequest):
+                nack_requests.append(item)
+            elif isinstance(item, requests.DropRequest):
+                drop_requests.append(item)
+            else:
+                warnings.warn(
+                    f'Skipping unknown request item of type "{type(item)}"',
+                    category=RuntimeWarning,
+                )
 
         _LOGGER.debug("Handling %d batched requests", len(items))
 
-        if batched_commands[requests.LeaseRequest]:
-            self.lease(batched_commands.pop(requests.LeaseRequest))
-        if batched_commands[requests.ModAckRequest]:
-            self.modify_ack_deadline(batched_commands.pop(requests.ModAckRequest))
+        if lease_requests:
+            self.lease(lease_requests)
+
+        if modack_requests:
+            self.modify_ack_deadline(modack_requests)
+
         # Note: Drop and ack *must* be after lease. It's possible to get both
         # the lease and the ack/drop request in the same batch.
-        if batched_commands[requests.AckRequest]:
-            self.ack(batched_commands.pop(requests.AckRequest))
-        if batched_commands[requests.NackRequest]:
-            self.nack(batched_commands.pop(requests.NackRequest))
-        if batched_commands[requests.DropRequest]:
-            self.drop(batched_commands.pop(requests.DropRequest))
+        if ack_requests:
+            self.ack(ack_requests)
+
+        if nack_requests:
+            self.nack(nack_requests)
+
+        if drop_requests:
+            self.drop(drop_requests)
 
     def ack(self, items: Sequence[requests.AckRequest]) -> None:
         """Acknowledge the given messages.
@@ -169,6 +191,7 @@ class Dispatcher(object):
         Args:
             items: The items to drop.
         """
+        assert self._manager.leaser is not None
         self._manager.leaser.remove(items)
         ordering_keys = (k.ordering_key for k in items if k.ordering_key)
         self._manager.activate_ordering_keys(ordering_keys)
@@ -180,6 +203,7 @@ class Dispatcher(object):
         Args:
             items: The items to lease.
         """
+        assert self._manager.leaser is not None
         self._manager.leaser.add(items)
         self._manager.maybe_pause_consumer()
 

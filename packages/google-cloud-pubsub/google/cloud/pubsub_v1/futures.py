@@ -15,7 +15,7 @@
 from __future__ import absolute_import
 
 import concurrent.futures
-from typing import Any, NoReturn
+from typing import Any, NoReturn, Optional
 
 import google.api_core.future
 
@@ -47,7 +47,7 @@ class Future(concurrent.futures.Future, google.api_core.future.Future):
         """
         return super().set_result(result=result)
 
-    def set_exception(self, exception: Exception):
+    def set_exception(self, exception: Optional[BaseException]):
         """Set the result of the future as being the given exception.
 
         Do not use this method, it should only be used internally by the library and its

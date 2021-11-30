@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import typing
+from typing import Optional
 
 from google.api_core import gapic_v1
 
@@ -20,10 +21,12 @@ from google.cloud.pubsub_v1.publisher._sequencer import base
 from google.pubsub_v1 import types as gapic_types
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
-    from concurrent import futures
-    from google.api_core import retry
-    from google.cloud.pubsub_v1 import PublisherClient
     from google.cloud.pubsub_v1.publisher import _batch
+    from google.cloud.pubsub_v1.publisher import futures
+    from google.cloud.pubsub_v1.publisher.client import Client as PublisherClient
+    from google.pubsub_v1.services.publisher.client import OptionalRetry
+
+    from google.cloud.pubsub_v1 import types
 
 
 class UnorderedSequencer(base.Sequencer):
@@ -35,7 +38,7 @@ class UnorderedSequencer(base.Sequencer):
     def __init__(self, client: "PublisherClient", topic: str):
         self._client = client
         self._topic = topic
-        self._current_batch = None
+        self._current_batch: Optional["_batch.thread.Batch"] = None
         self._stopped = False
 
     def is_finished(self) -> bool:
@@ -88,8 +91,8 @@ class UnorderedSequencer(base.Sequencer):
 
     def _create_batch(
         self,
-        commit_retry: "retry.Retry" = gapic_v1.method.DEFAULT,
-        commit_timeout: gapic_types.TimeoutType = gapic_v1.method.DEFAULT,
+        commit_retry: "OptionalRetry" = gapic_v1.method.DEFAULT,
+        commit_timeout: "types.OptionalTimeout" = gapic_v1.method.DEFAULT,
     ) -> "_batch.thread.Batch":
         """ Create a new batch using the client's batch class and other stored
             settings.
@@ -113,8 +116,8 @@ class UnorderedSequencer(base.Sequencer):
     def publish(
         self,
         message: gapic_types.PubsubMessage,
-        retry: "retry.Retry" = gapic_v1.method.DEFAULT,
-        timeout: gapic_types.TimeoutType = gapic_v1.method.DEFAULT,
+        retry: "OptionalRetry" = gapic_v1.method.DEFAULT,
+        timeout: "types.OptionalTimeout" = gapic_v1.method.DEFAULT,
     ) -> "futures.Future":
         """ Batch message into existing or new batch.
 

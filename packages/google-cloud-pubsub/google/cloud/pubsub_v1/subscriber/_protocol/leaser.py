@@ -14,14 +14,21 @@
 
 from __future__ import absolute_import
 
-import collections
 import copy
 import logging
 import random
 import threading
 import time
 import typing
-from typing import Iterable, Sequence, Union
+from typing import Dict, Iterable, Optional, Union
+
+try:
+    from collections.abc import KeysView
+
+    KeysView[None]  # KeysView is only subscriptable in Python 3.9+
+except TypeError:
+    # Deprecated since Python 3.9, thus only use as a fallback in older Python versions
+    from typing import KeysView
 
 from google.cloud.pubsub_v1.subscriber._protocol import requests
 
@@ -35,14 +42,17 @@ _LOGGER = logging.getLogger(__name__)
 _LEASE_WORKER_NAME = "Thread-LeaseMaintainer"
 
 
-_LeasedMessage = collections.namedtuple(
-    "_LeasedMessage", ["sent_time", "size", "ordering_key"]
-)
+class _LeasedMessage(typing.NamedTuple):
+    sent_time: float
+    """The local time when ACK ID was initially leased in seconds since the epoch."""
+
+    size: int
+    ordering_key: Optional[str]
 
 
 class Leaser(object):
     def __init__(self, manager: "StreamingPullManager"):
-        self._thread = None
+        self._thread: Optional[threading.Thread] = None
         self._manager = manager
 
         # a lock used for start/stop operations, protecting the _thread attribute
@@ -53,11 +63,10 @@ class Leaser(object):
         self._add_remove_lock = threading.Lock()
 
         # Dict of ack_id -> _LeasedMessage
-        self._leased_messages = {}
-        """dict[str, float]: A mapping of ack IDs to the local time when the
-            ack ID was initially leased in seconds since the epoch."""
+        self._leased_messages: Dict[str, _LeasedMessage] = {}
+
         self._bytes = 0
-        """int: The total number of bytes consumed by leased messages."""
+        """The total number of bytes consumed by leased messages."""
 
         self._stop_event = threading.Event()
 
@@ -67,7 +76,7 @@ class Leaser(object):
         return len(self._leased_messages)
 
     @property
-    def ack_ids(self) -> Sequence[str]:
+    def ack_ids(self) -> KeysView[str]:  # pytype: disable=invalid-annotation
         """The ack IDs of all leased messages."""
         return self._leased_messages.keys()
 
@@ -163,6 +172,7 @@ class Leaser(object):
                 _LOGGER.warning(
                     "Dropping %s items because they were leased too long.", len(to_drop)
                 )
+                assert self._manager.dispatcher is not None
                 self._manager.dispatcher.drop(to_drop)
 
             # Remove dropped items from our copy of the leased messages (they
@@ -183,6 +193,7 @@ class Leaser(object):
                 #       without any sort of race condition would require a
                 #       way for ``send_request`` to fail when the consumer
                 #       is inactive.
+                assert self._manager.dispatcher is not None
                 self._manager.dispatcher.modify_ack_deadline(
                     [requests.ModAckRequest(ack_id, deadline) for ack_id in ack_ids]
                 )

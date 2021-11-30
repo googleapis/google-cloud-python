@@ -83,7 +83,7 @@ class Message(object):
 
     def __init__(  # pytype: disable=module-attr
         self,
-        message: "types.PubsubMessage._meta._pb",
+        message: "types.PubsubMessage._meta._pb",  # type: ignore
         ack_id: str,
         delivery_attempt: int,
         request_queue: "queue.Queue",

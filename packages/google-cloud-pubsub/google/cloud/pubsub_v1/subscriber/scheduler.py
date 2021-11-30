@@ -101,7 +101,7 @@ class ThreadScheduler(Scheduler):
     def __init__(
         self, executor: Optional[concurrent.futures.ThreadPoolExecutor] = None
     ):
-        self._queue = queue.Queue()
+        self._queue: queue.Queue = queue.Queue()
         if executor is None:
             self._executor = _make_default_thread_pool_executor()
         else:

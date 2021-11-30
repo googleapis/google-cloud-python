@@ -58,7 +58,7 @@ class Batch(metaclass=abc.ABCMeta):
 
     @staticmethod
     @abc.abstractmethod
-    def make_lock() -> None:  # pragma: NO COVER
+    def make_lock():  # pragma: NO COVER
         """Return a lock in the chosen concurrency model.
 
         Returns:

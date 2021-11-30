@@ -19,15 +19,15 @@ import enum
 import inspect
 import sys
 import typing
-from typing import Dict, NamedTuple
+from typing import Dict, NamedTuple, Union
 
-import proto
+import proto  # type: ignore
 
-from google.api import http_pb2
+from google.api import http_pb2  # type: ignore
 from google.api_core import gapic_v1
-from google.iam.v1 import iam_policy_pb2
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2
-from google.iam.v1.logging import audit_data_pb2
+from google.iam.v1.logging import audit_data_pb2  # type: ignore
 from google.protobuf import descriptor_pb2
 from google.protobuf import duration_pb2
 from google.protobuf import empty_pb2
@@ -41,8 +41,18 @@ from google.pubsub_v1.types import pubsub as pubsub_gapic_types
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     from types import ModuleType
-    from google.api_core import retry as retries
     from google.pubsub_v1 import types as gapic_types
+    from google.pubsub_v1.services.publisher.client import OptionalRetry
+
+    # TODO: Eventually implement OptionalTimeout in the GAPIC code generator and import
+    # it from the generated code. It's the same solution that is used for OptionalRetry.
+    # https://github.com/googleapis/gapic-generator-python/pull/1032/files
+    # https://github.com/googleapis/gapic-generator-python/pull/1065/files
+    if hasattr(gapic_v1.method, "_MethodDefault"):
+        # _MethodDefault was only added in google-api-core==2.2.2
+        OptionalTimeout = Union[gapic_types.TimeoutType, gapic_v1.method._MethodDefault]
+    else:
+        OptionalTimeout = Union[gapic_types.TimeoutType, object]  # type: ignore
 
 
 # Define the default values for batching.
@@ -85,10 +95,10 @@ class LimitExceededBehavior(str, enum.Enum):
 class PublishFlowControl(NamedTuple):
     """The client flow control settings for message publishing."""
 
-    message_limit: int = 10 * BatchSettings.__new__.__defaults__[2]
+    message_limit: int = 10 * BatchSettings.__new__.__defaults__[2]  # type: ignore
     """The maximum number of messages awaiting to be published."""
 
-    byte_limit: int = 10 * BatchSettings.__new__.__defaults__[0]
+    byte_limit: int = 10 * BatchSettings.__new__.__defaults__[0]  # type: ignore
     """The maximum total size of messages awaiting to be published."""
 
     limit_exceeded_behavior: LimitExceededBehavior = LimitExceededBehavior.IGNORE
@@ -111,17 +121,19 @@ class PublisherOptions(NamedTuple):
         "the publisher client does not do any throttling."
     )
 
-    retry: "retries.Retry" = gapic_v1.method.DEFAULT  # use api_core default
+    retry: "OptionalRetry" = gapic_v1.method.DEFAULT  # use api_core default
     (
         "Retry settings for message publishing by the client. This should be "
         "an instance of :class:`google.api_core.retry.Retry`."
     )
 
-    timeout: "gapic_types.TimeoutType" = gapic_v1.method.DEFAULT  # use api_core default
+    # pytype: disable=invalid-annotation
+    timeout: "OptionalTimeout" = gapic_v1.method.DEFAULT  # use api_core default
     (
         "Timeout settings for message publishing by the client. It should be "
         "compatible with :class:`~.pubsub_v1.types.TimeoutType`."
     )
+    # pytype: enable=invalid-annotation
 
 
 # Define the type class and default values for flow control settings.

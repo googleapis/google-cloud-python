@@ -15,6 +15,7 @@
 import collections
 import queue
 import threading
+import warnings
 
 from google.cloud.pubsub_v1.subscriber._protocol import dispatcher
 from google.cloud.pubsub_v1.subscriber._protocol import helper_threads
@@ -73,6 +74,26 @@ def test_dispatch_callback_inactive_manager(item, method_name):
         dispatcher_.dispatch_callback(items)
 
     method.assert_called_once_with([item])
+
+
+def test_dispatch_callback_inactive_manager_unknown_request():
+    manager = mock.create_autospec(
+        streaming_pull_manager.StreamingPullManager, instance=True
+    )
+    manager.is_active = False
+    dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
+
+    FooType = type("FooType", (), {})
+    items = [FooType()]
+
+    with warnings.catch_warnings(record=True) as warned:
+        dispatcher_.dispatch_callback(items)
+
+    assert len(warned) == 1
+    assert issubclass(warned[0].category, RuntimeWarning)
+    warning_msg = str(warned[0].message)
+    assert "unknown request item" in warning_msg
+    assert "FooType" in warning_msg
 
 
 def test_ack():

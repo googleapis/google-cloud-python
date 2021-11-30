@@ -401,6 +401,7 @@ def test__maybe_release_messages_negative_on_hold_bytes_warning(caplog):
     manager = make_manager(
         flow_control=types.FlowControl(max_messages=10, max_bytes=1000)
     )
+    manager._callback = lambda msg: msg  # pragma: NO COVER
 
     msg = mock.create_autospec(message.Message, instance=True, ack_id="ack", size=17)
     manager._messages_on_hold.put(msg)

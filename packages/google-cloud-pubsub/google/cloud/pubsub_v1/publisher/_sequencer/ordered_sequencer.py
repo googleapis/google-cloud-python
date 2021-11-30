@@ -14,21 +14,22 @@
 
 import enum
 import collections
-import concurrent.futures as futures
 import threading
 import typing
-from typing import Iterable, Sequence
+from typing import Deque, Iterable, Sequence
 
 from google.api_core import gapic_v1
+from google.cloud.pubsub_v1.publisher import futures
 from google.cloud.pubsub_v1.publisher import exceptions
 from google.cloud.pubsub_v1.publisher._sequencer import base as sequencer_base
 from google.cloud.pubsub_v1.publisher._batch import base as batch_base
 from google.pubsub_v1 import types as gapic_types
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
-    from google.api_core import retry
-    from google.cloud.pubsub_v1 import PublisherClient
+    from google.cloud.pubsub_v1 import types
     from google.cloud.pubsub_v1.publisher import _batch
+    from google.cloud.pubsub_v1.publisher.client import Client as PublisherClient
+    from google.pubsub_v1.services.publisher.client import OptionalRetry
 
 
 class _OrderedSequencerStatus(str, enum.Enum):
@@ -101,7 +102,7 @@ class OrderedSequencer(sequencer_base.Sequencer):
         # Batches ordered from first (head/left) to last (right/tail).
         # Invariant: always has at least one batch after the first publish,
         # unless paused or stopped.
-        self._ordered_batches = collections.deque()
+        self._ordered_batches: Deque["_batch.thread.Batch"] = collections.deque()
         # See _OrderedSequencerStatus for valid state transitions.
         self._state = _OrderedSequencerStatus.ACCEPTING_MESSAGES
 
@@ -237,8 +238,8 @@ class OrderedSequencer(sequencer_base.Sequencer):
 
     def _create_batch(
         self,
-        commit_retry: "retry.Retry" = gapic_v1.method.DEFAULT,
-        commit_timeout: gapic_types.TimeoutType = gapic_v1.method.DEFAULT,
+        commit_retry: "OptionalRetry" = gapic_v1.method.DEFAULT,
+        commit_timeout: "types.OptionalTimeout" = gapic_v1.method.DEFAULT,
     ) -> "_batch.thread.Batch":
         """ Create a new batch using the client's batch class and other stored
             settings.
@@ -262,8 +263,8 @@ class OrderedSequencer(sequencer_base.Sequencer):
     def publish(
         self,
         message: gapic_types.PubsubMessage,
-        retry: "retry.Retry" = gapic_v1.method.DEFAULT,
-        timeout: gapic_types.TimeoutType = gapic_v1.method.DEFAULT,
+        retry: "OptionalRetry" = gapic_v1.method.DEFAULT,
+        timeout: "types.OptionalTimeout" = gapic_v1.method.DEFAULT,
     ) -> futures.Future:
         """ Publish message for this ordering key.
 
@@ -289,12 +290,12 @@ class OrderedSequencer(sequencer_base.Sequencer):
         """
         with self._state_lock:
             if self._state == _OrderedSequencerStatus.PAUSED:
-                future = futures.Future()
+                errored_future = futures.Future()
                 exception = exceptions.PublishToPausedOrderingKeyException(
                     self._ordering_key
                 )
-                future.set_exception(exception)
-                return future
+                errored_future.set_exception(exception)
+                return errored_future
 
             # If waiting to be cleaned-up, convert to accepting messages to
             # prevent this sequencer from being cleaned-up only to have another

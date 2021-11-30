@@ -17,10 +17,10 @@ from __future__ import absolute_import
 import os
 import pkg_resources
 import typing
-from typing import Any, Callable, Optional, Sequence, Union
+from typing import cast, Any, Callable, Optional, Sequence, Union
 
-from google.auth.credentials import AnonymousCredentials
-from google.oauth2 import service_account
+from google.auth.credentials import AnonymousCredentials  # type: ignore
+from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.pubsub_v1 import _gapic
 from google.cloud.pubsub_v1 import types
@@ -30,6 +30,9 @@ from google.pubsub_v1.services.subscriber import client as subscriber_client
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.pubsub_v1 import subscriber
+    from google.pubsub_v1.services.subscriber.transports.grpc import (
+        SubscriberGrpcTransport,
+    )
 
 
 try:
@@ -138,7 +141,7 @@ class Client(object):
         subscription: str,
         callback: Callable[["subscriber.message.Message"], Any],
         flow_control: Union[types.FlowControl, Sequence] = (),
-        scheduler: Optional["subscriber.scheduler.Scheduler"] = None,
+        scheduler: Optional["subscriber.scheduler.ThreadScheduler"] = None,
         use_legacy_flow_control: bool = False,
         await_callbacks_on_shutdown: bool = False,
     ) -> futures.StreamingPullFuture:
@@ -263,7 +266,8 @@ class Client(object):
 
         This method is idempotent.
         """
-        self.api._transport.grpc_channel.close()
+        transport = cast("SubscriberGrpcTransport", self.api._transport)
+        transport.grpc_channel.close()
         self._closed = True
 
     def __enter__(self) -> "Client":
