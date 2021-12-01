@@ -971,6 +971,7 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
 
         required_fields = [
             # (snake_case_name, camel_case_name)
+            ("parent_id", "parentId"),
         ]
 
         request_kwargs = compute.InsertFirewallPolicyRequest.to_dict(request)
@@ -1214,6 +1215,7 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
         required_fields = [
             # (snake_case_name, camel_case_name)
             ("firewall_policy", "firewallPolicy"),
+            ("parent_id", "parentId"),
         ]
 
         request_kwargs = compute.MoveFirewallPolicyRequest.to_dict(request)
