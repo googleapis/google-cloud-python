@@ -68,6 +68,11 @@ class Requirements(SuiteRequirements):
     def sequences(self):
         return exclusions.closed()
 
+    @property
+    def temporary_tables(self):
+        """Target database supports temporary tables."""
+        return exclusions.closed()
+
     def get_order_by_collation(self, _):
         """Get the default collation name.
 

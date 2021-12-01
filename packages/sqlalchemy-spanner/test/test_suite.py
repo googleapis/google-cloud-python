@@ -36,7 +36,6 @@ from sqlalchemy.testing import eq_
 from sqlalchemy.testing import provide_metadata, emits_warning
 from sqlalchemy.testing import fixtures
 from sqlalchemy.testing import is_true
-from sqlalchemy.testing.provision import temp_table_keyword_args
 from sqlalchemy.testing.schema import Column
 from sqlalchemy.testing.schema import Table
 from sqlalchemy import literal_column
@@ -676,7 +675,6 @@ class ComponentReflectionTest(_ComponentReflectionTest):
         creating unique constraints. Overriding the test to replace
         constraints with indexes in testing data.
         """
-        kw = temp_table_keyword_args(config, config.db)
         user_tmp = Table(
             "user_tmp",
             metadata,
@@ -685,7 +683,6 @@ class ComponentReflectionTest(_ComponentReflectionTest):
             Column("foo", sqlalchemy.INT),
             sqlalchemy.Index("user_tmp_uq", "name", unique=True),
             sqlalchemy.Index("user_tmp_ix", "foo"),
-            **kw,
         )
         if (
             testing.requires.view_reflection.enabled
