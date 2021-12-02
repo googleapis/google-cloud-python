@@ -7,6 +7,7 @@ import mock
 
 import grpc
 from grpc.experimental import aio
+import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
@@ -1187,6 +1188,7 @@ def test_{{ method_name }}_rest(transport: str = 'rest', request_type={{ method.
     {% if "next_page_token" in method.output.fields.values()|map(attribute='name') and not method.paged_result_field %}
     {# Cheeser assertion to force code coverage for bad paginated methods #}
     assert response.raw_page is response
+
     {% endif %}
 
     # Establish that the response is the type that we expect.
@@ -1208,6 +1210,130 @@ def test_{{ method_name }}_rest(transport: str = 'rest', request_type={{ method.
     {% endif %}{# end oneof/optional #}
     {% endfor %}
     {% endif %}
+
+
+    {% if method.input.required_fields %}
+def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ident }}):
+    transport_class = transports.{{ service.rest_transport_name }}
+
+    request_init = {}
+    {% for req_field in method.input.required_fields if req_field.is_primitive %}
+    {% if req_field.field_pb.default_value is string %}
+    request_init["{{ req_field.name }}"] = "{{ req_field.field_pb.default_value }}"
+    {% else %}
+    request_init["{{ req_field.name }}"] = {{ req_field.field_pb.default_value }}
+    {% endif %}{# default is str #}
+    {% endfor %}
+    request = request_type(request_init)
+    jsonified_request = json.loads(request_type.to_json(
+        request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+        ))
+
+    # verify fields with default values are dropped
+    {% for req_field in method.input.required_fields if req_field.is_primitive %}
+    {% set field_name = req_field.name | camel_case %}
+    assert "{{ field_name }}" not in jsonified_request
+    {% endfor %}
+
+    unset_fields = transport_class._{{ method.name | snake_case }}_get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    {% for req_field in method.input.required_fields if req_field.is_primitive %}
+    {% set field_name = req_field.name | camel_case %}
+    assert "{{ field_name }}" in jsonified_request
+    assert jsonified_request["{{ field_name }}"] == request_init["{{ req_field.name }}"]
+    {% endfor %}
+
+    {% for req_field in method.input.required_fields if req_field.is_primitive %}
+    {% set field_name = req_field.name | camel_case %}
+    {% set mock_value = req_field.primitive_mock_as_str() %}
+    jsonified_request["{{ field_name }}"] = {{ mock_value }}
+    {% endfor %}
+
+    unset_fields = transport_class._{{ method.name | snake_case }}_get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    {% for req_field in method.input.required_fields if req_field.is_primitive %}
+    {% set field_name = req_field.name | camel_case %}
+    {% set mock_value = req_field.primitive_mock_as_str() %}
+    assert "{{ field_name }}" in jsonified_request
+    assert jsonified_request["{{ field_name }}"] == {{ mock_value }}
+    {% endfor %}
+
+
+    client = {{ service.client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    {% if method.void %}
+    return_value = None
+    {% elif method.lro %}
+    return_value = operations_pb2.Operation(name='operations/spam')
+    {% elif method.server_streaming %}
+    return_value = iter([{{ method.output.ident }}()])
+    {% else %}
+    return_value = {{ method.output.ident }}()
+    {% endif %}
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "{{ method.http_options[0].method }}",
+                'query_params': request_init,
+            }
+            {% if method.http_options[0].body %}
+            transcode_result['body'] = {}
+            {% endif %}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            {% if method.void %}
+            json_return_value = ''
+            {% elif method.lro %}
+            json_return_value = json_format.MessageToJson(return_value)
+            {% else %}
+            json_return_value = {{ method.output.ident }}.to_json(return_value)
+            {% endif %}
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            {% if method.client_streaming %}
+            response = client.{{ method.name|snake_case }}(iter(requests))
+            {% else %}
+            response = client.{{ method_name }}(request)
+            {% endif %}
+
+            expected_params = [
+                {% for req_field in method.input.required_fields if req_field.is_primitive %}
+                (
+                    "{{ req_field.name }}",
+                    {% if req_field.field_pb.default_value is string %}
+                    "{{ req_field.field_pb.default_value }}"
+                    {% else %}
+                    {{ req_field.field_pb.default_value }}
+                    {% endif %}{# default is str #}
+                )
+                {% endfor %}
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+    {% endif %}{# required_fields #}
 
 
 def test_{{ method_name }}_rest_bad_request(transport: str = 'rest', request_type={{ method.input.ident }}):
@@ -1325,9 +1451,10 @@ def test_{{ method_name }}_rest_flattened_error(transport: str = 'rest'):
 
 
 {% if method.paged_result_field %}
-def test_{{ method_name }}_rest_pager():
+def test_{{ method_name }}_rest_pager(transport: str = 'rest'):
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1446,25 +1573,35 @@ def test_{{ method_name }}_rest_error():
         credentials=ga_credentials.AnonymousCredentials(),
         transport='rest'
     )
-    {%- if not method.http_options %}
-    # Since a `google.api.http` annotation is required for using a rest transport
-    # method, this should error.
-    with pytest.raises(RuntimeError) as runtime_error:
-        client.{{ method_name }}({})
-    assert ('Cannot define a method without a valid `google.api.http` annotation.'
-        in str(runtime_error.value))
-    {%- else %}
 
     # TODO(yon-mg): Remove when this method has a working implementation
     #               or testing straegy
     with pytest.raises(NotImplementedError):
         client.{{ method_name }}({})
 
-    {%- endif %}
 
-{% endif %}{% endwith %}{# method_name #}
+{% endif %}{# not streaming #}{% endwith %}{# method_name #}
 
 {% endfor -%} {#- method in methods for rest #}
+
+{% for method in service.methods.values() if 'rest' in opts.transport and
+    not method.http_options %}{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.name|snake_case %}
+def test_{{ method_name }}_rest_error():
+    client = {{ service.client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(RuntimeError) as runtime_error:
+        client.{{ method_name }}({})
+    assert ("Cannot define a method without a valid 'google.api.http' annotation."
+        in str(runtime_error.value))
+
+
+{% endwith %}{# method_name #}
+{% endfor %}{# for methods without http_options #}
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.{{ service.name }}{{ opts.transport[0].capitalize() }}Transport(
@@ -1758,8 +1895,7 @@ def test_{{ service.name|snake_case }}_http_transport_client_cert_source_for_mtl
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
-{# TODO(kbandes): re-enable this code when LRO is implmented for rest #}
-{% if False and service.has_lro -%}
+{% if service.has_lro -%}
 def test_{{ service.name|snake_case }}_rest_lro_client():
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1770,7 +1906,7 @@ def test_{{ service.name|snake_case }}_rest_lro_client():
     # Ensure that we have a api-core operations client.
     assert isinstance(
         transport.operations_client,
-        operations_v1.OperationsClient,
+        operations_v1.AbstractOperationsClient,
     )
 
     # Ensure that subsequent calls to the property send the exact same object.
