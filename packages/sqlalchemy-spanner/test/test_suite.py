@@ -1613,6 +1613,31 @@ class ExecutionOptionsTest(fixtures.TestBase):
             assert connection.connection.staleness is None
 
 
+class LimitOffsetTest(fixtures.TestBase):
+    """
+    Check that SQL with an offset and no limit is being generated correctly.
+    """
+
+    def setUp(self):
+        self._engine = create_engine(get_db_url(), pool_size=1)
+        self._metadata = MetaData(bind=self._engine)
+
+        self._table = Table(
+            "users",
+            self._metadata,
+            Column("user_id", Integer, primary_key=True),
+            Column("user_name", String(16), nullable=False),
+        )
+
+        self._metadata.create_all(self._engine)
+
+    def test_offset_only(self):
+        for offset in [1, 7, 10, 100, 1000, 10000]:
+
+            with self._engine.connect().execution_options(read_only=True) as connection:
+                list(connection.execute(self._table.select().offset(offset)).fetchall())
+
+
 class ComputedReflectionFixtureTest(_ComputedReflectionFixtureTest):
     @classmethod
     def define_tables(cls, metadata):
