@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://www.github.com/googleapis/python-test-utils/compare/v1.2.0...v1.3.0) (2021-11-16)
+
+
+### Features
+
+* add 'py.typed' declaration ([#73](https://www.github.com/googleapis/python-test-utils/issues/73)) ([f8f5f0a](https://www.github.com/googleapis/python-test-utils/commit/f8f5f0a194b2420b2fee1cf88ac50220d3ba1538))
+
 ## [1.2.0](https://www.github.com/googleapis/python-test-utils/compare/v1.1.0...v1.2.0) (2021-10-18)
 
 
