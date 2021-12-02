@@ -5,6 +5,24 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [2.31.0](https://www.github.com/googleapis/python-bigquery/compare/v2.30.1...v2.31.0) (2021-11-24)
+
+
+### Features
+
+* allow cell magic body to be a $variable ([#1053](https://www.github.com/googleapis/python-bigquery/issues/1053)) ([3a681e0](https://www.github.com/googleapis/python-bigquery/commit/3a681e046819df18118aa0b2b5733416d004c9b3))
+* promote `RowIterator.to_arrow_iterable` to public method ([#1073](https://www.github.com/googleapis/python-bigquery/issues/1073)) ([21cd710](https://www.github.com/googleapis/python-bigquery/commit/21cd71022d60c32104f8f90ee2ca445fbb43f7f3))
+
+
+### Bug Fixes
+
+* apply timeout to all resumable upload requests ([#1070](https://www.github.com/googleapis/python-bigquery/issues/1070)) ([3314dfb](https://www.github.com/googleapis/python-bigquery/commit/3314dfbed62488503dc41b11e403a672fcf71048))
+
+
+### Dependencies
+
+* support OpenTelemetry >= 1.1.0 ([#1050](https://www.github.com/googleapis/python-bigquery/issues/1050)) ([4616cd5](https://www.github.com/googleapis/python-bigquery/commit/4616cd58d3c6da641fb881ce99a87dcdedc20ba2))
+
 ### [2.30.1](https://www.github.com/googleapis/python-bigquery/compare/v2.30.0...v2.30.1) (2021-11-04)
 
 
