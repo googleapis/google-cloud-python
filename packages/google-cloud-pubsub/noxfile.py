@@ -57,21 +57,23 @@ nox.options.error_on_missing_interpreters = True
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def mypy(session):
     """Run type checks with mypy."""
-    session.install("-e", ".")
+    session.install("-e", ".[all]")
     session.install(MYPY_VERSION)
 
-    # Just install the type info directly, since "mypy --install-types" might require
-    # an additional pass.
+    # Just install the type info directly, since "mypy --install-types" might
+    # require an additional pass.
     session.install("types-protobuf", "types-setuptools")
 
-    # Check the hand-written layer.
+    # TODO: Only check the hand-written layer, the generated code does not pass
+    # mypy checks yet.
+    # https://github.com/googleapis/gapic-generator-python/issues/1092
     session.run("mypy", "google/cloud")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def pytype(session):
     """Run type checks."""
-    session.install("-e", ".")
+    session.install("-e", ".[all]")
     session.install(PYTYPE_VERSION)
     session.run("pytype")
 

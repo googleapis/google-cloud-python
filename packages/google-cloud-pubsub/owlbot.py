@@ -398,7 +398,7 @@ s.replace(
 s.replace(
     "noxfile.py",
     r"BLACK_PATHS = \[.*?\]",
-    '\g<0>\n\nPYTYPE_VERSION = "pytype==2021.4.9"\n',
+    '\g<0>\nPYTYPE_VERSION = "pytype==2021.4.9"\n',
 )
 s.replace(
     "noxfile.py", r'"blacken",', '\g<0>\n    "pytype",',
@@ -418,8 +418,46 @@ s.replace(
         session.run("pytype")'''
     ),
 )
+
+# ----------------------------------------------------------------------------
+# Add mypy nox session.
+# ----------------------------------------------------------------------------
+s.replace(
+    "noxfile.py",
+    r"BLACK_PATHS = \[.*?\]",
+    '\g<0>\n\nMYPY_VERSION = "mypy==0.910"',
+)
+s.replace(
+    "noxfile.py", r'"blacken",', '\g<0>\n    "mypy",',
+)
+s.replace(
+    "noxfile.py",
+    r"nox\.options\.error_on_missing_interpreters = True",
+    textwrap.dedent(
+        '''    \g<0>
+
+
+    @nox.session(python=DEFAULT_PYTHON_VERSION)
+    def mypy(session):
+        """Run type checks with mypy."""
+        session.install("-e", ".[all]")
+        session.install(MYPY_VERSION)
+
+        # Just install the type info directly, since "mypy --install-types" might
+        # require an additional pass.
+        session.install("types-protobuf", "types-setuptools")
+
+        # TODO: Only check the hand-written layer, the generated code does not pass
+        # mypy checks yet.
+        # https://github.com/googleapis/gapic-generator-python/issues/1092
+        session.run("mypy", "google/cloud")'''
+    ),
+)
+
+# Only consider the hand-written layer when assessing the test coverage.
 s.replace(
     "noxfile.py", "--cov=google", "--cov=google/cloud",
 )
 
+# Final code style adjustments.
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
