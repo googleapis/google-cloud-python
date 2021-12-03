@@ -1716,10 +1716,6 @@ class DlpServiceAsyncClient:
         trigger. The inspection will be processed
         asynchronously. To review the findings monitor the jobs
         within the trigger.
-        Early access feature is in a pre-release state and might
-        change or have limited support. For more information,
-        see
-        https://cloud.google.com/products#product-launch-stages.
 
         Args:
             request (Union[google.cloud.dlp_v2.types.HybridInspectJobTriggerRequest, dict]):
@@ -2154,15 +2150,16 @@ class DlpServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             inspect_job (:class:`google.cloud.dlp_v2.types.InspectJobConfig`):
-                Set to control what and how to
-                inspect.
+                An inspection job scans a storage
+                repository for InfoTypes.
 
                 This corresponds to the ``inspect_job`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             risk_job (:class:`google.cloud.dlp_v2.types.RiskAnalysisJobConfig`):
-                Set to choose what metric to
-                calculate.
+                A risk analysis job calculates re-
+                dentification risk metrics for a
+                BigQuery table.
 
                 This corresponds to the ``risk_job`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3036,12 +3033,8 @@ class DlpServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.HybridInspectResponse:
         r"""Inspect hybrid content and store findings to a job.
-        To review the findings inspect the job. Inspection will
+        To review the findings, inspect the job. Inspection will
         occur asynchronously.
-        Early access feature is in a pre-release state and might
-        change or have limited support. For more information,
-        see
-        https://cloud.google.com/products#product-launch-stages.
 
         Args:
             request (Union[google.cloud.dlp_v2.types.HybridInspectDlpJobRequest, dict]):
@@ -3114,10 +3107,7 @@ class DlpServiceAsyncClient:
     ) -> None:
         r"""Finish a running hybrid DlpJob. Triggers the
         finalization steps and running of any enabled actions
-        that have not yet run. Early access feature is in a pre-
-        release state and might change or have limited support.
-        For more information, see
-        https://cloud.google.com/products#product-launch-stages.
+        that have not yet run.
 
         Args:
             request (Union[google.cloud.dlp_v2.types.FinishDlpJobRequest, dict]):

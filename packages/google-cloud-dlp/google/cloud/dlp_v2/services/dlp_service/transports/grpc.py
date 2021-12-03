@@ -749,10 +749,6 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         trigger. The inspection will be processed
         asynchronously. To review the findings monitor the jobs
         within the trigger.
-        Early access feature is in a pre-release state and might
-        change or have limited support. For more information,
-        see
-        https://cloud.google.com/products#product-launch-stages.
 
         Returns:
             Callable[[~.HybridInspectJobTriggerRequest],
@@ -1179,12 +1175,8 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         r"""Return a callable for the hybrid inspect dlp job method over gRPC.
 
         Inspect hybrid content and store findings to a job.
-        To review the findings inspect the job. Inspection will
+        To review the findings, inspect the job. Inspection will
         occur asynchronously.
-        Early access feature is in a pre-release state and might
-        change or have limited support. For more information,
-        see
-        https://cloud.google.com/products#product-launch-stages.
 
         Returns:
             Callable[[~.HybridInspectDlpJobRequest],
@@ -1210,10 +1202,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
 
         Finish a running hybrid DlpJob. Triggers the
         finalization steps and running of any enabled actions
-        that have not yet run. Early access feature is in a pre-
-        release state and might change or have limited support.
-        For more information, see
-        https://cloud.google.com/products#product-launch-stages.
+        that have not yet run.
 
         Returns:
             Callable[[~.FinishDlpJobRequest],

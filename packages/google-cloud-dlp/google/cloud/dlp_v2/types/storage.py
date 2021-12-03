@@ -88,9 +88,12 @@ class InfoType(proto.Message):
             when specifying a built-in type. When sending Cloud DLP
             results to Data Catalog, infoType names should conform to
             the pattern ``[A-Za-z0-9$-_]{1,64}``.
+        version (str):
+            Optional version name for this InfoType.
     """
 
     name = proto.Field(proto.STRING, number=1,)
+    version = proto.Field(proto.STRING, number=2,)
 
 
 class StoredType(proto.Message):
@@ -185,12 +188,13 @@ class CustomInfoType(proto.Message):
         Plane <https://en.wikipedia.org/wiki/Plane_%28Unicode%29#Basic_Multilingual_Plane>`__
         will be replaced with whitespace when scanning for matches, so the
         dictionary phrase "Sam Johnson" will match all three phrases "sam
-        johnson", "Sam, Johnson", and "Sam (Johnson)". Additionally, the
-        characters surrounding any match must be of a different type than
-        the adjacent characters within the word, so letters must be next to
-        non-letters and digits next to non-digits. For example, the
-        dictionary word "jen" will match the first three letters of the text
-        "jen123" but will return no matches for "jennifer".
+        johnson",
+        Plane](https://en.wikipedia.org/wiki/Plane_%28Unicode%29#Basic_Multilingual_Plane)
+        surrounding any match must be of a different type than the adjacent
+        characters within the word, so letters must be next to non-letters
+        and digits next to non-digits. For example, the dictionary word
+        "jen" will match the first three letters of the text "jen123" but
+        will return no matches for "jennifer".
 
         Dictionary words containing a large number of characters that are
         not letters or digits may result in unexpected findings because such
@@ -198,7 +202,9 @@ class CustomInfoType(proto.Message):
         `limits <https://cloud.google.com/dlp/limits>`__ page contains
         details about the size limits of dictionaries. For dictionaries that
         do not fit within these constraints, consider using
-        ``LargeCustomDictionaryConfig`` in the ``StoredInfoType`` API.
+        ``LargeCustomDictionaryConfig`` in the
+        `limits <https://cloud.google.com/dlp/limits>`__ page contains
+        details about
 
         This message has `oneof`_ fields (mutually exclusive fields).
         For each oneof, at most one member field can be set at the same time.
@@ -254,9 +260,11 @@ class CustomInfoType(proto.Message):
                 be found under the google/re2 repository on
                 GitHub.
             group_indexes (Sequence[int]):
-                The index of the submatch to extract as
-                findings. When not specified, the entire match
-                is returned. No more than 3 may be included.
+                (https://github.com/google/re2/wiki/Syntax)
+                can be found under the The index of the submatch
+                to extract as findings. When not specified, the
+                entire match is returned. No more than 3 may be
+                included.
         """
 
         pattern = proto.Field(proto.STRING, number=1,)
@@ -267,10 +275,10 @@ class CustomInfoType(proto.Message):
         such as
         ```CryptoReplaceFfxFpeConfig`` <https://cloud.google.com/dlp/docs/reference/rest/v2/organizations.deidentifyTemplates#cryptoreplaceffxfpeconfig>`__.
         These types of transformations are those that perform
-        pseudonymization, thereby producing a "surrogate" as output. This
-        should be used in conjunction with a field on the transformation
-        such as ``surrogate_info_type``. This CustomInfoType does not
-        support the use of ``detection_rules``.
+        pseudonymization, thereby producing a "surrogate" as
+        ```CryptoReplaceFfxFpeConfig`` <https://cloud.google.com/dlp/docs/reference/rest/v2/organizations.deidentifyTemplates#cryptoreplaceffxfpeconfig>`__.
+        transformation such as ``surrogate_info_type``. This CustomInfoType
+        does not support the use of ``detection_rules``.
 
         """
 
@@ -519,9 +527,11 @@ class CloudStorageRegexFileSet(proto.Message):
             guide can be found under the google/re2 repository on
             GitHub.
         exclude_regex (Sequence[str]):
-            A list of regular expressions matching file paths to
-            exclude. All files in the bucket that match at least one of
-            these regular expressions will be excluded from the scan.
+            `syntax <https://github.com/google/re2/wiki/Syntax>`__; a
+            guide can be found A list of regular expressions matching
+            file paths to exclude. All files in the bucket that match at
+            least one of these regular expressions will be excluded from
+            the scan.
 
             Regular expressions use RE2
             `syntax <https://github.com/google/re2/wiki/Syntax>`__; a
@@ -545,13 +555,15 @@ class CloudStorageOptions(proto.Message):
             Max number of bytes to scan from a file. If a scanned file's
             size is bigger than this value then the rest of the bytes
             are omitted. Only one of bytes_limit_per_file and
-            bytes_limit_per_file_percent can be specified.
+            bytes_limit_per_file_percent can be specified. Cannot be set
+            if de-identification is requested.
         bytes_limit_per_file_percent (int):
             Max percentage of bytes to scan from a file. The rest are
             omitted. The number of bytes scanned is rounded down. Must
             be between 0 and 100, inclusively. Both 0 and 100 means no
             limit. Defaults to 0. Only one of bytes_limit_per_file and
-            bytes_limit_per_file_percent can be specified.
+            bytes_limit_per_file_percent can be specified. Cannot be set
+            if de-identification is requested.
         file_types (Sequence[google.cloud.dlp_v2.types.FileType]):
             List of file type groups to include in the scan. If empty,
             all files are scanned and available data format processors
@@ -671,6 +683,8 @@ class BigQueryOptions(proto.Message):
             References to fields excluded from scanning.
             This allows you to skip inspection of entire
             columns which you know have no findings.
+        included_fields (Sequence[google.cloud.dlp_v2.types.FieldId]):
+            Limit scanning only to these fields.
     """
 
     class SampleMethod(proto.Enum):
@@ -690,6 +704,7 @@ class BigQueryOptions(proto.Message):
     rows_limit_percent = proto.Field(proto.INT32, number=6,)
     sample_method = proto.Field(proto.ENUM, number=4, enum=SampleMethod,)
     excluded_fields = proto.RepeatedField(proto.MESSAGE, number=5, message="FieldId",)
+    included_fields = proto.RepeatedField(proto.MESSAGE, number=7, message="FieldId",)
 
 
 class StorageConfig(proto.Message):
@@ -717,11 +732,6 @@ class StorageConfig(proto.Message):
             This field is a member of `oneof`_ ``type``.
         hybrid_options (google.cloud.dlp_v2.types.HybridOptions):
             Hybrid inspection options.
-            Early access feature is in a pre-release state
-            and might change or have limited support. For
-            more information, see
-            https://cloud.google.com/products#product-
-            launch-stages.
 
             This field is a member of `oneof`_ ``type``.
         timespan_config (google.cloud.dlp_v2.types.StorageConfig.TimespanConfig):

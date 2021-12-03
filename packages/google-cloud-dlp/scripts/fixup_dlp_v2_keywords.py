@@ -65,7 +65,7 @@ class dlpCallTransformer(cst.CSTTransformer):
         'list_dlp_jobs': ('parent', 'filter', 'page_size', 'page_token', 'type_', 'order_by', 'location_id', ),
         'list_info_types': ('parent', 'language_code', 'filter', 'location_id', ),
         'list_inspect_templates': ('parent', 'page_token', 'page_size', 'order_by', 'location_id', ),
-        'list_job_triggers': ('parent', 'page_token', 'page_size', 'order_by', 'filter', 'location_id', ),
+        'list_job_triggers': ('parent', 'page_token', 'page_size', 'order_by', 'filter', 'type_', 'location_id', ),
         'list_stored_info_types': ('parent', 'page_token', 'page_size', 'order_by', 'location_id', ),
         'redact_image': ('parent', 'location_id', 'inspect_config', 'image_redaction_configs', 'include_findings', 'byte_item', ),
         'reidentify_content': ('parent', 'reidentify_config', 'inspect_config', 'item', 'inspect_template_name', 'reidentify_template_name', 'location_id', ),

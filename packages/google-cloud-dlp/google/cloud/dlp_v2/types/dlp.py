@@ -89,6 +89,7 @@ __protobuf__ = proto.module(
         "CryptoHashConfig",
         "CryptoDeterministicConfig",
         "ReplaceValueConfig",
+        "ReplaceDictionaryConfig",
         "ReplaceWithInfoTypeConfig",
         "RedactConfig",
         "CharsToIgnore",
@@ -393,6 +394,7 @@ class InspectConfig(proto.Message):
 
     class FindingLimits(proto.Message):
         r"""Configuration to control the number of findings returned.
+        Cannot be set if de-identification is requested.
 
         Attributes:
             max_findings_per_item (int):
@@ -461,7 +463,10 @@ class ByteContentItem(proto.Message):
     """
 
     class BytesType(proto.Enum):
-        r"""The type of data being sent for inspection."""
+        r"""The type of data being sent for inspection. To learn more, see
+        `Supported file
+        types <https://cloud.google.com/dlp/docs/supported-file-types>`__.
+        """
         BYTES_TYPE_UNSPECIFIED = 0
         IMAGE = 6
         IMAGE_JPEG = 1
@@ -517,7 +522,7 @@ class ContentItem(proto.Message):
 class Table(proto.Message):
     r"""Structured content to inspect. Up to 50,000 ``Value``\ s per request
     allowed. See
-    https://cloud.google.com/dlp/docs/inspecting-text#inspecting_a_table
+    https://cloud.google.com/dlp/docs/inspecting-structured-text#inspecting_a_table
     to learn more.
 
     Attributes:
@@ -620,6 +625,8 @@ class Finding(proto.Message):
             finding.
         job_name (str):
             The job that stored the finding.
+        finding_id (str):
+            The unique finding id.
     """
 
     name = proto.Field(proto.STRING, number=14,)
@@ -636,6 +643,7 @@ class Finding(proto.Message):
         proto.MESSAGE, number=11, message=timestamp_pb2.Timestamp,
     )
     job_name = proto.Field(proto.STRING, number=13,)
+    finding_id = proto.Field(proto.STRING, number=15,)
 
 
 class Location(proto.Message):
@@ -1353,7 +1361,8 @@ class InspectDataSourceDetails(proto.Message):
         requested_options (google.cloud.dlp_v2.types.InspectDataSourceDetails.RequestedOptions):
             The configuration used for this job.
         result (google.cloud.dlp_v2.types.InspectDataSourceDetails.Result):
-            A summary of the outcome of this inspect job.
+            A summary of the outcome of this inspection
+            job.
     """
 
     class RequestedOptions(proto.Message):
@@ -1386,11 +1395,7 @@ class InspectDataSourceDetails(proto.Message):
                 type were found during inspect job.
             hybrid_stats (google.cloud.dlp_v2.types.HybridInspectStatistics):
                 Statistics related to the processing of
-                hybrid inspect. Early access feature is in a
-                pre-release state and might change or have
-                limited support. For more information, see
-                https://cloud.google.com/products#product-
-                launch-stages.
+                hybrid inspect.
         """
 
         processed_bytes = proto.Field(proto.INT64, number=1,)
@@ -2589,7 +2594,7 @@ class PrimitiveTransformation(proto.Message):
 
     Attributes:
         replace_config (google.cloud.dlp_v2.types.ReplaceValueConfig):
-            Replace
+            Replace with a specified value.
 
             This field is a member of `oneof`_ ``transformation``.
         redact_config (google.cloud.dlp_v2.types.RedactConfig):
@@ -2630,6 +2635,11 @@ class PrimitiveTransformation(proto.Message):
             This field is a member of `oneof`_ ``transformation``.
         crypto_deterministic_config (google.cloud.dlp_v2.types.CryptoDeterministicConfig):
             Deterministic Crypto
+
+            This field is a member of `oneof`_ ``transformation``.
+        replace_dictionary_config (google.cloud.dlp_v2.types.ReplaceDictionaryConfig):
+            Replace with a value randomly drawn (with
+            replacement) from a dictionary.
 
             This field is a member of `oneof`_ ``transformation``.
     """
@@ -2678,6 +2688,12 @@ class PrimitiveTransformation(proto.Message):
         number=12,
         oneof="transformation",
         message="CryptoDeterministicConfig",
+    )
+    replace_dictionary_config = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        oneof="transformation",
+        message="ReplaceDictionaryConfig",
     )
 
 
@@ -2729,7 +2745,10 @@ class CryptoDeterministicConfig(proto.Message):
 
     Attributes:
         crypto_key (google.cloud.dlp_v2.types.CryptoKey):
-            The key used by the encryption function.
+            The key used by the encryption function. For
+            deterministic encryption using AES-SIV, the
+            provided key is internally expanded to 64 bytes
+            prior to use.
         surrogate_info_type (google.cloud.dlp_v2.types.InfoType):
             The custom info type to annotate the surrogate with. This
             annotation will be applied to the surrogate by prefixing it
@@ -2808,6 +2827,30 @@ class ReplaceValueConfig(proto.Message):
     """
 
     new_value = proto.Field(proto.MESSAGE, number=1, message="Value",)
+
+
+class ReplaceDictionaryConfig(proto.Message):
+    r"""Replace each input value with a value randomly selected from
+    the dictionary.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        word_list (google.cloud.dlp_v2.types.CustomInfoType.Dictionary.WordList):
+            A list of words to select from for random replacement. The
+            `limits <https://cloud.google.com/dlp/limits>`__ page
+            contains details about the size limits of dictionaries.
+
+            This field is a member of `oneof`_ ``type``.
+    """
+
+    word_list = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="type",
+        message=storage.CustomInfoType.Dictionary.WordList,
+    )
 
 
 class ReplaceWithInfoTypeConfig(proto.Message):
@@ -2914,9 +2957,9 @@ class FixedSizeBucketingConfig(proto.Message):
     user for simple bucketing strategies.
 
     The transformed value will be a hyphenated string of
-    {lower_bound}-{upper_bound}, i.e if lower_bound = 10 and upper_bound
-    = 20 all values that are within this bucket will be replaced with
-    "10-20".
+    {lower_bound}-{upper_bound}. For example, if lower_bound = 10 and
+    upper_bound = 20, all values that are within this bucket will be
+    replaced with "10-20".
 
     This can be used on data of type: double, long.
 
@@ -3122,10 +3165,11 @@ class CryptoReplaceFfxFpeConfig(proto.Message):
 
 class CryptoKey(proto.Message):
     r"""This is a data encryption key (DEK) (as opposed to
-    a key encryption key (KEK) stored by KMS).
-    When using KMS to wrap/unwrap DEKs, be sure to set an
-    appropriate IAM policy on the KMS CryptoKey (KEK) to ensure an
-    attacker cannot unwrap the data crypto key.
+    a key encryption key (KEK) stored by Cloud Key Management
+    Service (Cloud KMS).
+    When using Cloud KMS to wrap or unwrap a DEK, be sure to set an
+    appropriate IAM policy on the KEK to ensure an attacker cannot
+    unwrap the DEK.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -3144,7 +3188,7 @@ class CryptoKey(proto.Message):
 
             This field is a member of `oneof`_ ``source``.
         kms_wrapped (google.cloud.dlp_v2.types.KmsWrappedCryptoKey):
-            Kms wrapped key
+            Key wrapped using Cloud KMS
 
             This field is a member of `oneof`_ ``source``.
     """
@@ -3191,11 +3235,17 @@ class UnwrappedCryptoKey(proto.Message):
 
 
 class KmsWrappedCryptoKey(proto.Message):
-    r"""Include to use an existing data crypto key wrapped by KMS.
-    The wrapped key must be a 128/192/256 bit key.
-    Authorization requires the following IAM permissions when
-    sending a request to perform a crypto transformation using a
-    kms-wrapped crypto key: dlp.kms.encrypt
+    r"""Include to use an existing data crypto key wrapped by KMS. The
+    wrapped key must be a 128-, 192-, or 256-bit key. Authorization
+    requires the following IAM permissions when sending a request to
+    perform a crypto transformation using a KMS-wrapped crypto key:
+    dlp.kms.encrypt
+
+    For more information, see [Creating a wrapped key]
+    (https://cloud.google.com/dlp/docs/create-wrapped-key).
+
+    Note: When you use Cloud KMS for cryptographic operations, `charges
+    apply <https://cloud.google.com/kms/pricing>`__.
 
     Attributes:
         wrapped_key (bytes):
@@ -3304,8 +3354,11 @@ class FieldTransformation(proto.Message):
 
     Attributes:
         fields (Sequence[google.cloud.dlp_v2.types.FieldId]):
-            Required. Input field(s) to apply the
-            transformation to.
+            Required. Input field(s) to apply the transformation to.
+            When you have columns that reference their position within a
+            list, omit the index from the FieldId. FieldId name matching
+            ignores the index. For example, instead of
+            "contact.nums[0].type", use "contact.nums.type".
         condition (google.cloud.dlp_v2.types.RecordCondition):
             Only apply the transformation if the condition evaluates to
             true for the given ``RecordCondition``. The conditions are
@@ -3558,7 +3611,7 @@ class TransformationSummary(proto.Message):
 
 
 class Schedule(proto.Message):
-    r"""Schedule for triggeredJobs.
+    r"""Schedule for inspect job triggers.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -3649,8 +3702,7 @@ class DeidentifyTemplate(proto.Message):
             Output only. The last update timestamp of an
             inspectTemplate.
         deidentify_config (google.cloud.dlp_v2.types.DeidentifyConfig):
-            ///////////// // The core content of the
-            template  // ///////////////
+            The core content of the template.
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -3759,12 +3811,7 @@ class JobTrigger(proto.Message):
                 This field is a member of `oneof`_ ``trigger``.
             manual (google.cloud.dlp_v2.types.Manual):
                 For use with hybrid jobs. Jobs must be
-                manually created and finished. Early access
-                feature is in a pre-release state and might
-                change or have limited support. For more
-                information, see
-                https://cloud.google.com/products#product-
-                launch-stages.
+                manually created and finished.
 
                 This field is a member of `oneof`_ ``trigger``.
         """
@@ -3884,14 +3931,14 @@ class Action(proto.Message):
         """
 
     class PublishFindingsToCloudDataCatalog(proto.Message):
-        r"""Publish findings of a DlpJob to Cloud Data Catalog. Labels
+        r"""Publish findings of a DlpJob to Data Catalog. Labels
         summarizing the results of the DlpJob will be applied to the
-        entry for the resource scanned in Cloud Data Catalog. Any labels
+        entry for the resource scanned in Data Catalog. Any labels
         previously written by another DlpJob will be deleted. InfoType
         naming patterns are strictly enforced when using this feature.
-        Note that the findings will be persisted in Cloud Data Catalog
-        storage and are governed by Data Catalog service-specific
-        policy, see https://cloud.google.com/terms/service-terms
+        Note that the findings will be persisted in Data Catalog storage
+        and are governed by Data Catalog service-specific policy, see
+        https://cloud.google.com/terms/service-terms
         Only a single instance of this action can be specified and only
         allowed if all resources being scanned are BigQuery tables.
         Compatible with: Inspect
@@ -4235,11 +4282,13 @@ class CreateDlpJobRequest(proto.Message):
 
                 parent=projects/example-project/locations/europe-west3
         inspect_job (google.cloud.dlp_v2.types.InspectJobConfig):
-            Set to control what and how to inspect.
+            An inspection job scans a storage repository
+            for InfoTypes.
 
             This field is a member of `oneof`_ ``job``.
         risk_job (google.cloud.dlp_v2.types.RiskAnalysisJobConfig):
-            Set to choose what metric to calculate.
+            A risk analysis job calculates re-
+            dentification risk metrics for a BigQuery table.
 
             This field is a member of `oneof`_ ``job``.
         job_id (str):
@@ -4324,7 +4373,7 @@ class ListJobTriggersRequest(proto.Message):
                ``AND``.
             -  A restriction has the form of
                ``{field} {operator} {value}``.
-            -  Supported fields/values for inspect jobs:
+            -  Supported fields/values for inspect triggers:
 
                -  ``status`` - HEALTHY|PAUSED|CANCELLED
                -  ``inspected_storage`` -
@@ -4349,6 +4398,9 @@ class ListJobTriggersRequest(proto.Message):
 
             The length of this field should be no more than 500
             characters.
+        type_ (google.cloud.dlp_v2.types.DlpJobType):
+            The type of jobs. Will use ``DlpJobType.INSPECT`` if not
+            set.
         location_id (str):
             Deprecated. This field has no effect.
     """
@@ -4358,6 +4410,7 @@ class ListJobTriggersRequest(proto.Message):
     page_size = proto.Field(proto.INT32, number=3,)
     order_by = proto.Field(proto.STRING, number=4,)
     filter = proto.Field(proto.STRING, number=5,)
+    type_ = proto.Field(proto.ENUM, number=6, enum="DlpJobType",)
     location_id = proto.Field(proto.STRING, number=7,)
 
 

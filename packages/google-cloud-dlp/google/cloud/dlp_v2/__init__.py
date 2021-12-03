@@ -117,6 +117,7 @@ from .types.dlp import RedactImageRequest
 from .types.dlp import RedactImageResponse
 from .types.dlp import ReidentifyContentRequest
 from .types.dlp import ReidentifyContentResponse
+from .types.dlp import ReplaceDictionaryConfig
 from .types.dlp import ReplaceValueConfig
 from .types.dlp import ReplaceWithInfoTypeConfig
 from .types.dlp import RiskAnalysisJobConfig
@@ -303,6 +304,7 @@ __all__ = (
     "ReidentifyContentRequest",
     "ReidentifyContentResponse",
     "RelationalOperator",
+    "ReplaceDictionaryConfig",
     "ReplaceValueConfig",
     "ReplaceWithInfoTypeConfig",
     "RiskAnalysisJobConfig",

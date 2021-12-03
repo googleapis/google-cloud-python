@@ -117,6 +117,7 @@ from google.cloud.dlp_v2.types.dlp import RedactImageRequest
 from google.cloud.dlp_v2.types.dlp import RedactImageResponse
 from google.cloud.dlp_v2.types.dlp import ReidentifyContentRequest
 from google.cloud.dlp_v2.types.dlp import ReidentifyContentResponse
+from google.cloud.dlp_v2.types.dlp import ReplaceDictionaryConfig
 from google.cloud.dlp_v2.types.dlp import ReplaceValueConfig
 from google.cloud.dlp_v2.types.dlp import ReplaceWithInfoTypeConfig
 from google.cloud.dlp_v2.types.dlp import RiskAnalysisJobConfig
@@ -276,6 +277,7 @@ __all__ = (
     "RedactImageResponse",
     "ReidentifyContentRequest",
     "ReidentifyContentResponse",
+    "ReplaceDictionaryConfig",
     "ReplaceValueConfig",
     "ReplaceWithInfoTypeConfig",
     "RiskAnalysisJobConfig",
