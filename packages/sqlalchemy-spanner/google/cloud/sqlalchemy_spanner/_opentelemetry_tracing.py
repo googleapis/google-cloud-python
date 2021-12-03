@@ -52,9 +52,9 @@ def trace_call(name, extra_attributes=None):
         name, kind=trace.SpanKind.CLIENT, attributes=attributes
     ) as span:
         try:
-            span.set_status(Status(StatusCode.OK))
             yield span
         except GoogleAPICallError as error:
             span.set_status(Status(StatusCode.ERROR))
             span.record_exception(error)
             raise
+        span.set_status(Status(StatusCode.OK))

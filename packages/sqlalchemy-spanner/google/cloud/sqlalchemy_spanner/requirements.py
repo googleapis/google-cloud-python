@@ -16,7 +16,7 @@ from sqlalchemy.testing import exclusions
 from sqlalchemy.testing.requirements import SuiteRequirements
 
 
-class Requirements(SuiteRequirements):
+class Requirements(SuiteRequirements):  # pragma: no cover
     @property
     def computed_columns(self):
         return exclusions.open()

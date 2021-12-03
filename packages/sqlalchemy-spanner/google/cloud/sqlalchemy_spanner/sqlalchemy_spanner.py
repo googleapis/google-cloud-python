@@ -373,10 +373,14 @@ class SpannerTypeCompiler(GenericTypeCompiler):
     def visit_ARRAY(self, type_, **kw):
         return "ARRAY<{}>".format(self.process(type_.item_type, **kw))
 
-    def visit_BINARY(self, type_, **kw):
+    def visit_BINARY(self, type_, **kw):  # pragma: no cover
+        """
+        The BINARY type is superseded by large_binary in
+        newer versions of SQLAlchemy (>1.4).
+        """
         return "BYTES({})".format(type_.length or "MAX")
 
-    def visit_large_binary(self, type_, **kw):
+    def visit_large_binary(self, type_, **kw):  # pragma: no cover
         return "BYTES({})".format(type_.length or "MAX")
 
     def visit_DECIMAL(self, type_, **kw):

@@ -20,6 +20,7 @@ import operator
 import os
 import pkg_resources
 import pytest
+import unittest
 from unittest import mock
 
 import sqlalchemy
@@ -726,6 +727,7 @@ class ComponentReflectionTest(_ComponentReflectionTest):
         self.metadata.create_all()
 
         Table("bytes_table", MetaData(bind=self.bind), autoload=True)
+        inspect(config.db).get_columns("bytes_table")
 
     @testing.provide_metadata
     def _test_get_unique_constraints(self, schema=None):
@@ -1576,24 +1578,25 @@ class UserAgentTest(fixtures.TestBase):
             )
 
 
-class ExecutionOptionsTest(fixtures.TestBase):
+class ExecutionOptionsTest(fixtures.TestBase, unittest.TestCase):
     """
     Check that `execution_options()` method correctly
     sets parameters on the underlying DB API connection.
     """
 
-    def setUp(self):
-        self._engine = create_engine(get_db_url(), pool_size=1)
-        self._metadata = MetaData(bind=self._engine)
+    @classmethod
+    def setUpClass(cls):
+        cls._engine = create_engine(get_db_url(), pool_size=1)
+        cls._metadata = MetaData(bind=cls._engine)
 
-        self._table = Table(
+        cls._table = Table(
             "execution_options",
-            self._metadata,
+            cls._metadata,
             Column("opt_id", Integer, primary_key=True),
             Column("opt_name", String(16), nullable=False),
         )
 
-        self._metadata.create_all(self._engine)
+        cls._metadata.create_all(cls._engine)
 
     def test_read_only(self):
         with self._engine.connect().execution_options(read_only=True) as connection:
@@ -1602,11 +1605,11 @@ class ExecutionOptionsTest(fixtures.TestBase):
 
     def test_staleness(self):
         with self._engine.connect().execution_options(
-            read_only=True, staleness={"max_staleness": datetime.timedelta(seconds=5)}
+            read_only=True, staleness={"exact_staleness": datetime.timedelta(seconds=5)}
         ) as connection:
             connection.execute(select(["*"], from_obj=self._table)).fetchall()
             assert connection.connection.staleness == {
-                "max_staleness": datetime.timedelta(seconds=5)
+                "exact_staleness": datetime.timedelta(seconds=5)
             }
 
         with self._engine.connect() as connection:
@@ -1636,6 +1639,26 @@ class LimitOffsetTest(fixtures.TestBase):
 
             with self._engine.connect().execution_options(read_only=True) as connection:
                 list(connection.execute(self._table.select().offset(offset)).fetchall())
+
+
+class TemporaryTableTest(fixtures.TestBase):
+    """
+    Check that temporary tables raise an error on creation.
+    """
+
+    def setUp(self):
+        self._engine = create_engine(get_db_url(), pool_size=1)
+        self._metadata = MetaData(bind=self._engine)
+
+    def test_temporary_prefix(self):
+        with pytest.raises(NotImplementedError):
+            Table(
+                "users",
+                self._metadata,
+                Column("user_id", Integer, primary_key=True),
+                Column("user_name", String(16), nullable=False),
+                prefixes=["TEMPORARY"],
+            ).create()
 
 
 class ComputedReflectionFixtureTest(_ComputedReflectionFixtureTest):

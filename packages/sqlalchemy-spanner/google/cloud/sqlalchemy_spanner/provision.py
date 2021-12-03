@@ -15,6 +15,6 @@
 from sqlalchemy.testing.provision import temp_table_keyword_args
 
 
-@temp_table_keyword_args.for_db("spanner")
+@temp_table_keyword_args.for_db("spanner")  # pragma: no cover
 def _spanner_temp_table_keyword_args(cfg, eng):
     return {"prefixes": ["TEMPORARY"]}

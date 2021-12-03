@@ -128,11 +128,25 @@ def compliance_test(session):
             "Credentials or emulator host must be set via environment variable"
         )
 
+    session.install(
+        "pytest", "pytest-cov", "pytest-asyncio",
+    )
+
     session.install("pytest")
     session.install("mock")
-    session.install("-e", ".")
+    session.install("-e", ".[tracing]")
     session.run("python", "create_test_database.py")
-    session.run("pytest", "-v")
+
+    session.run(
+        "py.test",
+        "--cov=google.cloud.sqlalchemy_spanner",
+        "--cov=tests",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        "--cov-fail-under=0",
+        "test",
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
