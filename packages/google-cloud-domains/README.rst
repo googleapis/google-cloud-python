@@ -1,15 +1,15 @@
 Python Client for Cloud Domains
 =================================================
 
-|beta| |pypi| |versions|
+|ga| |pypi| |versions|
 
 `Cloud Domains`_: Enables management and configuration of domain names.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#beta-support
+.. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#ga-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-domains.svg
    :target: https://pypi.org/project/google-cloud-domains/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-domains.svg
