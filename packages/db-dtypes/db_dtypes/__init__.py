@@ -17,7 +17,7 @@ Pandas Data Types for SQL systems (BigQuery, Spanner)
 
 import datetime
 import re
-from typing import Union
+from typing import Optional, Union
 
 import numpy
 import packaging.version
@@ -103,7 +103,7 @@ class TimeArray(core.BaseDatetimeArray):
             r"(?::(?P<seconds>\d+)"
             r"(?:\.(?P<fraction>\d*))?)?)?\s*$"
         ).match,
-    ):
+    ) -> Optional[numpy.datetime64]:
         # Convert pyarrow values to datetime.time.
         if isinstance(scalar, (pyarrow.Time32Scalar, pyarrow.Time64Scalar)):
             scalar = (
@@ -115,8 +115,16 @@ class TimeArray(core.BaseDatetimeArray):
 
         if scalar is None:
             return None
-        elif isinstance(scalar, datetime.time):
-            return datetime.datetime.combine(_EPOCH, scalar)
+        if isinstance(scalar, datetime.time):
+            return pandas.Timestamp(
+                year=1970,
+                month=1,
+                day=1,
+                hour=scalar.hour,
+                minute=scalar.minute,
+                second=scalar.second,
+                microsecond=scalar.microsecond,
+            ).to_datetime64()
         elif isinstance(scalar, pandas.Timestamp):
             return scalar.to_datetime64()
         elif isinstance(scalar, str):
@@ -125,20 +133,20 @@ class TimeArray(core.BaseDatetimeArray):
             if not parsed:
                 raise ValueError(f"Bad time string: {repr(scalar)}")
 
-            hours = parsed.group("hours")
-            minutes = parsed.group("minutes")
-            seconds = parsed.group("seconds")
+            hour = parsed.group("hours")
+            minute = parsed.group("minutes")
+            second = parsed.group("seconds")
             fraction = parsed.group("fraction")
-            microseconds = int(fraction.ljust(6, "0")[:6]) if fraction else 0
-            return datetime.datetime(
-                1970,
-                1,
-                1,
-                int(hours),
-                int(minutes) if minutes else 0,
-                int(seconds) if seconds else 0,
-                microseconds,
-            )
+            nanosecond = int(fraction.ljust(9, "0")[:9]) if fraction else 0
+            return pandas.Timestamp(
+                year=1970,
+                month=1,
+                day=1,
+                hour=int(hour),
+                minute=int(minute) if minute else 0,
+                second=int(second) if second else 0,
+                nanosecond=nanosecond,
+            ).to_datetime64()
         else:
             raise TypeError("Invalid value type", scalar)
 
@@ -225,7 +233,7 @@ class DateArray(core.BaseDatetimeArray):
     def _datetime(
         scalar,
         match_fn=re.compile(r"\s*(?P<year>\d+)-(?P<month>\d+)-(?P<day>\d+)\s*$").match,
-    ):
+    ) -> Optional[numpy.datetime64]:
         # Convert pyarrow values to datetime.date.
         if isinstance(scalar, (pyarrow.Date32Scalar, pyarrow.Date64Scalar)):
             scalar = scalar.as_py()
@@ -233,7 +241,9 @@ class DateArray(core.BaseDatetimeArray):
         if scalar is None:
             return None
         elif isinstance(scalar, datetime.date):
-            return datetime.datetime(scalar.year, scalar.month, scalar.day)
+            return pandas.Timestamp(
+                year=scalar.year, month=scalar.month, day=scalar.day
+            ).to_datetime64()
         elif isinstance(scalar, str):
             match = match_fn(scalar)
             if not match:
@@ -241,7 +251,7 @@ class DateArray(core.BaseDatetimeArray):
             year = int(match.group("year"))
             month = int(match.group("month"))
             day = int(match.group("day"))
-            return datetime.datetime(year, month, day)
+            return pandas.Timestamp(year=year, month=month, day=day).to_datetime64()
         else:
             raise TypeError("Invalid value type", scalar)
 

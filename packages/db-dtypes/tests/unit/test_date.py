@@ -55,6 +55,11 @@ def test_date_parsing(value, expected):
         ("2021-2-99", "day is out of range for month"),
         ("2021-99-1", "month must be in 1[.][.]12"),
         ("10000-1-1", "year 10000 is out of range"),
+        # Outside of min/max values pandas.Timestamp.
+        ("0001-01-01", "Out of bounds"),
+        ("9999-12-31", "Out of bounds"),
+        ("1677-09-21", "Out of bounds"),
+        ("2262-04-12", "Out of bounds"),
     ],
 )
 def test_date_parsing_errors(value, error):

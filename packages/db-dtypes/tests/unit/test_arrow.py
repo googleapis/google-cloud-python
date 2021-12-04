@@ -183,13 +183,13 @@ SERIES_ARRAYS_CUSTOM_ARROW_TYPES = [
             type=pyarrow.time64("us"),
         ),
     ),
-    (
+    # Only microseconds are supported when reading data. See:
+    # https://github.com/googleapis/python-db-dtypes-pandas/issues/19
+    # Still, round-trip with pyarrow nanosecond precision scalars
+    # is supported.
+    pytest.param(
         pandas.Series(
             [
-                # Only microseconds are supported when reading data. See:
-                # https://github.com/googleapis/python-db-dtypes-pandas/issues/19
-                # Still, round-trip with pyarrow nanosecond precision scalars
-                # is supported.
                 pyarrow.scalar(0, pyarrow.time64("ns")),
                 pyarrow.scalar(
                     12 * HOUR_NANOS
@@ -216,6 +216,21 @@ SERIES_ARRAYS_CUSTOM_ARROW_TYPES = [
             ],
             type=pyarrow.time64("ns"),
         ),
+        id="time-nanoseconds-arrow-round-trip",
+    ),
+    pytest.param(
+        pandas.Series(
+            ["0:0:0", "12:30:15.123456789", "23:59:59.999999999"], dtype="dbtime",
+        ),
+        pyarrow.array(
+            [
+                0,
+                12 * HOUR_NANOS + 30 * MINUTE_NANOS + 15 * SECOND_NANOS + 123_456_789,
+                23 * HOUR_NANOS + 59 * MINUTE_NANOS + 59 * SECOND_NANOS + 999_999_999,
+            ],
+            type=pyarrow.time64("ns"),
+        ),
+        id="time-nanoseconds-arrow-from-string",
     ),
 ]
 

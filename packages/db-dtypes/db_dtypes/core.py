@@ -127,9 +127,7 @@ class BaseDatetimeArray(
         if allow_fill:
             fill_value = self._validate_scalar(fill_value)
             fill_value = (
-                numpy.datetime64()
-                if fill_value is None
-                else numpy.datetime64(self._datetime(fill_value))
+                numpy.datetime64() if fill_value is None else self._datetime(fill_value)
             )
             if (indices < -1).any():
                 raise ValueError(
