@@ -58,6 +58,10 @@ class SpeechAsyncClient:
     DEFAULT_ENDPOINT = SpeechClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = SpeechClient.DEFAULT_MTLS_ENDPOINT
 
+    custom_class_path = staticmethod(SpeechClient.custom_class_path)
+    parse_custom_class_path = staticmethod(SpeechClient.parse_custom_class_path)
+    phrase_set_path = staticmethod(SpeechClient.phrase_set_path)
+    parse_phrase_set_path = staticmethod(SpeechClient.parse_phrase_set_path)
     common_billing_account_path = staticmethod(SpeechClient.common_billing_account_path)
     parse_common_billing_account_path = staticmethod(
         SpeechClient.parse_common_billing_account_path
