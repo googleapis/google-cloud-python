@@ -15,8 +15,10 @@
 #
 import proto  # type: ignore
 
+from google.cloud.speech_v1.types import resource
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import wrappers_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 
 
@@ -245,6 +247,20 @@ class RecognitionConfig(proto.Message):
             language tag. Example: "en-US". See `Language
             Support <https://cloud.google.com/speech-to-text/docs/languages>`__
             for a list of the currently supported language codes.
+        alternative_language_codes (Sequence[str]):
+            A list of up to 3 additional
+            `BCP-47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__
+            language tags, listing possible alternative languages of the
+            supplied audio. See `Language
+            Support <https://cloud.google.com/speech-to-text/docs/languages>`__
+            for a list of the currently supported language codes. If
+            alternative languages are listed, recognition result will
+            contain recognition in the most likely language detected
+            including the main language_code. The recognition result
+            will include the language tag of the language detected in
+            the audio. Note: This feature is only supported for Voice
+            Command and Voice Search use cases and performance may vary
+            for other use cases (e.g., phone call transcription).
         max_alternatives (int):
             Maximum number of recognition hypotheses to be returned.
             Specifically, the maximum number of
@@ -258,6 +274,12 @@ class RecognitionConfig(proto.Message):
             profanities, replacing all but the initial character in each
             filtered word with asterisks, e.g. "f***". If set to
             ``false`` or omitted, profanities won't be filtered out.
+        adaptation (google.cloud.speech_v1.types.SpeechAdaptation):
+            Speech adaptation configuration improves the accuracy of
+            speech recognition. For more information, see the `speech
+            adaptation <https://cloud.google.com/speech-to-text/docs/adaptation>`__
+            documentation. When speech adaptation is set it supersedes
+            the ``speech_contexts`` field.
         speech_contexts (Sequence[google.cloud.speech_v1.types.SpeechContext]):
             Array of
             [SpeechContext][google.cloud.speech.v1.SpeechContext]. A
@@ -269,6 +291,11 @@ class RecognitionConfig(proto.Message):
             start and end time offsets (timestamps) for those words. If
             ``false``, no word-level time offset information is
             returned. The default is ``false``.
+        enable_word_confidence (bool):
+            If ``true``, the top result includes a list of words and the
+            confidence for those words. If ``false``, no word-level
+            confidence information is returned. The default is
+            ``false``.
         enable_automatic_punctuation (bool):
             If 'true', adds punctuation to recognition
             result hypotheses. This feature is only
@@ -276,6 +303,23 @@ class RecognitionConfig(proto.Message):
             requests in other languages has no effect at
             all. The default 'false' value does not add
             punctuation to result hypotheses.
+        enable_spoken_punctuation (google.protobuf.wrappers_pb2.BoolValue):
+            The spoken punctuation behavior for the call If not set,
+            uses default behavior based on model of choice e.g.
+            command_and_search will enable spoken punctuation by default
+            If 'true', replaces spoken punctuation with the
+            corresponding symbols in the request. For example, "how are
+            you question mark" becomes "how are you?". See
+            https://cloud.google.com/speech-to-text/docs/spoken-punctuation
+            for support. If 'false', spoken punctuation is not replaced.
+        enable_spoken_emojis (google.protobuf.wrappers_pb2.BoolValue):
+            The spoken emoji behavior for the call
+            If not set, uses default behavior based on model
+            of choice If 'true', adds spoken emoji
+            formatting for the request. This will replace
+            spoken emojis with the corresponding Unicode
+            symbols in the final transcript. If 'false',
+            spoken emojis are not replaced.
         diarization_config (google.cloud.speech_v1.types.SpeakerDiarizationConfig):
             Config to enable speaker diarization and set
             additional parameters to make diarization better
@@ -352,7 +396,7 @@ class RecognitionConfig(proto.Message):
         codecs are used to capture or transmit audio, particularly if
         background noise is present. Lossy codecs include ``MULAW``,
         ``AMR``, ``AMR_WB``, ``OGG_OPUS``, ``SPEEX_WITH_HEADER_BYTE``,
-        ``MP3``.
+        ``MP3``, and ``WEBM_OPUS``.
 
         The ``FLAC`` and ``WAV`` audio file formats include a header that
         describes the included audio content. You can request recognition
@@ -374,19 +418,31 @@ class RecognitionConfig(proto.Message):
         AMR_WB = 5
         OGG_OPUS = 6
         SPEEX_WITH_HEADER_BYTE = 7
+        WEBM_OPUS = 9
 
     encoding = proto.Field(proto.ENUM, number=1, enum=AudioEncoding,)
     sample_rate_hertz = proto.Field(proto.INT32, number=2,)
     audio_channel_count = proto.Field(proto.INT32, number=7,)
     enable_separate_recognition_per_channel = proto.Field(proto.BOOL, number=12,)
     language_code = proto.Field(proto.STRING, number=3,)
+    alternative_language_codes = proto.RepeatedField(proto.STRING, number=18,)
     max_alternatives = proto.Field(proto.INT32, number=4,)
     profanity_filter = proto.Field(proto.BOOL, number=5,)
+    adaptation = proto.Field(
+        proto.MESSAGE, number=20, message=resource.SpeechAdaptation,
+    )
     speech_contexts = proto.RepeatedField(
         proto.MESSAGE, number=6, message="SpeechContext",
     )
     enable_word_time_offsets = proto.Field(proto.BOOL, number=8,)
+    enable_word_confidence = proto.Field(proto.BOOL, number=15,)
     enable_automatic_punctuation = proto.Field(proto.BOOL, number=11,)
+    enable_spoken_punctuation = proto.Field(
+        proto.MESSAGE, number=22, message=wrappers_pb2.BoolValue,
+    )
+    enable_spoken_emojis = proto.Field(
+        proto.MESSAGE, number=23, message=wrappers_pb2.BoolValue,
+    )
     diarization_config = proto.Field(
         proto.MESSAGE, number=19, message="SpeakerDiarizationConfig",
     )
@@ -534,9 +590,21 @@ class SpeechContext(proto.Message):
             for every month of the year, using the $MONTH class improves
             the likelihood of correctly transcribing audio that includes
             months.
+        boost (float):
+            Hint Boost. Positive value will increase the probability
+            that a specific phrase will be recognized over other similar
+            sounding phrases. The higher the boost, the higher the
+            chance of false positive recognition as well. Negative boost
+            values would correspond to anti-biasing. Anti-biasing is not
+            enabled, so negative boost will simply be ignored. Though
+            ``boost`` can accept a wide range of positive values, most
+            use cases are best served with values between 0 and 20. We
+            recommend using a binary search approach to finding the
+            optimal value for your use case.
     """
 
     phrases = proto.RepeatedField(proto.STRING, number=1,)
+    boost = proto.Field(proto.FLOAT, number=4,)
 
 
 class RecognitionAudio(proto.Message):
@@ -617,6 +685,12 @@ class LongRunningRecognizeResponse(proto.Message):
         total_billed_time (google.protobuf.duration_pb2.Duration):
             When available, billed audio seconds for the
             corresponding request.
+        output_config (google.cloud.speech_v1.types.TranscriptOutputConfig):
+            Original output config if present in the
+            request.
+        output_error (google.rpc.status_pb2.Status):
+            If the transcript output fails this field
+            contains the relevant error.
     """
 
     results = proto.RepeatedField(
@@ -625,6 +699,10 @@ class LongRunningRecognizeResponse(proto.Message):
     total_billed_time = proto.Field(
         proto.MESSAGE, number=3, message=duration_pb2.Duration,
     )
+    output_config = proto.Field(
+        proto.MESSAGE, number=6, message="TranscriptOutputConfig",
+    )
+    output_error = proto.Field(proto.MESSAGE, number=7, message=status_pb2.Status,)
 
 
 class LongRunningRecognizeMetadata(proto.Message):
@@ -777,7 +855,7 @@ class StreamingRecognitionResult(proto.Message):
             that channel. For audio_channel_count = N, its output values
             can range from '1' to 'N'.
         language_code (str):
-            The
+            Output only. The
             `BCP-47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__
             language tag of the language in this result. This language
             code was detected to have the most likelihood of being
@@ -812,12 +890,25 @@ class SpeechRecognitionResult(proto.Message):
             corresponding to the recognized result for the audio from
             that channel. For audio_channel_count = N, its output values
             can range from '1' to 'N'.
+        result_end_time (google.protobuf.duration_pb2.Duration):
+            Time offset of the end of this result
+            relative to the beginning of the audio.
+        language_code (str):
+            Output only. The
+            `BCP-47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__
+            language tag of the language in this result. This language
+            code was detected to have the most likelihood of being
+            spoken in the audio.
     """
 
     alternatives = proto.RepeatedField(
         proto.MESSAGE, number=1, message="SpeechRecognitionAlternative",
     )
     channel_tag = proto.Field(proto.INT32, number=2,)
+    result_end_time = proto.Field(
+        proto.MESSAGE, number=4, message=duration_pb2.Duration,
+    )
+    language_code = proto.Field(proto.STRING, number=5,)
 
 
 class SpeechRecognitionAlternative(proto.Message):
@@ -866,6 +957,15 @@ class WordInfo(proto.Message):
         word (str):
             The word corresponding to this set of
             information.
+        confidence (float):
+            The confidence estimate between 0.0 and 1.0. A higher number
+            indicates an estimated greater likelihood that the
+            recognized words are correct. This field is set only for the
+            top alternative of a non-streaming result or, of a streaming
+            result where ``is_final=true``. This field is not guaranteed
+            to be accurate and users should not rely on it to be always
+            provided. The default of 0.0 is a sentinel value indicating
+            ``confidence`` was not set.
         speaker_tag (int):
             Output only. A distinct integer value is assigned for every
             speaker within the audio. This field specifies which one of
@@ -878,6 +978,7 @@ class WordInfo(proto.Message):
     start_time = proto.Field(proto.MESSAGE, number=1, message=duration_pb2.Duration,)
     end_time = proto.Field(proto.MESSAGE, number=2, message=duration_pb2.Duration,)
     word = proto.Field(proto.STRING, number=3,)
+    confidence = proto.Field(proto.FLOAT, number=4,)
     speaker_tag = proto.Field(proto.INT32, number=5,)
 
 

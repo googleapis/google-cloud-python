@@ -35,6 +35,9 @@ from .types.cloud_speech import StreamingRecognizeRequest
 from .types.cloud_speech import StreamingRecognizeResponse
 from .types.cloud_speech import TranscriptOutputConfig
 from .types.cloud_speech import WordInfo
+from .types.resource import CustomClass
+from .types.resource import PhraseSet
+from .types.resource import SpeechAdaptation
 
 from google.cloud.speech_v1.helpers import SpeechHelpers
 
@@ -45,15 +48,18 @@ class SpeechClient(SpeechHelpers, SpeechClient):
 
 __all__ = (
     "SpeechAsyncClient",
+    "CustomClass",
     "LongRunningRecognizeMetadata",
     "LongRunningRecognizeRequest",
     "LongRunningRecognizeResponse",
+    "PhraseSet",
     "RecognitionAudio",
     "RecognitionConfig",
     "RecognitionMetadata",
     "RecognizeRequest",
     "RecognizeResponse",
     "SpeakerDiarizationConfig",
+    "SpeechAdaptation",
     "SpeechClient",
     "SpeechContext",
     "SpeechRecognitionAlternative",

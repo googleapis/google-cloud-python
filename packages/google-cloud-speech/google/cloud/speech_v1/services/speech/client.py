@@ -161,6 +161,38 @@ class SpeechClient(metaclass=SpeechClientMeta):
         return self._transport
 
     @staticmethod
+    def custom_class_path(project: str, location: str, custom_class: str,) -> str:
+        """Returns a fully-qualified custom_class string."""
+        return "projects/{project}/locations/{location}/customClasses/{custom_class}".format(
+            project=project, location=location, custom_class=custom_class,
+        )
+
+    @staticmethod
+    def parse_custom_class_path(path: str) -> Dict[str, str]:
+        """Parses a custom_class path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/customClasses/(?P<custom_class>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def phrase_set_path(project: str, location: str, phrase_set: str,) -> str:
+        """Returns a fully-qualified phrase_set string."""
+        return "projects/{project}/locations/{location}/phraseSets/{phrase_set}".format(
+            project=project, location=location, phrase_set=phrase_set,
+        )
+
+    @staticmethod
+    def parse_phrase_set_path(path: str) -> Dict[str, str]:
+        """Parses a phrase_set path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/phraseSets/(?P<phrase_set>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(

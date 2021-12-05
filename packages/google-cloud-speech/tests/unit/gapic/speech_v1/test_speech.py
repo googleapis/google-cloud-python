@@ -38,9 +38,11 @@ from google.cloud.speech_v1.services.speech import SpeechAsyncClient
 from google.cloud.speech_v1.services.speech import SpeechClient
 from google.cloud.speech_v1.services.speech import transports
 from google.cloud.speech_v1.types import cloud_speech
+from google.cloud.speech_v1.types import resource
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import wrappers_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import google.auth
 
@@ -1286,6 +1288,54 @@ def test_speech_grpc_lro_async_client():
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
+
+
+def test_custom_class_path():
+    project = "squid"
+    location = "clam"
+    custom_class = "whelk"
+    expected = "projects/{project}/locations/{location}/customClasses/{custom_class}".format(
+        project=project, location=location, custom_class=custom_class,
+    )
+    actual = SpeechClient.custom_class_path(project, location, custom_class)
+    assert expected == actual
+
+
+def test_parse_custom_class_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "custom_class": "nudibranch",
+    }
+    path = SpeechClient.custom_class_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SpeechClient.parse_custom_class_path(path)
+    assert expected == actual
+
+
+def test_phrase_set_path():
+    project = "cuttlefish"
+    location = "mussel"
+    phrase_set = "winkle"
+    expected = "projects/{project}/locations/{location}/phraseSets/{phrase_set}".format(
+        project=project, location=location, phrase_set=phrase_set,
+    )
+    actual = SpeechClient.phrase_set_path(project, location, phrase_set)
+    assert expected == actual
+
+
+def test_parse_phrase_set_path():
+    expected = {
+        "project": "nautilus",
+        "location": "scallop",
+        "phrase_set": "abalone",
+    }
+    path = SpeechClient.phrase_set_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SpeechClient.parse_phrase_set_path(path)
+    assert expected == actual
 
 
 def test_common_billing_account_path():

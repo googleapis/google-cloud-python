@@ -33,6 +33,11 @@ from .cloud_speech import (
     TranscriptOutputConfig,
     WordInfo,
 )
+from .resource import (
+    CustomClass,
+    PhraseSet,
+    SpeechAdaptation,
+)
 
 __all__ = (
     "LongRunningRecognizeMetadata",
@@ -53,4 +58,7 @@ __all__ = (
     "StreamingRecognizeResponse",
     "TranscriptOutputConfig",
     "WordInfo",
+    "CustomClass",
+    "PhraseSet",
+    "SpeechAdaptation",
 )

@@ -35,6 +35,9 @@ from google.cloud.speech_v1.types.cloud_speech import StreamingRecognizeRequest
 from google.cloud.speech_v1.types.cloud_speech import StreamingRecognizeResponse
 from google.cloud.speech_v1.types.cloud_speech import TranscriptOutputConfig
 from google.cloud.speech_v1.types.cloud_speech import WordInfo
+from google.cloud.speech_v1.types.resource import CustomClass
+from google.cloud.speech_v1.types.resource import PhraseSet
+from google.cloud.speech_v1.types.resource import SpeechAdaptation
 
 __all__ = (
     "SpeechClient",
@@ -57,4 +60,7 @@ __all__ = (
     "StreamingRecognizeResponse",
     "TranscriptOutputConfig",
     "WordInfo",
+    "CustomClass",
+    "PhraseSet",
+    "SpeechAdaptation",
 )
