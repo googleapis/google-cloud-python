@@ -45,7 +45,15 @@ class CreatePhraseSetRequest(proto.Message):
         parent (str):
             Required. The parent resource where this phrase set will be
             created. Format:
-            {api_version}/projects/{project}/locations/{location}/phraseSets
+
+            ``projects/{project}/locations/{location}/phraseSets``
+
+            Speech-to-Text supports three locations: ``global``, ``us``
+            (US North America), and ``eu`` (Europe). If you are calling
+            the ``speech.googleapis.com`` endpoint, use the ``global``
+            location. To specify a region, use a `regional
+            endpoint </speech-to-text/docs/endpoints>`__ with matching
+            ``us`` or ``eu`` location value.
         phrase_set_id (str):
             Required. The ID to use for the phrase set, which will
             become the final component of the phrase set's resource
@@ -71,7 +79,15 @@ class UpdatePhraseSetRequest(proto.Message):
 
             The phrase set's ``name`` field is used to identify the set
             to be updated. Format:
-            {api_version}/projects/{project}/locations/{location}/phraseSets/{phrase_set}
+
+            ``projects/{project}/locations/{location}/phraseSets/{phrase_set}``
+
+            Speech-to-Text supports three locations: ``global``, ``us``
+            (US North America), and ``eu`` (Europe). If you are calling
+            the ``speech.googleapis.com`` endpoint, use the ``global``
+            location. To specify a region, use a `regional
+            endpoint </speech-to-text/docs/endpoints>`__ with matching
+            ``us`` or ``eu`` location value.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The list of fields to be updated.
     """
@@ -88,7 +104,15 @@ class GetPhraseSetRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the phrase set to retrieve. Format:
-            {api_version}/projects/{project}/locations/{location}/phraseSets/{phrase_set}
+
+            ``projects/{project}/locations/{location}/phraseSets/{phrase_set}``
+
+            Speech-to-Text supports three locations: ``global``, ``us``
+            (US North America), and ``eu`` (Europe). If you are calling
+            the ``speech.googleapis.com`` endpoint, use the ``global``
+            location. To specify a region, use a `regional
+            endpoint </speech-to-text/docs/endpoints>`__ with matching
+            ``us`` or ``eu`` location value.
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -99,9 +123,17 @@ class ListPhraseSetRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent, which owns this
-            collection of phrase set. Format:
-            projects/{project}/locations/{location}
+            Required. The parent, which owns this collection of phrase
+            set. Format:
+
+            ``projects/{project}/locations/{location}``
+
+            Speech-to-Text supports three locations: ``global``, ``us``
+            (US North America), and ``eu`` (Europe). If you are calling
+            the ``speech.googleapis.com`` endpoint, use the ``global``
+            location. To specify a region, use a `regional
+            endpoint </speech-to-text/docs/endpoints>`__ with matching
+            ``us`` or ``eu`` location value.
         page_size (int):
             The maximum number of phrase sets to return.
             The service may return fewer than this value. If
@@ -150,7 +182,8 @@ class DeletePhraseSetRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the phrase set to delete. Format:
-            {api_version}/projects/{project}/locations/{location}/phraseSets/{phrase_set}
+
+            ``projects/{project}/locations/{location}/phraseSets/{phrase_set}``
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -163,7 +196,15 @@ class CreateCustomClassRequest(proto.Message):
         parent (str):
             Required. The parent resource where this custom class will
             be created. Format:
-            {api_version}/projects/{project}/locations/{location}/customClasses
+
+            ``projects/{project}/locations/{location}/customClasses``
+
+            Speech-to-Text supports three locations: ``global``, ``us``
+            (US North America), and ``eu`` (Europe). If you are calling
+            the ``speech.googleapis.com`` endpoint, use the ``global``
+            location. To specify a region, use a `regional
+            endpoint </speech-to-text/docs/endpoints>`__ with matching
+            ``us`` or ``eu`` location value.
         custom_class_id (str):
             Required. The ID to use for the custom class, which will
             become the final component of the custom class' resource
@@ -189,7 +230,15 @@ class UpdateCustomClassRequest(proto.Message):
 
             The custom class's ``name`` field is used to identify the
             custom class to be updated. Format:
-            {api_version}/projects/{project}/locations/{location}/customClasses/{custom_class}
+
+            ``projects/{project}/locations/{location}/customClasses/{custom_class}``
+
+            Speech-to-Text supports three locations: ``global``, ``us``
+            (US North America), and ``eu`` (Europe). If you are calling
+            the ``speech.googleapis.com`` endpoint, use the ``global``
+            location. To specify a region, use a `regional
+            endpoint </speech-to-text/docs/endpoints>`__ with matching
+            ``us`` or ``eu`` location value.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The list of fields to be updated.
     """
@@ -206,7 +255,8 @@ class GetCustomClassRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the custom class to retrieve. Format:
-            {api_version}/projects/{project}/locations/{location}/customClasses/{custom_class}
+
+            ``projects/{project}/locations/{location}/customClasses/{custom_class}``
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -219,7 +269,15 @@ class ListCustomClassesRequest(proto.Message):
         parent (str):
             Required. The parent, which owns this collection of custom
             classes. Format:
-            {api_version}/projects/{project}/locations/{location}/customClasses
+
+            ``projects/{project}/locations/{location}/customClasses``
+
+            Speech-to-Text supports three locations: ``global``, ``us``
+            (US North America), and ``eu`` (Europe). If you are calling
+            the ``speech.googleapis.com`` endpoint, use the ``global``
+            location. To specify a region, use a `regional
+            endpoint </speech-to-text/docs/endpoints>`__ with matching
+            ``us`` or ``eu`` location value.
         page_size (int):
             The maximum number of custom classes to
             return. The service may return fewer than this
@@ -268,7 +326,15 @@ class DeleteCustomClassRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the custom class to delete. Format:
-            {api_version}/projects/{project}/locations/{location}/customClasses/{custom_class}
+
+            ``projects/{project}/locations/{location}/customClasses/{custom_class}``
+
+            Speech-to-Text supports three locations: ``global``, ``us``
+            (US North America), and ``eu`` (Europe). If you are calling
+            the ``speech.googleapis.com`` endpoint, use the ``global``
+            location. To specify a region, use a `regional
+            endpoint </speech-to-text/docs/endpoints>`__ with matching
+            ``us`` or ``eu`` location value.
     """
 
     name = proto.Field(proto.STRING, number=1,)
