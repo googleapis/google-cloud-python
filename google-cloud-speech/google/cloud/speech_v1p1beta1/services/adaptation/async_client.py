@@ -187,7 +187,15 @@ class AdaptationAsyncClient:
             parent (:class:`str`):
                 Required. The parent resource where this phrase set will
                 be created. Format:
-                {api_version}/projects/{project}/locations/{location}/phraseSets
+
+                ``projects/{project}/locations/{location}/phraseSets``
+
+                Speech-to-Text supports three locations: ``global``,
+                ``us`` (US North America), and ``eu`` (Europe). If you
+                are calling the ``speech.googleapis.com`` endpoint, use
+                the ``global`` location. To specify a region, use a
+                `regional endpoint </speech-to-text/docs/endpoints>`__
+                with matching ``us`` or ``eu`` location value.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -280,7 +288,15 @@ class AdaptationAsyncClient:
             name (:class:`str`):
                 Required. The name of the phrase set to retrieve.
                 Format:
-                {api_version}/projects/{project}/locations/{location}/phraseSets/{phrase_set}
+
+                ``projects/{project}/locations/{location}/phraseSets/{phrase_set}``
+
+                Speech-to-Text supports three locations: ``global``,
+                ``us`` (US North America), and ``eu`` (Europe). If you
+                are calling the ``speech.googleapis.com`` endpoint, use
+                the ``global`` location. To specify a region, use a
+                `regional endpoint </speech-to-text/docs/endpoints>`__
+                with matching ``us`` or ``eu`` location value.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -351,9 +367,17 @@ class AdaptationAsyncClient:
                 The request object. Message sent by the client for the
                 `ListPhraseSet` method.
             parent (:class:`str`):
-                Required. The parent, which owns this
-                collection of phrase set. Format:
-                projects/{project}/locations/{location}
+                Required. The parent, which owns this collection of
+                phrase set. Format:
+
+                ``projects/{project}/locations/{location}``
+
+                Speech-to-Text supports three locations: ``global``,
+                ``us`` (US North America), and ``eu`` (Europe). If you
+                are calling the ``speech.googleapis.com`` endpoint, use
+                the ``global`` location. To specify a region, use a
+                `regional endpoint </speech-to-text/docs/endpoints>`__
+                with matching ``us`` or ``eu`` location value.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -437,7 +461,15 @@ class AdaptationAsyncClient:
 
                 The phrase set's ``name`` field is used to identify the
                 set to be updated. Format:
-                {api_version}/projects/{project}/locations/{location}/phraseSets/{phrase_set}
+
+                ``projects/{project}/locations/{location}/phraseSets/{phrase_set}``
+
+                Speech-to-Text supports three locations: ``global``,
+                ``us`` (US North America), and ``eu`` (Europe). If you
+                are calling the ``speech.googleapis.com`` endpoint, use
+                the ``global`` location. To specify a region, use a
+                `regional endpoint </speech-to-text/docs/endpoints>`__
+                with matching ``us`` or ``eu`` location value.
 
                 This corresponds to the ``phrase_set`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -518,7 +550,8 @@ class AdaptationAsyncClient:
                 `DeletePhraseSet` method.
             name (:class:`str`):
                 Required. The name of the phrase set to delete. Format:
-                {api_version}/projects/{project}/locations/{location}/phraseSets/{phrase_set}
+
+                ``projects/{project}/locations/{location}/phraseSets/{phrase_set}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -585,7 +618,15 @@ class AdaptationAsyncClient:
             parent (:class:`str`):
                 Required. The parent resource where this custom class
                 will be created. Format:
-                {api_version}/projects/{project}/locations/{location}/customClasses
+
+                ``projects/{project}/locations/{location}/customClasses``
+
+                Speech-to-Text supports three locations: ``global``,
+                ``us`` (US North America), and ``eu`` (Europe). If you
+                are calling the ``speech.googleapis.com`` endpoint, use
+                the ``global`` location. To specify a region, use a
+                `regional endpoint </speech-to-text/docs/endpoints>`__
+                with matching ``us`` or ``eu`` location value.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -682,7 +723,8 @@ class AdaptationAsyncClient:
             name (:class:`str`):
                 Required. The name of the custom class to retrieve.
                 Format:
-                {api_version}/projects/{project}/locations/{location}/customClasses/{custom_class}
+
+                ``projects/{project}/locations/{location}/customClasses/{custom_class}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -759,7 +801,15 @@ class AdaptationAsyncClient:
             parent (:class:`str`):
                 Required. The parent, which owns this collection of
                 custom classes. Format:
-                {api_version}/projects/{project}/locations/{location}/customClasses
+
+                ``projects/{project}/locations/{location}/customClasses``
+
+                Speech-to-Text supports three locations: ``global``,
+                ``us`` (US North America), and ``eu`` (Europe). If you
+                are calling the ``speech.googleapis.com`` endpoint, use
+                the ``global`` location. To specify a region, use a
+                `regional endpoint </speech-to-text/docs/endpoints>`__
+                with matching ``us`` or ``eu`` location value.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -843,7 +893,15 @@ class AdaptationAsyncClient:
 
                 The custom class's ``name`` field is used to identify
                 the custom class to be updated. Format:
-                {api_version}/projects/{project}/locations/{location}/customClasses/{custom_class}
+
+                ``projects/{project}/locations/{location}/customClasses/{custom_class}``
+
+                Speech-to-Text supports three locations: ``global``,
+                ``us`` (US North America), and ``eu`` (Europe). If you
+                are calling the ``speech.googleapis.com`` endpoint, use
+                the ``global`` location. To specify a region, use a
+                `regional endpoint </speech-to-text/docs/endpoints>`__
+                with matching ``us`` or ``eu`` location value.
 
                 This corresponds to the ``custom_class`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -929,7 +987,15 @@ class AdaptationAsyncClient:
             name (:class:`str`):
                 Required. The name of the custom class to delete.
                 Format:
-                {api_version}/projects/{project}/locations/{location}/customClasses/{custom_class}
+
+                ``projects/{project}/locations/{location}/customClasses/{custom_class}``
+
+                Speech-to-Text supports three locations: ``global``,
+                ``us`` (US North America), and ``eu`` (Europe). If you
+                are calling the ``speech.googleapis.com`` endpoint, use
+                the ``global`` location. To specify a region, use a
+                `regional endpoint </speech-to-text/docs/endpoints>`__
+                with matching ``us`` or ``eu`` location value.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
