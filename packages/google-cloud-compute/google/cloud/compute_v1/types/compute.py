@@ -7217,8 +7217,7 @@ class AutoscalingPolicyScalingSchedule(proto.Message):
             The time zone to use when interpreting the schedule. The
             value of this field must be a time zone name from the tz
             database: http://en.wikipedia.org/wiki/Tz_database. This
-            field is assigned a default value of ���UTC��� if left
-            empty.
+            field is assigned a default value of “UTC” if left empty.
 
             This field is a member of `oneof`_ ``_time_zone``.
     """
@@ -15082,7 +15081,8 @@ class ForwardingRule(proto.Message):
             different load balancing products as described in `Load
             balancing
             features <https://cloud.google.com/load-balancing/docs/features#protocols_from_the_load_balancer_to_the_backends>`__.
-            Check the IPProtocol enum for the list of possible values.
+            Check the IPProtocolEnum enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_I_p_protocol``.
         all_ports (bool):
@@ -15340,14 +15340,14 @@ class ForwardingRule(proto.Message):
             This field is a member of `oneof`_ ``_target``.
     """
 
-    class IPProtocol(proto.Enum):
+    class IPProtocolEnum(proto.Enum):
         r"""The IP protocol to which this rule applies. For protocol forwarding,
         valid options are TCP, UDP, ESP, AH, SCTP, ICMP and L3_DEFAULT. The
         valid IP protocols are different for different load balancing
         products as described in `Load balancing
         features <https://cloud.google.com/load-balancing/docs/features#protocols_from_the_load_balancer_to_the_backends>`__.
         """
-        UNDEFINED_I_P_PROTOCOL = 0
+        UNDEFINED_I_P_PROTOCOL_ENUM = 0
         AH = 2087
         ESP = 68962
         ICMP = 2241597
@@ -23840,8 +23840,8 @@ class InstanceGroupManagersApplyUpdatesRequest(proto.Message):
     Attributes:
         all_instances (bool):
             Flag to update all instances instead of
-            specified list of ���instances���. If the flag
-            is set to true then the instances may not be
+            specified list of “instances”. If the flag is
+            set to true then the instances may not be
             specified in the request.
 
             This field is a member of `oneof`_ ``_all_instances``.
@@ -41602,8 +41602,8 @@ class RegionInstanceGroupManagersApplyUpdatesRequest(proto.Message):
     Attributes:
         all_instances (bool):
             Flag to update all instances instead of
-            specified list of ���instances���. If the flag
-            is set to true then the instances may not be
+            specified list of “instances”. If the flag is
+            set to true then the instances may not be
             specified in the request.
 
             This field is a member of `oneof`_ ``_all_instances``.
