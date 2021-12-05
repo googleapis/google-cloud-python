@@ -409,7 +409,7 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
         Returns:
             google.cloud.dialogflowcx_v3.services.webhooks.pagers.ListWebhooksPager:
                 The response message for
-                   [Webhooks.ListWebhooks][google.cloud.dialogflow.cx.v3.Webhooks.ListWebhooks].
+                [Webhooks.ListWebhooks][google.cloud.dialogflow.cx.v3.Webhooks.ListWebhooks].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
