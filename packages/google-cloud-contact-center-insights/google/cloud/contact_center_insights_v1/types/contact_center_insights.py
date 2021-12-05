@@ -455,7 +455,18 @@ class ExportInsightsDataRequest(proto.Message):
             A fully qualified KMS key name for BigQuery
             tables protected by CMEK. Format:
             projects/{project}/locations/{location}/keyRings/{keyring}/cryptoKeys/{key}/cryptoKeyVersions/{version}
+        write_disposition (google.cloud.contact_center_insights_v1.types.ExportInsightsDataRequest.WriteDisposition):
+            Options for what to do if the destination
+            table already exists.
     """
+
+    class WriteDisposition(proto.Enum):
+        r"""Specifies the action that occurs if the destination table
+        already exists.
+        """
+        WRITE_DISPOSITION_UNSPECIFIED = 0
+        WRITE_TRUNCATE = 1
+        WRITE_APPEND = 2
 
     class BigQueryDestination(proto.Message):
         r"""A BigQuery Table Reference.
@@ -486,6 +497,7 @@ class ExportInsightsDataRequest(proto.Message):
     parent = proto.Field(proto.STRING, number=1,)
     filter = proto.Field(proto.STRING, number=3,)
     kms_key = proto.Field(proto.STRING, number=4,)
+    write_disposition = proto.Field(proto.ENUM, number=5, enum=WriteDisposition,)
 
 
 class ExportInsightsDataMetadata(proto.Message):

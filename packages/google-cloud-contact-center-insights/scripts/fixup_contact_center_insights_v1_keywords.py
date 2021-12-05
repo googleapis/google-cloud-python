@@ -50,7 +50,7 @@ class contact_center_insightsCallTransformer(cst.CSTTransformer):
         'delete_issue_model': ('name', ),
         'delete_phrase_matcher': ('name', ),
         'deploy_issue_model': ('name', ),
-        'export_insights_data': ('parent', 'big_query_destination', 'filter', 'kms_key', ),
+        'export_insights_data': ('parent', 'big_query_destination', 'filter', 'kms_key', 'write_disposition', ),
         'get_analysis': ('name', ),
         'get_conversation': ('name', 'view', ),
         'get_issue': ('name', ),
