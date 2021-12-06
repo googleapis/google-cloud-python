@@ -34,9 +34,13 @@ from sqlalchemy.sql.compiler import (
     GenericTypeCompiler,
     IdentifierPreparer,
     SQLCompiler,
+    OPERATORS,
     RESERVED_WORDS,
 )
+from sqlalchemy.sql.default_comparator import operator_lookup
+from sqlalchemy.sql.operators import json_getitem_op
 
+from google.cloud.spanner_v1.data_types import JsonObject
 from google.cloud import spanner_dbapi
 from google.cloud.sqlalchemy_spanner._opentelemetry_tracing import trace_call
 
@@ -45,6 +49,10 @@ from google.cloud.sqlalchemy_spanner._opentelemetry_tracing import trace_call
 def reset_connection(dbapi_conn, connection_record):
     """An event of returning a connection back to a pool."""
     dbapi_conn.connection.staleness = None
+
+
+# register a method to get a single value of a JSON object
+OPERATORS[json_getitem_op] = operator_lookup["json_getitem_op"]
 
 
 # Spanner-to-SQLAlchemy types map
@@ -60,7 +68,9 @@ _type_map = {
     "TIME": types.TIME,
     "TIMESTAMP": types.TIMESTAMP,
     "ARRAY": types.ARRAY,
+    "JSON": types.JSON,
 }
+
 
 _type_map_inv = {
     types.Boolean: "BOOL",
@@ -208,6 +218,53 @@ class SpannerSQLCompiler(SQLCompiler):
         return "%s LIKE %s" % (
             binary.left._compiler_dispatch(self, **kw),
             binary.right._compiler_dispatch(self, **kw),
+        )
+
+    def _generate_generic_binary(self, binary, opstring, eager_grouping=False, **kw):
+        """The method is overriden to process JSON data type cases."""
+        _in_binary = kw.get("_in_binary", False)
+
+        kw["_in_binary"] = True
+
+        if isinstance(opstring, str):
+            text = (
+                binary.left._compiler_dispatch(
+                    self, eager_grouping=eager_grouping, **kw
+                )
+                + opstring
+                + binary.right._compiler_dispatch(
+                    self, eager_grouping=eager_grouping, **kw
+                )
+            )
+            if _in_binary and eager_grouping:
+                text = "(%s)" % text
+        else:
+            # got JSON data
+            right_value = getattr(
+                binary.right, "value", None
+            ) or binary.right._compiler_dispatch(
+                self, eager_grouping=eager_grouping, **kw
+            )
+
+            text = (
+                binary.left._compiler_dispatch(
+                    self, eager_grouping=eager_grouping, **kw
+                )
+                + """, "$."""
+                + str(right_value)
+                + '"'
+            )
+            text = "JSON_VALUE(%s)" % text
+
+        return text
+
+    def visit_json_path_getitem_op_binary(self, binary, operator, **kw):
+        """Build a JSON_VALUE() function call."""
+        expr = """JSON_VALUE(%s, "$.%s")"""
+
+        return expr % (
+            self.process(binary.left, **kw),
+            self.process(binary.right, **kw),
         )
 
     def render_literal_value(self, value, type_):
@@ -404,6 +461,9 @@ class SpannerTypeCompiler(GenericTypeCompiler):
     def visit_BIGINT(self, type_, **kw):
         return "INT64"
 
+    def visit_JSON(self, type_, **kw):
+        return "JSON"
+
 
 class SpannerDialect(DefaultDialect):
     """Cloud Spanner dialect.
@@ -434,6 +494,8 @@ class SpannerDialect(DefaultDialect):
     statement_compiler = SpannerSQLCompiler
     type_compiler = SpannerTypeCompiler
     execution_ctx_cls = SpannerExecutionContext
+    _json_serializer = JsonObject
+    _json_deserializer = JsonObject
 
     @classmethod
     def dbapi(cls):

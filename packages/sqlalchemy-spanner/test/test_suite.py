@@ -20,6 +20,7 @@ import operator
 import os
 import pkg_resources
 import pytest
+import random
 import unittest
 from unittest import mock
 
@@ -61,7 +62,6 @@ from sqlalchemy.testing.fixtures import (
 )
 
 from google.api_core.datetime_helpers import DatetimeWithNanoseconds
-
 from google.cloud import spanner_dbapi
 
 from sqlalchemy.testing.suite.test_cte import *  # noqa: F401, F403
@@ -98,15 +98,17 @@ from sqlalchemy.testing.suite.test_reflection import (
 )
 from sqlalchemy.testing.suite.test_results import RowFetchTest as _RowFetchTest
 from sqlalchemy.testing.suite.test_types import (  # noqa: F401, F403
+    _DateFixture as _DateFixtureTest,
+    _LiteralRoundTripFixture,
+    _UnicodeFixture as _UnicodeFixtureTest,
     BooleanTest as _BooleanTest,
     DateTest as _DateTest,
-    _DateFixture as _DateFixtureTest,
     DateTimeHistoricTest,
     DateTimeCoercedToDateTimeTest as _DateTimeCoercedToDateTimeTest,
     DateTimeMicrosecondsTest as _DateTimeMicrosecondsTest,
     DateTimeTest as _DateTimeTest,
     IntegerTest as _IntegerTest,
-    _LiteralRoundTripFixture,
+    JSONTest as _JSONTest,
     NumericTest as _NumericTest,
     StringTest as _StringTest,
     TextTest as _TextTest,
@@ -115,7 +117,6 @@ from sqlalchemy.testing.suite.test_types import (  # noqa: F401, F403
     TimestampMicrosecondsTest,
     UnicodeVarcharTest as _UnicodeVarcharTest,
     UnicodeTextTest as _UnicodeTextTest,
-    _UnicodeFixture as _UnicodeFixtureTest,
 )
 from test._helpers import get_db_url
 
@@ -1751,3 +1752,128 @@ class ComputedReflectionTest(_ComputedReflectionTest, ComputedReflectionFixtureT
         is_true("computed" in compData)
         is_true("sqltext" in compData["computed"])
         eq_(self.normalize(compData["computed"]["sqltext"]), "normal+42")
+
+
+@pytest.mark.skipif(
+    bool(os.environ.get("SPANNER_EMULATOR_HOST")), reason="Skipped on emulator"
+)
+class JSONTest(_JSONTest):
+    @pytest.mark.skip("Values without keys are not supported.")
+    def test_single_element_round_trip(self, element):
+        pass
+
+    def _test_round_trip(self, data_element):
+        data_table = self.tables.data_table
+
+        config.db.execute(
+            data_table.insert(),
+            {"id": random.randint(1, 100000000), "name": "row1", "data": data_element},
+        )
+
+        row = config.db.execute(select([data_table.c.data])).first()
+
+        eq_(row, (data_element,))
+
+    def test_unicode_round_trip(self):
+        # note we include Unicode supplementary characters as well
+        with config.db.connect() as conn:
+            conn.execute(
+                self.tables.data_table.insert(),
+                {
+                    "id": random.randint(1, 100000000),
+                    "name": "r1",
+                    "data": {
+                        util.u("réve🐍 illé"): util.u("réve🐍 illé"),
+                        "data": {"k1": util.u("drôl🐍e")},
+                    },
+                },
+            )
+
+            eq_(
+                conn.scalar(select([self.tables.data_table.c.data])),
+                {
+                    util.u("réve🐍 illé"): util.u("réve🐍 illé"),
+                    "data": {"k1": util.u("drôl🐍e")},
+                },
+            )
+
+    @pytest.mark.skip("Parameterized types are not supported.")
+    def test_eval_none_flag_orm(self):
+        pass
+
+    @pytest.mark.skip(
+        "Spanner JSON_VALUE() always returns STRING,"
+        "thus, this test case can't be executed."
+    )
+    def test_index_typed_comparison(self):
+        pass
+
+    @pytest.mark.skip(
+        "Spanner JSON_VALUE() always returns STRING,"
+        "thus, this test case can't be executed."
+    )
+    def test_path_typed_comparison(self):
+        pass
+
+    @pytest.mark.skip("Custom JSON de-/serializers are not supported.")
+    def test_round_trip_custom_json(self):
+        pass
+
+    def _index_fixtures(fn):
+        fn = testing.combinations(
+            ("boolean", True),
+            ("boolean", False),
+            ("boolean", None),
+            ("string", "some string"),
+            ("string", None),
+            ("integer", 15),
+            ("integer", 1),
+            ("integer", 0),
+            ("integer", None),
+            ("float", 28.5),
+            ("float", None),
+            id_="sa",
+        )(fn)
+        return fn
+
+    @_index_fixtures
+    def test_index_typed_access(self, datatype, value):
+        data_table = self.tables.data_table
+        data_element = {"key1": value}
+        with config.db.connect() as conn:
+            conn.execute(
+                data_table.insert(),
+                {
+                    "id": random.randint(1, 100000000),
+                    "name": "row1",
+                    "data": data_element,
+                    "nulldata": data_element,
+                },
+            )
+
+            expr = data_table.c.data["key1"]
+            expr = getattr(expr, "as_%s" % datatype)()
+
+            roundtrip = conn.scalar(select([expr]))
+            if roundtrip in ("true", "false", None):
+                roundtrip = str(roundtrip).capitalize()
+
+            eq_(str(roundtrip), str(value))
+
+    @pytest.mark.skip(
+        "Spanner doesn't support type casts inside JSON_VALUE() function."
+    )
+    def test_round_trip_json_null_as_json_null(self):
+        pass
+
+    @pytest.mark.skip(
+        "Spanner doesn't support type casts inside JSON_VALUE() function."
+    )
+    def test_round_trip_none_as_json_null(self):
+        pass
+
+    @pytest.mark.skip(
+        "Spanner doesn't support type casts inside JSON_VALUE() function."
+    )
+    def test_round_trip_none_as_sql_null(self):
+        pass
