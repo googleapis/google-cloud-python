@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-monitoring-metrics-scopes/compare/v0.1.1...v1.0.0) (2021-12-03)
+
+
+### Features
+
+* bump release level to production/stable ([#7](https://www.github.com/googleapis/python-monitoring-metrics-scopes/issues/7)) ([52fe836](https://www.github.com/googleapis/python-monitoring-metrics-scopes/commit/52fe8369d035a1f906488789948dab480eaca59b))
+
 ### [0.1.1](https://www.github.com/googleapis/python-monitoring-metrics-scopes/compare/v0.1.0...v0.1.1) (2021-11-01)
 
 
