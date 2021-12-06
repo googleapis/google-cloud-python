@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.3.1](https://www.github.com/googleapis/python-db-dtypes-pandas/compare/v0.3.0...v0.3.1) (2021-12-04)
+
+
+### Bug Fixes
+
+* raise ValueError if date is out-of-bounds ([#46](https://www.github.com/googleapis/python-db-dtypes-pandas/issues/46)) ([4253358](https://www.github.com/googleapis/python-db-dtypes-pandas/commit/4253358b673965f7d2823b750f56553f6627e130))
+
 ## [0.3.0](https://www.github.com/googleapis/python-db-dtypes-pandas/compare/v0.2.0...v0.3.0) (2021-11-08)
 
 
