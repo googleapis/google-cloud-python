@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-domains/compare/v0.4.1...v1.0.0) (2021-12-03)
+
+
+### Features
+
+* bump release level to production/stable ([#82](https://www.github.com/googleapis/python-domains/issues/82)) ([24606e7](https://www.github.com/googleapis/python-domains/commit/24606e7dd3a90509e702d25edea9b0256420e3ae))
+
 ### [0.4.1](https://www.github.com/googleapis/python-domains/compare/v0.4.0...v0.4.1) (2021-11-01)
 
 
