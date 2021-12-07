@@ -376,7 +376,7 @@ class Client(ClientWithProject):
             if monitored_resource.type == _GAE_RESOURCE_TYPE:
                 return CloudLoggingHandler(self, resource=monitored_resource, **kw)
             elif monitored_resource.type == _GKE_RESOURCE_TYPE:
-                return ContainerEngineHandler(**kw)
+                return StructuredLogHandler(**kw, project_id=self.project)
             elif monitored_resource.type == _GCF_RESOURCE_TYPE:
                 # __stdout__ stream required to support structured logging on Python 3.7
                 kw["stream"] = kw.get("stream", sys.__stdout__)

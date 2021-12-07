@@ -551,6 +551,31 @@ class TestLogging(unittest.TestCase):
         )
         self.assertEqual(entries[0].resource.type, extra["resource"].type)
 
+    def test_handlers_w_json_fields(self):
+        LOG_MESSAGE = "Testing with json_field extras."
+        LOGGER_NAME = "json_field_extras"
+        handler_name = self._logger_name(LOGGER_NAME)
+
+        handler = CloudLoggingHandler(
+            Config.CLIENT, name=handler_name, transport=SyncTransport
+        )
+
+        # only create the logger to delete, hidden otherwise
+        logger = Config.CLIENT.logger(handler.name)
+        self.to_delete.append(logger)
+
+        cloud_logger = logging.getLogger(LOGGER_NAME)
+        cloud_logger.addHandler(handler)
+        extra = {"json_fields": {"hello": "world", "two": 2}}
+        cloud_logger.warn(LOG_MESSAGE, extra=extra)
+
+        entries = _list_entries(logger)
+        self.assertEqual(len(entries), 1)
+        payload = entries[0].payload
+        self.assertEqual(payload["message"], LOG_MESSAGE)
+        self.assertEqual(payload["hello"], "world")
+        self.assertEqual(payload["two"], 2)
+
     def test_log_root_handler(self):
         LOG_MESSAGE = "It was the best of times."
 
