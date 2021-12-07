@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.4.0](https://www.github.com/googleapis/python-dlp/compare/v3.3.1...v3.4.0) (2021-12-03)
+
+
+### Features
+
+* added deidentify replacement dictionaries ([#296](https://www.github.com/googleapis/python-dlp/issues/296)) ([63e9661](https://www.github.com/googleapis/python-dlp/commit/63e96614ba72e4ae8e0eafe4139d5329e75a3c18))
+* added field for BigQuery inspect template inclusion lists ([63e9661](https://www.github.com/googleapis/python-dlp/commit/63e96614ba72e4ae8e0eafe4139d5329e75a3c18))
+* added field to support infotype versioning ([63e9661](https://www.github.com/googleapis/python-dlp/commit/63e96614ba72e4ae8e0eafe4139d5329e75a3c18))
+
 ### [3.3.1](https://www.github.com/googleapis/python-dlp/compare/v3.3.0...v3.3.1) (2021-11-05)
 
 
