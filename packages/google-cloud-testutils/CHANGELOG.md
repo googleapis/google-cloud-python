@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.1](https://www.github.com/googleapis/python-test-utils/compare/v1.3.0...v1.3.1) (2021-12-07)
+
+
+### Bug Fixes
+
+* ensure that 'test_utils/py.typed' is packaged ([#76](https://www.github.com/googleapis/python-test-utils/issues/76)) ([4beb565](https://www.github.com/googleapis/python-test-utils/commit/4beb565a4063cb462dc44e469fb91212607016f3))
+
 ## [1.3.0](https://www.github.com/googleapis/python-test-utils/compare/v1.2.0...v1.3.0) (2021-11-16)
 
 
