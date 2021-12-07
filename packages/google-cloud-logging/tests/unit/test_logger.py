@@ -937,6 +937,36 @@ class TestLogger(unittest.TestCase):
             },
         )
 
+    def test_list_entries_folder(self):
+        from google.cloud.logging import TextEntry
+        from google.cloud.logging import Client
+
+        client = Client(
+            project=self.PROJECT, credentials=_make_credentials(), _use_grpc=False
+        )
+        FOLDER_ID = "123"
+        LOG_NAME = f"folders/{FOLDER_ID}/logs/cloudaudit.googleapis.com%2Fdata_access"
+
+        ENTRIES = [
+            {
+                "textPayload": "hello world",
+                "insertId": "1",
+                "resource": {"type": "global"},
+                "logName": LOG_NAME,
+            },
+        ]
+        returned = {"entries": ENTRIES}
+        client._connection = _Connection(returned)
+
+        iterator = client.list_entries(resource_names=[f"folder/{FOLDER_ID}"],)
+        entries = list(iterator)
+        # Check the entries.
+        self.assertEqual(len(entries), 1)
+        entry = entries[0]
+        self.assertIsInstance(entry, TextEntry)
+        self.assertIsNone(entry.logger)
+        self.assertEqual(entry.log_name, LOG_NAME)
+
 
 class TestBatch(unittest.TestCase):
 

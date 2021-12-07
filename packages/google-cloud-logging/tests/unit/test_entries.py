@@ -18,10 +18,10 @@ import mock
 
 
 class Test_logger_name_from_path(unittest.TestCase):
-    def _call_fut(self, path):
+    def _call_fut(self, path, project=None):
         from google.cloud.logging_v2.entries import logger_name_from_path
 
-        return logger_name_from_path(path)
+        return logger_name_from_path(path, project)
 
     def test_w_simple_name(self):
         LOGGER_NAME = "LOGGER_NAME"
@@ -36,6 +36,30 @@ class Test_logger_name_from_path(unittest.TestCase):
         PATH = "projects/%s/logs/%s" % (PROJECT, LOGGER_NAME)
         logger_name = self._call_fut(PATH)
         self.assertEqual(logger_name, LOGGER_NAME)
+
+    def test_w_wrong_project(self):
+        LOGGER_NAME = "LOGGER_NAME"
+        IN_PROJECT = "in-project"
+        PATH_PROJECT = "path-project"
+        PATH = "projects/%s/logs/%s" % (PATH_PROJECT, LOGGER_NAME)
+        with self.assertRaises(ValueError):
+            self._call_fut(PATH, IN_PROJECT)
+
+    def test_invalid_inputs(self):
+        invalid_list = [
+            "",
+            "abc/123/logs/456",
+            "projects//logs/",
+            "projects/123/logs",
+            "projects/123logs/",
+            "projects123/logs",
+            "project/123",
+            "projects123logs456",
+            "/logs/123",
+        ]
+        for path in invalid_list:
+            with self.assertRaises(ValueError):
+                self._call_fut(path)
 
 
 class Test__int_or_none(unittest.TestCase):
@@ -299,6 +323,62 @@ class TestLogEntry(unittest.TestCase):
 
         self.assertEqual(entry.log_name, LOG_NAME)
         self.assertIs(entry.logger, LOGGER)
+        self.assertEqual(entry.insert_id, IID)
+        self.assertEqual(entry.timestamp, NOW)
+        self.assertEqual(entry.received_timestamp, LATER)
+        self.assertEqual(entry.labels, LABELS)
+        self.assertEqual(entry.trace, TRACE)
+        self.assertEqual(entry.span_id, SPANID)
+        self.assertTrue(entry.trace_sampled)
+
+        source_location = entry.source_location
+        self.assertEqual(source_location["file"], FILE)
+        self.assertEqual(source_location["line"], LINE_NO)
+        self.assertEqual(source_location["function"], FUNCTION)
+
+        self.assertEqual(entry.operation, OPERATION)
+        self.assertIsNone(entry.payload)
+
+    def test_from_api_repr_w_folder_path(self):
+        from datetime import datetime
+        from datetime import timedelta
+        from google.cloud._helpers import UTC
+
+        client = _Client(self.PROJECT)
+        IID = "IID"
+        NOW = datetime.utcnow().replace(tzinfo=UTC)
+        LATER = NOW + timedelta(seconds=1)
+        TIMESTAMP = _datetime_to_rfc3339_w_nanos(NOW)
+        RECEIVED = _datetime_to_rfc3339_w_nanos(LATER)
+        LOG_NAME = "folders/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME)
+        LABELS = {"foo": "bar", "baz": "qux"}
+        TRACE = "12345678-1234-5678-1234-567812345678"
+        SPANID = "000000000000004a"
+        FILE = "my_file.py"
+        LINE_NO = 123
+        FUNCTION = "my_function"
+        SOURCE_LOCATION = {"file": FILE, "line": str(LINE_NO), "function": FUNCTION}
+        OP_ID = "OP_ID"
+        PRODUCER = "PRODUCER"
+        OPERATION = {"id": OP_ID, "producer": PRODUCER, "first": True, "last": False}
+        API_REPR = {
+            "logName": LOG_NAME,
+            "insertId": IID,
+            "timestamp": TIMESTAMP,
+            "receiveTimestamp": RECEIVED,
+            "labels": LABELS,
+            "trace": TRACE,
+            "spanId": SPANID,
+            "traceSampled": True,
+            "sourceLocation": SOURCE_LOCATION,
+            "operation": OPERATION,
+        }
+        klass = self._get_target_class()
+
+        entry = klass.from_api_repr(API_REPR, client)
+
+        self.assertEqual(entry.log_name, LOG_NAME)
+        self.assertIsNone(entry.logger)
         self.assertEqual(entry.insert_id, IID)
         self.assertEqual(entry.timestamp, NOW)
         self.assertEqual(entry.received_timestamp, LATER)
