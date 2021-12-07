@@ -28,6 +28,7 @@ s.move(
     templated_files,
     excludes=[
         ".coveragerc",
+        "MANIFEST.in",  # no 'google' package
         "noxfile.py",  # noxfile is non-standard
         "docs/**/*",  # no docs to publish
         ".kokoro/docs/",  
