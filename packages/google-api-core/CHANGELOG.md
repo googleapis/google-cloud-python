@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.3.0](https://www.github.com/googleapis/python-api-core/compare/v2.2.2...v2.3.0) (2021-11-25)
+
+
+### Features
+
+* add operations rest client to support long-running operations. ([#311](https://www.github.com/googleapis/python-api-core/issues/311)) ([ce1adf3](https://www.github.com/googleapis/python-api-core/commit/ce1adf395982ede157c0f25a920946bb52789873))
+
+
+### Bug Fixes
+
+* handle bare 'grpc.Call' in 'from_grpc_error' ([#298](https://www.github.com/googleapis/python-api-core/issues/298)) ([060b339](https://www.github.com/googleapis/python-api-core/commit/060b339e3af296dd1772bfc1b4a0d2b4264cae1f))
+
 ### [2.2.2](https://www.github.com/googleapis/python-api-core/compare/v2.2.1...v2.2.2) (2021-11-02)
 
 
