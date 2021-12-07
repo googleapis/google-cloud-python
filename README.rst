@@ -187,6 +187,9 @@ Libraries
    * - `Document Understanding API <https://github.com/googleapis/python-documentai>`_
      - |ga|
      - |PyPI-google-cloud-documentai|
+   * - `Domains <https://github.com/googleapis/python-domains>`_
+     - |ga|
+     - |PyPI-google-cloud-domains|
    * - `Essential Contacts API <https://github.com/googleapis/python-essential-contacts>`_
      - |ga|
      - |PyPI-google-cloud-essential-contacts|
@@ -241,6 +244,9 @@ Libraries
    * - `Memorystore for Memcached <https://github.com/googleapis/python-memcache>`_
      - |ga|
      - |PyPI-google-cloud-memcache|
+   * - `Metrics Scopes API <https://github.com/googleapis/python-monitoring-metrics-scopes>`_
+     - |ga|
+     - |PyPI-google-cloud-monitoring-metrics-scopes|
    * - `Monitoring Dashboards <https://github.com/googleapis/python-monitoring-dashboards>`_
      - |ga|
      - |PyPI-google-cloud-monitoring-dashboards|
@@ -382,9 +388,6 @@ Libraries
    * - `Dataflow <https://github.com/googleapis/python-dataflow-client>`_
      - |beta|
      - |PyPI-google-cloud-dataflow-client|
-   * - `Domains <https://github.com/googleapis/python-domains>`_
-     - |beta|
-     - |PyPI-google-cloud-domains|
    * - `Error Reporting <https://github.com/googleapis/python-error-reporting>`_
      - |beta|
      - |PyPI-google-cloud-error-reporting|
@@ -400,9 +403,6 @@ Libraries
    * - `Media Translation <https://github.com/googleapis/python-media-translation>`_
      - |beta|
      - |PyPI-google-cloud-media-translation|
-   * - `Metrics Scopes API <https://github.com/googleapis/python-monitoring-metrics-scopes>`_
-     - |beta|
-     - |PyPI-google-cloud-monitoring-metrics-scopes|
    * - `Network Security API <https://github.com/googleapis/python-network-security>`_
      - |beta|
      - |PyPI-google-cloud-network-security|
@@ -530,6 +530,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-dialogflow-cx
 .. |PyPI-google-cloud-documentai| image:: https://img.shields.io/pypi/v/google-cloud-documentai.svg
      :target: https://pypi.org/project/google-cloud-documentai
+.. |PyPI-google-cloud-domains| image:: https://img.shields.io/pypi/v/google-cloud-domains.svg
+     :target: https://pypi.org/project/google-cloud-domains
 .. |PyPI-google-cloud-essential-contacts| image:: https://img.shields.io/pypi/v/google-cloud-essential-contacts.svg
      :target: https://pypi.org/project/google-cloud-essential-contacts
 .. |PyPI-google-cloud-eventarc| image:: https://img.shields.io/pypi/v/google-cloud-eventarc.svg
@@ -566,6 +568,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-managed-identities
 .. |PyPI-google-cloud-memcache| image:: https://img.shields.io/pypi/v/google-cloud-memcache.svg
      :target: https://pypi.org/project/google-cloud-memcache
+.. |PyPI-google-cloud-monitoring-metrics-scopes| image:: https://img.shields.io/pypi/v/google-cloud-monitoring-metrics-scopes.svg
+     :target: https://pypi.org/project/google-cloud-monitoring-metrics-scopes
 .. |PyPI-google-cloud-monitoring-dashboards| image:: https://img.shields.io/pypi/v/google-cloud-monitoring-dashboards.svg
      :target: https://pypi.org/project/google-cloud-monitoring-dashboards
 .. |PyPI-google-cloud-ndb| image:: https://img.shields.io/pypi/v/google-cloud-ndb.svg
@@ -660,8 +664,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-datalabeling
 .. |PyPI-google-cloud-dataflow-client| image:: https://img.shields.io/pypi/v/google-cloud-dataflow-client.svg
      :target: https://pypi.org/project/google-cloud-dataflow-client
-.. |PyPI-google-cloud-domains| image:: https://img.shields.io/pypi/v/google-cloud-domains.svg
-     :target: https://pypi.org/project/google-cloud-domains
 .. |PyPI-google-cloud-error-reporting| image:: https://img.shields.io/pypi/v/google-cloud-error-reporting.svg
      :target: https://pypi.org/project/google-cloud-error-reporting
 .. |PyPI-google-cloud-gke-connect-gateway| image:: https://img.shields.io/pypi/v/google-cloud-gke-connect-gateway.svg
@@ -672,8 +674,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-life-sciences
 .. |PyPI-google-cloud-media-translation| image:: https://img.shields.io/pypi/v/google-cloud-media-translation.svg
      :target: https://pypi.org/project/google-cloud-media-translation
-.. |PyPI-google-cloud-monitoring-metrics-scopes| image:: https://img.shields.io/pypi/v/google-cloud-monitoring-metrics-scopes.svg
-     :target: https://pypi.org/project/google-cloud-monitoring-metrics-scopes
 .. |PyPI-google-cloud-network-security| image:: https://img.shields.io/pypi/v/google-cloud-network-security.svg
      :target: https://pypi.org/project/google-cloud-network-security
 .. |PyPI-db-dtypes| image:: https://img.shields.io/pypi/v/db-dtypes.svg
