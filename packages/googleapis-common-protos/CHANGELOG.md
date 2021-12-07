@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.54.0](https://www.github.com/googleapis/python-api-common-protos/compare/v1.53.0...v1.54.0) (2021-12-07)
+
+
+### Features
+
+* add extended_operations.proto ([#77](https://www.github.com/googleapis/python-api-common-protos/issues/77)) ([bc85849](https://www.github.com/googleapis/python-api-common-protos/commit/bc85849e21494b267d87cd6dc5d0a0e23e012470))
+* add google/api/routing.proto ([#75](https://www.github.com/googleapis/python-api-common-protos/issues/75)) ([1ae0bbc](https://www.github.com/googleapis/python-api-common-protos/commit/1ae0bbcc9747af4dd467e7a246c1a2a4cd5ef2ec))
+
 ## [1.53.0](https://www.github.com/googleapis/python-api-common-protos/compare/v1.52.0...v1.53.0) (2021-02-25)
 
 
