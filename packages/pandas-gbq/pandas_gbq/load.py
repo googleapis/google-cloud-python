@@ -90,12 +90,13 @@ def cast_dataframe_for_parquet(
             # Use extension dtype first so that it uses the correct equality operator.
             and db_dtypes.DateDtype() != dataframe[column_name].dtype
         ):
-            # Construct converted column manually, because I can't use
-            # .astype() with DateDtype. With .astype(), I get the error:
-            #
-            # TypeError: Cannot interpret '<db_dtypes.DateDtype ...>' as a data type
-            cast_column = pandas.Series(
-                dataframe[column_name], dtype=db_dtypes.DateDtype()
+            cast_column = dataframe[column_name].astype(
+                dtype=db_dtypes.DateDtype(),
+                # Return the original column if there was an error converting
+                # to the dtype, such as is there is a date outside the
+                # supported range.
+                # https://github.com/googleapis/python-bigquery-pandas/issues/441
+                errors="ignore",
             )
         elif column_type in {"NUMERIC", "DECIMAL", "BIGNUMERIC", "BIGDECIMAL"}:
             cast_column = dataframe[column_name].map(decimal.Decimal)

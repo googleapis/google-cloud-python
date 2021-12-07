@@ -188,6 +188,54 @@ DATAFRAME_ROUND_TRIPS = [
             {"name": "num_col", "type": "NUMERIC"},
         ],
     ),
+    pytest.param(
+        *DataFrameRoundTripTestCase(
+            input_df=pandas.DataFrame(
+                {
+                    "row_num": [1, 2, 3],
+                    # DATE valuess outside the pandas range for timestamp
+                    # aren't supported by the db-dtypes package.
+                    # https://github.com/googleapis/python-bigquery-pandas/issues/441
+                    "date_col": [
+                        datetime.date(1, 1, 1),
+                        datetime.date(1970, 1, 1),
+                        datetime.date(9999, 12, 31),
+                    ],
+                    # TODO: DATETIME/TIMESTAMP values outside of the range for
+                    # pandas timestamp require `date_as_object` parameter in
+                    # google-cloud-bigquery versions 1.x and 2.x.
+                    # https://github.com/googleapis/python-bigquery-pandas/issues/365
+                    # "datetime_col": [
+                    #     datetime.datetime(1, 1, 1),
+                    #     datetime.datetime(1970, 1, 1),
+                    #     datetime.datetime(9999, 12, 31, 23, 59, 59, 999999),
+                    # ],
+                    # "timestamp_col": [
+                    #     datetime.datetime(1, 1, 1, tzinfo=datetime.timezone.utc),
+                    #     datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc),
+                    #     datetime.datetime(
+                    #         9999,
+                    #         12,
+                    #         31,
+                    #         23,
+                    #         59,
+                    #         59,
+                    #         999999,
+                    #         tzinfo=datetime.timezone.utc,
+                    #     ),
+                    # ],
+                },
+                columns=["row_num", "date_col", "datetime_col", "timestamp_col"],
+            ),
+            table_schema=[
+                {"name": "row_num", "type": "INTEGER"},
+                {"name": "date_col", "type": "DATE"},
+                {"name": "datetime_col", "type": "DATETIME"},
+                {"name": "timestamp_col", "type": "TIMESTAMP"},
+            ],
+        ),
+        id="issue365-extreme-datetimes",
+    ),
 ]
 
 

@@ -1,6 +1,6 @@
 codecov
 coverage
-db-dtypes==0.3.0
+db-dtypes==0.3.1
 fastavro
 flake8
 numpy==1.16.6
