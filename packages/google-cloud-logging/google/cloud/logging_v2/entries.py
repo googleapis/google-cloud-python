@@ -46,11 +46,12 @@ _LOGGER_TEMPLATE = re.compile(
 )
 
 
-def logger_name_from_path(path):
+def logger_name_from_path(path, project=None):
     """Validate a logger URI path and get the logger name.
 
     Args:
         path (str): URI path for a logger API request
+        project (str): The project the path is expected to belong to
 
     Returns:
         str: Logger name parsed from ``path``.
@@ -59,7 +60,7 @@ def logger_name_from_path(path):
         ValueError: If the ``path`` is ill-formed of if the project
             from ``path`` does not agree with the ``project`` passed in.
     """
-    return _name_from_project_path(path, None, _LOGGER_TEMPLATE)
+    return _name_from_project_path(path, project, _LOGGER_TEMPLATE)
 
 
 def _int_or_none(value):
@@ -155,7 +156,8 @@ class LogEntry(_LogEntryTuple):
                 Client which holds credentials and project configuration.
             loggers (Optional[dict]):
                 A mapping of logger fullnames -> loggers.  If not
-                passed, the entry will have a newly-created logger.
+                passed, the entry will have a newly-created logger if possible,
+                or an empty logger field if not.
 
         Returns:
             google.cloud.logging.entries.LogEntry: Log entry parsed from ``resource``.
@@ -165,8 +167,13 @@ class LogEntry(_LogEntryTuple):
         logger_fullname = resource["logName"]
         logger = loggers.get(logger_fullname)
         if logger is None:
-            logger_name = logger_name_from_path(logger_fullname)
-            logger = loggers[logger_fullname] = client.logger(logger_name)
+            # attempt to create a logger if possible
+            try:
+                logger_name = logger_name_from_path(logger_fullname, client.project)
+                logger = loggers[logger_fullname] = client.logger(logger_name)
+            except ValueError:
+                # log name is not scoped to a project. Leave logger as None
+                pass
         payload = cls._extract_payload(resource)
         insert_id = resource.get("insertId")
         timestamp = resource.get("timestamp")
