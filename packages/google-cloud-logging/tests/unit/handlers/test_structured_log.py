@@ -321,3 +321,26 @@ class TestStructuredLogHandler(unittest.TestCase):
             result = json.loads(handler.format(record))
             for (key, value) in expected_payload.items():
                 self.assertEqual(value, result[key])
+
+    def test_format_with_json_fields(self):
+        """
+        User can add json_fields to the record, which should populate the payload
+        """
+        import logging
+        import json
+
+        handler = self._make_one()
+        message = "name: %s"
+        name_arg = "Daniel"
+        expected_result = "name: Daniel"
+        json_fields = {"hello": "world", "number": 12}
+        record = logging.LogRecord(
+            None, logging.INFO, None, None, message, name_arg, None,
+        )
+        record.created = None
+        setattr(record, "json_fields", json_fields)
+        handler.filter(record)
+        result = json.loads(handler.format(record))
+        self.assertEqual(result["message"], expected_result)
+        self.assertEqual(result["hello"], "world")
+        self.assertEqual(result["number"], 12)
