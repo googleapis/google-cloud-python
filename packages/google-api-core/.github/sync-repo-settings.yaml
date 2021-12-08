@@ -1,3 +1,28 @@
+# https://github.com/googleapis/repo-automation-bots/tree/main/packages/sync-repo-settings
+# Rules for main branch protection
+branchProtectionRules:
+# Identifies the protection rule pattern. Name of the branch to be protected.
+# Defaults to `main`
+- pattern: main
+  requiresCodeOwnerReviews: true
+  requiresStrictStatusChecks: true
+  requiredStatusCheckContexts:
+    - 'cla/google'
+    # No Kokoro:  the following are Github actions
+    - 'lint-mypy'
+    - 'unit-3.6'
+    - 'unit-3.7'
+    - 'unit-3.8'
+    - 'unit-3.9'
+    - 'unit-3.10'
+    - 'unit_grpc_gcp-3.6'
+    - 'unit_grpc_gcp-3.7'
+    - 'unit_grpc_gcp-3.8'
+    - 'unit_grpc_gcp-3.9'
+    - 'unit_grpc_gcp-3.10'
+    - 'unit_wo_grpc-3.6'
+    - 'unit_wo_grpc-3.10'
+    - 'cover'
 permissionRules:
   - team: actools-python
     permission: admin
