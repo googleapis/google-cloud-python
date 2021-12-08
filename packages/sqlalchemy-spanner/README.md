@@ -2,9 +2,7 @@
 
 Spanner dialect for SQLAlchemy represents an interface API designed to make it possible to control Cloud Spanner databases with SQLAlchemy API. The dialect is built on top of [the Spanner DB API](https://github.com/googleapis/python-spanner/tree/master/google/cloud/spanner_dbapi), which is designed in accordance with [PEP-249](https://www.python.org/dev/peps/pep-0249/).
 
-This project has **Preview** release status. Known limitations are listed [here](#features-and-limitations). All supported features have been tested and verified to work with the test configurations. There may be configurations and/or data model variations that have not yet been covered by the tests and that show unexpected behavior. Please report any problems that you might encounter by [creating a new issue](https://github.com/cloudspannerecosystem/python-spanner-sqlalchemy/issues/new).
-
-**NOTE: This project may still make breaking changes without prior notice and should not yet be used for production purposes.**  
+Known limitations are listed [here](#features-and-limitations). All supported features have been tested and verified to work with the test configurations. There may be configurations and/or data model variations that have not yet been covered by the tests and that show unexpected behavior. Please report any problems that you might encounter by [creating a new issue](https://github.com/googleapis/python-spanner-sqlalchemy/issues/new).
 
 - [Cloud Spanner product documentation](https://cloud.google.com/spanner/docs)
 - [SQLAlchemy product documentation](https://www.sqlalchemy.org/)
@@ -22,7 +20,7 @@ In order to use this package, you first need to go through the following steps:
 
 To install an in-development version of the package, clone its Git-repository:
 ```
-git clone https://github.com/cloudspannerecosystem/python-spanner-sqlalchemy.git
+git clone https://github.com/googleapis/python-spanner-sqlalchemy.git
 ```
 Next install the package from the package `setup.py` file:
 ```
@@ -291,11 +289,11 @@ The dialect test suite can be runned on [Spanner emulator](https://cloud.google.
 
 ## Contributing
 
-Contributions to this library are welcome and encouraged. Please report issues, file feature requests, and send pull requests. See [CONTRIBUTING](https://github.com/cloudspannerecosystem/python-spanner-sqlalchemy/blob/main/contributing.md) for more information on how to get
+Contributions to this library are welcome and encouraged. Please report issues, file feature requests, and send pull requests. See [CONTRIBUTING](https://github.com/googleapis/python-spanner-sqlalchemy/blob/main/contributing.md) for more information on how to get
 started.
 
 **Note that this project is not officially supported by Google as part of the Cloud Spanner product.**
 
 Please note that this project is released with a Contributor Code of Conduct.
 By participating in this project you agree to abide by its terms. See the [Code
-of Conduct](https://github.com/cloudspannerecosystem/python-spanner-sqlalchemy/blob/main/code-of-conduct.md) for more information.
+of Conduct](https://github.com/googleapis/python-spanner-sqlalchemy/blob/main/code-of-conduct.md) for more information.

@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 import setuptools
 
 
@@ -31,6 +32,13 @@ extras = {
         "opentelemetry-instrumentation >= 0.20b0",
     ]
 }
+
+BASE_DIR = os.path.dirname(__file__)
+VERSION_FILENAME = os.path.join(BASE_DIR, "version.py")
+PACKAGE_INFO = {}
+with open(VERSION_FILENAME) as f:
+    exec(f.read(), PACKAGE_INFO)
+version = PACKAGE_INFO["__version__"]
 
 # Only include packages under the 'google' namespace. Do not include tests,
 # benchmarks, etc.
@@ -61,7 +69,7 @@ setuptools.setup(
     namespace_packages=namespaces,
     packages=packages,
     url="https://github.com/cloudspannerecosystem/python-spanner-sqlalchemy",
-    version="0.1",
+    version=version,
     include_package_data=True,
     zip_safe=False,
 )
