@@ -194,6 +194,8 @@ class WriteStream(proto.Message):
             generate data that's compatible with this schema to send in
             initial ``AppendRowsRequest``. The table schema could go out
             of date during the life time of the stream.
+        write_mode (google.cloud.bigquery_storage_v1.types.WriteStream.WriteMode):
+            Immutable. Mode of the stream.
     """
 
     class Type(proto.Enum):
@@ -203,11 +205,17 @@ class WriteStream(proto.Message):
         PENDING = 2
         BUFFERED = 3
 
+    class WriteMode(proto.Enum):
+        r"""Mode enum of the stream."""
+        WRITE_MODE_UNSPECIFIED = 0
+        INSERT = 1
+
     name = proto.Field(proto.STRING, number=1,)
     type_ = proto.Field(proto.ENUM, number=2, enum=Type,)
     create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
     commit_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
     table_schema = proto.Field(proto.MESSAGE, number=5, message=gcbs_table.TableSchema,)
+    write_mode = proto.Field(proto.ENUM, number=7, enum=WriteMode,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -504,7 +504,9 @@ def test_create_write_stream(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = stream.WriteStream(
-            name="name_value", type_=stream.WriteStream.Type.COMMITTED,
+            name="name_value",
+            type_=stream.WriteStream.Type.COMMITTED,
+            write_mode=stream.WriteStream.WriteMode.INSERT,
         )
         response = client.create_write_stream(request)
 
@@ -517,6 +519,7 @@ def test_create_write_stream(
     assert isinstance(response, stream.WriteStream)
     assert response.name == "name_value"
     assert response.type_ == stream.WriteStream.Type.COMMITTED
+    assert response.write_mode == stream.WriteStream.WriteMode.INSERT
 
 
 def test_create_write_stream_from_dict():
@@ -559,7 +562,9 @@ async def test_create_write_stream_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             stream.WriteStream(
-                name="name_value", type_=stream.WriteStream.Type.COMMITTED,
+                name="name_value",
+                type_=stream.WriteStream.Type.COMMITTED,
+                write_mode=stream.WriteStream.WriteMode.INSERT,
             )
         )
         response = await client.create_write_stream(request)
@@ -573,6 +578,7 @@ async def test_create_write_stream_async(
     assert isinstance(response, stream.WriteStream)
     assert response.name == "name_value"
     assert response.type_ == stream.WriteStream.Type.COMMITTED
+    assert response.write_mode == stream.WriteStream.WriteMode.INSERT
 
 
 @pytest.mark.asyncio
@@ -805,7 +811,9 @@ def test_get_write_stream(
     with mock.patch.object(type(client.transport.get_write_stream), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = stream.WriteStream(
-            name="name_value", type_=stream.WriteStream.Type.COMMITTED,
+            name="name_value",
+            type_=stream.WriteStream.Type.COMMITTED,
+            write_mode=stream.WriteStream.WriteMode.INSERT,
         )
         response = client.get_write_stream(request)
 
@@ -818,6 +826,7 @@ def test_get_write_stream(
     assert isinstance(response, stream.WriteStream)
     assert response.name == "name_value"
     assert response.type_ == stream.WriteStream.Type.COMMITTED
+    assert response.write_mode == stream.WriteStream.WriteMode.INSERT
 
 
 def test_get_write_stream_from_dict():
@@ -856,7 +865,9 @@ async def test_get_write_stream_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             stream.WriteStream(
-                name="name_value", type_=stream.WriteStream.Type.COMMITTED,
+                name="name_value",
+                type_=stream.WriteStream.Type.COMMITTED,
+                write_mode=stream.WriteStream.WriteMode.INSERT,
             )
         )
         response = await client.get_write_stream(request)
@@ -870,6 +881,7 @@ async def test_get_write_stream_async(
     assert isinstance(response, stream.WriteStream)
     assert response.name == "name_value"
     assert response.type_ == stream.WriteStream.Type.COMMITTED
+    assert response.write_mode == stream.WriteStream.WriteMode.INSERT
 
 
 @pytest.mark.asyncio
