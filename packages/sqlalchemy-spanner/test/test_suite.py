@@ -1510,15 +1510,19 @@ class TestQueryHints(fixtures.TablesTest):
         assert str(query.statement.compile(session.bind)) == EXPECTED_QUERY
 
 
-class InterleavedTablesTest(fixtures.TestBase):
-    """
-    Check that CREATE TABLE statements for interleaved tables are correctly
-    generated.
-    """
+class SpannerSpecificTestBase(fixtures.TestBase):
+    """Base class for the Cloud Spanner related tests."""
 
     def setUp(self):
         self._engine = create_engine(get_db_url())
         self._metadata = MetaData(bind=self._engine)
+
+
+class InterleavedTablesTest(SpannerSpecificTestBase):
+    """
+    Check that CREATE TABLE statements for interleaved tables are correctly
+    generated.
+    """
 
     def test_interleave(self):
         EXP_QUERY = (
@@ -1562,12 +1566,8 @@ class InterleavedTablesTest(fixtures.TestBase):
             execute.assert_called_once_with(EXP_QUERY, [])
 
 
-class UserAgentTest(fixtures.TestBase):
+class UserAgentTest(SpannerSpecificTestBase):
     """Check that SQLAlchemy dialect uses correct user agent."""
-
-    def setUp(self):
-        self._engine = create_engine(get_db_url())
-        self._metadata = MetaData(bind=self._engine)
 
     def test_user_agent(self):
         dist = pkg_resources.get_distribution("sqlalchemy-spanner")
