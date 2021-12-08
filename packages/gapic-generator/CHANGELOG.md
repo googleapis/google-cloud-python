@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.58.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.57.0...v0.58.0) (2021-12-07)
+
+
+### Features
+
+* add support for long-running operations with rest transport. ([#1094](https://www.github.com/googleapis/gapic-generator-python/issues/1094)) ([e89fd23](https://www.github.com/googleapis/gapic-generator-python/commit/e89fd23609625c5aa49acd6c6ee67f87fce324fd))
+
+
+### Bug Fixes
+
+* ensure rest unit tests have complete coverage ([#1098](https://www.github.com/googleapis/gapic-generator-python/issues/1098)) ([0705d9c](https://www.github.com/googleapis/gapic-generator-python/commit/0705d9c5dbbea793867551e64991be37d8339c6b))
+* fix resource path args for paths with =** ([#1089](https://www.github.com/googleapis/gapic-generator-python/issues/1089)) ([309cc66](https://www.github.com/googleapis/gapic-generator-python/commit/309cc66e880e07940866864b03c744310ef56762))
+* **snippetgen:** don't create duplicate requests for required oneofs ([#1088](https://www.github.com/googleapis/gapic-generator-python/issues/1088)) ([5531795](https://www.github.com/googleapis/gapic-generator-python/commit/55317956397370a91b1a06ecd476e55f58789807))
+
 ## [0.57.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.56.2...v0.57.0) (2021-11-17)
 
 
