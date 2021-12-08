@@ -549,7 +549,7 @@ class SpannerDialect(DefaultDialect):
         dist = pkg_resources.get_distribution("sqlalchemy-spanner")
         return (
             [match.group("instance"), match.group("database"), match.group("project")],
-            {"user_agent": dist.project_name + "/" + dist.version},
+            {"user_agent": f"gl-{dist.project_name}/{dist.version}"},
         )
 
     @engine_to_connection

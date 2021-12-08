@@ -1575,7 +1575,7 @@ class UserAgentTest(SpannerSpecificTestBase):
         with self._engine.connect() as connection:
             assert (
                 connection.connection.instance._client._client_info.user_agent
-                == dist.project_name + "/" + dist.version
+                == f"gl-{dist.project_name}/{dist.version}"
             )
 
 
