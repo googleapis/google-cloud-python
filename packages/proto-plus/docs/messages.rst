@@ -246,8 +246,11 @@ already allows construction from mapping types.
 
 .. note::
 
-   Protobuf messages **CANNOT** be safely pickled or unpickled. This has serious consequences for programs that use multiprocessing or write messages to files.
-   The preferred mechanism for serializing proto messages is :meth:`~.Message.serialize`.
+   Although Python's pickling protocol has known issues when used with
+   untrusted collaborators, some frameworks do use it for communication
+   between trusted hosts.  To support such frameworks, protobuf messages
+   **can** be pickled and unpickled, although the preferred mechanism for
+   serializing proto messages is :meth:`~.Message.serialize`.
 
    Multiprocessing example:
 

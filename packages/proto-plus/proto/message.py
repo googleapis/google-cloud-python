@@ -642,6 +642,15 @@ class Message(metaclass=MessageMeta):
         if pb_value is not None:
             self._pb.MergeFrom(self._meta.pb(**{key: pb_value}))
 
+    def __getstate__(self):
+        """Serialize for pickling."""
+        return self._pb.SerializeToString()
+
+    def __setstate__(self, value):
+        """Deserialization for pickling."""
+        new_pb = self._meta.pb().FromString(value)
+        super().__setattr__("_pb", new_pb)
+
 
 class _MessageInfo:
     """Metadata about a message.
