@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.58.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.58.0...v0.58.1) (2021-12-09)
+
+
+### Bug Fixes
+
+* syntax fix for required_fields struct in rest transport ([#1103](https://www.github.com/googleapis/gapic-generator-python/issues/1103)) ([3d7128c](https://www.github.com/googleapis/gapic-generator-python/commit/3d7128ce8f55523b9aff2e44e2c000450e712ac2))
+
 ## [0.58.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.57.0...v0.58.0) (2021-12-07)
 
 
