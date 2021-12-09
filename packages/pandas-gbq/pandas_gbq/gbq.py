@@ -579,12 +579,13 @@ def _bqschema_to_nullsafe_dtypes(schema_fields):
     #missing-data-casting-rules-and-indexing
     """
     # If you update this mapping, also update the table at
-    # `docs/source/reading.rst`.
+    # `docs/reading.rst`.
     dtype_map = {
         "DATE": "datetime64[ns]",
         "DATETIME": "datetime64[ns]",
         "FLOAT": np.dtype(float),
         "GEOMETRY": "object",
+        "INTEGER": "Int64",
         "RECORD": "object",
         "STRING": "object",
         # datetime.time objects cannot be case to datetime64.
@@ -595,6 +596,10 @@ def _bqschema_to_nullsafe_dtypes(schema_fields):
         # https://github.com/pandas-dev/pandas/issues/25843
         "TIMESTAMP": "datetime64[ns]",
     }
+
+    # Amend dtype_map with newer extension types if pandas version allows.
+    if FEATURES.pandas_has_boolean_dtype:
+        dtype_map["BOOLEAN"] = "boolean"
 
     dtypes = {}
     for field in schema_fields:

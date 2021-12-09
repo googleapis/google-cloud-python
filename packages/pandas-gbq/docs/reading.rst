@@ -59,11 +59,13 @@ column, based on the BigQuery table schema.
 ================== =========================
 BigQuery Data Type dtype
 ================== =========================
-FLOAT              float
-TIMESTAMP          :class:`~pandas.DatetimeTZDtype` with ``unit='ns'`` and ``tz='UTC'``
-DATETIME           datetime64[ns]
-TIME               datetime64[ns]
 DATE               datetime64[ns]
+DATETIME           datetime64[ns]
+BOOL               boolean
+FLOAT              float
+INT64              Int64
+TIME               datetime64[ns]
+TIMESTAMP          :class:`~pandas.DatetimeTZDtype` with ``unit='ns'`` and ``tz='UTC'``
 ================== =========================
 
 .. _reading-bqstorage-api:

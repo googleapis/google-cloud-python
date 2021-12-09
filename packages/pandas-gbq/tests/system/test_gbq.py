@@ -10,7 +10,7 @@ import sys
 import numpy as np
 import pandas
 import pandas.api.types
-import pandas.util.testing as tm
+import pandas.testing as tm
 from pandas import DataFrame, NaT
 
 try:
@@ -21,6 +21,7 @@ import pytest
 import pytz
 
 from pandas_gbq import gbq
+from pandas_gbq.features import FEATURES
 import pandas_gbq.schema
 
 
@@ -30,6 +31,18 @@ PANDAS_VERSION = pkg_resources.parse_version(pandas.__version__)
 
 def test_imports():
     gbq._test_google_api_imports()
+
+
+def make_mixed_dataframe_v1():
+    # Re-implementation of private pandas.util.testing.makeMixedDataFrame
+    return pandas.DataFrame(
+        {
+            "A": [0.0, 1.0, 2.0, 3.0, 4.0],
+            "B": [0.0, 1.0, 0.0, 1.0, 0.0],
+            "C": ["foo1", "foo2", "foo3", "foo4", "foo5"],
+            "D": pandas.bdate_range("1/1/2009", periods=5),
+        }
+    )
 
 
 def make_mixed_dataframe_v2(test_size):
@@ -168,7 +181,7 @@ class TestReadGBQIntegration(object):
             credentials=self.credentials,
             dialect="standard",
         )
-        tm.assert_frame_equal(df, DataFrame({"valid_integer": [3]}))
+        tm.assert_frame_equal(df, DataFrame({"valid_integer": [3]}, dtype="Int64"))
 
     def test_should_properly_handle_nullable_integers(self, project_id):
         query = """SELECT * FROM
@@ -194,7 +207,7 @@ class TestReadGBQIntegration(object):
             credentials=self.credentials,
             dialect="standard",
         )
-        tm.assert_frame_equal(df, DataFrame({"valid_long": [1 << 62]}))
+        tm.assert_frame_equal(df, DataFrame({"valid_long": [1 << 62]}, dtype="Int64"))
 
     def test_should_properly_handle_nullable_longs(self, project_id):
         query = """SELECT * FROM
@@ -433,7 +446,10 @@ class TestReadGBQIntegration(object):
             credentials=self.credentials,
             dialect="legacy",
         )
-        tm.assert_frame_equal(df, DataFrame({"null_boolean": [None]}))
+        expected_dtype = "boolean" if FEATURES.pandas_has_boolean_dtype else None
+        tm.assert_frame_equal(
+            df, DataFrame({"null_boolean": [None]}, dtype=expected_dtype)
+        )
 
     def test_should_properly_handle_nullable_booleans(self, project_id):
         query = """SELECT * FROM
@@ -445,8 +461,9 @@ class TestReadGBQIntegration(object):
             credentials=self.credentials,
             dialect="legacy",
         )
+        expected_dtype = "boolean" if FEATURES.pandas_has_boolean_dtype else None
         tm.assert_frame_equal(
-            df, DataFrame({"nullable_boolean": [True, None]}).astype(object)
+            df, DataFrame({"nullable_boolean": [True, None]}, dtype=expected_dtype)
         )
 
     def test_unicode_string_conversion_and_normalization(self, project_id):
@@ -629,7 +646,7 @@ class TestReadGBQIntegration(object):
             credentials=self.credentials,
             dialect="standard",
         )
-        expected_result = DataFrame(dict(v=[3]))
+        expected_result = DataFrame(dict(v=[3]), dtype="Int64")
         tm.assert_frame_equal(df, expected_result)
 
     def test_legacy_sql(self, project_id):
@@ -719,7 +736,7 @@ class TestReadGBQIntegration(object):
             configuration=config,
             dialect="legacy",
         )
-        tm.assert_frame_equal(df, DataFrame({"valid_result": [3]}))
+        tm.assert_frame_equal(df, DataFrame({"valid_result": [3]}, dtype="Int64"))
 
     def test_query_inside_configuration(self, project_id):
         query_no_use = 'SELECT "PI_WRONG" AS valid_string'
@@ -842,7 +859,11 @@ class TestReadGBQIntegration(object):
             dialect="standard",
         )
         expected = DataFrame(
-            [[1, {"letter": "a", "num": 1}]], columns=["int_field", "struct_field"],
+            {
+                "int_field": pandas.Series([1], dtype="Int64"),
+                "struct_field": [{"letter": "a", "num": 1}],
+            },
+            columns=["int_field", "struct_field"],
         )
         tm.assert_frame_equal(df, expected)
 
@@ -874,7 +895,12 @@ class TestReadGBQIntegration(object):
             dialect="standard",
         )
         expected = DataFrame(
-            [["a", [""], 1], ["b", [], 0]], columns=["letter", "array_field", "len"],
+            {
+                "letter": ["a", "b"],
+                "array_field": [[""], []],
+                "len": pandas.Series([1, 0], dtype="Int64"),
+            },
+            columns=["letter", "array_field", "len"],
         )
         tm.assert_frame_equal(df, expected)
 
@@ -908,7 +934,13 @@ class TestReadGBQIntegration(object):
             credentials=self.credentials,
             dialect="standard",
         )
-        tm.assert_frame_equal(df, DataFrame([[[1.1, 2.2, 3.3], 4]], columns=["a", "b"]))
+        tm.assert_frame_equal(
+            df,
+            DataFrame(
+                {"a": [[1.1, 2.2, 3.3]], "b": pandas.Series([4], dtype="Int64")},
+                columns=["a", "b"],
+            ),
+        )
 
     def test_tokyo(self, tokyo_dataset, tokyo_table, project_id):
         df = gbq.read_gbq(
@@ -1021,7 +1053,7 @@ class TestToGBQIntegration(object):
         test_id = "3"
         test_size = 10
         df = make_mixed_dataframe_v2(test_size)
-        df_different_schema = tm.makeMixedDataFrame()
+        df_different_schema = make_mixed_dataframe_v1()
 
         # Initialize table with sample data
         gbq.to_gbq(
@@ -1101,7 +1133,7 @@ class TestToGBQIntegration(object):
         test_id = "4"
         test_size = 10
         df = make_mixed_dataframe_v2(test_size)
-        df_different_schema = tm.makeMixedDataFrame()
+        df_different_schema = make_mixed_dataframe_v1()
 
         # Initialize table with sample data
         gbq.to_gbq(
@@ -1225,7 +1257,7 @@ class TestToGBQIntegration(object):
         result = result_df["s"].sort_values()
         expected = df["s"].sort_values()
 
-        tm.assert_numpy_array_equal(expected.values, result.values)
+        tm.assert_series_equal(expected, result)
 
     def test_upload_data_flexible_column_order(self, project_id):
         test_id = "13"
@@ -1254,7 +1286,7 @@ class TestToGBQIntegration(object):
     def test_upload_data_with_valid_user_schema(self, project_id):
         # Issue #46; tests test scenarios with user-provided
         # schemas
-        df = tm.makeMixedDataFrame()
+        df = make_mixed_dataframe_v1()
         test_id = "18"
         test_schema = [
             {"name": "A", "type": "FLOAT"},
@@ -1276,7 +1308,7 @@ class TestToGBQIntegration(object):
         )
 
     def test_upload_data_with_invalid_user_schema_raises_error(self, project_id):
-        df = tm.makeMixedDataFrame()
+        df = make_mixed_dataframe_v1()
         test_id = "19"
         test_schema = [
             {"name": "A", "type": "FLOAT"},
@@ -1295,7 +1327,7 @@ class TestToGBQIntegration(object):
             )
 
     def test_upload_data_with_missing_schema_fields_raises_error(self, project_id):
-        df = tm.makeMixedDataFrame()
+        df = make_mixed_dataframe_v1()
         test_id = "20"
         test_schema = [
             {"name": "A", "type": "FLOAT"},
@@ -1351,7 +1383,7 @@ class TestToGBQIntegration(object):
         tm.assert_series_equal(expected, result)
 
     def test_upload_data_with_different_df_and_user_schema(self, project_id):
-        df = tm.makeMixedDataFrame()
+        df = make_mixed_dataframe_v1()
         df["A"] = df["A"].astype(str)
         df["B"] = df["B"].astype(str)
         test_id = "22"
@@ -1460,13 +1492,13 @@ def test_dataset_does_not_exist(gbq_dataset, random_dataset_id):
 
 
 def test_create_table(gbq_table):
-    schema = gbq._generate_bq_schema(tm.makeMixedDataFrame())
+    schema = gbq._generate_bq_schema(make_mixed_dataframe_v1())
     gbq_table.create("test_create_table", schema)
     assert gbq_table.exists("test_create_table")
 
 
 def test_create_table_already_exists(gbq_table):
-    schema = gbq._generate_bq_schema(tm.makeMixedDataFrame())
+    schema = gbq._generate_bq_schema(make_mixed_dataframe_v1())
     gbq_table.create("test_create_table_exists", schema)
     with pytest.raises(gbq.TableCreationError):
         gbq_table.create("test_create_table_exists", schema)

@@ -64,8 +64,8 @@ def no_auth(monkeypatch):
 @pytest.mark.parametrize(
     ("type_", "expected"),
     [
-        ("INTEGER", None),  # Can't handle NULL
-        ("BOOLEAN", None),  # Can't handle NULL
+        ("SOME_NEW_UNKNOWN_TYPE", None),
+        ("INTEGER", "Int64"),
         ("FLOAT", numpy.dtype(float)),
         # TIMESTAMP will be localized after DataFrame construction.
         ("TIMESTAMP", "datetime64[ns]"),
