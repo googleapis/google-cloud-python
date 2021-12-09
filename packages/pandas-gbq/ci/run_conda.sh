@@ -6,25 +6,16 @@
 set -e -x
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
-# Install dependencies using Conda
+eval "$(micromamba shell hook --shell=bash)"
+micromamba activate
 
-conda config --set always_yes yes --set changeps1 no
-conda config --add channels pandas
-conda config --add channels conda-forge
-conda update -q conda
-conda info -a
-conda create -q -n test-environment python=$PYTHON
-source activate test-environment
+# Install dependencies using (micro)mamba
+# https://github.com/mamba-org/micromamba-docker
 REQ="ci/requirements-${PYTHON}-${PANDAS}"
-conda install -q --file "$REQ.conda";
-
-if [[ "$PANDAS" == "NIGHTLY" ]]; then
-  conda install -q numpy pytz python-dateutil;
-  PRE_WHEELS="https://7933911d6844c6c53a7d-47bd50c35cd79bd838daf386af554a83.ssl.cf2.rackcdn.com";
-  pip install --pre --upgrade --timeout=60 -f $PRE_WHEELS pandas;
-else
-  conda install -q pandas=$PANDAS;
-fi
+micromamba install -q pandas=$PANDAS python=${PYTHON} -c conda-forge;
+micromamba install -q --file "$REQ.conda" -c conda-forge;
+micromamba list
+micromamba info
 
 python setup.py develop --no-deps
 
