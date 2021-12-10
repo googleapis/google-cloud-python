@@ -66,6 +66,7 @@ class TestStructuredLogHandler(unittest.TestCase):
             "severity": record.levelname,
             "logging.googleapis.com/trace": "",
             "logging.googleapis.com/spanId": "",
+            "logging.googleapis.com/trace_sampled": False,
             "logging.googleapis.com/sourceLocation": {
                 "file": pathname,
                 "line": lineno,
@@ -95,6 +96,7 @@ class TestStructuredLogHandler(unittest.TestCase):
             "severity": "INFO",
             "logging.googleapis.com/trace": "",
             "logging.googleapis.com/spanId": "",
+            "logging.googleapis.com/trace_sampled": False,
             "logging.googleapis.com/sourceLocation": {},
             "httpRequest": {},
             "logging.googleapis.com/labels": {},
@@ -242,10 +244,11 @@ class TestStructuredLogHandler(unittest.TestCase):
         expected_agent = "Mozilla/5.0"
         expected_trace = "123"
         expected_span = "456"
-        trace_header = f"{expected_trace}/{expected_span};o=0"
+        trace_header = f"{expected_trace}/{expected_span};o=1"
         expected_payload = {
             "logging.googleapis.com/trace": expected_trace,
             "logging.googleapis.com/spanId": expected_span,
+            "logging.googleapis.com/trace_sampled": True,
             "httpRequest": {
                 "requestMethod": "GET",
                 "requestUrl": expected_path,
@@ -261,6 +264,41 @@ class TestStructuredLogHandler(unittest.TestCase):
                 "User-Agent": expected_agent,
                 "X_CLOUD_TRACE_CONTEXT": trace_header,
             },
+        ):
+            handler.filter(record)
+            result = json.loads(handler.format(record))
+            for (key, value) in expected_payload.items():
+                self.assertEqual(value, result[key])
+
+    def test_format_with_traceparent(self):
+        import logging
+        import json
+
+        handler = self._make_one()
+        logname = "loggername"
+        message = "hello world，嗨 世界"
+        record = logging.LogRecord(logname, logging.INFO, "", 0, message, None, None)
+        expected_path = "http://testserver/123"
+        expected_agent = "Mozilla/5.0"
+        expected_trace = "4bf92f3577b34da6a3ce929d0e0e4736"
+        expected_span = "00f067aa0ba902b7"
+        trace_header = f"00-{expected_trace}-{expected_span}-09"
+        expected_payload = {
+            "logging.googleapis.com/trace": expected_trace,
+            "logging.googleapis.com/spanId": expected_span,
+            "logging.googleapis.com/trace_sampled": True,
+            "httpRequest": {
+                "requestMethod": "GET",
+                "requestUrl": expected_path,
+                "userAgent": expected_agent,
+                "protocol": "HTTP/1.1",
+            },
+        }
+
+        app = self.create_app()
+        with app.test_request_context(
+            expected_path,
+            headers={"User-Agent": expected_agent, "TRACEPARENT": trace_header},
         ):
             handler.filter(record)
             result = json.loads(handler.format(record))
@@ -289,17 +327,19 @@ class TestStructuredLogHandler(unittest.TestCase):
         inferred_path = "http://testserver/123"
         overwrite_trace = "abc"
         overwrite_span = "def"
-        inferred_trace_span = "123/456;"
+        inferred_trace_span = "123/456;o=1"
         overwrite_file = "test-file"
         record.http_request = {"requestUrl": overwrite_path}
         record.source_location = {"file": overwrite_file}
         record.trace = overwrite_trace
         record.span_id = overwrite_span
+        record.trace_sampled = False
         added_labels = {"added_key": "added_value", "overwritten_key": "new_value"}
         record.labels = added_labels
         expected_payload = {
             "logging.googleapis.com/trace": overwrite_trace,
             "logging.googleapis.com/spanId": overwrite_span,
+            "logging.googleapis.com/trace_sampled": False,
             "logging.googleapis.com/sourceLocation": {"file": overwrite_file},
             "httpRequest": {"requestUrl": overwrite_path},
             "logging.googleapis.com/labels": {
