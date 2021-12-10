@@ -27,3 +27,11 @@ To run the test suite locally:
 ```bash
 nox -s conftest_retry-3.8
 ```
+
+To run a single test locally:
+
+Single test names are displayed as "test-S{scenario_id}-{method}-{client-library-method-name}-{instructions index}", such as `test-S1-storage.buckets.get-bucket_reload-1`
+
+```bash
+nox -re conftest_retry-3.8 -- -k <single_test_name>
+```
