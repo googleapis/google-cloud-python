@@ -84,6 +84,8 @@ class TestCloudLoggingFilter(unittest.TestCase):
         self.assertIsNone(record._resource)
         self.assertIsNone(record._trace)
         self.assertEqual(record._trace_str, "")
+        self.assertFalse(record._trace_sampled)
+        self.assertEqual(record._trace_sampled_str, "false")
         self.assertIsNone(record._span_id)
         self.assertEqual(record._span_id_str, "")
         self.assertIsNone(record._http_request)
@@ -112,6 +114,8 @@ class TestCloudLoggingFilter(unittest.TestCase):
         self.assertEqual(record._trace_str, "")
         self.assertIsNone(record._span_id)
         self.assertEqual(record._span_id_str, "")
+        self.assertFalse(record._trace_sampled)
+        self.assertEqual(record._trace_sampled_str, "false")
         self.assertIsNone(record._http_request)
         self.assertEqual(record._http_request_str, "{}")
         self.assertIsNone(record._labels)
@@ -131,7 +135,7 @@ class TestCloudLoggingFilter(unittest.TestCase):
         expected_agent = "Mozilla/5.0"
         expected_trace = "123"
         expected_span = "456"
-        combined_trace = f"{expected_trace}/{expected_span}"
+        combined_trace = f"{expected_trace}/{expected_span};o=1"
         expected_request = {
             "requestMethod": "GET",
             "requestUrl": expected_path,
@@ -154,6 +158,47 @@ class TestCloudLoggingFilter(unittest.TestCase):
             self.assertEqual(record._trace_str, expected_trace)
             self.assertEqual(record._span_id, expected_span)
             self.assertEqual(record._span_id_str, expected_span)
+            self.assertTrue(record._trace_sampled)
+            self.assertEqual(record._trace_sampled_str, "true")
+            self.assertEqual(record._http_request, expected_request)
+            self.assertEqual(record._http_request_str, json.dumps(expected_request))
+
+    def test_record_with_traceparent_request(self):
+        """
+        test filter adds http request data when available
+        """
+        import logging
+
+        filter_obj = self._make_one()
+        record = logging.LogRecord(None, logging.INFO, None, None, None, None, None,)
+        record.created = None
+
+        expected_path = "http://testserver/123"
+        expected_agent = "Mozilla/5.0"
+        expected_trace = "4bf92f3577b34da6a3ce929d0e0e4736"
+        expected_span = "00f067aa0ba902b7"
+        combined_trace = f"00-{expected_trace}-{expected_span}-03"
+        expected_request = {
+            "requestMethod": "GET",
+            "requestUrl": expected_path,
+            "userAgent": expected_agent,
+            "protocol": "HTTP/1.1",
+        }
+
+        app = self.create_app()
+        with app.test_request_context(
+            expected_path,
+            headers={"User-Agent": expected_agent, "TRACEPARENT": combined_trace},
+        ):
+            success = filter_obj.filter(record)
+            self.assertTrue(success)
+
+            self.assertEqual(record._trace, expected_trace)
+            self.assertEqual(record._trace_str, expected_trace)
+            self.assertEqual(record._span_id, expected_span)
+            self.assertEqual(record._span_id_str, expected_span)
+            self.assertTrue(record._trace_sampled)
+            self.assertEqual(record._trace_sampled_str, "true")
             self.assertEqual(record._http_request, expected_request)
             self.assertEqual(record._http_request_str, json.dumps(expected_request))
 
@@ -306,6 +351,7 @@ class TestCloudLoggingHandler(unittest.TestCase):
                 {"python_logger": logname},
                 None,
                 None,
+                False,
                 None,
                 None,
             ),
@@ -322,7 +368,7 @@ class TestCloudLoggingHandler(unittest.TestCase):
         handler.handle(record)
         self.assertEqual(
             handler.transport.send_called_with,
-            (record, None, _GLOBAL_RESOURCE, None, None, None, None, None,),
+            (record, None, _GLOBAL_RESOURCE, None, None, None, False, None, None,),
         )
 
     def test_emit_manual_field_override(self):
@@ -350,6 +396,8 @@ class TestCloudLoggingHandler(unittest.TestCase):
         setattr(record, "trace", expected_trace)
         expected_span = "456"
         setattr(record, "span_id", expected_span)
+        expected_sampled = True
+        setattr(record, "trace_sampled", expected_sampled)
         expected_http = {"reuqest_url": "manual"}
         setattr(record, "http_request", expected_http)
         expected_source = {"file": "test-file"}
@@ -375,6 +423,7 @@ class TestCloudLoggingHandler(unittest.TestCase):
                 expected_labels,
                 expected_trace,
                 expected_span,
+                expected_sampled,
                 expected_http,
                 expected_source,
             ),
@@ -410,6 +459,7 @@ class TestCloudLoggingHandler(unittest.TestCase):
                 expected_label,
                 None,
                 None,
+                False,
                 None,
                 None,
             ),
@@ -442,6 +492,7 @@ class TestCloudLoggingHandler(unittest.TestCase):
                 expected_label,
                 None,
                 None,
+                False,
                 None,
                 None,
             ),
@@ -476,6 +527,7 @@ class TestCloudLoggingHandler(unittest.TestCase):
                 expected_label,
                 None,
                 None,
+                False,
                 None,
                 None,
             ),
@@ -508,6 +560,7 @@ class TestCloudLoggingHandler(unittest.TestCase):
                 expected_label,
                 None,
                 None,
+                False,
                 None,
                 None,
             ),
@@ -533,7 +586,17 @@ class TestCloudLoggingHandler(unittest.TestCase):
 
         self.assertEqual(
             handler.transport.send_called_with,
-            (record, expected_result, _GLOBAL_RESOURCE, None, None, None, None, None,),
+            (
+                record,
+                expected_result,
+                _GLOBAL_RESOURCE,
+                None,
+                None,
+                None,
+                False,
+                None,
+                None,
+            ),
         )
 
 
@@ -809,6 +872,7 @@ class _Transport(object):
         labels=None,
         trace=None,
         span_id=None,
+        trace_sampled=None,
         http_request=None,
         source_location=None,
     ):
@@ -819,6 +883,7 @@ class _Transport(object):
             labels,
             trace,
             span_id,
+            trace_sampled,
             http_request,
             source_location,
         )

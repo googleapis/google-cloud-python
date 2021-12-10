@@ -454,6 +454,7 @@ class TestLogging(unittest.TestCase):
 
             self.assertEqual(len(entries), 1)
             self.assertIsNone(entries[0].payload)
+            self.assertFalse(entries[0].trace_sampled)
 
     def test_log_struct_logentry_data(self):
         logger = Config.CLIENT.logger(self._logger_name("log_w_struct"))
@@ -473,6 +474,7 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(entries[0].severity, "WARNING")
         self.assertEqual(entries[0].trace, JSON_PAYLOAD["trace"])
         self.assertEqual(entries[0].span_id, JSON_PAYLOAD["span_id"])
+        self.assertFalse(entries[0].trace_sampled)
 
     def test_log_handler_async(self):
         LOG_MESSAGE = "It was the worst of times"
@@ -534,6 +536,7 @@ class TestLogging(unittest.TestCase):
         extra = {
             "trace": "123",
             "span_id": "456",
+            "trace_sampled": True,
             "http_request": expected_request,
             "source_location": expected_source,
             "resource": Resource(type="cloudiot_device", labels={}),
@@ -545,6 +548,7 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].trace, extra["trace"])
         self.assertEqual(entries[0].span_id, extra["span_id"])
+        self.assertTrue(entries[0].trace_sampled)
         self.assertEqual(entries[0].http_request, expected_request)
         self.assertEqual(
             entries[0].labels, {**extra["labels"], "python_logger": LOGGER_NAME}
