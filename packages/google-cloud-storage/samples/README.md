@@ -82,6 +82,7 @@ for instructions on setting up credentials for applications.
 * [Download Encrypted File](#download-encrypted-file)
 * [Download File](#download-file)
 * [Download File Requester Pays](#download-file-requester-pays)
+* [Download Into Memory](#download-into-memory)
 * [Download Public File](#download-public-file)
 * [Enable Bucket Lifecycle Management](#enable-bucket-lifecycle-management)
 * [Enable Default Event Based Hold](#enable-default-event-based-hold)
@@ -144,6 +145,7 @@ for instructions on setting up credentials for applications.
 * [Set Temporary Hold](#set-temporary-hold)
 * [Upload Encrypted File](#upload-encrypted-file)
 * [Upload File](#upload-file)
+* [Upload From Memory](#upload-from-memory)
 * [Upload With KMS Key](#upload-with-kms-key)
 * [View Bucket IAM Members](#view-bucket-iam-members)
 
@@ -455,6 +457,15 @@ View the [source code](https://github.com/googleapis/python-storage/blob/main/sa
 
 
 `python storage_download_file_requester_pays.py <BUCKET_NAME> <PROJECT_ID> <SOURCE_BLOB_NAME> <DESTINATION_FILE_NAME>`
+
+-----
+### Download Into Memory
+[![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/python-storage&page=editor&open_in_editor=samples/snippets/storage_download_into_memory.py,samples/README.md)
+
+View the [source code](https://github.com/googleapis/python-storage/blob/main/samples/snippets/storage_download_into_memory.py). To run this sample:
+
+
+`python storage_download_into_memory.py <BUCKET_NAME> <BLOB_NAME>`
 
 -----
 ### Download Public File
@@ -1013,6 +1024,15 @@ View the [source code](https://github.com/googleapis/python-storage/blob/main/sa
 
 
 `python storage_upload_file.py <BUCKET_NAME> <SOURCE_FILE_NAME> <DESTINATION_BLOB_NAME>`
+
+-----
+### Upload From Memory
+[![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/python-storage&page=editor&open_in_editor=samples/snippets/storage_upload_from_memory.py,samples/README.md)
+
+View the [source code](https://github.com/googleapis/python-storage/blob/main/samples/snippets/storage_upload_from_memory.py). To run this sample:
+
+
+`python storage_upload_from_memory.py <BUCKET_NAME> <CONTENTS> <DESTINATION_BLOB_NAME>`
 
 -----
 ### Upload With KMS Key
