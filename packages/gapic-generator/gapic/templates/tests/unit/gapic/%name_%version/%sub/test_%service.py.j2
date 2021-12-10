@@ -1323,7 +1323,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
             expected_params = [
                 {% for req_field in method.input.required_fields if req_field.is_primitive %}
                 (
-                    "{{ req_field.name }}",
+                    "{{ req_field.name | camel_case }}",
                     {% if req_field.field_pb.default_value is string %}
                     "{{ req_field.field_pb.default_value }}",
                     {% else %}
