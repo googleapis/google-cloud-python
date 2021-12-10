@@ -1325,11 +1325,11 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
                 (
                     "{{ req_field.name }}",
                     {% if req_field.field_pb.default_value is string %}
-                    "{{ req_field.field_pb.default_value }}"
+                    "{{ req_field.field_pb.default_value }}",
                     {% else %}
-                    {{ req_field.field_pb.default_value }}
+                    {{ req_field.field_pb.default_value }},
                     {% endif %}{# default is str #}
-                )
+                ),
                 {% endfor %}
             ]
             actual_params = req.call_args.kwargs['params']
