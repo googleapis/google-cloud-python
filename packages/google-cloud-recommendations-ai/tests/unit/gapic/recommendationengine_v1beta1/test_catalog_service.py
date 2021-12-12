@@ -2589,7 +2589,7 @@ def test_parse_catalog_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -2599,7 +2599,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "octopus",
     }
     path = CatalogServiceClient.common_billing_account_path(**expected)
 
@@ -2609,7 +2609,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "oyster"
     expected = "folders/{folder}".format(folder=folder,)
     actual = CatalogServiceClient.common_folder_path(folder)
     assert expected == actual
@@ -2617,7 +2617,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "nudibranch",
     }
     path = CatalogServiceClient.common_folder_path(**expected)
 
@@ -2627,7 +2627,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(organization=organization,)
     actual = CatalogServiceClient.common_organization_path(organization)
     assert expected == actual
@@ -2635,7 +2635,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "mussel",
     }
     path = CatalogServiceClient.common_organization_path(**expected)
 
@@ -2645,7 +2645,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "winkle"
     expected = "projects/{project}".format(project=project,)
     actual = CatalogServiceClient.common_project_path(project)
     assert expected == actual
@@ -2653,7 +2653,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "nautilus",
     }
     path = CatalogServiceClient.common_project_path(**expected)
 
@@ -2663,8 +2663,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -2674,8 +2674,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "squid",
+        "location": "clam",
     }
     path = CatalogServiceClient.common_location_path(**expected)
 
