@@ -30,7 +30,7 @@ for library in s.get_staging_dirs(default_version):
         "type"
     )
 
-    s.move(library, excludes=["docs/index.rst", "setup.py"])
+    s.move(library, excludes=["docs/index.rst", "setup.py", "README.rst"])
 
 s.remove_staging_dirs()
 
