@@ -18,6 +18,7 @@ import mock
 
 import grpc
 from grpc.experimental import aio
+import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
@@ -29,6 +30,7 @@ from google.api_core import future
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
+from google.api_core import operation
 from google.api_core import operation_async  # type: ignore
 from google.api_core import operations_v1
 from google.api_core import path_template
@@ -49,6 +51,7 @@ from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 import google.auth
 
@@ -760,6 +763,8 @@ def test_update_workload(
             billing_account="billing_account_value",
             etag="etag_value",
             provisioned_resources_parent="provisioned_resources_parent_value",
+            kaj_enrollment_state=assuredworkloads.Workload.KajEnrollmentState.KAJ_ENROLLMENT_STATE_PENDING,
+            enable_sovereign_controls=True,
         )
         response = client.update_workload(request)
 
@@ -776,6 +781,11 @@ def test_update_workload(
     assert response.billing_account == "billing_account_value"
     assert response.etag == "etag_value"
     assert response.provisioned_resources_parent == "provisioned_resources_parent_value"
+    assert (
+        response.kaj_enrollment_state
+        == assuredworkloads.Workload.KajEnrollmentState.KAJ_ENROLLMENT_STATE_PENDING
+    )
+    assert response.enable_sovereign_controls is True
 
 
 def test_update_workload_from_dict():
@@ -820,6 +830,8 @@ async def test_update_workload_async(
                 billing_account="billing_account_value",
                 etag="etag_value",
                 provisioned_resources_parent="provisioned_resources_parent_value",
+                kaj_enrollment_state=assuredworkloads.Workload.KajEnrollmentState.KAJ_ENROLLMENT_STATE_PENDING,
+                enable_sovereign_controls=True,
             )
         )
         response = await client.update_workload(request)
@@ -837,6 +849,11 @@ async def test_update_workload_async(
     assert response.billing_account == "billing_account_value"
     assert response.etag == "etag_value"
     assert response.provisioned_resources_parent == "provisioned_resources_parent_value"
+    assert (
+        response.kaj_enrollment_state
+        == assuredworkloads.Workload.KajEnrollmentState.KAJ_ENROLLMENT_STATE_PENDING
+    )
+    assert response.enable_sovereign_controls is True
 
 
 @pytest.mark.asyncio
@@ -1220,6 +1237,8 @@ def test_get_workload(
             billing_account="billing_account_value",
             etag="etag_value",
             provisioned_resources_parent="provisioned_resources_parent_value",
+            kaj_enrollment_state=assuredworkloads.Workload.KajEnrollmentState.KAJ_ENROLLMENT_STATE_PENDING,
+            enable_sovereign_controls=True,
         )
         response = client.get_workload(request)
 
@@ -1236,6 +1255,11 @@ def test_get_workload(
     assert response.billing_account == "billing_account_value"
     assert response.etag == "etag_value"
     assert response.provisioned_resources_parent == "provisioned_resources_parent_value"
+    assert (
+        response.kaj_enrollment_state
+        == assuredworkloads.Workload.KajEnrollmentState.KAJ_ENROLLMENT_STATE_PENDING
+    )
+    assert response.enable_sovereign_controls is True
 
 
 def test_get_workload_from_dict():
@@ -1280,6 +1304,8 @@ async def test_get_workload_async(
                 billing_account="billing_account_value",
                 etag="etag_value",
                 provisioned_resources_parent="provisioned_resources_parent_value",
+                kaj_enrollment_state=assuredworkloads.Workload.KajEnrollmentState.KAJ_ENROLLMENT_STATE_PENDING,
+                enable_sovereign_controls=True,
             )
         )
         response = await client.get_workload(request)
@@ -1297,6 +1323,11 @@ async def test_get_workload_async(
     assert response.billing_account == "billing_account_value"
     assert response.etag == "etag_value"
     assert response.provisioned_resources_parent == "provisioned_resources_parent_value"
+    assert (
+        response.kaj_enrollment_state
+        == assuredworkloads.Workload.KajEnrollmentState.KAJ_ENROLLMENT_STATE_PENDING
+    )
+    assert response.enable_sovereign_controls is True
 
 
 @pytest.mark.asyncio

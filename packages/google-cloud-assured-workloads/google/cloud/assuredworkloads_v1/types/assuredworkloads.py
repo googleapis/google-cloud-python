@@ -219,6 +219,19 @@ class Workload(proto.Message):
             properties (such as custom project id) will be
             used to create workload resources if possible.
             This field is optional.
+        kaj_enrollment_state (google.cloud.assuredworkloads_v1.types.Workload.KajEnrollmentState):
+            Output only. Represents the KAJ enrollment
+            state of the given workload.
+        enable_sovereign_controls (bool):
+            Optional. Indicates the sovereignty status of
+            the given workload. Currently meant to be used
+            by Europe/Canada customers.
+        saa_enrollment_response (google.cloud.assuredworkloads_v1.types.Workload.SaaEnrollmentResponse):
+            Output only. Represents the SAA enrollment
+            response of the given workload. SAA enrollment
+            response is queried during GetWorkload call. In
+            failure cases, user friendly error message is
+            shown in SAA details page.
     """
 
     class ComplianceRegime(proto.Enum):
@@ -233,6 +246,12 @@ class Workload(proto.Message):
         HITRUST = 7
         EU_REGIONS_AND_SUPPORT = 8
         CA_REGIONS_AND_SUPPORT = 9
+
+    class KajEnrollmentState(proto.Enum):
+        r"""Key Access Justifications(KAJ) Enrollment State."""
+        KAJ_ENROLLMENT_STATE_UNSPECIFIED = 0
+        KAJ_ENROLLMENT_STATE_PENDING = 1
+        KAJ_ENROLLMENT_STATE_COMPLETE = 2
 
     class ResourceInfo(proto.Message):
         r"""Represent the resources that are children of this Workload.
@@ -305,6 +324,45 @@ class Workload(proto.Message):
         )
         display_name = proto.Field(proto.STRING, number=3,)
 
+    class SaaEnrollmentResponse(proto.Message):
+        r"""Signed Access Approvals (SAA) enrollment response.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            setup_status (google.cloud.assuredworkloads_v1.types.Workload.SaaEnrollmentResponse.SetupState):
+                Indicates SAA enrollment status of a given
+                workload.
+
+                This field is a member of `oneof`_ ``_setup_status``.
+            setup_errors (Sequence[google.cloud.assuredworkloads_v1.types.Workload.SaaEnrollmentResponse.SetupError]):
+                Indicates SAA enrollment setup error if any.
+        """
+
+        class SetupState(proto.Enum):
+            r"""Setup state of SAA enrollment."""
+            SETUP_STATE_UNSPECIFIED = 0
+            STATUS_PENDING = 1
+            STATUS_COMPLETE = 2
+
+        class SetupError(proto.Enum):
+            r"""Setup error of SAA enrollment."""
+            SETUP_ERROR_UNSPECIFIED = 0
+            ERROR_INVALID_BASE_SETUP = 1
+            ERROR_MISSING_EXTERNAL_SIGNING_KEY = 2
+            ERROR_NOT_ALL_SERVICES_ENROLLED = 3
+            ERROR_SETUP_CHECK_FAILED = 4
+
+        setup_status = proto.Field(
+            proto.ENUM,
+            number=1,
+            optional=True,
+            enum="Workload.SaaEnrollmentResponse.SetupState",
+        )
+        setup_errors = proto.RepeatedField(
+            proto.ENUM, number=2, enum="Workload.SaaEnrollmentResponse.SetupError",
+        )
+
     name = proto.Field(proto.STRING, number=1,)
     display_name = proto.Field(proto.STRING, number=2,)
     resources = proto.RepeatedField(proto.MESSAGE, number=3, message=ResourceInfo,)
@@ -317,6 +375,11 @@ class Workload(proto.Message):
     kms_settings = proto.Field(proto.MESSAGE, number=14, message=KMSSettings,)
     resource_settings = proto.RepeatedField(
         proto.MESSAGE, number=15, message=ResourceSettings,
+    )
+    kaj_enrollment_state = proto.Field(proto.ENUM, number=17, enum=KajEnrollmentState,)
+    enable_sovereign_controls = proto.Field(proto.BOOL, number=18,)
+    saa_enrollment_response = proto.Field(
+        proto.MESSAGE, number=20, message=SaaEnrollmentResponse,
     )
 
 
