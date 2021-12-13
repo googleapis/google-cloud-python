@@ -1,5 +1,14 @@
 # Changelog
 
+### [0.58.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.58.1...v0.58.2) (2021-12-13)
+
+
+### Bug Fixes
+
+* fix case for expected field names in required fields test. ([#1107](https://www.github.com/googleapis/gapic-generator-python/issues/1107)) ([6a593f9](https://www.github.com/googleapis/gapic-generator-python/commit/6a593f9807141aaf6c13a8843804e9fa9b300c91))
+* non-string required fields provide correct values ([#1108](https://www.github.com/googleapis/gapic-generator-python/issues/1108)) ([bc5f729](https://www.github.com/googleapis/gapic-generator-python/commit/bc5f729cf777d30e1053e23a1d115460952478af))
+* syntax fix and test for multiple required fields ([#1105](https://www.github.com/googleapis/gapic-generator-python/issues/1105)) ([4e5fe2d](https://www.github.com/googleapis/gapic-generator-python/commit/4e5fe2db9d0d81929cc1559d3a134c9a38ae595c))
+
 ### [0.58.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.58.0...v0.58.1) (2021-12-09)
 
 
