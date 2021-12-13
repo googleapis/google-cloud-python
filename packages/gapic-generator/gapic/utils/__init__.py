@@ -29,7 +29,6 @@ from gapic.utils.options import Options
 from gapic.utils.reserved_names import RESERVED_NAMES
 from gapic.utils.rst import rst
 from gapic.utils.uri_conv import convert_uri_fieldnames
-from gapic.utils.uri_sample import sample_from_path_fields
 
 
 __all__ = (
@@ -44,7 +43,6 @@ __all__ = (
     'partition',
     'RESERVED_NAMES',
     'rst',
-    'sample_from_path_fields',
     'sort_lines',
     'to_snake_case',
     'to_camel_case',

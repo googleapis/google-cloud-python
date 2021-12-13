@@ -1134,11 +1134,11 @@ def test_{{ method_name }}_rest(transport: str = 'rest', request_type={{ method.
     )
 
     # send a request that will satisfy transcoding
-    request_init = {{ method.http_options[0].sample_request}}
+    request_init = {{ method.http_options[0].sample_request(method) }}
     {% for field in method.body_fields.values() %}
     {% if not field.oneof or field.proto3_optional %}
     {# ignore oneof fields that might conflict with sample_request #}
-    request_init["{{ field.name }}"] = {{ field.mock_value }}
+    request_init["{{ field.name }}"] = {{ field.mock_value_original_type }}
     {% endif %}
     {% endfor %}
     request = request_type(request_init)
@@ -1221,10 +1221,10 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
 
     request_init = {}
     {% for req_field in method.input.required_fields if req_field.is_primitive %}
-    {% if req_field.field_pb.default_value is string %}
+    {% if req_field.field_pb.type == 9 %}
     request_init["{{ req_field.name }}"] = "{{ req_field.field_pb.default_value }}"
     {% else %}
-    request_init["{{ req_field.name }}"] = {{ req_field.field_pb.default_value }}
+    request_init["{{ req_field.name }}"] = {{ req_field.type.python_type(req_field.field_pb.default_value or 0) }}
     {% endif %}{# default is str #}
     {% endfor %}
     request = request_type(request_init)
@@ -1324,10 +1324,10 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
                 {% for req_field in method.input.required_fields if req_field.is_primitive %}
                 (
                     "{{ req_field.name | camel_case }}",
-                    {% if req_field.field_pb.default_value is string %}
+                    {% if req_field.field_pb.type == 9 %}
                     "{{ req_field.field_pb.default_value }}",
                     {% else %}
-                    {{ req_field.field_pb.default_value }},
+                    {{ req_field.type.python_type(req_field.field_pb.default_value or 0) }},
                     {% endif %}{# default is str #}
                 ),
                 {% endfor %}
@@ -1346,11 +1346,11 @@ def test_{{ method_name }}_rest_bad_request(transport: str = 'rest', request_typ
     )
 
     # send a request that will satisfy transcoding
-    request_init = {{ method.http_options[0].sample_request}}
+    request_init = {{ method.http_options[0].sample_request(method) }}
     {% for field in method.body_fields.values() %}
     {% if not field.oneof or field.proto3_optional %}
     {# ignore oneof fields that might conflict with sample_request #}
-    request_init["{{ field.name }}"] = {{ field.mock_value }}
+    request_init["{{ field.name }}"] = {{ field.mock_value_original_type }}
     {% endif %}
     {% endfor %}
     request = request_type(request_init)
@@ -1411,7 +1411,7 @@ def test_{{ method_name }}_rest_flattened(transport: str = 'rest'):
         req.return_value = response_value
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {{ method.http_options[0].sample_request }}
+        sample_request = {{ method.http_options[0].sample_request(method) }}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -1531,7 +1531,7 @@ def test_{{ method_name }}_rest_pager(transport: str = 'rest'):
                 return_val.status_code = 200
             req.side_effect = return_values
 
-            sample_request = {{ method.http_options[0].sample_request }}
+            sample_request = {{ method.http_options[0].sample_request(method) }}
             {% for field in method.body_fields.values() %}
             {% if not field.oneof or field.proto3_optional %}
             {# ignore oneof fields that might conflict with sample_request #}

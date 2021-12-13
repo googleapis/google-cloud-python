@@ -470,9 +470,29 @@ def test_method_http_options_generate_sample():
     http_rule = http_pb2.HttpRule(
         get='/v1/{resource.id=projects/*/regions/*/id/**}/stuff',
     )
-    method = make_method('DoSomething', http_rule=http_rule)
-    sample = method.http_options[0].sample_request
-    assert json.loads(sample) == {'resource': {
+
+    method = make_method(
+        'DoSomething',
+        make_message(
+            name="Input",
+            fields=[
+                make_field(
+                    name="resource",
+                    number=1,
+                    type=11,
+                    message=make_message(
+                        "Resource",
+                        fields=[
+                            make_field(name="id", type=9),
+                        ],
+                    ),
+                ),
+            ],
+        ),
+        http_rule=http_rule,
+    )
+    sample = method.http_options[0].sample_request(method)
+    assert sample == {'resource': {
         'id': 'projects/sample1/regions/sample2/id/sample3'}}
 
 
@@ -480,9 +500,28 @@ def test_method_http_options_generate_sample_implicit_template():
     http_rule = http_pb2.HttpRule(
         get='/v1/{resource.id}/stuff',
     )
-    method = make_method('DoSomething', http_rule=http_rule)
-    sample = method.http_options[0].sample_request
-    assert json.loads(sample) == {'resource': {
+    method = make_method(
+        'DoSomething',
+        make_message(
+            name="Input",
+            fields=[
+                make_field(
+                    name="resource",
+                    number=1,
+                    message=make_message(
+                        "Resource",
+                        fields=[
+                            make_field(name="id", type=9),
+                        ],
+                    ),
+                ),
+            ],
+        ),
+        http_rule=http_rule,
+    )
+
+    sample = method.http_options[0].sample_request(method)
+    assert sample == {'resource': {
         'id': 'sample1'}}
 
 
