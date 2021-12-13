@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+### [2.6.3](https://www.github.com/googleapis/python-vision/compare/v2.6.2...v2.6.3) (2021-12-12)
+
+
+### Documentation
+
+* Add example of how to use max_results ([#277](https://www.github.com/googleapis/python-vision/issues/277)) ([cf4dafe](https://www.github.com/googleapis/python-vision/commit/cf4dafe7c716c8091efd3bcc5a6fa5729c72fed3))
+* Update doctext sample to include method signature ([#275](https://www.github.com/googleapis/python-vision/issues/275)) ([b059f3a](https://www.github.com/googleapis/python-vision/commit/b059f3a7b39a6f17c0086e18fc69776265de18d7))
+
 ### [2.6.2](https://www.github.com/googleapis/python-vision/compare/v2.6.1...v2.6.2) (2021-11-01)
 
 
