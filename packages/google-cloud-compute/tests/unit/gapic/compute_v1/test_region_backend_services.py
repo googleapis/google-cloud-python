@@ -440,7 +440,7 @@ def test_region_backend_services_client_client_options_credentials_file(
         )
 
 
-def test_delete_rest(
+def test_delete_unary_rest(
     transport: str = "rest", request_type=compute.DeleteRegionBackendServiceRequest
 ):
     client = RegionBackendServicesClient(
@@ -489,7 +489,7 @@ def test_delete_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.delete(request)
+        response = client.delete_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -517,7 +517,7 @@ def test_delete_rest(
     assert response.zone == "zone_value"
 
 
-def test_delete_rest_bad_request(
+def test_delete_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DeleteRegionBackendServiceRequest
 ):
     client = RegionBackendServicesClient(
@@ -541,14 +541,14 @@ def test_delete_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.delete(request)
+        client.delete_unary(request)
 
 
-def test_delete_rest_from_dict():
-    test_delete_rest(request_type=dict)
+def test_delete_unary_rest_from_dict():
+    test_delete_unary_rest(request_type=dict)
 
 
-def test_delete_rest_flattened(transport: str = "rest"):
+def test_delete_unary_rest_flattened(transport: str = "rest"):
     client = RegionBackendServicesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -580,7 +580,7 @@ def test_delete_rest_flattened(transport: str = "rest"):
             backend_service="backend_service_value",
         )
         mock_args.update(sample_request)
-        client.delete(**mock_args)
+        client.delete_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -593,7 +593,7 @@ def test_delete_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_delete_rest_flattened_error(transport: str = "rest"):
+def test_delete_unary_rest_flattened_error(transport: str = "rest"):
     client = RegionBackendServicesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -601,7 +601,7 @@ def test_delete_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.delete(
+        client.delete_unary(
             compute.DeleteRegionBackendServiceRequest(),
             project="project_value",
             region="region_value",
@@ -915,7 +915,7 @@ def test_get_health_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_insert_rest(
+def test_insert_unary_rest(
     transport: str = "rest", request_type=compute.InsertRegionBackendServiceRequest
 ):
     client = RegionBackendServicesClient(
@@ -963,7 +963,7 @@ def test_insert_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.insert(request)
+        response = client.insert_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -991,7 +991,7 @@ def test_insert_rest(
     assert response.zone == "zone_value"
 
 
-def test_insert_rest_bad_request(
+def test_insert_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.InsertRegionBackendServiceRequest
 ):
     client = RegionBackendServicesClient(
@@ -1014,14 +1014,14 @@ def test_insert_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.insert(request)
+        client.insert_unary(request)
 
 
-def test_insert_rest_from_dict():
-    test_insert_rest(request_type=dict)
+def test_insert_unary_rest_from_dict():
+    test_insert_unary_rest(request_type=dict)
 
 
-def test_insert_rest_flattened(transport: str = "rest"):
+def test_insert_unary_rest_flattened(transport: str = "rest"):
     client = RegionBackendServicesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1051,7 +1051,7 @@ def test_insert_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.insert(**mock_args)
+        client.insert_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1064,7 +1064,7 @@ def test_insert_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_insert_rest_flattened_error(transport: str = "rest"):
+def test_insert_unary_rest_flattened_error(transport: str = "rest"):
     client = RegionBackendServicesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1072,7 +1072,7 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.insert(
+        client.insert_unary(
             compute.InsertRegionBackendServiceRequest(),
             project="project_value",
             region="region_value",
@@ -1249,7 +1249,7 @@ def test_list_rest_pager():
             assert page_.raw_page.next_page_token == token
 
 
-def test_patch_rest(
+def test_patch_unary_rest(
     transport: str = "rest", request_type=compute.PatchRegionBackendServiceRequest
 ):
     client = RegionBackendServicesClient(
@@ -1301,7 +1301,7 @@ def test_patch_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.patch(request)
+        response = client.patch_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -1329,7 +1329,7 @@ def test_patch_rest(
     assert response.zone == "zone_value"
 
 
-def test_patch_rest_bad_request(
+def test_patch_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.PatchRegionBackendServiceRequest
 ):
     client = RegionBackendServicesClient(
@@ -1356,14 +1356,14 @@ def test_patch_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.patch(request)
+        client.patch_unary(request)
 
 
-def test_patch_rest_from_dict():
-    test_patch_rest(request_type=dict)
+def test_patch_unary_rest_from_dict():
+    test_patch_unary_rest(request_type=dict)
 
 
-def test_patch_rest_flattened(transport: str = "rest"):
+def test_patch_unary_rest_flattened(transport: str = "rest"):
     client = RegionBackendServicesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1398,7 +1398,7 @@ def test_patch_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.patch(**mock_args)
+        client.patch_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1411,7 +1411,7 @@ def test_patch_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_patch_rest_flattened_error(transport: str = "rest"):
+def test_patch_unary_rest_flattened_error(transport: str = "rest"):
     client = RegionBackendServicesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1419,7 +1419,7 @@ def test_patch_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.patch(
+        client.patch_unary(
             compute.PatchRegionBackendServiceRequest(),
             project="project_value",
             region="region_value",
@@ -1430,7 +1430,7 @@ def test_patch_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_update_rest(
+def test_update_unary_rest(
     transport: str = "rest", request_type=compute.UpdateRegionBackendServiceRequest
 ):
     client = RegionBackendServicesClient(
@@ -1482,7 +1482,7 @@ def test_update_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.update(request)
+        response = client.update_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -1510,7 +1510,7 @@ def test_update_rest(
     assert response.zone == "zone_value"
 
 
-def test_update_rest_bad_request(
+def test_update_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.UpdateRegionBackendServiceRequest
 ):
     client = RegionBackendServicesClient(
@@ -1537,14 +1537,14 @@ def test_update_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.update(request)
+        client.update_unary(request)
 
 
-def test_update_rest_from_dict():
-    test_update_rest(request_type=dict)
+def test_update_unary_rest_from_dict():
+    test_update_unary_rest(request_type=dict)
 
 
-def test_update_rest_flattened(transport: str = "rest"):
+def test_update_unary_rest_flattened(transport: str = "rest"):
     client = RegionBackendServicesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1579,7 +1579,7 @@ def test_update_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.update(**mock_args)
+        client.update_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1592,7 +1592,7 @@ def test_update_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_update_rest_flattened_error(transport: str = "rest"):
+def test_update_unary_rest_flattened_error(transport: str = "rest"):
     client = RegionBackendServicesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1600,7 +1600,7 @@ def test_update_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.update(
+        client.update_unary(
             compute.UpdateRegionBackendServiceRequest(),
             project="project_value",
             region="region_value",

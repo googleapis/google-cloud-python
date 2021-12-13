@@ -340,7 +340,7 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
                 always_use_jwt_access=True,
             )
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteTargetSslProxyRequest, dict] = None,
         *,
@@ -509,7 +509,7 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertTargetSslProxyRequest, dict] = None,
         *,
@@ -669,7 +669,7 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         # Done; return the response.
         return response
 
-    def set_backend_service(
+    def set_backend_service_unary(
         self,
         request: Union[compute.SetBackendServiceTargetSslProxyRequest, dict] = None,
         *,
@@ -773,7 +773,7 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         # Done; return the response.
         return response
 
-    def set_proxy_header(
+    def set_proxy_header_unary(
         self,
         request: Union[compute.SetProxyHeaderTargetSslProxyRequest, dict] = None,
         *,
@@ -876,7 +876,7 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         # Done; return the response.
         return response
 
-    def set_ssl_certificates(
+    def set_ssl_certificates_unary(
         self,
         request: Union[compute.SetSslCertificatesTargetSslProxyRequest, dict] = None,
         *,
@@ -980,7 +980,7 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         # Done; return the response.
         return response
 
-    def set_ssl_policy(
+    def set_ssl_policy_unary(
         self,
         request: Union[compute.SetSslPolicyTargetSslProxyRequest, dict] = None,
         *,

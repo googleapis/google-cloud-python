@@ -419,7 +419,7 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         # Done; return the response.
         return response
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteServiceAttachmentRequest, dict] = None,
         *,
@@ -727,7 +727,7 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertServiceAttachmentRequest, dict] = None,
         *,
@@ -902,7 +902,7 @@ class ServiceAttachmentsClient(metaclass=ServiceAttachmentsClientMeta):
         # Done; return the response.
         return response
 
-    def patch(
+    def patch_unary(
         self,
         request: Union[compute.PatchServiceAttachmentRequest, dict] = None,
         *,

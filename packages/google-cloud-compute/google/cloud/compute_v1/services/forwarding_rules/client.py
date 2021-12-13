@@ -411,7 +411,7 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
         # Done; return the response.
         return response
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteForwardingRuleRequest, dict] = None,
         *,
@@ -602,7 +602,7 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertForwardingRuleRequest, dict] = None,
         *,
@@ -783,7 +783,7 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
         # Done; return the response.
         return response
 
-    def patch(
+    def patch_unary(
         self,
         request: Union[compute.PatchForwardingRuleRequest, dict] = None,
         *,
@@ -893,7 +893,7 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
         # Done; return the response.
         return response
 
-    def set_labels(
+    def set_labels_unary(
         self,
         request: Union[compute.SetLabelsForwardingRuleRequest, dict] = None,
         *,
@@ -1002,7 +1002,7 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
         # Done; return the response.
         return response
 
-    def set_target(
+    def set_target_unary(
         self,
         request: Union[compute.SetTargetForwardingRuleRequest, dict] = None,
         *,

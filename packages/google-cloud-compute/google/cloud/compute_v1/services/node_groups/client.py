@@ -338,7 +338,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
                 always_use_jwt_access=True,
             )
 
-    def add_nodes(
+    def add_nodes_unary(
         self,
         request: Union[compute.AddNodesNodeGroupRequest, dict] = None,
         *,
@@ -518,7 +518,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Done; return the response.
         return response
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteNodeGroupRequest, dict] = None,
         *,
@@ -615,7 +615,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Done; return the response.
         return response
 
-    def delete_nodes(
+    def delete_nodes_unary(
         self,
         request: Union[compute.DeleteNodesNodeGroupRequest, dict] = None,
         *,
@@ -939,7 +939,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertNodeGroupRequest, dict] = None,
         *,
@@ -1221,7 +1221,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Done; return the response.
         return response
 
-    def patch(
+    def patch_unary(
         self,
         request: Union[compute.PatchNodeGroupRequest, dict] = None,
         *,
@@ -1460,7 +1460,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Done; return the response.
         return response
 
-    def set_node_template(
+    def set_node_template_unary(
         self,
         request: Union[compute.SetNodeTemplateNodeGroupRequest, dict] = None,
         *,

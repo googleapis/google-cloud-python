@@ -412,7 +412,7 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         # Done; return the response.
         return response
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteHealthCheckRequest, dict] = None,
         *,
@@ -592,7 +592,7 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertHealthCheckRequest, dict] = None,
         *,
@@ -752,7 +752,7 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         # Done; return the response.
         return response
 
-    def patch(
+    def patch_unary(
         self,
         request: Union[compute.PatchHealthCheckRequest, dict] = None,
         *,
@@ -850,7 +850,7 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         # Done; return the response.
         return response
 
-    def update(
+    def update_unary(
         self,
         request: Union[compute.UpdateHealthCheckRequest, dict] = None,
         *,

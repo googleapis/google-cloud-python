@@ -412,7 +412,7 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
         # Done; return the response.
         return response
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteResourcePolicyRequest, dict] = None,
         *,
@@ -716,7 +716,7 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertResourcePolicyRequest, dict] = None,
         *,

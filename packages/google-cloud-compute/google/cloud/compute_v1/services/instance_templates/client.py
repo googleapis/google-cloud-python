@@ -342,7 +342,7 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
                 always_use_jwt_access=True,
             )
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteInstanceTemplateRequest, dict] = None,
         *,
@@ -621,7 +621,7 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertInstanceTemplateRequest, dict] = None,
         *,

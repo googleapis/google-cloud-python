@@ -338,7 +338,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
                 always_use_jwt_access=True,
             )
 
-    def disable_xpn_host(
+    def disable_xpn_host_unary(
         self,
         request: Union[compute.DisableXpnHostProjectRequest, dict] = None,
         *,
@@ -415,7 +415,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # Done; return the response.
         return response
 
-    def disable_xpn_resource(
+    def disable_xpn_resource_unary(
         self,
         request: Union[compute.DisableXpnResourceProjectRequest, dict] = None,
         *,
@@ -505,7 +505,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # Done; return the response.
         return response
 
-    def enable_xpn_host(
+    def enable_xpn_host_unary(
         self,
         request: Union[compute.EnableXpnHostProjectRequest, dict] = None,
         *,
@@ -582,7 +582,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # Done; return the response.
         return response
 
-    def enable_xpn_resource(
+    def enable_xpn_resource_unary(
         self,
         request: Union[compute.EnableXpnResourceProjectRequest, dict] = None,
         *,
@@ -961,7 +961,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # Done; return the response.
         return response
 
-    def move_disk(
+    def move_disk_unary(
         self,
         request: Union[compute.MoveDiskProjectRequest, dict] = None,
         *,
@@ -1046,7 +1046,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # Done; return the response.
         return response
 
-    def move_instance(
+    def move_instance_unary(
         self,
         request: Union[compute.MoveInstanceProjectRequest, dict] = None,
         *,
@@ -1132,7 +1132,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # Done; return the response.
         return response
 
-    def set_common_instance_metadata(
+    def set_common_instance_metadata_unary(
         self,
         request: Union[compute.SetCommonInstanceMetadataProjectRequest, dict] = None,
         *,
@@ -1221,7 +1221,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # Done; return the response.
         return response
 
-    def set_default_network_tier(
+    def set_default_network_tier_unary(
         self,
         request: Union[compute.SetDefaultNetworkTierProjectRequest, dict] = None,
         *,
@@ -1313,7 +1313,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # Done; return the response.
         return response
 
-    def set_usage_export_bucket(
+    def set_usage_export_bucket_unary(
         self,
         request: Union[compute.SetUsageExportBucketProjectRequest, dict] = None,
         *,

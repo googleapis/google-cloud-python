@@ -338,7 +338,7 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
                 always_use_jwt_access=True,
             )
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteFirewallRequest, dict] = None,
         *,
@@ -497,7 +497,7 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertFirewallRequest, dict] = None,
         *,
@@ -655,7 +655,7 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
         # Done; return the response.
         return response
 
-    def patch(
+    def patch_unary(
         self,
         request: Union[compute.PatchFirewallRequest, dict] = None,
         *,
@@ -750,7 +750,7 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
         # Done; return the response.
         return response
 
-    def update(
+    def update_unary(
         self,
         request: Union[compute.UpdateFirewallRequest, dict] = None,
         *,

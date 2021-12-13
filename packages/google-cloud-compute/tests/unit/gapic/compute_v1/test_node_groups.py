@@ -401,7 +401,7 @@ def test_node_groups_client_client_options_credentials_file(
         )
 
 
-def test_add_nodes_rest(
+def test_add_nodes_unary_rest(
     transport: str = "rest", request_type=compute.AddNodesNodeGroupRequest
 ):
     client = NodeGroupsClient(
@@ -449,7 +449,7 @@ def test_add_nodes_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.add_nodes(request)
+        response = client.add_nodes_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -477,7 +477,7 @@ def test_add_nodes_rest(
     assert response.zone == "zone_value"
 
 
-def test_add_nodes_rest_bad_request(
+def test_add_nodes_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.AddNodesNodeGroupRequest
 ):
     client = NodeGroupsClient(
@@ -500,14 +500,14 @@ def test_add_nodes_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.add_nodes(request)
+        client.add_nodes_unary(request)
 
 
-def test_add_nodes_rest_from_dict():
-    test_add_nodes_rest(request_type=dict)
+def test_add_nodes_unary_rest_from_dict():
+    test_add_nodes_unary_rest(request_type=dict)
 
 
-def test_add_nodes_rest_flattened(transport: str = "rest"):
+def test_add_nodes_unary_rest_flattened(transport: str = "rest"):
     client = NodeGroupsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -542,7 +542,7 @@ def test_add_nodes_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.add_nodes(**mock_args)
+        client.add_nodes_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -555,7 +555,7 @@ def test_add_nodes_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_add_nodes_rest_flattened_error(transport: str = "rest"):
+def test_add_nodes_unary_rest_flattened_error(transport: str = "rest"):
     client = NodeGroupsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -563,7 +563,7 @@ def test_add_nodes_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.add_nodes(
+        client.add_nodes_unary(
             compute.AddNodesNodeGroupRequest(),
             project="project_value",
             zone="zone_value",
@@ -751,7 +751,7 @@ def test_aggregated_list_rest_pager():
             assert page_.raw_page.next_page_token == token
 
 
-def test_delete_rest(
+def test_delete_unary_rest(
     transport: str = "rest", request_type=compute.DeleteNodeGroupRequest
 ):
     client = NodeGroupsClient(
@@ -796,7 +796,7 @@ def test_delete_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.delete(request)
+        response = client.delete_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -824,7 +824,7 @@ def test_delete_rest(
     assert response.zone == "zone_value"
 
 
-def test_delete_rest_bad_request(
+def test_delete_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DeleteNodeGroupRequest
 ):
     client = NodeGroupsClient(
@@ -844,14 +844,14 @@ def test_delete_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.delete(request)
+        client.delete_unary(request)
 
 
-def test_delete_rest_from_dict():
-    test_delete_rest(request_type=dict)
+def test_delete_unary_rest_from_dict():
+    test_delete_unary_rest(request_type=dict)
 
 
-def test_delete_rest_flattened(transport: str = "rest"):
+def test_delete_unary_rest_flattened(transport: str = "rest"):
     client = NodeGroupsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -881,7 +881,7 @@ def test_delete_rest_flattened(transport: str = "rest"):
             project="project_value", zone="zone_value", node_group="node_group_value",
         )
         mock_args.update(sample_request)
-        client.delete(**mock_args)
+        client.delete_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -894,7 +894,7 @@ def test_delete_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_delete_rest_flattened_error(transport: str = "rest"):
+def test_delete_unary_rest_flattened_error(transport: str = "rest"):
     client = NodeGroupsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -902,7 +902,7 @@ def test_delete_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.delete(
+        client.delete_unary(
             compute.DeleteNodeGroupRequest(),
             project="project_value",
             zone="zone_value",
@@ -910,7 +910,7 @@ def test_delete_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_delete_nodes_rest(
+def test_delete_nodes_unary_rest(
     transport: str = "rest", request_type=compute.DeleteNodesNodeGroupRequest
 ):
     client = NodeGroupsClient(
@@ -958,7 +958,7 @@ def test_delete_nodes_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.delete_nodes(request)
+        response = client.delete_nodes_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -986,7 +986,7 @@ def test_delete_nodes_rest(
     assert response.zone == "zone_value"
 
 
-def test_delete_nodes_rest_bad_request(
+def test_delete_nodes_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DeleteNodesNodeGroupRequest
 ):
     client = NodeGroupsClient(
@@ -1009,14 +1009,14 @@ def test_delete_nodes_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.delete_nodes(request)
+        client.delete_nodes_unary(request)
 
 
-def test_delete_nodes_rest_from_dict():
-    test_delete_nodes_rest(request_type=dict)
+def test_delete_nodes_unary_rest_from_dict():
+    test_delete_nodes_unary_rest(request_type=dict)
 
 
-def test_delete_nodes_rest_flattened(transport: str = "rest"):
+def test_delete_nodes_unary_rest_flattened(transport: str = "rest"):
     client = NodeGroupsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1051,7 +1051,7 @@ def test_delete_nodes_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.delete_nodes(**mock_args)
+        client.delete_nodes_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1064,7 +1064,7 @@ def test_delete_nodes_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_delete_nodes_rest_flattened_error(transport: str = "rest"):
+def test_delete_nodes_unary_rest_flattened_error(transport: str = "rest"):
     client = NodeGroupsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1072,7 +1072,7 @@ def test_delete_nodes_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.delete_nodes(
+        client.delete_nodes_unary(
             compute.DeleteNodesNodeGroupRequest(),
             project="project_value",
             zone="zone_value",
@@ -1339,7 +1339,7 @@ def test_get_iam_policy_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_insert_rest(
+def test_insert_unary_rest(
     transport: str = "rest", request_type=compute.InsertNodeGroupRequest
 ):
     client = NodeGroupsClient(
@@ -1387,7 +1387,7 @@ def test_insert_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.insert(request)
+        response = client.insert_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -1415,7 +1415,7 @@ def test_insert_rest(
     assert response.zone == "zone_value"
 
 
-def test_insert_rest_bad_request(
+def test_insert_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.InsertNodeGroupRequest
 ):
     client = NodeGroupsClient(
@@ -1438,14 +1438,14 @@ def test_insert_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.insert(request)
+        client.insert_unary(request)
 
 
-def test_insert_rest_from_dict():
-    test_insert_rest(request_type=dict)
+def test_insert_unary_rest_from_dict():
+    test_insert_unary_rest(request_type=dict)
 
 
-def test_insert_rest_flattened(transport: str = "rest"):
+def test_insert_unary_rest_flattened(transport: str = "rest"):
     client = NodeGroupsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1476,7 +1476,7 @@ def test_insert_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.insert(**mock_args)
+        client.insert_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1489,7 +1489,7 @@ def test_insert_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_insert_rest_flattened_error(transport: str = "rest"):
+def test_insert_unary_rest_flattened_error(transport: str = "rest"):
     client = NodeGroupsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1497,7 +1497,7 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.insert(
+        client.insert_unary(
             compute.InsertNodeGroupRequest(),
             project="project_value",
             zone="zone_value",
@@ -1837,7 +1837,7 @@ def test_list_nodes_rest_pager():
             assert page_.raw_page.next_page_token == token
 
 
-def test_patch_rest(
+def test_patch_unary_rest(
     transport: str = "rest", request_type=compute.PatchNodeGroupRequest
 ):
     client = NodeGroupsClient(
@@ -1885,7 +1885,7 @@ def test_patch_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.patch(request)
+        response = client.patch_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -1913,7 +1913,7 @@ def test_patch_rest(
     assert response.zone == "zone_value"
 
 
-def test_patch_rest_bad_request(
+def test_patch_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.PatchNodeGroupRequest
 ):
     client = NodeGroupsClient(
@@ -1936,14 +1936,14 @@ def test_patch_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.patch(request)
+        client.patch_unary(request)
 
 
-def test_patch_rest_from_dict():
-    test_patch_rest(request_type=dict)
+def test_patch_unary_rest_from_dict():
+    test_patch_unary_rest(request_type=dict)
 
 
-def test_patch_rest_flattened(transport: str = "rest"):
+def test_patch_unary_rest_flattened(transport: str = "rest"):
     client = NodeGroupsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1978,7 +1978,7 @@ def test_patch_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.patch(**mock_args)
+        client.patch_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1991,7 +1991,7 @@ def test_patch_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_patch_rest_flattened_error(transport: str = "rest"):
+def test_patch_unary_rest_flattened_error(transport: str = "rest"):
     client = NodeGroupsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1999,7 +1999,7 @@ def test_patch_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.patch(
+        client.patch_unary(
             compute.PatchNodeGroupRequest(),
             project="project_value",
             zone="zone_value",
@@ -2141,7 +2141,7 @@ def test_set_iam_policy_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_set_node_template_rest(
+def test_set_node_template_unary_rest(
     transport: str = "rest", request_type=compute.SetNodeTemplateNodeGroupRequest
 ):
     client = NodeGroupsClient(
@@ -2189,7 +2189,7 @@ def test_set_node_template_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.set_node_template(request)
+        response = client.set_node_template_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -2217,7 +2217,7 @@ def test_set_node_template_rest(
     assert response.zone == "zone_value"
 
 
-def test_set_node_template_rest_bad_request(
+def test_set_node_template_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.SetNodeTemplateNodeGroupRequest
 ):
     client = NodeGroupsClient(
@@ -2240,14 +2240,14 @@ def test_set_node_template_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.set_node_template(request)
+        client.set_node_template_unary(request)
 
 
-def test_set_node_template_rest_from_dict():
-    test_set_node_template_rest(request_type=dict)
+def test_set_node_template_unary_rest_from_dict():
+    test_set_node_template_unary_rest(request_type=dict)
 
 
-def test_set_node_template_rest_flattened(transport: str = "rest"):
+def test_set_node_template_unary_rest_flattened(transport: str = "rest"):
     client = NodeGroupsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2282,7 +2282,7 @@ def test_set_node_template_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.set_node_template(**mock_args)
+        client.set_node_template_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2295,7 +2295,7 @@ def test_set_node_template_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_set_node_template_rest_flattened_error(transport: str = "rest"):
+def test_set_node_template_unary_rest_flattened_error(transport: str = "rest"):
     client = NodeGroupsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2303,7 +2303,7 @@ def test_set_node_template_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.set_node_template(
+        client.set_node_template_unary(
             compute.SetNodeTemplateNodeGroupRequest(),
             project="project_value",
             zone="zone_value",

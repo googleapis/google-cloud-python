@@ -409,7 +409,7 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         # Done; return the response.
         return response
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteSubnetworkRequest, dict] = None,
         *,
@@ -506,7 +506,7 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         # Done; return the response.
         return response
 
-    def expand_ip_cidr_range(
+    def expand_ip_cidr_range_unary(
         self,
         request: Union[compute.ExpandIpCidrRangeSubnetworkRequest, dict] = None,
         *,
@@ -832,7 +832,7 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertSubnetworkRequest, dict] = None,
         *,
@@ -1084,7 +1084,7 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         # Done; return the response.
         return response
 
-    def patch(
+    def patch_unary(
         self,
         request: Union[compute.PatchSubnetworkRequest, dict] = None,
         *,
@@ -1327,7 +1327,7 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         # Done; return the response.
         return response
 
-    def set_private_ip_google_access(
+    def set_private_ip_google_access_unary(
         self,
         request: Union[compute.SetPrivateIpGoogleAccessSubnetworkRequest, dict] = None,
         *,

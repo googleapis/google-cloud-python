@@ -416,7 +416,7 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         # Done; return the response.
         return response
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteTargetHttpsProxyRequest, dict] = None,
         *,
@@ -589,7 +589,7 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertTargetHttpsProxyRequest, dict] = None,
         *,
@@ -749,7 +749,7 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         # Done; return the response.
         return response
 
-    def patch(
+    def patch_unary(
         self,
         request: Union[compute.PatchTargetHttpsProxyRequest, dict] = None,
         *,
@@ -849,7 +849,7 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         # Done; return the response.
         return response
 
-    def set_quic_override(
+    def set_quic_override_unary(
         self,
         request: Union[compute.SetQuicOverrideTargetHttpsProxyRequest, dict] = None,
         *,
@@ -953,7 +953,7 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         # Done; return the response.
         return response
 
-    def set_ssl_certificates(
+    def set_ssl_certificates_unary(
         self,
         request: Union[compute.SetSslCertificatesTargetHttpsProxyRequest, dict] = None,
         *,
@@ -1056,7 +1056,7 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         # Done; return the response.
         return response
 
-    def set_ssl_policy(
+    def set_ssl_policy_unary(
         self,
         request: Union[compute.SetSslPolicyTargetHttpsProxyRequest, dict] = None,
         *,
@@ -1159,7 +1159,7 @@ class TargetHttpsProxiesClient(metaclass=TargetHttpsProxiesClientMeta):
         # Done; return the response.
         return response
 
-    def set_url_map(
+    def set_url_map_unary(
         self,
         request: Union[compute.SetUrlMapTargetHttpsProxyRequest, dict] = None,
         *,

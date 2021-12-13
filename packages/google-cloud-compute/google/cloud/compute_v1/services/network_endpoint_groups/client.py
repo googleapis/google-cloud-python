@@ -414,7 +414,7 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         # Done; return the response.
         return response
 
-    def attach_network_endpoints(
+    def attach_network_endpoints_unary(
         self,
         request: Union[
             compute.AttachNetworkEndpointsNetworkEndpointGroupRequest, dict
@@ -536,7 +536,7 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         # Done; return the response.
         return response
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteNetworkEndpointGroupRequest, dict] = None,
         *,
@@ -639,7 +639,7 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         # Done; return the response.
         return response
 
-    def detach_network_endpoints(
+    def detach_network_endpoints_unary(
         self,
         request: Union[
             compute.DetachNetworkEndpointsNetworkEndpointGroupRequest, dict
@@ -857,7 +857,7 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertNetworkEndpointGroupRequest, dict] = None,
         *,

@@ -603,7 +603,7 @@ def test_aggregated_list_rest_pager():
             assert page_.raw_page.next_page_token == token
 
 
-def test_delete_rest(
+def test_delete_unary_rest(
     transport: str = "rest", request_type=compute.DeleteTargetVpnGatewayRequest
 ):
     client = TargetVpnGatewaysClient(
@@ -652,7 +652,7 @@ def test_delete_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.delete(request)
+        response = client.delete_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -680,7 +680,7 @@ def test_delete_rest(
     assert response.zone == "zone_value"
 
 
-def test_delete_rest_bad_request(
+def test_delete_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DeleteTargetVpnGatewayRequest
 ):
     client = TargetVpnGatewaysClient(
@@ -704,14 +704,14 @@ def test_delete_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.delete(request)
+        client.delete_unary(request)
 
 
-def test_delete_rest_from_dict():
-    test_delete_rest(request_type=dict)
+def test_delete_unary_rest_from_dict():
+    test_delete_unary_rest(request_type=dict)
 
 
-def test_delete_rest_flattened(transport: str = "rest"):
+def test_delete_unary_rest_flattened(transport: str = "rest"):
     client = TargetVpnGatewaysClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -743,7 +743,7 @@ def test_delete_rest_flattened(transport: str = "rest"):
             target_vpn_gateway="target_vpn_gateway_value",
         )
         mock_args.update(sample_request)
-        client.delete(**mock_args)
+        client.delete_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -756,7 +756,7 @@ def test_delete_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_delete_rest_flattened_error(transport: str = "rest"):
+def test_delete_unary_rest_flattened_error(transport: str = "rest"):
     client = TargetVpnGatewaysClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -764,7 +764,7 @@ def test_delete_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.delete(
+        client.delete_unary(
             compute.DeleteTargetVpnGatewayRequest(),
             project="project_value",
             region="region_value",
@@ -919,7 +919,7 @@ def test_get_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_insert_rest(
+def test_insert_unary_rest(
     transport: str = "rest", request_type=compute.InsertTargetVpnGatewayRequest
 ):
     client = TargetVpnGatewaysClient(
@@ -967,7 +967,7 @@ def test_insert_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.insert(request)
+        response = client.insert_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -995,7 +995,7 @@ def test_insert_rest(
     assert response.zone == "zone_value"
 
 
-def test_insert_rest_bad_request(
+def test_insert_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.InsertTargetVpnGatewayRequest
 ):
     client = TargetVpnGatewaysClient(
@@ -1018,14 +1018,14 @@ def test_insert_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.insert(request)
+        client.insert_unary(request)
 
 
-def test_insert_rest_from_dict():
-    test_insert_rest(request_type=dict)
+def test_insert_unary_rest_from_dict():
+    test_insert_unary_rest(request_type=dict)
 
 
-def test_insert_rest_flattened(transport: str = "rest"):
+def test_insert_unary_rest_flattened(transport: str = "rest"):
     client = TargetVpnGatewaysClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1055,7 +1055,7 @@ def test_insert_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.insert(**mock_args)
+        client.insert_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1068,7 +1068,7 @@ def test_insert_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_insert_rest_flattened_error(transport: str = "rest"):
+def test_insert_unary_rest_flattened_error(transport: str = "rest"):
     client = TargetVpnGatewaysClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1076,7 +1076,7 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.insert(
+        client.insert_unary(
             compute.InsertTargetVpnGatewayRequest(),
             project="project_value",
             region="region_value",

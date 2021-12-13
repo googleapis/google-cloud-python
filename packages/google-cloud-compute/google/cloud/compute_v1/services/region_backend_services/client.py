@@ -342,7 +342,7 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
                 always_use_jwt_access=True,
             )
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteRegionBackendServiceRequest, dict] = None,
         *,
@@ -633,7 +633,7 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertRegionBackendServiceRequest, dict] = None,
         *,
@@ -816,7 +816,7 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
         # Done; return the response.
         return response
 
-    def patch(
+    def patch_unary(
         self,
         request: Union[compute.PatchRegionBackendServiceRequest, dict] = None,
         *,
@@ -927,7 +927,7 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
         # Done; return the response.
         return response
 
-    def update(
+    def update_unary(
         self,
         request: Union[compute.UpdateRegionBackendServiceRequest, dict] = None,
         *,

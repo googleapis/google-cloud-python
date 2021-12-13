@@ -394,7 +394,9 @@ def test_images_client_client_options_credentials_file(
         )
 
 
-def test_delete_rest(transport: str = "rest", request_type=compute.DeleteImageRequest):
+def test_delete_unary_rest(
+    transport: str = "rest", request_type=compute.DeleteImageRequest
+):
     client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -437,7 +439,7 @@ def test_delete_rest(transport: str = "rest", request_type=compute.DeleteImageRe
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.delete(request)
+        response = client.delete_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -465,7 +467,7 @@ def test_delete_rest(transport: str = "rest", request_type=compute.DeleteImageRe
     assert response.zone == "zone_value"
 
 
-def test_delete_rest_bad_request(
+def test_delete_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DeleteImageRequest
 ):
     client = ImagesClient(
@@ -485,14 +487,14 @@ def test_delete_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.delete(request)
+        client.delete_unary(request)
 
 
-def test_delete_rest_from_dict():
-    test_delete_rest(request_type=dict)
+def test_delete_unary_rest_from_dict():
+    test_delete_unary_rest(request_type=dict)
 
 
-def test_delete_rest_flattened(transport: str = "rest"):
+def test_delete_unary_rest_flattened(transport: str = "rest"):
     client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -516,7 +518,7 @@ def test_delete_rest_flattened(transport: str = "rest"):
         # get truthy value for each flattened field
         mock_args = dict(project="project_value", image="image_value",)
         mock_args.update(sample_request)
-        client.delete(**mock_args)
+        client.delete_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -529,7 +531,7 @@ def test_delete_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_delete_rest_flattened_error(transport: str = "rest"):
+def test_delete_unary_rest_flattened_error(transport: str = "rest"):
     client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -537,12 +539,12 @@ def test_delete_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.delete(
+        client.delete_unary(
             compute.DeleteImageRequest(), project="project_value", image="image_value",
         )
 
 
-def test_deprecate_rest(
+def test_deprecate_unary_rest(
     transport: str = "rest", request_type=compute.DeprecateImageRequest
 ):
     client = ImagesClient(
@@ -590,7 +592,7 @@ def test_deprecate_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.deprecate(request)
+        response = client.deprecate_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -618,7 +620,7 @@ def test_deprecate_rest(
     assert response.zone == "zone_value"
 
 
-def test_deprecate_rest_bad_request(
+def test_deprecate_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DeprecateImageRequest
 ):
     client = ImagesClient(
@@ -641,14 +643,14 @@ def test_deprecate_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.deprecate(request)
+        client.deprecate_unary(request)
 
 
-def test_deprecate_rest_from_dict():
-    test_deprecate_rest(request_type=dict)
+def test_deprecate_unary_rest_from_dict():
+    test_deprecate_unary_rest(request_type=dict)
 
 
-def test_deprecate_rest_flattened(transport: str = "rest"):
+def test_deprecate_unary_rest_flattened(transport: str = "rest"):
     client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -678,7 +680,7 @@ def test_deprecate_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.deprecate(**mock_args)
+        client.deprecate_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -691,7 +693,7 @@ def test_deprecate_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_deprecate_rest_flattened_error(transport: str = "rest"):
+def test_deprecate_unary_rest_flattened_error(transport: str = "rest"):
     client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -699,7 +701,7 @@ def test_deprecate_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.deprecate(
+        client.deprecate_unary(
             compute.DeprecateImageRequest(),
             project="project_value",
             image="image_value",
@@ -1119,7 +1121,9 @@ def test_get_iam_policy_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_insert_rest(transport: str = "rest", request_type=compute.InsertImageRequest):
+def test_insert_unary_rest(
+    transport: str = "rest", request_type=compute.InsertImageRequest
+):
     client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1163,7 +1167,7 @@ def test_insert_rest(transport: str = "rest", request_type=compute.InsertImageRe
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.insert(request)
+        response = client.insert_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -1191,7 +1195,7 @@ def test_insert_rest(transport: str = "rest", request_type=compute.InsertImageRe
     assert response.zone == "zone_value"
 
 
-def test_insert_rest_bad_request(
+def test_insert_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.InsertImageRequest
 ):
     client = ImagesClient(
@@ -1212,14 +1216,14 @@ def test_insert_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.insert(request)
+        client.insert_unary(request)
 
 
-def test_insert_rest_from_dict():
-    test_insert_rest(request_type=dict)
+def test_insert_unary_rest_from_dict():
+    test_insert_unary_rest(request_type=dict)
 
 
-def test_insert_rest_flattened(transport: str = "rest"):
+def test_insert_unary_rest_flattened(transport: str = "rest"):
     client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1246,7 +1250,7 @@ def test_insert_rest_flattened(transport: str = "rest"):
             image_resource=compute.Image(archive_size_bytes=1922),
         )
         mock_args.update(sample_request)
-        client.insert(**mock_args)
+        client.insert_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1259,7 +1263,7 @@ def test_insert_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_insert_rest_flattened_error(transport: str = "rest"):
+def test_insert_unary_rest_flattened_error(transport: str = "rest"):
     client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1267,7 +1271,7 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.insert(
+        client.insert_unary(
             compute.InsertImageRequest(),
             project="project_value",
             image_resource=compute.Image(archive_size_bytes=1922),
@@ -1427,7 +1431,9 @@ def test_list_rest_pager():
             assert page_.raw_page.next_page_token == token
 
 
-def test_patch_rest(transport: str = "rest", request_type=compute.PatchImageRequest):
+def test_patch_unary_rest(
+    transport: str = "rest", request_type=compute.PatchImageRequest
+):
     client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1471,7 +1477,7 @@ def test_patch_rest(transport: str = "rest", request_type=compute.PatchImageRequ
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.patch(request)
+        response = client.patch_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -1499,7 +1505,7 @@ def test_patch_rest(transport: str = "rest", request_type=compute.PatchImageRequ
     assert response.zone == "zone_value"
 
 
-def test_patch_rest_bad_request(
+def test_patch_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.PatchImageRequest
 ):
     client = ImagesClient(
@@ -1520,14 +1526,14 @@ def test_patch_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.patch(request)
+        client.patch_unary(request)
 
 
-def test_patch_rest_from_dict():
-    test_patch_rest(request_type=dict)
+def test_patch_unary_rest_from_dict():
+    test_patch_unary_rest(request_type=dict)
 
 
-def test_patch_rest_flattened(transport: str = "rest"):
+def test_patch_unary_rest_flattened(transport: str = "rest"):
     client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1555,7 +1561,7 @@ def test_patch_rest_flattened(transport: str = "rest"):
             image_resource=compute.Image(archive_size_bytes=1922),
         )
         mock_args.update(sample_request)
-        client.patch(**mock_args)
+        client.patch_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1568,7 +1574,7 @@ def test_patch_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_patch_rest_flattened_error(transport: str = "rest"):
+def test_patch_unary_rest_flattened_error(transport: str = "rest"):
     client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1576,7 +1582,7 @@ def test_patch_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.patch(
+        client.patch_unary(
             compute.PatchImageRequest(),
             project="project_value",
             image="image_value",
@@ -1709,7 +1715,7 @@ def test_set_iam_policy_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_set_labels_rest(
+def test_set_labels_unary_rest(
     transport: str = "rest", request_type=compute.SetLabelsImageRequest
 ):
     client = ImagesClient(
@@ -1757,7 +1763,7 @@ def test_set_labels_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.set_labels(request)
+        response = client.set_labels_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -1785,7 +1791,7 @@ def test_set_labels_rest(
     assert response.zone == "zone_value"
 
 
-def test_set_labels_rest_bad_request(
+def test_set_labels_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.SetLabelsImageRequest
 ):
     client = ImagesClient(
@@ -1808,14 +1814,14 @@ def test_set_labels_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.set_labels(request)
+        client.set_labels_unary(request)
 
 
-def test_set_labels_rest_from_dict():
-    test_set_labels_rest(request_type=dict)
+def test_set_labels_unary_rest_from_dict():
+    test_set_labels_unary_rest(request_type=dict)
 
 
-def test_set_labels_rest_flattened(transport: str = "rest"):
+def test_set_labels_unary_rest_flattened(transport: str = "rest"):
     client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1845,7 +1851,7 @@ def test_set_labels_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.set_labels(**mock_args)
+        client.set_labels_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1858,7 +1864,7 @@ def test_set_labels_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_set_labels_rest_flattened_error(transport: str = "rest"):
+def test_set_labels_unary_rest_flattened_error(transport: str = "rest"):
     client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1866,7 +1872,7 @@ def test_set_labels_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.set_labels(
+        client.set_labels_unary(
             compute.SetLabelsImageRequest(),
             project="project_value",
             resource="resource_value",

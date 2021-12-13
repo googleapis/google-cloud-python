@@ -338,7 +338,7 @@ class DisksClient(metaclass=DisksClientMeta):
                 always_use_jwt_access=True,
             )
 
-    def add_resource_policies(
+    def add_resource_policies_unary(
         self,
         request: Union[compute.AddResourcePoliciesDiskRequest, dict] = None,
         *,
@@ -518,7 +518,7 @@ class DisksClient(metaclass=DisksClientMeta):
         # Done; return the response.
         return response
 
-    def create_snapshot(
+    def create_snapshot_unary(
         self,
         request: Union[compute.CreateSnapshotDiskRequest, dict] = None,
         *,
@@ -623,7 +623,7 @@ class DisksClient(metaclass=DisksClientMeta):
         # Done; return the response.
         return response
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteDiskRequest, dict] = None,
         *,
@@ -939,7 +939,7 @@ class DisksClient(metaclass=DisksClientMeta):
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertDiskRequest, dict] = None,
         *,
@@ -1121,7 +1121,7 @@ class DisksClient(metaclass=DisksClientMeta):
         # Done; return the response.
         return response
 
-    def remove_resource_policies(
+    def remove_resource_policies_unary(
         self,
         request: Union[compute.RemoveResourcePoliciesDiskRequest, dict] = None,
         *,
@@ -1228,7 +1228,7 @@ class DisksClient(metaclass=DisksClientMeta):
         # Done; return the response.
         return response
 
-    def resize(
+    def resize_unary(
         self,
         request: Union[compute.ResizeDiskRequest, dict] = None,
         *,
@@ -1465,7 +1465,7 @@ class DisksClient(metaclass=DisksClientMeta):
         # Done; return the response.
         return response
 
-    def set_labels(
+    def set_labels_unary(
         self,
         request: Union[compute.SetLabelsDiskRequest, dict] = None,
         *,

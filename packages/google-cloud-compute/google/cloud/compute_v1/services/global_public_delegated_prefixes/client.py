@@ -344,7 +344,7 @@ class GlobalPublicDelegatedPrefixesClient(
                 always_use_jwt_access=True,
             )
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteGlobalPublicDelegatedPrefixeRequest, dict] = None,
         *,
@@ -513,7 +513,7 @@ class GlobalPublicDelegatedPrefixesClient(
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertGlobalPublicDelegatedPrefixeRequest, dict] = None,
         *,
@@ -674,7 +674,7 @@ class GlobalPublicDelegatedPrefixesClient(
         # Done; return the response.
         return response
 
-    def patch(
+    def patch_unary(
         self,
         request: Union[compute.PatchGlobalPublicDelegatedPrefixeRequest, dict] = None,
         *,

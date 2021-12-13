@@ -338,7 +338,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 always_use_jwt_access=True,
             )
 
-    def add_access_config(
+    def add_access_config_unary(
         self,
         request: Union[compute.AddAccessConfigInstanceRequest, dict] = None,
         *,
@@ -454,7 +454,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def add_resource_policies(
+    def add_resource_policies_unary(
         self,
         request: Union[compute.AddResourcePoliciesInstanceRequest, dict] = None,
         *,
@@ -638,7 +638,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def attach_disk(
+    def attach_disk_unary(
         self,
         request: Union[compute.AttachDiskInstanceRequest, dict] = None,
         *,
@@ -745,7 +745,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def bulk_insert(
+    def bulk_insert_unary(
         self,
         request: Union[compute.BulkInsertInstanceRequest, dict] = None,
         *,
@@ -845,7 +845,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteInstanceRequest, dict] = None,
         *,
@@ -943,7 +943,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def delete_access_config(
+    def delete_access_config_unary(
         self,
         request: Union[compute.DeleteAccessConfigInstanceRequest, dict] = None,
         *,
@@ -1059,7 +1059,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def detach_disk(
+    def detach_disk_unary(
         self,
         request: Union[compute.DetachDiskInstanceRequest, dict] = None,
         *,
@@ -1799,7 +1799,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertInstanceRequest, dict] = None,
         *,
@@ -2077,7 +2077,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def remove_resource_policies(
+    def remove_resource_policies_unary(
         self,
         request: Union[compute.RemoveResourcePoliciesInstanceRequest, dict] = None,
         *,
@@ -2189,7 +2189,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def reset(
+    def reset_unary(
         self,
         request: Union[compute.ResetInstanceRequest, dict] = None,
         *,
@@ -2374,7 +2374,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def set_deletion_protection(
+    def set_deletion_protection_unary(
         self,
         request: Union[compute.SetDeletionProtectionInstanceRequest, dict] = None,
         *,
@@ -2471,7 +2471,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def set_disk_auto_delete(
+    def set_disk_auto_delete_unary(
         self,
         request: Union[compute.SetDiskAutoDeleteInstanceRequest, dict] = None,
         *,
@@ -2723,7 +2723,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def set_labels(
+    def set_labels_unary(
         self,
         request: Union[compute.SetLabelsInstanceRequest, dict] = None,
         *,
@@ -2833,7 +2833,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def set_machine_resources(
+    def set_machine_resources_unary(
         self,
         request: Union[compute.SetMachineResourcesInstanceRequest, dict] = None,
         *,
@@ -2943,7 +2943,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def set_machine_type(
+    def set_machine_type_unary(
         self,
         request: Union[compute.SetMachineTypeInstanceRequest, dict] = None,
         *,
@@ -3053,7 +3053,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def set_metadata(
+    def set_metadata_unary(
         self,
         request: Union[compute.SetMetadataInstanceRequest, dict] = None,
         *,
@@ -3159,7 +3159,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def set_min_cpu_platform(
+    def set_min_cpu_platform_unary(
         self,
         request: Union[compute.SetMinCpuPlatformInstanceRequest, dict] = None,
         *,
@@ -3271,7 +3271,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def set_scheduling(
+    def set_scheduling_unary(
         self,
         request: Union[compute.SetSchedulingInstanceRequest, dict] = None,
         *,
@@ -3377,7 +3377,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def set_service_account(
+    def set_service_account_unary(
         self,
         request: Union[compute.SetServiceAccountInstanceRequest, dict] = None,
         *,
@@ -3488,7 +3488,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def set_shielded_instance_integrity_policy(
+    def set_shielded_instance_integrity_policy_unary(
         self,
         request: Union[
             compute.SetShieldedInstanceIntegrityPolicyInstanceRequest, dict
@@ -3606,7 +3606,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def set_tags(
+    def set_tags_unary(
         self,
         request: Union[compute.SetTagsInstanceRequest, dict] = None,
         *,
@@ -3712,7 +3712,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def simulate_maintenance_event(
+    def simulate_maintenance_event_unary(
         self,
         request: Union[compute.SimulateMaintenanceEventInstanceRequest, dict] = None,
         *,
@@ -3811,7 +3811,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def start(
+    def start_unary(
         self,
         request: Union[compute.StartInstanceRequest, dict] = None,
         *,
@@ -3909,7 +3909,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def start_with_encryption_key(
+    def start_with_encryption_key_unary(
         self,
         request: Union[compute.StartWithEncryptionKeyInstanceRequest, dict] = None,
         *,
@@ -4027,7 +4027,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def stop(
+    def stop_unary(
         self,
         request: Union[compute.StopInstanceRequest, dict] = None,
         *,
@@ -4224,7 +4224,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def update(
+    def update_unary(
         self,
         request: Union[compute.UpdateInstanceRequest, dict] = None,
         *,
@@ -4332,7 +4332,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def update_access_config(
+    def update_access_config_unary(
         self,
         request: Union[compute.UpdateAccessConfigInstanceRequest, dict] = None,
         *,
@@ -4450,7 +4450,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def update_display_device(
+    def update_display_device_unary(
         self,
         request: Union[compute.UpdateDisplayDeviceInstanceRequest, dict] = None,
         *,
@@ -4558,7 +4558,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def update_network_interface(
+    def update_network_interface_unary(
         self,
         request: Union[compute.UpdateNetworkInterfaceInstanceRequest, dict] = None,
         *,
@@ -4679,7 +4679,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Done; return the response.
         return response
 
-    def update_shielded_instance_config(
+    def update_shielded_instance_config_unary(
         self,
         request: Union[
             compute.UpdateShieldedInstanceConfigInstanceRequest, dict

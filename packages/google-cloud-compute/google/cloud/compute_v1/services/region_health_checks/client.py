@@ -342,7 +342,7 @@ class RegionHealthChecksClient(metaclass=RegionHealthChecksClientMeta):
                 always_use_jwt_access=True,
             )
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteRegionHealthCheckRequest, dict] = None,
         *,
@@ -542,7 +542,7 @@ class RegionHealthChecksClient(metaclass=RegionHealthChecksClientMeta):
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertRegionHealthCheckRequest, dict] = None,
         *,
@@ -722,7 +722,7 @@ class RegionHealthChecksClient(metaclass=RegionHealthChecksClientMeta):
         # Done; return the response.
         return response
 
-    def patch(
+    def patch_unary(
         self,
         request: Union[compute.PatchRegionHealthCheckRequest, dict] = None,
         *,
@@ -832,7 +832,7 @@ class RegionHealthChecksClient(metaclass=RegionHealthChecksClientMeta):
         # Done; return the response.
         return response
 
-    def update(
+    def update_unary(
         self,
         request: Union[compute.UpdateRegionHealthCheckRequest, dict] = None,
         *,

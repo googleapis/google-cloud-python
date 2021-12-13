@@ -338,7 +338,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 always_use_jwt_access=True,
             )
 
-    def add_health_check(
+    def add_health_check_unary(
         self,
         request: Union[compute.AddHealthCheckTargetPoolRequest, dict] = None,
         *,
@@ -452,7 +452,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # Done; return the response.
         return response
 
-    def add_instance(
+    def add_instance_unary(
         self,
         request: Union[compute.AddInstanceTargetPoolRequest, dict] = None,
         *,
@@ -632,7 +632,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # Done; return the response.
         return response
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteTargetPoolRequest, dict] = None,
         *,
@@ -913,7 +913,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertTargetPoolRequest, dict] = None,
         *,
@@ -1093,7 +1093,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # Done; return the response.
         return response
 
-    def remove_health_check(
+    def remove_health_check_unary(
         self,
         request: Union[compute.RemoveHealthCheckTargetPoolRequest, dict] = None,
         *,
@@ -1205,7 +1205,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # Done; return the response.
         return response
 
-    def remove_instance(
+    def remove_instance_unary(
         self,
         request: Union[compute.RemoveInstanceTargetPoolRequest, dict] = None,
         *,
@@ -1319,7 +1319,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # Done; return the response.
         return response
 
-    def set_backup(
+    def set_backup_unary(
         self,
         request: Union[compute.SetBackupTargetPoolRequest, dict] = None,
         *,

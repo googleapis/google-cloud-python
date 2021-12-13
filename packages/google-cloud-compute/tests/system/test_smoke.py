@@ -43,7 +43,7 @@ class TestComputeSmoke(TestBase):
 
     def tearDown(self) -> None:
         for instance in self.instances:
-            self.client.delete(
+            self.client.delete_unary(
                 project=self.DEFAULT_PROJECT, zone=self.DEFAULT_ZONE, instance=instance
             )
 
@@ -86,7 +86,7 @@ class TestComputeSmoke(TestBase):
         self.insert_instance()
         instance = self.get_instance()
         self.assertEqual(instance.shielded_instance_config.enable_secure_boot, False)
-        op = self.client.stop(
+        op = self.client.stop_unary(
             project=self.DEFAULT_PROJECT, zone=self.DEFAULT_ZONE, instance=self.name
         )
         self.wait_for_zonal_operation(op.name)
@@ -103,7 +103,7 @@ class TestComputeSmoke(TestBase):
 
         resource = ShieldedInstanceConfig()
         resource.enable_secure_boot = True
-        op = self.client.update_shielded_instance_config(
+        op = self.client.update_shielded_instance_config_unary(
             project=self.DEFAULT_PROJECT,
             zone=self.DEFAULT_ZONE,
             instance=self.name,
@@ -131,7 +131,7 @@ class TestComputeSmoke(TestBase):
         self.assertEqual(instance.description, "test")
         self.assertEqual(instance.scheduling.min_node_cpus, 0)
         instance.description = ""
-        update_op = self.client.update(
+        update_op = self.client.update_unary(
             project=self.DEFAULT_PROJECT,
             zone=self.DEFAULT_ZONE,
             instance=self.name,
@@ -147,7 +147,7 @@ class TestComputeSmoke(TestBase):
         instance = self.get_instance()
         self.assertEqual(instance.description, "test")
         instance.description = "тест"
-        update_op = self.client.update(
+        update_op = self.client.update_unary(
             project=self.DEFAULT_PROJECT,
             zone=self.DEFAULT_ZONE,
             instance=self.name,
@@ -190,7 +190,7 @@ class TestComputeSmoke(TestBase):
             project=self.DEFAULT_PROJECT,
             instance_resource=instance,
         )
-        operation = self.client.insert(request=request)
+        operation = self.client.insert_unary(request=request)
         self.wait_for_zonal_operation(operation.name)
         self.instances.append(self.name)
 
@@ -210,7 +210,7 @@ class TestComputeImages(TestBase):
         )
         images_client = ImagesClient(transport="rest")
         request = InsertImageRequest(project=self.DEFAULT_PROJECT, image_resource=image)
-        op = images_client.insert(request)
+        op = images_client.insert_unary(request)
         try:
             self.wait_for_global_operation(op.name)
 
@@ -218,7 +218,7 @@ class TestComputeImages(TestBase):
             self.assertEqual(fetched.license_codes, license_codes)
             self.assertEqual(fetched.name, name)
         finally:
-            images_client.delete(project=self.DEFAULT_PROJECT, image=name)
+            images_client.delete_unary(project=self.DEFAULT_PROJECT, image=name)
 
 
 class TestComputeFirewalls(TestBase):
@@ -234,7 +234,9 @@ class TestComputeFirewalls(TestBase):
             source_ranges=["0.0.0.0/0"],
             allowed=[Allowed(I_p_protocol="tcp", ports=["80"])],
         )
-        op = client.insert(project=self.DEFAULT_PROJECT, firewall_resource=firewall)
+        op = client.insert_unary(
+            project=self.DEFAULT_PROJECT, firewall_resource=firewall
+        )
         try:
             self.wait_for_global_operation(op.name)
 
@@ -242,4 +244,4 @@ class TestComputeFirewalls(TestBase):
             self.assertEqual(fetched.allowed[0].I_p_protocol, "tcp")
             self.assertEqual(fetched.allowed[0].ports, ["80"])
         finally:
-            client.delete(project=self.DEFAULT_PROJECT, firewall=name)
+            client.delete_unary(project=self.DEFAULT_PROJECT, firewall=name)

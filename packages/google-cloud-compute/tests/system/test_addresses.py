@@ -26,7 +26,7 @@ class TestAddresses(TestBase):
 
     def tearDown(self) -> None:
         for address in self.addresses:
-            self.client.delete(
+            self.client.delete_unary(
                 project=self.DEFAULT_PROJECT,
                 region=self.DEFAULT_REGION,
                 address=address,
@@ -40,7 +40,7 @@ class TestAddresses(TestBase):
         request.project = self.DEFAULT_PROJECT
         request.region = self.DEFAULT_REGION
         request.address_resource = address_res
-        operation = self.client.insert(request)
+        operation = self.client.insert_unary(request)
         self.wait_for_regional_operation(operation.name)
         self.addresses.append(self.name)
 

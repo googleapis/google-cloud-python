@@ -340,7 +340,7 @@ class GlobalAddressesClient(metaclass=GlobalAddressesClientMeta):
                 always_use_jwt_access=True,
             )
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteGlobalAddressRequest, dict] = None,
         *,
@@ -507,7 +507,7 @@ class GlobalAddressesClient(metaclass=GlobalAddressesClientMeta):
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertGlobalAddressRequest, dict] = None,
         *,

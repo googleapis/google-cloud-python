@@ -411,7 +411,7 @@ class TargetInstancesClient(metaclass=TargetInstancesClientMeta):
         # Done; return the response.
         return response
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteTargetInstanceRequest, dict] = None,
         *,
@@ -600,7 +600,7 @@ class TargetInstancesClient(metaclass=TargetInstancesClientMeta):
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertTargetInstanceRequest, dict] = None,
         *,

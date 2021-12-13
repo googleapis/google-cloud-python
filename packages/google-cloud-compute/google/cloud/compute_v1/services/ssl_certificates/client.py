@@ -414,7 +414,7 @@ class SslCertificatesClient(metaclass=SslCertificatesClientMeta):
         # Done; return the response.
         return response
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteSslCertificateRequest, dict] = None,
         *,
@@ -591,7 +591,7 @@ class SslCertificatesClient(metaclass=SslCertificatesClientMeta):
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertSslCertificateRequest, dict] = None,
         *,

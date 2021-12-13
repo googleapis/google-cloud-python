@@ -409,7 +409,7 @@ class AddressesClient(metaclass=AddressesClientMeta):
         # Done; return the response.
         return response
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteAddressRequest, dict] = None,
         *,
@@ -590,7 +590,7 @@ class AddressesClient(metaclass=AddressesClientMeta):
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertAddressRequest, dict] = None,
         *,

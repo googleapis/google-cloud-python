@@ -44,18 +44,18 @@ class TestInstanceGroups(TestBase):
 
     def tearDown(self) -> None:
         for igm in self.igms:
-            op = self.igm_client.delete(
+            op = self.igm_client.delete_unary(
                 project=self.DEFAULT_PROJECT,
                 zone=self.DEFAULT_ZONE,
                 instance_group_manager=igm,
             )
             self.wait_for_zonal_operation(op.name)
         for instance in self.instances:
-            op = self.inst_client.delete(
+            op = self.inst_client.delete_unary(
                 project=self.DEFAULT_PROJECT, zone=self.DEFAULT_ZONE, instance=instance
             )
         for template in self.templates:
-            op = self.template_client.delete(
+            op = self.template_client.delete_unary(
                 project=self.DEFAULT_PROJECT, instance_template=template
             )
 
@@ -80,7 +80,7 @@ class TestInstanceGroups(TestBase):
             project=self.DEFAULT_PROJECT,
             instance_resource=instance,
         )
-        operation = self.inst_client.insert(request=request)
+        operation = self.inst_client.insert_unary(request=request)
         self.wait_for_zonal_operation(operation.name)
         self.instances.append(self.name)
 
@@ -92,7 +92,7 @@ class TestInstanceGroups(TestBase):
         template_resource = InstanceTemplate(
             name=template_name, source_instance=instance
         )
-        operation = self.template_client.insert(
+        operation = self.template_client.insert_unary(
             project=self.DEFAULT_PROJECT, instance_template_resource=template_resource
         )
         self.wait_for_global_operation(operation.name)
@@ -105,7 +105,7 @@ class TestInstanceGroups(TestBase):
             name=igm_name,
             target_size=0,
         )
-        operation = self.igm_client.insert(
+        operation = self.igm_client.insert_unary(
             project=self.DEFAULT_PROJECT,
             zone=self.DEFAULT_ZONE,
             instance_group_manager_resource=igm_resource,
@@ -120,7 +120,7 @@ class TestInstanceGroups(TestBase):
         )
         self.assertEqual(instance_group.target_size, 0)
 
-        resize_op = self.igm_client.resize(
+        resize_op = self.igm_client.resize_unary(
             project=self.DEFAULT_PROJECT,
             zone=self.DEFAULT_ZONE,
             size=1,
@@ -135,7 +135,7 @@ class TestInstanceGroups(TestBase):
         )
         self.assertEqual(instance_group.target_size, 1)
 
-        resize_0_op = self.igm_client.resize(
+        resize_0_op = self.igm_client.resize_unary(
             project=self.DEFAULT_PROJECT,
             zone=self.DEFAULT_ZONE,
             size=0,

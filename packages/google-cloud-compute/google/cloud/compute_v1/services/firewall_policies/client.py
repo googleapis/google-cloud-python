@@ -340,7 +340,7 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 always_use_jwt_access=True,
             )
 
-    def add_association(
+    def add_association_unary(
         self,
         request: Union[compute.AddAssociationFirewallPolicyRequest, dict] = None,
         *,
@@ -432,7 +432,7 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         # Done; return the response.
         return response
 
-    def add_rule(
+    def add_rule_unary(
         self,
         request: Union[compute.AddRuleFirewallPolicyRequest, dict] = None,
         *,
@@ -519,7 +519,7 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         # Done; return the response.
         return response
 
-    def clone_rules(
+    def clone_rules_unary(
         self,
         request: Union[compute.CloneRulesFirewallPolicyRequest, dict] = None,
         *,
@@ -598,7 +598,7 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         # Done; return the response.
         return response
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteFirewallPolicyRequest, dict] = None,
         *,
@@ -977,7 +977,7 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertFirewallPolicyRequest, dict] = None,
         *,
@@ -1164,7 +1164,7 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         # Done; return the response.
         return response
 
-    def move(
+    def move_unary(
         self,
         request: Union[compute.MoveFirewallPolicyRequest, dict] = None,
         *,
@@ -1253,7 +1253,7 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         # Done; return the response.
         return response
 
-    def patch(
+    def patch_unary(
         self,
         request: Union[compute.PatchFirewallPolicyRequest, dict] = None,
         *,
@@ -1341,7 +1341,7 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         # Done; return the response.
         return response
 
-    def patch_rule(
+    def patch_rule_unary(
         self,
         request: Union[compute.PatchRuleFirewallPolicyRequest, dict] = None,
         *,
@@ -1428,7 +1428,7 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         # Done; return the response.
         return response
 
-    def remove_association(
+    def remove_association_unary(
         self,
         request: Union[compute.RemoveAssociationFirewallPolicyRequest, dict] = None,
         *,
@@ -1508,7 +1508,7 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
         # Done; return the response.
         return response
 
-    def remove_rule(
+    def remove_rule_unary(
         self,
         request: Union[compute.RemoveRuleFirewallPolicyRequest, dict] = None,
         *,

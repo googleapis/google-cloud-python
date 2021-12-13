@@ -344,7 +344,7 @@ class GlobalNetworkEndpointGroupsClient(
                 always_use_jwt_access=True,
             )
 
-    def attach_network_endpoints(
+    def attach_network_endpoints_unary(
         self,
         request: Union[
             compute.AttachNetworkEndpointsGlobalNetworkEndpointGroupRequest, dict
@@ -459,7 +459,7 @@ class GlobalNetworkEndpointGroupsClient(
         # Done; return the response.
         return response
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteGlobalNetworkEndpointGroupRequest, dict] = None,
         *,
@@ -549,7 +549,7 @@ class GlobalNetworkEndpointGroupsClient(
         # Done; return the response.
         return response
 
-    def detach_network_endpoints(
+    def detach_network_endpoints_unary(
         self,
         request: Union[
             compute.DetachNetworkEndpointsGlobalNetworkEndpointGroupRequest, dict
@@ -749,7 +749,7 @@ class GlobalNetworkEndpointGroupsClient(
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertGlobalNetworkEndpointGroupRequest, dict] = None,
         *,

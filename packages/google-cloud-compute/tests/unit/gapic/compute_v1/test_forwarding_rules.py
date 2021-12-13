@@ -602,7 +602,7 @@ def test_aggregated_list_rest_pager():
             assert page_.raw_page.next_page_token == token
 
 
-def test_delete_rest(
+def test_delete_unary_rest(
     transport: str = "rest", request_type=compute.DeleteForwardingRuleRequest
 ):
     client = ForwardingRulesClient(
@@ -651,7 +651,7 @@ def test_delete_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.delete(request)
+        response = client.delete_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -679,7 +679,7 @@ def test_delete_rest(
     assert response.zone == "zone_value"
 
 
-def test_delete_rest_bad_request(
+def test_delete_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DeleteForwardingRuleRequest
 ):
     client = ForwardingRulesClient(
@@ -703,14 +703,14 @@ def test_delete_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.delete(request)
+        client.delete_unary(request)
 
 
-def test_delete_rest_from_dict():
-    test_delete_rest(request_type=dict)
+def test_delete_unary_rest_from_dict():
+    test_delete_unary_rest(request_type=dict)
 
 
-def test_delete_rest_flattened(transport: str = "rest"):
+def test_delete_unary_rest_flattened(transport: str = "rest"):
     client = ForwardingRulesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -742,7 +742,7 @@ def test_delete_rest_flattened(transport: str = "rest"):
             forwarding_rule="forwarding_rule_value",
         )
         mock_args.update(sample_request)
-        client.delete(**mock_args)
+        client.delete_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -755,7 +755,7 @@ def test_delete_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_delete_rest_flattened_error(transport: str = "rest"):
+def test_delete_unary_rest_flattened_error(transport: str = "rest"):
     client = ForwardingRulesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -763,7 +763,7 @@ def test_delete_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.delete(
+        client.delete_unary(
             compute.DeleteForwardingRuleRequest(),
             project="project_value",
             region="region_value",
@@ -950,7 +950,7 @@ def test_get_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_insert_rest(
+def test_insert_unary_rest(
     transport: str = "rest", request_type=compute.InsertForwardingRuleRequest
 ):
     client = ForwardingRulesClient(
@@ -998,7 +998,7 @@ def test_insert_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.insert(request)
+        response = client.insert_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -1026,7 +1026,7 @@ def test_insert_rest(
     assert response.zone == "zone_value"
 
 
-def test_insert_rest_bad_request(
+def test_insert_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.InsertForwardingRuleRequest
 ):
     client = ForwardingRulesClient(
@@ -1049,14 +1049,14 @@ def test_insert_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.insert(request)
+        client.insert_unary(request)
 
 
-def test_insert_rest_from_dict():
-    test_insert_rest(request_type=dict)
+def test_insert_unary_rest_from_dict():
+    test_insert_unary_rest(request_type=dict)
 
 
-def test_insert_rest_flattened(transport: str = "rest"):
+def test_insert_unary_rest_flattened(transport: str = "rest"):
     client = ForwardingRulesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1086,7 +1086,7 @@ def test_insert_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.insert(**mock_args)
+        client.insert_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1099,7 +1099,7 @@ def test_insert_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_insert_rest_flattened_error(transport: str = "rest"):
+def test_insert_unary_rest_flattened_error(transport: str = "rest"):
     client = ForwardingRulesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1107,7 +1107,7 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.insert(
+        client.insert_unary(
             compute.InsertForwardingRuleRequest(),
             project="project_value",
             region="region_value",
@@ -1282,7 +1282,7 @@ def test_list_rest_pager():
             assert page_.raw_page.next_page_token == token
 
 
-def test_patch_rest(
+def test_patch_unary_rest(
     transport: str = "rest", request_type=compute.PatchForwardingRuleRequest
 ):
     client = ForwardingRulesClient(
@@ -1334,7 +1334,7 @@ def test_patch_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.patch(request)
+        response = client.patch_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -1362,7 +1362,7 @@ def test_patch_rest(
     assert response.zone == "zone_value"
 
 
-def test_patch_rest_bad_request(
+def test_patch_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.PatchForwardingRuleRequest
 ):
     client = ForwardingRulesClient(
@@ -1389,14 +1389,14 @@ def test_patch_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.patch(request)
+        client.patch_unary(request)
 
 
-def test_patch_rest_from_dict():
-    test_patch_rest(request_type=dict)
+def test_patch_unary_rest_from_dict():
+    test_patch_unary_rest(request_type=dict)
 
 
-def test_patch_rest_flattened(transport: str = "rest"):
+def test_patch_unary_rest_flattened(transport: str = "rest"):
     client = ForwardingRulesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1431,7 +1431,7 @@ def test_patch_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.patch(**mock_args)
+        client.patch_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1444,7 +1444,7 @@ def test_patch_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_patch_rest_flattened_error(transport: str = "rest"):
+def test_patch_unary_rest_flattened_error(transport: str = "rest"):
     client = ForwardingRulesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1452,7 +1452,7 @@ def test_patch_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.patch(
+        client.patch_unary(
             compute.PatchForwardingRuleRequest(),
             project="project_value",
             region="region_value",
@@ -1463,7 +1463,7 @@ def test_patch_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_set_labels_rest(
+def test_set_labels_unary_rest(
     transport: str = "rest", request_type=compute.SetLabelsForwardingRuleRequest
 ):
     client = ForwardingRulesClient(
@@ -1511,7 +1511,7 @@ def test_set_labels_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.set_labels(request)
+        response = client.set_labels_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -1539,7 +1539,7 @@ def test_set_labels_rest(
     assert response.zone == "zone_value"
 
 
-def test_set_labels_rest_bad_request(
+def test_set_labels_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.SetLabelsForwardingRuleRequest
 ):
     client = ForwardingRulesClient(
@@ -1562,14 +1562,14 @@ def test_set_labels_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.set_labels(request)
+        client.set_labels_unary(request)
 
 
-def test_set_labels_rest_from_dict():
-    test_set_labels_rest(request_type=dict)
+def test_set_labels_unary_rest_from_dict():
+    test_set_labels_unary_rest(request_type=dict)
 
 
-def test_set_labels_rest_flattened(transport: str = "rest"):
+def test_set_labels_unary_rest_flattened(transport: str = "rest"):
     client = ForwardingRulesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1604,7 +1604,7 @@ def test_set_labels_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.set_labels(**mock_args)
+        client.set_labels_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1617,7 +1617,7 @@ def test_set_labels_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_set_labels_rest_flattened_error(transport: str = "rest"):
+def test_set_labels_unary_rest_flattened_error(transport: str = "rest"):
     client = ForwardingRulesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1625,7 +1625,7 @@ def test_set_labels_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.set_labels(
+        client.set_labels_unary(
             compute.SetLabelsForwardingRuleRequest(),
             project="project_value",
             region="region_value",
@@ -1636,7 +1636,7 @@ def test_set_labels_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_set_target_rest(
+def test_set_target_unary_rest(
     transport: str = "rest", request_type=compute.SetTargetForwardingRuleRequest
 ):
     client = ForwardingRulesClient(
@@ -1688,7 +1688,7 @@ def test_set_target_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.set_target(request)
+        response = client.set_target_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -1716,7 +1716,7 @@ def test_set_target_rest(
     assert response.zone == "zone_value"
 
 
-def test_set_target_rest_bad_request(
+def test_set_target_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.SetTargetForwardingRuleRequest
 ):
     client = ForwardingRulesClient(
@@ -1743,14 +1743,14 @@ def test_set_target_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.set_target(request)
+        client.set_target_unary(request)
 
 
-def test_set_target_rest_from_dict():
-    test_set_target_rest(request_type=dict)
+def test_set_target_unary_rest_from_dict():
+    test_set_target_unary_rest(request_type=dict)
 
 
-def test_set_target_rest_flattened(transport: str = "rest"):
+def test_set_target_unary_rest_flattened(transport: str = "rest"):
     client = ForwardingRulesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1783,7 +1783,7 @@ def test_set_target_rest_flattened(transport: str = "rest"):
             target_reference_resource=compute.TargetReference(target="target_value"),
         )
         mock_args.update(sample_request)
-        client.set_target(**mock_args)
+        client.set_target_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1796,7 +1796,7 @@ def test_set_target_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_set_target_rest_flattened_error(transport: str = "rest"):
+def test_set_target_unary_rest_flattened_error(transport: str = "rest"):
     client = ForwardingRulesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1804,7 +1804,7 @@ def test_set_target_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.set_target(
+        client.set_target_unary(
             compute.SetTargetForwardingRuleRequest(),
             project="project_value",
             region="region_value",

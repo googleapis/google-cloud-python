@@ -344,7 +344,7 @@ class RegionInstanceGroupManagersClient(
                 always_use_jwt_access=True,
             )
 
-    def abandon_instances(
+    def abandon_instances_unary(
         self,
         request: Union[
             compute.AbandonInstancesRegionInstanceGroupManagerRequest, dict
@@ -478,7 +478,7 @@ class RegionInstanceGroupManagersClient(
         # Done; return the response.
         return response
 
-    def apply_updates_to_instances(
+    def apply_updates_to_instances_unary(
         self,
         request: Union[
             compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest, dict
@@ -604,7 +604,7 @@ class RegionInstanceGroupManagersClient(
         # Done; return the response.
         return response
 
-    def create_instances(
+    def create_instances_unary(
         self,
         request: Union[
             compute.CreateInstancesRegionInstanceGroupManagerRequest, dict
@@ -733,7 +733,7 @@ class RegionInstanceGroupManagersClient(
         # Done; return the response.
         return response
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteRegionInstanceGroupManagerRequest, dict] = None,
         *,
@@ -831,7 +831,7 @@ class RegionInstanceGroupManagersClient(
         # Done; return the response.
         return response
 
-    def delete_instances(
+    def delete_instances_unary(
         self,
         request: Union[
             compute.DeleteInstancesRegionInstanceGroupManagerRequest, dict
@@ -964,7 +964,7 @@ class RegionInstanceGroupManagersClient(
         # Done; return the response.
         return response
 
-    def delete_per_instance_configs(
+    def delete_per_instance_configs_unary(
         self,
         request: Union[
             compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest, dict
@@ -1182,7 +1182,7 @@ class RegionInstanceGroupManagersClient(
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertRegionInstanceGroupManagerRequest, dict] = None,
         *,
@@ -1673,7 +1673,7 @@ class RegionInstanceGroupManagersClient(
         # Done; return the response.
         return response
 
-    def patch(
+    def patch_unary(
         self,
         request: Union[compute.PatchRegionInstanceGroupManagerRequest, dict] = None,
         *,
@@ -1795,7 +1795,7 @@ class RegionInstanceGroupManagersClient(
         # Done; return the response.
         return response
 
-    def patch_per_instance_configs(
+    def patch_per_instance_configs_unary(
         self,
         request: Union[
             compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest, dict
@@ -1923,7 +1923,7 @@ class RegionInstanceGroupManagersClient(
         # Done; return the response.
         return response
 
-    def recreate_instances(
+    def recreate_instances_unary(
         self,
         request: Union[
             compute.RecreateInstancesRegionInstanceGroupManagerRequest, dict
@@ -2054,7 +2054,7 @@ class RegionInstanceGroupManagersClient(
         # Done; return the response.
         return response
 
-    def resize(
+    def resize_unary(
         self,
         request: Union[compute.ResizeRegionInstanceGroupManagerRequest, dict] = None,
         *,
@@ -2171,7 +2171,7 @@ class RegionInstanceGroupManagersClient(
         # Done; return the response.
         return response
 
-    def set_instance_template(
+    def set_instance_template_unary(
         self,
         request: Union[
             compute.SetInstanceTemplateRegionInstanceGroupManagerRequest, dict
@@ -2293,7 +2293,7 @@ class RegionInstanceGroupManagersClient(
         # Done; return the response.
         return response
 
-    def set_target_pools(
+    def set_target_pools_unary(
         self,
         request: Union[
             compute.SetTargetPoolsRegionInstanceGroupManagerRequest, dict
@@ -2414,7 +2414,7 @@ class RegionInstanceGroupManagersClient(
         # Done; return the response.
         return response
 
-    def update_per_instance_configs(
+    def update_per_instance_configs_unary(
         self,
         request: Union[
             compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest, dict

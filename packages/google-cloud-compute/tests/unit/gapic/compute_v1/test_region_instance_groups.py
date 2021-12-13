@@ -976,7 +976,7 @@ def test_list_instances_rest_pager():
             assert page_.raw_page.next_page_token == token
 
 
-def test_set_named_ports_rest(
+def test_set_named_ports_unary_rest(
     transport: str = "rest",
     request_type=compute.SetNamedPortsRegionInstanceGroupRequest,
 ):
@@ -1031,7 +1031,7 @@ def test_set_named_ports_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.set_named_ports(request)
+        response = client.set_named_ports_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -1059,7 +1059,7 @@ def test_set_named_ports_rest(
     assert response.zone == "zone_value"
 
 
-def test_set_named_ports_rest_bad_request(
+def test_set_named_ports_unary_rest_bad_request(
     transport: str = "rest",
     request_type=compute.SetNamedPortsRegionInstanceGroupRequest,
 ):
@@ -1089,14 +1089,14 @@ def test_set_named_ports_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.set_named_ports(request)
+        client.set_named_ports_unary(request)
 
 
-def test_set_named_ports_rest_from_dict():
-    test_set_named_ports_rest(request_type=dict)
+def test_set_named_ports_unary_rest_from_dict():
+    test_set_named_ports_unary_rest(request_type=dict)
 
 
-def test_set_named_ports_rest_flattened(transport: str = "rest"):
+def test_set_named_ports_unary_rest_flattened(transport: str = "rest"):
     client = RegionInstanceGroupsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1131,7 +1131,7 @@ def test_set_named_ports_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.set_named_ports(**mock_args)
+        client.set_named_ports_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1144,7 +1144,7 @@ def test_set_named_ports_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_set_named_ports_rest_flattened_error(transport: str = "rest"):
+def test_set_named_ports_unary_rest_flattened_error(transport: str = "rest"):
     client = RegionInstanceGroupsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1152,7 +1152,7 @@ def test_set_named_ports_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.set_named_ports(
+        client.set_named_ports_unary(
             compute.SetNamedPortsRegionInstanceGroupRequest(),
             project="project_value",
             region="region_value",

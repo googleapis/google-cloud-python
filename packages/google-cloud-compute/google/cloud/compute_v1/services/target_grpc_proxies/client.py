@@ -342,7 +342,7 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
                 always_use_jwt_access=True,
             )
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteTargetGrpcProxyRequest, dict] = None,
         *,
@@ -510,7 +510,7 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertTargetGrpcProxyRequest, dict] = None,
         *,
@@ -669,7 +669,7 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
         # Done; return the response.
         return response
 
-    def patch(
+    def patch_unary(
         self,
         request: Union[compute.PatchTargetGrpcProxyRequest, dict] = None,
         *,

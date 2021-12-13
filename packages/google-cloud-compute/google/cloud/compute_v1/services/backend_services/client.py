@@ -340,7 +340,7 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
                 always_use_jwt_access=True,
             )
 
-    def add_signed_url_key(
+    def add_signed_url_key_unary(
         self,
         request: Union[compute.AddSignedUrlKeyBackendServiceRequest, dict] = None,
         *,
@@ -514,7 +514,7 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Done; return the response.
         return response
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteBackendServiceRequest, dict] = None,
         *,
@@ -601,7 +601,7 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Done; return the response.
         return response
 
-    def delete_signed_url_key(
+    def delete_signed_url_key_unary(
         self,
         request: Union[compute.DeleteSignedUrlKeyBackendServiceRequest, dict] = None,
         *,
@@ -875,7 +875,7 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertBackendServiceRequest, dict] = None,
         *,
@@ -1036,7 +1036,7 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Done; return the response.
         return response
 
-    def patch(
+    def patch_unary(
         self,
         request: Union[compute.PatchBackendServiceRequest, dict] = None,
         *,
@@ -1135,7 +1135,7 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Done; return the response.
         return response
 
-    def set_security_policy(
+    def set_security_policy_unary(
         self,
         request: Union[compute.SetSecurityPolicyBackendServiceRequest, dict] = None,
         *,
@@ -1237,7 +1237,7 @@ class BackendServicesClient(metaclass=BackendServicesClientMeta):
         # Done; return the response.
         return response
 
-    def update(
+    def update_unary(
         self,
         request: Union[compute.UpdateBackendServiceRequest, dict] = None,
         *,

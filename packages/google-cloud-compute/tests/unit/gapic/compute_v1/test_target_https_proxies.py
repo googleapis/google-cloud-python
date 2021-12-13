@@ -609,7 +609,7 @@ def test_aggregated_list_rest_pager():
             assert page_.raw_page.next_page_token == token
 
 
-def test_delete_rest(
+def test_delete_unary_rest(
     transport: str = "rest", request_type=compute.DeleteTargetHttpsProxyRequest
 ):
     client = TargetHttpsProxiesClient(
@@ -654,7 +654,7 @@ def test_delete_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.delete(request)
+        response = client.delete_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -682,7 +682,7 @@ def test_delete_rest(
     assert response.zone == "zone_value"
 
 
-def test_delete_rest_bad_request(
+def test_delete_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DeleteTargetHttpsProxyRequest
 ):
     client = TargetHttpsProxiesClient(
@@ -702,14 +702,14 @@ def test_delete_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.delete(request)
+        client.delete_unary(request)
 
 
-def test_delete_rest_from_dict():
-    test_delete_rest(request_type=dict)
+def test_delete_unary_rest_from_dict():
+    test_delete_unary_rest(request_type=dict)
 
 
-def test_delete_rest_flattened(transport: str = "rest"):
+def test_delete_unary_rest_flattened(transport: str = "rest"):
     client = TargetHttpsProxiesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -735,7 +735,7 @@ def test_delete_rest_flattened(transport: str = "rest"):
             project="project_value", target_https_proxy="target_https_proxy_value",
         )
         mock_args.update(sample_request)
-        client.delete(**mock_args)
+        client.delete_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -748,7 +748,7 @@ def test_delete_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_delete_rest_flattened_error(transport: str = "rest"):
+def test_delete_unary_rest_flattened_error(transport: str = "rest"):
     client = TargetHttpsProxiesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -756,7 +756,7 @@ def test_delete_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.delete(
+        client.delete_unary(
             compute.DeleteTargetHttpsProxyRequest(),
             project="project_value",
             target_https_proxy="target_https_proxy_value",
@@ -903,7 +903,7 @@ def test_get_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_insert_rest(
+def test_insert_unary_rest(
     transport: str = "rest", request_type=compute.InsertTargetHttpsProxyRequest
 ):
     client = TargetHttpsProxiesClient(
@@ -951,7 +951,7 @@ def test_insert_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.insert(request)
+        response = client.insert_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -979,7 +979,7 @@ def test_insert_rest(
     assert response.zone == "zone_value"
 
 
-def test_insert_rest_bad_request(
+def test_insert_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.InsertTargetHttpsProxyRequest
 ):
     client = TargetHttpsProxiesClient(
@@ -1002,14 +1002,14 @@ def test_insert_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.insert(request)
+        client.insert_unary(request)
 
 
-def test_insert_rest_from_dict():
-    test_insert_rest(request_type=dict)
+def test_insert_unary_rest_from_dict():
+    test_insert_unary_rest(request_type=dict)
 
 
-def test_insert_rest_flattened(transport: str = "rest"):
+def test_insert_unary_rest_flattened(transport: str = "rest"):
     client = TargetHttpsProxiesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1038,7 +1038,7 @@ def test_insert_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.insert(**mock_args)
+        client.insert_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1051,7 +1051,7 @@ def test_insert_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_insert_rest_flattened_error(transport: str = "rest"):
+def test_insert_unary_rest_flattened_error(transport: str = "rest"):
     client = TargetHttpsProxiesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1059,7 +1059,7 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.insert(
+        client.insert_unary(
             compute.InsertTargetHttpsProxyRequest(),
             project="project_value",
             target_https_proxy_resource=compute.TargetHttpsProxy(
@@ -1233,7 +1233,7 @@ def test_list_rest_pager():
             assert page_.raw_page.next_page_token == token
 
 
-def test_patch_rest(
+def test_patch_unary_rest(
     transport: str = "rest", request_type=compute.PatchTargetHttpsProxyRequest
 ):
     client = TargetHttpsProxiesClient(
@@ -1281,7 +1281,7 @@ def test_patch_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.patch(request)
+        response = client.patch_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -1309,7 +1309,7 @@ def test_patch_rest(
     assert response.zone == "zone_value"
 
 
-def test_patch_rest_bad_request(
+def test_patch_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.PatchTargetHttpsProxyRequest
 ):
     client = TargetHttpsProxiesClient(
@@ -1332,14 +1332,14 @@ def test_patch_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.patch(request)
+        client.patch_unary(request)
 
 
-def test_patch_rest_from_dict():
-    test_patch_rest(request_type=dict)
+def test_patch_unary_rest_from_dict():
+    test_patch_unary_rest(request_type=dict)
 
 
-def test_patch_rest_flattened(transport: str = "rest"):
+def test_patch_unary_rest_flattened(transport: str = "rest"):
     client = TargetHttpsProxiesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1369,7 +1369,7 @@ def test_patch_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.patch(**mock_args)
+        client.patch_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1382,7 +1382,7 @@ def test_patch_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_patch_rest_flattened_error(transport: str = "rest"):
+def test_patch_unary_rest_flattened_error(transport: str = "rest"):
     client = TargetHttpsProxiesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1390,7 +1390,7 @@ def test_patch_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.patch(
+        client.patch_unary(
             compute.PatchTargetHttpsProxyRequest(),
             project="project_value",
             target_https_proxy="target_https_proxy_value",
@@ -1400,7 +1400,7 @@ def test_patch_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_set_quic_override_rest(
+def test_set_quic_override_unary_rest(
     transport: str = "rest", request_type=compute.SetQuicOverrideTargetHttpsProxyRequest
 ):
     client = TargetHttpsProxiesClient(
@@ -1450,7 +1450,7 @@ def test_set_quic_override_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.set_quic_override(request)
+        response = client.set_quic_override_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -1478,7 +1478,7 @@ def test_set_quic_override_rest(
     assert response.zone == "zone_value"
 
 
-def test_set_quic_override_rest_bad_request(
+def test_set_quic_override_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.SetQuicOverrideTargetHttpsProxyRequest
 ):
     client = TargetHttpsProxiesClient(
@@ -1503,14 +1503,14 @@ def test_set_quic_override_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.set_quic_override(request)
+        client.set_quic_override_unary(request)
 
 
-def test_set_quic_override_rest_from_dict():
-    test_set_quic_override_rest(request_type=dict)
+def test_set_quic_override_unary_rest_from_dict():
+    test_set_quic_override_unary_rest(request_type=dict)
 
 
-def test_set_quic_override_rest_flattened(transport: str = "rest"):
+def test_set_quic_override_unary_rest_flattened(transport: str = "rest"):
     client = TargetHttpsProxiesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1540,7 +1540,7 @@ def test_set_quic_override_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.set_quic_override(**mock_args)
+        client.set_quic_override_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1553,7 +1553,7 @@ def test_set_quic_override_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_set_quic_override_rest_flattened_error(transport: str = "rest"):
+def test_set_quic_override_unary_rest_flattened_error(transport: str = "rest"):
     client = TargetHttpsProxiesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1561,7 +1561,7 @@ def test_set_quic_override_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.set_quic_override(
+        client.set_quic_override_unary(
             compute.SetQuicOverrideTargetHttpsProxyRequest(),
             project="project_value",
             target_https_proxy="target_https_proxy_value",
@@ -1571,7 +1571,7 @@ def test_set_quic_override_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_set_ssl_certificates_rest(
+def test_set_ssl_certificates_unary_rest(
     transport: str = "rest",
     request_type=compute.SetSslCertificatesTargetHttpsProxyRequest,
 ):
@@ -1622,7 +1622,7 @@ def test_set_ssl_certificates_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.set_ssl_certificates(request)
+        response = client.set_ssl_certificates_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -1650,7 +1650,7 @@ def test_set_ssl_certificates_rest(
     assert response.zone == "zone_value"
 
 
-def test_set_ssl_certificates_rest_bad_request(
+def test_set_ssl_certificates_unary_rest_bad_request(
     transport: str = "rest",
     request_type=compute.SetSslCertificatesTargetHttpsProxyRequest,
 ):
@@ -1676,14 +1676,14 @@ def test_set_ssl_certificates_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.set_ssl_certificates(request)
+        client.set_ssl_certificates_unary(request)
 
 
-def test_set_ssl_certificates_rest_from_dict():
-    test_set_ssl_certificates_rest(request_type=dict)
+def test_set_ssl_certificates_unary_rest_from_dict():
+    test_set_ssl_certificates_unary_rest(request_type=dict)
 
 
-def test_set_ssl_certificates_rest_flattened(transport: str = "rest"):
+def test_set_ssl_certificates_unary_rest_flattened(transport: str = "rest"):
     client = TargetHttpsProxiesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1713,7 +1713,7 @@ def test_set_ssl_certificates_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.set_ssl_certificates(**mock_args)
+        client.set_ssl_certificates_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1726,7 +1726,7 @@ def test_set_ssl_certificates_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_set_ssl_certificates_rest_flattened_error(transport: str = "rest"):
+def test_set_ssl_certificates_unary_rest_flattened_error(transport: str = "rest"):
     client = TargetHttpsProxiesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1734,7 +1734,7 @@ def test_set_ssl_certificates_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.set_ssl_certificates(
+        client.set_ssl_certificates_unary(
             compute.SetSslCertificatesTargetHttpsProxyRequest(),
             project="project_value",
             target_https_proxy="target_https_proxy_value",
@@ -1744,7 +1744,7 @@ def test_set_ssl_certificates_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_set_ssl_policy_rest(
+def test_set_ssl_policy_unary_rest(
     transport: str = "rest", request_type=compute.SetSslPolicyTargetHttpsProxyRequest
 ):
     client = TargetHttpsProxiesClient(
@@ -1792,7 +1792,7 @@ def test_set_ssl_policy_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.set_ssl_policy(request)
+        response = client.set_ssl_policy_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -1820,7 +1820,7 @@ def test_set_ssl_policy_rest(
     assert response.zone == "zone_value"
 
 
-def test_set_ssl_policy_rest_bad_request(
+def test_set_ssl_policy_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.SetSslPolicyTargetHttpsProxyRequest
 ):
     client = TargetHttpsProxiesClient(
@@ -1843,14 +1843,14 @@ def test_set_ssl_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.set_ssl_policy(request)
+        client.set_ssl_policy_unary(request)
 
 
-def test_set_ssl_policy_rest_from_dict():
-    test_set_ssl_policy_rest(request_type=dict)
+def test_set_ssl_policy_unary_rest_from_dict():
+    test_set_ssl_policy_unary_rest(request_type=dict)
 
 
-def test_set_ssl_policy_rest_flattened(transport: str = "rest"):
+def test_set_ssl_policy_unary_rest_flattened(transport: str = "rest"):
     client = TargetHttpsProxiesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1880,7 +1880,7 @@ def test_set_ssl_policy_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.set_ssl_policy(**mock_args)
+        client.set_ssl_policy_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1893,7 +1893,7 @@ def test_set_ssl_policy_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_set_ssl_policy_rest_flattened_error(transport: str = "rest"):
+def test_set_ssl_policy_unary_rest_flattened_error(transport: str = "rest"):
     client = TargetHttpsProxiesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1901,7 +1901,7 @@ def test_set_ssl_policy_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.set_ssl_policy(
+        client.set_ssl_policy_unary(
             compute.SetSslPolicyTargetHttpsProxyRequest(),
             project="project_value",
             target_https_proxy="target_https_proxy_value",
@@ -1911,7 +1911,7 @@ def test_set_ssl_policy_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_set_url_map_rest(
+def test_set_url_map_unary_rest(
     transport: str = "rest", request_type=compute.SetUrlMapTargetHttpsProxyRequest
 ):
     client = TargetHttpsProxiesClient(
@@ -1959,7 +1959,7 @@ def test_set_url_map_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.set_url_map(request)
+        response = client.set_url_map_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -1987,7 +1987,7 @@ def test_set_url_map_rest(
     assert response.zone == "zone_value"
 
 
-def test_set_url_map_rest_bad_request(
+def test_set_url_map_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.SetUrlMapTargetHttpsProxyRequest
 ):
     client = TargetHttpsProxiesClient(
@@ -2010,14 +2010,14 @@ def test_set_url_map_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.set_url_map(request)
+        client.set_url_map_unary(request)
 
 
-def test_set_url_map_rest_from_dict():
-    test_set_url_map_rest(request_type=dict)
+def test_set_url_map_unary_rest_from_dict():
+    test_set_url_map_unary_rest(request_type=dict)
 
 
-def test_set_url_map_rest_flattened(transport: str = "rest"):
+def test_set_url_map_unary_rest_flattened(transport: str = "rest"):
     client = TargetHttpsProxiesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2045,7 +2045,7 @@ def test_set_url_map_rest_flattened(transport: str = "rest"):
             url_map_reference_resource=compute.UrlMapReference(url_map="url_map_value"),
         )
         mock_args.update(sample_request)
-        client.set_url_map(**mock_args)
+        client.set_url_map_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2058,7 +2058,7 @@ def test_set_url_map_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_set_url_map_rest_flattened_error(transport: str = "rest"):
+def test_set_url_map_unary_rest_flattened_error(transport: str = "rest"):
     client = TargetHttpsProxiesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2066,7 +2066,7 @@ def test_set_url_map_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.set_url_map(
+        client.set_url_map_unary(
             compute.SetUrlMapTargetHttpsProxyRequest(),
             project="project_value",
             target_https_proxy="target_https_proxy_value",

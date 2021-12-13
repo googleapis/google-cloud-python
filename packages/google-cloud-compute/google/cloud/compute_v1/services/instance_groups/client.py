@@ -340,7 +340,7 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
                 always_use_jwt_access=True,
             )
 
-    def add_instances(
+    def add_instances_unary(
         self,
         request: Union[compute.AddInstancesInstanceGroupRequest, dict] = None,
         *,
@@ -529,7 +529,7 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         # Done; return the response.
         return response
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteInstanceGroupRequest, dict] = None,
         *,
@@ -727,7 +727,7 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertInstanceGroupRequest, dict] = None,
         *,
@@ -1018,7 +1018,7 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         # Done; return the response.
         return response
 
-    def remove_instances(
+    def remove_instances_unary(
         self,
         request: Union[compute.RemoveInstancesInstanceGroupRequest, dict] = None,
         *,
@@ -1137,7 +1137,7 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         # Done; return the response.
         return response
 
-    def set_named_ports(
+    def set_named_ports_unary(
         self,
         request: Union[compute.SetNamedPortsInstanceGroupRequest, dict] = None,
         *,

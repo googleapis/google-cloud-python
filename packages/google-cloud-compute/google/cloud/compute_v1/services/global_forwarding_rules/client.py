@@ -342,7 +342,7 @@ class GlobalForwardingRulesClient(metaclass=GlobalForwardingRulesClientMeta):
                 always_use_jwt_access=True,
             )
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteGlobalForwardingRuleRequest, dict] = None,
         *,
@@ -515,7 +515,7 @@ class GlobalForwardingRulesClient(metaclass=GlobalForwardingRulesClientMeta):
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertGlobalForwardingRuleRequest, dict] = None,
         *,
@@ -676,7 +676,7 @@ class GlobalForwardingRulesClient(metaclass=GlobalForwardingRulesClientMeta):
         # Done; return the response.
         return response
 
-    def patch(
+    def patch_unary(
         self,
         request: Union[compute.PatchGlobalForwardingRuleRequest, dict] = None,
         *,
@@ -774,7 +774,7 @@ class GlobalForwardingRulesClient(metaclass=GlobalForwardingRulesClientMeta):
         # Done; return the response.
         return response
 
-    def set_labels(
+    def set_labels_unary(
         self,
         request: Union[compute.SetLabelsGlobalForwardingRuleRequest, dict] = None,
         *,
@@ -875,7 +875,7 @@ class GlobalForwardingRulesClient(metaclass=GlobalForwardingRulesClientMeta):
         # Done; return the response.
         return response
 
-    def set_target(
+    def set_target_unary(
         self,
         request: Union[compute.SetTargetGlobalForwardingRuleRequest, dict] = None,
         *,

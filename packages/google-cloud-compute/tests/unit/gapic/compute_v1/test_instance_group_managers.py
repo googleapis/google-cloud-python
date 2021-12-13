@@ -440,7 +440,7 @@ def test_instance_group_managers_client_client_options_credentials_file(
         )
 
 
-def test_abandon_instances_rest(
+def test_abandon_instances_unary_rest(
     transport: str = "rest",
     request_type=compute.AbandonInstancesInstanceGroupManagerRequest,
 ):
@@ -495,7 +495,7 @@ def test_abandon_instances_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.abandon_instances(request)
+        response = client.abandon_instances_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -523,7 +523,7 @@ def test_abandon_instances_rest(
     assert response.zone == "zone_value"
 
 
-def test_abandon_instances_rest_bad_request(
+def test_abandon_instances_unary_rest_bad_request(
     transport: str = "rest",
     request_type=compute.AbandonInstancesInstanceGroupManagerRequest,
 ):
@@ -553,14 +553,14 @@ def test_abandon_instances_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.abandon_instances(request)
+        client.abandon_instances_unary(request)
 
 
-def test_abandon_instances_rest_from_dict():
-    test_abandon_instances_rest(request_type=dict)
+def test_abandon_instances_unary_rest_from_dict():
+    test_abandon_instances_unary_rest(request_type=dict)
 
 
-def test_abandon_instances_rest_flattened(transport: str = "rest"):
+def test_abandon_instances_unary_rest_flattened(transport: str = "rest"):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -595,7 +595,7 @@ def test_abandon_instances_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.abandon_instances(**mock_args)
+        client.abandon_instances_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -608,7 +608,7 @@ def test_abandon_instances_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_abandon_instances_rest_flattened_error(transport: str = "rest"):
+def test_abandon_instances_unary_rest_flattened_error(transport: str = "rest"):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -616,7 +616,7 @@ def test_abandon_instances_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.abandon_instances(
+        client.abandon_instances_unary(
             compute.AbandonInstancesInstanceGroupManagerRequest(),
             project="project_value",
             zone="zone_value",
@@ -821,7 +821,7 @@ def test_aggregated_list_rest_pager():
             assert page_.raw_page.next_page_token == token
 
 
-def test_apply_updates_to_instances_rest(
+def test_apply_updates_to_instances_unary_rest(
     transport: str = "rest",
     request_type=compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest,
 ):
@@ -874,7 +874,7 @@ def test_apply_updates_to_instances_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.apply_updates_to_instances(request)
+        response = client.apply_updates_to_instances_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -902,7 +902,7 @@ def test_apply_updates_to_instances_rest(
     assert response.zone == "zone_value"
 
 
-def test_apply_updates_to_instances_rest_bad_request(
+def test_apply_updates_to_instances_unary_rest_bad_request(
     transport: str = "rest",
     request_type=compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest,
 ):
@@ -930,14 +930,14 @@ def test_apply_updates_to_instances_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.apply_updates_to_instances(request)
+        client.apply_updates_to_instances_unary(request)
 
 
-def test_apply_updates_to_instances_rest_from_dict():
-    test_apply_updates_to_instances_rest(request_type=dict)
+def test_apply_updates_to_instances_unary_rest_from_dict():
+    test_apply_updates_to_instances_unary_rest(request_type=dict)
 
 
-def test_apply_updates_to_instances_rest_flattened(transport: str = "rest"):
+def test_apply_updates_to_instances_unary_rest_flattened(transport: str = "rest"):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -972,7 +972,7 @@ def test_apply_updates_to_instances_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.apply_updates_to_instances(**mock_args)
+        client.apply_updates_to_instances_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -985,7 +985,7 @@ def test_apply_updates_to_instances_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_apply_updates_to_instances_rest_flattened_error(transport: str = "rest"):
+def test_apply_updates_to_instances_unary_rest_flattened_error(transport: str = "rest"):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -993,7 +993,7 @@ def test_apply_updates_to_instances_rest_flattened_error(transport: str = "rest"
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.apply_updates_to_instances(
+        client.apply_updates_to_instances_unary(
             compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest(),
             project="project_value",
             zone="zone_value",
@@ -1004,7 +1004,7 @@ def test_apply_updates_to_instances_rest_flattened_error(transport: str = "rest"
         )
 
 
-def test_create_instances_rest(
+def test_create_instances_unary_rest(
     transport: str = "rest",
     request_type=compute.CreateInstancesInstanceGroupManagerRequest,
 ):
@@ -1059,7 +1059,7 @@ def test_create_instances_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.create_instances(request)
+        response = client.create_instances_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -1087,7 +1087,7 @@ def test_create_instances_rest(
     assert response.zone == "zone_value"
 
 
-def test_create_instances_rest_bad_request(
+def test_create_instances_unary_rest_bad_request(
     transport: str = "rest",
     request_type=compute.CreateInstancesInstanceGroupManagerRequest,
 ):
@@ -1117,14 +1117,14 @@ def test_create_instances_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.create_instances(request)
+        client.create_instances_unary(request)
 
 
-def test_create_instances_rest_from_dict():
-    test_create_instances_rest(request_type=dict)
+def test_create_instances_unary_rest_from_dict():
+    test_create_instances_unary_rest(request_type=dict)
 
 
-def test_create_instances_rest_flattened(transport: str = "rest"):
+def test_create_instances_unary_rest_flattened(transport: str = "rest"):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1159,7 +1159,7 @@ def test_create_instances_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.create_instances(**mock_args)
+        client.create_instances_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1172,7 +1172,7 @@ def test_create_instances_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_create_instances_rest_flattened_error(transport: str = "rest"):
+def test_create_instances_unary_rest_flattened_error(transport: str = "rest"):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1180,7 +1180,7 @@ def test_create_instances_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.create_instances(
+        client.create_instances_unary(
             compute.CreateInstancesInstanceGroupManagerRequest(),
             project="project_value",
             zone="zone_value",
@@ -1191,7 +1191,7 @@ def test_create_instances_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_delete_rest(
+def test_delete_unary_rest(
     transport: str = "rest", request_type=compute.DeleteInstanceGroupManagerRequest
 ):
     client = InstanceGroupManagersClient(
@@ -1240,7 +1240,7 @@ def test_delete_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.delete(request)
+        response = client.delete_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -1268,7 +1268,7 @@ def test_delete_rest(
     assert response.zone == "zone_value"
 
 
-def test_delete_rest_bad_request(
+def test_delete_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DeleteInstanceGroupManagerRequest
 ):
     client = InstanceGroupManagersClient(
@@ -1292,14 +1292,14 @@ def test_delete_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.delete(request)
+        client.delete_unary(request)
 
 
-def test_delete_rest_from_dict():
-    test_delete_rest(request_type=dict)
+def test_delete_unary_rest_from_dict():
+    test_delete_unary_rest(request_type=dict)
 
 
-def test_delete_rest_flattened(transport: str = "rest"):
+def test_delete_unary_rest_flattened(transport: str = "rest"):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1331,7 +1331,7 @@ def test_delete_rest_flattened(transport: str = "rest"):
             instance_group_manager="instance_group_manager_value",
         )
         mock_args.update(sample_request)
-        client.delete(**mock_args)
+        client.delete_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1344,7 +1344,7 @@ def test_delete_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_delete_rest_flattened_error(transport: str = "rest"):
+def test_delete_unary_rest_flattened_error(transport: str = "rest"):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1352,7 +1352,7 @@ def test_delete_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.delete(
+        client.delete_unary(
             compute.DeleteInstanceGroupManagerRequest(),
             project="project_value",
             zone="zone_value",
@@ -1360,7 +1360,7 @@ def test_delete_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_delete_instances_rest(
+def test_delete_instances_unary_rest(
     transport: str = "rest",
     request_type=compute.DeleteInstancesInstanceGroupManagerRequest,
 ):
@@ -1415,7 +1415,7 @@ def test_delete_instances_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.delete_instances(request)
+        response = client.delete_instances_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -1443,7 +1443,7 @@ def test_delete_instances_rest(
     assert response.zone == "zone_value"
 
 
-def test_delete_instances_rest_bad_request(
+def test_delete_instances_unary_rest_bad_request(
     transport: str = "rest",
     request_type=compute.DeleteInstancesInstanceGroupManagerRequest,
 ):
@@ -1473,14 +1473,14 @@ def test_delete_instances_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.delete_instances(request)
+        client.delete_instances_unary(request)
 
 
-def test_delete_instances_rest_from_dict():
-    test_delete_instances_rest(request_type=dict)
+def test_delete_instances_unary_rest_from_dict():
+    test_delete_instances_unary_rest(request_type=dict)
 
 
-def test_delete_instances_rest_flattened(transport: str = "rest"):
+def test_delete_instances_unary_rest_flattened(transport: str = "rest"):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1515,7 +1515,7 @@ def test_delete_instances_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.delete_instances(**mock_args)
+        client.delete_instances_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1528,7 +1528,7 @@ def test_delete_instances_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_delete_instances_rest_flattened_error(transport: str = "rest"):
+def test_delete_instances_unary_rest_flattened_error(transport: str = "rest"):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1536,7 +1536,7 @@ def test_delete_instances_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.delete_instances(
+        client.delete_instances_unary(
             compute.DeleteInstancesInstanceGroupManagerRequest(),
             project="project_value",
             zone="zone_value",
@@ -1547,7 +1547,7 @@ def test_delete_instances_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_delete_per_instance_configs_rest(
+def test_delete_per_instance_configs_unary_rest(
     transport: str = "rest",
     request_type=compute.DeletePerInstanceConfigsInstanceGroupManagerRequest,
 ):
@@ -1600,7 +1600,7 @@ def test_delete_per_instance_configs_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.delete_per_instance_configs(request)
+        response = client.delete_per_instance_configs_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -1628,7 +1628,7 @@ def test_delete_per_instance_configs_rest(
     assert response.zone == "zone_value"
 
 
-def test_delete_per_instance_configs_rest_bad_request(
+def test_delete_per_instance_configs_unary_rest_bad_request(
     transport: str = "rest",
     request_type=compute.DeletePerInstanceConfigsInstanceGroupManagerRequest,
 ):
@@ -1656,14 +1656,14 @@ def test_delete_per_instance_configs_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.delete_per_instance_configs(request)
+        client.delete_per_instance_configs_unary(request)
 
 
-def test_delete_per_instance_configs_rest_from_dict():
-    test_delete_per_instance_configs_rest(request_type=dict)
+def test_delete_per_instance_configs_unary_rest_from_dict():
+    test_delete_per_instance_configs_unary_rest(request_type=dict)
 
 
-def test_delete_per_instance_configs_rest_flattened(transport: str = "rest"):
+def test_delete_per_instance_configs_unary_rest_flattened(transport: str = "rest"):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1698,7 +1698,7 @@ def test_delete_per_instance_configs_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.delete_per_instance_configs(**mock_args)
+        client.delete_per_instance_configs_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1711,7 +1711,9 @@ def test_delete_per_instance_configs_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_delete_per_instance_configs_rest_flattened_error(transport: str = "rest"):
+def test_delete_per_instance_configs_unary_rest_flattened_error(
+    transport: str = "rest",
+):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1719,7 +1721,7 @@ def test_delete_per_instance_configs_rest_flattened_error(transport: str = "rest
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.delete_per_instance_configs(
+        client.delete_per_instance_configs_unary(
             compute.DeletePerInstanceConfigsInstanceGroupManagerRequest(),
             project="project_value",
             zone="zone_value",
@@ -1883,7 +1885,7 @@ def test_get_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_insert_rest(
+def test_insert_unary_rest(
     transport: str = "rest", request_type=compute.InsertInstanceGroupManagerRequest
 ):
     client = InstanceGroupManagersClient(
@@ -1935,7 +1937,7 @@ def test_insert_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.insert(request)
+        response = client.insert_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -1963,7 +1965,7 @@ def test_insert_rest(
     assert response.zone == "zone_value"
 
 
-def test_insert_rest_bad_request(
+def test_insert_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.InsertInstanceGroupManagerRequest
 ):
     client = InstanceGroupManagersClient(
@@ -1990,14 +1992,14 @@ def test_insert_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.insert(request)
+        client.insert_unary(request)
 
 
-def test_insert_rest_from_dict():
-    test_insert_rest(request_type=dict)
+def test_insert_unary_rest_from_dict():
+    test_insert_unary_rest(request_type=dict)
 
 
-def test_insert_rest_flattened(transport: str = "rest"):
+def test_insert_unary_rest_flattened(transport: str = "rest"):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2031,7 +2033,7 @@ def test_insert_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.insert(**mock_args)
+        client.insert_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2044,7 +2046,7 @@ def test_insert_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_insert_rest_flattened_error(transport: str = "rest"):
+def test_insert_unary_rest_flattened_error(transport: str = "rest"):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2052,7 +2054,7 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.insert(
+        client.insert_unary(
             compute.InsertInstanceGroupManagerRequest(),
             project="project_value",
             zone="zone_value",
@@ -2815,7 +2817,7 @@ def test_list_per_instance_configs_rest_pager():
             assert page_.raw_page.next_page_token == token
 
 
-def test_patch_rest(
+def test_patch_unary_rest(
     transport: str = "rest", request_type=compute.PatchInstanceGroupManagerRequest
 ):
     client = InstanceGroupManagersClient(
@@ -2871,7 +2873,7 @@ def test_patch_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.patch(request)
+        response = client.patch_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -2899,7 +2901,7 @@ def test_patch_rest(
     assert response.zone == "zone_value"
 
 
-def test_patch_rest_bad_request(
+def test_patch_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.PatchInstanceGroupManagerRequest
 ):
     client = InstanceGroupManagersClient(
@@ -2930,14 +2932,14 @@ def test_patch_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.patch(request)
+        client.patch_unary(request)
 
 
-def test_patch_rest_from_dict():
-    test_patch_rest(request_type=dict)
+def test_patch_unary_rest_from_dict():
+    test_patch_unary_rest(request_type=dict)
 
 
-def test_patch_rest_flattened(transport: str = "rest"):
+def test_patch_unary_rest_flattened(transport: str = "rest"):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2976,7 +2978,7 @@ def test_patch_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.patch(**mock_args)
+        client.patch_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2989,7 +2991,7 @@ def test_patch_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_patch_rest_flattened_error(transport: str = "rest"):
+def test_patch_unary_rest_flattened_error(transport: str = "rest"):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2997,7 +2999,7 @@ def test_patch_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.patch(
+        client.patch_unary(
             compute.PatchInstanceGroupManagerRequest(),
             project="project_value",
             zone="zone_value",
@@ -3012,7 +3014,7 @@ def test_patch_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_patch_per_instance_configs_rest(
+def test_patch_per_instance_configs_unary_rest(
     transport: str = "rest",
     request_type=compute.PatchPerInstanceConfigsInstanceGroupManagerRequest,
 ):
@@ -3069,7 +3071,7 @@ def test_patch_per_instance_configs_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.patch_per_instance_configs(request)
+        response = client.patch_per_instance_configs_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -3097,7 +3099,7 @@ def test_patch_per_instance_configs_rest(
     assert response.zone == "zone_value"
 
 
-def test_patch_per_instance_configs_rest_bad_request(
+def test_patch_per_instance_configs_unary_rest_bad_request(
     transport: str = "rest",
     request_type=compute.PatchPerInstanceConfigsInstanceGroupManagerRequest,
 ):
@@ -3129,14 +3131,14 @@ def test_patch_per_instance_configs_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.patch_per_instance_configs(request)
+        client.patch_per_instance_configs_unary(request)
 
 
-def test_patch_per_instance_configs_rest_from_dict():
-    test_patch_per_instance_configs_rest(request_type=dict)
+def test_patch_per_instance_configs_unary_rest_from_dict():
+    test_patch_per_instance_configs_unary_rest(request_type=dict)
 
 
-def test_patch_per_instance_configs_rest_flattened(transport: str = "rest"):
+def test_patch_per_instance_configs_unary_rest_flattened(transport: str = "rest"):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3173,7 +3175,7 @@ def test_patch_per_instance_configs_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.patch_per_instance_configs(**mock_args)
+        client.patch_per_instance_configs_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3186,7 +3188,7 @@ def test_patch_per_instance_configs_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_patch_per_instance_configs_rest_flattened_error(transport: str = "rest"):
+def test_patch_per_instance_configs_unary_rest_flattened_error(transport: str = "rest"):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3194,7 +3196,7 @@ def test_patch_per_instance_configs_rest_flattened_error(transport: str = "rest"
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.patch_per_instance_configs(
+        client.patch_per_instance_configs_unary(
             compute.PatchPerInstanceConfigsInstanceGroupManagerRequest(),
             project="project_value",
             zone="zone_value",
@@ -3207,7 +3209,7 @@ def test_patch_per_instance_configs_rest_flattened_error(transport: str = "rest"
         )
 
 
-def test_recreate_instances_rest(
+def test_recreate_instances_unary_rest(
     transport: str = "rest",
     request_type=compute.RecreateInstancesInstanceGroupManagerRequest,
 ):
@@ -3262,7 +3264,7 @@ def test_recreate_instances_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.recreate_instances(request)
+        response = client.recreate_instances_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -3290,7 +3292,7 @@ def test_recreate_instances_rest(
     assert response.zone == "zone_value"
 
 
-def test_recreate_instances_rest_bad_request(
+def test_recreate_instances_unary_rest_bad_request(
     transport: str = "rest",
     request_type=compute.RecreateInstancesInstanceGroupManagerRequest,
 ):
@@ -3320,14 +3322,14 @@ def test_recreate_instances_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.recreate_instances(request)
+        client.recreate_instances_unary(request)
 
 
-def test_recreate_instances_rest_from_dict():
-    test_recreate_instances_rest(request_type=dict)
+def test_recreate_instances_unary_rest_from_dict():
+    test_recreate_instances_unary_rest(request_type=dict)
 
 
-def test_recreate_instances_rest_flattened(transport: str = "rest"):
+def test_recreate_instances_unary_rest_flattened(transport: str = "rest"):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3362,7 +3364,7 @@ def test_recreate_instances_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.recreate_instances(**mock_args)
+        client.recreate_instances_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3375,7 +3377,7 @@ def test_recreate_instances_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_recreate_instances_rest_flattened_error(transport: str = "rest"):
+def test_recreate_instances_unary_rest_flattened_error(transport: str = "rest"):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3383,7 +3385,7 @@ def test_recreate_instances_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.recreate_instances(
+        client.recreate_instances_unary(
             compute.RecreateInstancesInstanceGroupManagerRequest(),
             project="project_value",
             zone="zone_value",
@@ -3394,7 +3396,7 @@ def test_recreate_instances_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_resize_rest(
+def test_resize_unary_rest(
     transport: str = "rest", request_type=compute.ResizeInstanceGroupManagerRequest
 ):
     client = InstanceGroupManagersClient(
@@ -3443,7 +3445,7 @@ def test_resize_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.resize(request)
+        response = client.resize_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -3471,7 +3473,7 @@ def test_resize_rest(
     assert response.zone == "zone_value"
 
 
-def test_resize_rest_bad_request(
+def test_resize_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.ResizeInstanceGroupManagerRequest
 ):
     client = InstanceGroupManagersClient(
@@ -3495,14 +3497,14 @@ def test_resize_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.resize(request)
+        client.resize_unary(request)
 
 
-def test_resize_rest_from_dict():
-    test_resize_rest(request_type=dict)
+def test_resize_unary_rest_from_dict():
+    test_resize_unary_rest(request_type=dict)
 
 
-def test_resize_rest_flattened(transport: str = "rest"):
+def test_resize_unary_rest_flattened(transport: str = "rest"):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3535,7 +3537,7 @@ def test_resize_rest_flattened(transport: str = "rest"):
             size=443,
         )
         mock_args.update(sample_request)
-        client.resize(**mock_args)
+        client.resize_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3548,7 +3550,7 @@ def test_resize_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_resize_rest_flattened_error(transport: str = "rest"):
+def test_resize_unary_rest_flattened_error(transport: str = "rest"):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3556,7 +3558,7 @@ def test_resize_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.resize(
+        client.resize_unary(
             compute.ResizeInstanceGroupManagerRequest(),
             project="project_value",
             zone="zone_value",
@@ -3565,7 +3567,7 @@ def test_resize_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_set_instance_template_rest(
+def test_set_instance_template_unary_rest(
     transport: str = "rest",
     request_type=compute.SetInstanceTemplateInstanceGroupManagerRequest,
 ):
@@ -3620,7 +3622,7 @@ def test_set_instance_template_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.set_instance_template(request)
+        response = client.set_instance_template_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -3648,7 +3650,7 @@ def test_set_instance_template_rest(
     assert response.zone == "zone_value"
 
 
-def test_set_instance_template_rest_bad_request(
+def test_set_instance_template_unary_rest_bad_request(
     transport: str = "rest",
     request_type=compute.SetInstanceTemplateInstanceGroupManagerRequest,
 ):
@@ -3678,14 +3680,14 @@ def test_set_instance_template_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.set_instance_template(request)
+        client.set_instance_template_unary(request)
 
 
-def test_set_instance_template_rest_from_dict():
-    test_set_instance_template_rest(request_type=dict)
+def test_set_instance_template_unary_rest_from_dict():
+    test_set_instance_template_unary_rest(request_type=dict)
 
 
-def test_set_instance_template_rest_flattened(transport: str = "rest"):
+def test_set_instance_template_unary_rest_flattened(transport: str = "rest"):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3720,7 +3722,7 @@ def test_set_instance_template_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.set_instance_template(**mock_args)
+        client.set_instance_template_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3733,7 +3735,7 @@ def test_set_instance_template_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_set_instance_template_rest_flattened_error(transport: str = "rest"):
+def test_set_instance_template_unary_rest_flattened_error(transport: str = "rest"):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3741,7 +3743,7 @@ def test_set_instance_template_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.set_instance_template(
+        client.set_instance_template_unary(
             compute.SetInstanceTemplateInstanceGroupManagerRequest(),
             project="project_value",
             zone="zone_value",
@@ -3752,7 +3754,7 @@ def test_set_instance_template_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_set_target_pools_rest(
+def test_set_target_pools_unary_rest(
     transport: str = "rest",
     request_type=compute.SetTargetPoolsInstanceGroupManagerRequest,
 ):
@@ -3807,7 +3809,7 @@ def test_set_target_pools_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.set_target_pools(request)
+        response = client.set_target_pools_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -3835,7 +3837,7 @@ def test_set_target_pools_rest(
     assert response.zone == "zone_value"
 
 
-def test_set_target_pools_rest_bad_request(
+def test_set_target_pools_unary_rest_bad_request(
     transport: str = "rest",
     request_type=compute.SetTargetPoolsInstanceGroupManagerRequest,
 ):
@@ -3865,14 +3867,14 @@ def test_set_target_pools_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.set_target_pools(request)
+        client.set_target_pools_unary(request)
 
 
-def test_set_target_pools_rest_from_dict():
-    test_set_target_pools_rest(request_type=dict)
+def test_set_target_pools_unary_rest_from_dict():
+    test_set_target_pools_unary_rest(request_type=dict)
 
 
-def test_set_target_pools_rest_flattened(transport: str = "rest"):
+def test_set_target_pools_unary_rest_flattened(transport: str = "rest"):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3907,7 +3909,7 @@ def test_set_target_pools_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.set_target_pools(**mock_args)
+        client.set_target_pools_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3920,7 +3922,7 @@ def test_set_target_pools_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_set_target_pools_rest_flattened_error(transport: str = "rest"):
+def test_set_target_pools_unary_rest_flattened_error(transport: str = "rest"):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3928,7 +3930,7 @@ def test_set_target_pools_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.set_target_pools(
+        client.set_target_pools_unary(
             compute.SetTargetPoolsInstanceGroupManagerRequest(),
             project="project_value",
             zone="zone_value",
@@ -3939,7 +3941,7 @@ def test_set_target_pools_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_update_per_instance_configs_rest(
+def test_update_per_instance_configs_unary_rest(
     transport: str = "rest",
     request_type=compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest,
 ):
@@ -3996,7 +3998,7 @@ def test_update_per_instance_configs_rest(
         json_return_value = compute.Operation.to_json(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.update_per_instance_configs(request)
+        response = client.update_per_instance_configs_unary(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
@@ -4024,7 +4026,7 @@ def test_update_per_instance_configs_rest(
     assert response.zone == "zone_value"
 
 
-def test_update_per_instance_configs_rest_bad_request(
+def test_update_per_instance_configs_unary_rest_bad_request(
     transport: str = "rest",
     request_type=compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest,
 ):
@@ -4056,14 +4058,14 @@ def test_update_per_instance_configs_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.update_per_instance_configs(request)
+        client.update_per_instance_configs_unary(request)
 
 
-def test_update_per_instance_configs_rest_from_dict():
-    test_update_per_instance_configs_rest(request_type=dict)
+def test_update_per_instance_configs_unary_rest_from_dict():
+    test_update_per_instance_configs_unary_rest(request_type=dict)
 
 
-def test_update_per_instance_configs_rest_flattened(transport: str = "rest"):
+def test_update_per_instance_configs_unary_rest_flattened(transport: str = "rest"):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4100,7 +4102,7 @@ def test_update_per_instance_configs_rest_flattened(transport: str = "rest"):
             ),
         )
         mock_args.update(sample_request)
-        client.update_per_instance_configs(**mock_args)
+        client.update_per_instance_configs_unary(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4113,7 +4115,9 @@ def test_update_per_instance_configs_rest_flattened(transport: str = "rest"):
         )
 
 
-def test_update_per_instance_configs_rest_flattened_error(transport: str = "rest"):
+def test_update_per_instance_configs_unary_rest_flattened_error(
+    transport: str = "rest",
+):
     client = InstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4121,7 +4125,7 @@ def test_update_per_instance_configs_rest_flattened_error(transport: str = "rest
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.update_per_instance_configs(
+        client.update_per_instance_configs_unary(
             compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest(),
             project="project_value",
             zone="zone_value",

@@ -634,7 +634,7 @@ class RegionInstanceGroupsClient(metaclass=RegionInstanceGroupsClientMeta):
         # Done; return the response.
         return response
 
-    def set_named_ports(
+    def set_named_ports_unary(
         self,
         request: Union[compute.SetNamedPortsRegionInstanceGroupRequest, dict] = None,
         *,

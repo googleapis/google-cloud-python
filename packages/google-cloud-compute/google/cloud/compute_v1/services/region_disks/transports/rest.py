@@ -33,7 +33,6 @@ except AttributeError:  # pragma: NO COVER
 # limitations under the License.
 #
 
-
 from google.cloud.compute_v1.types import compute
 
 from .base import RegionDisksTransport, DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO

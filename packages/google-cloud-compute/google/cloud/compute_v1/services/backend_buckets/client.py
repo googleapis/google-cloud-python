@@ -340,7 +340,7 @@ class BackendBucketsClient(metaclass=BackendBucketsClientMeta):
                 always_use_jwt_access=True,
             )
 
-    def add_signed_url_key(
+    def add_signed_url_key_unary(
         self,
         request: Union[compute.AddSignedUrlKeyBackendBucketRequest, dict] = None,
         *,
@@ -438,7 +438,7 @@ class BackendBucketsClient(metaclass=BackendBucketsClientMeta):
         # Done; return the response.
         return response
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteBackendBucketRequest, dict] = None,
         *,
@@ -525,7 +525,7 @@ class BackendBucketsClient(metaclass=BackendBucketsClientMeta):
         # Done; return the response.
         return response
 
-    def delete_signed_url_key(
+    def delete_signed_url_key_unary(
         self,
         request: Union[compute.DeleteSignedUrlKeyBackendBucketRequest, dict] = None,
         *,
@@ -704,7 +704,7 @@ class BackendBucketsClient(metaclass=BackendBucketsClientMeta):
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertBackendBucketRequest, dict] = None,
         *,
@@ -864,7 +864,7 @@ class BackendBucketsClient(metaclass=BackendBucketsClientMeta):
         # Done; return the response.
         return response
 
-    def patch(
+    def patch_unary(
         self,
         request: Union[compute.PatchBackendBucketRequest, dict] = None,
         *,
@@ -962,7 +962,7 @@ class BackendBucketsClient(metaclass=BackendBucketsClientMeta):
         # Done; return the response.
         return response
 
-    def update(
+    def update_unary(
         self,
         request: Union[compute.UpdateBackendBucketRequest, dict] = None,
         *,

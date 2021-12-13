@@ -338,7 +338,7 @@ class NetworksClient(metaclass=NetworksClientMeta):
                 always_use_jwt_access=True,
             )
 
-    def add_peering(
+    def add_peering_unary(
         self,
         request: Union[compute.AddPeeringNetworkRequest, dict] = None,
         *,
@@ -437,7 +437,7 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # Done; return the response.
         return response
 
-    def delete(
+    def delete_unary(
         self,
         request: Union[compute.DeleteNetworkRequest, dict] = None,
         *,
@@ -666,7 +666,7 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # Done; return the response.
         return response
 
-    def insert(
+    def insert_unary(
         self,
         request: Union[compute.InsertNetworkRequest, dict] = None,
         *,
@@ -903,7 +903,7 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # Done; return the response.
         return response
 
-    def patch(
+    def patch_unary(
         self,
         request: Union[compute.PatchNetworkRequest, dict] = None,
         *,
@@ -997,7 +997,7 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # Done; return the response.
         return response
 
-    def remove_peering(
+    def remove_peering_unary(
         self,
         request: Union[compute.RemovePeeringNetworkRequest, dict] = None,
         *,
@@ -1096,7 +1096,7 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # Done; return the response.
         return response
 
-    def switch_to_custom_mode(
+    def switch_to_custom_mode_unary(
         self,
         request: Union[compute.SwitchToCustomModeNetworkRequest, dict] = None,
         *,
@@ -1182,7 +1182,7 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # Done; return the response.
         return response
 
-    def update_peering(
+    def update_peering_unary(
         self,
         request: Union[compute.UpdatePeeringNetworkRequest, dict] = None,
         *,

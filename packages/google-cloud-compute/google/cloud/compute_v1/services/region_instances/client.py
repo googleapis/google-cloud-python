@@ -339,7 +339,7 @@ class RegionInstancesClient(metaclass=RegionInstancesClientMeta):
                 always_use_jwt_access=True,
             )
 
-    def bulk_insert(
+    def bulk_insert_unary(
         self,
         request: Union[compute.BulkInsertRegionInstanceRequest, dict] = None,
         *,
