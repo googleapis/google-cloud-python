@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.9.0](https://www.github.com/googleapis/python-compute/compare/v0.8.0...v0.9.0) (2021-12-13)
+
+
+### Features
+
+* Switch to string enums for compute ([#685](https://www.github.com/googleapis/python-compute/issues/685)) ([#158](https://www.github.com/googleapis/python-compute/issues/158)) ([6cfa01e](https://www.github.com/googleapis/python-compute/commit/6cfa01eb2b33986809854e9a33c6f6441a91bedf))
+
+
+### Bug Fixes
+
+* handle GCP enum name start with uppercase IPProtocol ([#691](https://www.github.com/googleapis/python-compute/issues/691)) ([#166](https://www.github.com/googleapis/python-compute/issues/166)) ([3d0fe75](https://www.github.com/googleapis/python-compute/commit/3d0fe75400c782ad704f80e8be6032d3c52003c2))
+* make parent_id fields required compute move and insert methods ([#686](https://www.github.com/googleapis/python-compute/issues/686)) ([#160](https://www.github.com/googleapis/python-compute/issues/160)) ([8b373af](https://www.github.com/googleapis/python-compute/commit/8b373af2458ad18c29fdf112daf512a7120ce528))
+
+
+### Documentation
+
+* **samples:** Adding samples for instance from template creation ([#159](https://www.github.com/googleapis/python-compute/issues/159)) ([34092b5](https://www.github.com/googleapis/python-compute/commit/34092b5e0801364a417837eefb98f72ba6474564))
+* **samples:** Adding template samples ([#136](https://www.github.com/googleapis/python-compute/issues/136)) ([bc721a7](https://www.github.com/googleapis/python-compute/commit/bc721a7e0933c13c5894336a5500c362c7d1d0ac))
+* **samples:** Renaming region to avoid name collision with different region. ([#167](https://www.github.com/googleapis/python-compute/issues/167)) ([60f2937](https://www.github.com/googleapis/python-compute/commit/60f2937f35da587f9cfbfa5125821ce5d56f10cd))
+
 ## [0.8.0](https://www.github.com/googleapis/python-compute/compare/v0.7.0...v0.8.0) (2021-11-16)
 
 
