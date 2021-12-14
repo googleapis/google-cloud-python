@@ -141,6 +141,28 @@ class TestAccessEntry(unittest.TestCase):
         exp_resource = {"routine": routine}
         self.assertEqual(resource, exp_resource)
 
+    def test_to_api_repr_dataset(self):
+        dataset = {
+            "dataset": {"projectId": "my-project", "datasetId": "my_dataset"},
+            "target_types": "VIEWS",
+        }
+        entry = self._make_one(None, "dataset", dataset)
+        resource = entry.to_api_repr()
+        exp_resource = {"dataset": dataset}
+        self.assertEqual(resource, exp_resource)
+
+    def test_to_api_w_incorrect_role(self):
+        dataset = {
+            "dataset": {
+                "projectId": "my-project",
+                "datasetId": "my_dataset",
+                "tableId": "my_table",
+            },
+            "target_type": "VIEW",
+        }
+        with self.assertRaises(ValueError):
+            self._make_one("READER", "dataset", dataset)
+
     def test_from_api_repr(self):
         resource = {"role": "OWNER", "userByEmail": "salmon@example.com"}
         entry = self._get_target_class().from_api_repr(resource)
@@ -150,8 +172,22 @@ class TestAccessEntry(unittest.TestCase):
 
     def test_from_api_repr_w_unknown_entity_type(self):
         resource = {"role": "READER", "unknown": "UNKNOWN"}
-        with self.assertRaises(ValueError):
-            self._get_target_class().from_api_repr(resource)
+        entry = self._get_target_class().from_api_repr(resource)
+        self.assertEqual(entry.role, "READER")
+        self.assertEqual(entry.entity_type, "unknown")
+        self.assertEqual(entry.entity_id, "UNKNOWN")
+        exp_resource = entry.to_api_repr()
+        self.assertEqual(resource, exp_resource)
+
+    def test_to_api_repr_w_extra_properties(self):
+        resource = {
+            "role": "READER",
+            "userByEmail": "salmon@example.com",
+        }
+        entry = self._get_target_class().from_api_repr(resource)
+        entry._properties["specialGroup"] = resource["specialGroup"] = "projectReaders"
+        exp_resource = entry.to_api_repr()
+        self.assertEqual(resource, exp_resource)
 
     def test_from_api_repr_entries_w_extra_keys(self):
         resource = {

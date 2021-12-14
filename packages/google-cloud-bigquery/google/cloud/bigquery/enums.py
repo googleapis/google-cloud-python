@@ -232,6 +232,19 @@ def _make_sql_scalars_enum():
 StandardSqlDataTypes = _make_sql_scalars_enum()
 
 
+class EntityTypes(str, enum.Enum):
+    """Enum of allowed entity type names in AccessEntry"""
+
+    USER_BY_EMAIL = "userByEmail"
+    GROUP_BY_EMAIL = "groupByEmail"
+    DOMAIN = "domain"
+    DATASET = "dataset"
+    SPECIAL_GROUP = "specialGroup"
+    VIEW = "view"
+    IAM_MEMBER = "iamMember"
+    ROUTINE = "routine"
+
+
 # See also: https://cloud.google.com/bigquery/data-types#legacy_sql_data_types
 # and https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types
 class SqlTypeNames(str, enum.Enum):

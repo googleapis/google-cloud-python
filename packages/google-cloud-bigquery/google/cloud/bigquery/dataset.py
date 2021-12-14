@@ -77,10 +77,10 @@ def _get_routine_reference(self, routine_id):
 class AccessEntry(object):
     """Represents grant of an access role to an entity.
 
-    An entry must have exactly one of the allowed :attr:`ENTITY_TYPES`. If
-    anything but ``view`` or ``routine`` are set, a ``role`` is also required.
-    ``role`` is omitted for ``view`` and ``routine``, because they are always
-    read-only.
+    An entry must have exactly one of the allowed
+    :class:`google.cloud.bigquery.enums.EntityTypes`. If anything but ``view``, ``routine``,
+    or ``dataset`` are set, a ``role`` is also required. ``role`` is omitted for ``view``,
+    ``routine``, ``dataset``, because they are always read-only.
 
     See https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets.
 
@@ -88,17 +88,18 @@ class AccessEntry(object):
         role (str):
             Role granted to the entity. The following string values are
             supported: `'READER'`, `'WRITER'`, `'OWNER'`. It may also be
-            :data:`None` if the ``entity_type`` is ``view`` or ``routine``.
+            :data:`None` if the ``entity_type`` is ``view``, ``routine``, or ``dataset``.
 
         entity_type (str):
-            Type of entity being granted the role. One of :attr:`ENTITY_TYPES`.
+            Type of entity being granted the role. See
+            :class:`google.cloud.bigquery.enums.EntityTypes` for supported types.
 
         entity_id (Union[str, Dict[str, str]]):
-            If the ``entity_type`` is not 'view' or 'routine', the ``entity_id``
-            is the ``str`` ID of the entity being granted the role. If the
-            ``entity_type`` is 'view' or 'routine', the ``entity_id`` is a ``dict``
-            representing the view  or routine from a different dataset to grant
-            access to in the following format for views::
+            If the ``entity_type`` is not 'view', 'routine', or 'dataset', the
+            ``entity_id`` is the ``str`` ID of the entity being granted the role. If
+            the ``entity_type`` is 'view' or 'routine', the ``entity_id`` is a ``dict``
+            representing the view or routine from a different dataset to grant access
+            to in the following format for views::
 
                 {
                     'projectId': string,
@@ -114,11 +115,22 @@ class AccessEntry(object):
                     'routineId': string
                 }
 
+            If the ``entity_type`` is 'dataset', the ``entity_id`` is a ``dict`` that includes
+            a 'dataset' field with a ``dict`` representing the dataset and a 'target_types'
+            field with a ``str`` value of the dataset's resource type::
+
+                {
+                    'dataset': {
+                        'projectId': string,
+                        'datasetId': string,
+                    },
+                    'target_types: 'VIEWS'
+                }
+
     Raises:
         ValueError:
-            If the ``entity_type`` is not among :attr:`ENTITY_TYPES`, or if a
-            ``view`` or a ``routine`` has ``role`` set, or a non ``view`` and
-            non ``routine`` **does not** have a ``role`` set.
+            If a ``view``, ``routine``, or ``dataset`` has ``role`` set, or a non ``view``,
+            non ``routine``, and non ``dataset`` **does not** have a ``role`` set.
 
     Examples:
         >>> entry = AccessEntry('OWNER', 'userByEmail', 'user@example.com')
@@ -131,27 +143,9 @@ class AccessEntry(object):
         >>> entry = AccessEntry(None, 'view', view)
     """
 
-    ENTITY_TYPES = frozenset(
-        [
-            "userByEmail",
-            "groupByEmail",
-            "domain",
-            "specialGroup",
-            "view",
-            "iamMember",
-            "routine",
-        ]
-    )
-    """Allowed entity types."""
-
-    def __init__(self, role, entity_type, entity_id):
-        if entity_type not in self.ENTITY_TYPES:
-            message = "Entity type %r not among: %s" % (
-                entity_type,
-                ", ".join(self.ENTITY_TYPES),
-            )
-            raise ValueError(message)
-        if entity_type in ("view", "routine"):
+    def __init__(self, role=None, entity_type=None, entity_id=None):
+        self._properties = {}
+        if entity_type in ("view", "routine", "dataset"):
             if role is not None:
                 raise ValueError(
                     "Role must be None for a %r. Received "
@@ -162,7 +156,6 @@ class AccessEntry(object):
                 raise ValueError(
                     "Role must be set for entity " "type %r" % (entity_type,)
                 )
-
         self._role = role
         self._entity_type = entity_type
         self._entity_id = entity_id
@@ -214,7 +207,8 @@ class AccessEntry(object):
         Returns:
             Dict[str, object]: Access entry represented as an API resource
         """
-        resource = {self._entity_type: self._entity_id}
+        resource = copy.deepcopy(self._properties)
+        resource[self._entity_type] = self._entity_id
         if self._role is not None:
             resource["role"] = self._role
         return resource
@@ -241,7 +235,10 @@ class AccessEntry(object):
         entity_type, entity_id = entry.popitem()
         if len(entry) != 0:
             raise ValueError("Entry has unexpected keys remaining.", entry)
-        return cls(role, entity_type, entity_id)
+
+        config = cls(role, entity_type, entity_id)
+        config._properties = copy.deepcopy(resource)
+        return config
 
 
 class DatasetReference(object):
