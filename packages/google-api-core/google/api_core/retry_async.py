@@ -132,8 +132,8 @@ async def retry_target(target, predicate, sleep_generator, deadline, on_error=No
                 # Chains the raising RetryError with the root cause error,
                 # which helps observability and debugability.
                 raise exceptions.RetryError(
-                    "Deadline of {:.1f}s exceeded while calling {}".format(
-                        deadline, target
+                    "Deadline of {:.1f}s exceeded while calling target function".format(
+                        deadline
                     ),
                     last_exc,
                 ) from last_exc

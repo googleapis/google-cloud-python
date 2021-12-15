@@ -120,6 +120,10 @@ async def test_retry_target_deadline_exceeded(utcnow, sleep):
     assert exc_info.match("last exception: meep")
     assert target.call_count == 2
 
+    # Ensure the exception message does not include the target fn:
+    # it may be a partial with user data embedded
+    assert str(target) not in exc_info.exconly()
+
 
 @pytest.mark.asyncio
 async def test_retry_target_bad_sleep_generator():

@@ -203,8 +203,8 @@ def retry_target(target, predicate, sleep_generator, deadline, on_error=None):
         if deadline_datetime is not None:
             if deadline_datetime <= now:
                 raise exceptions.RetryError(
-                    "Deadline of {:.1f}s exceeded while calling {}".format(
-                        deadline, target
+                    "Deadline of {:.1f}s exceeded while calling target function".format(
+                        deadline
                     ),
                     last_exc,
                 ) from last_exc
