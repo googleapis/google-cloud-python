@@ -109,6 +109,24 @@ class TestBlobReaderBinary(unittest.TestCase, _BlobReaderBase):
 
         reader.close()
 
+    def test_read_with_raw_download(self):
+        blob = mock.Mock()
+
+        def read_from_fake_data(start=0, end=None, **_):
+            return TEST_BINARY_DATA[start:end]
+
+        blob.download_as_bytes = mock.Mock(side_effect=read_from_fake_data)
+        download_kwargs = {"raw_download": True}
+        reader = self._make_blob_reader(blob, chunk_size=8, **download_kwargs)
+
+        # Read and trigger the first download of chunk_size.
+        self.assertEqual(reader.read(1), TEST_BINARY_DATA[0:1])
+        blob.download_as_bytes.assert_called_once_with(
+            start=0, end=8, checksum=None, retry=DEFAULT_RETRY, raw_download=True
+        )
+
+        reader.close()
+
     def test_retry_passed_through(self):
         blob = mock.Mock()
 

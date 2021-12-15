@@ -35,6 +35,7 @@ VALID_DOWNLOAD_KWARGS = {
     "if_metageneration_not_match",
     "timeout",
     "retry",
+    "raw_download",
 }
 
 # Valid keyword arguments for upload methods.
