@@ -21,8 +21,8 @@ Before running the samples, make sure you've followed the steps outlined in
 [Quick Start](https://github.com/googleapis/python-storage#quick-start).
 
 ### Authentication
-This sample requires you to have authentication setup. Refer to the [Authentication Getting Started Guide](https://cloud.google.com/docs/authentication/getting-started)
-for instructions on setting up credentials for applications.
+Refer to the [Authentication Set Up Guide](https://cloud.google.com/storage/docs/reference/libraries#setting_up_authentication)
+for more detailed instructions.
 
 ### Install Dependencies
 1. Clone this repository and change to the sample directory you want to use.
@@ -30,15 +30,12 @@ for instructions on setting up credentials for applications.
     git clone https://github.com/googleapis/python-storage.git
     ```
 
-2. Install [pip](https://pip.pypa.io/) and [virtualenv](https://virtualenv.pypa.io) if you do not already have them. You may want to refer to the [Python Development Environment Setup Guide](https://cloud.google.com/python/setup) for Google Cloud Platform for instructions.
-
-3. Create a virtualenv. Samples are compatible with Python 3.6+.
+2. Activate a venv if you have not already from the [Quick Start](https://github.com/googleapis/python-storage#quick-start).
     ```
-    virtualenv env
-    source env/bin/activate
+    source <your-venv>/bin/activate
     ```
 
-4. Install the dependencies needed to run the samples.
+3. Install the dependencies needed to run the samples.
     ```
     cd samples/snippets
     pip install -r requirements.txt

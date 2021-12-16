@@ -34,20 +34,22 @@ In order to use this library, you first need to go through the following steps:
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
 .. _Enable the Google Cloud Storage API.:  https://cloud.google.com/storage
-.. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
+.. _Setup Authentication.: https://cloud.google.com/storage/docs/reference/libraries#setting_up_authentication
 
 Installation
 ~~~~~~~~~~~~
 
-Install this library in a `virtualenv`_ using pip. `virtualenv`_ is a tool to
-create isolated Python environments. The basic problem it addresses is one of
-dependencies and versions, and indirectly permissions.
+`Set up a Python development environment`_ and install this library in a `venv`.
+`venv`_ is a tool to create isolated Python environments. The basic problem it
+addresses is one of dependencies and versions, and indirectly permissions.
 
-With `virtualenv`_, it's possible to install this library without needing system
+Make sure you're using Python 3.3 or later, which includes `venv`_ by default.
+With `venv`, it's possible to install this library without needing system
 install permissions, and without clashing with the installed system
 dependencies.
 
-.. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+.. _Set up a Python development environment: https://cloud.google.com/python/docs/setup
+.. _`venv`: https://docs.python.org/3/library/venv.html
 
 
 Supported Python Versions
@@ -68,10 +70,9 @@ Mac/Linux
 
 .. code-block:: console
 
-    pip install virtualenv
-    virtualenv <your-env>
-    source <your-env>/bin/activate
-    <your-env>/bin/pip install google-cloud-storage
+    python -m venv env
+    source env/bin/activate
+    pip install google-cloud-storage
 
 
 Windows
@@ -79,10 +80,9 @@ Windows
 
 .. code-block:: console
 
-    pip install virtualenv
-    virtualenv <your-env>
-    <your-env>\Scripts\activate
-    <your-env>\Scripts\pip.exe install google-cloud-storage
+    py -m venv env
+    .\env\Scripts\activate
+    pip install google-cloud-storage
 
 
 Example Usage
@@ -90,8 +90,13 @@ Example Usage
 
 .. code:: python
 
+    # Imports the Google Cloud client library
     from google.cloud import storage
+
+    # Instantiates a client
     client = storage.Client()
+
+    # Creates a new bucket and uploads an object
     new_bucket = client.create_bucket('new-bucket-id')
     new_blob = new_bucket.blob('remote/path/storage.txt')
     new_blob.upload_from_filename(filename='/local/path.txt')
@@ -103,4 +108,12 @@ Example Usage
     blob = bucket.get_blob('remote/path/to/file.txt')
     print(blob.download_as_bytes())
     blob.upload_from_string('New contents!')
-    
+
+
+What's Next
+~~~~~~~~~~~
+
+Now that you've set up your Python client for Cloud Storage,
+you can get started running `Storage samples.`_
+
+.. _Storage samples.: https://github.com/googleapis/python-storage/tree/main/samples
