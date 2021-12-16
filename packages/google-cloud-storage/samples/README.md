@@ -137,7 +137,6 @@ for more detailed instructions.
 * [Set Metadata](#set-metadata)
 * [Set Public Access Prevention Enforced](#set-public-access-prevention-enforced)
 * [Set Public Access Prevention Inherited](#set-public-access-prevention-inherited)
-* [Set Public Access Prevention Unspecified](#set-public-access-prevention-unspecified)
 * [Set Retention Policy](#set-retention-policy)
 * [Set Temporary Hold](#set-temporary-hold)
 * [Upload Encrypted File](#upload-encrypted-file)
@@ -976,15 +975,6 @@ View the [source code](https://github.com/googleapis/python-storage/blob/main/sa
 
 
 `python storage_set_public_access_prevention_inherited.py <BUCKET_NAME>`
-
------
-### Set Public Access Prevention Unspecified
-[![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/python-storage&page=editor&open_in_editor=samples/snippets/storage_set_public_access_prevention_unspecified.py,samples/README.md)
-
-View the [source code](https://github.com/googleapis/python-storage/blob/main/samples/snippets/storage_set_public_access_prevention_unspecified.py). To run this sample:
-
-
-`python storage_set_public_access_prevention_unspecified.py <BUCKET_NAME>`
 
 -----
 ### Set Retention Policy
