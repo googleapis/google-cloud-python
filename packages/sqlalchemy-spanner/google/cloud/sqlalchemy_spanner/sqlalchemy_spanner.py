@@ -324,6 +324,29 @@ class SpannerSQLCompiler(SQLCompiler):
 class SpannerDDLCompiler(DDLCompiler):
     """Spanner DDL statements compiler."""
 
+    def get_column_specification(self, column, **kwargs):
+        """Build new column specifications.
+
+        Overridden to move the NOT NULL statement to front
+        of a computed column expression definitions.
+        """
+        colspec = (
+            self.preparer.format_column(column)
+            + " "
+            + self.dialect.type_compiler.process(column.type, type_expression=column)
+        )
+        default = self.get_column_default_string(column)
+        if default is not None:
+            colspec += " DEFAULT " + default
+
+        if not column.nullable:
+            colspec += " NOT NULL"
+
+        if column.computed is not None:
+            colspec += " " + self.process(column.computed)
+
+        return colspec
+
     def visit_computed_column(self, generated, **kw):
         """Computed column operator."""
         text = "AS (%s) STORED" % self.sql_compiler.process(

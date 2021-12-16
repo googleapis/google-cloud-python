@@ -1753,6 +1753,33 @@ class ComputedReflectionTest(_ComputedReflectionTest, ComputedReflectionFixtureT
         is_true("sqltext" in compData["computed"])
         eq_(self.normalize(compData["computed"]["sqltext"]), "normal+42")
 
+    def test_create_not_null_computed_column(self):
+        """
+        SPANNER TEST:
+
+        Check that on creating a computed column with a NOT NULL
+        clause the clause is set in front of the computed column
+        statement definition and doesn't cause failures.
+        """
+        engine = create_engine(get_db_url())
+        metadata = MetaData(bind=engine)
+
+        Table(
+            "Singers",
+            metadata,
+            Column("SingerId", String(36), primary_key=True, nullable=False),
+            Column("FirstName", String(200)),
+            Column("LastName", String(200), nullable=False),
+            Column(
+                "FullName",
+                String(400),
+                Computed("COALESCE(FirstName || ' ', '') || LastName"),
+                nullable=False,
+            ),
+        )
+
+        metadata.create_all(engine)
+
 
 @pytest.mark.skipif(
     bool(os.environ.get("SPANNER_EMULATOR_HOST")), reason="Skipped on emulator"
