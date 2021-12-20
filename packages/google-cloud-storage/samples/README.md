@@ -76,6 +76,7 @@ for more detailed instructions.
 * [Disable Requester Pays](#disable-requester-pays)
 * [Disable Uniform Bucket Level Access](#disable-uniform-bucket-level-access)
 * [Disable Versioning](#disable-versioning)
+* [Download Byte Range](#download-byte-range)
 * [Download Encrypted File](#download-encrypted-file)
 * [Download File](#download-file)
 * [Download File Requester Pays](#download-file-requester-pays)
@@ -426,6 +427,15 @@ View the [source code](https://github.com/googleapis/python-storage/blob/main/sa
 
 
 `python storage_disable_versioning.py <BUCKET_NAME>`
+
+-----
+### Download Byte Range
+[![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/python-storage&page=editor&open_in_editor=samples/snippets/storage_download_byte_range.py,samples/README.md)
+
+View the [source code](https://github.com/googleapis/python-storage/blob/main/samples/snippets/storage_download_byte_range.py). To run this sample:
+
+
+`python storage_download_byte_range.py <BUCKET_NAME> <SOURCE_BLOB_NAME> <START_BYTE> <END_BYTE> <DESTINATION_FILE_NAME> <>BASE64_ENCRYPTION_KEY`
 
 -----
 ### Download Encrypted File
