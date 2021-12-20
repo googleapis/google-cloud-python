@@ -729,8 +729,17 @@ class AssistQueryParameters(proto.Message):
             comma. For example, filters to match all documents that have
             'US' or 'CA' in their market metadata values and 'agent' in
             their user metadata values will be
-            documents_metadata_filters { key: "market" value: "US,CA" }
-            documents_metadata_filters { key: "user" value: "agent" }
+
+            ::
+
+               documents_metadata_filters {
+                 key: "market"
+                 value: "US,CA"
+               }
+               documents_metadata_filters {
+                 key: "user"
+                 value: "agent"
+               }
     """
 
     documents_metadata_filters = proto.MapField(proto.STRING, proto.STRING, number=1,)

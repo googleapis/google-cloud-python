@@ -364,13 +364,15 @@ class SpeechToTextConfig(proto.Message):
 
     Attributes:
         speech_model_variant (google.cloud.dialogflow_v2.types.SpeechModelVariant):
-            Optional. The speech model used in speech to text.
+            The speech model used in speech to text.
             ``SPEECH_MODEL_VARIANT_UNSPECIFIED``, ``USE_BEST_AVAILABLE``
             will be treated as ``USE_ENHANCED``. It can be overridden in
             [AnalyzeContentRequest][google.cloud.dialogflow.v2.AnalyzeContentRequest]
             and
             [StreamingAnalyzeContentRequest][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest]
-            request.
+            request. If enhanced model variant is specified and an
+            enhanced version of the specified model for the language
+            does not exist, then it would emit an error.
     """
 
     speech_model_variant = proto.Field(proto.ENUM, number=1, enum="SpeechModelVariant",)
