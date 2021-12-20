@@ -5913,12 +5913,12 @@ def test_artifact_registry_grpc_lro_async_client():
 def test_file_path():
     project = "squid"
     location = "clam"
-    repo = "whelk"
+    repository = "whelk"
     file = "octopus"
-    expected = "projects/{project}/locations/{location}/repositories/{repo}/files/{file}".format(
-        project=project, location=location, repo=repo, file=file,
+    expected = "projects/{project}/locations/{location}/repositories/{repository}/files/{file}".format(
+        project=project, location=location, repository=repository, file=file,
     )
-    actual = ArtifactRegistryClient.file_path(project, location, repo, file)
+    actual = ArtifactRegistryClient.file_path(project, location, repository, file)
     assert expected == actual
 
 
@@ -5926,7 +5926,7 @@ def test_parse_file_path():
     expected = {
         "project": "oyster",
         "location": "nudibranch",
-        "repo": "cuttlefish",
+        "repository": "cuttlefish",
         "file": "mussel",
     }
     path = ArtifactRegistryClient.file_path(**expected)

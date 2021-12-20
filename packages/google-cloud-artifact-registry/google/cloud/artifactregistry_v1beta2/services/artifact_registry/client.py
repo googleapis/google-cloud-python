@@ -187,17 +187,17 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         return self._transport
 
     @staticmethod
-    def file_path(project: str, location: str, repo: str, file: str,) -> str:
+    def file_path(project: str, location: str, repository: str, file: str,) -> str:
         """Returns a fully-qualified file string."""
-        return "projects/{project}/locations/{location}/repositories/{repo}/files/{file}".format(
-            project=project, location=location, repo=repo, file=file,
+        return "projects/{project}/locations/{location}/repositories/{repository}/files/{file}".format(
+            project=project, location=location, repository=repository, file=file,
         )
 
     @staticmethod
     def parse_file_path(path: str) -> Dict[str, str]:
         """Parses a file path into its component segments."""
         m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/repositories/(?P<repo>.+?)/files/(?P<file>.+?)$",
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/repositories/(?P<repository>.+?)/files/(?P<file>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
