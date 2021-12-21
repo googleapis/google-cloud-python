@@ -363,9 +363,9 @@ class ReservationServiceAsyncClient:
                     core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
-                deadline=60.0,
+                deadline=300.0,
             ),
-            default_timeout=60.0,
+            default_timeout=300.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -451,9 +451,9 @@ class ReservationServiceAsyncClient:
                     core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
-                deadline=60.0,
+                deadline=300.0,
             ),
-            default_timeout=60.0,
+            default_timeout=300.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -529,9 +529,9 @@ class ReservationServiceAsyncClient:
                     core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
-                deadline=60.0,
+                deadline=300.0,
             ),
-            default_timeout=60.0,
+            default_timeout=300.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -787,9 +787,9 @@ class ReservationServiceAsyncClient:
                     core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
-                deadline=60.0,
+                deadline=300.0,
             ),
-            default_timeout=60.0,
+            default_timeout=300.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -887,9 +887,9 @@ class ReservationServiceAsyncClient:
                     core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
-                deadline=60.0,
+                deadline=300.0,
             ),
-            default_timeout=60.0,
+            default_timeout=300.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -965,9 +965,9 @@ class ReservationServiceAsyncClient:
                     core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
-                deadline=60.0,
+                deadline=300.0,
             ),
-            default_timeout=60.0,
+            default_timeout=300.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1492,9 +1492,9 @@ class ReservationServiceAsyncClient:
                     core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
-                deadline=60.0,
+                deadline=300.0,
             ),
-            default_timeout=60.0,
+            default_timeout=300.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1590,9 +1590,9 @@ class ReservationServiceAsyncClient:
                     core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
-                deadline=60.0,
+                deadline=300.0,
             ),
-            default_timeout=60.0,
+            default_timeout=300.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1720,9 +1720,9 @@ class ReservationServiceAsyncClient:
                     core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
-                deadline=60.0,
+                deadline=300.0,
             ),
-            default_timeout=60.0,
+            default_timeout=300.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -2018,9 +2018,9 @@ class ReservationServiceAsyncClient:
                     core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
-                deadline=60.0,
+                deadline=300.0,
             ),
-            default_timeout=60.0,
+            default_timeout=300.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
