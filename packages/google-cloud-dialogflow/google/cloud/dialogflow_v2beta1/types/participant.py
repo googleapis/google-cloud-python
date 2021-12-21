@@ -123,14 +123,14 @@ class Participant(proto.Message):
 
             ::
 
-                documents_metadata_filters {
-                  key: "market"
-                  value: "US,CA"
-                }
-                documents_metadata_filters {
-                  key: "user"
-                  value: "agent"
-                }
+               documents_metadata_filters {
+                 key: "market"
+                 value: "US,CA"
+               }
+               documents_metadata_filters {
+                 key: "user"
+                 value: "agent"
+               }
     """
 
     class Role(proto.Enum):
@@ -424,14 +424,14 @@ class AssistQueryParameters(proto.Message):
 
             ::
 
-                documents_metadata_filters {
-                  key: "market"
-                  value: "US,CA"
-                }
-                documents_metadata_filters {
-                  key: "user"
-                  value: "agent"
-                }
+               documents_metadata_filters {
+                 key: "market"
+                 value: "US,CA"
+               }
+               documents_metadata_filters {
+                 key: "user"
+                 value: "agent"
+               }
     """
 
     documents_metadata_filters = proto.MapField(proto.STRING, proto.STRING, number=1,)

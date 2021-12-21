@@ -385,6 +385,9 @@ class KnowledgeOperationMetadata(proto.Message):
         state (google.cloud.dialogflow_v2beta1.types.KnowledgeOperationMetadata.State):
             Required. Output only. The current state of
             this operation.
+        knowledge_base (str):
+            The name of the knowledge base interacted
+            with during the operation.
     """
 
     class State(proto.Enum):
@@ -395,6 +398,7 @@ class KnowledgeOperationMetadata(proto.Message):
         DONE = 3
 
     state = proto.Field(proto.ENUM, number=1, enum=State,)
+    knowledge_base = proto.Field(proto.STRING, number=3,)
 
 
 class ReloadDocumentRequest(proto.Message):
