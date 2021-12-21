@@ -12,412 +12,420 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import datetime
-import unittest
 
 import mock
-from proto.datetime_helpers import DatetimeWithNanoseconds
-
-
-class TestBaseDocumentReference(unittest.TestCase):
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.firestore_v1.document import DocumentReference
-
-        return DocumentReference
-
-    def _make_one(self, *args, **kwargs):
-        klass = self._get_target_class()
-        return klass(*args, **kwargs)
-
-    def test_constructor(self):
-        collection_id1 = "users"
-        document_id1 = "alovelace"
-        collection_id2 = "platform"
-        document_id2 = "*nix"
-        client = mock.MagicMock()
-        client.__hash__.return_value = 1234
-
-        document = self._make_one(
-            collection_id1, document_id1, collection_id2, document_id2, client=client
-        )
-        self.assertIs(document._client, client)
-        expected_path = "/".join(
-            (collection_id1, document_id1, collection_id2, document_id2)
-        )
-        self.assertEqual(document.path, expected_path)
-
-    def test_constructor_invalid_path_empty(self):
-        with self.assertRaises(ValueError):
-            self._make_one()
-
-    def test_constructor_invalid_path_bad_collection_id(self):
-        with self.assertRaises(ValueError):
-            self._make_one(None, "before", "bad-collection-id", "fifteen")
-
-    def test_constructor_invalid_path_bad_document_id(self):
-        with self.assertRaises(ValueError):
-            self._make_one("bad-document-ID", None)
-
-    def test_constructor_invalid_path_bad_number_args(self):
-        with self.assertRaises(ValueError):
-            self._make_one("Just", "A-Collection", "Sub")
-
-    def test_constructor_invalid_kwarg(self):
-        with self.assertRaises(TypeError):
-            self._make_one("Coh-lek-shun", "Dahk-yu-mehnt", burger=18.75)
-
-    def test___copy__(self):
-        client = _make_client("rain")
-        document = self._make_one("a", "b", client=client)
-        # Access the document path so it is copied.
-        doc_path = document._document_path
-        self.assertEqual(doc_path, document._document_path_internal)
-
-        new_document = document.__copy__()
-        self.assertIsNot(new_document, document)
-        self.assertIs(new_document._client, document._client)
-        self.assertEqual(new_document._path, document._path)
-        self.assertEqual(
-            new_document._document_path_internal, document._document_path_internal
-        )
-
-    def test___deepcopy__calls_copy(self):
-        client = mock.sentinel.client
-        document = self._make_one("a", "b", client=client)
-        document.__copy__ = mock.Mock(return_value=mock.sentinel.new_doc, spec=[])
-
-        unused_memo = {}
-        new_document = document.__deepcopy__(unused_memo)
-        self.assertIs(new_document, mock.sentinel.new_doc)
-        document.__copy__.assert_called_once_with()
-
-    def test__eq__same_type(self):
-        document1 = self._make_one("X", "YY", client=mock.sentinel.client)
-        document2 = self._make_one("X", "ZZ", client=mock.sentinel.client)
-        document3 = self._make_one("X", "YY", client=mock.sentinel.client2)
-        document4 = self._make_one("X", "YY", client=mock.sentinel.client)
-
-        pairs = ((document1, document2), (document1, document3), (document2, document3))
-        for candidate1, candidate2 in pairs:
-            # We use == explicitly since assertNotEqual would use !=.
-            equality_val = candidate1 == candidate2
-            self.assertFalse(equality_val)
-
-        # Check the only equal one.
-        self.assertEqual(document1, document4)
-        self.assertIsNot(document1, document4)
-
-    def test__eq__other_type(self):
-        document = self._make_one("X", "YY", client=mock.sentinel.client)
-        other = object()
-        equality_val = document == other
-        self.assertFalse(equality_val)
-        self.assertIs(document.__eq__(other), NotImplemented)
-
-    def test___hash__(self):
-        client = mock.MagicMock()
-        client.__hash__.return_value = 234566789
-        document = self._make_one("X", "YY", client=client)
-        self.assertEqual(hash(document), hash(("X", "YY")) + hash(client))
-
-    def test__ne__same_type(self):
-        document1 = self._make_one("X", "YY", client=mock.sentinel.client)
-        document2 = self._make_one("X", "ZZ", client=mock.sentinel.client)
-        document3 = self._make_one("X", "YY", client=mock.sentinel.client2)
-        document4 = self._make_one("X", "YY", client=mock.sentinel.client)
-
-        self.assertNotEqual(document1, document2)
-        self.assertNotEqual(document1, document3)
-        self.assertNotEqual(document2, document3)
-
-        # We use != explicitly since assertEqual would use ==.
-        inequality_val = document1 != document4
-        self.assertFalse(inequality_val)
-        self.assertIsNot(document1, document4)
-
-    def test__ne__other_type(self):
-        document = self._make_one("X", "YY", client=mock.sentinel.client)
-        other = object()
-        self.assertNotEqual(document, other)
-        self.assertIs(document.__ne__(other), NotImplemented)
-
-    def test__document_path_property(self):
-        project = "hi-its-me-ok-bye"
-        client = _make_client(project=project)
-
-        collection_id = "then"
-        document_id = "090909iii"
-        document = self._make_one(collection_id, document_id, client=client)
-        doc_path = document._document_path
-        expected = "projects/{}/databases/{}/documents/{}/{}".format(
-            project, client._database, collection_id, document_id
-        )
-        self.assertEqual(doc_path, expected)
-        self.assertIs(document._document_path_internal, doc_path)
-
-        # Make sure value is cached.
-        document._document_path_internal = mock.sentinel.cached
-        self.assertIs(document._document_path, mock.sentinel.cached)
-
-    def test__document_path_property_no_client(self):
-        document = self._make_one("hi", "bye")
-        self.assertIsNone(document._client)
-        with self.assertRaises(ValueError):
-            getattr(document, "_document_path")
-
-        self.assertIsNone(document._document_path_internal)
-
-    def test_id_property(self):
-        document_id = "867-5309"
-        document = self._make_one("Co-lek-shun", document_id)
-        self.assertEqual(document.id, document_id)
-
-    def test_parent_property(self):
-        from google.cloud.firestore_v1.collection import CollectionReference
-
-        collection_id = "grocery-store"
-        document_id = "market"
-        client = _make_client()
-        document = self._make_one(collection_id, document_id, client=client)
-
-        parent = document.parent
-        self.assertIsInstance(parent, CollectionReference)
-        self.assertIs(parent._client, client)
-        self.assertEqual(parent._path, (collection_id,))
-
-    def test_collection_factory(self):
-        from google.cloud.firestore_v1.collection import CollectionReference
-
-        collection_id = "grocery-store"
-        document_id = "market"
-        new_collection = "fruits"
-        client = _make_client()
-        document = self._make_one(collection_id, document_id, client=client)
-
-        child = document.collection(new_collection)
-        self.assertIsInstance(child, CollectionReference)
-        self.assertIs(child._client, client)
-        self.assertEqual(child._path, (collection_id, document_id, new_collection))
-
-
-class TestDocumentSnapshot(unittest.TestCase):
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.firestore_v1.document import DocumentSnapshot
-
-        return DocumentSnapshot
-
-    def _make_one(self, *args, **kwargs):
-        klass = self._get_target_class()
-        return klass(*args, **kwargs)
-
-    def _make_reference(self, *args, **kwargs):
-        from google.cloud.firestore_v1.document import DocumentReference
-
-        return DocumentReference(*args, **kwargs)
-
-    def _make_w_ref(self, ref_path=("a", "b"), data={}, exists=True):
-        client = mock.sentinel.client
-        reference = self._make_reference(*ref_path, client=client)
-        return self._make_one(
-            reference,
-            data,
-            exists,
-            mock.sentinel.read_time,
-            mock.sentinel.create_time,
-            mock.sentinel.update_time,
-        )
-
-    def test_constructor(self):
-        client = mock.sentinel.client
-        reference = self._make_reference("hi", "bye", client=client)
-        data = {"zoop": 83}
-        snapshot = self._make_one(
-            reference,
-            data,
-            True,
-            mock.sentinel.read_time,
-            mock.sentinel.create_time,
-            mock.sentinel.update_time,
-        )
-        self.assertIs(snapshot._reference, reference)
-        self.assertEqual(snapshot._data, data)
-        self.assertIsNot(snapshot._data, data)  # Make sure copied.
-        self.assertTrue(snapshot._exists)
-        self.assertIs(snapshot.read_time, mock.sentinel.read_time)
-        self.assertIs(snapshot.create_time, mock.sentinel.create_time)
-        self.assertIs(snapshot.update_time, mock.sentinel.update_time)
-
-    def test___eq___other_type(self):
-        snapshot = self._make_w_ref()
-        other = object()
-        self.assertFalse(snapshot == other)
-
-    def test___eq___different_reference_same_data(self):
-        snapshot = self._make_w_ref(("a", "b"))
-        other = self._make_w_ref(("c", "d"))
-        self.assertFalse(snapshot == other)
-
-    def test___eq___same_reference_different_data(self):
-        snapshot = self._make_w_ref(("a", "b"))
-        other = self._make_w_ref(("a", "b"), {"foo": "bar"})
-        self.assertFalse(snapshot == other)
-
-    def test___eq___same_reference_same_data(self):
-        snapshot = self._make_w_ref(("a", "b"), {"foo": "bar"})
-        other = self._make_w_ref(("a", "b"), {"foo": "bar"})
-        self.assertTrue(snapshot == other)
-
-    def test___hash__(self):
-        client = mock.MagicMock()
-        client.__hash__.return_value = 234566789
-        reference = self._make_reference("hi", "bye", client=client)
-        data = {"zoop": 83}
-        update_time = DatetimeWithNanoseconds(
-            2021, 10, 4, 17, 43, 27, nanosecond=123456789, tzinfo=datetime.timezone.utc
-        )
-        snapshot = self._make_one(
-            reference, data, True, None, mock.sentinel.create_time, update_time
-        )
-        self.assertEqual(hash(snapshot), hash(reference) + hash(update_time))
-
-    def test__client_property(self):
-        reference = self._make_reference(
-            "ok", "fine", "now", "fore", client=mock.sentinel.client
-        )
-        snapshot = self._make_one(reference, {}, False, None, None, None)
-        self.assertIs(snapshot._client, mock.sentinel.client)
-
-    def test_exists_property(self):
-        reference = mock.sentinel.reference
-
-        snapshot1 = self._make_one(reference, {}, False, None, None, None)
-        self.assertFalse(snapshot1.exists)
-        snapshot2 = self._make_one(reference, {}, True, None, None, None)
-        self.assertTrue(snapshot2.exists)
-
-    def test_id_property(self):
-        document_id = "around"
-        reference = self._make_reference(
-            "look", document_id, client=mock.sentinel.client
-        )
-        snapshot = self._make_one(reference, {}, True, None, None, None)
-        self.assertEqual(snapshot.id, document_id)
-        self.assertEqual(reference.id, document_id)
-
-    def test_reference_property(self):
-        snapshot = self._make_one(mock.sentinel.reference, {}, True, None, None, None)
-        self.assertIs(snapshot.reference, mock.sentinel.reference)
-
-    def test_get(self):
-        data = {"one": {"bold": "move"}}
-        snapshot = self._make_one(None, data, True, None, None, None)
-
-        first_read = snapshot.get("one")
-        second_read = snapshot.get("one")
-        self.assertEqual(first_read, data.get("one"))
-        self.assertIsNot(first_read, data.get("one"))
-        self.assertEqual(first_read, second_read)
-        self.assertIsNot(first_read, second_read)
-
-        with self.assertRaises(KeyError):
-            snapshot.get("two")
-
-    def test_nonexistent_snapshot(self):
-        snapshot = self._make_one(None, None, False, None, None, None)
-        self.assertIsNone(snapshot.get("one"))
-
-    def test_to_dict(self):
-        data = {"a": 10, "b": ["definitely", "mutable"], "c": {"45": 50}}
-        snapshot = self._make_one(None, data, True, None, None, None)
-        as_dict = snapshot.to_dict()
-        self.assertEqual(as_dict, data)
-        self.assertIsNot(as_dict, data)
-        # Check that the data remains unchanged.
-        as_dict["b"].append("hi")
-        self.assertEqual(data, snapshot.to_dict())
-        self.assertNotEqual(data, as_dict)
-
-    def test_non_existent(self):
-        snapshot = self._make_one(None, None, False, None, None, None)
-        as_dict = snapshot.to_dict()
-        self.assertIsNone(as_dict)
-
-
-class Test__get_document_path(unittest.TestCase):
-    @staticmethod
-    def _call_fut(client, path):
-        from google.cloud.firestore_v1.base_document import _get_document_path
-
-        return _get_document_path(client, path)
-
-    def test_it(self):
-        project = "prah-jekt"
-        client = _make_client(project=project)
-        path = ("Some", "Document", "Child", "Shockument")
-        document_path = self._call_fut(client, path)
-
-        expected = "projects/{}/databases/{}/documents/{}".format(
-            project, client._database, "/".join(path)
-        )
-        self.assertEqual(document_path, expected)
-
-
-class Test__consume_single_get(unittest.TestCase):
-    @staticmethod
-    def _call_fut(response_iterator):
-        from google.cloud.firestore_v1.base_document import _consume_single_get
-
-        return _consume_single_get(response_iterator)
-
-    def test_success(self):
-        response_iterator = iter([mock.sentinel.result])
-        result = self._call_fut(response_iterator)
-        self.assertIs(result, mock.sentinel.result)
-
-    def test_failure_not_enough(self):
-        response_iterator = iter([])
-        with self.assertRaises(ValueError):
-            self._call_fut(response_iterator)
-
-    def test_failure_too_many(self):
-        response_iterator = iter([None, None])
-        with self.assertRaises(ValueError):
-            self._call_fut(response_iterator)
-
-
-class Test__first_write_result(unittest.TestCase):
-    @staticmethod
-    def _call_fut(write_results):
-        from google.cloud.firestore_v1.base_document import _first_write_result
-
-        return _first_write_result(write_results)
-
-    def test_success(self):
-        from google.protobuf import timestamp_pb2
-        from google.cloud.firestore_v1.types import write
-
-        single_result = write.WriteResult(
-            update_time=timestamp_pb2.Timestamp(seconds=1368767504, nanos=458000123)
-        )
-        write_results = [single_result]
-        result = self._call_fut(write_results)
-        self.assertIs(result, single_result)
-
-    def test_failure_not_enough(self):
-        write_results = []
-        with self.assertRaises(ValueError):
-            self._call_fut(write_results)
-
-    def test_more_than_one(self):
-        from google.cloud.firestore_v1.types import write
-
-        result1 = write.WriteResult()
-        result2 = write.WriteResult()
-        write_results = [result1, result2]
-        result = self._call_fut(write_results)
-        self.assertIs(result, result1)
+import pytest
+
+
+def _make_base_document_reference(*args, **kwargs):
+    from google.cloud.firestore_v1.base_document import BaseDocumentReference
+
+    return BaseDocumentReference(*args, **kwargs)
+
+
+def test_basedocumentreference_constructor():
+    collection_id1 = "users"
+    document_id1 = "alovelace"
+    collection_id2 = "platform"
+    document_id2 = "*nix"
+    client = mock.MagicMock()
+    client.__hash__.return_value = 1234
+
+    document = _make_base_document_reference(
+        collection_id1, document_id1, collection_id2, document_id2, client=client
+    )
+    assert document._client is client
+    expected_path = "/".join(
+        (collection_id1, document_id1, collection_id2, document_id2)
+    )
+    assert document.path == expected_path
+
+
+def test_basedocumentreference_constructor_invalid_path_empty():
+    with pytest.raises(ValueError):
+        _make_base_document_reference()
+
+
+def test_basedocumentreference_constructor_invalid_path_bad_collection_id():
+    with pytest.raises(ValueError):
+        _make_base_document_reference(None, "before", "bad-collection-id", "fifteen")
+
+
+def test_basedocumentreference_constructor_invalid_path_bad_document_id():
+    with pytest.raises(ValueError):
+        _make_base_document_reference("bad-document-ID", None)
+
+
+def test_basedocumentreference_constructor_invalid_path_bad_number_args():
+    with pytest.raises(ValueError):
+        _make_base_document_reference("Just", "A-Collection", "Sub")
+
+
+def test_basedocumentreference_constructor_invalid_kwarg():
+    with pytest.raises(TypeError):
+        _make_base_document_reference("Coh-lek-shun", "Dahk-yu-mehnt", burger=18.75)
+
+
+def test_basedocumentreference___copy__():
+    client = _make_client("rain")
+    document = _make_base_document_reference("a", "b", client=client)
+    # Access the document path so it is copied.
+    doc_path = document._document_path
+    assert doc_path == document._document_path_internal
+
+    new_document = document.__copy__()
+    assert new_document is not document
+    assert new_document._client is document._client
+    assert new_document._path == document._path
+    assert new_document._document_path_internal == document._document_path_internal
+
+
+def test_basedocumentreference___deepcopy__calls_copy():
+    client = mock.sentinel.client
+    document = _make_base_document_reference("a", "b", client=client)
+    document.__copy__ = mock.Mock(return_value=mock.sentinel.new_doc, spec=[])
+
+    unused_memo = {}
+    new_document = document.__deepcopy__(unused_memo)
+    assert new_document is mock.sentinel.new_doc
+    document.__copy__.assert_called_once_with()
+
+
+def test_basedocumentreference__eq__same_type():
+    document1 = _make_base_document_reference("X", "YY", client=mock.sentinel.client)
+    document2 = _make_base_document_reference("X", "ZZ", client=mock.sentinel.client)
+    document3 = _make_base_document_reference("X", "YY", client=mock.sentinel.client2)
+    document4 = _make_base_document_reference("X", "YY", client=mock.sentinel.client)
+
+    pairs = ((document1, document2), (document1, document3), (document2, document3))
+    for candidate1, candidate2 in pairs:
+        # We use == explicitly since assertNotEqual would use !=.
+        assert not (candidate1 == candidate2)
+
+    # Check the only equal one.
+    assert document1 == document4
+    assert document1 is not document4
+
+
+def test_basedocumentreference__eq__other_type():
+    document = _make_base_document_reference("X", "YY", client=mock.sentinel.client)
+    other = object()
+    assert not (document == other)
+    assert document.__eq__(other) is NotImplemented
+
+
+def test_basedocumentreference___hash__():
+    client = mock.MagicMock()
+    client.__hash__.return_value = 234566789
+    document = _make_base_document_reference("X", "YY", client=client)
+    assert hash(document) == hash(("X", "YY")) + hash(client)
+
+
+def test_basedocumentreference__ne__same_type():
+    document1 = _make_base_document_reference("X", "YY", client=mock.sentinel.client)
+    document2 = _make_base_document_reference("X", "ZZ", client=mock.sentinel.client)
+    document3 = _make_base_document_reference("X", "YY", client=mock.sentinel.client2)
+    document4 = _make_base_document_reference("X", "YY", client=mock.sentinel.client)
+
+    assert document1 != document2
+    assert document1 != document3
+    assert document2 != document3
+
+    assert not (document1 != document4)
+    assert document1 is not document4
+
+
+def test_basedocumentreference__ne__other_type():
+    document = _make_base_document_reference("X", "YY", client=mock.sentinel.client)
+    other = object()
+    assert document != other
+    assert document.__ne__(other) is NotImplemented
+
+
+def test_basedocumentreference__document_path_property():
+    project = "hi-its-me-ok-bye"
+    client = _make_client(project=project)
+
+    collection_id = "then"
+    document_id = "090909iii"
+    document = _make_base_document_reference(collection_id, document_id, client=client)
+    doc_path = document._document_path
+    expected = "projects/{}/databases/{}/documents/{}/{}".format(
+        project, client._database, collection_id, document_id
+    )
+    assert doc_path == expected
+    assert document._document_path_internal is doc_path
+
+    # Make sure value is cached.
+    document._document_path_internal = mock.sentinel.cached
+    assert document._document_path is mock.sentinel.cached
+
+
+def test_basedocumentreference__document_path_property_no_client():
+    document = _make_base_document_reference("hi", "bye")
+    assert document._client is None
+    with pytest.raises(ValueError):
+        getattr(document, "_document_path")
+
+    assert document._document_path_internal is None
+
+
+def test_basedocumentreference_id_property():
+    document_id = "867-5309"
+    document = _make_base_document_reference("Co-lek-shun", document_id)
+    assert document.id == document_id
+
+
+def test_basedocumentreference_parent_property():
+    from google.cloud.firestore_v1.collection import CollectionReference
+
+    collection_id = "grocery-store"
+    document_id = "market"
+    client = _make_client()
+    document = _make_base_document_reference(collection_id, document_id, client=client)
+
+    parent = document.parent
+    assert isinstance(parent, CollectionReference)
+    assert parent._client is client
+    assert parent._path == (collection_id,)
+
+
+def test_basedocumentreference_collection_factory():
+    from google.cloud.firestore_v1.collection import CollectionReference
+
+    collection_id = "grocery-store"
+    document_id = "market"
+    new_collection = "fruits"
+    client = _make_client()
+    document = _make_base_document_reference(collection_id, document_id, client=client)
+
+    child = document.collection(new_collection)
+    assert isinstance(child, CollectionReference)
+    assert child._client is client
+    assert child._path == (collection_id, document_id, new_collection)
+
+
+def _make_document_snapshot(*args, **kwargs):
+    from google.cloud.firestore_v1.document import DocumentSnapshot
+
+    return DocumentSnapshot(*args, **kwargs)
+
+
+def _make_w_ref(ref_path=("a", "b"), data={}, exists=True):
+    client = mock.sentinel.client
+    reference = _make_base_document_reference(*ref_path, client=client)
+    return _make_document_snapshot(
+        reference,
+        data,
+        exists,
+        mock.sentinel.read_time,
+        mock.sentinel.create_time,
+        mock.sentinel.update_time,
+    )
+
+
+def test_documentsnapshot_constructor():
+    client = mock.sentinel.client
+    reference = _make_base_document_reference("hi", "bye", client=client)
+    data = {"zoop": 83}
+    snapshot = _make_document_snapshot(
+        reference,
+        data,
+        True,
+        mock.sentinel.read_time,
+        mock.sentinel.create_time,
+        mock.sentinel.update_time,
+    )
+    assert snapshot._reference is reference
+    assert snapshot._data == data
+    assert snapshot._data is not data  # Make sure copied
+    assert snapshot._exists
+    assert snapshot.read_time is mock.sentinel.read_time
+    assert snapshot.create_time is mock.sentinel.create_time
+    assert snapshot.update_time is mock.sentinel.update_time
+
+
+def test_documentsnapshot___eq___other_type():
+    snapshot = _make_w_ref()
+    other = object()
+    assert not (snapshot == other)
+
+
+def test_documentsnapshot___eq___different_reference_same_data():
+    snapshot = _make_w_ref(("a", "b"))
+    other = _make_w_ref(("c", "d"))
+    assert not (snapshot == other)
+
+
+def test_documentsnapshot___eq___same_reference_different_data():
+    snapshot = _make_w_ref(("a", "b"))
+    other = _make_w_ref(("a", "b"), {"foo": "bar"})
+    assert not (snapshot == other)
+
+
+def test_documentsnapshot___eq___same_reference_same_data():
+    snapshot = _make_w_ref(("a", "b"), {"foo": "bar"})
+    other = _make_w_ref(("a", "b"), {"foo": "bar"})
+    assert snapshot == other
+
+
+def test_documentsnapshot___hash__():
+    import datetime
+    from proto.datetime_helpers import DatetimeWithNanoseconds
+
+    client = mock.MagicMock()
+    client.__hash__.return_value = 234566789
+    reference = _make_base_document_reference("hi", "bye", client=client)
+    data = {"zoop": 83}
+    update_time = DatetimeWithNanoseconds(
+        2021, 10, 4, 17, 43, 27, nanosecond=123456789, tzinfo=datetime.timezone.utc
+    )
+    snapshot = _make_document_snapshot(
+        reference, data, True, None, mock.sentinel.create_time, update_time
+    )
+    assert hash(snapshot) == hash(reference) + hash(update_time)
+
+
+def test_documentsnapshot__client_property():
+    reference = _make_base_document_reference(
+        "ok", "fine", "now", "fore", client=mock.sentinel.client
+    )
+    snapshot = _make_document_snapshot(reference, {}, False, None, None, None)
+    assert snapshot._client is mock.sentinel.client
+
+
+def test_documentsnapshot_exists_property():
+    reference = mock.sentinel.reference
+
+    snapshot1 = _make_document_snapshot(reference, {}, False, None, None, None)
+    assert not snapshot1.exists
+    snapshot2 = _make_document_snapshot(reference, {}, True, None, None, None)
+    assert snapshot2.exists
+
+
+def test_documentsnapshot_id_property():
+    document_id = "around"
+    reference = _make_base_document_reference(
+        "look", document_id, client=mock.sentinel.client
+    )
+    snapshot = _make_document_snapshot(reference, {}, True, None, None, None)
+    assert snapshot.id == document_id
+    assert reference.id == document_id
+
+
+def test_documentsnapshot_reference_property():
+    snapshot = _make_document_snapshot(
+        mock.sentinel.reference, {}, True, None, None, None
+    )
+    assert snapshot.reference is mock.sentinel.reference
+
+
+def test_documentsnapshot_get():
+    data = {"one": {"bold": "move"}}
+    snapshot = _make_document_snapshot(None, data, True, None, None, None)
+
+    first_read = snapshot.get("one")
+    second_read = snapshot.get("one")
+    assert first_read == data.get("one")
+    assert first_read is not data.get("one")
+    assert first_read == second_read
+    assert first_read is not second_read
+
+    with pytest.raises(KeyError):
+        snapshot.get("two")
+
+
+def test_documentsnapshot_nonexistent_snapshot():
+    snapshot = _make_document_snapshot(None, None, False, None, None, None)
+    assert snapshot.get("one") is None
+
+
+def test_documentsnapshot_to_dict():
+    data = {"a": 10, "b": ["definitely", "mutable"], "c": {"45": 50}}
+    snapshot = _make_document_snapshot(None, data, True, None, None, None)
+    as_dict = snapshot.to_dict()
+    assert as_dict == data
+    assert as_dict is not data
+    # Check that the data remains unchanged.
+    as_dict["b"].append("hi")
+    assert data == snapshot.to_dict()
+    assert data != as_dict
+
+
+def test_documentsnapshot_non_existent():
+    snapshot = _make_document_snapshot(None, None, False, None, None, None)
+    as_dict = snapshot.to_dict()
+    assert as_dict is None
+
+
+def test__get_document_path():
+    from google.cloud.firestore_v1.base_document import _get_document_path
+
+    project = "prah-jekt"
+    client = _make_client(project=project)
+    path = ("Some", "Document", "Child", "Shockument")
+    document_path = _get_document_path(client, path)
+
+    expected = "projects/{}/databases/{}/documents/{}".format(
+        project, client._database, "/".join(path)
+    )
+    assert document_path == expected
+
+
+def test__consume_single_get_success():
+    from google.cloud.firestore_v1.base_document import _consume_single_get
+
+    response_iterator = iter([mock.sentinel.result])
+    result = _consume_single_get(response_iterator)
+    assert result is mock.sentinel.result
+
+
+def test__consume_single_get_failure_not_enough():
+    from google.cloud.firestore_v1.base_document import _consume_single_get
+
+    response_iterator = iter([])
+    with pytest.raises(ValueError):
+        _consume_single_get(response_iterator)
+
+
+def test__consume_single_get_failure_too_many():
+    from google.cloud.firestore_v1.base_document import _consume_single_get
+
+    response_iterator = iter([None, None])
+    with pytest.raises(ValueError):
+        _consume_single_get(response_iterator)
+
+
+def test__first_write_result_success():
+    from google.protobuf import timestamp_pb2
+    from google.cloud.firestore_v1.types import write
+    from google.cloud.firestore_v1.base_document import _first_write_result
+
+    single_result = write.WriteResult(
+        update_time=timestamp_pb2.Timestamp(seconds=1368767504, nanos=458000123)
+    )
+    write_results = [single_result]
+    result = _first_write_result(write_results)
+    assert result is single_result
+
+
+def test__first_write_result_failure_not_enough():
+    from google.cloud.firestore_v1.base_document import _first_write_result
+
+    write_results = []
+    with pytest.raises(ValueError):
+        _first_write_result(write_results)
+
+
+def test__first_write_result_more_than_one():
+    from google.cloud.firestore_v1.types import write
+    from google.cloud.firestore_v1.base_document import _first_write_result
+
+    result1 = write.WriteResult()
+    result2 = write.WriteResult()
+    write_results = [result1, result2]
+    result = _first_write_result(write_results)
+    assert result is result1
 
 
 def _make_credentials():

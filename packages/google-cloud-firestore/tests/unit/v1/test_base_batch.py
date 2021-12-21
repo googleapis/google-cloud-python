@@ -12,155 +12,153 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest
-from google.cloud.firestore_v1.base_batch import BaseWriteBatch
-
 import mock
 
 
-class DerivedBaseWriteBatch(BaseWriteBatch):
-    def __init__(self, client):
-        super().__init__(client=client)
+def _make_derived_write_batch(*args, **kwargs):
+    from google.cloud.firestore_v1.base_batch import BaseWriteBatch
 
-    """Create a fake subclass of `BaseWriteBatch` for the purposes of
-    evaluating the shared methods."""
+    class DerivedBaseWriteBatch(BaseWriteBatch):
+        def __init__(self, client):
+            super().__init__(client=client)
 
-    def commit(self):
-        pass  # pragma: NO COVER
+        """Create a fake subclass of `BaseWriteBatch` for the purposes of
+        evaluating the shared methods."""
+
+        def commit(self):
+            pass  # pragma: NO COVER
+
+    return DerivedBaseWriteBatch(*args, **kwargs)
 
 
-class TestBaseWriteBatch(unittest.TestCase):
-    @staticmethod
-    def _get_target_class():
-        return DerivedBaseWriteBatch
+def test_basewritebatch_constructor():
+    batch = _make_derived_write_batch(mock.sentinel.client)
+    assert batch._client is mock.sentinel.client
+    assert batch._write_pbs == []
+    assert batch.write_results is None
+    assert batch.commit_time is None
 
-    def _make_one(self, *args, **kwargs):
-        klass = self._get_target_class()
-        return klass(*args, **kwargs)
 
-    def test_constructor(self):
-        batch = self._make_one(mock.sentinel.client)
-        self.assertIs(batch._client, mock.sentinel.client)
-        self.assertEqual(batch._write_pbs, [])
-        self.assertIsNone(batch.write_results)
-        self.assertIsNone(batch.commit_time)
+def test_basewritebatch__add_write_pbs():
+    batch = _make_derived_write_batch(mock.sentinel.client)
+    assert batch._write_pbs == []
+    batch._add_write_pbs([mock.sentinel.write1, mock.sentinel.write2])
+    assert batch._write_pbs == [mock.sentinel.write1, mock.sentinel.write2]
 
-    def test__add_write_pbs(self):
-        batch = self._make_one(mock.sentinel.client)
-        self.assertEqual(batch._write_pbs, [])
-        batch._add_write_pbs([mock.sentinel.write1, mock.sentinel.write2])
-        self.assertEqual(batch._write_pbs, [mock.sentinel.write1, mock.sentinel.write2])
 
-    def test_create(self):
-        from google.cloud.firestore_v1.types import common
-        from google.cloud.firestore_v1.types import document
-        from google.cloud.firestore_v1.types import write
+def test_basewritebatch_create():
+    from google.cloud.firestore_v1.types import common
+    from google.cloud.firestore_v1.types import document
+    from google.cloud.firestore_v1.types import write
 
-        client = _make_client()
-        batch = self._make_one(client)
-        self.assertEqual(batch._write_pbs, [])
+    client = _make_client()
+    batch = _make_derived_write_batch(client)
+    assert batch._write_pbs == []
 
-        reference = client.document("this", "one")
-        document_data = {"a": 10, "b": 2.5}
-        ret_val = batch.create(reference, document_data)
-        self.assertIsNone(ret_val)
-        new_write_pb = write.Write(
-            update=document.Document(
-                name=reference._document_path,
-                fields={
-                    "a": _value_pb(integer_value=document_data["a"]),
-                    "b": _value_pb(double_value=document_data["b"]),
-                },
-            ),
-            current_document=common.Precondition(exists=False),
+    reference = client.document("this", "one")
+    document_data = {"a": 10, "b": 2.5}
+    ret_val = batch.create(reference, document_data)
+    assert ret_val is None
+    new_write_pb = write.Write(
+        update=document.Document(
+            name=reference._document_path,
+            fields={
+                "a": _value_pb(integer_value=document_data["a"]),
+                "b": _value_pb(double_value=document_data["b"]),
+            },
+        ),
+        current_document=common.Precondition(exists=False),
+    )
+    assert batch._write_pbs == [new_write_pb]
+
+
+def test_basewritebatch_set():
+    from google.cloud.firestore_v1.types import document
+    from google.cloud.firestore_v1.types import write
+
+    client = _make_client()
+    batch = _make_derived_write_batch(client)
+    assert batch._write_pbs == []
+
+    reference = client.document("another", "one")
+    field = "zapzap"
+    value = u"meadows and flowers"
+    document_data = {field: value}
+    ret_val = batch.set(reference, document_data)
+    assert ret_val is None
+    new_write_pb = write.Write(
+        update=document.Document(
+            name=reference._document_path,
+            fields={field: _value_pb(string_value=value)},
         )
-        self.assertEqual(batch._write_pbs, [new_write_pb])
+    )
+    assert batch._write_pbs == [new_write_pb]
 
-    def test_set(self):
-        from google.cloud.firestore_v1.types import document
-        from google.cloud.firestore_v1.types import write
 
-        client = _make_client()
-        batch = self._make_one(client)
-        self.assertEqual(batch._write_pbs, [])
+def test_basewritebatch_set_merge():
+    from google.cloud.firestore_v1.types import document
+    from google.cloud.firestore_v1.types import write
 
-        reference = client.document("another", "one")
-        field = "zapzap"
-        value = u"meadows and flowers"
-        document_data = {field: value}
-        ret_val = batch.set(reference, document_data)
-        self.assertIsNone(ret_val)
-        new_write_pb = write.Write(
-            update=document.Document(
-                name=reference._document_path,
-                fields={field: _value_pb(string_value=value)},
-            )
-        )
-        self.assertEqual(batch._write_pbs, [new_write_pb])
+    client = _make_client()
+    batch = _make_derived_write_batch(client)
+    assert batch._write_pbs == []
 
-    def test_set_merge(self):
-        from google.cloud.firestore_v1.types import document
-        from google.cloud.firestore_v1.types import write
+    reference = client.document("another", "one")
+    field = "zapzap"
+    value = u"meadows and flowers"
+    document_data = {field: value}
+    ret_val = batch.set(reference, document_data, merge=True)
+    assert ret_val is None
+    new_write_pb = write.Write(
+        update=document.Document(
+            name=reference._document_path,
+            fields={field: _value_pb(string_value=value)},
+        ),
+        update_mask={"field_paths": [field]},
+    )
+    assert batch._write_pbs == [new_write_pb]
 
-        client = _make_client()
-        batch = self._make_one(client)
-        self.assertEqual(batch._write_pbs, [])
 
-        reference = client.document("another", "one")
-        field = "zapzap"
-        value = u"meadows and flowers"
-        document_data = {field: value}
-        ret_val = batch.set(reference, document_data, merge=True)
-        self.assertIsNone(ret_val)
-        new_write_pb = write.Write(
-            update=document.Document(
-                name=reference._document_path,
-                fields={field: _value_pb(string_value=value)},
-            ),
-            update_mask={"field_paths": [field]},
-        )
-        self.assertEqual(batch._write_pbs, [new_write_pb])
+def test_basewritebatch_update():
+    from google.cloud.firestore_v1.types import common
+    from google.cloud.firestore_v1.types import document
+    from google.cloud.firestore_v1.types import write
 
-    def test_update(self):
-        from google.cloud.firestore_v1.types import common
-        from google.cloud.firestore_v1.types import document
-        from google.cloud.firestore_v1.types import write
+    client = _make_client()
+    batch = _make_derived_write_batch(client)
+    assert batch._write_pbs == []
 
-        client = _make_client()
-        batch = self._make_one(client)
-        self.assertEqual(batch._write_pbs, [])
+    reference = client.document("cats", "cradle")
+    field_path = "head.foot"
+    value = u"knees toes shoulders"
+    field_updates = {field_path: value}
 
-        reference = client.document("cats", "cradle")
-        field_path = "head.foot"
-        value = u"knees toes shoulders"
-        field_updates = {field_path: value}
+    ret_val = batch.update(reference, field_updates)
+    assert ret_val is None
 
-        ret_val = batch.update(reference, field_updates)
-        self.assertIsNone(ret_val)
+    map_pb = document.MapValue(fields={"foot": _value_pb(string_value=value)})
+    new_write_pb = write.Write(
+        update=document.Document(
+            name=reference._document_path, fields={"head": _value_pb(map_value=map_pb)},
+        ),
+        update_mask=common.DocumentMask(field_paths=[field_path]),
+        current_document=common.Precondition(exists=True),
+    )
+    assert batch._write_pbs == [new_write_pb]
 
-        map_pb = document.MapValue(fields={"foot": _value_pb(string_value=value)})
-        new_write_pb = write.Write(
-            update=document.Document(
-                name=reference._document_path,
-                fields={"head": _value_pb(map_value=map_pb)},
-            ),
-            update_mask=common.DocumentMask(field_paths=[field_path]),
-            current_document=common.Precondition(exists=True),
-        )
-        self.assertEqual(batch._write_pbs, [new_write_pb])
 
-    def test_delete(self):
-        from google.cloud.firestore_v1.types import write
+def test_basewritebatch_delete():
+    from google.cloud.firestore_v1.types import write
 
-        client = _make_client()
-        batch = self._make_one(client)
-        self.assertEqual(batch._write_pbs, [])
+    client = _make_client()
+    batch = _make_derived_write_batch(client)
+    assert batch._write_pbs == []
 
-        reference = client.document("early", "mornin", "dawn", "now")
-        ret_val = batch.delete(reference)
-        self.assertIsNone(ret_val)
-        new_write_pb = write.Write(delete=reference._document_path)
-        self.assertEqual(batch._write_pbs, [new_write_pb])
+    reference = client.document("early", "mornin", "dawn", "now")
+    ret_val = batch.delete(reference)
+    assert ret_val is None
+    new_write_pb = write.Write(delete=reference._document_path)
+    assert batch._write_pbs == [new_write_pb]
 
 
 def _value_pb(**kwargs):

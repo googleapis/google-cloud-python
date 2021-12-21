@@ -12,102 +12,104 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest
+import pytest
 
 
-class Test_ValueList(unittest.TestCase):
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.firestore_v1.transforms import _ValueList
+def _make_value_list(*args, **kwargs):
+    from google.cloud.firestore_v1.transforms import _ValueList
 
-        return _ValueList
-
-    def _make_one(self, values):
-        return self._get_target_class()(values)
-
-    def test_ctor_w_non_list_non_tuple(self):
-        invalid_values = (None, u"phred", b"DEADBEEF", 123, {}, object())
-        for invalid_value in invalid_values:
-            with self.assertRaises(ValueError):
-                self._make_one(invalid_value)
-
-    def test_ctor_w_empty(self):
-        with self.assertRaises(ValueError):
-            self._make_one([])
-
-    def test_ctor_w_non_empty_list(self):
-        values = ["phred", "bharney"]
-        inst = self._make_one(values)
-        self.assertEqual(inst.values, values)
-
-    def test_ctor_w_non_empty_tuple(self):
-        values = ("phred", "bharney")
-        inst = self._make_one(values)
-        self.assertEqual(inst.values, list(values))
-
-    def test___eq___other_type(self):
-        values = ("phred", "bharney")
-        inst = self._make_one(values)
-        other = object()
-        self.assertFalse(inst == other)
-
-    def test___eq___different_values(self):
-        values = ("phred", "bharney")
-        other_values = ("wylma", "bhetty")
-        inst = self._make_one(values)
-        other = self._make_one(other_values)
-        self.assertFalse(inst == other)
-
-    def test___eq___same_values(self):
-        values = ("phred", "bharney")
-        inst = self._make_one(values)
-        other = self._make_one(values)
-        self.assertTrue(inst == other)
+    return _ValueList(*args, **kwargs)
 
 
-class Test_NumericValue(unittest.TestCase):
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.firestore_v1.transforms import _NumericValue
+def test__valuelist_ctor_w_non_list_non_tuple():
+    invalid_values = (None, u"phred", b"DEADBEEF", 123, {}, object())
+    for invalid_value in invalid_values:
+        with pytest.raises(ValueError):
+            _make_value_list(invalid_value)
 
-        return _NumericValue
 
-    def _make_one(self, values):
-        return self._get_target_class()(values)
+def test__valuelist_ctor_w_empty():
+    with pytest.raises(ValueError):
+        _make_value_list([])
 
-    def test_ctor_w_invalid_types(self):
-        invalid_values = (None, u"phred", b"DEADBEEF", [], {}, object())
-        for invalid_value in invalid_values:
-            with self.assertRaises(ValueError):
-                self._make_one(invalid_value)
 
-    def test_ctor_w_int(self):
-        values = (-10, -1, 0, 1, 10)
-        for value in values:
-            inst = self._make_one(value)
-            self.assertEqual(inst.value, value)
+def test__valuelist_ctor_w_non_empty_list():
+    values = ["phred", "bharney"]
+    inst = _make_value_list(values)
+    assert inst.values == values
 
-    def test_ctor_w_float(self):
-        values = (-10.0, -1.0, 0.0, 1.0, 10.0)
-        for value in values:
-            inst = self._make_one(value)
-            self.assertEqual(inst.value, value)
 
-    def test___eq___other_type(self):
-        value = 3.1415926
-        inst = self._make_one(value)
-        other = object()
-        self.assertFalse(inst == other)
+def test__valuelist_ctor_w_non_empty_tuple():
+    values = ("phred", "bharney")
+    inst = _make_value_list(values)
+    assert inst.values == list(values)
 
-    def test___eq___different_value(self):
-        value = 3.1415926
-        other_value = 2.71828
-        inst = self._make_one(value)
-        other = self._make_one(other_value)
-        self.assertFalse(inst == other)
 
-    def test___eq___same_value(self):
-        value = 3.1415926
-        inst = self._make_one(value)
-        other = self._make_one(value)
-        self.assertTrue(inst == other)
+def test__valuelist___eq___other_type():
+    values = ("phred", "bharney")
+    inst = _make_value_list(values)
+    other = object()
+    assert not (inst == other)
+
+
+def test__valuelist___eq___different_values():
+    values = ("phred", "bharney")
+    other_values = ("wylma", "bhetty")
+    inst = _make_value_list(values)
+    other = _make_value_list(other_values)
+    assert not (inst == other)
+
+
+def test__valuelist___eq___same_values():
+    values = ("phred", "bharney")
+    inst = _make_value_list(values)
+    other = _make_value_list(values)
+    assert inst == other
+
+
+def _make_numeric_value(*args, **kwargs):
+    from google.cloud.firestore_v1.transforms import _NumericValue
+
+    return _NumericValue(*args, **kwargs)
+
+
+@pytest.mark.parametrize(
+    "invalid_value", [(None, u"phred", b"DEADBEEF", [], {}, object())],
+)
+def test__numericvalue_ctor_w_invalid_types(invalid_value):
+    with pytest.raises(ValueError):
+        _make_numeric_value(invalid_value)
+
+
+@pytest.mark.parametrize("value", [-10, -1, 0, 1, 10])
+def test__numericvalue_ctor_w_int(value):
+    inst = _make_numeric_value(value)
+    assert inst.value == value
+
+
+@pytest.mark.parametrize("value", [-10.0, -1.0, 0.0, 1.0, 10.0])
+def test__numericvalue_ctor_w_float(value):
+    inst = _make_numeric_value(value)
+    assert inst.value == value
+
+
+def test__numericvalue___eq___other_type():
+    value = 3.1415926
+    inst = _make_numeric_value(value)
+    other = object()
+    assert not (inst == other)
+
+
+def test__numericvalue___eq___different_value():
+    value = 3.1415926
+    other_value = 2.71828
+    inst = _make_numeric_value(value)
+    other = _make_numeric_value(other_value)
+    assert not (inst == other)
+
+
+def test__numericvalue___eq___same_value():
+    value = 3.1415926
+    inst = _make_numeric_value(value)
+    other = _make_numeric_value(value)
+    assert inst == other

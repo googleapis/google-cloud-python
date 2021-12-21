@@ -12,331 +12,345 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest
-
 import mock
+import pytest
 
 
-class TestCollectionReference(unittest.TestCase):
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.firestore_v1.base_collection import BaseCollectionReference
+def _make_base_collection_reference(*args, **kwargs):
+    from google.cloud.firestore_v1.base_collection import BaseCollectionReference
 
-        return BaseCollectionReference
+    return BaseCollectionReference(*args, **kwargs)
 
-    def _make_one(self, *args, **kwargs):
-        klass = self._get_target_class()
-        return klass(*args, **kwargs)
 
-    def test_constructor(self):
-        collection_id1 = "rooms"
-        document_id = "roomA"
-        collection_id2 = "messages"
-        client = mock.sentinel.client
+def test_basecollectionreference_ctor():
+    collection_id1 = "rooms"
+    document_id = "roomA"
+    collection_id2 = "messages"
+    client = mock.sentinel.client
 
-        collection = self._make_one(
-            collection_id1, document_id, collection_id2, client=client
-        )
-        self.assertIs(collection._client, client)
-        expected_path = (collection_id1, document_id, collection_id2)
-        self.assertEqual(collection._path, expected_path)
-
-    def test_constructor_invalid_path_empty(self):
-        with self.assertRaises(ValueError):
-            self._make_one()
-
-    def test_constructor_invalid_path_bad_collection_id(self):
-        with self.assertRaises(ValueError):
-            self._make_one(99, "doc", "bad-collection-id")
-
-    def test_constructor_invalid_path_bad_document_id(self):
-        with self.assertRaises(ValueError):
-            self._make_one("bad-document-ID", None, "sub-collection")
-
-    def test_constructor_invalid_path_bad_number_args(self):
-        with self.assertRaises(ValueError):
-            self._make_one("Just", "A-Document")
-
-    def test_constructor_invalid_kwarg(self):
-        with self.assertRaises(TypeError):
-            self._make_one("Coh-lek-shun", donut=True)
-
-    def test___eq___other_type(self):
-        client = mock.sentinel.client
-        collection = self._make_one("name", client=client)
-        other = object()
-        self.assertFalse(collection == other)
-
-    def test___eq___different_path_same_client(self):
-        client = mock.sentinel.client
-        collection = self._make_one("name", client=client)
-        other = self._make_one("other", client=client)
-        self.assertFalse(collection == other)
-
-    def test___eq___same_path_different_client(self):
-        client = mock.sentinel.client
-        other_client = mock.sentinel.other_client
-        collection = self._make_one("name", client=client)
-        other = self._make_one("name", client=other_client)
-        self.assertFalse(collection == other)
-
-    def test___eq___same_path_same_client(self):
-        client = mock.sentinel.client
-        collection = self._make_one("name", client=client)
-        other = self._make_one("name", client=client)
-        self.assertTrue(collection == other)
-
-    def test_id_property(self):
-        collection_id = "hi-bob"
-        collection = self._make_one(collection_id)
-        self.assertEqual(collection.id, collection_id)
-
-    def test_parent_property(self):
-        from google.cloud.firestore_v1.document import DocumentReference
-
-        collection_id1 = "grocery-store"
-        document_id = "market"
-        collection_id2 = "darth"
-        client = _make_client()
-        collection = self._make_one(
-            collection_id1, document_id, collection_id2, client=client
-        )
-
-        parent = collection.parent
-        self.assertIsInstance(parent, DocumentReference)
-        self.assertIs(parent._client, client)
-        self.assertEqual(parent._path, (collection_id1, document_id))
-
-    def test_parent_property_top_level(self):
-        collection = self._make_one("tahp-leh-vull")
-        self.assertIsNone(collection.parent)
-
-    def test_document_factory_explicit_id(self):
-        from google.cloud.firestore_v1.document import DocumentReference
-
-        collection_id = "grocery-store"
-        document_id = "market"
-        client = _make_client()
-        collection = self._make_one(collection_id, client=client)
-
-        child = collection.document(document_id)
-        self.assertIsInstance(child, DocumentReference)
-        self.assertIs(child._client, client)
-        self.assertEqual(child._path, (collection_id, document_id))
-
-    @mock.patch(
-        "google.cloud.firestore_v1.base_collection._auto_id",
-        return_value="zorpzorpthreezorp012",
+    collection = _make_base_collection_reference(
+        collection_id1, document_id, collection_id2, client=client
     )
-    def test_document_factory_auto_id(self, mock_auto_id):
-        from google.cloud.firestore_v1.document import DocumentReference
-
-        collection_name = "space-town"
-        client = _make_client()
-        collection = self._make_one(collection_name, client=client)
-
-        child = collection.document()
-        self.assertIsInstance(child, DocumentReference)
-        self.assertIs(child._client, client)
-        self.assertEqual(child._path, (collection_name, mock_auto_id.return_value))
-
-        mock_auto_id.assert_called_once_with()
-
-    def test__parent_info_top_level(self):
-        client = _make_client()
-        collection_id = "soap"
-        collection = self._make_one(collection_id, client=client)
-
-        parent_path, expected_prefix = collection._parent_info()
-
-        expected_path = "projects/{}/databases/{}/documents".format(
-            client.project, client._database
-        )
-        self.assertEqual(parent_path, expected_path)
-        prefix = "{}/{}".format(expected_path, collection_id)
-        self.assertEqual(expected_prefix, prefix)
-
-    def test__parent_info_nested(self):
-        collection_id1 = "bar"
-        document_id = "baz"
-        collection_id2 = "chunk"
-        client = _make_client()
-        collection = self._make_one(
-            collection_id1, document_id, collection_id2, client=client
-        )
-
-        parent_path, expected_prefix = collection._parent_info()
-
-        expected_path = "projects/{}/databases/{}/documents/{}/{}".format(
-            client.project, client._database, collection_id1, document_id
-        )
-        self.assertEqual(parent_path, expected_path)
-        prefix = "{}/{}".format(expected_path, collection_id2)
-        self.assertEqual(expected_prefix, prefix)
-
-    @mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
-    def test_select(self, mock_query):
-        from google.cloud.firestore_v1.base_collection import BaseCollectionReference
-
-        with mock.patch.object(BaseCollectionReference, "_query") as _query:
-            _query.return_value = mock_query
-
-            collection = self._make_one("collection")
-            field_paths = ["a", "b"]
-            query = collection.select(field_paths)
-
-            mock_query.select.assert_called_once_with(field_paths)
-            self.assertEqual(query, mock_query.select.return_value)
-
-    @mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
-    def test_where(self, mock_query):
-        from google.cloud.firestore_v1.base_collection import BaseCollectionReference
-
-        with mock.patch.object(BaseCollectionReference, "_query") as _query:
-            _query.return_value = mock_query
-
-            collection = self._make_one("collection")
-            field_path = "foo"
-            op_string = "=="
-            value = 45
-            query = collection.where(field_path, op_string, value)
-
-            mock_query.where.assert_called_once_with(field_path, op_string, value)
-            self.assertEqual(query, mock_query.where.return_value)
-
-    @mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
-    def test_order_by(self, mock_query):
-        from google.cloud.firestore_v1.base_query import BaseQuery
-        from google.cloud.firestore_v1.base_collection import BaseCollectionReference
-
-        with mock.patch.object(BaseCollectionReference, "_query") as _query:
-            _query.return_value = mock_query
-
-            collection = self._make_one("collection")
-            field_path = "foo"
-            direction = BaseQuery.DESCENDING
-            query = collection.order_by(field_path, direction=direction)
-
-            mock_query.order_by.assert_called_once_with(field_path, direction=direction)
-            self.assertEqual(query, mock_query.order_by.return_value)
-
-    @mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
-    def test_limit(self, mock_query):
-        from google.cloud.firestore_v1.base_collection import BaseCollectionReference
-
-        with mock.patch.object(BaseCollectionReference, "_query") as _query:
-            _query.return_value = mock_query
-
-            collection = self._make_one("collection")
-            limit = 15
-            query = collection.limit(limit)
-
-            mock_query.limit.assert_called_once_with(limit)
-            self.assertEqual(query, mock_query.limit.return_value)
-
-    @mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
-    def test_limit_to_last(self, mock_query):
-        from google.cloud.firestore_v1.base_collection import BaseCollectionReference
-
-        with mock.patch.object(BaseCollectionReference, "_query") as _query:
-            _query.return_value = mock_query
-
-            collection = self._make_one("collection")
-            limit = 15
-            query = collection.limit_to_last(limit)
-
-            mock_query.limit_to_last.assert_called_once_with(limit)
-            self.assertEqual(query, mock_query.limit_to_last.return_value)
-
-    @mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
-    def test_offset(self, mock_query):
-        from google.cloud.firestore_v1.base_collection import BaseCollectionReference
-
-        with mock.patch.object(BaseCollectionReference, "_query") as _query:
-            _query.return_value = mock_query
-
-            collection = self._make_one("collection")
-            offset = 113
-            query = collection.offset(offset)
-
-            mock_query.offset.assert_called_once_with(offset)
-            self.assertEqual(query, mock_query.offset.return_value)
-
-    @mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
-    def test_start_at(self, mock_query):
-        from google.cloud.firestore_v1.base_collection import BaseCollectionReference
-
-        with mock.patch.object(BaseCollectionReference, "_query") as _query:
-            _query.return_value = mock_query
-
-            collection = self._make_one("collection")
-            doc_fields = {"a": "b"}
-            query = collection.start_at(doc_fields)
-
-            mock_query.start_at.assert_called_once_with(doc_fields)
-            self.assertEqual(query, mock_query.start_at.return_value)
-
-    @mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
-    def test_start_after(self, mock_query):
-        from google.cloud.firestore_v1.base_collection import BaseCollectionReference
-
-        with mock.patch.object(BaseCollectionReference, "_query") as _query:
-            _query.return_value = mock_query
-
-            collection = self._make_one("collection")
-            doc_fields = {"d": "foo", "e": 10}
-            query = collection.start_after(doc_fields)
-
-            mock_query.start_after.assert_called_once_with(doc_fields)
-            self.assertEqual(query, mock_query.start_after.return_value)
-
-    @mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
-    def test_end_before(self, mock_query):
-        from google.cloud.firestore_v1.base_collection import BaseCollectionReference
-
-        with mock.patch.object(BaseCollectionReference, "_query") as _query:
-            _query.return_value = mock_query
-
-            collection = self._make_one("collection")
-            doc_fields = {"bar": 10.5}
-            query = collection.end_before(doc_fields)
-
-            mock_query.end_before.assert_called_once_with(doc_fields)
-            self.assertEqual(query, mock_query.end_before.return_value)
-
-    @mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
-    def test_end_at(self, mock_query):
-        from google.cloud.firestore_v1.base_collection import BaseCollectionReference
-
-        with mock.patch.object(BaseCollectionReference, "_query") as _query:
-            _query.return_value = mock_query
-
-            collection = self._make_one("collection")
-            doc_fields = {"opportunity": True, "reason": 9}
-            query = collection.end_at(doc_fields)
-
-            mock_query.end_at.assert_called_once_with(doc_fields)
-            self.assertEqual(query, mock_query.end_at.return_value)
+    assert collection._client is client
+    expected_path = (collection_id1, document_id, collection_id2)
+    assert collection._path == expected_path
 
 
-class Test__auto_id(unittest.TestCase):
-    @staticmethod
-    def _call_fut():
-        from google.cloud.firestore_v1.base_collection import _auto_id
+def test_basecollectionreference_ctor_invalid_path_empty():
+    with pytest.raises(ValueError):
+        _make_base_collection_reference()
 
-        return _auto_id()
 
-    @mock.patch("random.choice")
-    def test_it(self, mock_rand_choice):
-        from google.cloud.firestore_v1.base_collection import _AUTO_ID_CHARS
+def test_basecollectionreference_ctor_invalid_path_bad_collection_id():
+    with pytest.raises(ValueError):
+        _make_base_collection_reference(99, "doc", "bad-collection-id")
 
-        mock_result = "0123456789abcdefghij"
-        mock_rand_choice.side_effect = list(mock_result)
-        result = self._call_fut()
-        self.assertEqual(result, mock_result)
 
-        mock_calls = [mock.call(_AUTO_ID_CHARS)] * 20
-        self.assertEqual(mock_rand_choice.mock_calls, mock_calls)
+def test_basecollectionreference_ctor_invalid_path_bad_document_id():
+    with pytest.raises(ValueError):
+        _make_base_collection_reference("bad-document-ID", None, "sub-collection")
+
+
+def test_basecollectionreference_ctor_invalid_path_bad_number_args():
+    with pytest.raises(ValueError):
+        _make_base_collection_reference("Just", "A-Document")
+
+
+def test_basecollectionreference_ctor_invalid_kwarg():
+    with pytest.raises(TypeError):
+        _make_base_collection_reference("Coh-lek-shun", donut=True)
+
+
+def test_basecollectionreference___eq___other_type():
+    client = mock.sentinel.client
+    collection = _make_base_collection_reference("name", client=client)
+    other = object()
+    assert not collection == other
+
+
+def test_basecollectionreference___eq___different_path_same_client():
+    client = mock.sentinel.client
+    collection = _make_base_collection_reference("name", client=client)
+    other = _make_base_collection_reference("other", client=client)
+    assert not collection == other
+
+
+def test_basecollectionreference___eq___same_path_different_client():
+    client = mock.sentinel.client
+    other_client = mock.sentinel.other_client
+    collection = _make_base_collection_reference("name", client=client)
+    other = _make_base_collection_reference("name", client=other_client)
+    assert not collection == other
+
+
+def test_basecollectionreference___eq___same_path_same_client():
+    client = mock.sentinel.client
+    collection = _make_base_collection_reference("name", client=client)
+    other = _make_base_collection_reference("name", client=client)
+    assert collection == other
+
+
+def test_basecollectionreference_id_property():
+    collection_id = "hi-bob"
+    collection = _make_base_collection_reference(collection_id)
+    assert collection.id == collection_id
+
+
+def test_basecollectionreference_parent_property():
+    from google.cloud.firestore_v1.document import DocumentReference
+
+    collection_id1 = "grocery-store"
+    document_id = "market"
+    collection_id2 = "darth"
+    client = _make_client()
+    collection = _make_base_collection_reference(
+        collection_id1, document_id, collection_id2, client=client
+    )
+
+    parent = collection.parent
+    assert isinstance(parent, DocumentReference)
+    assert parent._client is client
+    assert parent._path == (collection_id1, document_id)
+
+
+def test_basecollectionreference_parent_property_top_level():
+    collection = _make_base_collection_reference("tahp-leh-vull")
+    assert collection.parent is None
+
+
+def test_basecollectionreference_document_factory_explicit_id():
+    from google.cloud.firestore_v1.document import DocumentReference
+
+    collection_id = "grocery-store"
+    document_id = "market"
+    client = _make_client()
+    collection = _make_base_collection_reference(collection_id, client=client)
+
+    child = collection.document(document_id)
+    assert isinstance(child, DocumentReference)
+    assert child._client is client
+    assert child._path == (collection_id, document_id)
+
+
+@mock.patch(
+    "google.cloud.firestore_v1.base_collection._auto_id",
+    return_value="zorpzorpthreezorp012",
+)
+def test_basecollectionreference_document_factory_auto_id(mock_auto_id):
+    from google.cloud.firestore_v1.document import DocumentReference
+
+    collection_name = "space-town"
+    client = _make_client()
+    collection = _make_base_collection_reference(collection_name, client=client)
+
+    child = collection.document()
+    assert isinstance(child, DocumentReference)
+    assert child._client is client
+    assert child._path == (collection_name, mock_auto_id.return_value)
+
+    mock_auto_id.assert_called_once_with()
+
+
+def test_basecollectionreference__parent_info_top_level():
+    client = _make_client()
+    collection_id = "soap"
+    collection = _make_base_collection_reference(collection_id, client=client)
+
+    parent_path, expected_prefix = collection._parent_info()
+
+    expected_path = "projects/{}/databases/{}/documents".format(
+        client.project, client._database
+    )
+    assert parent_path == expected_path
+    prefix = "{}/{}".format(expected_path, collection_id)
+    assert expected_prefix == prefix
+
+
+def test_basecollectionreference__parent_info_nested():
+    collection_id1 = "bar"
+    document_id = "baz"
+    collection_id2 = "chunk"
+    client = _make_client()
+    collection = _make_base_collection_reference(
+        collection_id1, document_id, collection_id2, client=client
+    )
+
+    parent_path, expected_prefix = collection._parent_info()
+
+    expected_path = "projects/{}/databases/{}/documents/{}/{}".format(
+        client.project, client._database, collection_id1, document_id
+    )
+    assert parent_path == expected_path
+    prefix = "{}/{}".format(expected_path, collection_id2)
+    assert expected_prefix == prefix
+
+
+@mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
+def test_basecollectionreference_select(mock_query):
+    from google.cloud.firestore_v1.base_collection import BaseCollectionReference
+
+    with mock.patch.object(BaseCollectionReference, "_query") as _query:
+        _query.return_value = mock_query
+
+        collection = _make_base_collection_reference("collection")
+        field_paths = ["a", "b"]
+        query = collection.select(field_paths)
+
+        mock_query.select.assert_called_once_with(field_paths)
+        assert query == mock_query.select.return_value
+
+
+@mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
+def test_basecollectionreference_where(mock_query):
+    from google.cloud.firestore_v1.base_collection import BaseCollectionReference
+
+    with mock.patch.object(BaseCollectionReference, "_query") as _query:
+        _query.return_value = mock_query
+
+        collection = _make_base_collection_reference("collection")
+        field_path = "foo"
+        op_string = "=="
+        value = 45
+        query = collection.where(field_path, op_string, value)
+
+        mock_query.where.assert_called_once_with(field_path, op_string, value)
+        assert query == mock_query.where.return_value
+
+
+@mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
+def test_basecollectionreference_order_by(mock_query):
+    from google.cloud.firestore_v1.base_query import BaseQuery
+    from google.cloud.firestore_v1.base_collection import BaseCollectionReference
+
+    with mock.patch.object(BaseCollectionReference, "_query") as _query:
+        _query.return_value = mock_query
+
+        collection = _make_base_collection_reference("collection")
+        field_path = "foo"
+        direction = BaseQuery.DESCENDING
+        query = collection.order_by(field_path, direction=direction)
+
+        mock_query.order_by.assert_called_once_with(field_path, direction=direction)
+        assert query == mock_query.order_by.return_value
+
+
+@mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
+def test_basecollectionreference_limit(mock_query):
+    from google.cloud.firestore_v1.base_collection import BaseCollectionReference
+
+    with mock.patch.object(BaseCollectionReference, "_query") as _query:
+        _query.return_value = mock_query
+
+        collection = _make_base_collection_reference("collection")
+        limit = 15
+        query = collection.limit(limit)
+
+        mock_query.limit.assert_called_once_with(limit)
+        assert query == mock_query.limit.return_value
+
+
+@mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
+def test_basecollectionreference_limit_to_last(mock_query):
+    from google.cloud.firestore_v1.base_collection import BaseCollectionReference
+
+    with mock.patch.object(BaseCollectionReference, "_query") as _query:
+        _query.return_value = mock_query
+
+        collection = _make_base_collection_reference("collection")
+        limit = 15
+        query = collection.limit_to_last(limit)
+
+        mock_query.limit_to_last.assert_called_once_with(limit)
+        assert query == mock_query.limit_to_last.return_value
+
+
+@mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
+def test_basecollectionreference_offset(mock_query):
+    from google.cloud.firestore_v1.base_collection import BaseCollectionReference
+
+    with mock.patch.object(BaseCollectionReference, "_query") as _query:
+        _query.return_value = mock_query
+
+        collection = _make_base_collection_reference("collection")
+        offset = 113
+        query = collection.offset(offset)
+
+        mock_query.offset.assert_called_once_with(offset)
+        assert query == mock_query.offset.return_value
+
+
+@mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
+def test_basecollectionreference_start_at(mock_query):
+    from google.cloud.firestore_v1.base_collection import BaseCollectionReference
+
+    with mock.patch.object(BaseCollectionReference, "_query") as _query:
+        _query.return_value = mock_query
+
+        collection = _make_base_collection_reference("collection")
+        doc_fields = {"a": "b"}
+        query = collection.start_at(doc_fields)
+
+        mock_query.start_at.assert_called_once_with(doc_fields)
+        assert query == mock_query.start_at.return_value
+
+
+@mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
+def test_basecollectionreference_start_after(mock_query):
+    from google.cloud.firestore_v1.base_collection import BaseCollectionReference
+
+    with mock.patch.object(BaseCollectionReference, "_query") as _query:
+        _query.return_value = mock_query
+
+        collection = _make_base_collection_reference("collection")
+        doc_fields = {"d": "foo", "e": 10}
+        query = collection.start_after(doc_fields)
+
+        mock_query.start_after.assert_called_once_with(doc_fields)
+        assert query == mock_query.start_after.return_value
+
+
+@mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
+def test_basecollectionreference_end_before(mock_query):
+    from google.cloud.firestore_v1.base_collection import BaseCollectionReference
+
+    with mock.patch.object(BaseCollectionReference, "_query") as _query:
+        _query.return_value = mock_query
+
+        collection = _make_base_collection_reference("collection")
+        doc_fields = {"bar": 10.5}
+        query = collection.end_before(doc_fields)
+
+        mock_query.end_before.assert_called_once_with(doc_fields)
+        assert query == mock_query.end_before.return_value
+
+
+@mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
+def test_basecollectionreference_end_at(mock_query):
+    from google.cloud.firestore_v1.base_collection import BaseCollectionReference
+
+    with mock.patch.object(BaseCollectionReference, "_query") as _query:
+        _query.return_value = mock_query
+
+        collection = _make_base_collection_reference("collection")
+        doc_fields = {"opportunity": True, "reason": 9}
+        query = collection.end_at(doc_fields)
+
+        mock_query.end_at.assert_called_once_with(doc_fields)
+        assert query == mock_query.end_at.return_value
+
+
+@mock.patch("random.choice")
+def test__auto_id(mock_rand_choice):
+    from google.cloud.firestore_v1.base_collection import _AUTO_ID_CHARS
+    from google.cloud.firestore_v1.base_collection import _auto_id
+
+    mock_result = "0123456789abcdefghij"
+    mock_rand_choice.side_effect = list(mock_result)
+    result = _auto_id()
+    assert result == mock_result
+
+    mock_calls = [mock.call(_AUTO_ID_CHARS)] * 20
+    assert mock_rand_choice.mock_calls == mock_calls
 
 
 def _make_credentials():

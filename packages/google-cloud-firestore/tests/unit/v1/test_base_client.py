@@ -13,424 +13,466 @@
 # limitations under the License.
 
 import datetime
-import unittest
 import grpc
 
 import mock
+import pytest
+
+PROJECT = "my-prahjekt"
 
 
-class TestBaseClient(unittest.TestCase):
+def _make_base_client(*args, **kwargs):
+    from google.cloud.firestore_v1.base_client import BaseClient
 
-    PROJECT = "my-prahjekt"
+    return BaseClient(*args, **kwargs)
 
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.firestore_v1.client import Client
 
-        return Client
+def _make_default_base_client():
+    credentials = _make_credentials()
+    return _make_base_client(project=PROJECT, credentials=credentials)
 
-    def _make_one(self, *args, **kwargs):
-        klass = self._get_target_class()
-        return klass(*args, **kwargs)
 
-    def _make_default_one(self):
-        credentials = _make_credentials()
-        return self._make_one(project=self.PROJECT, credentials=credentials)
+def test_baseclient_constructor_with_emulator_host_defaults():
+    from google.auth.credentials import AnonymousCredentials
+    from google.cloud.firestore_v1.base_client import _DEFAULT_EMULATOR_PROJECT
+    from google.cloud.firestore_v1.base_client import _FIRESTORE_EMULATOR_HOST
 
-    def test_constructor_with_emulator_host_defaults(self):
-        from google.auth.credentials import AnonymousCredentials
-        from google.cloud.firestore_v1.base_client import _DEFAULT_EMULATOR_PROJECT
-        from google.cloud.firestore_v1.base_client import _FIRESTORE_EMULATOR_HOST
+    emulator_host = "localhost:8081"
 
-        emulator_host = "localhost:8081"
+    with mock.patch("os.environ", {_FIRESTORE_EMULATOR_HOST: emulator_host}):
+        client = _make_base_client()
 
-        with mock.patch("os.environ", {_FIRESTORE_EMULATOR_HOST: emulator_host}):
-            client = self._make_one()
+    assert client._emulator_host == emulator_host
+    assert isinstance(client._credentials, AnonymousCredentials)
+    assert client.project == _DEFAULT_EMULATOR_PROJECT
 
-        self.assertEqual(client._emulator_host, emulator_host)
-        self.assertIsInstance(client._credentials, AnonymousCredentials)
-        self.assertEqual(client.project, _DEFAULT_EMULATOR_PROJECT)
 
-    def test_constructor_with_emulator_host_w_project(self):
-        from google.auth.credentials import AnonymousCredentials
-        from google.cloud.firestore_v1.base_client import _FIRESTORE_EMULATOR_HOST
+def test_baseclient_constructor_with_emulator_host_w_project():
+    from google.auth.credentials import AnonymousCredentials
+    from google.cloud.firestore_v1.base_client import _FIRESTORE_EMULATOR_HOST
 
-        emulator_host = "localhost:8081"
+    emulator_host = "localhost:8081"
 
-        with mock.patch("os.environ", {_FIRESTORE_EMULATOR_HOST: emulator_host}):
-            client = self._make_one(project=self.PROJECT)
+    with mock.patch("os.environ", {_FIRESTORE_EMULATOR_HOST: emulator_host}):
+        client = _make_base_client(project=PROJECT)
 
-        self.assertEqual(client._emulator_host, emulator_host)
-        self.assertIsInstance(client._credentials, AnonymousCredentials)
+    assert client._emulator_host == emulator_host
+    assert isinstance(client._credentials, AnonymousCredentials)
 
-    def test_constructor_with_emulator_host_w_creds(self):
-        from google.cloud.firestore_v1.base_client import _DEFAULT_EMULATOR_PROJECT
-        from google.cloud.firestore_v1.base_client import _FIRESTORE_EMULATOR_HOST
 
-        credentials = _make_credentials()
-        emulator_host = "localhost:8081"
+def test_baseclient_constructor_with_emulator_host_w_creds():
+    from google.cloud.firestore_v1.base_client import _DEFAULT_EMULATOR_PROJECT
+    from google.cloud.firestore_v1.base_client import _FIRESTORE_EMULATOR_HOST
 
-        with mock.patch("os.environ", {_FIRESTORE_EMULATOR_HOST: emulator_host}):
-            client = self._make_one(credentials=credentials)
+    credentials = _make_credentials()
+    emulator_host = "localhost:8081"
 
-        self.assertEqual(client._emulator_host, emulator_host)
-        self.assertIs(client._credentials, credentials)
-        self.assertEqual(client.project, _DEFAULT_EMULATOR_PROJECT)
+    with mock.patch("os.environ", {_FIRESTORE_EMULATOR_HOST: emulator_host}):
+        client = _make_base_client(credentials=credentials)
 
-    @mock.patch(
-        "google.cloud.firestore_v1.services.firestore.client.FirestoreClient",
-        autospec=True,
-        return_value=mock.sentinel.firestore_api,
+    assert client._emulator_host == emulator_host
+    assert client._credentials is credentials
+    assert client.project == _DEFAULT_EMULATOR_PROJECT
+
+
+def test_baseclient__firestore_api_helper_w_already():
+    client = _make_default_base_client()
+    internal = client._firestore_api_internal = mock.Mock()
+
+    transport_class = mock.Mock()
+    client_class = mock.Mock()
+    client_module = mock.Mock()
+
+    api = client._firestore_api_helper(transport_class, client_class, client_module)
+
+    assert api is internal
+    transport_class.assert_not_called()
+    client_class.assert_not_called()
+
+
+def test_baseclient__firestore_api_helper_wo_emulator():
+    client = _make_default_base_client()
+    client_options = client._client_options = mock.Mock()
+    target = client._target = mock.Mock()
+    assert client._firestore_api_internal is None
+
+    transport_class = mock.Mock()
+    client_class = mock.Mock()
+    client_module = mock.Mock()
+
+    api = client._firestore_api_helper(transport_class, client_class, client_module)
+
+    assert api is client_class.return_value
+    assert client._firestore_api_internal is api
+    channel_options = {"grpc.keepalive_time_ms": 30000}
+    transport_class.create_channel.assert_called_once_with(
+        target, credentials=client._credentials, options=channel_options.items()
     )
-    @mock.patch(
-        "google.cloud.firestore_v1.services.firestore.transports.grpc.FirestoreGrpcTransport",
-        autospec=True,
+    transport_class.assert_called_once_with(
+        host=target, channel=transport_class.create_channel.return_value,
     )
-    def test__firestore_api_property(self, mock_channel, mock_client):
-        mock_client.DEFAULT_ENDPOINT = "endpoint"
-        client = self._make_default_one()
-        client_options = client._client_options = mock.Mock()
-        self.assertIsNone(client._firestore_api_internal)
-        firestore_api = client._firestore_api
-        self.assertIs(firestore_api, mock_client.return_value)
-        self.assertIs(firestore_api, client._firestore_api_internal)
-        mock_client.assert_called_once_with(
-            transport=client._transport, client_options=client_options
-        )
-
-        # Call again to show that it is cached, but call count is still 1.
-        self.assertIs(client._firestore_api, mock_client.return_value)
-        self.assertEqual(mock_client.call_count, 1)
-
-    @mock.patch(
-        "google.cloud.firestore_v1.services.firestore.client.FirestoreClient",
-        autospec=True,
-        return_value=mock.sentinel.firestore_api,
+    client_class.assert_called_once_with(
+        transport=transport_class.return_value, client_options=client_options
     )
-    @mock.patch(
-        "google.cloud.firestore_v1.base_client.BaseClient._emulator_channel",
-        autospec=True,
+
+
+def test_baseclient__firestore_api_helper_w_emulator():
+    emulator_host = "localhost:8081"
+    with mock.patch("os.getenv") as getenv:
+        getenv.return_value = emulator_host
+        client = _make_default_base_client()
+
+    client_options = client._client_options = mock.Mock()
+    target = client._target = mock.Mock()
+    emulator_channel = client._emulator_channel = mock.Mock()
+    assert client._firestore_api_internal is None
+
+    transport_class = mock.Mock(__name__="TestTransport")
+    client_class = mock.Mock()
+    client_module = mock.Mock()
+
+    api = client._firestore_api_helper(transport_class, client_class, client_module)
+
+    assert api is client_class.return_value
+    assert api is client._firestore_api_internal
+
+    emulator_channel.assert_called_once_with(transport_class)
+    transport_class.assert_called_once_with(
+        host=target, channel=emulator_channel.return_value,
     )
-    def test__firestore_api_property_with_emulator(
-        self, mock_emulator_channel, mock_client
-    ):
-        emulator_host = "localhost:8081"
-        with mock.patch("os.getenv") as getenv:
-            getenv.return_value = emulator_host
-            client = self._make_default_one()
+    client_class.assert_called_once_with(
+        transport=transport_class.return_value, client_options=client_options
+    )
 
-        self.assertIsNone(client._firestore_api_internal)
-        firestore_api = client._firestore_api
-        self.assertIs(firestore_api, mock_client.return_value)
-        self.assertIs(firestore_api, client._firestore_api_internal)
 
-        mock_emulator_channel.assert_called_once()
+def test_baseclient___database_string_property():
+    credentials = _make_credentials()
+    database = "cheeeeez"
+    client = _make_base_client(
+        project=PROJECT, credentials=credentials, database=database
+    )
+    assert client._database_string_internal is None
+    database_string = client._database_string
+    expected = "projects/{}/databases/{}".format(client.project, client._database)
+    assert database_string == expected
+    assert database_string is client._database_string_internal
 
-        # Call again to show that it is cached, but call count is still 1.
-        self.assertIs(client._firestore_api, mock_client.return_value)
-        self.assertEqual(mock_client.call_count, 1)
+    # Swap it out with a unique value to verify it is cached.
+    client._database_string_internal = mock.sentinel.cached
+    assert client._database_string is mock.sentinel.cached
 
-    def test___database_string_property(self):
-        credentials = _make_credentials()
-        database = "cheeeeez"
-        client = self._make_one(
-            project=self.PROJECT, credentials=credentials, database=database
-        )
-        self.assertIsNone(client._database_string_internal)
-        database_string = client._database_string
-        expected = "projects/{}/databases/{}".format(client.project, client._database)
-        self.assertEqual(database_string, expected)
-        self.assertIs(database_string, client._database_string_internal)
 
-        # Swap it out with a unique value to verify it is cached.
-        client._database_string_internal = mock.sentinel.cached
-        self.assertIs(client._database_string, mock.sentinel.cached)
+def test_baseclient___rpc_metadata_property():
+    credentials = _make_credentials()
+    database = "quanta"
+    client = _make_base_client(
+        project=PROJECT, credentials=credentials, database=database
+    )
 
-    def test___rpc_metadata_property(self):
+    assert client._rpc_metadata == [
+        ("google-cloud-resource-prefix", client._database_string),
+    ]
+
+
+def test_baseclient__rpc_metadata_property_with_emulator():
+    emulator_host = "localhost:8081"
+    with mock.patch("os.getenv") as getenv:
+        getenv.return_value = emulator_host
+
         credentials = _make_credentials()
         database = "quanta"
-        client = self._make_one(
-            project=self.PROJECT, credentials=credentials, database=database
+        client = _make_base_client(
+            project=PROJECT, credentials=credentials, database=database
         )
 
-        self.assertEqual(
-            client._rpc_metadata,
-            [("google-cloud-resource-prefix", client._database_string)],
+    assert client._rpc_metadata == [
+        ("google-cloud-resource-prefix", client._database_string),
+        ("authorization", "Bearer owner"),
+    ]
+
+
+def test_baseclient__emulator_channel():
+    from google.cloud.firestore_v1.services.firestore.transports.grpc import (
+        FirestoreGrpcTransport,
+    )
+    from google.cloud.firestore_v1.services.firestore.transports.grpc_asyncio import (
+        FirestoreGrpcAsyncIOTransport,
+    )
+
+    emulator_host = "localhost:8081"
+    credentials = _make_credentials()
+    database = "quanta"
+    with mock.patch("os.getenv") as getenv:
+        getenv.return_value = emulator_host
+        credentials.id_token = None
+        client = _make_base_client(
+            project=PROJECT, credentials=credentials, database=database
         )
 
-    def test__rpc_metadata_property_with_emulator(self):
-        emulator_host = "localhost:8081"
-        with mock.patch("os.getenv") as getenv:
-            getenv.return_value = emulator_host
+    # checks that a channel is created
+    channel = client._emulator_channel(FirestoreGrpcTransport)
+    assert isinstance(channel, grpc.Channel)
+    channel = client._emulator_channel(FirestoreGrpcAsyncIOTransport)
+    assert isinstance(channel, grpc.aio.Channel)
 
-            credentials = _make_credentials()
-            database = "quanta"
-            client = self._make_one(
-                project=self.PROJECT, credentials=credentials, database=database
-            )
-
-        self.assertEqual(
-            client._rpc_metadata,
-            [
-                ("google-cloud-resource-prefix", client._database_string),
-                ("authorization", "Bearer owner"),
-            ],
+    # Verify that when credentials are provided with an id token it is used
+    # for channel construction
+    # NOTE: On windows, emulation requires an insecure channel. If this is
+    # altered to use a secure channel, start by verifying that it still
+    # works as expected on windows.
+    with mock.patch("os.getenv") as getenv:
+        getenv.return_value = emulator_host
+        credentials.id_token = "test"
+        client = _make_base_client(
+            project=PROJECT, credentials=credentials, database=database
         )
-
-    def test_emulator_channel(self):
-        from google.cloud.firestore_v1.services.firestore.transports.grpc import (
-            FirestoreGrpcTransport,
-        )
-        from google.cloud.firestore_v1.services.firestore.transports.grpc_asyncio import (
-            FirestoreGrpcAsyncIOTransport,
-        )
-
-        emulator_host = "localhost:8081"
-        credentials = _make_credentials()
-        database = "quanta"
-        with mock.patch("os.getenv") as getenv:
-            getenv.return_value = emulator_host
-            credentials.id_token = None
-            client = self._make_one(
-                project=self.PROJECT, credentials=credentials, database=database
-            )
-
-        # checks that a channel is created
+    with mock.patch("grpc.insecure_channel") as insecure_channel:
         channel = client._emulator_channel(FirestoreGrpcTransport)
-        self.assertTrue(isinstance(channel, grpc.Channel))
-        channel = client._emulator_channel(FirestoreGrpcAsyncIOTransport)
-        self.assertTrue(isinstance(channel, grpc.aio.Channel))
-
-        # Verify that when credentials are provided with an id token it is used
-        # for channel construction
-        # NOTE: On windows, emulation requires an insecure channel. If this is
-        # altered to use a secure channel, start by verifying that it still
-        # works as expected on windows.
-        with mock.patch("os.getenv") as getenv:
-            getenv.return_value = emulator_host
-            credentials.id_token = "test"
-            client = self._make_one(
-                project=self.PROJECT, credentials=credentials, database=database
-            )
-        with mock.patch("grpc.insecure_channel") as insecure_channel:
-            channel = client._emulator_channel(FirestoreGrpcTransport)
-            insecure_channel.assert_called_once_with(
-                emulator_host, options=[("Authorization", "Bearer test")]
-            )
-
-    def test_field_path(self):
-        klass = self._get_target_class()
-        self.assertEqual(klass.field_path("a", "b", "c"), "a.b.c")
-
-    def test_write_option_last_update(self):
-        from google.protobuf import timestamp_pb2
-        from google.cloud.firestore_v1._helpers import LastUpdateOption
-
-        timestamp = timestamp_pb2.Timestamp(seconds=1299767599, nanos=811111097)
-
-        klass = self._get_target_class()
-        option = klass.write_option(last_update_time=timestamp)
-        self.assertIsInstance(option, LastUpdateOption)
-        self.assertEqual(option._last_update_time, timestamp)
-
-    def test_write_option_exists(self):
-        from google.cloud.firestore_v1._helpers import ExistsOption
-
-        klass = self._get_target_class()
-
-        option1 = klass.write_option(exists=False)
-        self.assertIsInstance(option1, ExistsOption)
-        self.assertFalse(option1._exists)
-
-        option2 = klass.write_option(exists=True)
-        self.assertIsInstance(option2, ExistsOption)
-        self.assertTrue(option2._exists)
-
-    def test_write_open_neither_arg(self):
-        from google.cloud.firestore_v1.base_client import _BAD_OPTION_ERR
-
-        klass = self._get_target_class()
-        with self.assertRaises(TypeError) as exc_info:
-            klass.write_option()
-
-        self.assertEqual(exc_info.exception.args, (_BAD_OPTION_ERR,))
-
-    def test_write_multiple_args(self):
-        from google.cloud.firestore_v1.base_client import _BAD_OPTION_ERR
-
-        klass = self._get_target_class()
-        with self.assertRaises(TypeError) as exc_info:
-            klass.write_option(exists=False, last_update_time=mock.sentinel.timestamp)
-
-        self.assertEqual(exc_info.exception.args, (_BAD_OPTION_ERR,))
-
-    def test_write_bad_arg(self):
-        from google.cloud.firestore_v1.base_client import _BAD_OPTION_ERR
-
-        klass = self._get_target_class()
-        with self.assertRaises(TypeError) as exc_info:
-            klass.write_option(spinach="popeye")
-
-        extra = "{!r} was provided".format("spinach")
-        self.assertEqual(exc_info.exception.args, (_BAD_OPTION_ERR, extra))
-
-
-class Test__reference_info(unittest.TestCase):
-    @staticmethod
-    def _call_fut(references):
-        from google.cloud.firestore_v1.base_client import _reference_info
-
-        return _reference_info(references)
-
-    def test_it(self):
-        from google.cloud.firestore_v1.client import Client
-
-        credentials = _make_credentials()
-        client = Client(project="hi-projject", credentials=credentials)
-
-        reference1 = client.document("a", "b")
-        reference2 = client.document("a", "b", "c", "d")
-        reference3 = client.document("a", "b")
-        reference4 = client.document("f", "g")
-
-        doc_path1 = reference1._document_path
-        doc_path2 = reference2._document_path
-        doc_path3 = reference3._document_path
-        doc_path4 = reference4._document_path
-        self.assertEqual(doc_path1, doc_path3)
-
-        document_paths, reference_map = self._call_fut(
-            [reference1, reference2, reference3, reference4]
-        )
-        self.assertEqual(document_paths, [doc_path1, doc_path2, doc_path3, doc_path4])
-        # reference3 over-rides reference1.
-        expected_map = {
-            doc_path2: reference2,
-            doc_path3: reference3,
-            doc_path4: reference4,
-        }
-        self.assertEqual(reference_map, expected_map)
-
-
-class Test__get_reference(unittest.TestCase):
-    @staticmethod
-    def _call_fut(document_path, reference_map):
-        from google.cloud.firestore_v1.base_client import _get_reference
-
-        return _get_reference(document_path, reference_map)
-
-    def test_success(self):
-        doc_path = "a/b/c"
-        reference_map = {doc_path: mock.sentinel.reference}
-        self.assertIs(self._call_fut(doc_path, reference_map), mock.sentinel.reference)
-
-    def test_failure(self):
-        from google.cloud.firestore_v1.base_client import _BAD_DOC_TEMPLATE
-
-        doc_path = "1/888/call-now"
-        with self.assertRaises(ValueError) as exc_info:
-            self._call_fut(doc_path, {})
-
-        err_msg = _BAD_DOC_TEMPLATE.format(doc_path)
-        self.assertEqual(exc_info.exception.args, (err_msg,))
-
-
-class Test__parse_batch_get(unittest.TestCase):
-    @staticmethod
-    def _call_fut(get_doc_response, reference_map, client=mock.sentinel.client):
-        from google.cloud.firestore_v1.base_client import _parse_batch_get
-
-        return _parse_batch_get(get_doc_response, reference_map, client)
-
-    @staticmethod
-    def _dummy_ref_string():
-        from google.cloud.firestore_v1.base_client import DEFAULT_DATABASE
-
-        project = u"bazzzz"
-        collection_id = u"fizz"
-        document_id = u"buzz"
-        return u"projects/{}/databases/{}/documents/{}/{}".format(
-            project, DEFAULT_DATABASE, collection_id, document_id
+        insecure_channel.assert_called_once_with(
+            emulator_host, options=[("Authorization", "Bearer test")]
         )
 
-    def test_found(self):
-        from google.cloud.firestore_v1.types import document
-        from google.cloud._helpers import _datetime_to_pb_timestamp
-        from google.cloud.firestore_v1.document import DocumentSnapshot
 
-        now = datetime.datetime.utcnow()
-        read_time = _datetime_to_pb_timestamp(now)
-        delta = datetime.timedelta(seconds=100)
-        update_time = _datetime_to_pb_timestamp(now - delta)
-        create_time = _datetime_to_pb_timestamp(now - 2 * delta)
-
-        ref_string = self._dummy_ref_string()
-        document_pb = document.Document(
-            name=ref_string,
-            fields={
-                "foo": document.Value(double_value=1.5),
-                "bar": document.Value(string_value=u"skillz"),
-            },
-            create_time=create_time,
-            update_time=update_time,
+def test_baseclient__target_helper_w_emulator_host():
+    emulator_host = "localhost:8081"
+    credentials = _make_credentials()
+    database = "quanta"
+    with mock.patch("os.getenv") as getenv:
+        getenv.return_value = emulator_host
+        credentials.id_token = None
+        client = _make_base_client(
+            project=PROJECT, credentials=credentials, database=database
         )
-        response_pb = _make_batch_response(found=document_pb, read_time=read_time)
 
-        reference_map = {ref_string: mock.sentinel.reference}
-        snapshot = self._call_fut(response_pb, reference_map)
-        self.assertIsInstance(snapshot, DocumentSnapshot)
-        self.assertIs(snapshot._reference, mock.sentinel.reference)
-        self.assertEqual(snapshot._data, {"foo": 1.5, "bar": u"skillz"})
-        self.assertTrue(snapshot._exists)
-        self.assertEqual(snapshot.read_time.timestamp_pb(), read_time)
-        self.assertEqual(snapshot.create_time.timestamp_pb(), create_time)
-        self.assertEqual(snapshot.update_time.timestamp_pb(), update_time)
-
-    def test_missing(self):
-        from google.cloud.firestore_v1.document import DocumentReference
-
-        ref_string = self._dummy_ref_string()
-        response_pb = _make_batch_response(missing=ref_string)
-        document = DocumentReference("fizz", "bazz", client=mock.sentinel.client)
-        reference_map = {ref_string: document}
-        snapshot = self._call_fut(response_pb, reference_map)
-        self.assertFalse(snapshot.exists)
-        self.assertEqual(snapshot.id, "bazz")
-        self.assertIsNone(snapshot._data)
-
-    def test_unset_result_type(self):
-        response_pb = _make_batch_response()
-        with self.assertRaises(ValueError):
-            self._call_fut(response_pb, {})
-
-    def test_unknown_result_type(self):
-        response_pb = mock.Mock()
-        response_pb._pb.mock_add_spec(spec=["WhichOneof"])
-        response_pb._pb.WhichOneof.return_value = "zoob_value"
-
-        with self.assertRaises(ValueError):
-            self._call_fut(response_pb, {})
-
-        response_pb._pb.WhichOneof.assert_called_once_with("result")
+    assert client._target_helper(None) == emulator_host
 
 
-class Test__get_doc_mask(unittest.TestCase):
-    @staticmethod
-    def _call_fut(field_paths):
-        from google.cloud.firestore_v1.base_client import _get_doc_mask
+def test_baseclient__target_helper_w_client_options_w_endpoint():
+    credentials = _make_credentials()
+    endpoint = "https://api.example.com/firestore"
+    client_options = {"api_endpoint": endpoint}
+    client = _make_base_client(
+        project=PROJECT, credentials=credentials, client_options=client_options,
+    )
 
-        return _get_doc_mask(field_paths)
+    assert client._target_helper(None) == endpoint
 
-    def test_none(self):
-        self.assertIsNone(self._call_fut(None))
 
-    def test_paths(self):
-        from google.cloud.firestore_v1.types import common
+def test_baseclient__target_helper_w_client_options_wo_endpoint():
+    credentials = _make_credentials()
+    endpoint = "https://api.example.com/firestore"
+    client_options = {}
+    client_class = mock.Mock(instance=False, DEFAULT_ENDPOINT=endpoint)
+    client = _make_base_client(
+        project=PROJECT, credentials=credentials, client_options=client_options,
+    )
 
-        field_paths = ["a.b", "c"]
-        result = self._call_fut(field_paths)
-        expected = common.DocumentMask(field_paths=field_paths)
-        self.assertEqual(result, expected)
+    assert client._target_helper(client_class) == endpoint
+
+
+def test_baseclient__target_helper_wo_client_options():
+    credentials = _make_credentials()
+    endpoint = "https://api.example.com/firestore"
+    client_class = mock.Mock(instance=False, DEFAULT_ENDPOINT=endpoint)
+    client = _make_base_client(project=PROJECT, credentials=credentials,)
+
+    assert client._target_helper(client_class) == endpoint
+
+
+def test_baseclient_field_path():
+    from google.cloud.firestore_v1.base_client import BaseClient
+
+    assert BaseClient.field_path("a", "b", "c") == "a.b.c"
+
+
+def test_baseclient_write_option_last_update():
+    from google.protobuf import timestamp_pb2
+    from google.cloud.firestore_v1._helpers import LastUpdateOption
+    from google.cloud.firestore_v1.base_client import BaseClient
+
+    timestamp = timestamp_pb2.Timestamp(seconds=1299767599, nanos=811111097)
+
+    option = BaseClient.write_option(last_update_time=timestamp)
+    assert isinstance(option, LastUpdateOption)
+    assert option._last_update_time == timestamp
+
+
+def test_baseclient_write_option_exists():
+    from google.cloud.firestore_v1._helpers import ExistsOption
+    from google.cloud.firestore_v1.base_client import BaseClient
+
+    option1 = BaseClient.write_option(exists=False)
+    assert isinstance(option1, ExistsOption)
+    assert not option1._exists
+
+    option2 = BaseClient.write_option(exists=True)
+    assert isinstance(option2, ExistsOption)
+    assert option2._exists
+
+
+def test_baseclient_write_open_neither_arg():
+    from google.cloud.firestore_v1.base_client import _BAD_OPTION_ERR
+    from google.cloud.firestore_v1.base_client import BaseClient
+
+    with pytest.raises(TypeError) as exc_info:
+        BaseClient.write_option()
+
+    assert exc_info.value.args == (_BAD_OPTION_ERR,)
+
+
+def test_baseclient_write_multiple_args():
+    from google.cloud.firestore_v1.base_client import _BAD_OPTION_ERR
+    from google.cloud.firestore_v1.base_client import BaseClient
+
+    with pytest.raises(TypeError) as exc_info:
+        BaseClient.write_option(exists=False, last_update_time=mock.sentinel.timestamp)
+
+    assert exc_info.value.args == (_BAD_OPTION_ERR,)
+
+
+def test_baseclient_write_bad_arg():
+    from google.cloud.firestore_v1.base_client import _BAD_OPTION_ERR
+    from google.cloud.firestore_v1.base_client import BaseClient
+
+    with pytest.raises(TypeError) as exc_info:
+        BaseClient.write_option(spinach="popeye")
+
+    extra = "{!r} was provided".format("spinach")
+    assert exc_info.value.args == (_BAD_OPTION_ERR, extra)
+
+
+def test__reference_info():
+    from google.cloud.firestore_v1.base_client import _reference_info
+
+    expected_doc_paths = ["/a/b", "/a/b/c/d", "/a/b", "/f/g"]
+    documents = [mock.Mock(_document_path=path) for path in expected_doc_paths]
+
+    document_paths, reference_map = _reference_info(documents)
+
+    assert document_paths == expected_doc_paths
+    # reference3 over-rides reference1.
+    expected_map = {
+        path: document
+        for path, document in list(zip(expected_doc_paths, documents))[1:]
+    }
+    assert reference_map == expected_map
+
+
+def test__get_reference_success():
+    from google.cloud.firestore_v1.base_client import _get_reference
+
+    doc_path = "a/b/c"
+    reference_map = {doc_path: mock.sentinel.reference}
+    assert _get_reference(doc_path, reference_map) is mock.sentinel.reference
+
+
+def test__get_reference_failure():
+    from google.cloud.firestore_v1.base_client import _BAD_DOC_TEMPLATE
+    from google.cloud.firestore_v1.base_client import _get_reference
+
+    doc_path = "1/888/call-now"
+    with pytest.raises(ValueError) as exc_info:
+        _get_reference(doc_path, {})
+
+    err_msg = _BAD_DOC_TEMPLATE.format(doc_path)
+    assert exc_info.value.args == (err_msg,)
+
+
+def _dummy_ref_string():
+    from google.cloud.firestore_v1.base_client import DEFAULT_DATABASE
+
+    project = u"bazzzz"
+    collection_id = u"fizz"
+    document_id = u"buzz"
+    return u"projects/{}/databases/{}/documents/{}/{}".format(
+        project, DEFAULT_DATABASE, collection_id, document_id
+    )
+
+
+def test__parse_batch_get_found():
+    from google.cloud.firestore_v1.types import document
+    from google.cloud._helpers import _datetime_to_pb_timestamp
+    from google.cloud.firestore_v1.document import DocumentSnapshot
+    from google.cloud.firestore_v1.base_client import _parse_batch_get
+
+    now = datetime.datetime.utcnow()
+    read_time = _datetime_to_pb_timestamp(now)
+    delta = datetime.timedelta(seconds=100)
+    update_time = _datetime_to_pb_timestamp(now - delta)
+    create_time = _datetime_to_pb_timestamp(now - 2 * delta)
+
+    ref_string = _dummy_ref_string()
+    document_pb = document.Document(
+        name=ref_string,
+        fields={
+            "foo": document.Value(double_value=1.5),
+            "bar": document.Value(string_value=u"skillz"),
+        },
+        create_time=create_time,
+        update_time=update_time,
+    )
+    response_pb = _make_batch_response(found=document_pb, read_time=read_time)
+
+    reference_map = {ref_string: mock.sentinel.reference}
+    snapshot = _parse_batch_get(response_pb, reference_map, mock.sentinel.client)
+    assert isinstance(snapshot, DocumentSnapshot)
+    assert snapshot._reference is mock.sentinel.reference
+    assert snapshot._data == {"foo": 1.5, "bar": u"skillz"}
+    assert snapshot._exists
+    assert snapshot.read_time.timestamp_pb() == read_time
+    assert snapshot.create_time.timestamp_pb() == create_time
+    assert snapshot.update_time.timestamp_pb() == update_time
+
+
+def test__parse_batch_get_missing():
+    from google.cloud.firestore_v1.document import DocumentReference
+    from google.cloud.firestore_v1.base_client import _parse_batch_get
+
+    ref_string = _dummy_ref_string()
+    response_pb = _make_batch_response(missing=ref_string)
+    document = DocumentReference("fizz", "bazz", client=mock.sentinel.client)
+    reference_map = {ref_string: document}
+    snapshot = _parse_batch_get(response_pb, reference_map, mock.sentinel.client)
+    assert not snapshot.exists
+    assert snapshot.id == "bazz"
+    assert snapshot._data is None
+
+
+def test__parse_batch_get_unset_result_type():
+    from google.cloud.firestore_v1.base_client import _parse_batch_get
+
+    response_pb = _make_batch_response()
+    with pytest.raises(ValueError):
+        _parse_batch_get(response_pb, {}, mock.sentinel.client)
+
+
+def test__parse_batch_get_unknown_result_type():
+    from google.cloud.firestore_v1.base_client import _parse_batch_get
+
+    response_pb = mock.Mock()
+    response_pb._pb.mock_add_spec(spec=["WhichOneof"])
+    response_pb._pb.WhichOneof.return_value = "zoob_value"
+
+    with pytest.raises(ValueError):
+        _parse_batch_get(response_pb, {}, mock.sentinel.client)
+
+    response_pb._pb.WhichOneof.assert_called_once_with("result")
+
+
+def test__get_doc_mask_w_none():
+    from google.cloud.firestore_v1.base_client import _get_doc_mask
+
+    assert _get_doc_mask(None) is None
+
+
+def test__get_doc_mask_w_paths():
+    from google.cloud.firestore_v1.types import common
+    from google.cloud.firestore_v1.base_client import _get_doc_mask
+
+    field_paths = ["a.b", "c"]
+    result = _get_doc_mask(field_paths)
+    expected = common.DocumentMask(field_paths=field_paths)
+    assert result == expected
 
 
 def _make_credentials():

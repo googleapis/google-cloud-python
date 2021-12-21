@@ -13,74 +13,69 @@
 # limitations under the License.
 
 import datetime
-import unittest
 from typing import List, NoReturn, Optional, Tuple, Type
 
-from google.rpc import status_pb2
 import aiounittest  # type: ignore
 import mock
+import pytest
 
-from google.cloud.firestore_v1._helpers import build_timestamp, ExistsOption
-from google.cloud.firestore_v1.async_client import AsyncClient
-from google.cloud.firestore_v1.base_document import BaseDocumentReference
-from google.cloud.firestore_v1.client import Client
-from google.cloud.firestore_v1.base_client import BaseClient
-from google.cloud.firestore_v1.bulk_batch import BulkWriteBatch
-from google.cloud.firestore_v1.bulk_writer import (
-    BulkRetry,
-    BulkWriter,
-    BulkWriteFailure,
-    BulkWriterCreateOperation,
-    BulkWriterOptions,
-    BulkWriterOperation,
-    OperationRetry,
-    SendMode,
-)
-from google.cloud.firestore_v1.types.firestore import BatchWriteResponse
-from google.cloud.firestore_v1.types.write import WriteResult
-from tests.unit.v1._test_helpers import FakeThreadPoolExecutor
+from google.cloud.firestore_v1 import async_client
+from google.cloud.firestore_v1 import client
+from google.cloud.firestore_v1 import base_client
 
 
-class NoSendBulkWriter(BulkWriter):
-    """Test-friendly BulkWriter subclass whose `_send` method returns faked
-    BatchWriteResponse instances and whose _process_response` method stores
-    those faked instances for later evaluation."""
+def _make_no_send_bulk_writer(*args, **kwargs):
+    from google.rpc import status_pb2
+    from google.cloud.firestore_v1._helpers import build_timestamp
+    from google.cloud.firestore_v1.bulk_batch import BulkWriteBatch
+    from google.cloud.firestore_v1.bulk_writer import BulkWriter
+    from google.cloud.firestore_v1.bulk_writer import BulkWriterOperation
+    from google.cloud.firestore_v1.types.firestore import BatchWriteResponse
+    from google.cloud.firestore_v1.types.write import WriteResult
+    from tests.unit.v1._test_helpers import FakeThreadPoolExecutor
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self._responses: List[
-            Tuple[BulkWriteBatch, BatchWriteResponse, BulkWriterOperation]
-        ] = []
-        self._fail_indices: List[int] = []
+    class NoSendBulkWriter(BulkWriter):
+        """Test-friendly BulkWriter subclass whose `_send` method returns faked
+        BatchWriteResponse instances and whose _process_response` method stores
+        those faked instances for later evaluation."""
 
-    def _send(self, batch: BulkWriteBatch) -> BatchWriteResponse:
-        """Generate a fake `BatchWriteResponse` for the supplied batch instead
-        of actually submitting it to the server.
-        """
-        return BatchWriteResponse(
-            write_results=[
-                WriteResult(update_time=build_timestamp())
-                if index not in self._fail_indices
-                else WriteResult()
-                for index, el in enumerate(batch._document_references.values())
-            ],
-            status=[
-                status_pb2.Status(code=0 if index not in self._fail_indices else 1)
-                for index, el in enumerate(batch._document_references.values())
-            ],
-        )
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self._responses: List[
+                Tuple[BulkWriteBatch, BatchWriteResponse, BulkWriterOperation]
+            ] = []
+            self._fail_indices: List[int] = []
 
-    def _process_response(
-        self,
-        batch: BulkWriteBatch,
-        response: BatchWriteResponse,
-        operations: List[BulkWriterOperation],
-    ) -> NoReturn:
-        super()._process_response(batch, response, operations)
-        self._responses.append((batch, response, operations))
+        def _send(self, batch: BulkWriteBatch) -> BatchWriteResponse:
+            """Generate a fake `BatchWriteResponse` for the supplied batch instead
+            of actually submitting it to the server.
+            """
+            return BatchWriteResponse(
+                write_results=[
+                    WriteResult(update_time=build_timestamp())
+                    if index not in self._fail_indices
+                    else WriteResult()
+                    for index, el in enumerate(batch._document_references.values())
+                ],
+                status=[
+                    status_pb2.Status(code=0 if index not in self._fail_indices else 1)
+                    for index, el in enumerate(batch._document_references.values())
+                ],
+            )
 
-    def _instantiate_executor(self):
-        return FakeThreadPoolExecutor()
+        def _process_response(
+            self,
+            batch: BulkWriteBatch,
+            response: BatchWriteResponse,
+            operations: List[BulkWriterOperation],
+        ) -> NoReturn:
+            super()._process_response(batch, response, operations)
+            self._responses.append((batch, response, operations))
+
+        def _instantiate_executor(self):
+            return FakeThreadPoolExecutor()
+
+    return NoSendBulkWriter(*args, **kwargs)
 
 
 def _make_credentials():
@@ -96,8 +91,8 @@ class _SyncClientMixin:
     _PRESERVES_CLIENT = True
 
     @staticmethod
-    def _make_client() -> Client:
-        return Client(credentials=_make_credentials(), project="project-id")
+    def _make_client() -> client.Client:
+        return client.Client(credentials=_make_credentials(), project="project-id")
 
 
 class _AsyncClientMixin:
@@ -107,18 +102,22 @@ class _AsyncClientMixin:
     _PRESERVES_CLIENT = False
 
     @staticmethod
-    def _make_client() -> AsyncClient:
-        return AsyncClient(credentials=_make_credentials(), project="project-id")
+    def _make_client() -> async_client.AsyncClient:
+        return async_client.AsyncClient(
+            credentials=_make_credentials(), project="project-id"
+        )
 
 
 class _BaseBulkWriterTests:
-    def _ctor_helper(self, **kw):
+    def _basebulkwriter_ctor_helper(self, **kw):
+        from google.cloud.firestore_v1.bulk_writer import BulkWriterOptions
+
         client = self._make_client()
 
         if not self._PRESERVES_CLIENT:
             sync_copy = client._sync_copy = object()
 
-        bw = NoSendBulkWriter(client, **kw)
+        bw = _make_no_send_bulk_writer(client, **kw)
 
         if self._PRESERVES_CLIENT:
             assert bw._client is client
@@ -130,27 +129,22 @@ class _BaseBulkWriterTests:
         else:
             assert bw._options == BulkWriterOptions()
 
-    def test_ctor_defaults(self):
-        self._ctor_helper()
+    def test_basebulkwriter_ctor_defaults(self):
+        self._basebulkwriter_ctor_helper()
 
-    def test_ctor_explicit(self):
+    def test_basebulkwriter_ctor_explicit(self):
+        from google.cloud.firestore_v1.bulk_writer import BulkRetry
+        from google.cloud.firestore_v1.bulk_writer import BulkWriterOptions
+
         options = BulkWriterOptions(retry=BulkRetry.immediate)
-        self._ctor_helper(options=options)
-
-    @staticmethod
-    def _get_document_reference(
-        client: BaseClient,
-        collection_name: Optional[str] = "col",
-        id: Optional[str] = None,
-    ) -> Type:
-        return client.collection(collection_name).document(id)
+        self._basebulkwriter_ctor_helper(options=options)
 
     def _doc_iter(self, client, num: int, ids: Optional[List[str]] = None):
         for _ in range(num):
             id: Optional[str] = ids[_] if ids else None
-            yield self._get_document_reference(client, id=id), {"id": _}
+            yield _get_document_reference(client, id=id), {"id": _}
 
-    def _verify_bw_activity(self, bw: BulkWriter, counts: List[Tuple[int, int]]):
+    def _verify_bw_activity(self, bw, counts: List[Tuple[int, int]]):
         """
         Args:
             bw: (BulkWriter)
@@ -160,29 +154,26 @@ class _BaseBulkWriterTests:
                 representing the number of times batches of that size should
                 have been sent.
         """
+        from google.cloud.firestore_v1.types.firestore import BatchWriteResponse
+
         total_batches = sum([el[1] for el in counts])
-        batches_word = "batches" if total_batches != 1 else "batch"
-        self.assertEqual(
-            len(bw._responses),
-            total_batches,
-            f"Expected to have sent {total_batches} {batches_word}, but only sent {len(bw._responses)}",
-        )
+        assert len(bw._responses) == total_batches
         docs_count = {}
         resp: BatchWriteResponse
         for _, resp, ops in bw._responses:
             docs_count.setdefault(len(resp.write_results), 0)
             docs_count[len(resp.write_results)] += 1
 
-        self.assertEqual(len(docs_count), len(counts))
+        assert len(docs_count) == len(counts)
         for size, num_sent in counts:
-            self.assertEqual(docs_count[size], num_sent)
+            assert docs_count[size] == num_sent
 
         # Assert flush leaves no operation behind
-        self.assertEqual(len(bw._operations), 0)
+        assert len(bw._operations) == 0
 
-    def test_create_calls_send_correctly(self):
+    def test_basebulkwriter_create_calls_send_correctly(self):
         client = self._make_client()
-        bw = NoSendBulkWriter(client)
+        bw = _make_no_send_bulk_writer(client)
         for ref, data in self._doc_iter(client, 101):
             bw.create(ref, data)
         bw.flush()
@@ -190,9 +181,9 @@ class _BaseBulkWriterTests:
         # batch should have been sent once.
         self._verify_bw_activity(bw, [(20, 5,), (1, 1,)])
 
-    def test_delete_calls_send_correctly(self):
+    def test_basebulkwriter_delete_calls_send_correctly(self):
         client = self._make_client()
-        bw = NoSendBulkWriter(client)
+        bw = _make_no_send_bulk_writer(client)
         for ref, _ in self._doc_iter(client, 101):
             bw.delete(ref)
         bw.flush()
@@ -200,19 +191,19 @@ class _BaseBulkWriterTests:
         # batch should have been sent once.
         self._verify_bw_activity(bw, [(20, 5,), (1, 1,)])
 
-    def test_delete_separates_batch(self):
+    def test_basebulkwriter_delete_separates_batch(self):
         client = self._make_client()
-        bw = NoSendBulkWriter(client)
-        ref = self._get_document_reference(client, id="asdf")
+        bw = _make_no_send_bulk_writer(client)
+        ref = _get_document_reference(client, id="asdf")
         bw.create(ref, {})
         bw.delete(ref)
         bw.flush()
         # Consecutive batches each with 1 operation should have been sent
         self._verify_bw_activity(bw, [(1, 2,)])
 
-    def test_set_calls_send_correctly(self):
+    def test_basebulkwriter_set_calls_send_correctly(self):
         client = self._make_client()
-        bw = NoSendBulkWriter(client)
+        bw = _make_no_send_bulk_writer(client)
         for ref, data in self._doc_iter(client, 101):
             bw.set(ref, data)
         bw.flush()
@@ -220,9 +211,9 @@ class _BaseBulkWriterTests:
         # batch should have been sent once.
         self._verify_bw_activity(bw, [(20, 5,), (1, 1,)])
 
-    def test_update_calls_send_correctly(self):
+    def test_basebulkwriter_update_calls_send_correctly(self):
         client = self._make_client()
-        bw = NoSendBulkWriter(client)
+        bw = _make_no_send_bulk_writer(client)
         for ref, data in self._doc_iter(client, 101):
             bw.update(ref, data)
         bw.flush()
@@ -230,10 +221,10 @@ class _BaseBulkWriterTests:
         # batch should have been sent once.
         self._verify_bw_activity(bw, [(20, 5,), (1, 1,)])
 
-    def test_update_separates_batch(self):
+    def test_basebulkwriter_update_separates_batch(self):
         client = self._make_client()
-        bw = NoSendBulkWriter(client)
-        ref = self._get_document_reference(client, id="asdf")
+        bw = _make_no_send_bulk_writer(client)
+        ref = _get_document_reference(client, id="asdf")
         bw.create(ref, {})
         bw.update(ref, {"field": "value"})
         bw.flush()
@@ -241,9 +232,15 @@ class _BaseBulkWriterTests:
         # batch should have been sent once.
         self._verify_bw_activity(bw, [(1, 2,)])
 
-    def test_invokes_success_callbacks_successfully(self):
+    def test_basebulkwriter_invokes_success_callbacks_successfully(self):
+        from google.cloud.firestore_v1.base_document import BaseDocumentReference
+        from google.cloud.firestore_v1.bulk_batch import BulkWriteBatch
+        from google.cloud.firestore_v1.bulk_writer import BulkWriter
+        from google.cloud.firestore_v1.types.firestore import BatchWriteResponse
+        from google.cloud.firestore_v1.types.write import WriteResult
+
         client = self._make_client()
-        bw = NoSendBulkWriter(client)
+        bw = _make_no_send_bulk_writer(client)
         bw._fail_indices = []
         bw._sent_batches = 0
         bw._sent_documents = 0
@@ -267,13 +264,15 @@ class _BaseBulkWriterTests:
             bw.create(ref, data)
         bw.flush()
 
-        self.assertEqual(bw._sent_batches, 6)
-        self.assertEqual(bw._sent_documents, 101)
-        self.assertEqual(len(bw._operations), 0)
+        assert bw._sent_batches == 6
+        assert bw._sent_documents == 101
+        assert len(bw._operations) == 0
 
-    def test_invokes_error_callbacks_successfully(self):
+    def test_basebulkwriter_invokes_error_callbacks_successfully(self):
+        from google.cloud.firestore_v1.bulk_writer import BulkWriteFailure
+
         client = self._make_client()
-        bw = NoSendBulkWriter(client)
+        bw = _make_no_send_bulk_writer(client)
         # First document in each batch will "fail"
         bw._fail_indices = [0]
         bw._sent_batches = 0
@@ -303,14 +302,18 @@ class _BaseBulkWriterTests:
             bw.create(ref, data)
         bw.flush()
 
-        self.assertEqual(bw._sent_documents, 0)
-        self.assertEqual(bw._total_retries, times_to_retry)
-        self.assertEqual(bw._sent_batches, 2)
-        self.assertEqual(len(bw._operations), 0)
+        assert bw._sent_documents == 0
+        assert bw._total_retries == times_to_retry
+        assert bw._sent_batches == 2
+        assert len(bw._operations) == 0
 
-    def test_invokes_error_callbacks_successfully_multiple_retries(self):
+    def test_basebulkwriter_invokes_error_callbacks_successfully_multiple_retries(self):
+        from google.cloud.firestore_v1.bulk_writer import BulkRetry
+        from google.cloud.firestore_v1.bulk_writer import BulkWriteFailure
+        from google.cloud.firestore_v1.bulk_writer import BulkWriterOptions
+
         client = self._make_client()
-        bw = NoSendBulkWriter(
+        bw = _make_no_send_bulk_writer(
             client, options=BulkWriterOptions(retry=BulkRetry.immediate),
         )
         # First document in each batch will "fail"
@@ -342,14 +345,17 @@ class _BaseBulkWriterTests:
             bw.create(ref, data)
         bw.flush()
 
-        self.assertEqual(bw._sent_documents, 1)
-        self.assertEqual(bw._total_retries, times_to_retry)
-        self.assertEqual(bw._sent_batches, times_to_retry + 1)
-        self.assertEqual(len(bw._operations), 0)
+        assert bw._sent_documents == 1
+        assert bw._total_retries == times_to_retry
+        assert bw._sent_batches == times_to_retry + 1
+        assert len(bw._operations) == 0
 
-    def test_default_error_handler(self):
+    def test_basebulkwriter_default_error_handler(self):
+        from google.cloud.firestore_v1.bulk_writer import BulkRetry
+        from google.cloud.firestore_v1.bulk_writer import BulkWriterOptions
+
         client = self._make_client()
-        bw = NoSendBulkWriter(
+        bw = _make_no_send_bulk_writer(
             client, options=BulkWriterOptions(retry=BulkRetry.immediate),
         )
         bw._attempts = 0
@@ -365,11 +371,15 @@ class _BaseBulkWriterTests:
         for ref, data in self._doc_iter(client, 1):
             bw.create(ref, data)
         bw.flush()
-        self.assertEqual(bw._attempts, 15)
+        assert bw._attempts == 15
 
-    def test_handles_errors_and_successes_correctly(self):
+    def test_basebulkwriter_handles_errors_and_successes_correctly(self):
+        from google.cloud.firestore_v1.bulk_writer import BulkRetry
+        from google.cloud.firestore_v1.bulk_writer import BulkWriteFailure
+        from google.cloud.firestore_v1.bulk_writer import BulkWriterOptions
+
         client = self._make_client()
-        bw = NoSendBulkWriter(
+        bw = _make_no_send_bulk_writer(
             client, options=BulkWriterOptions(retry=BulkRetry.immediate),
         )
         # First document in each batch will "fail"
@@ -402,14 +412,18 @@ class _BaseBulkWriterTests:
         bw.flush()
 
         # 19 successful writes per batch
-        self.assertEqual(bw._sent_documents, 38)
-        self.assertEqual(bw._total_retries, times_to_retry * 2)
-        self.assertEqual(bw._sent_batches, 4)
-        self.assertEqual(len(bw._operations), 0)
+        assert bw._sent_documents == 38
+        assert bw._total_retries == times_to_retry * 2
+        assert bw._sent_batches == 4
+        assert len(bw._operations) == 0
 
-    def test_create_retriable(self):
+    def test_basebulkwriter_create_retriable(self):
+        from google.cloud.firestore_v1.bulk_writer import BulkRetry
+        from google.cloud.firestore_v1.bulk_writer import BulkWriteFailure
+        from google.cloud.firestore_v1.bulk_writer import BulkWriterOptions
+
         client = self._make_client()
-        bw = NoSendBulkWriter(
+        bw = _make_no_send_bulk_writer(
             client, options=BulkWriterOptions(retry=BulkRetry.immediate),
         )
         # First document in each batch will "fail"
@@ -430,12 +444,16 @@ class _BaseBulkWriterTests:
             bw.create(ref, data)
         bw.flush()
 
-        self.assertEqual(bw._total_retries, times_to_retry)
-        self.assertEqual(len(bw._operations), 0)
+        assert bw._total_retries == times_to_retry
+        assert len(bw._operations) == 0
 
-    def test_delete_retriable(self):
+    def test_basebulkwriter_delete_retriable(self):
+        from google.cloud.firestore_v1.bulk_writer import BulkRetry
+        from google.cloud.firestore_v1.bulk_writer import BulkWriteFailure
+        from google.cloud.firestore_v1.bulk_writer import BulkWriterOptions
+
         client = self._make_client()
-        bw = NoSendBulkWriter(
+        bw = _make_no_send_bulk_writer(
             client, options=BulkWriterOptions(retry=BulkRetry.immediate),
         )
         # First document in each batch will "fail"
@@ -456,12 +474,16 @@ class _BaseBulkWriterTests:
             bw.delete(ref)
         bw.flush()
 
-        self.assertEqual(bw._total_retries, times_to_retry)
-        self.assertEqual(len(bw._operations), 0)
+        assert bw._total_retries == times_to_retry
+        assert len(bw._operations) == 0
 
-    def test_set_retriable(self):
+    def test_basebulkwriter_set_retriable(self):
+        from google.cloud.firestore_v1.bulk_writer import BulkRetry
+        from google.cloud.firestore_v1.bulk_writer import BulkWriteFailure
+        from google.cloud.firestore_v1.bulk_writer import BulkWriterOptions
+
         client = self._make_client()
-        bw = NoSendBulkWriter(
+        bw = _make_no_send_bulk_writer(
             client, options=BulkWriterOptions(retry=BulkRetry.immediate),
         )
         # First document in each batch will "fail"
@@ -482,12 +504,16 @@ class _BaseBulkWriterTests:
             bw.set(ref, data)
         bw.flush()
 
-        self.assertEqual(bw._total_retries, times_to_retry)
-        self.assertEqual(len(bw._operations), 0)
+        assert bw._total_retries == times_to_retry
+        assert len(bw._operations) == 0
 
-    def test_update_retriable(self):
+    def test_basebulkwriter_update_retriable(self):
+        from google.cloud.firestore_v1.bulk_writer import BulkRetry
+        from google.cloud.firestore_v1.bulk_writer import BulkWriteFailure
+        from google.cloud.firestore_v1.bulk_writer import BulkWriterOptions
+
         client = self._make_client()
-        bw = NoSendBulkWriter(
+        bw = _make_no_send_bulk_writer(
             client, options=BulkWriterOptions(retry=BulkRetry.immediate),
         )
         # First document in each batch will "fail"
@@ -508,12 +534,17 @@ class _BaseBulkWriterTests:
             bw.update(ref, data)
         bw.flush()
 
-        self.assertEqual(bw._total_retries, times_to_retry)
-        self.assertEqual(len(bw._operations), 0)
+        assert bw._total_retries == times_to_retry
+        assert len(bw._operations) == 0
 
-    def test_serial_calls_send_correctly(self):
+    def test_basebulkwriter_serial_calls_send_correctly(self):
+        from google.cloud.firestore_v1.bulk_writer import BulkWriterOptions
+        from google.cloud.firestore_v1.bulk_writer import SendMode
+
         client = self._make_client()
-        bw = NoSendBulkWriter(client, options=BulkWriterOptions(mode=SendMode.serial))
+        bw = _make_no_send_bulk_writer(
+            client, options=BulkWriterOptions(mode=SendMode.serial)
+        )
         for ref, data in self._doc_iter(client, 101):
             bw.create(ref, data)
         bw.flush()
@@ -521,9 +552,9 @@ class _BaseBulkWriterTests:
         # batch should have been sent once.
         self._verify_bw_activity(bw, [(20, 5,), (1, 1,)])
 
-    def test_separates_same_document(self):
+    def test_basebulkwriter_separates_same_document(self):
         client = self._make_client()
-        bw = NoSendBulkWriter(client)
+        bw = _make_no_send_bulk_writer(client)
         for ref, data in self._doc_iter(client, 2, ["same-id", "same-id"]):
             bw.create(ref, data)
         bw.flush()
@@ -531,9 +562,9 @@ class _BaseBulkWriterTests:
         # Expect to have sent 1-item batches twice.
         self._verify_bw_activity(bw, [(1, 2,)])
 
-    def test_separates_same_document_different_operation(self):
+    def test_basebulkwriter_separates_same_document_different_operation(self):
         client = self._make_client()
-        bw = NoSendBulkWriter(client)
+        bw = _make_no_send_bulk_writer(client)
         for ref, data in self._doc_iter(client, 1, ["same-id"]):
             bw.create(ref, data)
             bw.set(ref, data)
@@ -542,61 +573,63 @@ class _BaseBulkWriterTests:
         # Expect to have sent 1-item batches twice.
         self._verify_bw_activity(bw, [(1, 2,)])
 
-    def test_ensure_sending_repeatedly_callable(self):
+    def test_basebulkwriter_ensure_sending_repeatedly_callable(self):
         client = self._make_client()
-        bw = NoSendBulkWriter(client)
+        bw = _make_no_send_bulk_writer(client)
         bw._is_sending = True
         bw._ensure_sending()
 
-    def test_flush_close_repeatedly_callable(self):
+    def test_basebulkwriter_flush_close_repeatedly_callable(self):
         client = self._make_client()
-        bw = NoSendBulkWriter(client)
+        bw = _make_no_send_bulk_writer(client)
         bw.flush()
         bw.flush()
         bw.close()
 
-    def test_flush_sends_in_progress(self):
+    def test_basebulkwriter_flush_sends_in_progress(self):
         client = self._make_client()
-        bw = NoSendBulkWriter(client)
-        bw.create(self._get_document_reference(client), {"whatever": "you want"})
+        bw = _make_no_send_bulk_writer(client)
+        bw.create(_get_document_reference(client), {"whatever": "you want"})
         bw.flush()
         self._verify_bw_activity(bw, [(1, 1,)])
 
-    def test_flush_sends_all_queued_batches(self):
+    def test_basebulkwriter_flush_sends_all_queued_batches(self):
         client = self._make_client()
-        bw = NoSendBulkWriter(client)
+        bw = _make_no_send_bulk_writer(client)
         for _ in range(2):
-            bw.create(self._get_document_reference(client), {"whatever": "you want"})
+            bw.create(_get_document_reference(client), {"whatever": "you want"})
             bw._queued_batches.append(bw._operations)
             bw._reset_operations()
         bw.flush()
         self._verify_bw_activity(bw, [(1, 2,)])
 
-    def test_cannot_add_after_close(self):
+    def test_basebulkwriter_cannot_add_after_close(self):
         client = self._make_client()
-        bw = NoSendBulkWriter(client)
+        bw = _make_no_send_bulk_writer(client)
         bw.close()
-        self.assertRaises(Exception, bw._verify_not_closed)
+        with pytest.raises(Exception):
+            bw._verify_not_closed()
 
-    def test_multiple_flushes(self):
+    def test_basebulkwriter_multiple_flushes(self):
         client = self._make_client()
-        bw = NoSendBulkWriter(client)
+        bw = _make_no_send_bulk_writer(client)
         bw.flush()
         bw.flush()
 
-    def test_update_raises_with_bad_option(self):
+    def test_basebulkwriter_update_raises_with_bad_option(self):
+        from google.cloud.firestore_v1._helpers import ExistsOption
+
         client = self._make_client()
-        bw = NoSendBulkWriter(client)
-        self.assertRaises(
-            ValueError,
-            bw.update,
-            self._get_document_reference(client, "id"),
-            {},
-            option=ExistsOption(exists=True),
-        )
+        bw = _make_no_send_bulk_writer(client)
+        with pytest.raises(ValueError):
+            bw.update(
+                _get_document_reference(client, "id"),
+                {},
+                option=ExistsOption(exists=True),
+            )
 
 
-class TestSyncBulkWriter(_SyncClientMixin, _BaseBulkWriterTests, unittest.TestCase):
+class TestSyncBulkWriter(_SyncClientMixin, _BaseBulkWriterTests):
     """All BulkWriters are opaquely async, but this one simulates a BulkWriter
     dealing with synchronous DocumentReferences."""
 
@@ -608,58 +641,67 @@ class TestAsyncBulkWriter(
     dealing with AsyncDocumentReferences."""
 
 
-class TestScheduling(unittest.TestCase):
-    @staticmethod
-    def _make_client() -> Client:
-        return Client(credentials=_make_credentials(), project="project-id")
+def _make_sync_client() -> client.Client:
+    return client.Client(credentials=_make_credentials(), project="project-id")
 
-    def test_max_in_flight_honored(self):
-        bw = NoSendBulkWriter(self._make_client())
-        # Calling this method sets up all the internal timekeeping machinery
-        bw._rate_limiter.take_tokens(20)
 
-        # Now we pretend that all tokens have been consumed. This will force us
-        # to wait actual, real world milliseconds before being cleared to send more
-        bw._rate_limiter._available_tokens = 0
+def test_scheduling_max_in_flight_honored():
+    bw = _make_no_send_bulk_writer(_make_sync_client())
+    # Calling this method sets up all the internal timekeeping machinery
+    bw._rate_limiter.take_tokens(20)
 
-        st = datetime.datetime.now()
+    # Now we pretend that all tokens have been consumed. This will force us
+    # to wait actual, real world milliseconds before being cleared to send more
+    bw._rate_limiter._available_tokens = 0
 
-        # Make a real request, subject to the actual real world clock.
-        # As this request is 1/10th the per second limit, we should wait ~100ms
-        bw._request_send(50)
+    st = datetime.datetime.now()
 
-        self.assertGreater(
-            datetime.datetime.now() - st, datetime.timedelta(milliseconds=90),
-        )
+    # Make a real request, subject to the actual real world clock.
+    # As this request is 1/10th the per second limit, we should wait ~100ms
+    bw._request_send(50)
 
-    def test_operation_retry_scheduling(self):
-        now = datetime.datetime.now()
-        one_second_from_now = now + datetime.timedelta(seconds=1)
+    assert datetime.datetime.now() - st > datetime.timedelta(milliseconds=90)
 
-        db = self._make_client()
-        operation = BulkWriterCreateOperation(
-            reference=db.collection("asdf").document("asdf"),
-            document_data={"does.not": "matter"},
-        )
-        operation2 = BulkWriterCreateOperation(
-            reference=db.collection("different").document("document"),
-            document_data={"different": "values"},
-        )
 
-        op1 = OperationRetry(operation=operation, run_at=now)
-        op2 = OperationRetry(operation=operation2, run_at=now)
-        op3 = OperationRetry(operation=operation, run_at=one_second_from_now)
+def test_scheduling_operation_retry_scheduling():
+    from google.cloud.firestore_v1.bulk_writer import BulkWriterCreateOperation
+    from google.cloud.firestore_v1.bulk_writer import OperationRetry
 
-        self.assertLess(op1, op3)
-        self.assertLess(op1, op3.run_at)
-        self.assertLess(op2, op3)
-        self.assertLess(op2, op3.run_at)
+    now = datetime.datetime.now()
+    one_second_from_now = now + datetime.timedelta(seconds=1)
 
-        # Because these have the same values for `run_at`, neither should conclude
-        # they are less than the other. It is okay that if we checked them with
-        # greater-than evaluation, they would return True (because
-        # @functools.total_ordering flips the result from __lt__). In practice,
-        # this only arises for actual ties, and we don't care how actual ties are
-        # ordered as we maintain the sorted list of scheduled retries.
-        self.assertFalse(op1 < op2)
-        self.assertFalse(op2 < op1)
+    db = _make_sync_client()
+    operation = BulkWriterCreateOperation(
+        reference=db.collection("asdf").document("asdf"),
+        document_data={"does.not": "matter"},
+    )
+    operation2 = BulkWriterCreateOperation(
+        reference=db.collection("different").document("document"),
+        document_data={"different": "values"},
+    )
+
+    op1 = OperationRetry(operation=operation, run_at=now)
+    op2 = OperationRetry(operation=operation2, run_at=now)
+    op3 = OperationRetry(operation=operation, run_at=one_second_from_now)
+
+    assert op1 < op3
+    assert op1 < op3.run_at
+    assert op2 < op3
+    assert op2 < op3.run_at
+
+    # Because these have the same values for `run_at`, neither should conclude
+    # they are less than the other. It is okay that if we checked them with
+    # greater-than evaluation, they would return True (because
+    # @functools.total_ordering flips the result from __lt__). In practice,
+    # this only arises for actual ties, and we don't care how actual ties are
+    # ordered as we maintain the sorted list of scheduled retries.
+    assert not (op1 < op2)
+    assert not (op2 < op1)
+
+
+def _get_document_reference(
+    client: base_client.BaseClient,
+    collection_name: Optional[str] = "col",
+    id: Optional[str] = None,
+) -> Type:
+    return client.collection(collection_name).document(id)

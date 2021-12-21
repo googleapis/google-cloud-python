@@ -14,23 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
 import typing
-import unittest
 
 import mock
-from google.cloud.firestore_bundle import BundleElement, FirestoreBundle
-from google.cloud.firestore_v1 import _helpers
-from google.cloud.firestore_v1.async_collection import AsyncCollectionReference
-from google.cloud.firestore_v1.base_query import BaseQuery
-from google.cloud.firestore_v1.collection import CollectionReference
-from google.cloud.firestore_v1.query import Query
-from google.cloud.firestore_v1.services.firestore.client import FirestoreClient
-from google.cloud.firestore_v1.types.document import Document
-from google.cloud.firestore_v1.types.firestore import RunQueryResponse
-from google.protobuf.timestamp_pb2 import Timestamp  # type: ignore
+import pytest
+
+from google.cloud.firestore_v1 import base_query
+from google.cloud.firestore_v1 import collection
+from google.cloud.firestore_v1 import query as query_mod
 from tests.unit.v1 import _test_helpers
-from tests.unit.v1 import test__helpers
 
 
 class _CollectionQueryMixin:
@@ -59,13 +51,18 @@ class _CollectionQueryMixin:
         self,
         document_ids: typing.Optional[typing.List[str]] = None,
         data: typing.Optional[typing.List[typing.Dict]] = None,
-    ) -> CollectionReference:
+    ) -> collection.CollectionReference:
         """Builder of a mocked Query for the sake of testing Bundles.
 
         Bundling queries involves loading the actual documents for cold storage,
         and this method arranges all of the necessary mocks so that unit tests
         can think they are evaluating a live query.
         """
+        from google.cloud.firestore_v1 import _helpers
+        from google.cloud.firestore_v1.types.document import Document
+        from google.cloud.firestore_v1.types.firestore import RunQueryResponse
+        from google.protobuf.timestamp_pb2 import Timestamp  # type: ignore
+
         client = self.get_client()
         template = client._database_string + "/documents/col/{}"
         document_ids = document_ids or ["doc-1", "doc-2"]
@@ -100,13 +97,13 @@ class _CollectionQueryMixin:
         self,
         document_ids: typing.Optional[typing.List[str]] = None,
         data: typing.Optional[typing.List[typing.Dict]] = None,
-    ) -> BaseQuery:
+    ) -> base_query.BaseQuery:
         return self._bundled_collection_helper(
             document_ids=document_ids, data=data,
         )._query()
 
 
-class TestBundle(_CollectionQueryMixin, unittest.TestCase):
+class TestBundle(_CollectionQueryMixin):
     @staticmethod
     def build_results_iterable(items):
         return iter(items)
@@ -117,19 +114,26 @@ class TestBundle(_CollectionQueryMixin, unittest.TestCase):
 
     @staticmethod
     def get_internal_client_mock():
-        return mock.create_autospec(FirestoreClient)
+        from google.cloud.firestore_v1.services.firestore import client
+
+        return mock.create_autospec(client.FirestoreClient)
 
     @classmethod
     def get_collection_class(cls):
-        return CollectionReference
+        return collection.CollectionReference
 
     def test_add_document(self):
+        from google.cloud.firestore_bundle import FirestoreBundle
+
         bundle = FirestoreBundle("test")
         doc = _test_helpers.build_document_snapshot(client=_test_helpers.make_client())
         bundle.add_document(doc)
-        self.assertEqual(bundle.documents[self.doc_key].snapshot, doc)
+        assert bundle.documents[self.doc_key].snapshot == doc
 
     def test_add_newer_document(self):
+        from google.protobuf.timestamp_pb2 import Timestamp  # type: ignore
+        from google.cloud.firestore_bundle import FirestoreBundle
+
         bundle = FirestoreBundle("test")
         old_doc = _test_helpers.build_document_snapshot(
             data={"version": 1},
@@ -137,7 +141,7 @@ class TestBundle(_CollectionQueryMixin, unittest.TestCase):
             read_time=Timestamp(seconds=1, nanos=1),
         )
         bundle.add_document(old_doc)
-        self.assertEqual(bundle.documents[self.doc_key].snapshot._data["version"], 1)
+        assert bundle.documents[self.doc_key].snapshot._data["version"] == 1
 
         # Builds the same ID by default
         new_doc = _test_helpers.build_document_snapshot(
@@ -146,9 +150,12 @@ class TestBundle(_CollectionQueryMixin, unittest.TestCase):
             read_time=Timestamp(seconds=1, nanos=2),
         )
         bundle.add_document(new_doc)
-        self.assertEqual(bundle.documents[self.doc_key].snapshot._data["version"], 2)
+        assert bundle.documents[self.doc_key].snapshot._data["version"] == 2
 
     def test_add_older_document(self):
+        from google.protobuf.timestamp_pb2 import Timestamp  # type: ignore
+        from google.cloud.firestore_bundle import FirestoreBundle
+
         bundle = FirestoreBundle("test")
         new_doc = _test_helpers.build_document_snapshot(
             data={"version": 2},
@@ -156,7 +163,7 @@ class TestBundle(_CollectionQueryMixin, unittest.TestCase):
             read_time=Timestamp(seconds=1, nanos=2),
         )
         bundle.add_document(new_doc)
-        self.assertEqual(bundle.documents[self.doc_key].snapshot._data["version"], 2)
+        assert bundle.documents[self.doc_key].snapshot._data["version"] == 2
 
         # Builds the same ID by default
         old_doc = _test_helpers.build_document_snapshot(
@@ -165,9 +172,11 @@ class TestBundle(_CollectionQueryMixin, unittest.TestCase):
             read_time=Timestamp(seconds=1, nanos=1),
         )
         bundle.add_document(old_doc)
-        self.assertEqual(bundle.documents[self.doc_key].snapshot._data["version"], 2)
+        assert bundle.documents[self.doc_key].snapshot._data["version"] == 2
 
     def test_add_document_with_different_read_times(self):
+        from google.cloud.firestore_bundle import FirestoreBundle
+
         bundle = FirestoreBundle("test")
         doc = _test_helpers.build_document_snapshot(
             client=_test_helpers.make_client(),
@@ -183,147 +192,176 @@ class TestBundle(_CollectionQueryMixin, unittest.TestCase):
         )
 
         bundle.add_document(doc)
-        self.assertEqual(
-            bundle.documents[self.doc_key].snapshot._data, {"version": 1},
-        )
+        assert bundle.documents[self.doc_key].snapshot._data == {"version": 1}
         bundle.add_document(doc_refreshed)
-        self.assertEqual(
-            bundle.documents[self.doc_key].snapshot._data, {"version": 2},
-        )
+        assert bundle.documents[self.doc_key].snapshot._data == {"version": 2}
 
     def test_add_query(self):
+        from google.cloud.firestore_bundle import FirestoreBundle
+
         query = self._bundled_query_helper()
         bundle = FirestoreBundle("test")
         bundle.add_named_query("asdf", query)
-        self.assertIsNotNone(bundle.named_queries.get("asdf"))
-        self.assertIsNotNone(
+        assert bundle.named_queries.get("asdf") is not None
+        assert (
             bundle.documents[
                 "projects/project-project/databases/(default)/documents/col/doc-1"
             ]
+            is not None
         )
-        self.assertIsNotNone(
+        assert (
             bundle.documents[
                 "projects/project-project/databases/(default)/documents/col/doc-2"
             ]
+            is not None
         )
 
     def test_add_query_twice(self):
+        from google.cloud.firestore_bundle import FirestoreBundle
+
         query = self._bundled_query_helper()
         bundle = FirestoreBundle("test")
         bundle.add_named_query("asdf", query)
-        self.assertRaises(ValueError, bundle.add_named_query, "asdf", query)
+        with pytest.raises(ValueError):
+            bundle.add_named_query("asdf", query)
 
     def test_adding_collection_raises_error(self):
+        from google.cloud.firestore_bundle import FirestoreBundle
+
         col = self._bundled_collection_helper()
         bundle = FirestoreBundle("test")
-        self.assertRaises(ValueError, bundle.add_named_query, "asdf", col)
+        with pytest.raises(ValueError):
+            bundle.add_named_query("asdf", col)
 
     def test_bundle_build(self):
+        from google.cloud.firestore_bundle import FirestoreBundle
+
         bundle = FirestoreBundle("test")
         bundle.add_named_query("best name", self._bundled_query_helper())
-        self.assertIsInstance(bundle.build(), str)
+        assert isinstance(bundle.build(), str)
 
     def test_get_documents(self):
+        from google.cloud.firestore_v1 import _helpers
+        from google.cloud.firestore_bundle import FirestoreBundle
+
         bundle = FirestoreBundle("test")
-        query: Query = self._bundled_query_helper()  # type: ignore
+        query: query_mod.Query = self._bundled_query_helper()  # type: ignore
         bundle.add_named_query("sweet query", query)
         docs_iter = _helpers._get_documents_from_bundle(
             bundle, query_name="sweet query"
         )
         doc = next(docs_iter)
-        self.assertEqual(doc.id, "doc-1")
+        assert doc.id == "doc-1"
         doc = next(docs_iter)
-        self.assertEqual(doc.id, "doc-2")
+        assert doc.id == "doc-2"
 
         # Now an empty one
         docs_iter = _helpers._get_documents_from_bundle(
             bundle, query_name="wrong query"
         )
         doc = next(docs_iter, None)
-        self.assertIsNone(doc)
+        assert doc is None
 
     def test_get_documents_two_queries(self):
+        from google.cloud.firestore_bundle import FirestoreBundle
+        from google.cloud.firestore_v1 import _helpers
+
         bundle = FirestoreBundle("test")
-        query: Query = self._bundled_query_helper()  # type: ignore
+        query: query_mod.Query = self._bundled_query_helper()  # type: ignore
         bundle.add_named_query("sweet query", query)
 
-        query: Query = self._bundled_query_helper(document_ids=["doc-3", "doc-4"])  # type: ignore
+        query: query_mod.Query = self._bundled_query_helper(document_ids=["doc-3", "doc-4"])  # type: ignore
         bundle.add_named_query("second query", query)
 
         docs_iter = _helpers._get_documents_from_bundle(
             bundle, query_name="sweet query"
         )
         doc = next(docs_iter)
-        self.assertEqual(doc.id, "doc-1")
+        assert doc.id == "doc-1"
         doc = next(docs_iter)
-        self.assertEqual(doc.id, "doc-2")
+        assert doc.id == "doc-2"
 
         docs_iter = _helpers._get_documents_from_bundle(
             bundle, query_name="second query"
         )
         doc = next(docs_iter)
-        self.assertEqual(doc.id, "doc-3")
+        assert doc.id == "doc-3"
         doc = next(docs_iter)
-        self.assertEqual(doc.id, "doc-4")
+        assert doc.id == "doc-4"
 
     def test_get_document(self):
+        from google.cloud.firestore_bundle import FirestoreBundle
+        from google.cloud.firestore_v1 import _helpers
+
         bundle = FirestoreBundle("test")
-        query: Query = self._bundled_query_helper()  # type: ignore
+        query: query_mod.Query = self._bundled_query_helper()  # type: ignore
         bundle.add_named_query("sweet query", query)
 
-        self.assertIsNotNone(
+        assert (
             _helpers._get_document_from_bundle(
                 bundle,
                 document_id="projects/project-project/databases/(default)/documents/col/doc-1",
-            ),
+            )
+            is not None
         )
 
-        self.assertIsNone(
+        assert (
             _helpers._get_document_from_bundle(
                 bundle,
                 document_id="projects/project-project/databases/(default)/documents/col/doc-0",
-            ),
+            )
+            is None
         )
 
 
-class TestAsyncBundle(_CollectionQueryMixin, unittest.TestCase):
+class TestAsyncBundle(_CollectionQueryMixin):
     @staticmethod
     def get_client():
         return _test_helpers.make_async_client()
 
     @staticmethod
     def build_results_iterable(items):
+        from tests.unit.v1 import test__helpers
+
         return test__helpers.AsyncIter(items)
 
     @staticmethod
     def get_internal_client_mock():
+        from tests.unit.v1 import test__helpers
+
         return test__helpers.AsyncMock(spec=["run_query"])
 
     @classmethod
     def get_collection_class(cls):
-        return AsyncCollectionReference
+        from google.cloud.firestore_v1 import async_collection
+
+        return async_collection.AsyncCollectionReference
 
     def test_async_query(self):
         # Create an async query, but this test does not need to be
         # marked as async by pytest because `bundle.add_named_query()`
         # seemlessly handles accepting async iterables.
+        from google.cloud.firestore_bundle import FirestoreBundle
+
         async_query = self._bundled_query_helper()
         bundle = FirestoreBundle("test")
         bundle.add_named_query("asdf", async_query)
-        self.assertIsNotNone(bundle.named_queries.get("asdf"))
-        self.assertIsNotNone(
+        assert bundle.named_queries.get("asdf") is not None
+        assert (
             bundle.documents[
                 "projects/project-project/databases/(default)/documents/col/doc-1"
             ]
+            is not None
         )
-        self.assertIsNotNone(
+        assert (
             bundle.documents[
                 "projects/project-project/databases/(default)/documents/col/doc-2"
             ]
+            is not None
         )
 
 
-class TestBundleBuilder(_CollectionQueryMixin, unittest.TestCase):
+class TestBundleBuilder(_CollectionQueryMixin):
     @staticmethod
     def build_results_iterable(items):
         return iter(items)
@@ -334,22 +372,30 @@ class TestBundleBuilder(_CollectionQueryMixin, unittest.TestCase):
 
     @staticmethod
     def get_internal_client_mock():
-        return mock.create_autospec(FirestoreClient)
+        from google.cloud.firestore_v1.services.firestore import client
+
+        return mock.create_autospec(client.FirestoreClient)
 
     @classmethod
     def get_collection_class(cls):
-        return CollectionReference
+        return collection.CollectionReference
 
     def test_build_round_trip(self):
+        from google.cloud.firestore_bundle import FirestoreBundle
+        from google.cloud.firestore_v1 import _helpers
+
         query = self._bundled_query_helper()
         bundle = FirestoreBundle("test")
         bundle.add_named_query("asdf", query)
         serialized = bundle.build()
-        self.assertEqual(
-            serialized, _helpers.deserialize_bundle(serialized, query._client).build(),
+        assert (
+            serialized == _helpers.deserialize_bundle(serialized, query._client).build()
         )
 
     def test_build_round_trip_emojis(self):
+        from google.cloud.firestore_bundle import FirestoreBundle
+        from google.cloud.firestore_v1 import _helpers
+
         smile = "😂"
         mermaid = "🧜🏿‍♀️"
         query = self._bundled_query_helper(
@@ -360,23 +406,24 @@ class TestBundleBuilder(_CollectionQueryMixin, unittest.TestCase):
         serialized = bundle.build()
         reserialized_bundle = _helpers.deserialize_bundle(serialized, query._client)
 
-        self.assertEqual(
+        assert (
             bundle.documents[
                 "projects/project-project/databases/(default)/documents/col/doc-1"
-            ].snapshot._data["smile"],
-            smile,
+            ].snapshot._data["smile"]
+            == smile
         )
-        self.assertEqual(
+        assert (
             bundle.documents[
                 "projects/project-project/databases/(default)/documents/col/doc-2"
-            ].snapshot._data["compound"],
-            mermaid,
+            ].snapshot._data["compound"]
+            == mermaid
         )
-        self.assertEqual(
-            serialized, reserialized_bundle.build(),
-        )
+        assert serialized == reserialized_bundle.build()
 
     def test_build_round_trip_more_unicode(self):
+        from google.cloud.firestore_bundle import FirestoreBundle
+        from google.cloud.firestore_v1 import _helpers
+
         bano = "baño"
         chinese_characters = "殷周金文集成引得"
         query = self._bundled_query_helper(
@@ -387,23 +434,25 @@ class TestBundleBuilder(_CollectionQueryMixin, unittest.TestCase):
         serialized = bundle.build()
         reserialized_bundle = _helpers.deserialize_bundle(serialized, query._client)
 
-        self.assertEqual(
+        assert (
             bundle.documents[
                 "projects/project-project/databases/(default)/documents/col/doc-1"
-            ].snapshot._data["bano"],
-            bano,
+            ].snapshot._data["bano"]
+            == bano
         )
-        self.assertEqual(
+        assert (
             bundle.documents[
                 "projects/project-project/databases/(default)/documents/col/doc-2"
-            ].snapshot._data["international"],
-            chinese_characters,
+            ].snapshot._data["international"]
+            == chinese_characters
         )
-        self.assertEqual(
-            serialized, reserialized_bundle.build(),
-        )
+        assert serialized == reserialized_bundle.build()
 
     def test_roundtrip_binary_data(self):
+        import sys
+        from google.cloud.firestore_bundle import FirestoreBundle
+        from google.cloud.firestore_v1 import _helpers
+
         query = self._bundled_query_helper(data=[{"binary_data": b"\x0f"}],)
         bundle = FirestoreBundle("test")
         bundle.add_named_query("asdf", query)
@@ -411,8 +460,8 @@ class TestBundleBuilder(_CollectionQueryMixin, unittest.TestCase):
         reserialized_bundle = _helpers.deserialize_bundle(serialized, query._client)
         gen = _helpers._get_documents_from_bundle(reserialized_bundle)
         snapshot = next(gen)
-        self.assertEqual(
-            int.from_bytes(snapshot._data["binary_data"], byteorder=sys.byteorder), 15,
+        assert (
+            int.from_bytes(snapshot._data["binary_data"], byteorder=sys.byteorder) == 15
         )
 
     def test_deserialize_from_seconds_nanos(self):
@@ -420,6 +469,7 @@ class TestBundleBuilder(_CollectionQueryMixin, unittest.TestCase):
         '{"seconds": 123, "nanos": 456}', instead of an ISO-formatted string.
         This tests deserialization from that format."""
         from google.protobuf.json_format import ParseError
+        from google.cloud.firestore_v1 import _helpers
 
         client = _test_helpers.make_client(project_name="fir-bundles-test")
 
@@ -441,13 +491,13 @@ class TestBundleBuilder(_CollectionQueryMixin, unittest.TestCase):
             + '"updateTime":{"seconds":"1615492486","nanos":34157000}}}'
         )
 
-        self.assertRaises(
-            (ValueError, ParseError),  # protobuf 3.18.0 raises ParseError
-            _helpers.deserialize_bundle,
-            _serialized,
-            client=client,
-        )
+        with pytest.raises(
+            (ValueError, ParseError)
+        ):  # protobuf 3.18.0 raises ParseError
+            _helpers.deserialize_bundle(_serialized, client=client)
 
+        # See https://github.com/googleapis/python-firestore/issues/505
+        #
         # The following assertions would test deserialization of NodeJS bundles
         # were explicit handling of that edge case to be added.
 
@@ -458,50 +508,56 @@ class TestBundleBuilder(_CollectionQueryMixin, unittest.TestCase):
         # instead of seconds/nanos.
         # re_serialized = bundle.build()
         # # Finally, confirm the round trip.
-        # self.assertEqual(
-        #     re_serialized,
-        #     _helpers.deserialize_bundle(re_serialized, client=client).build(),
-        # )
+        # assert re_serialized == _helpers.deserialize_bundle(re_serialized, client=client).build()
+        #
 
     def test_deserialized_bundle_cached_metadata(self):
+        from google.cloud.firestore_bundle import FirestoreBundle
+        from google.cloud.firestore_v1 import _helpers
+
         query = self._bundled_query_helper()
         bundle = FirestoreBundle("test")
         bundle.add_named_query("asdf", query)
         bundle_copy = _helpers.deserialize_bundle(bundle.build(), query._client)
-        self.assertIsInstance(bundle_copy, FirestoreBundle)
-        self.assertIsNotNone(bundle_copy._deserialized_metadata)
+        assert isinstance(bundle_copy, FirestoreBundle)
+        assert bundle_copy._deserialized_metadata is not None
         bundle_copy.add_named_query("second query", query)
-        self.assertIsNone(bundle_copy._deserialized_metadata)
+        assert bundle_copy._deserialized_metadata is None
 
     @mock.patch("google.cloud.firestore_v1._helpers._parse_bundle_elements_data")
     def test_invalid_json(self, fnc):
+        from google.cloud.firestore_v1 import _helpers
+
         client = _test_helpers.make_client()
         fnc.return_value = iter([{}])
-        self.assertRaises(
-            ValueError, _helpers.deserialize_bundle, "does not matter", client,
-        )
+        with pytest.raises(ValueError):
+            _helpers.deserialize_bundle("does not matter", client)
 
     @mock.patch("google.cloud.firestore_v1._helpers._parse_bundle_elements_data")
     def test_not_metadata_first(self, fnc):
+        from google.cloud.firestore_v1 import _helpers
+
         client = _test_helpers.make_client()
         fnc.return_value = iter([{"document": {}}])
-        self.assertRaises(
-            ValueError, _helpers.deserialize_bundle, "does not matter", client,
-        )
+        with pytest.raises(ValueError):
+            _helpers.deserialize_bundle("does not matter", client)
 
     @mock.patch("google.cloud.firestore_bundle.FirestoreBundle._add_bundle_element")
     @mock.patch("google.cloud.firestore_v1._helpers._parse_bundle_elements_data")
     def test_unexpected_termination(self, fnc, _):
+        from google.cloud.firestore_v1 import _helpers
+
         client = _test_helpers.make_client()
         # invalid bc `document_metadata` must be followed by a `document`
         fnc.return_value = [{"metadata": {"id": "asdf"}}, {"documentMetadata": {}}]
-        self.assertRaises(
-            ValueError, _helpers.deserialize_bundle, "does not matter", client,
-        )
+        with pytest.raises(ValueError):
+            _helpers.deserialize_bundle("does not matter", client)
 
     @mock.patch("google.cloud.firestore_bundle.FirestoreBundle._add_bundle_element")
     @mock.patch("google.cloud.firestore_v1._helpers._parse_bundle_elements_data")
     def test_valid_passes(self, fnc, _):
+        from google.cloud.firestore_v1 import _helpers
+
         client = _test_helpers.make_client()
         fnc.return_value = [
             {"metadata": {"id": "asdf"}},
@@ -513,46 +569,48 @@ class TestBundleBuilder(_CollectionQueryMixin, unittest.TestCase):
     @mock.patch("google.cloud.firestore_bundle.FirestoreBundle._add_bundle_element")
     @mock.patch("google.cloud.firestore_v1._helpers._parse_bundle_elements_data")
     def test_invalid_bundle(self, fnc, _):
+        from google.cloud.firestore_v1 import _helpers
+
         client = _test_helpers.make_client()
         # invalid bc `document` must follow `document_metadata`
         fnc.return_value = [{"metadata": {"id": "asdf"}}, {"document": {}}]
-        self.assertRaises(
-            ValueError, _helpers.deserialize_bundle, "does not matter", client,
-        )
+        with pytest.raises(ValueError):
+            _helpers.deserialize_bundle("does not matter", client)
 
     @mock.patch("google.cloud.firestore_bundle.FirestoreBundle._add_bundle_element")
     @mock.patch("google.cloud.firestore_v1._helpers._parse_bundle_elements_data")
     def test_invalid_bundle_element_type(self, fnc, _):
+        from google.cloud.firestore_v1 import _helpers
+
         client = _test_helpers.make_client()
         # invalid bc `wtfisthis?` is obviously invalid
         fnc.return_value = [{"metadata": {"id": "asdf"}}, {"wtfisthis?": {}}]
-        self.assertRaises(
-            ValueError, _helpers.deserialize_bundle, "does not matter", client,
-        )
+        with pytest.raises(ValueError):
+            _helpers.deserialize_bundle("does not matter", client)
 
     @mock.patch("google.cloud.firestore_bundle.FirestoreBundle._add_bundle_element")
     @mock.patch("google.cloud.firestore_v1._helpers._parse_bundle_elements_data")
     def test_invalid_bundle_start(self, fnc, _):
+        from google.cloud.firestore_v1 import _helpers
+
         client = _test_helpers.make_client()
         # invalid bc first element must be of key `metadata`
         fnc.return_value = [{"document": {}}]
-        self.assertRaises(
-            ValueError, _helpers.deserialize_bundle, "does not matter", client,
-        )
+        with pytest.raises(ValueError):
+            _helpers.deserialize_bundle("does not matter", client)
 
     def test_not_actually_a_bundle_at_all(self):
+        from google.cloud.firestore_v1 import _helpers
+
         client = _test_helpers.make_client()
-        self.assertRaises(
-            ValueError, _helpers.deserialize_bundle, "{}", client,
-        )
+        with pytest.raises(ValueError):
+            _helpers.deserialize_bundle("{}", client)
 
     def test_add_invalid_bundle_element_type(self):
+        from google.cloud.firestore_bundle import FirestoreBundle
+        from google.cloud.firestore_bundle import BundleElement
+
         client = _test_helpers.make_client()
         bundle = FirestoreBundle("asdf")
-        self.assertRaises(
-            ValueError,
-            bundle._add_bundle_element,
-            BundleElement(),
-            client=client,
-            type="asdf",
-        )
+        with pytest.raises(ValueError):
+            bundle._add_bundle_element(BundleElement(), client=client, type="asdf")
