@@ -199,9 +199,7 @@ class BigtableInstanceAdminAsyncClient:
         parent: str = None,
         instance_id: str = None,
         instance: gba_instance.Instance = None,
-        clusters: Sequence[
-            bigtable_instance_admin.CreateInstanceRequest.ClustersEntry
-        ] = None,
+        clusters: Dict[str, gba_instance.Cluster] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -235,7 +233,7 @@ class BigtableInstanceAdminAsyncClient:
                 This corresponds to the ``instance`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            clusters (:class:`Sequence[google.cloud.bigtable_admin_v2.types.CreateInstanceRequest.ClustersEntry]`):
+            clusters (Dict[str, gba_instance.Cluster]):
                 Required. The clusters to be created within the
                 instance, mapped by desired cluster ID, e.g., just
                 ``mycluster`` rather than
