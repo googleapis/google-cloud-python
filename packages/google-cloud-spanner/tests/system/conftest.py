@@ -93,7 +93,11 @@ def instance_config(instance_configs):
     if not instance_configs:
         raise ValueError("No instance configs found.")
 
-    yield instance_configs[0]
+    us_west1_config = [
+        config for config in instance_configs if config.display_name == "us-west1"
+    ]
+    config = us_west1_config[0] if len(us_west1_config) > 0 else instance_configs[0]
+    yield config
 
 
 @pytest.fixture(scope="session")

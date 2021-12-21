@@ -198,9 +198,9 @@ def list_backup_operations(instance_id, database_id):
 
     # List the CreateBackup operations.
     filter_ = (
-        "(metadata.database:{}) AND "
         "(metadata.@type:type.googleapis.com/"
-        "google.spanner.admin.database.v1.CreateBackupMetadata)"
+        "google.spanner.admin.database.v1.CreateBackupMetadata) "
+        "AND (metadata.database:{})"
     ).format(database_id)
     operations = instance.list_backup_operations(filter_=filter_)
     for op in operations:
