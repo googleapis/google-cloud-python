@@ -119,9 +119,11 @@ client = Table(
     spanner_interleave_in="team",
     spanner_interleave_on_delete_cascade=True,
 )
+client.add_is_dependent_on(team)
 
 client.create(engine)
 ```
+**Note**: Interleaved tables have a dependency between them, so the parent table must be created before the child table. When creating tables with this feature, make sure to call `add_is_dependent_on()` on the child table to request SQLAlchemy to create the parent table before the child table.
 
 ### Unique constraints  
 Cloud Spanner doesn't support direct UNIQUE constraints creation. In order to achieve column values uniqueness UNIQUE indexes should be used.
