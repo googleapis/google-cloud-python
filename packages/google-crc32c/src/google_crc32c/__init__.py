@@ -25,7 +25,7 @@ try:
     from google_crc32c import cext as impl
     implementation = "c"
 except ImportError as exc:
-    from google_crc32c import python as impl
+    from google_crc32c import python as impl  # type: ignore
     warnings.warn(_SLOW_CRC32C_WARNING, RuntimeWarning)
     implementation = "python"
 

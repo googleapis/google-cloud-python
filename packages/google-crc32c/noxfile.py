@@ -47,3 +47,15 @@ def check(session):
     # Run py.test against the unit tests.
     session.run("py.test", "tests")
     session.run("python", f"{HERE}/scripts/check_crc32c_extension.py", *session.posargs)
+
+
+@nox.session(python="3.6")
+def mypy(session):
+    """Verify type hints are mypy compatible."""
+    session.install("-e", ".")
+    session.install(
+        "mypy",
+        "types-mock",
+        "types-setuptools",
+    )
+    session.run("mypy", "src/google_crc32c/", "tests/")

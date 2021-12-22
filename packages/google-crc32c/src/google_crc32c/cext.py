@@ -16,9 +16,9 @@ import struct
 
 # NOTE: ``__config__`` **must** be the first import because it (may)
 #       modify the search path used to locate shared libraries.
-import google_crc32c.__config__
-from google_crc32c._crc32c import extend
-from google_crc32c._crc32c import value
+import google_crc32c.__config__  # type: ignore
+from google_crc32c._crc32c import extend  # type: ignore
+from google_crc32c._crc32c import value  # type: ignore
 from google_crc32c._checksum import CommonChecksum
 
 

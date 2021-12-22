@@ -15,7 +15,7 @@ import functools
 import itertools
 from unittest import mock
 
-import pytest
+import pytest  # type: ignore
 
 import google_crc32c
 
