@@ -7,6 +7,22 @@ on:
 
 jobs:
 
+  mypy:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.6"
+    - name: Install nox
+      run: |
+        python -m ensurepip
+        python -m pip install nox
+    - name: Run mypy
+      run: |
+        nox -s mypy
+
   build-wheels-linux:
     name: ${{ matrix.os }}
     strategy:
