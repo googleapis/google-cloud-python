@@ -3,6 +3,7 @@
 # license that can be found in the LICENSE file.
 
 import os
+import functools
 import pathlib
 
 from google.cloud import bigquery
@@ -54,6 +55,24 @@ def project_id(bigquery_client) -> str:
 @pytest.fixture(scope="session")
 def project(project_id):
     return project_id
+
+
+@pytest.fixture
+def to_gbq(credentials, project_id):
+    import pandas_gbq
+
+    return functools.partial(
+        pandas_gbq.to_gbq, project_id=project_id, credentials=credentials
+    )
+
+
+@pytest.fixture
+def read_gbq(credentials, project_id):
+    import pandas_gbq
+
+    return functools.partial(
+        pandas_gbq.read_gbq, project_id=project_id, credentials=credentials
+    )
 
 
 @pytest.fixture()

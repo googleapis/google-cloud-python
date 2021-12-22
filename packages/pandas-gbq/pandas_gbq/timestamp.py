@@ -7,6 +7,8 @@
 Private module.
 """
 
+import pandas.api.types
+
 
 def localize_df(df, schema_fields):
     """Localize any TIMESTAMP columns to tz-aware type.
@@ -38,7 +40,11 @@ def localize_df(df, schema_fields):
         if "mode" in field and field["mode"].upper() == "REPEATED":
             continue
 
-        if field["type"].upper() == "TIMESTAMP" and df[column].dt.tz is None:
+        if (
+            field["type"].upper() == "TIMESTAMP"
+            and pandas.api.types.is_datetime64_ns_dtype(df.dtypes[column])
+            and df[column].dt.tz is None
+        ):
             df[column] = df[column].dt.tz_localize("UTC")
 
     return df

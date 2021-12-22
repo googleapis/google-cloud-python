@@ -5,7 +5,6 @@
 import datetime
 import decimal
 import collections
-import functools
 import random
 
 import db_dtypes
@@ -23,12 +22,8 @@ def api_method(request):
 
 
 @pytest.fixture
-def method_under_test(credentials, project_id):
-    import pandas_gbq
-
-    return functools.partial(
-        pandas_gbq.to_gbq, project_id=project_id, credentials=credentials
-    )
+def method_under_test(to_gbq):
+    return to_gbq
 
 
 SeriesRoundTripTestCase = collections.namedtuple(
@@ -98,7 +93,7 @@ SeriesRoundTripTestCase = collections.namedtuple(
 def test_series_round_trip(
     method_under_test,
     random_dataset_id,
-    bigquery_client,
+    read_gbq,
     input_series,
     api_method,
     api_methods,
@@ -114,7 +109,7 @@ def test_series_round_trip(
     )
     method_under_test(df, table_id, api_method=api_method)
 
-    round_trip = bigquery_client.list_rows(table_id).to_dataframe()
+    round_trip = read_gbq(table_id)
     round_trip_series = round_trip["test_col"].sort_values().reset_index(drop=True)
     pandas.testing.assert_series_equal(
         round_trip_series, input_series, check_exact=True, check_names=False,
@@ -244,8 +239,8 @@ DATAFRAME_ROUND_TRIPS = [
 )
 def test_dataframe_round_trip_with_table_schema(
     method_under_test,
+    read_gbq,
     random_dataset_id,
-    bigquery_client,
     input_df,
     expected_df,
     table_schema,
@@ -260,8 +255,8 @@ def test_dataframe_round_trip_with_table_schema(
     method_under_test(
         input_df, table_id, table_schema=table_schema, api_method=api_method
     )
-    round_trip = bigquery_client.list_rows(table_id).to_dataframe(
-        dtypes=dict(zip(expected_df.columns, expected_df.dtypes))
+    round_trip = read_gbq(
+        table_id, dtypes=dict(zip(expected_df.columns, expected_df.dtypes)),
     )
     round_trip.sort_values("row_num", inplace=True)
     pandas.testing.assert_frame_equal(expected_df, round_trip)
