@@ -360,6 +360,11 @@
                 "delete_document"
               ]
             },
+            "ExportDocument": {
+              "methods": [
+                "export_document"
+              ]
+            },
             "GetDocument": {
               "methods": [
                 "get_document"
@@ -393,6 +398,11 @@
             "DeleteDocument": {
               "methods": [
                 "delete_document"
+              ]
+            },
+            "ExportDocument": {
+              "methods": [
+                "export_document"
               ]
             },
             "GetDocument": {

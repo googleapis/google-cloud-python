@@ -90,6 +90,7 @@ from .document import (
     CreateDocumentRequest,
     DeleteDocumentRequest,
     Document,
+    ExportDocumentRequest,
     GetDocumentRequest,
     KnowledgeOperationMetadata,
     ListDocumentsRequest,
@@ -130,6 +131,7 @@ from .fulfillment import (
     GetFulfillmentRequest,
     UpdateFulfillmentRequest,
 )
+from .gcs import GcsDestination
 from .human_agent_assistant_event import HumanAgentAssistantEvent
 from .intent import (
     BatchDeleteIntentsRequest,
@@ -286,6 +288,7 @@ __all__ = (
     "CreateDocumentRequest",
     "DeleteDocumentRequest",
     "Document",
+    "ExportDocumentRequest",
     "GetDocumentRequest",
     "KnowledgeOperationMetadata",
     "ListDocumentsRequest",
@@ -319,6 +322,7 @@ __all__ = (
     "Fulfillment",
     "GetFulfillmentRequest",
     "UpdateFulfillmentRequest",
+    "GcsDestination",
     "HumanAgentAssistantEvent",
     "BatchDeleteIntentsRequest",
     "BatchUpdateIntentsRequest",

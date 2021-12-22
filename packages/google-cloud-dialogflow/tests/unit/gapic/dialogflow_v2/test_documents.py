@@ -40,6 +40,7 @@ from google.cloud.dialogflow_v2.services.documents import pagers
 from google.cloud.dialogflow_v2.services.documents import transports
 from google.cloud.dialogflow_v2.types import document
 from google.cloud.dialogflow_v2.types import document as gcd_document
+from google.cloud.dialogflow_v2.types import gcs
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
@@ -1862,6 +1863,136 @@ async def test_reload_document_flattened_error_async():
         )
 
 
+def test_export_document(
+    transport: str = "grpc", request_type=document.ExportDocumentRequest
+):
+    client = DocumentsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.export_document), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.export_document(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document.ExportDocumentRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_export_document_from_dict():
+    test_export_document(request_type=dict)
+
+
+def test_export_document_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.export_document), "__call__") as call:
+        client.export_document()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document.ExportDocumentRequest()
+
+
+@pytest.mark.asyncio
+async def test_export_document_async(
+    transport: str = "grpc_asyncio", request_type=document.ExportDocumentRequest
+):
+    client = DocumentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.export_document), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.export_document(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document.ExportDocumentRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_export_document_async_from_dict():
+    await test_export_document_async(request_type=dict)
+
+
+def test_export_document_field_headers():
+    client = DocumentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = document.ExportDocumentRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.export_document), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.export_document(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_export_document_field_headers_async():
+    client = DocumentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = document.ExportDocumentRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.export_document), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.export_document(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.DocumentsGrpcTransport(
@@ -1962,6 +2093,7 @@ def test_documents_base_transport():
         "delete_document",
         "update_document",
         "reload_document",
+        "export_document",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):

@@ -145,6 +145,9 @@ class DocumentsTransport(abc.ABC):
             self.reload_document: gapic_v1.method.wrap_method(
                 self.reload_document, default_timeout=None, client_info=client_info,
             ),
+            self.export_document: gapic_v1.method.wrap_method(
+                self.export_document, default_timeout=None, client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -213,6 +216,15 @@ class DocumentsTransport(abc.ABC):
         self,
     ) -> Callable[
         [document.ReloadDocumentRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def export_document(
+        self,
+    ) -> Callable[
+        [document.ExportDocumentRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

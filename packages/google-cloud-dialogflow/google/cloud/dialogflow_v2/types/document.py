@@ -15,6 +15,7 @@
 #
 import proto  # type: ignore
 
+from google.cloud.dialogflow_v2.types import gcs
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
@@ -31,6 +32,7 @@ __protobuf__ = proto.module(
         "DeleteDocumentRequest",
         "UpdateDocumentRequest",
         "ReloadDocumentRequest",
+        "ExportDocumentRequest",
         "KnowledgeOperationMetadata",
     },
 )
@@ -180,11 +182,36 @@ class ListDocumentsRequest(proto.Message):
         page_token (str):
             The next_page_token value returned from a previous list
             request.
+        filter (str):
+            The filter expression used to filter documents returned by
+            the list method. The expression has the following syntax:
+
+             [AND ] ...
+
+            The following fields and operators are supported:
+
+            -  knowledge_types with has(:) operator
+            -  display_name with has(:) operator
+            -  state with equals(=) operator
+
+            Examples:
+
+            -  "knowledge_types:FAQ" matches documents with FAQ
+               knowledge type.
+            -  "display_name:customer" matches documents whose display
+               name contains "customer".
+            -  "state=ACTIVE" matches documents with ACTIVE state.
+            -  "knowledge_types:FAQ AND state=ACTIVE" matches all active
+               FAQ documents.
+
+            For more information about filtering, see `API
+            Filtering <https://aip.dev/160>`__.
     """
 
     parent = proto.Field(proto.STRING, number=1,)
     page_size = proto.Field(proto.INT32, number=2,)
     page_token = proto.Field(proto.STRING, number=3,)
+    filter = proto.Field(proto.STRING, number=4,)
 
 
 class ListDocumentsResponse(proto.Message):
@@ -276,10 +303,52 @@ class ReloadDocumentRequest(proto.Message):
             must have the form ``gs://<bucket-name>/<object-name>``.
 
             This field is a member of `oneof`_ ``source``.
+        import_gcs_custom_metadata (bool):
+            Optional. Whether to import custom metadata
+            from Google Cloud Storage. Only valid when the
+            document source is Google Cloud Storage URI.
+        smart_messaging_partial_update (bool):
+            Optional. When enabled, the reload request is
+            to apply partial update to the smart messaging
+            allowlist.
     """
 
     name = proto.Field(proto.STRING, number=1,)
     content_uri = proto.Field(proto.STRING, number=3, oneof="source",)
+    import_gcs_custom_metadata = proto.Field(proto.BOOL, number=4,)
+    smart_messaging_partial_update = proto.Field(proto.BOOL, number=5,)
+
+
+class ExportDocumentRequest(proto.Message):
+    r"""Request message for
+    [Documents.ExportDocument][google.cloud.dialogflow.v2.Documents.ExportDocument].
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Required. The name of the document to export. Format:
+            ``projects/<Project ID>/locations/<Location ID>/knowledgeBases/<Knowledge Base ID>/documents/<Document ID>``.
+        gcs_destination (google.cloud.dialogflow_v2.types.GcsDestination):
+            Cloud Storage file path to export the
+            document.
+
+            This field is a member of `oneof`_ ``destination``.
+        export_full_content (bool):
+            When enabled, export the full content of the
+            document including empirical probability.
+        smart_messaging_partial_update (bool):
+            When enabled, export the smart messaging
+            allowlist document for partial update.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+    gcs_destination = proto.Field(
+        proto.MESSAGE, number=2, oneof="destination", message=gcs.GcsDestination,
+    )
+    export_full_content = proto.Field(proto.BOOL, number=3,)
+    smart_messaging_partial_update = proto.Field(proto.BOOL, number=5,)
 
 
 class KnowledgeOperationMetadata(proto.Message):

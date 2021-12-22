@@ -109,6 +109,7 @@ from .types.conversation_profile import UpdateConversationProfileRequest
 from .types.document import CreateDocumentRequest
 from .types.document import DeleteDocumentRequest
 from .types.document import Document
+from .types.document import ExportDocumentRequest
 from .types.document import GetDocumentRequest
 from .types.document import KnowledgeOperationMetadata
 from .types.document import ListDocumentsRequest
@@ -142,6 +143,7 @@ from .types.environment import UpdateEnvironmentRequest
 from .types.fulfillment import Fulfillment
 from .types.fulfillment import GetFulfillmentRequest
 from .types.fulfillment import UpdateFulfillmentRequest
+from .types.gcs import GcsDestination
 from .types.human_agent_assistant_event import HumanAgentAssistantEvent
 from .types.intent import BatchDeleteIntentsRequest
 from .types.intent import BatchUpdateIntentsRequest
@@ -302,9 +304,11 @@ __all__ = (
     "EventInput",
     "ExportAgentRequest",
     "ExportAgentResponse",
+    "ExportDocumentRequest",
     "FaqAnswer",
     "Fulfillment",
     "FulfillmentsClient",
+    "GcsDestination",
     "GetAgentRequest",
     "GetContextRequest",
     "GetConversationProfileRequest",

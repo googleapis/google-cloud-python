@@ -445,6 +445,42 @@ class DocumentsGrpcTransport(DocumentsTransport):
             )
         return self._stubs["reload_document"]
 
+    @property
+    def export_document(
+        self,
+    ) -> Callable[[document.ExportDocumentRequest], operations_pb2.Operation]:
+        r"""Return a callable for the export document method over gRPC.
+
+        Exports a smart messaging candidate document into the specified
+        destination.
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``:
+           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
+        -  ``response``: [Document][google.cloud.dialogflow.v2.Document]
+
+        Returns:
+            Callable[[~.ExportDocumentRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "export_document" not in self._stubs:
+            self._stubs["export_document"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.v2.Documents/ExportDocument",
+                request_serializer=document.ExportDocumentRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["export_document"]
+
     def close(self):
         self.grpc_channel.close()
 
