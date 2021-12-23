@@ -393,12 +393,14 @@ class TestResumableUpload(object):
         upload._total_bytes = 8192
         assert upload.total_bytes == 8192
 
-    def _prepare_initiate_request_helper(self, upload_headers=None, **method_kwargs):
+    def _prepare_initiate_request_helper(
+        self, upload_url=RESUMABLE_URL, upload_headers=None, **method_kwargs
+    ):
         data = b"some really big big data."
         stream = io.BytesIO(data)
         metadata = {"name": "big-data-file.txt"}
 
-        upload = _upload.ResumableUpload(RESUMABLE_URL, ONE_MB, headers=upload_headers)
+        upload = _upload.ResumableUpload(upload_url, ONE_MB, headers=upload_headers)
         orig_headers = upload._headers.copy()
         # Check ``upload``-s state before.
         assert upload._stream is None
@@ -434,6 +436,21 @@ class TestResumableUpload(object):
             "x-upload-content-type": BASIC_CONTENT,
         }
         assert headers == expected_headers
+
+    def test_prepare_initiate_request_with_signed_url(self):
+        signed_urls = [
+            "https://storage.googleapis.com/b/o?x-goog-signature=123abc",
+            "https://storage.googleapis.com/b/o?X-Goog-Signature=123abc",
+        ]
+        for signed_url in signed_urls:
+            data, headers = self._prepare_initiate_request_helper(
+                upload_url=signed_url,
+            )
+            expected_headers = {
+                "content-type": BASIC_CONTENT,
+                "x-upload-content-length": "{:d}".format(len(data)),
+            }
+            assert headers == expected_headers
 
     def test__prepare_initiate_request_with_headers(self):
         headers = {"caviar": "beluga", "top": "quark"}

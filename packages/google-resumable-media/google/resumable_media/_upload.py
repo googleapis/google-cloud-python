@@ -27,6 +27,7 @@ import os
 import random
 import re
 import sys
+import urllib.parse
 
 from google import resumable_media
 from google.resumable_media import _helpers
@@ -462,10 +463,17 @@ class ResumableUpload(UploadBase):
 
         self._stream = stream
         self._content_type = content_type
-        headers = {
-            _CONTENT_TYPE_HEADER: "application/json; charset=UTF-8",
-            "x-upload-content-type": content_type,
-        }
+
+        # Signed URL requires content type set directly - not through x-upload-content-type
+        parse_result = urllib.parse.urlparse(self.upload_url)
+        parsed_query = urllib.parse.parse_qs(parse_result.query)
+        if "x-goog-signature" in parsed_query or "X-Goog-Signature" in parsed_query:
+            headers = {_CONTENT_TYPE_HEADER: content_type}
+        else:
+            headers = {
+                _CONTENT_TYPE_HEADER: "application/json; charset=UTF-8",
+                "x-upload-content-type": content_type,
+            }
         # Set the total bytes if possible.
         if total_bytes is not None:
             self._total_bytes = total_bytes
