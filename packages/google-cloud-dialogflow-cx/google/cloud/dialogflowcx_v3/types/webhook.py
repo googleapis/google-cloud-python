@@ -529,6 +529,12 @@ class PageInfo(proto.Message):
             [WebhookResponse][google.cloud.dialogflow.cx.v3.WebhookResponse].
             The unique identifier of the current page. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>``.
+        display_name (str):
+            Always present for
+            [WebhookRequest][google.cloud.dialogflow.cx.v3.WebhookRequest].
+            Ignored for
+            [WebhookResponse][google.cloud.dialogflow.cx.v3.WebhookResponse].
+            The display name of the current page.
         form_info (google.cloud.dialogflowcx_v3.types.PageInfo.FormInfo):
             Optional for both
             [WebhookRequest][google.cloud.dialogflow.cx.v3.WebhookRequest]
@@ -617,6 +623,7 @@ class PageInfo(proto.Message):
         )
 
     current_page = proto.Field(proto.STRING, number=1,)
+    display_name = proto.Field(proto.STRING, number=4,)
     form_info = proto.Field(proto.MESSAGE, number=3, message=FormInfo,)
 
 
