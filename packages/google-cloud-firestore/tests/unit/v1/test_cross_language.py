@@ -226,14 +226,10 @@ def test_listen_testprotos(test_proto):  # pragma: NO COVER
 
     credentials = mock.Mock(spec=google.auth.credentials.Credentials)
     client = Client(project="project", credentials=credentials)
-    modulename = "google.cloud.firestore_v1.watch"
-    with mock.patch("%s.Watch.ResumableBidiRpc" % modulename, DummyRpc):
-        with mock.patch(
-            "%s.Watch.BackgroundConsumer" % modulename, DummyBackgroundConsumer
-        ):
-            with mock.patch(  # conformance data sets WATCH_TARGET_ID to 1
-                "%s.WATCH_TARGET_ID" % modulename, 1
-            ):
+    with mock.patch("google.cloud.firestore_v1.watch.ResumableBidiRpc"):
+        with mock.patch("google.cloud.firestore_v1.watch.BackgroundConsumer"):
+            # conformance data sets WATCH_TARGET_ID to 1
+            with mock.patch("google.cloud.firestore_v1.watch.WATCH_TARGET_ID", 1):
                 snapshots = []
 
                 def callback(keys, applied_changes, read_time):

@@ -162,7 +162,7 @@ def _document_watch_comparator(doc1, doc2):  # pragma: NO COVER
     return 0
 
 
-def _make_watch(
+def _make_watch_no_mocks(
     snapshots=None, comparator=_document_watch_comparator,
 ):
     from google.cloud.firestore_v1.watch import Watch
@@ -184,24 +184,127 @@ def _make_watch(
         snapshot_callback=snapshot_callback,
         document_snapshot_cls=DummyDocumentSnapshot,
         document_reference_cls=DummyDocumentReference,
-        BackgroundConsumer=DummyBackgroundConsumer,
-        ResumableBidiRpc=DummyRpc,
     )
 
 
+def _make_watch(snapshots=None, comparator=_document_watch_comparator):
+    with mock.patch("google.cloud.firestore_v1.watch.ResumableBidiRpc"):
+        with mock.patch("google.cloud.firestore_v1.watch.BackgroundConsumer"):
+            return _make_watch_no_mocks(snapshots, comparator)
+
+
 def test_watch_ctor():
-    from google.cloud.firestore_v1.types import firestore
     from google.cloud.firestore_v1.watch import _should_recover
     from google.cloud.firestore_v1.watch import _should_terminate
 
-    inst = _make_watch()
-    assert inst._consumer.started
-    assert inst._rpc.callbacks, [inst._on_rpc_done]
-    assert inst._rpc.start_rpc is inst._api._transport.listen
-    assert inst._rpc.should_recover is _should_recover
-    assert inst._rpc.should_terminate is _should_terminate
-    assert isinstance(inst._rpc.initial_request, firestore.ListenRequest)
-    assert inst._rpc.metadata == DummyFirestore._rpc_metadata
+    with mock.patch("google.cloud.firestore_v1.watch.ResumableBidiRpc") as rpc:
+        with mock.patch("google.cloud.firestore_v1.watch.BackgroundConsumer") as bc:
+            inst = _make_watch_no_mocks()
+
+    assert inst._rpc is rpc.return_value
+    rpc.assert_called_once_with(
+        start_rpc=inst._api._transport.listen,
+        should_recover=_should_recover,
+        should_terminate=_should_terminate,
+        initial_request=inst._get_rpc_request,
+        metadata=DummyFirestore._rpc_metadata,
+    )
+    inst._rpc.add_done_callback.assert_called_once_with(inst._on_rpc_done)
+
+    assert inst._consumer is bc.return_value
+    inst._consumer.start.assert_called_once_with()
+
+    assert inst._documents_pfx == f"{DummyFirestore._database_string}/documents/"
+
+
+def test_watch_for_document(snapshots):
+    from google.cloud.firestore_v1.watch import Watch
+
+    def snapshot_callback(*args):  # pragma: NO COVER
+        snapshots.append(args)
+
+    docref = DummyDocumentReference()
+    snapshot_class_instance = DummyDocumentSnapshot
+    document_reference_class_instance = DummyDocumentReference
+
+    with mock.patch("google.cloud.firestore_v1.watch.ResumableBidiRpc"):
+        with mock.patch("google.cloud.firestore_v1.watch.BackgroundConsumer"):
+            inst = Watch.for_document(
+                docref,
+                snapshot_callback,
+                snapshot_class_instance,
+                document_reference_class_instance,
+            )
+
+    inst._consumer.start.assert_called_once_with()
+    inst._rpc.add_done_callback.assert_called_once_with(inst._on_rpc_done)
+
+
+def test_watch_for_query(snapshots):
+    from google.cloud.firestore_v1.watch import Watch
+
+    def snapshot_callback(*args):  # pragma: NO COVER
+        snapshots.append(args)
+
+    snapshot_class_instance = DummyDocumentSnapshot
+    document_reference_class_instance = DummyDocumentReference
+    client = DummyFirestore()
+    parent = DummyCollection(client)
+    query = DummyQuery(parent=parent)
+
+    with mock.patch("google.cloud.firestore_v1.watch.ResumableBidiRpc"):
+        with mock.patch("google.cloud.firestore_v1.watch.BackgroundConsumer"):
+            with mock.patch("google.cloud.firestore_v1.watch.Target") as target:
+                inst = Watch.for_query(
+                    query,
+                    snapshot_callback,
+                    snapshot_class_instance,
+                    document_reference_class_instance,
+                )
+
+    inst._consumer.start.assert_called_once_with()
+    inst._rpc.add_done_callback.assert_called_once_with(inst._on_rpc_done)
+    parent_path, _ = parent._parent_info()
+    target.QueryTarget.assert_called_once_with(
+        parent=parent_path, structured_query=query._to_protobuf(),
+    )
+    query_target = target.QueryTarget.return_value
+    assert inst._targets["query"] is query_target._pb
+
+
+def test_watch_for_query_nested(snapshots):
+    from google.cloud.firestore_v1.watch import Watch
+
+    def snapshot_callback(*args):  # pragma: NO COVER
+        snapshots.append(args)
+
+    snapshot_class_instance = DummyDocumentSnapshot
+    document_reference_class_instance = DummyDocumentReference
+    client = DummyFirestore()
+    root = DummyCollection(client)
+    grandparent = DummyDocument("document", parent=root)
+    parent = DummyCollection(client, parent=grandparent)
+    query = DummyQuery(parent=parent)
+
+    with mock.patch("google.cloud.firestore_v1.watch.ResumableBidiRpc"):
+        with mock.patch("google.cloud.firestore_v1.watch.BackgroundConsumer"):
+            with mock.patch("google.cloud.firestore_v1.watch.Target") as target:
+                inst = Watch.for_query(
+                    query,
+                    snapshot_callback,
+                    snapshot_class_instance,
+                    document_reference_class_instance,
+                )
+
+    inst._consumer.start.assert_called_once_with()
+    inst._rpc.add_done_callback.assert_called_once_with(inst._on_rpc_done)
+    query_target = target.QueryTarget.return_value
+    parent_path, _ = parent._parent_info()
+    target.QueryTarget.assert_called_once_with(
+        parent=parent_path, structured_query=query._to_protobuf(),
+    )
+    query_target = target.QueryTarget.return_value
+    assert inst._targets["query"] is query_target._pb
 
 
 def test_watch__on_rpc_done():
@@ -224,6 +327,34 @@ def test_watch_close():
     assert inst._closed
 
 
+def test_watch__get_rpc_request_wo_resume_token():
+    inst = _make_watch()
+
+    request = inst._get_rpc_request()
+
+    assert "resume_token" not in inst._targets
+    assert request.add_target.resume_token == b""
+
+
+def test_watch__get_rpc_request_w_resume_token():
+    inst = _make_watch()
+    token = inst.resume_token = b"DEADBEEF"
+
+    request = inst._get_rpc_request()
+
+    assert inst._targets["resume_token"] == token
+    assert request.add_target.resume_token == token
+
+
+def test_watch__set_documents_pfx():
+    inst = _make_watch()
+
+    database_str = "foo://bar/"
+    inst._set_documents_pfx(database_str)
+
+    assert inst._documents_pfx == f"{database_str}/documents/"
+
+
 def test_watch_close_already_closed():
     inst = _make_watch()
     inst._closed = True
@@ -237,98 +368,33 @@ def test_watch_close_inactive():
     old_consumer = inst._consumer
     old_consumer.is_active = False
     inst.close()
-    assert not old_consumer.stopped
+    old_consumer.stop.assert_not_called()
+
+
+def test_watch_close_w_reason_exception():
+    inst = _make_watch()
+    reason_exc = ValueError("testing")
+
+    with pytest.raises(ValueError) as exc_info:
+        inst.close(reason_exc)
+
+    assert exc_info.value is reason_exc
+
+
+def test_watch_close_w_reason_str():
+    inst = _make_watch()
+    reason = "testing"
+
+    with pytest.raises(RuntimeError) as exc_info:
+        inst.close(reason)
+
+    assert exc_info.value.args == (reason,)
 
 
 def test_watch_unsubscribe():
     inst = _make_watch()
     inst.unsubscribe()
     assert inst._rpc is None
-
-
-def test_watch_for_document(snapshots):
-    from google.cloud.firestore_v1.watch import Watch
-
-    def snapshot_callback(*args):  # pragma: NO COVER
-        snapshots.append(args)
-
-    docref = DummyDocumentReference()
-    snapshot_class_instance = DummyDocumentSnapshot
-    document_reference_class_instance = DummyDocumentReference
-    modulename = "google.cloud.firestore_v1.watch"
-
-    with mock.patch("%s.Watch.ResumableBidiRpc" % modulename, DummyRpc):
-        with mock.patch(
-            "%s.Watch.BackgroundConsumer" % modulename, DummyBackgroundConsumer
-        ):
-            inst = Watch.for_document(
-                docref,
-                snapshot_callback,
-                snapshot_class_instance,
-                document_reference_class_instance,
-            )
-    assert inst._consumer.started
-    assert inst._rpc.callbacks == [inst._on_rpc_done]
-
-
-def test_watch_for_query(snapshots):
-    from google.cloud.firestore_v1.watch import Watch
-
-    def snapshot_callback(*args):  # pragma: NO COVER
-        snapshots.append(args)
-
-    snapshot_class_instance = DummyDocumentSnapshot
-    document_reference_class_instance = DummyDocumentReference
-    client = DummyFirestore()
-    parent = DummyCollection(client)
-    modulename = "google.cloud.firestore_v1.watch"
-    pb2 = DummyPb2()
-    with mock.patch("%s.firestore" % modulename, pb2):
-        with mock.patch("%s.Watch.ResumableBidiRpc" % modulename, DummyRpc):
-            with mock.patch(
-                "%s.Watch.BackgroundConsumer" % modulename, DummyBackgroundConsumer
-            ):
-                query = DummyQuery(parent=parent)
-                inst = Watch.for_query(
-                    query,
-                    snapshot_callback,
-                    snapshot_class_instance,
-                    document_reference_class_instance,
-                )
-    assert inst._consumer.started
-    assert inst._rpc.callbacks == [inst._on_rpc_done]
-    assert inst._targets["query"] == "dummy query target"
-
-
-def test_watch_for_query_nested(snapshots):
-    from google.cloud.firestore_v1.watch import Watch
-
-    def snapshot_callback(*args):  # pragma: NO COVER
-        snapshots.append(args)
-
-    snapshot_class_instance = DummyDocumentSnapshot
-    document_reference_class_instance = DummyDocumentReference
-    client = DummyFirestore()
-    root = DummyCollection(client)
-    grandparent = DummyDocument("document", parent=root)
-    parent = DummyCollection(client, parent=grandparent)
-    modulename = "google.cloud.firestore_v1.watch"
-    pb2 = DummyPb2()
-    with mock.patch("%s.firestore" % modulename, pb2):
-        with mock.patch("%s.Watch.ResumableBidiRpc" % modulename, DummyRpc):
-            with mock.patch(
-                "%s.Watch.BackgroundConsumer" % modulename, DummyBackgroundConsumer
-            ):
-                query = DummyQuery(parent=parent)
-                inst = Watch.for_query(
-                    query,
-                    snapshot_callback,
-                    snapshot_class_instance,
-                    document_reference_class_instance,
-                )
-    assert inst._consumer.started
-    assert inst._rpc.callbacks == [inst._on_rpc_done]
-    assert inst._targets["query"] == "dummy query target"
 
 
 def test_watch_on_snapshot_target_w_none():
@@ -341,14 +407,20 @@ def test_watch_on_snapshot_target_w_none():
 
 def test_watch_on_snapshot_target_no_change_no_target_ids_not_current():
     inst = _make_watch()
-    proto = DummyProto()
+    proto = _make_listen_response()
     inst.on_snapshot(proto)  # nothing to assert, no mutations, no rtnval
 
 
 def test_watch_on_snapshot_target_no_change_no_target_ids_current():
+    import datetime
+    from proto.datetime_helpers import DatetimeWithNanoseconds
+
     inst = _make_watch()
-    proto = DummyProto()
-    proto.target_change.read_time = 1
+    proto = _make_listen_response()
+    read_time = DatetimeWithNanoseconds(
+        1970, 1, 1, 0, 0, 0, tzinfo=datetime.timezone.utc
+    )
+    proto.target_change.read_time = read_time
     inst.current = True
 
     def push(read_time, next_resume_token):
@@ -357,15 +429,15 @@ def test_watch_on_snapshot_target_no_change_no_target_ids_current():
 
     inst.push = push
     inst.on_snapshot(proto)
-    assert inst._read_time == 1
-    assert inst._next_resume_token is None
+    assert inst._read_time == read_time
+    assert inst._next_resume_token == b""
 
 
 def test_watch_on_snapshot_target_add():
     from google.cloud.firestore_v1.types import firestore
 
     inst = _make_watch()
-    proto = DummyProto()
+    proto = _make_listen_response()
     proto.target_change.target_change_type = firestore.TargetChange.TargetChangeType.ADD
     proto.target_change.target_ids = [1]  # not "Py"
 
@@ -379,7 +451,7 @@ def test_watch_on_snapshot_target_remove():
     from google.cloud.firestore_v1.types import firestore
 
     inst = _make_watch()
-    proto = DummyProto()
+    proto = _make_listen_response()
     target_change = proto.target_change
     target_change.target_change_type = firestore.TargetChange.TargetChangeType.REMOVE
 
@@ -393,7 +465,7 @@ def test_watch_on_snapshot_target_remove_nocause():
     from google.cloud.firestore_v1.types import firestore
 
     inst = _make_watch()
-    proto = DummyProto()
+    proto = _make_listen_response()
     target_change = proto.target_change
     target_change.cause = None
     target_change.target_change_type = firestore.TargetChange.TargetChangeType.REMOVE
@@ -413,7 +485,7 @@ def test_watch_on_snapshot_target_reset():
         inst._docs_reset = True
 
     inst._reset_docs = reset
-    proto = DummyProto()
+    proto = _make_listen_response()
     target_change = proto.target_change
     target_change.target_change_type = firestore.TargetChange.TargetChangeType.RESET
     inst.on_snapshot(proto)
@@ -425,7 +497,7 @@ def test_watch_on_snapshot_target_current():
 
     inst = _make_watch()
     inst.current = False
-    proto = DummyProto()
+    proto = _make_listen_response()
     target_change = proto.target_change
     target_change.target_change_type = firestore.TargetChange.TargetChangeType.CURRENT
     inst.on_snapshot(proto)
@@ -442,72 +514,64 @@ def test_watch_on_snapshot_target_unknown():
 
     assert inst._consumer is None
     assert inst._rpc is None
-    assert str(exc.value) == "Unknown target change type: unknown "
+    assert str(exc.value) == "Unknown target change type: unknown"
 
 
 def test_watch_on_snapshot_document_change_removed():
-    from google.cloud.firestore_v1.watch import WATCH_TARGET_ID, ChangeType
+    from google.cloud.firestore_v1.types.document import Document
+    from google.cloud.firestore_v1.watch import WATCH_TARGET_ID
+    from google.cloud.firestore_v1.watch import ChangeType
 
     inst = _make_watch()
-    proto = DummyProto()
-    proto.target_change = ""
+    proto = _make_listen_response()
+    proto.target_change = None
     proto.document_change.removed_target_ids = [WATCH_TARGET_ID]
+    proto.document_change.document = Document(name="fred")
 
-    class DummyDocument:
-        name = "fred"
-
-    proto.document_change.document = DummyDocument()
     inst.on_snapshot(proto)
+
     assert inst.change_map["fred"] is ChangeType.REMOVED
 
 
 def test_watch_on_snapshot_document_change_changed():
+    from google.cloud.firestore_v1.types.document import Document
     from google.cloud.firestore_v1.watch import WATCH_TARGET_ID
 
     inst = _make_watch()
 
-    proto = DummyProto()
-    proto.target_change = ""
+    proto = _make_listen_response()
+    proto.target_change = None
     proto.document_change.target_ids = [WATCH_TARGET_ID]
+    proto.document_change.document = Document(name="fred")
 
-    class DummyDocument:
-        name = "fred"
-        fields = {}
-        create_time = None
-        update_time = None
-
-    proto.document_change.document = DummyDocument()
     inst.on_snapshot(proto)
+
     assert inst.change_map["fred"].data == {}
 
 
 def test_watch_on_snapshot_document_change_changed_docname_db_prefix():
     # TODO: Verify the current behavior. The change map currently contains
     # the db-prefixed document name and not the bare document name.
+    from google.cloud.firestore_v1.types.document import Document
     from google.cloud.firestore_v1.watch import WATCH_TARGET_ID
 
     inst = _make_watch()
 
-    proto = DummyProto()
-    proto.target_change = ""
+    proto = _make_listen_response()
+    proto.target_change = None
     proto.document_change.target_ids = [WATCH_TARGET_ID]
+    proto.document_change.document = Document(name="abc://foo/documents/fred")
+    inst._set_documents_pfx("abc://foo")
 
-    class DummyDocument:
-        name = "abc://foo/documents/fred"
-        fields = {}
-        create_time = None
-        update_time = None
-
-    proto.document_change.document = DummyDocument()
-    inst._firestore._database_string = "abc://foo"
     inst.on_snapshot(proto)
+
     assert inst.change_map["abc://foo/documents/fred"].data == {}
 
 
 def test_watch_on_snapshot_document_change_neither_changed_nor_removed():
     inst = _make_watch()
-    proto = DummyProto()
-    proto.target_change = ""
+    proto = _make_listen_response()
+    proto.target_change = None
     proto.document_change.target_ids = []
 
     inst.on_snapshot(proto)
@@ -518,67 +582,55 @@ def test_watch_on_snapshot_document_removed():
     from google.cloud.firestore_v1.watch import ChangeType
 
     inst = _make_watch()
-    proto = DummyProto()
-    proto.target_change = ""
-    proto.document_change = ""
+    proto = _make_listen_response()
+    proto.target_change = None
+    proto.document_change = None
+    proto.document_remove.document = "fred"
+    proto.document_delete = None
 
-    class DummyRemove(object):
-        document = "fred"
-
-    remove = DummyRemove()
-    proto.document_remove = remove
-    proto.document_delete = ""
     inst.on_snapshot(proto)
+
     assert inst.change_map["fred"] is ChangeType.REMOVED
 
 
 def test_watch_on_snapshot_filter_update():
     inst = _make_watch()
-    proto = DummyProto()
-    proto.target_change = ""
-    proto.document_change = ""
-    proto.document_remove = ""
-    proto.document_delete = ""
+    proto = _make_listen_response()
+    proto.target_change = None
+    proto.document_change = None
+    proto.document_remove = None
+    proto.document_delete = None
+    proto.filter.count = 999
+    reset = inst._reset_docs = mock.Mock()
 
-    class DummyFilter(object):
-        count = 999
-
-    proto.filter = DummyFilter()
-
-    def reset():
-        inst._docs_reset = True
-
-    inst._reset_docs = reset
     inst.on_snapshot(proto)
-    assert inst._docs_reset
+
+    reset.assert_called_once_with()
 
 
 def test_watch_on_snapshot_filter_update_no_size_change():
     inst = _make_watch()
-    proto = DummyProto()
-    proto.target_change = ""
-    proto.document_change = ""
-    proto.document_remove = ""
-    proto.document_delete = ""
-
-    class DummyFilter(object):
-        count = 0
-
-    proto.filter = DummyFilter()
-    inst._docs_reset = False
+    proto = _make_listen_response()
+    proto.target_change = None
+    proto.document_change = None
+    proto.document_remove = None
+    proto.document_delete = None
+    proto.filter.count = 0
+    reset = inst._reset_docs = mock.Mock()
 
     inst.on_snapshot(proto)
-    assert not inst._docs_reset
+
+    reset.assert_not_called()
 
 
 def test_watch_on_snapshot_unknown_listen_type():
     inst = _make_watch()
-    proto = DummyProto()
-    proto.target_change = ""
-    proto.document_change = ""
-    proto.document_remove = ""
-    proto.document_delete = ""
-    proto.filter = ""
+    proto = _make_listen_response()
+    proto.target_change = None
+    proto.document_change = None
+    proto.document_remove = None
+    proto.document_delete = None
+    proto.filter = None
 
     with pytest.raises(Exception) as exc:
         inst.on_snapshot(proto)
@@ -619,21 +671,6 @@ def test_watch__current_size_docmap_has_one():
     inst.doc_map["a"] = 1
     result = inst._current_size()
     assert result == 1
-
-
-def test_watch__affects_target_target_id_None():
-    inst = _make_watch()
-    assert inst._affects_target(None, [])
-
-
-def test_watch__affects_target_current_id_in_target_ids():
-    inst = _make_watch()
-    assert inst._affects_target([1], 1)
-
-
-def test_watch__affects_target_current_id_not_in_target_ids():
-    inst = _make_watch()
-    assert not inst._affects_target([1], 2)
 
 
 def test_watch__extract_changes_doc_removed():
@@ -929,23 +966,6 @@ class DummyDocumentSnapshot(object):
         return hash(str(self))
 
 
-class DummyBackgroundConsumer(object):
-    started = False
-    stopped = False
-    is_active = True
-
-    def __init__(self, rpc, on_snapshot):
-        self._rpc = rpc
-        self.on_snapshot = on_snapshot
-
-    def start(self):
-        self.started = True
-
-    def stop(self):
-        self.stopped = True
-        self.is_active = False
-
-
 class DummyThread(object):
     started = False
 
@@ -968,28 +988,18 @@ class DummyThreading(object):
         return thread
 
 
-class DummyRpc(object):
-    def __init__(
-        self,
-        start_rpc,
-        should_recover,
-        should_terminate=None,
-        initial_request=None,
-        metadata=None,
-    ):
-        self.start_rpc = start_rpc
-        self.should_recover = should_recover
-        self.should_terminate = should_terminate
-        self.initial_request = initial_request()
-        self.metadata = metadata
-        self.closed = False
-        self.callbacks = []
+def _make_listen_response():
+    from google.cloud.firestore_v1.types.firestore import ListenResponse
+    from google.cloud.firestore_v1.types.firestore import TargetChange
 
-    def add_done_callback(self, callback):
-        self.callbacks.append(callback)
+    response = ListenResponse()
+    tc = response.target_change
+    tc.resume_token = None
+    tc.target_change_type = TargetChange.TargetChangeType.NO_CHANGE
+    tc.cause.code = 1
+    tc.cause.message = "hi"
 
-    def close(self):
-        self.closed = True
+    return response
 
 
 class DummyCause(object):
@@ -1014,22 +1024,10 @@ class DummyProto(object):
         self.target_change = DummyChange()
         self.document_change = DummyChange()
 
-
-class DummyTarget(object):
-    def QueryTarget(self, **kw):
-        self.kw = kw
-        return DummyQueryTarget()
-
-
-class DummyQueryTarget(object):
     @property
     def _pb(self):
-        return "dummy query target"
+        return self
 
-
-class DummyPb2(object):
-
-    Target = DummyTarget()
-
-    def ListenRequest(self, **kw):
-        pass
+    def WhichOneof(self, oneof_name):
+        assert oneof_name == "response_type"
+        return "target_change"

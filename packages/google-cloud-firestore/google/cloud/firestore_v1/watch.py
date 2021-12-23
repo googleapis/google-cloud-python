@@ -12,22 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import logging
 import collections
-import threading
 from enum import Enum
 import functools
+import logging
+import threading
 
 from google.api_core.bidi import ResumableBidiRpc
 from google.api_core.bidi import BackgroundConsumer
-from google.cloud.firestore_v1.types import firestore
-from google.cloud.firestore_v1 import _helpers
-
 from google.api_core import exceptions
-
 import grpc  # type: ignore
 
-"""Python client for Google Cloud Firestore Watch."""
+from google.cloud.firestore_v1.types.firestore import ListenRequest
+from google.cloud.firestore_v1.types.firestore import Target
+from google.cloud.firestore_v1.types.firestore import TargetChange
+from google.cloud.firestore_v1 import _helpers
+
+
+TargetChangeType = TargetChange.TargetChangeType
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -165,10 +167,6 @@ def _should_terminate(exception):
 
 
 class Watch(object):
-
-    BackgroundConsumer = BackgroundConsumer  # FBO unit tests
-    ResumableBidiRpc = ResumableBidiRpc  # FBO unit tests
-
     def __init__(
         self,
         document_reference,
@@ -178,8 +176,6 @@ class Watch(object):
         snapshot_callback,
         document_snapshot_cls,
         document_reference_cls,
-        BackgroundConsumer=None,  # FBO unit testing
-        ResumableBidiRpc=None,  # FBO unit testing
     ):
         """
         Args:
@@ -209,16 +205,14 @@ class Watch(object):
         self._snapshot_callback = snapshot_callback
         self._closing = threading.Lock()
         self._closed = False
+        self._set_documents_pfx(firestore._database_string)
 
         self.resume_token = None
 
         rpc_request = self._get_rpc_request
 
-        if ResumableBidiRpc is None:
-            ResumableBidiRpc = self.ResumableBidiRpc  # FBO unit tests
-
         self._rpc = ResumableBidiRpc(
-            self._api._transport.listen,
+            start_rpc=self._api._transport.listen,
             should_recover=_should_recover,
             should_terminate=_should_terminate,
             initial_request=rpc_request,
@@ -249,19 +243,72 @@ class Watch(object):
         self.has_pushed = False
 
         # The server assigns and updates the resume token.
-        if BackgroundConsumer is None:  # FBO unit tests
-            BackgroundConsumer = self.BackgroundConsumer
-
         self._consumer = BackgroundConsumer(self._rpc, self.on_snapshot)
         self._consumer.start()
+
+    @classmethod
+    def for_document(
+        cls,
+        document_ref,
+        snapshot_callback,
+        document_snapshot_cls,
+        document_reference_cls,
+    ):
+        """
+        Creates a watch snapshot listener for a document. snapshot_callback
+        receives a DocumentChange object, but may also start to get
+        targetChange and such soon
+
+        Args:
+            document_ref: Reference to Document
+            snapshot_callback: callback to be called on snapshot
+            document_snapshot_cls: class to make snapshots with
+            reference_class_instance: class make references
+
+        """
+        return cls(
+            document_ref,
+            document_ref._client,
+            {
+                "documents": {"documents": [document_ref._document_path]},
+                "target_id": WATCH_TARGET_ID,
+            },
+            document_watch_comparator,
+            snapshot_callback,
+            document_snapshot_cls,
+            document_reference_cls,
+        )
+
+    @classmethod
+    def for_query(
+        cls, query, snapshot_callback, document_snapshot_cls, document_reference_cls,
+    ):
+        parent_path, _ = query._parent._parent_info()
+        query_target = Target.QueryTarget(
+            parent=parent_path, structured_query=query._to_protobuf()
+        )
+
+        return cls(
+            query,
+            query._client,
+            {"query": query_target._pb, "target_id": WATCH_TARGET_ID},
+            query._comparator,
+            snapshot_callback,
+            document_snapshot_cls,
+            document_reference_cls,
+        )
 
     def _get_rpc_request(self):
         if self.resume_token is not None:
             self._targets["resume_token"] = self.resume_token
 
-        return firestore.ListenRequest(
+        return ListenRequest(
             database=self._firestore._database_string, add_target=self._targets
         )
+
+    def _set_documents_pfx(self, database_string):
+        self._documents_pfx = f"{database_string}/documents/"
+        self._documents_pfx_len = len(self._documents_pfx)
 
     @property
     def is_active(self):
@@ -325,182 +372,122 @@ class Watch(object):
     def unsubscribe(self):
         self.close()
 
-    @classmethod
-    def for_document(
-        cls,
-        document_ref,
-        snapshot_callback,
-        snapshot_class_instance,
-        reference_class_instance,
-    ):
-        """
-        Creates a watch snapshot listener for a document. snapshot_callback
-        receives a DocumentChange object, but may also start to get
-        targetChange and such soon
-
-        Args:
-            document_ref: Reference to Document
-            snapshot_callback: callback to be called on snapshot
-            snapshot_class_instance: instance of DocumentSnapshot to make
-                snapshots with to pass to snapshot_callback
-            reference_class_instance: instance of DocumentReference to make
-                references
-
-        """
-        return cls(
-            document_ref,
-            document_ref._client,
-            {
-                "documents": {"documents": [document_ref._document_path]},
-                "target_id": WATCH_TARGET_ID,
-            },
-            document_watch_comparator,
-            snapshot_callback,
-            snapshot_class_instance,
-            reference_class_instance,
-        )
-
-    @classmethod
-    def for_query(
-        cls, query, snapshot_callback, snapshot_class_instance, reference_class_instance
-    ):
-        parent_path, _ = query._parent._parent_info()
-        query_target = firestore.Target.QueryTarget(
-            parent=parent_path, structured_query=query._to_protobuf()
-        )
-
-        return cls(
-            query,
-            query._client,
-            {"query": query_target._pb, "target_id": WATCH_TARGET_ID},
-            query._comparator,
-            snapshot_callback,
-            snapshot_class_instance,
-            reference_class_instance,
-        )
-
-    def _on_snapshot_target_change_no_change(self, proto):
+    def _on_snapshot_target_change_no_change(self, target_change):
         _LOGGER.debug("on_snapshot: target change: NO_CHANGE")
-        change = proto.target_change
 
-        no_target_ids = change.target_ids is None or len(change.target_ids) == 0
-        if no_target_ids and change.read_time and self.current:
+        no_target_ids = (
+            target_change.target_ids is None or len(target_change.target_ids) == 0
+        )
+        if no_target_ids and target_change.read_time and self.current:
             # TargetChange.TargetChangeType.CURRENT followed by
             # TargetChange.TargetChangeType.NO_CHANGE
             # signals a consistent state. Invoke the onSnapshot
             # callback as specified by the user.
-            self.push(change.read_time, change.resume_token)
+            self.push(target_change.read_time, target_change.resume_token)
 
-    def _on_snapshot_target_change_add(self, proto):
+    def _on_snapshot_target_change_add(self, target_change):
         _LOGGER.debug("on_snapshot: target change: ADD")
-        target_id = proto.target_change.target_ids[0]
+        target_id = target_change.target_ids[0]
         if target_id != WATCH_TARGET_ID:
             raise RuntimeError("Unexpected target ID %s sent by server" % target_id)
 
-    def _on_snapshot_target_change_remove(self, proto):
+    def _on_snapshot_target_change_remove(self, target_change):
         _LOGGER.debug("on_snapshot: target change: REMOVE")
-        change = proto.target_change
 
-        code = 13
-        message = "internal error"
-        if change.cause:
-            code = change.cause.code
-            message = change.cause.message
+        if target_change.cause.code:
+            code = target_change.cause.code
+            message = target_change.cause.message
+        else:
+            code = 13
+            message = "internal error"
 
-        message = "Error %s:  %s" % (code, message)
+        error_message = "Error %s:  %s" % (code, message)
 
-        raise RuntimeError(message)
+        raise RuntimeError(error_message)
 
-    def _on_snapshot_target_change_reset(self, proto):
+    def _on_snapshot_target_change_reset(self, target_change):
         # Whatever changes have happened so far no longer matter.
         _LOGGER.debug("on_snapshot: target change: RESET")
         self._reset_docs()
 
-    def _on_snapshot_target_change_current(self, proto):
+    def _on_snapshot_target_change_current(self, target_change):
         _LOGGER.debug("on_snapshot: target change: CURRENT")
         self.current = True
 
+    _target_changetype_dispatch = {
+        TargetChangeType.NO_CHANGE: _on_snapshot_target_change_no_change,
+        TargetChangeType.ADD: _on_snapshot_target_change_add,
+        TargetChangeType.REMOVE: _on_snapshot_target_change_remove,
+        TargetChangeType.RESET: _on_snapshot_target_change_reset,
+        TargetChangeType.CURRENT: _on_snapshot_target_change_current,
+    }
+
+    def _strip_document_pfx(self, document_name):
+        if document_name.startswith(self._documents_pfx):
+            document_name = document_name[self._documents_pfx_len :]
+        return document_name
+
     def on_snapshot(self, proto):
-        """
-        Called everytime there is a response from listen. Collect changes
-        and 'push' the changes in a batch to the customer when we receive
-        'current' from the listen response.
+        """Process a response from the bi-directional gRPC stream.
+
+        Collect changes and push the changes in a batch to the customer
+        when we receive 'current' from the listen response.
 
         Args:
-            listen_response(`google.cloud.firestore_v1.types.ListenResponse`):
+            proto(`google.cloud.firestore_v1.types.ListenResponse`):
                 Callback method that receives a object to
         """
-        TargetChange = firestore.TargetChange
+        if proto is None:
+            self.close()
+            return
 
-        target_changetype_dispatch = {
-            TargetChange.TargetChangeType.NO_CHANGE: self._on_snapshot_target_change_no_change,
-            TargetChange.TargetChangeType.ADD: self._on_snapshot_target_change_add,
-            TargetChange.TargetChangeType.REMOVE: self._on_snapshot_target_change_remove,
-            TargetChange.TargetChangeType.RESET: self._on_snapshot_target_change_reset,
-            TargetChange.TargetChangeType.CURRENT: self._on_snapshot_target_change_current,
-        }
+        pb = proto._pb
+        which = pb.WhichOneof("response_type")
 
-        target_change = getattr(proto, "target_change", "")
-        document_change = getattr(proto, "document_change", "")
-        document_delete = getattr(proto, "document_delete", "")
-        document_remove = getattr(proto, "document_remove", "")
-        filter_ = getattr(proto, "filter", "")
+        if which == "target_change":
 
-        if str(target_change):
-            target_change_type = target_change.target_change_type
-            _LOGGER.debug("on_snapshot: target change: " + str(target_change_type))
-            meth = target_changetype_dispatch.get(target_change_type)
+            target_change_type = pb.target_change.target_change_type
+            _LOGGER.debug(f"on_snapshot: target change: {target_change_type}")
+
+            meth = self._target_changetype_dispatch.get(target_change_type)
+
             if meth is None:
-                _LOGGER.info(
-                    "on_snapshot: Unknown target change " + str(target_change_type)
-                )
-                self.close(
-                    reason="Unknown target change type: %s " % str(target_change_type)
-                )
-            else:
-                try:
-                    meth(proto)
-                except Exception as exc2:
-                    _LOGGER.debug("meth(proto) exc: " + str(exc2))
-                    raise
+                message = f"Unknown target change type: {target_change_type}"
+                _LOGGER.info(f"on_snapshot: {message}")
+                self.close(reason=ValueError(message))
+
+            try:
+                # Use 'proto' vs 'pb' for datetime handling
+                meth(self, proto.target_change)
+            except Exception as exc2:
+                _LOGGER.debug(f"meth(proto) exc: {exc2}")
+                raise
 
             # NOTE:
             # in other implementations, such as node, the backoff is reset here
             # in this version bidi rpc is just used and will control this.
 
-        elif str(document_change):
+        elif which == "document_change":
             _LOGGER.debug("on_snapshot: document change")
 
             # No other target_ids can show up here, but we still need to see
             # if the targetId was in the added list or removed list.
-            target_ids = document_change.target_ids or []
-            removed_target_ids = document_change.removed_target_ids or []
-            changed = False
-            removed = False
+            changed = WATCH_TARGET_ID in pb.document_change.target_ids
+            removed = WATCH_TARGET_ID in pb.document_change.removed_target_ids
 
-            if WATCH_TARGET_ID in target_ids:
-                changed = True
-
-            if WATCH_TARGET_ID in removed_target_ids:
-                removed = True
+            # google.cloud.firestore_v1.types.Document
+            # Use 'proto' vs 'pb' for datetime handling
+            document = proto.document_change.document
 
             if changed:
                 _LOGGER.debug("on_snapshot: document change: CHANGED")
-
-                # google.cloud.firestore_v1.types.Document
-                document = document_change.document
 
                 data = _helpers.decode_dict(document.fields, self._firestore)
 
                 # Create a snapshot. As Document and Query objects can be
                 # passed we need to get a Document Reference in a more manual
                 # fashion than self._document_reference
-                document_name = document.name
-                db_str = self._firestore._database_string
-                db_str_documents = db_str + "/documents/"
-                if document_name.startswith(db_str_documents):
-                    document_name = document_name[len(db_str_documents) :]
-
+                document_name = self._strip_document_pfx(document.name)
                 document_ref = self._firestore.document(document_name)
 
                 snapshot = self.DocumentSnapshot(
@@ -515,43 +502,43 @@ class Watch(object):
 
             elif removed:
                 _LOGGER.debug("on_snapshot: document change: REMOVED")
-                document = document_change.document
                 self.change_map[document.name] = ChangeType.REMOVED
 
         # NB: document_delete and document_remove (as far as we, the client,
         # are concerned) are functionally equivalent
 
-        elif str(document_delete):
+        elif which == "document_delete":
             _LOGGER.debug("on_snapshot: document change: DELETE")
-            name = document_delete.document
+            name = pb.document_delete.document
             self.change_map[name] = ChangeType.REMOVED
 
-        elif str(document_remove):
+        elif which == "document_remove":
             _LOGGER.debug("on_snapshot: document change: REMOVE")
-            name = document_remove.document
+            name = pb.document_remove.document
             self.change_map[name] = ChangeType.REMOVED
 
-        elif filter_:
+        elif which == "filter":
             _LOGGER.debug("on_snapshot: filter update")
-            if filter_.count != self._current_size():
+            if pb.filter.count != self._current_size():
                 # We need to remove all the current results.
                 self._reset_docs()
                 # The filter didn't match, so re-issue the query.
                 # TODO: reset stream method?
                 # self._reset_stream();
 
-        elif proto is None:
-            self.close()
         else:
             _LOGGER.debug("UNKNOWN TYPE. UHOH")
-            self.close(reason=ValueError("Unknown listen response type: %s" % proto))
+            message = f"Unknown listen response type: {proto}"
+            self.close(reason=ValueError(message))
 
     def push(self, read_time, next_resume_token):
+        """Invoke the callback with a new snapshot
+
+        Build the sntapshot from the current set of changes.
+
+        Clear the current changes on completion.
         """
-        Assembles a new snapshot from the current set of changes and invokes
-        the user's callback. Clears the current changes on completion.
-        """
-        deletes, adds, updates = Watch._extract_changes(
+        deletes, adds, updates = self._extract_changes(
             self.doc_map, self.change_map, read_time
         )
 
@@ -702,23 +689,17 @@ class Watch(object):
                 appliedChanges.append(change)
 
         assert len(updated_tree) == len(updated_map), (
-            "The update document "
-            + "tree and document map should have the same number of entries."
+            "The update document tree and document map "
+            "should have the same number of entries."
         )
         return (updated_tree, updated_map, appliedChanges)
 
-    def _affects_target(self, target_ids, current_id):
-        if target_ids is None:
-            return True
-
-        return current_id in target_ids
-
     def _current_size(self):
+        """Return the current count of all documents.
+
+        Count includes the changes from the current changeMap.
         """
-        Returns the current count of all documents, including the changes from
-        the current changeMap.
-        """
-        deletes, adds, _ = Watch._extract_changes(self.doc_map, self.change_map, None)
+        deletes, adds, _ = self._extract_changes(self.doc_map, self.change_map, None)
         return len(self.doc_map) + len(adds) - len(deletes)
 
     def _reset_docs(self):
