@@ -218,6 +218,45 @@ def test_basecollectionreference_where(mock_query):
 
 
 @mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
+def test_basecollectionreference_where_w___name___w_value_as_list_of_str(mock_query):
+    from google.cloud.firestore_v1.base_collection import BaseCollectionReference
+
+    with mock.patch.object(BaseCollectionReference, "_query") as _query:
+        _query.return_value = mock_query
+
+        client = _make_client()
+        collection = _make_base_collection_reference("collection", client=client)
+        field_path = "__name__"
+        op_string = "in"
+        names = ["hello", "world"]
+
+        query = collection.where(field_path, op_string, names)
+
+        expected_refs = [collection.document(name) for name in names]
+        mock_query.where.assert_called_once_with(field_path, op_string, expected_refs)
+        assert query == mock_query.where.return_value
+
+
+@mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
+def test_basecollectionreference_where_w___name___w_value_as_list_of_docref(mock_query):
+    from google.cloud.firestore_v1.base_collection import BaseCollectionReference
+
+    with mock.patch.object(BaseCollectionReference, "_query") as _query:
+        _query.return_value = mock_query
+
+        client = _make_client()
+        collection = _make_base_collection_reference("collection", client=client)
+        field_path = "__name__"
+        op_string = "in"
+        refs = [collection.document("hello"), collection.document("world")]
+
+        query = collection.where(field_path, op_string, refs)
+
+        mock_query.where.assert_called_once_with(field_path, op_string, refs)
+        assert query == mock_query.where.return_value
+
+
+@mock.patch("google.cloud.firestore_v1.base_query.BaseQuery", autospec=True)
 def test_basecollectionreference_order_by(mock_query):
     from google.cloud.firestore_v1.base_query import BaseQuery
     from google.cloud.firestore_v1.base_collection import BaseCollectionReference

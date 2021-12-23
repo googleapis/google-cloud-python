@@ -236,16 +236,29 @@ class BaseCollectionReference(object):
             field_path (str): A field path (``.``-delimited list of
                 field names) for the field to filter on.
             op_string (str): A comparison operation in the form of a string.
-                Acceptable values are ``<``, ``<=``, ``==``, ``>=``
-                and ``>``.
+                Acceptable values are ``<``, ``<=``, ``==``, ``>=``, ``>``,
+                and ``in``.
             value (Any): The value to compare the field against in the filter.
                 If ``value`` is :data:`None` or a NaN, then ``==`` is the only
-                allowed operation.
+                allowed operation.  If ``op_string`` is ``in``, ``value``
+                must be a sequence of values.
 
         Returns:
             :class:`~google.cloud.firestore_v1.query.Query`:
             A filtered query.
         """
+        if field_path == "__name__" and op_string == "in":
+            wrapped_names = []
+
+            for name in value:
+
+                if isinstance(name, str):
+                    name = self.document(name)
+
+                wrapped_names.append(name)
+
+            value = wrapped_names
+
         query = self._query()
         return query.where(field_path, op_string, value)
 
