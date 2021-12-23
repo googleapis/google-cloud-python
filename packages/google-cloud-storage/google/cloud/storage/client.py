@@ -1065,7 +1065,7 @@ class Client(ClientWithProject):
             >>> bucket = client.get_bucket('my-bucket-name')
             >>> blob = storage.Blob('path/to/blob', bucket)
 
-            >>> with open('file-to-download-to') as file_obj:
+            >>> with open('file-to-download-to', 'w') as file_obj:
             >>>     client.download_blob_to_file(blob, file_obj)  # API request.
 
 
@@ -1074,7 +1074,7 @@ class Client(ClientWithProject):
             >>> from google.cloud import storage
             >>> client = storage.Client()
 
-            >>> with open('file-to-download-to') as file_obj:
+            >>> with open('file-to-download-to', 'w') as file_obj:
             >>>     client.download_blob_to_file(
             >>>         'gs://bucket_name/path/to/blob', file_obj)
 
