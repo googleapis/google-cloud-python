@@ -157,6 +157,18 @@ eng = create_engine("spanner:///projects/project-id/instances/instance-id/databa
 autocommit_engine = eng.execution_options(isolation_level="AUTOCOMMIT")
 ```
 
+### Autoincremented IDs  
+Cloud Spanner doesn't support autoincremented IDs mechanism due to performance reasons ([see for more details](https://cloud.google.com/spanner/docs/schema-design#primary-key-prevent-hotspots)). Though it's not encouraged to do so, in case you *need* the feature, you can simulate it manually, for example:
+```python
+with engine.begin() as connection:
+    top_id = connection.execute(
+        select([user.c.user_id]).order_by(user.c.user_id.desc()).limit(1)
+    ).fetchone()
+    next_id = top_id[0] + 1 if top_id else 1
+
+    connection.execute(user.insert(), {"user_id": next_id})
+```
+
 ### Query hints  
 Spanner dialect supports [query hints](https://cloud.google.com/spanner/docs/query-syntax#table_hints), which give the ability to set additional query execution parameters. Usage example:
 ```python
