@@ -4,7 +4,7 @@
     "product_documentation": "https://cloud.google.com/bigquery/docs/reference/migration/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/bigquerymigration/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/559654",
-    "release_level": "alpha",
+    "release_level": "preview",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-bigquery-migration",
@@ -12,5 +12,6 @@
     "api_id": "bigquerymigration.googleapis.com",
     "requires_billing": true,
     "default_version": "v2alpha",
-    "codeowner_team": "@googleapis/api-bigquery"
+    "codeowner_team": "@googleapis/api-bigquery",
+    "api_shortname": "bigquerymigration"
 }
