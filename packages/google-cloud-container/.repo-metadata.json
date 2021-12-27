@@ -4,7 +4,7 @@
     "product_documentation": "https://cloud.google.com/kubernetes-engine/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/container/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/559746",
-    "release_level": "ga",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-container",
@@ -12,5 +12,6 @@
     "api_id": "container.googleapis.com",
     "codeowner_team": "@googleapis/anthos-dpe",
     "requires_billing": true,
-    "default_version": "v1"
+    "default_version": "v1",
+    "api_shortname": "container"
 }
