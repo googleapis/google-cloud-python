@@ -4,12 +4,13 @@
     "product_documentation": "https://cloud.google.com/anthos/multicluster-management/gateway",
     "client_documentation": "https://cloud.google.com/python/docs/reference/connectgateway/latest",
     "issue_tracker": "",
-    "release_level": "beta",
+    "release_level": "preview",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-gke-connect-gateway",
     "distribution_name": "google-cloud-gke-connect-gateway",
     "api_id": "connectgateway.googleapis.com",
     "default_version": "v1beta1",
-    "codeowner_team": ""
+    "codeowner_team": "",
+    "api_shortname": "connectgateway"
 }
