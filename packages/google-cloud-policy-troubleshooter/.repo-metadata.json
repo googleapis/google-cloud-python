@@ -4,11 +4,13 @@
     "product_documentation": "https://cloud.google.com/iam/docs/troubleshooting-access#rest-api/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/policytroubleshooter/latest",
     "issue_tracker": "",
-    "release_level": "ga",
+    "release_level": "stable",
     "language": "python",
     "repo": "googleapis/python-policy-troubleshooter",
     "distribution_name": "google-cloud-policy-troubleshooter",
     "api_id": "policytroubleshooter.googleapis.com",
     "default_version": "v1",
-    "codeowner_team": ""
+    "codeowner_team": "",
+    "api_shortname": "policytroubleshooter",
+    "library_type": "GAPIC_AUTO"
 }
