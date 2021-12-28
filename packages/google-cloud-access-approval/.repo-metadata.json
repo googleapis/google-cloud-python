@@ -4,12 +4,13 @@
     "product_documentation": "https://cloud.google.com/access-approval",
     "client_documentation": "https://cloud.google.com/python/docs/reference/accessapproval/latest",
     "issue_tracker": "",
-    "release_level": "ga",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-access-approval",
     "distribution_name": "google-cloud-access-approval",
     "api_id": "accessapproval.googleapis.com",
     "default_version": "v1",
-    "codeowner_team": ""
+    "codeowner_team": "",
+    "api_shortname": "accessapproval"
 }
