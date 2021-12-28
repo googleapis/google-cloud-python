@@ -4,12 +4,13 @@
     "product_documentation": "https://cloud.google.com/api-gateway",
     "client_documentation": "https://cloud.google.com/python/docs/reference/apigateway/latest",
     "issue_tracker": "",
-    "release_level": "ga",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-api-gateway",
     "distribution_name": "google-cloud-api-gateway",
     "api_id": "apigateway.googleapis.com",
     "default_version": "v1",
-    "codeowner_team": ""
+    "codeowner_team": "",
+    "api_shortname": "apigateway"
 }
