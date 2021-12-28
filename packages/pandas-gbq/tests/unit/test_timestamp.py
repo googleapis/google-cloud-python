@@ -56,6 +56,14 @@ def test_localize_df_with_timestamp_column(module_under_test):
                 dtype="datetime64[ns]",
             ),
             "float_col": [0.1, 0.2, 0.3],
+            "repeated_col": pandas.Series(
+                [
+                    ["2011-01-01 01:02:03"],
+                    ["2012-02-02 04:05:06"],
+                    ["2013-03-03 07:08:09"],
+                ],
+                dtype="object",
+            ),
         }
     )
     expected = df.copy()
@@ -64,6 +72,7 @@ def test_localize_df_with_timestamp_column(module_under_test):
         {"name": "integer_col", "type": "INTEGER"},
         {"name": "timestamp_col", "type": "TIMESTAMP"},
         {"name": "float_col", "type": "FLOAT"},
+        {"name": "repeated_col", "type": "TIMESTAMP", "mode": "REPEATED"},
     ]
 
     localized = module_under_test.localize_df(df, bq_schema)

@@ -32,34 +32,40 @@ def mock_get_credentials_no_project(*args, **kwargs):
     return mock_credentials, None
 
 
-def mock_get_credentials(*args, **kwargs):
-    import google.auth.credentials
-
-    mock_credentials = mock.create_autospec(google.auth.credentials.Credentials)
-    return mock_credentials, "default-project"
-
-
-@pytest.fixture
-def mock_service_account_credentials():
-    import google.oauth2.service_account
-
-    mock_credentials = mock.create_autospec(google.oauth2.service_account.Credentials)
-    return mock_credentials
-
-
-@pytest.fixture
-def mock_compute_engine_credentials():
-    import google.auth.compute_engine
-
-    mock_credentials = mock.create_autospec(google.auth.compute_engine.Credentials)
-    return mock_credentials
-
-
 @pytest.fixture(autouse=True)
-def no_auth(monkeypatch):
-    import pydata_google_auth
+def default_bigquery_client(mock_bigquery_client):
+    mock_query = mock.create_autospec(google.cloud.bigquery.QueryJob)
+    mock_query.job_id = "some-random-id"
+    mock_query.state = "DONE"
+    mock_rows = mock.create_autospec(google.cloud.bigquery.table.RowIterator)
+    mock_rows.total_rows = 1
 
-    monkeypatch.setattr(pydata_google_auth, "default", mock_get_credentials)
+    mock_rows.__iter__.return_value = [(1,)]
+    mock_query.result.return_value = mock_rows
+    mock_bigquery_client.list_rows.return_value = mock_rows
+    mock_bigquery_client.query.return_value = mock_query
+
+    # Mock out SELECT 1 query results.
+    def generate_schema():
+        query = (
+            mock_bigquery_client.query.call_args[0][0]
+            if mock_bigquery_client.query.call_args
+            else ""
+        )
+        if query == "SELECT 1 AS int_col":
+            return [google.cloud.bigquery.SchemaField("int_col", "INTEGER")]
+        else:
+            return [google.cloud.bigquery.SchemaField("_f0", "INTEGER")]
+
+    type(mock_rows).schema = mock.PropertyMock(side_effect=generate_schema)
+
+    # Mock out get_table.
+    def get_table(table_ref_or_id, **kwargs):
+        return google.cloud.bigquery.Table(table_ref_or_id)
+
+    mock_bigquery_client.get_table.side_effect = get_table
+
+    return mock_bigquery_client
 
 
 @pytest.mark.parametrize(
@@ -290,7 +296,7 @@ def test_to_gbq_w_project_table(mock_bigquery_client):
     assert table.project == "project_table"
 
 
-def test_to_gbq_creates_dataset(mock_bigquery_client):
+def test_to_gbq_create_dataset(mock_bigquery_client):
     import google.api_core.exceptions
 
     mock_bigquery_client.get_table.side_effect = google.api_core.exceptions.NotFound(
@@ -301,6 +307,111 @@ def test_to_gbq_creates_dataset(mock_bigquery_client):
     )
     gbq.to_gbq(DataFrame([[1]]), "my_dataset.my_table", project_id="1234")
     mock_bigquery_client.create_dataset.assert_called_with(mock.ANY)
+
+
+def test_dataset_create_already_exists_translates_exception(mock_bigquery_client):
+    connector = gbq._Dataset("my-project")
+    connector.client = mock_bigquery_client
+    mock_bigquery_client.get_dataset.return_value = object()
+    with pytest.raises(gbq.DatasetCreationError):
+        connector.create("already_exists")
+
+
+def test_dataset_exists_false(mock_bigquery_client):
+    connector = gbq._Dataset("my-project")
+    connector.client = mock_bigquery_client
+    mock_bigquery_client.get_dataset.side_effect = google.api_core.exceptions.NotFound(
+        "nope"
+    )
+    assert not connector.exists("not_exists")
+
+
+def test_dataset_exists_true(mock_bigquery_client):
+    connector = gbq._Dataset("my-project")
+    connector.client = mock_bigquery_client
+    mock_bigquery_client.get_dataset.return_value = object()
+    assert connector.exists("yes_exists")
+
+
+def test_dataset_exists_translates_exception(mock_bigquery_client):
+    connector = gbq._Dataset("my-project")
+    connector.client = mock_bigquery_client
+    mock_bigquery_client.get_dataset.side_effect = google.api_core.exceptions.InternalServerError(
+        "something went wrong"
+    )
+    with pytest.raises(gbq.GenericGBQException):
+        connector.exists("not_gonna_work")
+
+
+def test_table_create_already_exists(mock_bigquery_client):
+    connector = gbq._Table("my-project", "my_dataset")
+    connector.client = mock_bigquery_client
+    mock_bigquery_client.get_table.return_value = object()
+    with pytest.raises(gbq.TableCreationError):
+        connector.create(
+            "already_exists", {"fields": [{"name": "f", "type": "STRING"}]}
+        )
+
+
+def test_table_create_translates_exception(mock_bigquery_client):
+    connector = gbq._Table("my-project", "my_dataset")
+    connector.client = mock_bigquery_client
+    mock_bigquery_client.get_table.side_effect = google.api_core.exceptions.NotFound(
+        "nope"
+    )
+    mock_bigquery_client.create_table.side_effect = google.api_core.exceptions.InternalServerError(
+        "something went wrong"
+    )
+    with pytest.raises(gbq.GenericGBQException):
+        connector.create(
+            "not_gonna_work", {"fields": [{"name": "f", "type": "STRING"}]}
+        )
+
+
+def test_table_delete_notfound_ok(mock_bigquery_client):
+    connector = gbq._Table("my-project", "my_dataset")
+    connector.client = mock_bigquery_client
+    mock_bigquery_client.delete_table.side_effect = google.api_core.exceptions.NotFound(
+        "nope"
+    )
+    connector.delete("not_exists")
+    mock_bigquery_client.delete_table.assert_called_once()
+
+
+def test_table_delete_translates_exception(mock_bigquery_client):
+    connector = gbq._Table("my-project", "my_dataset")
+    connector.client = mock_bigquery_client
+    mock_bigquery_client.delete_table.side_effect = google.api_core.exceptions.InternalServerError(
+        "something went wrong"
+    )
+    with pytest.raises(gbq.GenericGBQException):
+        connector.delete("not_gonna_work")
+
+
+def test_table_exists_false(mock_bigquery_client):
+    connector = gbq._Table("my-project", "my_dataset")
+    connector.client = mock_bigquery_client
+    mock_bigquery_client.get_table.side_effect = google.api_core.exceptions.NotFound(
+        "nope"
+    )
+    assert not connector.exists("not_exists")
+
+
+def test_table_exists_true(mock_bigquery_client):
+    connector = gbq._Table("my-project", "my_dataset")
+    connector.client = mock_bigquery_client
+    mock_bigquery_client.get_table.return_value = object()
+    assert connector.exists("yes_exists")
+
+
+def test_table_exists_translates_exception(mock_bigquery_client):
+    connector = gbq._Table("my-project", "my_dataset")
+    connector.client = mock_bigquery_client
+    mock_bigquery_client.get_table.side_effect = google.api_core.exceptions.InternalServerError(
+        "something went wrong"
+    )
+    with pytest.raises(gbq.GenericGBQException):
+        connector.exists("not_gonna_work")
 
 
 def test_read_gbq_with_no_project_id_given_should_fail(monkeypatch):

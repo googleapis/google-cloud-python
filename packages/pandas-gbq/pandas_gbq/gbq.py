@@ -121,7 +121,20 @@ class InvalidSchema(ValueError):
     table in BigQuery.
     """
 
-    pass
+    def __init__(
+        self, message: str, local_schema: Dict[str, Any], remote_schema: Dict[str, Any]
+    ):
+        super().__init__(message)
+        self._local_schema = local_schema
+        self._remote_schema = remote_schema
+
+    @property
+    def local_schema(self) -> Dict[str, Any]:
+        return self._local_schema
+
+    @property
+    def remote_schema(self) -> Dict[str, Any]:
+        return self._remote_schema
 
 
 class NotFoundException(ValueError):
@@ -354,19 +367,12 @@ class GbqConnector(object):
         return fmt % (num, "Y", suffix)
 
     def get_client(self):
+        import google.api_core.client_info
         import pandas
 
-        try:
-            # This module was added in google-api-core 1.11.0.
-            # We don't have a hard requirement on that version, so only
-            # populate the client_info if available.
-            import google.api_core.client_info
-
-            client_info = google.api_core.client_info.ClientInfo(
-                user_agent="pandas-{}".format(pandas.__version__)
-            )
-        except ImportError:
-            client_info = None
+        client_info = google.api_core.client_info.ClientInfo(
+            user_agent="pandas-{}".format(pandas.__version__)
+        )
 
         # In addition to new enough version of google-api-core, a new enough
         # version of google-cloud-bigquery is required to populate the
@@ -1057,7 +1063,7 @@ def to_gbq(
                 DeprecationWarning,
                 stacklevel=2,
             )
-        elif api_method == "load_csv":
+        else:
             warnings.warn(
                 "chunksize will be ignored when using api_method='load_csv' in a future version of pandas-gbq",
                 PendingDeprecationWarning,
@@ -1122,12 +1128,14 @@ def to_gbq(
             )
         elif if_exists == "replace":
             connector.delete_and_recreate_table(dataset_id, table_id, table_schema)
-        elif if_exists == "append":
+        else:
             if not pandas_gbq.schema.schema_is_subset(original_schema, table_schema):
                 raise InvalidSchema(
                     "Please verify that the structure and "
                     "data types in the DataFrame match the "
-                    "schema of the destination table."
+                    "schema of the destination table.",
+                    table_schema,
+                    original_schema,
                 )
 
             # Update the local `table_schema` so mode (NULLABLE/REQUIRED)
@@ -1282,9 +1290,6 @@ class _Table(GbqConnector):
             Name of table to be deleted
         """
         from google.api_core.exceptions import NotFound
-
-        if not self.exists(table_id):
-            raise NotFoundException("Table does not exist")
 
         table_ref = self._table_ref(table_id)
         try:

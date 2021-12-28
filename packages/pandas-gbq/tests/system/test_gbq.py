@@ -1522,11 +1522,6 @@ def test_delete_table(gbq_table):
     assert not gbq_table.exists("test_delete_table")
 
 
-def test_delete_table_not_found(gbq_table):
-    with pytest.raises(gbq.NotFoundException):
-        gbq_table.delete("test_delete_table_not_found")
-
-
 def test_create_table_data_dataset_does_not_exist(
     project, credentials, gbq_dataset, random_dataset_id
 ):

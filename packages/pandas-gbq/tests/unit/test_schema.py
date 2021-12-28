@@ -3,7 +3,9 @@
 # license that can be found in the LICENSE file.
 
 import datetime
+from typing import Any, Dict, List
 
+import google.cloud.bigquery
 import pandas
 import pytest
 
@@ -151,3 +153,38 @@ def test_generate_bq_schema(module_under_test, dataframe, expected_schema):
 def test_update_schema(module_under_test, schema_old, schema_new, expected_output):
     output = module_under_test.update_schema(schema_old, schema_new)
     assert output == expected_output
+
+
+@pytest.mark.parametrize(
+    ["bq_schema", "expected"],
+    [
+        ([], {"fields": []}),
+        (
+            [google.cloud.bigquery.SchemaField("test_col", "STRING")],
+            {"fields": [{"name": "test_col", "type": "STRING", "mode": "NULLABLE"}]},
+        ),
+        (
+            [google.cloud.bigquery.SchemaField("test_col", "STRING", mode="REQUIRED")],
+            {"fields": [{"name": "test_col", "type": "STRING", "mode": "REQUIRED"}]},
+        ),
+        (
+            [
+                google.cloud.bigquery.SchemaField("test1", "STRING"),
+                google.cloud.bigquery.SchemaField("test2", "INTEGER"),
+            ],
+            {
+                "fields": [
+                    {"name": "test1", "type": "STRING", "mode": "NULLABLE"},
+                    {"name": "test2", "type": "INTEGER", "mode": "NULLABLE"},
+                ]
+            },
+        ),
+    ],
+)
+def test_to_pandas_gbq(
+    bq_schema: List[google.cloud.bigquery.SchemaField], expected: Dict[str, Any]
+):
+    import pandas_gbq.schema
+
+    result = pandas_gbq.schema.to_pandas_gbq(bq_schema)
+    assert result == expected

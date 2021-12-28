@@ -6,7 +6,23 @@
 
 from unittest import mock
 
+import google.cloud.bigquery
+import google.cloud.bigquery.table
 import pytest
+
+
+@pytest.fixture(autouse=True)
+def default_bigquery_client(mock_bigquery_client):
+    mock_query = mock.create_autospec(google.cloud.bigquery.QueryJob)
+    mock_query.job_id = "some-random-id"
+    mock_query.state = "DONE"
+    mock_rows = mock.create_autospec(google.cloud.bigquery.table.RowIterator)
+    mock_rows.total_rows = 1
+    mock_rows.__iter__.return_value = [(1,)]
+    mock_query.result.return_value = mock_rows
+    mock_bigquery_client.list_rows.return_value = mock_rows
+    mock_bigquery_client.query.return_value = mock_query
+    return mock_bigquery_client
 
 
 @pytest.fixture(autouse=True)

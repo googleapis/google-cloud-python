@@ -21,7 +21,19 @@ def to_pandas_gbq(client_schema):
     """Given a sequence of :class:`google.cloud.bigquery.schema.SchemaField`,
     return a schema in pandas-gbq API format.
     """
-    remote_fields = [field_remote.to_api_repr() for field_remote in client_schema]
+    remote_fields = [
+        # Filter out default values. google-cloud-bigquery versions before
+        # 2.31.0 (https://github.com/googleapis/python-bigquery/pull/557)
+        # include a description key, even if not explicitly set. This has the
+        # potential to unset the description unintentionally in cases where
+        # pandas-gbq is updating the schema.
+        {
+            key: value
+            for key, value in field_remote.to_api_repr().items()
+            if value is not None
+        }
+        for field_remote in client_schema
+    ]
     for field in remote_fields:
         field["type"] = field["type"].upper()
         field["mode"] = field["mode"].upper()

@@ -16,6 +16,7 @@ import pandas
 import pandas.testing
 import pytest
 
+from pandas_gbq import exceptions
 from pandas_gbq.features import FEATURES
 from pandas_gbq import load
 
@@ -95,6 +96,85 @@ def test_encode_chunks_with_chunksize_none():
     assert len(chunk.index) == 6
 
 
+def test_load_csv_from_dataframe_allows_client_to_generate_schema(mock_bigquery_client):
+    import google.cloud.bigquery
+
+    df = pandas.DataFrame({"int_col": [1, 2, 3]})
+    destination = google.cloud.bigquery.TableReference.from_string(
+        "my-project.my_dataset.my_table"
+    )
+
+    _ = list(
+        load.load_csv_from_dataframe(
+            mock_bigquery_client, df, destination, None, None, None
+        )
+    )
+
+    mock_load = mock_bigquery_client.load_table_from_dataframe
+    assert mock_load.called
+    _, kwargs = mock_load.call_args
+    assert "job_config" in kwargs
+    assert kwargs["job_config"].schema is None
+
+
+def test_load_csv_from_file_generates_schema(mock_bigquery_client):
+    import google.cloud.bigquery
+
+    df = pandas.DataFrame(
+        {
+            "int_col": [1, 2, 3],
+            "bool_col": [True, False, True],
+            "float_col": [0.0, 1.25, -2.75],
+            "string_col": ["a", "b", "c"],
+            "datetime_col": pandas.Series(
+                [
+                    "2021-12-21 13:28:40.123789",
+                    "2000-01-01 11:10:09",
+                    "2040-10-31 23:59:59.999999",
+                ],
+                dtype="datetime64[ns]",
+            ),
+            "timestamp_col": pandas.Series(
+                [
+                    "2021-12-21 13:28:40.123789",
+                    "2000-01-01 11:10:09",
+                    "2040-10-31 23:59:59.999999",
+                ],
+                dtype="datetime64[ns]",
+            ).dt.tz_localize(datetime.timezone.utc),
+        }
+    )
+    destination = google.cloud.bigquery.TableReference.from_string(
+        "my-project.my_dataset.my_table"
+    )
+
+    _ = list(
+        load.load_csv_from_file(mock_bigquery_client, df, destination, None, None, None)
+    )
+
+    mock_load = mock_bigquery_client.load_table_from_file
+    assert mock_load.called
+    _, kwargs = mock_load.call_args
+    assert "job_config" in kwargs
+    sent_schema = kwargs["job_config"].schema
+    assert len(sent_schema) == len(df.columns)
+    assert sent_schema[0].name == "int_col"
+    assert sent_schema[0].field_type == "INTEGER"
+    assert sent_schema[1].name == "bool_col"
+    assert sent_schema[1].field_type == "BOOLEAN"
+    assert sent_schema[2].name == "float_col"
+    assert sent_schema[2].field_type == "FLOAT"
+    assert sent_schema[3].name == "string_col"
+    assert sent_schema[3].field_type == "STRING"
+    # TODO: Disambiguate TIMESTAMP from DATETIME based on if column is
+    # localized or at least use field type from table metadata. See:
+    # https://github.com/googleapis/python-bigquery-pandas/issues/450
+    assert sent_schema[4].name == "datetime_col"
+    assert sent_schema[4].field_type == "TIMESTAMP"
+    assert sent_schema[5].name == "timestamp_col"
+    assert sent_schema[5].field_type == "TIMESTAMP"
+
+
 @pytest.mark.parametrize(
     ["bigquery_has_from_dataframe_with_csv", "api_method"],
     [(True, "load_parquet"), (True, "load_csv"), (False, "load_csv")],
@@ -141,6 +221,39 @@ def test_load_chunks_omits_policy_tags(
 def test_load_chunks_with_invalid_api_method():
     with pytest.raises(ValueError, match="Got unexpected api_method:"):
         load.load_chunks(None, None, None, api_method="not_a_thing")
+
+
+def test_load_parquet_allows_client_to_generate_schema(mock_bigquery_client):
+    import google.cloud.bigquery
+
+    df = pandas.DataFrame({"int_col": [1, 2, 3]})
+    destination = google.cloud.bigquery.TableReference.from_string(
+        "my-project.my_dataset.my_table"
+    )
+
+    load.load_parquet(mock_bigquery_client, df, destination, None, None)
+
+    mock_load = mock_bigquery_client.load_table_from_dataframe
+    assert mock_load.called
+    _, kwargs = mock_load.call_args
+    assert "job_config" in kwargs
+    assert kwargs["job_config"].schema is None
+
+
+def test_load_parquet_with_bad_conversion(mock_bigquery_client):
+    import google.cloud.bigquery
+    import pyarrow
+
+    mock_bigquery_client.load_table_from_dataframe.side_effect = (
+        pyarrow.lib.ArrowInvalid()
+    )
+    df = pandas.DataFrame({"int_col": [1, 2, 3]})
+    destination = google.cloud.bigquery.TableReference.from_string(
+        "my-project.my_dataset.my_table"
+    )
+
+    with pytest.raises(exceptions.ConversionError):
+        load.load_parquet(mock_bigquery_client, df, destination, None, None)
 
 
 @pytest.mark.parametrize(
