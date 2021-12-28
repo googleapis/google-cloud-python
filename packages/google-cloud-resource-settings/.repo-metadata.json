@@ -4,11 +4,13 @@
     "product_documentation": "https://cloud.google.com/resource-settings",
     "client_documentation": "https://cloud.google.com/python/docs/reference/resourcesettings/latest",
     "issue_tracker": "",
-    "release_level": "ga",
+    "release_level": "stable",
     "language": "python",
     "repo": "googleapis/python-resource-settings",
     "distribution_name": "google-cloud-resource-settings",
     "api_id": "resourcesettings.googleapis.com",
     "default_version": "v1",
-    "codeowner_team": ""
+    "codeowner_team": "",
+    "api_shortname": "resourcesettings",
+    "library_type": "GAPIC_AUTO"
 }
