@@ -2,9 +2,9 @@
     "name": "cloudscheduler",
     "name_pretty": "Google Cloud Scheduler",
     "product_documentation": "https://cloud.google.com/scheduler/docs",
-    "client_documentation": "https://googleapis.dev/python/cloudscheduler/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/cloudscheduler/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/5411429",
-    "release_level": "ga",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-scheduler",
@@ -12,5 +12,6 @@
     "api_id": "cloudscheduler.googleapis.com",
     "requires_billing": true,
     "default_version": "v1",
-    "codeowner_team": "@googleapis/serverless-team"
+    "codeowner_team": "@googleapis/serverless-team",
+    "api_shortname": "cloudscheduler"
 }
