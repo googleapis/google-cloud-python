@@ -4,12 +4,13 @@
     "product_documentation": "https://cloud.google.com/recaptcha-enterprise",
     "client_documentation": "https://cloud.google.com/python/docs/reference/recaptchaenterprise/latest",
     "issue_tracker": "",
-    "release_level": "ga",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-recaptcha-enterprise",
     "distribution_name": "google-cloud-recaptcha-enterprise",
     "api_id": "recaptchaenterprise.googleapis.com",
     "default_version": "v1",
-    "codeowner_team": ""
+    "codeowner_team": "",
+    "api_shortname": "recaptchaenterprise"
 }
