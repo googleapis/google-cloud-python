@@ -4,7 +4,7 @@
     "product_documentation": "https://cloud.google.com/text-to-speech",
     "client_documentation": "https://cloud.google.com/python/docs/reference/texttospeech/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/5235428",
-    "release_level": "ga",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-texttospeech",
@@ -12,5 +12,6 @@
     "api_id": "texttospeech.googleapis.com",
     "requires_billing": true,
     "default_version": "v1",
-    "codeowner_team": "@googleapis/cdpe-cloudai"
+    "codeowner_team": "@googleapis/cdpe-cloudai",
+    "api_shortname": "texttospeech"
 }
