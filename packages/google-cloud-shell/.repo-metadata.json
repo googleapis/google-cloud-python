@@ -4,12 +4,13 @@
     "product_documentation": "https://cloud.google.com/shell/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/cloudshell/latest",
     "issue_tracker": "",
-    "release_level": "ga",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-shell",
     "distribution_name": "google-cloud-shell",
     "api_id": "cloudshell.googleapis.com",
     "default_version": "v1",
-    "codeowner_team": ""
+    "codeowner_team": "",
+    "api_shortname": "cloudshell"
 }
