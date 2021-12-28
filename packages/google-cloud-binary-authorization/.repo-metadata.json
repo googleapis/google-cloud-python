@@ -4,12 +4,13 @@
     "product_documentation": "https://cloud.google.com/binary-authorization",
     "client_documentation": "https://cloud.google.com/python/docs/reference/binaryauthorization/latest",
     "issue_tracker": "",
-    "release_level": "ga",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-binary-authorization",
     "distribution_name": "google-cloud-binary-authorization",
     "api_id": "binaryauthorization.googleapis.com",
     "codeowner_team": "@googleapis/cicd",
-    "default_version": "v1"
+    "default_version": "v1",
+    "api_shortname": "binaryauthorization"
 }
