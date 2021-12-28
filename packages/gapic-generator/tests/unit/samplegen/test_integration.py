@@ -23,7 +23,7 @@ from gapic.samplegen import samplegen
 from gapic.samplegen_utils import (types, utils as gapic_utils)
 from gapic.schema import (naming, wrappers)
 
-from tests.unit.samplegen.common_types import (DummyField, DummyMessage,
+from common_types import (DummyField, DummyMessage,
 
                           DummyMessageTypePB, DummyMethod, DummyService, DummyIdent,
                           DummyApiSchema, DummyNaming, enum_factory, message_factory)
