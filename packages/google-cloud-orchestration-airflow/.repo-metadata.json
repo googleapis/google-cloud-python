@@ -4,12 +4,13 @@
     "product_documentation": "https://cloud.google.com/composer/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/composer/latest",
     "issue_tracker": "",
-    "release_level": "ga",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-orchestration-airflow",
     "distribution_name": "google-cloud-orchestration-airflow",
     "api_id": "composer.googleapis.com",
     "default_version": "v1",
-    "codeowner_team": ""
+    "codeowner_team": "",
+    "api_shortname": "composer"
 }
