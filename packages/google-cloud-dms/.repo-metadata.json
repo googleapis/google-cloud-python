@@ -4,12 +4,13 @@
     "product_documentation": "https://cloud.google.com/database-migration/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/datamigration/latest",
     "issue_tracker": "",
-    "release_level": "ga",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-dms",
     "distribution_name": "google-cloud-dms",
     "api_id": "datamigration.googleapis.com",
     "default_version": "v1",
-    "codeowner_team": ""
+    "codeowner_team": "",
+    "api_shortname": "datamigration"
 }
