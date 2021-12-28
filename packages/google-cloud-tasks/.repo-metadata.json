@@ -4,7 +4,7 @@
     "product_documentation": "https://cloud.google.com/tasks/docs/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/cloudtasks/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/5433985",
-    "release_level": "ga",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-tasks",
@@ -12,5 +12,6 @@
     "api_id": "cloudtasks.googleapis.com",
     "requires_billing": true,
     "default_version": "v2",
-    "codeowner_team": "@googleapis/serverless-team"
+    "codeowner_team": "@googleapis/serverless-team",
+    "api_shortname": "cloudtasks"
 }
