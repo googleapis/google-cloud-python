@@ -4,12 +4,13 @@
     "product_documentation": "https://cloud.google.com/ai-platform/notebooks/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/notebooks/latest",
     "issue_tracker": "",
-    "release_level": "ga",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-notebooks",
     "distribution_name": "google-cloud-notebooks",
     "api_id": "notebooks.googleapis.com",
     "default_version": "v1",
-    "codeowner_team": "@googleapis/cdpe-cloudai"
+    "codeowner_team": "@googleapis/cdpe-cloudai",
+    "api_shortname": "notebooks"
 }
