@@ -4,7 +4,7 @@
     "product_documentation": "https://cloud.google.com/container-registry/docs/container-analysis",
     "client_documentation": "https://cloud.google.com/python/docs/reference/containeranalysis/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/559777",
-    "release_level": "ga",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-containeranalysis",
@@ -12,5 +12,6 @@
     "api_id": "containeranalysis.googleapis.com",
     "codeowner_team": "@googleapis/cicd",
     "requires_billing": false,
-    "default_version": "v1"
+    "default_version": "v1",
+    "api_shortname": "containeranalysis"
 }
