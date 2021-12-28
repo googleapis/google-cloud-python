@@ -4,12 +4,13 @@
     "product_documentation": "",
     "client_documentation": "https://googleapis.dev/python/area120tables/latest",
     "issue_tracker": "",
-    "release_level": "alpha",
+    "release_level": "preview",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-area120-tables",
     "distribution_name": "google-area120-tables",
     "api_id": "area120tables.googleapis.com",
     "default_version": "v1alpha1",
-    "codeowner_team": ""
+    "codeowner_team": "",
+    "api_shortname": "area120tables"
 }
