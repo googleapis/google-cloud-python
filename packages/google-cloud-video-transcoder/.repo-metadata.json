@@ -4,12 +4,13 @@
     "product_documentation": "https://cloud.google.com/transcoder",
     "client_documentation": "https://cloud.google.com/python/docs/reference/transcoder/latest",
     "issue_tracker": "",
-    "release_level": "ga",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-video-transcoder",
     "distribution_name": "google-cloud-video-transcoder",
     "api_id": "transcoder.googleapis.com",
     "default_version": "v1",
-    "codeowner_team": ""
+    "codeowner_team": "",
+    "api_shortname": "transcoder"
 }
