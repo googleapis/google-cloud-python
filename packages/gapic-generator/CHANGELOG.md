@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.58.3](https://www.github.com/googleapis/gapic-generator-python/compare/v0.58.2...v0.58.3) (2021-12-28)
+
+
+### Bug Fixes
+
+* add additional reserved names for disambiguation ([#1114](https://www.github.com/googleapis/gapic-generator-python/issues/1114)) ([1cffd8d](https://www.github.com/googleapis/gapic-generator-python/commit/1cffd8d99936cd10649faf05e0288b693e718f81))
+
 ### [0.58.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.58.1...v0.58.2) (2021-12-13)
 
 
