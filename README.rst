@@ -70,6 +70,18 @@ Libraries
    * - Client
      - Release Level
      - Version
+   * - `Kubernetes Engine <https://github.com/googleapis/python-container>`_
+     - |stable|
+     - |PyPI-google-cloud-container|
+   * - `Pub/Sub <https://github.com/googleapis/python-pubsub>`_
+     - |stable|
+     - |PyPI-google-cloud-pubsub|
+   * - `BigQuery Migration <https://github.com/googleapis/python-bigquery-migration>`_
+     - |preview|
+     - |PyPI-google-cloud-bigquery-migration|
+   * - `Data QnA <https://github.com/googleapis/python-data-qna>`_
+     - |preview|
+     - |PyPI-google-cloud-data-qna|
    * - `AI Platform <https://github.com/googleapis/python-aiplatform>`_
      - |ga|
      - |PyPI-google-cloud-aiplatform|
@@ -232,9 +244,6 @@ Libraries
    * - `Key Management Service <https://github.com/googleapis/python-kms>`_
      - |ga|
      - |PyPI-google-cloud-kms|
-   * - `Kubernetes Engine <https://github.com/googleapis/python-container>`_
-     - |ga|
-     - |PyPI-google-cloud-container|
    * - `Logging <https://github.com/googleapis/python-logging>`_
      - |ga|
      - |PyPI-google-cloud-logging|
@@ -268,9 +277,6 @@ Libraries
    * - `Private Certificate Authority <https://github.com/googleapis/python-security-private-ca>`_
      - |ga|
      - |PyPI-google-cloud-private-ca|
-   * - `Pub/Sub <https://github.com/googleapis/python-pubsub>`_
-     - |ga|
-     - |PyPI-google-cloud-pubsub|
    * - `Pub/Sub Lite <https://github.com/googleapis/python-pubsublite>`_
      - |ga|
      - |PyPI-google-cloud-pubsublite|
@@ -436,22 +442,24 @@ Libraries
    * - `Area 120 Tables API <https://github.com/googleapis/python-area120-tables>`_
      - |alpha|
      - |PyPI-google-area120-tables|
-   * - `BigQuery Migration <https://github.com/googleapis/python-bigquery-migration>`_
-     - |alpha|
-     - |PyPI-google-cloud-bigquery-migration|
    * - `Compute Engine <https://github.com/googleapis/python-compute>`_
      - |alpha|
      - |PyPI-google-cloud-compute|
    * - `DNS <https://github.com/googleapis/python-dns>`_
      - |alpha|
      - |PyPI-google-cloud-dns|
-   * - `Data QnA <https://github.com/googleapis/python-data-qna>`_
-     - |alpha|
-     - |PyPI-google-cloud-data-qna|
    * - `Datastream <https://github.com/googleapis/python-datastream>`_
      - |alpha|
      - |PyPI-google-cloud-datastream|
 
+.. |PyPI-google-cloud-container| image:: https://img.shields.io/pypi/v/google-cloud-container.svg
+     :target: https://pypi.org/project/google-cloud-container
+.. |PyPI-google-cloud-pubsub| image:: https://img.shields.io/pypi/v/google-cloud-pubsub.svg
+     :target: https://pypi.org/project/google-cloud-pubsub
+.. |PyPI-google-cloud-bigquery-migration| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-migration.svg
+     :target: https://pypi.org/project/google-cloud-bigquery-migration
+.. |PyPI-google-cloud-data-qna| image:: https://img.shields.io/pypi/v/google-cloud-data-qna.svg
+     :target: https://pypi.org/project/google-cloud-data-qna
 .. |PyPI-google-cloud-aiplatform| image:: https://img.shields.io/pypi/v/google-cloud-aiplatform.svg
      :target: https://pypi.org/project/google-cloud-aiplatform
 .. |PyPI-google-cloud-notebooks| image:: https://img.shields.io/pypi/v/google-cloud-notebooks.svg
@@ -560,8 +568,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-iot
 .. |PyPI-google-cloud-kms| image:: https://img.shields.io/pypi/v/google-cloud-kms.svg
      :target: https://pypi.org/project/google-cloud-kms
-.. |PyPI-google-cloud-container| image:: https://img.shields.io/pypi/v/google-cloud-container.svg
-     :target: https://pypi.org/project/google-cloud-container
 .. |PyPI-google-cloud-logging| image:: https://img.shields.io/pypi/v/google-cloud-logging.svg
      :target: https://pypi.org/project/google-cloud-logging
 .. |PyPI-google-cloud-managed-identities| image:: https://img.shields.io/pypi/v/google-cloud-managed-identities.svg
@@ -584,8 +590,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-os-login
 .. |PyPI-google-cloud-private-ca| image:: https://img.shields.io/pypi/v/google-cloud-private-ca.svg
      :target: https://pypi.org/project/google-cloud-private-ca
-.. |PyPI-google-cloud-pubsub| image:: https://img.shields.io/pypi/v/google-cloud-pubsub.svg
-     :target: https://pypi.org/project/google-cloud-pubsub
 .. |PyPI-google-cloud-pubsublite| image:: https://img.shields.io/pypi/v/google-cloud-pubsublite.svg
      :target: https://pypi.org/project/google-cloud-pubsublite
 .. |PyPI-google-cloud-recommender| image:: https://img.shields.io/pypi/v/google-cloud-recommender.svg
@@ -696,14 +700,10 @@ Libraries
      :target: https://pypi.org/project/google-analytics-admin
 .. |PyPI-google-area120-tables| image:: https://img.shields.io/pypi/v/google-area120-tables.svg
      :target: https://pypi.org/project/google-area120-tables
-.. |PyPI-google-cloud-bigquery-migration| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-migration.svg
-     :target: https://pypi.org/project/google-cloud-bigquery-migration
 .. |PyPI-google-cloud-compute| image:: https://img.shields.io/pypi/v/google-cloud-compute.svg
      :target: https://pypi.org/project/google-cloud-compute
 .. |PyPI-google-cloud-dns| image:: https://img.shields.io/pypi/v/google-cloud-dns.svg
      :target: https://pypi.org/project/google-cloud-dns
-.. |PyPI-google-cloud-data-qna| image:: https://img.shields.io/pypi/v/google-cloud-data-qna.svg
-     :target: https://pypi.org/project/google-cloud-data-qna
 .. |PyPI-google-cloud-datastream| image:: https://img.shields.io/pypi/v/google-cloud-datastream.svg
      :target: https://pypi.org/project/google-cloud-datastream
 
