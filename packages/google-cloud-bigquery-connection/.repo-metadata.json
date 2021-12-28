@@ -4,7 +4,7 @@
     "product_documentation": "https://cloud.google.com/bigquery/docs/reference/bigqueryconnection",
     "client_documentation": "https://cloud.google.com/python/docs/reference/bigqueryconnection/latest",
     "issue_tracker": "",
-    "release_level": "ga",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-bigquery-connection",
@@ -12,5 +12,6 @@
     "api_id": "bigqueryconnection.googleapis.com",
     "requires_billing": true,
     "default_version": "v1",
-    "codeowner_team": "@googleapis/api-bigquery"
+    "codeowner_team": "@googleapis/api-bigquery",
+    "api_shortname": "bigqueryconnection"
 }
