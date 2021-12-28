@@ -4,12 +4,13 @@
     "product_documentation": "https://cloud.google.com/secret-manager/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/secretmanager/latest",
     "issue_tracker": "",
-    "release_level": "ga",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-secret-manager",
     "distribution_name": "google-cloud-secret-manager",
     "api_id": "secretmanager.googleapis.com",
     "default_version": "v1",
-    "codeowner_team": ""
+    "codeowner_team": "",
+    "api_shortname": "secretmanager"
 }
