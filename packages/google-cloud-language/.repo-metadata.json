@@ -4,7 +4,7 @@
     "product_documentation": "https://cloud.google.com/natural-language/docs/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/language/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/559753",
-    "release_level": "ga",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-language",
@@ -12,5 +12,6 @@
     "api_id": "language.googleapis.com",
     "requires_billing": true,
     "default_version": "v1",
-    "codeowner_team": "@googleapis/cdpe-cloudai"
+    "codeowner_team": "@googleapis/cdpe-cloudai",
+    "api_shortname": "language"
 }
