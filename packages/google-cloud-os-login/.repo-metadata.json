@@ -4,7 +4,7 @@
     "product_documentation": "https://cloud.google.com/compute/docs/oslogin/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/oslogin/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/559755",
-    "release_level": "ga",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-oslogin",
@@ -12,5 +12,6 @@
     "api_id": "oslogin.googleapis.com",
     "requires_billing": true,
     "default_version": "v1",
-    "codeowner_team": ""
+    "codeowner_team": "",
+    "api_shortname": "oslogin"
 }
