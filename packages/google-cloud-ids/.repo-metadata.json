@@ -4,12 +4,13 @@
     "product_documentation": "https://cloud.google.com/intrusion-detection-system/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/ids/latest",
     "issue_tracker": "",
-    "release_level": "beta",
+    "release_level": "preview",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-ids",
     "distribution_name": "google-cloud-ids",
     "api_id": "ids.googleapis.com",
     "default_version": "v1",
-    "codeowner_team": ""
+    "codeowner_team": "",
+    "api_shortname": "ids"
 }
