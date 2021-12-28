@@ -4,7 +4,7 @@
     "product_documentation": "https://cloud.google.com/data-labeling/docs/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/datalabeling/latest",
     "issue_tracker": "",
-    "release_level": "beta",
+    "release_level": "preview",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-datalabeling",
@@ -12,5 +12,6 @@
     "api_id": "datalabeling.googleapis.com",
     "requires_billing": true,
     "default_version": "v1beta1",
-    "codeowner_team": "@googleapis/cdpe-cloudai"
+    "codeowner_team": "@googleapis/cdpe-cloudai",
+    "api_shortname": "datalabeling"
 }
