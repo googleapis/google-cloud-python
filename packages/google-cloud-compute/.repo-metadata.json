@@ -4,12 +4,13 @@
     "product_documentation": "https://cloud.google.com/compute/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/compute/latest",
     "issue_tracker": "https://issuetracker.google.com/issues/new?component=187134&template=0",
-    "release_level": "alpha",
+    "release_level": "preview",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-compute",
     "distribution_name": "google-cloud-compute",
     "api_id": "compute.googleapis.com",
     "codeowner_team": "@googleapis/api-compute",
-    "default_version": "v1"
+    "default_version": "v1",
+    "api_shortname": "compute"
 }
