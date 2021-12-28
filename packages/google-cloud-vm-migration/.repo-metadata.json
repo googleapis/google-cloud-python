@@ -2,14 +2,15 @@
     "name": "vmmigration",
     "name_pretty": "Cloud VM Migration",
     "product_documentation": "https://cloud.google.com/migrate/compute-engine/docs",
-    "client_documentation": "https://googleapis.dev/python/vmmigration/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/vmmigration/latest",
     "issue_tracker": "",
-    "release_level": "beta",
+    "release_level": "preview",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-vm-migration",
     "distribution_name": "google-cloud-vm-migration",
     "api_id": "vmmigration.googleapis.com",
     "default_version": "v1",
-    "codeowner_team": "@googleapis/api-compute"
+    "codeowner_team": "@googleapis/api-compute",
+    "api_shortname": "vmmigration"
 }
