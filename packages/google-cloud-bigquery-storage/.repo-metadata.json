@@ -4,7 +4,7 @@
     "product_documentation": "https://cloud.google.com/bigquery/docs/reference/storage/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/bigquerystorage/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/559654",
-    "release_level": "ga",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_COMBO",
     "repo": "googleapis/python-bigquery-storage",
@@ -12,5 +12,6 @@
     "api_id": "bigquerystorage.googleapis.com",
     "requires_billing": true,
     "default_version": "v1",
-    "codeowner_team": "@googleapis/api-bigquery"
+    "codeowner_team": "@googleapis/api-bigquery",
+    "api_shortname": "bigquerystorage"
 }
