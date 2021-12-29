@@ -22,11 +22,19 @@ branchProtectionRules:
     - 'showcase-unit (3.9)'
     - 'showcase-unit (3.9, _alternative_templates)'
     - 'showcase-unit-add-iam-methods'
+    - 'integration'
     - 'style-check'
     - 'unit (3.6)'
     - 'unit (3.7)'
     - 'unit (3.8)'
     - 'unit (3.9)'
+    - 'fragment (3.6)'
+    - 'fragment (3.7)'
+    - 'fragment (3.8)'
+    - 'fragment (3.9)'
+    - 'fragment (3.7, _alternative_templates)'
+    - 'fragment (3.8, _alternative_templates)'
+    - 'fragment (3.9, _alternative_templates)'
   requiredApprovingReviewCount: 1
   requiresCodeOwnerReviews: true
   requiresStrictStatusChecks: true

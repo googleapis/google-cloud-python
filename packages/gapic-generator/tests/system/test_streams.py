@@ -23,6 +23,10 @@ metadata = (("showcase-trailer", "hello world"),)
 
 
 def test_unary_stream(echo):
+    if isinstance(echo.transport, type(echo).get_transport_class("rest")):
+        # (TODO: dovs) Temporarily disabling rest
+        return
+
     content = 'The hail in Wales falls mainly on the snails.'
     responses = echo.expand({
         'content': content,
@@ -38,6 +42,10 @@ def test_unary_stream(echo):
 
 
 def test_stream_unary(echo):
+    if isinstance(echo.transport, type(echo).get_transport_class("rest")):
+        # (TODO: dovs) Temporarily disabling rest
+        return
+
     requests = []
     requests.append(showcase.EchoRequest(content="hello"))
     requests.append(showcase.EchoRequest(content="world!"))
@@ -46,12 +54,20 @@ def test_stream_unary(echo):
 
 
 def test_stream_unary_passing_dict(echo):
+    if isinstance(echo.transport, type(echo).get_transport_class("rest")):
+        # (TODO: dovs) Temporarily disabling rest
+        return
+
     requests = [{'content': 'hello'}, {'content': 'world!'}]
     response = echo.collect(iter(requests))
     assert response.content == 'hello world!'
 
 
 def test_stream_stream(echo):
+    if isinstance(echo.transport, type(echo).get_transport_class("rest")):
+        # (TODO: dovs) Temporarily disabling rest
+        return
+
     requests = []
     requests.append(showcase.EchoRequest(content="hello"))
     requests.append(showcase.EchoRequest(content="world!"))
@@ -66,6 +82,10 @@ def test_stream_stream(echo):
 
 
 def test_stream_stream_passing_dict(echo):
+    if isinstance(echo.transport, type(echo).get_transport_class("rest")):
+        # (TODO: dovs) Temporarily disabling rest
+        return
+
     requests = [{'content': 'hello'}, {'content': 'world!'}]
     responses = echo.chat(iter(requests), metadata=metadata)
 

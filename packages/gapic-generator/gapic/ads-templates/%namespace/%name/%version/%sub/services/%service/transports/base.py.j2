@@ -3,22 +3,29 @@
 {% block content %}
 
 import abc
-import typing
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 import pkg_resources
 
 import google.auth  # type: ignore
-from google.api_core import gapic_v1
-from google.api_core import retry as retries
+import google.api_core  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
+from google.api_core import gapic_v1    # type: ignore
+from google.api_core import retry as retries  # type: ignore
 {% if service.has_lro %}
 from google.api_core import operations_v1
 {% endif %}
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.oauth2 import service_account # type: ignore
 
 {% filter sort_lines %}
 {% for method in service.methods.values() %}
 {{ method.input.ident.python_import }}
 {{ method.output.ident.python_import }}
 {% endfor %}
+{% if opts.add_iam_methods %}
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+{% endif %}
 {% endfilter %}
 
 try:
@@ -31,7 +38,7 @@ except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
-class {{ service.name }}Transport(metaclass=abc.ABCMeta):
+class {{ service.name }}Transport(abc.ABC):
     """Abstract transport class for {{ service.name }}."""
 
     AUTH_SCOPES = (
@@ -40,11 +47,18 @@ class {{ service.name }}Transport(metaclass=abc.ABCMeta):
         {% endfor %}
     )
 
+    DEFAULT_HOST: str = {% if service.host %}'{{ service.host }}'{% else %}{{ '' }}{% endif %}
+
     def __init__(
             self, *,
-            host: str{% if service.host %} = '{{ service.host }}'{% endif %},
+            host: str = DEFAULT_HOST,
             credentials: ga_credentials.Credentials = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            quota_project_id: Optional[str] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            **kwargs,
             ) -> None:
         """Instantiate the transport.
 
@@ -56,30 +70,54 @@ class {{ service.name }}Transport(metaclass=abc.ABCMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is mutually exclusive with credentials.
+            scopes (Optional[Sequence[str]]): A list of scopes.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
                 The client info used to send a user-agent string along with
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                be used for service account credentials.
         """
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
         if ':' not in host:
             host += ':443'
         self._host = host
 
+        scopes_kwargs = {"scopes": scopes, "default_scopes": self.AUTH_SCOPES}
+
+        # Save the scopes.
+        self._scopes = scopes
+
         # If no credentials are provided, then determine the appropriate
         # defaults.
-        if credentials is None:
-            credentials, _ = google.auth.default(scopes=self.AUTH_SCOPES)
+        if credentials and credentials_file:
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
+
+        if credentials_file is not None:
+            credentials, _ = google.auth.load_credentials_from_file(
+                                credentials_file,
+                                **scopes_kwargs,
+                                quota_project_id=quota_project_id
+                            )
+        elif credentials is None:
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
+
+        # If the credentials are service account credentials, then always try to use self signed JWT.
+        if always_use_jwt_access and isinstance(credentials, service_account.Credentials) and hasattr(service_account.Credentials, "with_always_use_jwt_access"):
+            credentials = credentials.with_always_use_jwt_access(True)
 
         # Save the credentials.
         self._credentials = credentials
 
-        # Lifted into its own function so it can be stubbed out during tests.
-        self._prep_wrapped_messages(client_info)
 
     def _prep_wrapped_messages(self, client_info):
-        # Precomputed wrapped methods
+        # Precompute the wrapped methods.
         self._wrapped_methods = {
             {% for method in service.methods.values() %}
             self.{{ method.name|snake_case }}: gapic_v1.method.wrap_method(
@@ -106,7 +144,7 @@ class {{ service.name }}Transport(metaclass=abc.ABCMeta):
     def close(self):
         """Closes resources associated with the transport.
 
-        .. warning::
+       .. warning::
             Only call this method if the transport is NOT shared
             with other clients - this may cause errors in other clients!
         """
@@ -117,17 +155,52 @@ class {{ service.name }}Transport(metaclass=abc.ABCMeta):
     @property
     def operations_client(self):
         """Return the client designed to process long-running operations."""
-        raise NotImplementedError
+        raise NotImplementedError()
     {% endif %}
     {% for method in service.methods.values() %}
 
     @property
-    def {{ method.name|snake_case }}(self) -> typing.Callable[
+    def {{ method.name|snake_case }}(self) -> Callable[
             [{{ method.input.ident }}],
-            {{ method.output.ident }}]:
-        raise NotImplementedError
+            Union[
+                {{ method.output.ident }},
+                Awaitable[{{ method.output.ident }}]
+            ]]:
+        raise NotImplementedError()
     {% endfor %}
 
+
+    {% if opts.add_iam_methods %}
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.SetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.GetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        Union[
+            iam_policy_pb2.TestIamPermissionsResponse,
+            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+    {% endif %}
 
 __all__ = (
     '{{ service.name }}Transport',

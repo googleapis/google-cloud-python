@@ -127,7 +127,6 @@ class ListBucketsAsyncPager:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
-
     def __aiter__(self) -> AsyncIterator[logging_config.LogBucket]:
         async def async_generator():
             async for page in self.pages:
@@ -249,7 +248,6 @@ class ListViewsAsyncPager:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
-
     def __aiter__(self) -> AsyncIterator[logging_config.LogView]:
         async def async_generator():
             async for page in self.pages:
@@ -371,7 +369,6 @@ class ListSinksAsyncPager:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
-
     def __aiter__(self) -> AsyncIterator[logging_config.LogSink]:
         async def async_generator():
             async for page in self.pages:
@@ -493,7 +490,6 @@ class ListExclusionsAsyncPager:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
-
     def __aiter__(self) -> AsyncIterator[logging_config.LogExclusion]:
         async def async_generator():
             async for page in self.pages:

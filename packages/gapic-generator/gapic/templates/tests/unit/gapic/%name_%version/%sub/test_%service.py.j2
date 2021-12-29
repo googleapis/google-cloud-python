@@ -16,7 +16,7 @@ from proto.marshal.rules.dates import DurationRule, TimestampRule
 
 {% if 'rest' in opts.transport %}
 from requests import Response
-from requests import Request
+from requests import Request, PreparedRequest
 from requests.sessions import Session
 {% endif %}
 
@@ -245,18 +245,18 @@ def test_{{ service.client_name|snake_case }}_client_options(client_class, trans
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -295,7 +295,7 @@ def test_{{ service.client_name|snake_case }}_mtls_env_auto(client_class, transp
         options = client_options.ClientOptions(client_cert_source=client_cert_source_callback)
         with mock.patch.object(transport_class, '__init__') as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -375,7 +375,7 @@ def test_{{ service.client_name|snake_case }}_client_options_scopes(client_class
     )
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -403,7 +403,7 @@ def test_{{ service.client_name|snake_case }}_client_options_credentials_file(cl
     )
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -415,7 +415,7 @@ def test_{{ service.client_name|snake_case }}_client_options_credentials_file(cl
             always_use_jwt_access=True,
         )
 {% if 'grpc' in opts.transport %}
-
+{# TODO(dovs): genericize this function#}
 
 def test_{{ service.client_name|snake_case }}_client_options_from_dict():
     with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}GrpcTransport.__init__') as grpc_transport:
@@ -437,7 +437,11 @@ def test_{{ service.client_name|snake_case }}_client_options_from_dict():
 
 
 {% for method in service.methods.values() if 'grpc' in opts.transport %}{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.name|snake_case %}
-def test_{{ method_name }}(transport: str = 'grpc', request_type={{ method.input.ident }}):
+@pytest.mark.parametrize("request_type", [
+  {{ method.input.ident }},
+  dict,
+])
+def test_{{ method_name }}(request_type, transport: str = 'grpc'):
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -516,10 +520,6 @@ def test_{{ method_name }}(transport: str = 'grpc', request_type={{ method.input
     {% endif %}{# end oneof/optional #}
     {% endfor %}
     {% endif %}
-
-
-def test_{{ method_name }}_from_dict():
-    test_{{ method_name }}(request_type=dict)
 
 
 {% if not method.client_streaming %}
@@ -924,9 +924,11 @@ async def test_{{ method_name }}_flattened_error_async():
 
 
 {% if method.paged_result_field %}
-def test_{{ method_name }}_pager():
+{% if not method.paged_result_field.map %}
+def test_{{ method_name }}_pager(transport_name: str = "grpc"):
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -982,10 +984,11 @@ def test_{{ method_name }}_pager():
         assert len(results) == 6
         assert all(isinstance(i, {{ method.paged_result_field.type.ident }})
                    for i in results)
-
-def test_{{ method_name }}_pages():
+{% endif %}
+def test_{{ method_name }}_pages(transport_name: str = "grpc"):
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -993,6 +996,35 @@ def test_{{ method_name }}_pages():
             type(client.transport.{{ method.name|snake_case }}),
             '__call__') as call:
         # Set the response to a series of pages.
+        {% if method.paged_result_field.map %}
+        call.side_effect = (
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}={
+                    'a':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                    'b':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                    'c':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                },
+                next_page_token='abc',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}={},
+                next_page_token='def',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}={
+                    'g':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                },
+                next_page_token='ghi',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}={
+                    'h':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                    'i':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                },
+            ),
+            RuntimeError,
+        )
+        {% else %}
         call.side_effect = (
             {{ method.output.ident }}(
                 {{ method.paged_result_field.name }}=[
@@ -1020,6 +1052,8 @@ def test_{{ method_name }}_pages():
             ),
             RuntimeError,
         )
+        {% endif %}
+        {# method.paged_result_field.map #}
         pages = list(client.{{ method_name }}(request={}).pages)
         for page_, token in zip(pages, ['abc','def','ghi', '']):
             assert page_.raw_page.next_page_token == token
@@ -1036,6 +1070,33 @@ async def test_{{ method_name }}_async_pager():
             '__call__', new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
+        {% if method.paged_result_field.map %}
+              {{ method.output.ident }}(
+                  {{ method.paged_result_field.name }}={
+                      'a':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                      'b':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                      'c':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                  },
+                  next_page_token='abc',
+              ),
+              {{ method.output.ident }}(
+                  {{ method.paged_result_field.name }}={},
+                  next_page_token='def',
+              ),
+              {{ method.output.ident }}(
+                  {{ method.paged_result_field.name }}={
+                      'g':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                  },
+                  next_page_token='ghi',
+              ),
+              {{ method.output.ident }}(
+                  {{ method.paged_result_field.name }}={
+                      'h':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                      'i':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                  },
+              ),
+            RuntimeError,
+        {% else %}
             {{ method.output.ident }}(
                 {{ method.paged_result_field.name }}=[
                     {{ method.paged_result_field.type.ident }}(),
@@ -1061,6 +1122,7 @@ async def test_{{ method_name }}_async_pager():
                 ],
             ),
             RuntimeError,
+        {% endif %}
         )
         async_pager = await client.{{ method_name }}(request={},)
         assert async_pager.next_page_token == 'abc'
@@ -1069,8 +1131,22 @@ async def test_{{ method_name }}_async_pager():
             responses.append(response)
 
         assert len(responses) == 6
+        {% if method.paged_result_field.map %}
+
+        assert all(
+            isinstance(i, tuple)
+                for i in responses)
+        for result in responses:
+            assert isinstance(result, tuple)
+            assert tuple(type(t) for t in result) == (str, {{ method.paged_result_field.type.fields.get('value').ident }})
+
+        assert async_pager.get('a') is None
+        assert isinstance(async_pager.get('h'), {{ method.paged_result_field.type.fields.get('value').ident }})
+        {% else %}
         assert all(isinstance(i, {{ method.paged_result_field.type.ident }})
-                   for i in responses)
+                for i in responses)
+        {% endif %}
+
 
 @pytest.mark.asyncio
 async def test_{{ method_name }}_async_pages():
@@ -1084,6 +1160,33 @@ async def test_{{ method_name }}_async_pages():
             '__call__', new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
+        {% if method.paged_result_field.map %}
+              {{ method.output.ident }}(
+                  {{ method.paged_result_field.name }}={
+                      'a':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                      'b':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                      'c':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                  },
+                  next_page_token='abc',
+              ),
+              {{ method.output.ident }}(
+                  {{ method.paged_result_field.name }}={},
+                  next_page_token='def',
+              ),
+              {{ method.output.ident }}(
+                  {{ method.paged_result_field.name }}={
+                      'g':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                  },
+                  next_page_token='ghi',
+              ),
+              {{ method.output.ident }}(
+                  {{ method.paged_result_field.name }}={
+                      'h':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                      'i':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                  },
+              ),
+            RuntimeError,
+        {% else %}
             {{ method.output.ident }}(
                 {{ method.paged_result_field.name }}=[
                     {{ method.paged_result_field.type.ident }}(),
@@ -1109,6 +1212,7 @@ async def test_{{ method_name }}_async_pages():
                 ],
             ),
             RuntimeError,
+        {% endif %}
         )
         pages = []
         async for page_ in (await client.{{ method_name }}(request={})).pages:
@@ -1123,14 +1227,74 @@ def test_{{ method_name }}_raw_page_lro():
 
 {% endfor %} {# method in methods for grpc #}
 
-{% for method in service.methods.values() if 'rest' in opts.transport and
-    method.http_options %}{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.name|snake_case %}
-{# TODO(kbandes): remove this if condition when streaming is supported in rest. #}
+{% for method in service.methods.values() if 'rest' in opts.transport %}{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.name|snake_case %}{% if method.http_options %}
+{# TODO(kbandes): remove this if condition when streaming are supported. #}
 {% if not (method.server_streaming or method.client_streaming) %}
-def test_{{ method_name }}_rest(transport: str = 'rest', request_type={{ method.input.ident }}):
+@pytest.mark.parametrize("request_type", [
+  {{ method.input.ident }},
+  dict,
+])
+def test_{{ method_name }}_rest(request_type, transport: str = 'rest'):
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        transport="rest",
+    )
+    # Send a request that will satisfy transcoding
+    request = {{ method.input.ident }}({{ method.http_options[0].sample_request(method) }})
+    {% if method.client_streaming %}
+    requests = [request]
+    {% endif %}
+
+
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+                {% if method.void %}
+        return_value = None
+        {% elif method.lro %}
+        return_value = operations_pb2.Operation(name='operations/spam')
+        {% elif method.server_streaming %}
+        return_value = iter([{{ method.output.ident }}()])
+        {% else %}
+        return_value = {{ method.output.ident }}(
+            {% for field in method.output.fields.values() | rejectattr('message')%}
+            {% if not field.oneof or field.proto3_optional %}
+              {{ field.name }}={{ field.mock_value }},
+              {% endif %}{% endfor %}
+              {# This is a hack to only pick one field  #}
+              {% for oneof_fields in method.output.oneof_fields().values() %}
+              {% with field = oneof_fields[0] %}
+              {{ field.name }}={{ field.mock_value }},
+              {% endwith %}
+              {% endfor %}
+        )
+        {% endif %}
+        req.return_value = Response()
+        req.return_value.status_code = 500
+        req.return_value.request = PreparedRequest()
+        {% if method.void %}
+        json_return_value = ''
+        {% else %}
+        json_return_value = {{ method.output.ident }}.to_json(return_value)
+        {% endif %}
+        req.return_value._content = json_return_value.encode("UTF-8")
+        with pytest.raises(core_exceptions.GoogleAPIError):
+            # We only care that the correct exception is raised when putting
+            # the request over the wire, so an empty request is fine.
+            {% if method.client_streaming %}
+            client.{{ method_name }}(iter([requests]))
+            {% else %}
+            client.{{ method_name }}(request)
+            {% endif %}
+
+
+{# TODO(kbandes): remove this if condition when lro and streaming are supported. #}
+@pytest.mark.parametrize("request_type", [
+    {{ method.input.ident }},
+    dict,
+])
+def test_{{ method_name }}_rest(request_type):
+    client = {{ service.client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1147,7 +1311,7 @@ def test_{{ method_name }}_rest(transport: str = 'rest', request_type={{ method.
     {% endif %}
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, 'request') as req:
+    with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         {% if method.void %}
         return_value = None
@@ -1183,7 +1347,7 @@ def test_{{ method_name }}_rest(transport: str = 'rest', request_type={{ method.
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         {% if method.client_streaming %}
-        response = client.{{ method.name|snake_case }}(iter(requests))
+        response = client.{{ method_name }}(iter(requests))
         {% else %}
         response = client.{{ method_name }}(request)
         {% endif %}
@@ -1240,7 +1404,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     assert "{{ field_name }}" not in jsonified_request
     {% endfor %}
 
-    unset_fields = transport_class._{{ method.name | snake_case }}_get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.name | snake_case }}._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -1256,7 +1420,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     jsonified_request["{{ field_name }}"] = {{ mock_value }}
     {% endfor %}
 
-    unset_fields = transport_class._{{ method.name | snake_case }}_get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.name | snake_case }}._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -1315,7 +1479,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
             req.return_value = response_value
 
             {% if method.client_streaming %}
-            response = client.{{ method.name|snake_case }}(iter(requests))
+            response = client.{{ method_name }}(iter(requests))
             {% else %}
             response = client.{{ method_name }}(request)
             {% endif %}
@@ -1366,25 +1530,21 @@ def test_{{ method_name }}_rest_bad_request(transport: str = 'rest', request_typ
         response_value.request = Request()
         req.return_value = response_value
         {% if method.client_streaming %}
-        client.{{ method.name|snake_case }}(iter(requests))
+        client.{{ method_name }}(iter(requests))
         {% else %}
         client.{{ method_name }}(request)
         {% endif %}
 
 
-def test_{{ method_name }}_rest_from_dict():
-    test_{{ method_name }}_rest(request_type=dict)
-
-
-{% if method.flattened_fields %}
-def test_{{ method_name }}_rest_flattened(transport: str = 'rest'):
+{% if method.flattened_fields and "rest" in opts.transport %}
+def test_{{ method_name }}_rest_flattened():
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, 'request') as req:
+    with mock.patch.object(type(client.transport._session), 'request') as req:
         # Designate an appropriate value for the returned response.
         {% if method.void %}
         return_value = None
@@ -1464,126 +1624,158 @@ def test_{{ method_name }}_rest_pager(transport: str = 'rest'):
     with mock.patch.object(Session, 'request') as req:
         # TODO(kbandes): remove this mock unless there's a good reason for it.
         #with mock.patch.object(path_template, 'transcode') as transcode:
-            # Set the response as a series of pages
-            {% if method.paged_result_field.map%}
-            response = (
-                {{ method.output.ident }}(
-                    {{ method.paged_result_field.name }}={
-                        'a':{{ method.paged_result_field.type.fields.get('value').ident }}(),
-                        'b':{{ method.paged_result_field.type.fields.get('value').ident }}(),
-                        'c':{{ method.paged_result_field.type.fields.get('value').ident }}(),
-                    },
-                    next_page_token='abc',
-                ),
-                {{ method.output.ident }}(
-                    {{ method.paged_result_field.name }}={},
-                    next_page_token='def',
-                ),
-                {{ method.output.ident }}(
-                    {{ method.paged_result_field.name }}={
-                        'g':{{ method.paged_result_field.type.fields.get('value').ident }}(),
-                    },
-                    next_page_token='ghi',
-                ),
-                {{ method.output.ident }}(
-                    {{ method.paged_result_field.name }}={
-                        'h':{{ method.paged_result_field.type.fields.get('value').ident }}(),
-                        'i':{{ method.paged_result_field.type.fields.get('value').ident }}(),
-                    },
-                ),
-            )
-            {% else %}
-            response = (
-                {{ method.output.ident }}(
-                    {{ method.paged_result_field.name }}=[
-                        {{ method.paged_result_field.type.ident }}(),
-                        {{ method.paged_result_field.type.ident }}(),
-                        {{ method.paged_result_field.type.ident }}(),
-                    ],
-                    next_page_token='abc',
-                ),
-                {{ method.output.ident }}(
-                    {{ method.paged_result_field.name }}=[],
-                    next_page_token='def',
-                ),
-                {{ method.output.ident }}(
-                    {{ method.paged_result_field.name }}=[
-                        {{ method.paged_result_field.type.ident }}(),
-                    ],
-                    next_page_token='ghi',
-                ),
-                {{ method.output.ident }}(
-                    {{ method.paged_result_field.name }}=[
-                        {{ method.paged_result_field.type.ident }}(),
-                        {{ method.paged_result_field.type.ident }}(),
-                    ],
-                ),
-            )
-            {% endif %}
-            # Two responses for two calls
-            response = response + response
+        # Set the response as a series of pages
+        {% if method.paged_result_field.map%}
+        response = (
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}={
+                    'a':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                    'b':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                    'c':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                },
+                next_page_token='abc',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}={},
+                next_page_token='def',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}={
+                    'g':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                },
+                next_page_token='ghi',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}={
+                    'h':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                    'i':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                },
+            ),
+        )
+        {% else %}
+        response = (
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}=[
+                    {{ method.paged_result_field.type.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
+                ],
+                next_page_token='abc',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}=[],
+                next_page_token='def',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}=[
+                    {{ method.paged_result_field.type.ident }}(),
+                ],
+                next_page_token='ghi',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}=[
+                    {{ method.paged_result_field.type.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
+                ],
+            ),
+        )
+        {% endif %}
+        # Two responses for two calls
+        response = response + response
 
-            # Wrap the values into proper Response objs
-            response = tuple({{ method.output.ident }}.to_json(x) for x in response)
-            return_values = tuple(Response() for i in response)
-            for return_val, response_val in zip(return_values, response):
-                return_val._content = response_val.encode('UTF-8')
-                return_val.status_code = 200
-            req.side_effect = return_values
+        # Wrap the values into proper Response objs
+        response = tuple({{ method.output.ident }}.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode('UTF-8')
+            return_val.status_code = 200
+        req.side_effect = return_values
 
-            sample_request = {{ method.http_options[0].sample_request(method) }}
-            {% for field in method.body_fields.values() %}
-            {% if not field.oneof or field.proto3_optional %}
-            {# ignore oneof fields that might conflict with sample_request #}
-            sample_request["{{ field.name }}"] = {{ field.mock_value }}
-            {% endif %}
-            {% endfor %}
-
-            pager = client.{{ method_name }}(request=sample_request)
-
-            {% if method.paged_result_field.map %}
-            assert isinstance(pager.get('a'), {{ method.paged_result_field.type.fields.get('value').ident }})
-            assert pager.get('h') is None
-            {% endif %}
-
-            results = list(pager)
-            assert len(results) == 6
-            {% if method.paged_result_field.map %}
-            assert all(
-                isinstance(i, tuple)
-                    for i in results)
-            for result in results:
-                assert isinstance(result, tuple)
-                assert tuple(type(t) for t in result) == (str, {{ method.paged_result_field.type.fields.get('value').ident }})
-
-            assert pager.get('a') is None
-            assert isinstance(pager.get('h'), {{ method.paged_result_field.type.fields.get('value').ident }})
-            {% else %}
-            assert all(isinstance(i, {{ method.paged_result_field.type.ident }})
-                    for i in results)
-            {% endif %}
-
-            pages = list(client.{{ method_name }}(request=sample_request).pages)
-            for page_, token in zip(pages, ['abc','def','ghi', '']):
-                assert page_.raw_page.next_page_token == token
+        sample_request = {{ method.http_options[0].sample_request(method) }}
+        {% for field in method.body_fields.values() %}
+        {% if not field.oneof or field.proto3_optional %}
+        {# ignore oneof fields that might conflict with sample_request #}
+        sample_request["{{ field.name }}"] = {{ field.mock_value }}
+        {% endif %}
+        {% endfor %}
 
 
-{% endif %} {# paged methods #}
-{%- else %}
+        pager = client.{{ method_name }}(request=sample_request)
+
+        {% if method.paged_result_field.map %}
+        assert isinstance(pager.get('a'), {{ method.paged_result_field.type.fields.get('value').ident }})
+        assert pager.get('h') is None
+        {% endif %}
+
+        results = list(pager)
+        assert len(results) == 6
+        {% if method.paged_result_field.map %}
+        assert all(
+            isinstance(i, tuple)
+                for i in results)
+        for result in results:
+            assert isinstance(result, tuple)
+            assert tuple(type(t) for t in result) == (str, {{ method.paged_result_field.type.fields.get('value').ident }})
+
+        assert pager.get('a') is None
+        assert isinstance(pager.get('h'), {{ method.paged_result_field.type.fields.get('value').ident }})
+        {% else %}
+        assert all(isinstance(i, {{ method.paged_result_field.type.ident }})
+                for i in results)
+        {% endif %}
+
+        pages = list(client.{{ method_name }}(request=sample_request).pages)
+        for page_, token in zip(pages, ['abc','def','ghi', '']):
+            assert page_.raw_page.next_page_token == token
+
+
+{%- else %}{# paged_result_field #}
 
 def test_{{ method_name }}_rest_error():
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
         transport='rest'
     )
-
-    # TODO(yon-mg): Remove when this method has a working implementation
-    #               or testing straegy
-    with pytest.raises(NotImplementedError):
+    {%- if not method.http_options %}
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(RuntimeError) as runtime_error:
         client.{{ method_name }}({})
+    assert ('Cannot define a method without a valid `google.api.http` annotation.'
+        in str(runtime_error.value))
+
+    {%- endif %}
+{% endif %}{# flattened_fields #}
+
+{% else %}{# this is an lro or streaming method #}
+def test_{{ method_name }}_rest_unimplemented():
+    client = {{ service.client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = {{ method.input.ident }}()
+    {% if method.client_streaming %}
+    requests = [request]
+    {% endif %}
+    with pytest.raises(NotImplementedError):
+        client.{{ method_name }}({% if method.client_streaming %}requests{% else %}request{% endif %})
+
+{% endif %}{# not lro and not streaming #}{% else %}{# not method.http_options #}
+def test_{{ method_name }}_rest_no_http_options():
+    client = {{ service.client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = {{ method.input.ident }}()
+    {% if method.client_streaming %}
+    requests = [request]
+    {% endif %}
+    with pytest.raises(RuntimeError):
+        client.{{ method_name }}({% if method.client_streaming %}requests{% else %}request{% endif %})
 
 
-{% endif %}{# not streaming #}{% endwith %}{# method_name #}
+{% endif %}{# not method.http_options #}
+{% endwith %}{# method_name #}
 
 {% endfor -%} {#- method in methods for rest #}
 
@@ -1646,6 +1838,7 @@ def test_transport_instance():
     assert client.transport is transport
 
 {% if 'grpc' in opts.transport %}
+{# TODO(dovs): parametrize this over async/sync grpc#}
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
     transport = transports.{{ service.name }}GrpcTransport(
@@ -2134,7 +2327,7 @@ def test_parse_common_{{ resource_msg.message_type.resource_type|snake_case }}_p
 {% endwith %} {# cycler #}
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(transports.{{ service.name }}Transport, '_prep_wrapped_messages') as prep:

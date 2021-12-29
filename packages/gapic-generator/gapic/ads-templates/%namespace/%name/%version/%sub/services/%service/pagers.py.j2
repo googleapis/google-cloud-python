@@ -7,7 +7,7 @@
 {# This lives within the loop in order to ensure that this template
    is empty if there are no paged methods.
  -#}
-from typing import Any, Callable, Iterable, Sequence, Tuple
+from typing import Any, Callable, Iterable, Sequence, Tuple, Optional, Iterator
 
 {% filter sort_lines %}
 {% for method in service.methods.values() | selectattr('paged_result_field') %}
@@ -70,9 +70,18 @@ class {{ method.name }}Pager:
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> {{ method.paged_result_field.ident | replace('Sequence', 'Iterable') }}:
+    {% if method.paged_result_field.map %}
+    def __iter__(self) -> Iterator[Tuple[str, {{ method.paged_result_field.type.fields.get('value').ident }}]]:
+        for page in self.pages:
+            yield from page.{{ method.paged_result_field.name}}.items()
+
+    def get(self, key: str) -> Optional[{{ method.paged_result_field.type.fields.get('value').ident }}]:
+        return self._response.{{ method.paged_result_field.name }}.get(key)
+    {% else %}
+    def __iter__(self) -> {{ method.paged_result_field.ident | replace('Sequence', 'Iterator') }}:
         for page in self.pages:
             yield from page.{{ method.paged_result_field.name }}
+    {% endif %}
 
     def __repr__(self) -> str:
         return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)

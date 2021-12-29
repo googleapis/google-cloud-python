@@ -101,7 +101,6 @@ class IAMCredentialsTransport(abc.ABC):
                                 **scopes_kwargs,
                                 quota_project_id=quota_project_id
                             )
-
         elif credentials is None:
             credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
 

@@ -78,7 +78,7 @@ class {{ method.name }}Pager:
             yield from page.{{ method.paged_result_field.name}}.items()
 
     def get(self, key: str) -> Optional[{{ method.paged_result_field.type.fields.get('value').ident }}]:
-        return self._response.items.get(key)
+        return self._response.{{ method.paged_result_field.name }}.get(key)
     {% else %}
     def __iter__(self) -> {{ method.paged_result_field.ident | replace('Sequence', 'Iterator') }}:
         for page in self.pages:
@@ -141,7 +141,19 @@ class {{ method.name }}AsyncPager:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
+    {% if method.paged_result_field.map %}
+    def __aiter__(self) -> Iterator[Tuple[str, {{ method.paged_result_field.type.fields.get('value').ident }}]]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.{{ method.paged_result_field.name}}.items():
+                    yield response
 
+        return async_generator()
+
+    def get(self, key: str) -> Optional[{{ method.paged_result_field.type.fields.get('value').ident }}]:
+        return self._response.{{ method.paged_result_field.name }}.get(key)
+
+    {% else %}
     def __aiter__(self) -> {{ method.paged_result_field.ident | replace('Sequence', 'AsyncIterator') }}:
         async def async_generator():
             async for page in self.pages:
@@ -150,6 +162,7 @@ class {{ method.name }}AsyncPager:
 
         return async_generator()
 
+    {% endif %}
     def __repr__(self) -> str:
         return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 

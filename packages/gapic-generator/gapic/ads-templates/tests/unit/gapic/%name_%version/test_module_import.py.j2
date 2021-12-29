@@ -26,8 +26,14 @@ def test_module_level_imports():
     expected_names.append({{ service.client_name}}.__name__)
     from {{ api.naming.module_namespace|join('.')}}.{{ api.naming.module_name }} import {{ service.transport_name }}
     expected_names.append({{ service.transport_name }}.__name__)
+    {% if "grpc" in opts.transport %}
     from {{ api.naming.module_namespace|join('.')}}.{{ api.naming.module_name }} import {{ service.grpc_transport_name }}
     expected_names.append({{ service.grpc_transport_name }}.__name__)
+    {% endif %}
+    {% if "rest" in opts.transport %}
+    from {{ api.naming.module_namespace|join('.')}}.{{ api.naming.module_name }} import {{ service.rest_transport_name }}
+    expected_names.append({{ service.rest_transport_name }}.__name__)
+    {% endif %}
     {% endfor %}
 
     expected_names.sort()
@@ -62,8 +68,14 @@ def test_versionsed_module_level_imports():
     expected_names.append({{ service.client_name}}.__name__)
     from {{ api.naming.module_namespace|join('.')}}.{{ api.naming.versioned_module_name }} import {{ service.transport_name }}
     expected_names.append({{ service.transport_name }}.__name__)
+    {% if "grpc" in opts.transport %}
     from {{ api.naming.module_namespace|join('.')}}.{{ api.naming.versioned_module_name }} import {{ service.grpc_transport_name }}
     expected_names.append({{ service.grpc_transport_name }}.__name__)
+    {% endif %}
+    {% if "rest" in opts.transport %}
+    from {{ api.naming.module_namespace|join('.')}}.{{ api.naming.versioned_module_name }} import {{ service.rest_transport_name }}
+    expected_names.append({{ service.rest_transport_name }}.__name__)
+    {% endif %}
     {% endfor %}
 
     expected_names.sort()

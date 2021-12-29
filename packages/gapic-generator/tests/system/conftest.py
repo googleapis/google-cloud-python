@@ -35,7 +35,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
         return construct_client(
             EchoAsyncClient,
             use_mtls,
-            transport="grpc_asyncio",
+            transport_name="grpc_asyncio",
             channel_creator=aio.insecure_channel
         )
 
@@ -44,7 +44,7 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
         return construct_client(
             IdentityAsyncClient,
             use_mtls,
-            transport="grpc_asyncio",
+            transport_name="grpc_asyncio",
             channel_creator=aio.insecure_channel
         )
 
@@ -86,10 +86,12 @@ def pytest_addoption(parser):
     )
 
 
-def construct_client(client_class,
-                     use_mtls,
-                     transport="grpc",
-                     channel_creator=grpc.insecure_channel):
+def construct_client(
+    client_class,
+    use_mtls,
+    transport_name="grpc",
+    channel_creator=grpc.insecure_channel,
+):
     if use_mtls:
         with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
             with mock.patch("grpc.ssl_channel_credentials", autospec=True) as mock_ssl_cred:
@@ -103,9 +105,19 @@ def construct_client(client_class,
                 )
                 return client
     else:
-        transport = client_class.get_transport_class(transport)(
-            channel=channel_creator("localhost:7469")
-        )
+        transport_cls = client_class.get_transport_class(transport_name)
+        if transport_name in ["grpc", "grpc_asyncio"]:
+            transport = transport_cls(
+                channel=channel_creator("localhost:7469"),
+            )
+        elif transport_name == "rest":
+            # The custom host explicitly bypasses https.
+            transport = transport_cls(
+                host="http://localhost:7469",
+            )
+        else:
+            raise RuntimeError(f"Unexpected transport type: {transport_name}")
+
         return client_class(transport=transport)
 
 
@@ -114,27 +126,19 @@ def use_mtls(request):
     return request.config.getoption("--mtls")
 
 
-@pytest.fixture
-def echo(use_mtls):
-    return construct_client(EchoClient, use_mtls)
+@pytest.fixture(params=["grpc", "rest"])
+def echo(use_mtls, request):
+    return construct_client(EchoClient, use_mtls, transport_name=request.param)
 
 
-@pytest.fixture
-def identity():
-    transport = IdentityClient.get_transport_class('grpc')(
-        channel=grpc.insecure_channel('localhost:7469'),
-    )
-    return IdentityClient(transport=transport)
+@pytest.fixture(params=["grpc", "rest"])
+def identity(use_mtls, request):
+    return construct_client(IdentityClient, use_mtls, transport_name=request.param)
 
 
-@pytest.fixture
-def identity(use_mtls):
-    return construct_client(IdentityClient, use_mtls)
-
-
-@pytest.fixture
-def messaging(use_mtls):
-    return construct_client(MessagingClient, use_mtls)
+@pytest.fixture(params=["grpc", "rest"])
+def messaging(use_mtls, request):
+    return construct_client(MessagingClient, use_mtls, transport_name=request.param)
 
 
 class MetadataClientInterceptor(
