@@ -58,6 +58,8 @@ metadata.create_all(engine)
 
 ### Insert a row
 ```python
+import uuid
+
 from sqlalchemy import (
     MetaData,
     Table,
@@ -68,9 +70,10 @@ engine = create_engine(
     "spanner:///projects/project-id/instances/instance-id/databases/database-id"
 )
 user = Table("users", MetaData(bind=engine), autoload=True)
+user_id = uuid.uuid4().hex[:6].lower()
 
 with engine.begin() as connection:
-    connection.execute(user.insert(), {"user_id": 1, "user_name": "Full Name"})
+    connection.execute(user.insert(), {"user_id": user_id, "user_name": "Full Name"})
 ```
 
 ### Read
@@ -158,7 +161,9 @@ autocommit_engine = eng.execution_options(isolation_level="AUTOCOMMIT")
 ```
 
 ### Autoincremented IDs  
-Cloud Spanner doesn't support autoincremented IDs mechanism due to performance reasons ([see for more details](https://cloud.google.com/spanner/docs/schema-design#primary-key-prevent-hotspots)). Though it's not encouraged to do so, in case you *need* the feature, you can simulate it manually, for example:
+Cloud Spanner doesn't support autoincremented IDs mechanism due to performance reasons ([see for more details](https://cloud.google.com/spanner/docs/schema-design#primary-key-prevent-hotspots)). We recommend that you use the Python [uuid](https://docs.python.org/3/library/uuid.html) module to generate primary key fields to avoid creating monotonically increasing keys.
+
+Though it's not encouraged to do so, in case you *need* the feature, you can simulate it manually as follows:
 ```python
 with engine.begin() as connection:
     top_id = connection.execute(
