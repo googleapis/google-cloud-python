@@ -241,6 +241,7 @@ def test_mock_value_map():
         label=3,
         type='TYPE_MESSAGE',
     )
+
     assert field.mock_value == "{'key_value': 'value_value'}"
 
 
@@ -290,7 +291,7 @@ def test_mock_value_message():
     assert field.mock_value == 'bogus.Message(foo=324)'
 
 
-def test_mock_value_original_type_message_errors():
+def test_mock_value_original_type_message():
     subfields = collections.OrderedDict((
         ('foo', make_field(name='foo', type='TYPE_INT32')),
         ('bar', make_field(name='bar', type='TYPE_STRING'))
@@ -307,14 +308,39 @@ def test_mock_value_original_type_message_errors():
         nested_enums={},
         nested_messages={},
     )
+
     field = make_field(
         type='TYPE_MESSAGE',
         type_name='bogus.Message',
         message=message,
     )
 
+    mock = field.mock_value_original_type
+
+    assert mock == {"foo": 324, "bar": "bar_value"}
+
+    # Messages by definition aren't primitive
     with pytest.raises(TypeError):
-        mock = field.mock_value_original_type
+        field.primitive_mock()
+
+    # Special case for map entries
+    entry_msg = make_message(
+        name='MessageEntry',
+        fields=(
+            make_field(name='key', type='TYPE_STRING'),
+            make_field(name='value', type='TYPE_STRING'),
+        ),
+        options=descriptor_pb2.MessageOptions(map_entry=True),
+    )
+    entry_field = make_field(
+        name="messages",
+        type_name="stuff.MessageEntry",
+        message=entry_msg,
+        label=3,
+        type='TYPE_MESSAGE',
+    )
+
+    assert entry_field.mock_value_original_type == {}
 
 
 def test_mock_value_recursive():

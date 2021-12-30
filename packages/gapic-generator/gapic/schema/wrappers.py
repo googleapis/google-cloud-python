@@ -94,7 +94,20 @@ class Field:
         return bool(self.repeated and self.message and self.message.map)
 
     @utils.cached_property
-    def mock_value_original_type(self) -> Union[bool, str, bytes, int, float, List[Any], None]:
+    def mock_value_original_type(self) -> Union[bool, str, bytes, int, float, Dict[str, Any], List[Any], None]:
+        # Return messages as dicts and let the message ctor handle the conversion.
+        if self.message:
+            if self.map:
+                # Not worth the hassle, just return an empty map.
+                return {}
+
+            msg_dict = {
+                f.name: f.mock_value_original_type
+                for f in self.message.fields.values()
+            }
+
+            return [msg_dict] if self.repeated else msg_dict
+
         answer = self.primitive_mock() or None
 
         # If this is a repeated field, then the mock answer should
@@ -173,7 +186,7 @@ class Field:
         answer: Union[bool, str, bytes, int, float, List[Any], None] = None
 
         if not isinstance(self.type, PrimitiveType):
-            raise TypeError(f"'inner_mock_as_original_type' can only be used for"
+            raise TypeError(f"'primitive_mock' can only be used for "
                 f"PrimitiveType, but type is {self.type}")
 
         else:
