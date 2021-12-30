@@ -30,8 +30,8 @@ BLACK_PATHS = ["docs", "sqlalchemy_bigquery", "tests", "noxfile.py", "setup.py"]
 DEFAULT_PYTHON_VERSION = "3.8"
 
 # We're using two Python versions to test with sqlalchemy 1.3 and 1.4.
-SYSTEM_TEST_PYTHON_VERSIONS = ["3.8", "3.9"]
-UNIT_TEST_PYTHON_VERSIONS = ["3.6", "3.7", "3.8", "3.9"]
+SYSTEM_TEST_PYTHON_VERSIONS = ["3.8", "3.10"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.6", "3.7", "3.8", "3.9", "3.10"]
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
@@ -100,7 +100,7 @@ def default(session):
 
     if session.python == "3.8":
         extras = "[tests,alembic]"
-    elif session.python == "3.9":
+    elif session.python == "3.10":
         extras = "[tests,geography]"
     else:
         extras = "[tests]"
@@ -158,7 +158,7 @@ def system(session):
     session.install("mock", "pytest", "google-cloud-testutils", "-c", constraints_path)
     if session.python == "3.8":
         extras = "[tests,alembic]"
-    elif session.python == "3.9":
+    elif session.python == "3.10":
         extras = "[tests,geography]"
     else:
         extras = "[tests]"

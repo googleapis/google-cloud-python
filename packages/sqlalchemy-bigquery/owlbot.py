@@ -30,11 +30,11 @@ common = gcp.CommonTemplates()
 extras = ["tests"]
 extras_by_python = {
     "3.8": ["tests", "alembic"],
-    "3.9": ["tests", "geography"],
+    "3.10": ["tests", "geography"],
 }
 templated_files = common.py_library(
-    unit_test_python_versions=["3.6", "3.7", "3.8", "3.9"],
-    system_test_python_versions=["3.8", "3.9"],
+    unit_test_python_versions=["3.6", "3.7", "3.8", "3.9", "3.10"],
+    system_test_python_versions=["3.8", "3.10"],
     cov_level=100,
     unit_test_extras=extras,
     unit_test_extras_by_python=extras_by_python,
@@ -136,7 +136,7 @@ def compliance(session):
     )
     if session.python == "3.8":
         extras = "[tests,alembic]"
-    elif session.python == "3.9":
+    elif session.python == "3.10":
         extras = "[tests,geography]"
     else:
         extras = "[tests]"
