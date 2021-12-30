@@ -1,5 +1,14 @@
 # Changelog
 
+
+### [0.58.4](https://www.github.com/googleapis/gapic-generator-python/compare/v0.58.3...v0.58.4) (2021-12-30)
+
+
+### Bug Fixes
+
+* handle message bodies ([#1117](https://www.github.com/googleapis/gapic-generator-python/issues/1117)) ([36e3236](https://github.com/googleapis/gapic-generator-python/commit/36e3236b3832993331d8d99c10e72797a8851390))
+
+
 ### [0.58.3](https://www.github.com/googleapis/gapic-generator-python/compare/v0.58.2...v0.58.3) (2021-12-28)
 
 
