@@ -4,7 +4,7 @@
     "product_documentation": "https://www.dialogflow.com/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/dialogflow/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/5300385",
-    "release_level": "ga",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-dialogflow",
@@ -12,5 +12,6 @@
     "api_id": "dialogflow.googleapis.com",
     "requires_billing": true,
     "default_version": "v2",
-    "codeowner_team": "@googleapis/cdpe-cloudai"
+    "codeowner_team": "@googleapis/cdpe-cloudai",
+    "api_shortname": "dialogflow"
 }
