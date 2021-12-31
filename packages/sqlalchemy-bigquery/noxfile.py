@@ -212,7 +212,7 @@ def compliance(session):
     )
     if session.python == "3.8":
         extras = "[tests,alembic]"
-    elif session.python == "3.9":
+    elif session.python == "3.10":
         extras = "[tests,geography]"
     else:
         extras = "[tests]"

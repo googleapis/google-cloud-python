@@ -2,7 +2,7 @@
     "name": "sqlalchemy-bigquery",
     "name_pretty": "SQLAlchemy dialect for BigQuery",
     "client_documentation": "https://googleapis.dev/python/sqlalchemy-bigquery/latest/index.html",
-    "release_level": "beta",
+    "release_level": "preview",
     "language": "python",
     "library_type": "INTEGRATION",
     "repo": "googleapis/python-bigquery-sqlalchemy",
