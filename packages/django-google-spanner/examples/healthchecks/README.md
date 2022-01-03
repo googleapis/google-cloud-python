@@ -2,11 +2,8 @@
 
 This example shows how to use django-spanner for Cloud Spanner as a backend database for [https://healthchecks.io](https://healthchecks.io)
 
-*NOTE:* Use the version of python-spanner-django that corresponds to your version of Django. For example, python-spanner-django 2.2.x works with Django 2.2.y. (This is the only supported version at this time.)
-
 ### Table of contents
 - [Install healthchecks](#install-healthchecks)
-- [Clone django-spanner](#clone-django-spanner)
 - [Install django-spanner in the virtual-env](#install-django-spanner-in-the-virtual-env)
 - [Ensure you have a Cloud Spanner database already created](#ensure-you-have-a-Cloud-Spanner-database-already-created)
 - [Set credentials and project environment variables](#Set-credentials-and-project-environment-variables)
@@ -21,35 +18,19 @@ This example shows how to use django-spanner for Cloud Spanner as a backend data
 Please follow the instructions to install [healthchecks.io on Github](https://github.com/healthchecks/healthchecks/).
 You'll need to active the virtual-env as their install instructions request.
 
-### Clone django-spanner
-Open a fresh terminal, and go to a location that isn't a parent directory of where you cloned [healthchecks.io](#install-healthchecks).
-For example we can go to our $HOME/Desktop
-```shell
-cd $HOME/Desktop
-git clone https://github.com/googleapis/python-spanner-django
-```
-
-Note the full path of where django-spanner has been cloned into, for example
-```shell
-DJANGO_SPANNER_CODE_DIR=$Desktop/python-spanner-django
-```
-or add it to your environment, perhaps like this
-```shell
-export DJANGO_SPANNER_CODE_DIR=$Desktop/python-spanner-django
-```
-
 ### Install django-spanner in the virtual-env
-Go back to the directory in which you installed [healthchecks](#install-healthchecks) and ensure your virtual-env is on.
-Ensure that your environment is reloaded to get the settings for $DJANGO_SPANNER_CODE, or ensure you had manually copied that path.
-The prompt should look something like this
+
+Go to the directory in which you installed [healthchecks](#install-healthchecks)
+and ensure your virtual-env is on. The prompt should look something like this:
+
 ```shell
 (hc-venv) $
 ```
 
-now install django-spanner using the path you obtained in [Clone django-spanner](#clone-django-spanner), per
+Install django-google-spanner from PyPI:
 
 ```shell
-(h-venv) $ pip3 install $DJANGO_SPANNER_CODE_DIR
+(h-venv) $ pip install django-google-spanner
 ```
 
 ### Ensure you have a Cloud Spanner database already created
@@ -79,50 +60,50 @@ There are two ways to edit settings file:
 
     a) Add `django_spanner` as the first entry to `INSTALLED_APPS`:
 
-        ```python
-        INSTALLED_APPS = [
-            'django_spanner',  # Must be listed first.
-            ...
-        ]
-        ```
+    ```python
+    INSTALLED_APPS = [
+        'django_spanner',  # Must be listed first.
+        ...
+    ]
+    ```
 
     b) Edit `DATABASES` into the following:
 
-        ```python
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django_spanner',
-                'PROJECT': PROJECT_ID,
-                'INSTANCE': SPANNER_INSTANCE,
-                'NAME': SPANNER_DATABASE_NAME,
-            }
+    ```python
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django_spanner',
+            'PROJECT': PROJECT_ID,
+            'INSTANCE': SPANNER_INSTANCE,
+            'NAME': SPANNER_DATABASE_NAME,
         }
-        ```
+    }
+    ```
 
 2. You can edit the file `hc/local_settings.py` to:
 
-    a) The `INSTALLED_APPS` MUST be copied from hc/settings.py to hc/local_settings.py
+    a) The `INSTALLED_APPS` MUST be copied from `hc/settings.py` to `hc/local_settings.py`
        and add `django_spanner` as the first entry to `INSTALLED_APPS`:
 
-        ```python
-        INSTALLED_APPS = [
-            'django_spanner',  # Must be listed first.
-            ...
-        ]
-        ```
+    ```python
+    INSTALLED_APPS = [
+        'django_spanner',  # Must be listed first.
+        ...
+    ]
+    ```
 
     b) Add or Edit `DATABASES` into the following:
 
-        ```python
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django_spanner',
-                'PROJECT': PROJECT_ID,
-                'INSTANCE': SPANNER_INSTANCE,
-                'NAME': SPANNER_DATABASE_NAME,
-            }
+    ```python
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django_spanner',
+            'PROJECT': PROJECT_ID,
+            'INSTANCE': SPANNER_INSTANCE,
+            'NAME': SPANNER_DATABASE_NAME,
         }
-        ```
+    }
+    ```
 
 and for example here is a filled in database where:
 
