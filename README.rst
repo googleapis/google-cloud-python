@@ -70,396 +70,388 @@ Libraries
    * - Client
      - Release Level
      - Version
+   * - `AI Platform <https://github.com/googleapis/python-aiplatform>`_
+     - |stable|
+     - |PyPI-google-cloud-aiplatform|
+   * - `AI Platform Notebooks <https://github.com/googleapis/python-notebooks>`_
+     - |stable|
+     - |PyPI-google-cloud-notebooks|
+   * - `API Gateway <https://github.com/googleapis/python-api-gateway>`_
+     - |stable|
+     - |PyPI-google-cloud-api-gateway|
+   * - `Access Approval <https://github.com/googleapis/python-access-approval>`_
+     - |stable|
+     - |PyPI-google-cloud-access-approval|
+   * - `Apigee Connect API <https://github.com/googleapis/python-apigee-connect>`_
+     - |stable|
+     - |PyPI-google-cloud-apigee-connect|
+   * - `App Engine Admin API <https://github.com/googleapis/python-appengine-admin>`_
+     - |stable|
+     - |PyPI-google-cloud-appengine-admin|
+   * - `Artifact Registry <https://github.com/googleapis/python-artifact-registry>`_
+     - |stable|
+     - |PyPI-google-cloud-artifact-registry|
+   * - `Asset Inventory <https://github.com/googleapis/python-asset>`_
+     - |stable|
+     - |PyPI-google-cloud-asset|
+   * - `Assured Workloads for Government <https://github.com/googleapis/python-assured-workloads>`_
+     - |stable|
+     - |PyPI-google-cloud-assured-workloads|
+   * - `AutoML <https://github.com/googleapis/python-automl>`_
+     - |stable|
+     - |PyPI-google-cloud-automl|
+   * - `BigQuery <https://github.com/googleapis/python-bigquery>`_
+     - |stable|
+     - |PyPI-google-cloud-bigquery|
+   * - `BigQuery Connection <https://github.com/googleapis/python-bigquery-connection>`_
+     - |stable|
+     - |PyPI-google-cloud-bigquery-connection|
+   * - `BigQuery Data Transfer Service <https://github.com/googleapis/python-bigquery-datatransfer>`_
+     - |stable|
+     - |PyPI-google-cloud-bigquery-datatransfer|
+   * - `BigQuery Logging Protos <https://github.com/googleapis/python-bigquery-logging>`_
+     - |stable|
+     - |PyPI-google-cloud-bigquery-logging|
+   * - `BigQuery Reservation <https://github.com/googleapis/python-bigquery-reservation>`_
+     - |stable|
+     - |PyPI-google-cloud-bigquery-reservation|
+   * - `BigQuery Storage <https://github.com/googleapis/python-bigquery-storage>`_
+     - |stable|
+     - |PyPI-google-cloud-bigquery-storage|
+   * - `Billing <https://github.com/googleapis/python-billing>`_
+     - |stable|
+     - |PyPI-google-cloud-billing|
+   * - `Billing Budget <https://github.com/googleapis/python-billingbudgets>`_
+     - |stable|
+     - |PyPI-google-cloud-billing-budgets|
+   * - `Binary Authorization <https://github.com/googleapis/python-binary-authorization>`_
+     - |stable|
+     - |PyPI-google-cloud-binary-authorization|
+   * - `Build <https://github.com/googleapis/python-cloudbuild>`_
+     - |stable|
+     - |PyPI-google-cloud-build|
+   * - `Channel Services <https://github.com/googleapis/python-channel>`_
+     - |stable|
+     - |PyPI-google-cloud-channel|
+   * - `Composer <https://github.com/googleapis/python-orchestration-airflow>`_
+     - |stable|
+     - |PyPI-google-cloud-orchestration-airflow|
+   * - `Contact Center AI Insights API <https://github.com/googleapis/python-contact-center-insights>`_
+     - |stable|
+     - |PyPI-google-cloud-contact-center-insights|
+   * - `Container Analysis <https://github.com/googleapis/python-containeranalysis>`_
+     - |stable|
+     - |PyPI-google-cloud-containeranalysis|
+   * - `Data Catalog <https://github.com/googleapis/python-datacatalog>`_
+     - |stable|
+     - |PyPI-google-cloud-datacatalog|
+   * - `Data Fusion <https://github.com/googleapis/python-data-fusion>`_
+     - |stable|
+     - |PyPI-google-cloud-data-fusion|
+   * - `Data Loss Prevention <https://github.com/googleapis/python-dlp>`_
+     - |stable|
+     - |PyPI-google-cloud-dlp|
+   * - `Database Migration Service <https://github.com/googleapis/python-dms>`_
+     - |stable|
+     - |PyPI-google-cloud-dms|
+   * - `Dataproc Metastore <https://github.com/googleapis/python-dataproc-metastore>`_
+     - |stable|
+     - |PyPI-google-cloud-dataproc-metastore|
+   * - `Datastore <https://github.com/googleapis/python-datastore>`_
+     - |stable|
+     - |PyPI-google-cloud-datastore|
+   * - `Debugger <https://github.com/googleapis/python-debugger-client>`_
+     - |stable|
+     - |PyPI-google-cloud-debugger-client|
+   * - `Deploy <https://github.com/googleapis/python-deploy>`_
+     - |stable|
+     - |PyPI-google-cloud-deploy|
+   * - `Dialogflow <https://github.com/googleapis/python-dialogflow>`_
+     - |stable|
+     - |PyPI-google-cloud-dialogflow|
+   * - `Dialogflow CX <https://github.com/googleapis/python-dialogflow-cx>`_
+     - |stable|
+     - |PyPI-google-cloud-dialogflow-cx|
+   * - `Document Understanding API <https://github.com/googleapis/python-documentai>`_
+     - |stable|
+     - |PyPI-google-cloud-documentai|
+   * - `Domains <https://github.com/googleapis/python-domains>`_
+     - |stable|
+     - |PyPI-google-cloud-domains|
+   * - `Essential Contacts API <https://github.com/googleapis/python-essential-contacts>`_
+     - |stable|
+     - |PyPI-google-cloud-essential-contacts|
+   * - `Eventarc <https://github.com/googleapis/python-eventarc>`_
+     - |stable|
+     - |PyPI-google-cloud-eventarc|
+   * - `Filestore <https://github.com/googleapis/python-filestore>`_
+     - |stable|
+     - |PyPI-google-cloud-filestore|
+   * - `Firestore <https://github.com/googleapis/python-firestore>`_
+     - |stable|
+     - |PyPI-google-cloud-firestore|
+   * - `Functions <https://github.com/googleapis/python-functions>`_
+     - |stable|
+     - |PyPI-google-cloud-functions|
+   * - `GKE Hub API <https://github.com/googleapis/python-gke-hub>`_
+     - |stable|
+     - |PyPI-google-cloud-gke-hub|
+   * - `Game Servers <https://github.com/googleapis/python-game-servers>`_
+     - |stable|
+     - |PyPI-google-cloud-game-servers|
+   * - `Grafeas <https://github.com/googleapis/python-grafeas>`_
+     - |stable|
+     - |PyPI-grafeas|
+   * - `IAM Policy Troubleshooter API <https://github.com/googleapis/python-policy-troubleshooter>`_
+     - |stable|
+     - |PyPI-google-cloud-policy-troubleshooter|
+   * - `Identity and Access Management <https://github.com/googleapis/python-iam>`_
+     - |stable|
+     - |PyPI-google-cloud-iam|
+   * - `Identity-Aware Proxy <https://github.com/googleapis/python-iap>`_
+     - |stable|
+     - |PyPI-google-cloud-iap|
+   * - `Key Management Service <https://github.com/googleapis/python-kms>`_
+     - |stable|
+     - |PyPI-google-cloud-kms|
    * - `Kubernetes Engine <https://github.com/googleapis/python-container>`_
      - |stable|
      - |PyPI-google-cloud-container|
+   * - `Logging <https://github.com/googleapis/python-logging>`_
+     - |stable|
+     - |PyPI-google-cloud-logging|
+   * - `Managed Service for Microsoft Active Directory <https://github.com/googleapis/python-managed-identities>`_
+     - |stable|
+     - |PyPI-google-cloud-managed-identities|
+   * - `Memorystore for Memcached <https://github.com/googleapis/python-memcache>`_
+     - |stable|
+     - |PyPI-google-cloud-memcache|
+   * - `Monitoring Dashboards <https://github.com/googleapis/python-monitoring-dashboards>`_
+     - |stable|
+     - |PyPI-google-cloud-monitoring-dashboards|
+   * - `NDB Client Library for Datastore <https://github.com/googleapis/python-ndb>`_
+     - |stable|
+     - |PyPI-google-cloud-ndb|
+   * - `Natural Language <https://github.com/googleapis/python-language>`_
+     - |stable|
+     - |PyPI-google-cloud-language|
+   * - `Network Connectivity Center <https://github.com/googleapis/python-network-connectivity>`_
+     - |stable|
+     - |PyPI-google-cloud-network-connectivity|
+   * - `Network Management API <https://github.com/googleapis/python-network-management>`_
+     - |stable|
+     - |PyPI-google-cloud-network-management|
+   * - `OS Login <https://github.com/googleapis/python-oslogin>`_
+     - |stable|
+     - |PyPI-google-cloud-os-login|
+   * - `Private Certificate Authority <https://github.com/googleapis/python-security-private-ca>`_
+     - |stable|
+     - |PyPI-google-cloud-private-ca|
    * - `Pub/Sub <https://github.com/googleapis/python-pubsub>`_
      - |stable|
      - |PyPI-google-cloud-pubsub|
+   * - `Pub/Sub Lite <https://github.com/googleapis/python-pubsublite>`_
+     - |stable|
+     - |PyPI-google-cloud-pubsublite|
+   * - `Recommender API <https://github.com/googleapis/python-recommender>`_
+     - |stable|
+     - |PyPI-google-cloud-recommender|
+   * - `Redis <https://github.com/googleapis/python-redis>`_
+     - |stable|
+     - |PyPI-google-cloud-redis|
+   * - `Resource Manager API <https://github.com/googleapis/python-resource-manager>`_
+     - |stable|
+     - |PyPI-google-cloud-resource-manager|
+   * - `Resource Settings <https://github.com/googleapis/python-resource-settings>`_
+     - |stable|
+     - |PyPI-google-cloud-resource-settings|
+   * - `Retail API <https://github.com/googleapis/python-retail>`_
+     - |stable|
+     - |PyPI-google-cloud-retail|
+   * - `Scheduler <https://github.com/googleapis/python-scheduler>`_
+     - |stable|
+     - |PyPI-google-cloud-scheduler|
+   * - `Secret Manager <https://github.com/googleapis/python-secret-manager>`_
+     - |stable|
+     - |PyPI-google-cloud-secret-manager|
+   * - `Security Command Center <https://github.com/googleapis/python-securitycenter>`_
+     - |stable|
+     - |PyPI-google-cloud-securitycenter|
+   * - `Security Scanner <https://github.com/googleapis/python-websecurityscanner>`_
+     - |stable|
+     - |PyPI-google-cloud-websecurityscanner|
+   * - `Service Control API <https://github.com/googleapis/python-service-control>`_
+     - |stable|
+     - |PyPI-google-cloud-service-control|
+   * - `Service Directory <https://github.com/googleapis/python-service-directory>`_
+     - |stable|
+     - |PyPI-google-cloud-service-directory|
+   * - `Service Management API <https://github.com/googleapis/python-service-management>`_
+     - |stable|
+     - |PyPI-google-cloud-service-management|
+   * - `Service Usage <https://github.com/googleapis/python-service-usage>`_
+     - |stable|
+     - |PyPI-google-cloud-service-usage|
+   * - `Shell <https://github.com/googleapis/python-shell>`_
+     - |stable|
+     - |PyPI-google-cloud-shell|
+   * - `Source Context <https://github.com/googleapis/python-source-context>`_
+     - |stable|
+     - |PyPI-google-cloud-source-context|
+   * - `Spanner <https://github.com/googleapis/python-spanner>`_
+     - |stable|
+     - |PyPI-google-cloud-spanner|
+   * - `Spanner Django <https://github.com/googleapis/python-spanner-django>`_
+     - |stable|
+     - |PyPI-django-google-spanner|
+   * - `Speech <https://github.com/googleapis/python-speech>`_
+     - |stable|
+     - |PyPI-google-cloud-speech|
+   * - `Stackdriver Monitoring <https://github.com/googleapis/python-monitoring>`_
+     - |stable|
+     - |PyPI-google-cloud-monitoring|
+   * - `Storage <https://github.com/googleapis/python-storage>`_
+     - |stable|
+     - |PyPI-google-cloud-storage|
+   * - `Storage Transfer Service <https://github.com/googleapis/python-storage-transfer>`_
+     - |stable|
+     - |PyPI-google-cloud-storage-transfer|
+   * - `TPU <https://github.com/googleapis/python-tpu>`_
+     - |stable|
+     - |PyPI-google-cloud-tpu|
+   * - `Talent Solution <https://github.com/googleapis/python-talent>`_
+     - |stable|
+     - |PyPI-google-cloud-talent|
+   * - `Tasks <https://github.com/googleapis/python-tasks>`_
+     - |stable|
+     - |PyPI-google-cloud-tasks|
+   * - `Text-to-Speech <https://github.com/googleapis/python-texttospeech>`_
+     - |stable|
+     - |PyPI-google-cloud-texttospeech|
+   * - `Trace <https://github.com/googleapis/python-trace>`_
+     - |stable|
+     - |PyPI-google-cloud-trace|
+   * - `Transcoder <https://github.com/googleapis/python-video-transcoder>`_
+     - |stable|
+     - |PyPI-google-cloud-video-transcoder|
+   * - `Translation <https://github.com/googleapis/python-translate>`_
+     - |stable|
+     - |PyPI-google-cloud-translate|
+   * - `Video Intelligence <https://github.com/googleapis/python-videointelligence>`_
+     - |stable|
+     - |PyPI-google-cloud-videointelligence|
+   * - `Virtual Private Cloud <https://github.com/googleapis/python-vpc-access>`_
+     - |stable|
+     - |PyPI-google-cloud-vpc-access|
+   * - `Vision <https://github.com/googleapis/python-vision>`_
+     - |stable|
+     - |PyPI-google-cloud-vision|
+   * - `Web Risk <https://github.com/googleapis/python-webrisk>`_
+     - |stable|
+     - |PyPI-google-cloud-webrisk|
+   * - `Workflows <https://github.com/googleapis/python-workflows>`_
+     - |stable|
+     - |PyPI-google-cloud-workflows|
+   * - `reCAPTCHA Enterprise <https://github.com/googleapis/python-recaptcha-enterprise>`_
+     - |stable|
+     - |PyPI-google-cloud-recaptcha-enterprise|
+   * - `Analytics Admin <https://github.com/googleapis/python-analytics-admin>`_
+     - |preview|
+     - |PyPI-google-analytics-admin|
+   * - `Analytics Data API <https://github.com/googleapis/python-analytics-data>`_
+     - |preview|
+     - |PyPI-google-analytics-data|
+   * - `Area 120 Tables API <https://github.com/googleapis/python-area120-tables>`_
+     - |preview|
+     - |PyPI-google-area120-tables|
+   * - `Audit Log <https://github.com/googleapis/python-audit-log>`_
+     - |preview|
+     - |PyPI-google-cloud-audit-log|
    * - `BigQuery Migration <https://github.com/googleapis/python-bigquery-migration>`_
      - |preview|
      - |PyPI-google-cloud-bigquery-migration|
+   * - `BigQuery connector for pandas <https://github.com/googleapis/python-bigquery-pandas>`_
+     - |preview|
+     - |PyPI-pandas-gbq|
+   * - `Compute Engine <https://github.com/googleapis/python-compute>`_
+     - |preview|
+     - |PyPI-google-cloud-compute|
+   * - `DNS <https://github.com/googleapis/python-dns>`_
+     - |preview|
+     - |PyPI-google-cloud-dns|
+   * - `Data Labeling <https://github.com/googleapis/python-datalabeling>`_
+     - |preview|
+     - |PyPI-google-cloud-datalabeling|
    * - `Data QnA <https://github.com/googleapis/python-data-qna>`_
      - |preview|
      - |PyPI-google-cloud-data-qna|
-   * - `AI Platform <https://github.com/googleapis/python-aiplatform>`_
-     - |ga|
-     - |PyPI-google-cloud-aiplatform|
-   * - `AI Platform Notebooks <https://github.com/googleapis/python-notebooks>`_
-     - |ga|
-     - |PyPI-google-cloud-notebooks|
-   * - `API Gateway <https://github.com/googleapis/python-api-gateway>`_
-     - |ga|
-     - |PyPI-google-cloud-api-gateway|
-   * - `Access Approval <https://github.com/googleapis/python-access-approval>`_
-     - |ga|
-     - |PyPI-google-cloud-access-approval|
-   * - `Apigee Connect API <https://github.com/googleapis/python-apigee-connect>`_
-     - |ga|
-     - |PyPI-google-cloud-apigee-connect|
-   * - `App Engine Admin API <https://github.com/googleapis/python-appengine-admin>`_
-     - |ga|
-     - |PyPI-google-cloud-appengine-admin|
+   * - `Dataflow <https://github.com/googleapis/python-dataflow-client>`_
+     - |preview|
+     - |PyPI-google-cloud-dataflow-client|
+   * - `Datastream <https://github.com/googleapis/python-datastream>`_
+     - |preview|
+     - |PyPI-google-cloud-datastream|
+   * - `Error Reporting <https://github.com/googleapis/python-error-reporting>`_
+     - |preview|
+     - |PyPI-google-cloud-error-reporting|
+   * - `GKE Connect Gateway API <https://github.com/googleapis/python-gke-connect-gateway>`_
+     - |preview|
+     - |PyPI-google-cloud-gke-connect-gateway|
+   * - `IDS <https://github.com/googleapis/python-ids>`_
+     - |preview|
+     - |PyPI-google-cloud-ids|
+   * - `Life Sciences <https://github.com/googleapis/python-life-sciences>`_
+     - |preview|
+     - |PyPI-google-cloud-life-sciences|
+   * - `Media Translation <https://github.com/googleapis/python-media-translation>`_
+     - |preview|
+     - |PyPI-google-cloud-media-translation|
+   * - `Network Security API <https://github.com/googleapis/python-network-security>`_
+     - |preview|
+     - |PyPI-google-cloud-network-security|
+   * - `Pandas Data Types for SQL systems (BigQuery, Spanner) <https://github.com/googleapis/python-db-dtypes-pandas>`_
+     - |preview|
+     - |PyPI-db-dtypes|
+   * - `Phishing Protection <https://github.com/googleapis/python-phishingprotection>`_
+     - |preview|
+     - |PyPI-google-cloud-phishing-protection|
+   * - `Private Catalog <https://github.com/googleapis/python-private-catalog>`_
+     - |preview|
+     - |PyPI-google-cloud-private-catalog|
+   * - `Recommendations AI <https://github.com/googleapis/python-recommendations-ai>`_
+     - |preview|
+     - |PyPI-google-cloud-recommendations-ai|
+   * - `Runtime Configurator <https://github.com/googleapis/python-runtimeconfig>`_
+     - |preview|
+     - |PyPI-google-cloud-runtimeconfig|
+   * - `SQLAlchemy dialect for BigQuery <https://github.com/googleapis/python-bigquery-sqlalchemy>`_
+     - |preview|
+     - |PyPI-sqlalchemy-bigquery|
+   * - `VM Migration <https://github.com/googleapis/python-vm-migration>`_
+     - |preview|
+     - |PyPI-google-cloud-vm-migration|
    * - `App Engine Logging Protos <https://github.com/googleapis/python-appengine-logging>`_
      - |ga|
      - |PyPI-google-cloud-appengine-logging|
-   * - `Artifact Registry <https://github.com/googleapis/python-artifact-registry>`_
-     - |ga|
-     - |PyPI-google-cloud-artifact-registry|
-   * - `Asset Inventory <https://github.com/googleapis/python-asset>`_
-     - |ga|
-     - |PyPI-google-cloud-asset|
-   * - `Assured Workloads for Government <https://github.com/googleapis/python-assured-workloads>`_
-     - |ga|
-     - |PyPI-google-cloud-assured-workloads|
-   * - `AutoML <https://github.com/googleapis/python-automl>`_
-     - |ga|
-     - |PyPI-google-cloud-automl|
-   * - `BigQuery <https://github.com/googleapis/python-bigquery>`_
-     - |ga|
-     - |PyPI-google-cloud-bigquery|
-   * - `BigQuery Connection <https://github.com/googleapis/python-bigquery-connection>`_
-     - |ga|
-     - |PyPI-google-cloud-bigquery-connection|
-   * - `BigQuery Data Transfer Service <https://github.com/googleapis/python-bigquery-datatransfer>`_
-     - |ga|
-     - |PyPI-google-cloud-bigquery-datatransfer|
-   * - `BigQuery Logging Protos <https://github.com/googleapis/python-bigquery-logging>`_
-     - |ga|
-     - |PyPI-google-cloud-bigquery-logging|
-   * - `BigQuery Reservation <https://github.com/googleapis/python-bigquery-reservation>`_
-     - |ga|
-     - |PyPI-google-cloud-bigquery-reservation|
-   * - `BigQuery Storage <https://github.com/googleapis/python-bigquery-storage>`_
-     - |ga|
-     - |PyPI-google-cloud-bigquery-storage|
    * - `Bigtable <https://github.com/googleapis/python-bigtable>`_
      - |ga|
      - |PyPI-google-cloud-bigtable|
-   * - `Billing <https://github.com/googleapis/python-billing>`_
-     - |ga|
-     - |PyPI-google-cloud-billing|
-   * - `Billing Budget <https://github.com/googleapis/python-billingbudgets>`_
-     - |ga|
-     - |PyPI-google-cloud-billing-budgets|
-   * - `Binary Authorization <https://github.com/googleapis/python-binary-authorization>`_
-     - |ga|
-     - |PyPI-google-cloud-binary-authorization|
-   * - `Build <https://github.com/googleapis/python-cloudbuild>`_
-     - |ga|
-     - |PyPI-google-cloud-build|
-   * - `Channel Services <https://github.com/googleapis/python-channel>`_
-     - |ga|
-     - |PyPI-google-cloud-channel|
    * - `Common <https://github.com/googleapis/python-cloud-common>`_
      - |ga|
      - |PyPI-google-cloud-common|
-   * - `Composer <https://github.com/googleapis/python-orchestration-airflow>`_
-     - |ga|
-     - |PyPI-google-cloud-orchestration-airflow|
-   * - `Contact Center AI Insights API <https://github.com/googleapis/python-contact-center-insights>`_
-     - |ga|
-     - |PyPI-google-cloud-contact-center-insights|
-   * - `Container Analysis <https://github.com/googleapis/python-containeranalysis>`_
-     - |ga|
-     - |PyPI-google-cloud-containeranalysis|
-   * - `Data Catalog <https://github.com/googleapis/python-datacatalog>`_
-     - |ga|
-     - |PyPI-google-cloud-datacatalog|
-   * - `Data Fusion <https://github.com/googleapis/python-data-fusion>`_
-     - |ga|
-     - |PyPI-google-cloud-data-fusion|
-   * - `Data Loss Prevention <https://github.com/googleapis/python-dlp>`_
-     - |ga|
-     - |PyPI-google-cloud-dlp|
-   * - `Database Migration Service <https://github.com/googleapis/python-dms>`_
-     - |ga|
-     - |PyPI-google-cloud-dms|
    * - `Dataproc <https://github.com/googleapis/python-dataproc>`_
      - |ga|
      - |PyPI-google-cloud-dataproc|
-   * - `Dataproc Metastore <https://github.com/googleapis/python-dataproc-metastore>`_
-     - |ga|
-     - |PyPI-google-cloud-dataproc-metastore|
-   * - `Datastore <https://github.com/googleapis/python-datastore>`_
-     - |ga|
-     - |PyPI-google-cloud-datastore|
-   * - `Debugger <https://github.com/googleapis/python-debugger-client>`_
-     - |ga|
-     - |PyPI-google-cloud-debugger-client|
-   * - `Deploy <https://github.com/googleapis/python-deploy>`_
-     - |ga|
-     - |PyPI-google-cloud-deploy|
-   * - `Dialogflow <https://github.com/googleapis/python-dialogflow>`_
-     - |ga|
-     - |PyPI-google-cloud-dialogflow|
-   * - `Dialogflow CX <https://github.com/googleapis/python-dialogflow-cx>`_
-     - |ga|
-     - |PyPI-google-cloud-dialogflow-cx|
-   * - `Document Understanding API <https://github.com/googleapis/python-documentai>`_
-     - |ga|
-     - |PyPI-google-cloud-documentai|
-   * - `Domains <https://github.com/googleapis/python-domains>`_
-     - |ga|
-     - |PyPI-google-cloud-domains|
-   * - `Essential Contacts API <https://github.com/googleapis/python-essential-contacts>`_
-     - |ga|
-     - |PyPI-google-cloud-essential-contacts|
-   * - `Eventarc <https://github.com/googleapis/python-eventarc>`_
-     - |ga|
-     - |PyPI-google-cloud-eventarc|
-   * - `Filestore <https://github.com/googleapis/python-filestore>`_
-     - |ga|
-     - |PyPI-google-cloud-filestore|
-   * - `Firestore <https://github.com/googleapis/python-firestore>`_
-     - |ga|
-     - |PyPI-google-cloud-firestore|
-   * - `Functions <https://github.com/googleapis/python-functions>`_
-     - |ga|
-     - |PyPI-google-cloud-functions|
-   * - `GKE Hub API <https://github.com/googleapis/python-gke-hub>`_
-     - |ga|
-     - |PyPI-google-cloud-gke-hub|
-   * - `Game Servers <https://github.com/googleapis/python-game-servers>`_
-     - |ga|
-     - |PyPI-google-cloud-game-servers|
-   * - `Grafeas <https://github.com/googleapis/python-grafeas>`_
-     - |ga|
-     - |PyPI-grafeas|
    * - `IAM Logging Protos <https://github.com/googleapis/python-iam-logging>`_
      - |ga|
      - |PyPI-google-cloud-iam-logging|
-   * - `IAM Policy Troubleshooter API <https://github.com/googleapis/python-policy-troubleshooter>`_
-     - |ga|
-     - |PyPI-google-cloud-policy-troubleshooter|
-   * - `Identity and Access Management <https://github.com/googleapis/python-iam>`_
-     - |ga|
-     - |PyPI-google-cloud-iam|
-   * - `Identity-Aware Proxy <https://github.com/googleapis/python-iap>`_
-     - |ga|
-     - |PyPI-google-cloud-iap|
    * - `Internet of Things (IoT) Core <https://github.com/googleapis/python-iot>`_
      - |ga|
      - |PyPI-google-cloud-iot|
-   * - `Key Management Service <https://github.com/googleapis/python-kms>`_
-     - |ga|
-     - |PyPI-google-cloud-kms|
-   * - `Logging <https://github.com/googleapis/python-logging>`_
-     - |ga|
-     - |PyPI-google-cloud-logging|
-   * - `Managed Service for Microsoft Active Directory <https://github.com/googleapis/python-managed-identities>`_
-     - |ga|
-     - |PyPI-google-cloud-managed-identities|
-   * - `Memorystore for Memcached <https://github.com/googleapis/python-memcache>`_
-     - |ga|
-     - |PyPI-google-cloud-memcache|
    * - `Metrics Scopes API <https://github.com/googleapis/python-monitoring-metrics-scopes>`_
      - |ga|
      - |PyPI-google-cloud-monitoring-metrics-scopes|
-   * - `Monitoring Dashboards <https://github.com/googleapis/python-monitoring-dashboards>`_
-     - |ga|
-     - |PyPI-google-cloud-monitoring-dashboards|
-   * - `NDB Client Library for Datastore <https://github.com/googleapis/python-ndb>`_
-     - |ga|
-     - |PyPI-google-cloud-ndb|
-   * - `Natural Language <https://github.com/googleapis/python-language>`_
-     - |ga|
-     - |PyPI-google-cloud-language|
-   * - `Network Connectivity Center <https://github.com/googleapis/python-network-connectivity>`_
-     - |ga|
-     - |PyPI-google-cloud-network-connectivity|
-   * - `Network Management API <https://github.com/googleapis/python-network-management>`_
-     - |ga|
-     - |PyPI-google-cloud-network-management|
-   * - `OS Login <https://github.com/googleapis/python-oslogin>`_
-     - |ga|
-     - |PyPI-google-cloud-os-login|
-   * - `Private Certificate Authority <https://github.com/googleapis/python-security-private-ca>`_
-     - |ga|
-     - |PyPI-google-cloud-private-ca|
-   * - `Pub/Sub Lite <https://github.com/googleapis/python-pubsublite>`_
-     - |ga|
-     - |PyPI-google-cloud-pubsublite|
-   * - `Recommender API <https://github.com/googleapis/python-recommender>`_
-     - |ga|
-     - |PyPI-google-cloud-recommender|
-   * - `Redis <https://github.com/googleapis/python-redis>`_
-     - |ga|
-     - |PyPI-google-cloud-redis|
-   * - `Resource Manager API <https://github.com/googleapis/python-resource-manager>`_
-     - |ga|
-     - |PyPI-google-cloud-resource-manager|
-   * - `Resource Settings <https://github.com/googleapis/python-resource-settings>`_
-     - |ga|
-     - |PyPI-google-cloud-resource-settings|
-   * - `Retail API <https://github.com/googleapis/python-retail>`_
-     - |ga|
-     - |PyPI-google-cloud-retail|
-   * - `Scheduler <https://github.com/googleapis/python-scheduler>`_
-     - |ga|
-     - |PyPI-google-cloud-scheduler|
-   * - `Secret Manager <https://github.com/googleapis/python-secret-manager>`_
-     - |ga|
-     - |PyPI-google-cloud-secret-manager|
-   * - `Security Command Center <https://github.com/googleapis/python-securitycenter>`_
-     - |ga|
-     - |PyPI-google-cloud-securitycenter|
-   * - `Security Scanner <https://github.com/googleapis/python-websecurityscanner>`_
-     - |ga|
-     - |PyPI-google-cloud-websecurityscanner|
-   * - `Service Control API <https://github.com/googleapis/python-service-control>`_
-     - |ga|
-     - |PyPI-google-cloud-service-control|
-   * - `Service Directory <https://github.com/googleapis/python-service-directory>`_
-     - |ga|
-     - |PyPI-google-cloud-service-directory|
-   * - `Service Management API <https://github.com/googleapis/python-service-management>`_
-     - |ga|
-     - |PyPI-google-cloud-service-management|
-   * - `Service Usage <https://github.com/googleapis/python-service-usage>`_
-     - |ga|
-     - |PyPI-google-cloud-service-usage|
-   * - `Shell <https://github.com/googleapis/python-shell>`_
-     - |ga|
-     - |PyPI-google-cloud-shell|
-   * - `Source Context <https://github.com/googleapis/python-source-context>`_
-     - |ga|
-     - |PyPI-google-cloud-source-context|
-   * - `Spanner <https://github.com/googleapis/python-spanner>`_
-     - |ga|
-     - |PyPI-google-cloud-spanner|
-   * - `Speech <https://github.com/googleapis/python-speech>`_
-     - |ga|
-     - |PyPI-google-cloud-speech|
-   * - `Stackdriver Monitoring <https://github.com/googleapis/python-monitoring>`_
-     - |ga|
-     - |PyPI-google-cloud-monitoring|
-   * - `Storage <https://github.com/googleapis/python-storage>`_
-     - |ga|
-     - |PyPI-google-cloud-storage|
-   * - `Storage Transfer Service <https://github.com/googleapis/python-storage-transfer>`_
-     - |ga|
-     - |PyPI-google-cloud-storage-transfer|
-   * - `TPU <https://github.com/googleapis/python-tpu>`_
-     - |ga|
-     - |PyPI-google-cloud-tpu|
-   * - `Talent Solution <https://github.com/googleapis/python-talent>`_
-     - |ga|
-     - |PyPI-google-cloud-talent|
-   * - `Tasks <https://github.com/googleapis/python-tasks>`_
-     - |ga|
-     - |PyPI-google-cloud-tasks|
-   * - `Text-to-Speech <https://github.com/googleapis/python-texttospeech>`_
-     - |ga|
-     - |PyPI-google-cloud-texttospeech|
-   * - `Trace <https://github.com/googleapis/python-trace>`_
-     - |ga|
-     - |PyPI-google-cloud-trace|
-   * - `Transcoder <https://github.com/googleapis/python-video-transcoder>`_
-     - |ga|
-     - |PyPI-google-cloud-video-transcoder|
-   * - `Translation <https://github.com/googleapis/python-translate>`_
-     - |ga|
-     - |PyPI-google-cloud-translate|
-   * - `Video Intelligence <https://github.com/googleapis/python-videointelligence>`_
-     - |ga|
-     - |PyPI-google-cloud-videointelligence|
-   * - `Virtual Private Cloud <https://github.com/googleapis/python-vpc-access>`_
-     - |ga|
-     - |PyPI-google-cloud-vpc-access|
-   * - `Vision <https://github.com/googleapis/python-vision>`_
-     - |ga|
-     - |PyPI-google-cloud-vision|
-   * - `Web Risk <https://github.com/googleapis/python-webrisk>`_
-     - |ga|
-     - |PyPI-google-cloud-webrisk|
-   * - `Workflows <https://github.com/googleapis/python-workflows>`_
-     - |ga|
-     - |PyPI-google-cloud-workflows|
-   * - `reCAPTCHA Enterprise <https://github.com/googleapis/python-recaptcha-enterprise>`_
-     - |ga|
-     - |PyPI-google-cloud-recaptcha-enterprise|
-   * - `Analytics Data API <https://github.com/googleapis/python-analytics-data>`_
-     - |beta|
-     - |PyPI-google-analytics-data|
-   * - `Audit Log <https://github.com/googleapis/python-audit-log>`_
-     - |beta|
-     - |PyPI-google-cloud-audit-log|
-   * - `BigQuery connector for pandas <https://github.com/googleapis/python-bigquery-pandas>`_
-     - |beta|
-     - |PyPI-pandas-gbq|
-   * - `Data Labeling <https://github.com/googleapis/python-datalabeling>`_
-     - |beta|
-     - |PyPI-google-cloud-datalabeling|
-   * - `Dataflow <https://github.com/googleapis/python-dataflow-client>`_
-     - |beta|
-     - |PyPI-google-cloud-dataflow-client|
-   * - `Error Reporting <https://github.com/googleapis/python-error-reporting>`_
-     - |beta|
-     - |PyPI-google-cloud-error-reporting|
-   * - `GKE Connect Gateway API <https://github.com/googleapis/python-gke-connect-gateway>`_
-     - |beta|
-     - |PyPI-google-cloud-gke-connect-gateway|
-   * - `IDS <https://github.com/googleapis/python-ids>`_
-     - |beta|
-     - |PyPI-google-cloud-ids|
-   * - `Life Sciences <https://github.com/googleapis/python-life-sciences>`_
-     - |beta|
-     - |PyPI-google-cloud-life-sciences|
-   * - `Media Translation <https://github.com/googleapis/python-media-translation>`_
-     - |beta|
-     - |PyPI-google-cloud-media-translation|
-   * - `Network Security API <https://github.com/googleapis/python-network-security>`_
-     - |beta|
-     - |PyPI-google-cloud-network-security|
-   * - `Pandas Data Types for SQL systems (BigQuery, Spanner) <https://github.com/googleapis/python-db-dtypes-pandas>`_
-     - |beta|
-     - |PyPI-db-dtypes|
-   * - `Phishing Protection <https://github.com/googleapis/python-phishingprotection>`_
-     - |beta|
-     - |PyPI-google-cloud-phishing-protection|
-   * - `Private Catalog <https://github.com/googleapis/python-private-catalog>`_
-     - |beta|
-     - |PyPI-google-cloud-private-catalog|
-   * - `Recommendations AI <https://github.com/googleapis/python-recommendations-ai>`_
-     - |beta|
-     - |PyPI-google-cloud-recommendations-ai|
-   * - `Runtime Configurator <https://github.com/googleapis/python-runtimeconfig>`_
-     - |beta|
-     - |PyPI-google-cloud-runtimeconfig|
-   * - `SQLAlchemy dialect for BigQuery <https://github.com/googleapis/python-bigquery-sqlalchemy>`_
-     - |beta|
-     - |PyPI-sqlalchemy-bigquery|
-   * - `Spanner Django <https://github.com/googleapis/python-spanner-django>`_
-     - |beta|
-     - |PyPI-django-google-spanner|
-   * - `VM Migration <https://github.com/googleapis/python-vm-migration>`_
-     - |beta|
-     - |PyPI-google-cloud-vm-migration|
-   * - `Analytics Admin <https://github.com/googleapis/python-analytics-admin>`_
-     - |alpha|
-     - |PyPI-google-analytics-admin|
-   * - `Area 120 Tables API <https://github.com/googleapis/python-area120-tables>`_
-     - |alpha|
-     - |PyPI-google-area120-tables|
-   * - `Compute Engine <https://github.com/googleapis/python-compute>`_
-     - |alpha|
-     - |PyPI-google-cloud-compute|
-   * - `DNS <https://github.com/googleapis/python-dns>`_
-     - |alpha|
-     - |PyPI-google-cloud-dns|
-   * - `Datastream <https://github.com/googleapis/python-datastream>`_
-     - |alpha|
-     - |PyPI-google-cloud-datastream|
 
-.. |PyPI-google-cloud-container| image:: https://img.shields.io/pypi/v/google-cloud-container.svg
-     :target: https://pypi.org/project/google-cloud-container
-.. |PyPI-google-cloud-pubsub| image:: https://img.shields.io/pypi/v/google-cloud-pubsub.svg
-     :target: https://pypi.org/project/google-cloud-pubsub
-.. |PyPI-google-cloud-bigquery-migration| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-migration.svg
-     :target: https://pypi.org/project/google-cloud-bigquery-migration
-.. |PyPI-google-cloud-data-qna| image:: https://img.shields.io/pypi/v/google-cloud-data-qna.svg
-     :target: https://pypi.org/project/google-cloud-data-qna
 .. |PyPI-google-cloud-aiplatform| image:: https://img.shields.io/pypi/v/google-cloud-aiplatform.svg
      :target: https://pypi.org/project/google-cloud-aiplatform
 .. |PyPI-google-cloud-notebooks| image:: https://img.shields.io/pypi/v/google-cloud-notebooks.svg
@@ -472,8 +464,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-apigee-connect
 .. |PyPI-google-cloud-appengine-admin| image:: https://img.shields.io/pypi/v/google-cloud-appengine-admin.svg
      :target: https://pypi.org/project/google-cloud-appengine-admin
-.. |PyPI-google-cloud-appengine-logging| image:: https://img.shields.io/pypi/v/google-cloud-appengine-logging.svg
-     :target: https://pypi.org/project/google-cloud-appengine-logging
 .. |PyPI-google-cloud-artifact-registry| image:: https://img.shields.io/pypi/v/google-cloud-artifact-registry.svg
      :target: https://pypi.org/project/google-cloud-artifact-registry
 .. |PyPI-google-cloud-asset| image:: https://img.shields.io/pypi/v/google-cloud-asset.svg
@@ -494,8 +484,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-bigquery-reservation
 .. |PyPI-google-cloud-bigquery-storage| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-storage.svg
      :target: https://pypi.org/project/google-cloud-bigquery-storage
-.. |PyPI-google-cloud-bigtable| image:: https://img.shields.io/pypi/v/google-cloud-bigtable.svg
-     :target: https://pypi.org/project/google-cloud-bigtable
 .. |PyPI-google-cloud-billing| image:: https://img.shields.io/pypi/v/google-cloud-billing.svg
      :target: https://pypi.org/project/google-cloud-billing
 .. |PyPI-google-cloud-billing-budgets| image:: https://img.shields.io/pypi/v/google-cloud-billing-budgets.svg
@@ -506,8 +494,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-build
 .. |PyPI-google-cloud-channel| image:: https://img.shields.io/pypi/v/google-cloud-channel.svg
      :target: https://pypi.org/project/google-cloud-channel
-.. |PyPI-google-cloud-common| image:: https://img.shields.io/pypi/v/google-cloud-common.svg
-     :target: https://pypi.org/project/google-cloud-common
 .. |PyPI-google-cloud-orchestration-airflow| image:: https://img.shields.io/pypi/v/google-cloud-orchestration-airflow.svg
      :target: https://pypi.org/project/google-cloud-orchestration-airflow
 .. |PyPI-google-cloud-contact-center-insights| image:: https://img.shields.io/pypi/v/google-cloud-contact-center-insights.svg
@@ -522,8 +508,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-dlp
 .. |PyPI-google-cloud-dms| image:: https://img.shields.io/pypi/v/google-cloud-dms.svg
      :target: https://pypi.org/project/google-cloud-dms
-.. |PyPI-google-cloud-dataproc| image:: https://img.shields.io/pypi/v/google-cloud-dataproc.svg
-     :target: https://pypi.org/project/google-cloud-dataproc
 .. |PyPI-google-cloud-dataproc-metastore| image:: https://img.shields.io/pypi/v/google-cloud-dataproc-metastore.svg
      :target: https://pypi.org/project/google-cloud-dataproc-metastore
 .. |PyPI-google-cloud-datastore| image:: https://img.shields.io/pypi/v/google-cloud-datastore.svg
@@ -556,26 +540,22 @@ Libraries
      :target: https://pypi.org/project/google-cloud-game-servers
 .. |PyPI-grafeas| image:: https://img.shields.io/pypi/v/grafeas.svg
      :target: https://pypi.org/project/grafeas
-.. |PyPI-google-cloud-iam-logging| image:: https://img.shields.io/pypi/v/google-cloud-iam-logging.svg
-     :target: https://pypi.org/project/google-cloud-iam-logging
 .. |PyPI-google-cloud-policy-troubleshooter| image:: https://img.shields.io/pypi/v/google-cloud-policy-troubleshooter.svg
      :target: https://pypi.org/project/google-cloud-policy-troubleshooter
 .. |PyPI-google-cloud-iam| image:: https://img.shields.io/pypi/v/google-cloud-iam.svg
      :target: https://pypi.org/project/google-cloud-iam
 .. |PyPI-google-cloud-iap| image:: https://img.shields.io/pypi/v/google-cloud-iap.svg
      :target: https://pypi.org/project/google-cloud-iap
-.. |PyPI-google-cloud-iot| image:: https://img.shields.io/pypi/v/google-cloud-iot.svg
-     :target: https://pypi.org/project/google-cloud-iot
 .. |PyPI-google-cloud-kms| image:: https://img.shields.io/pypi/v/google-cloud-kms.svg
      :target: https://pypi.org/project/google-cloud-kms
+.. |PyPI-google-cloud-container| image:: https://img.shields.io/pypi/v/google-cloud-container.svg
+     :target: https://pypi.org/project/google-cloud-container
 .. |PyPI-google-cloud-logging| image:: https://img.shields.io/pypi/v/google-cloud-logging.svg
      :target: https://pypi.org/project/google-cloud-logging
 .. |PyPI-google-cloud-managed-identities| image:: https://img.shields.io/pypi/v/google-cloud-managed-identities.svg
      :target: https://pypi.org/project/google-cloud-managed-identities
 .. |PyPI-google-cloud-memcache| image:: https://img.shields.io/pypi/v/google-cloud-memcache.svg
      :target: https://pypi.org/project/google-cloud-memcache
-.. |PyPI-google-cloud-monitoring-metrics-scopes| image:: https://img.shields.io/pypi/v/google-cloud-monitoring-metrics-scopes.svg
-     :target: https://pypi.org/project/google-cloud-monitoring-metrics-scopes
 .. |PyPI-google-cloud-monitoring-dashboards| image:: https://img.shields.io/pypi/v/google-cloud-monitoring-dashboards.svg
      :target: https://pypi.org/project/google-cloud-monitoring-dashboards
 .. |PyPI-google-cloud-ndb| image:: https://img.shields.io/pypi/v/google-cloud-ndb.svg
@@ -590,6 +570,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-os-login
 .. |PyPI-google-cloud-private-ca| image:: https://img.shields.io/pypi/v/google-cloud-private-ca.svg
      :target: https://pypi.org/project/google-cloud-private-ca
+.. |PyPI-google-cloud-pubsub| image:: https://img.shields.io/pypi/v/google-cloud-pubsub.svg
+     :target: https://pypi.org/project/google-cloud-pubsub
 .. |PyPI-google-cloud-pubsublite| image:: https://img.shields.io/pypi/v/google-cloud-pubsublite.svg
      :target: https://pypi.org/project/google-cloud-pubsublite
 .. |PyPI-google-cloud-recommender| image:: https://img.shields.io/pypi/v/google-cloud-recommender.svg
@@ -624,6 +606,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-source-context
 .. |PyPI-google-cloud-spanner| image:: https://img.shields.io/pypi/v/google-cloud-spanner.svg
      :target: https://pypi.org/project/google-cloud-spanner
+.. |PyPI-django-google-spanner| image:: https://img.shields.io/pypi/v/django-google-spanner.svg
+     :target: https://pypi.org/project/django-google-spanner
 .. |PyPI-google-cloud-speech| image:: https://img.shields.io/pypi/v/google-cloud-speech.svg
      :target: https://pypi.org/project/google-cloud-speech
 .. |PyPI-google-cloud-monitoring| image:: https://img.shields.io/pypi/v/google-cloud-monitoring.svg
@@ -658,16 +642,30 @@ Libraries
      :target: https://pypi.org/project/google-cloud-workflows
 .. |PyPI-google-cloud-recaptcha-enterprise| image:: https://img.shields.io/pypi/v/google-cloud-recaptcha-enterprise.svg
      :target: https://pypi.org/project/google-cloud-recaptcha-enterprise
+.. |PyPI-google-analytics-admin| image:: https://img.shields.io/pypi/v/google-analytics-admin.svg
+     :target: https://pypi.org/project/google-analytics-admin
 .. |PyPI-google-analytics-data| image:: https://img.shields.io/pypi/v/google-analytics-data.svg
      :target: https://pypi.org/project/google-analytics-data
+.. |PyPI-google-area120-tables| image:: https://img.shields.io/pypi/v/google-area120-tables.svg
+     :target: https://pypi.org/project/google-area120-tables
 .. |PyPI-google-cloud-audit-log| image:: https://img.shields.io/pypi/v/google-cloud-audit-log.svg
      :target: https://pypi.org/project/google-cloud-audit-log
+.. |PyPI-google-cloud-bigquery-migration| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-migration.svg
+     :target: https://pypi.org/project/google-cloud-bigquery-migration
 .. |PyPI-pandas-gbq| image:: https://img.shields.io/pypi/v/pandas-gbq.svg
      :target: https://pypi.org/project/pandas-gbq
+.. |PyPI-google-cloud-compute| image:: https://img.shields.io/pypi/v/google-cloud-compute.svg
+     :target: https://pypi.org/project/google-cloud-compute
+.. |PyPI-google-cloud-dns| image:: https://img.shields.io/pypi/v/google-cloud-dns.svg
+     :target: https://pypi.org/project/google-cloud-dns
 .. |PyPI-google-cloud-datalabeling| image:: https://img.shields.io/pypi/v/google-cloud-datalabeling.svg
      :target: https://pypi.org/project/google-cloud-datalabeling
+.. |PyPI-google-cloud-data-qna| image:: https://img.shields.io/pypi/v/google-cloud-data-qna.svg
+     :target: https://pypi.org/project/google-cloud-data-qna
 .. |PyPI-google-cloud-dataflow-client| image:: https://img.shields.io/pypi/v/google-cloud-dataflow-client.svg
      :target: https://pypi.org/project/google-cloud-dataflow-client
+.. |PyPI-google-cloud-datastream| image:: https://img.shields.io/pypi/v/google-cloud-datastream.svg
+     :target: https://pypi.org/project/google-cloud-datastream
 .. |PyPI-google-cloud-error-reporting| image:: https://img.shields.io/pypi/v/google-cloud-error-reporting.svg
      :target: https://pypi.org/project/google-cloud-error-reporting
 .. |PyPI-google-cloud-gke-connect-gateway| image:: https://img.shields.io/pypi/v/google-cloud-gke-connect-gateway.svg
@@ -692,20 +690,22 @@ Libraries
      :target: https://pypi.org/project/google-cloud-runtimeconfig
 .. |PyPI-sqlalchemy-bigquery| image:: https://img.shields.io/pypi/v/sqlalchemy-bigquery.svg
      :target: https://pypi.org/project/sqlalchemy-bigquery
-.. |PyPI-django-google-spanner| image:: https://img.shields.io/pypi/v/django-google-spanner.svg
-     :target: https://pypi.org/project/django-google-spanner
 .. |PyPI-google-cloud-vm-migration| image:: https://img.shields.io/pypi/v/google-cloud-vm-migration.svg
      :target: https://pypi.org/project/google-cloud-vm-migration
-.. |PyPI-google-analytics-admin| image:: https://img.shields.io/pypi/v/google-analytics-admin.svg
-     :target: https://pypi.org/project/google-analytics-admin
-.. |PyPI-google-area120-tables| image:: https://img.shields.io/pypi/v/google-area120-tables.svg
-     :target: https://pypi.org/project/google-area120-tables
-.. |PyPI-google-cloud-compute| image:: https://img.shields.io/pypi/v/google-cloud-compute.svg
-     :target: https://pypi.org/project/google-cloud-compute
-.. |PyPI-google-cloud-dns| image:: https://img.shields.io/pypi/v/google-cloud-dns.svg
-     :target: https://pypi.org/project/google-cloud-dns
-.. |PyPI-google-cloud-datastream| image:: https://img.shields.io/pypi/v/google-cloud-datastream.svg
-     :target: https://pypi.org/project/google-cloud-datastream
+.. |PyPI-google-cloud-appengine-logging| image:: https://img.shields.io/pypi/v/google-cloud-appengine-logging.svg
+     :target: https://pypi.org/project/google-cloud-appengine-logging
+.. |PyPI-google-cloud-bigtable| image:: https://img.shields.io/pypi/v/google-cloud-bigtable.svg
+     :target: https://pypi.org/project/google-cloud-bigtable
+.. |PyPI-google-cloud-common| image:: https://img.shields.io/pypi/v/google-cloud-common.svg
+     :target: https://pypi.org/project/google-cloud-common
+.. |PyPI-google-cloud-dataproc| image:: https://img.shields.io/pypi/v/google-cloud-dataproc.svg
+     :target: https://pypi.org/project/google-cloud-dataproc
+.. |PyPI-google-cloud-iam-logging| image:: https://img.shields.io/pypi/v/google-cloud-iam-logging.svg
+     :target: https://pypi.org/project/google-cloud-iam-logging
+.. |PyPI-google-cloud-iot| image:: https://img.shields.io/pypi/v/google-cloud-iot.svg
+     :target: https://pypi.org/project/google-cloud-iot
+.. |PyPI-google-cloud-monitoring-metrics-scopes| image:: https://img.shields.io/pypi/v/google-cloud-monitoring-metrics-scopes.svg
+     :target: https://pypi.org/project/google-cloud-monitoring-metrics-scopes
 
 .. API_TABLE_END
 
