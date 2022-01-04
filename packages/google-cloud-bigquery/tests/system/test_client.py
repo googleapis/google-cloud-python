@@ -1725,7 +1725,7 @@ class TestBigQuery(unittest.TestCase):
 
         connection.close()
         conn_count_end = len(current_process.connections())
-        self.assertEqual(conn_count_end, conn_count_start)
+        self.assertLessEqual(conn_count_end, conn_count_start)
 
     def _load_table_for_dml(self, rows, dataset_id, table_id):
         from google.cloud._testing import _NamedTemporaryFile
