@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://www.github.com/googleapis/python-bigquery-reservation/compare/v1.4.1...v1.5.0) (2022-01-04)
+
+
+### Features
+
+* increase the logical timeout (retry deadline) to 5 minutes ([#198](https://www.github.com/googleapis/python-bigquery-reservation/issues/198)) ([13cb5b3](https://www.github.com/googleapis/python-bigquery-reservation/commit/13cb5b3c62fc4ca1823c1154e5ee5eaede5478ae))
+
 ### [1.4.1](https://www.github.com/googleapis/python-bigquery-reservation/compare/v1.4.0...v1.4.1) (2021-11-01)
 
 
