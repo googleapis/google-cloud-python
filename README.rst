@@ -32,6 +32,33 @@ GA libraries have development status classifier ``Development Status :: 5 - Prod
     import path (e.g. ``google.cloud.language_v1beta2``) should be considered
     to be beta.
 
+Stable
+------
+
+**Stable** indicates that the code surface will not change in
+backwards-incompatible ways unless either absolutely necessary (e.g. because
+of critical security issues) or with an extensive deprecation period.
+Issues and requests against stable libraries are addressed with the highest
+priority.
+
+Stable libraries have development status classifier ``Development Status :: 5 - Production/Stable``.
+
+.. note::
+
+    Sub-components of stable libraries explicitly marked as beta in the
+    import path (e.g. ``google.cloud.language_v1beta2``) should be considered
+    to be beta.
+
+Preview
+-------
+
+**Preview** indicates that the client library for a particular service is
+still a work-in-progress and is more likely to get backwards-incompatible
+updates. 
+
+Preview libraries have development status classifier of
+``Development Status :: 3 - Alpha`` or ``Development Status :: 4 - Beta``.
+
 Beta Support
 ------------
 
@@ -46,7 +73,7 @@ Alpha Support
 
 **Alpha** indicates that the client library for a particular service is
 still a work-in-progress and is more likely to get backwards-incompatible
-updates. See `versioning`_ for more details.
+updates.
 
 
 Alpha libraries have development status classifier ``Development Status :: 3 - Alpha``.
@@ -712,9 +739,14 @@ Libraries
 .. |ga| image:: https://img.shields.io/badge/support-GA-gold.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
 
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stable
+
+.. |preview| image:: https://img.shields.io/badge/support-preview-orange.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#preview
+
 .. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#beta-support
-
 
 .. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#alpha-support
