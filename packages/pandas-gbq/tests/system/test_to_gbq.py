@@ -160,7 +160,12 @@ DATAFRAME_ROUND_TRIPS = [
             columns=["row_num", "date_col"],
         ),
         expected_df=pandas.DataFrame(
-            {"row_num": [123], "date_col": [datetime.date(2021, 12, 12)]},
+            {
+                "row_num": [123],
+                "date_col": pandas.Series(
+                    [datetime.date(2021, 12, 12)], dtype=db_dtypes.DateDtype()
+                ),
+            },
             columns=["row_num", "date_col"],
         ),
         table_schema=[
@@ -196,29 +201,29 @@ DATAFRAME_ROUND_TRIPS = [
                         datetime.date(1970, 1, 1),
                         datetime.date(9999, 12, 31),
                     ],
-                    # TODO: DATETIME/TIMESTAMP values outside of the range for
-                    # pandas timestamp require `date_as_object` parameter in
-                    # google-cloud-bigquery versions 1.x and 2.x.
+                    # DATETIME values outside of the range for pandas timestamp
+                    # require `date_as_object` parameter in
+                    # google-cloud-bigquery versions 1.x and 2.x, but not 3.x.
                     # https://github.com/googleapis/python-bigquery-pandas/issues/365
-                    # "datetime_col": [
-                    #     datetime.datetime(1, 1, 1),
-                    #     datetime.datetime(1970, 1, 1),
-                    #     datetime.datetime(9999, 12, 31, 23, 59, 59, 999999),
-                    # ],
-                    # "timestamp_col": [
-                    #     datetime.datetime(1, 1, 1, tzinfo=datetime.timezone.utc),
-                    #     datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc),
-                    #     datetime.datetime(
-                    #         9999,
-                    #         12,
-                    #         31,
-                    #         23,
-                    #         59,
-                    #         59,
-                    #         999999,
-                    #         tzinfo=datetime.timezone.utc,
-                    #     ),
-                    # ],
+                    "datetime_col": [
+                        datetime.datetime(1, 1, 1),
+                        datetime.datetime(1970, 1, 1),
+                        datetime.datetime(9999, 12, 31, 23, 59, 59, 999999),
+                    ],
+                    "timestamp_col": [
+                        datetime.datetime(1, 1, 1, tzinfo=datetime.timezone.utc),
+                        datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc),
+                        datetime.datetime(
+                            9999,
+                            12,
+                            31,
+                            23,
+                            59,
+                            59,
+                            999999,
+                            tzinfo=datetime.timezone.utc,
+                        ),
+                    ],
                 },
                 columns=["row_num", "date_col", "datetime_col", "timestamp_col"],
             ),
@@ -256,7 +261,12 @@ def test_dataframe_round_trip_with_table_schema(
         input_df, table_id, table_schema=table_schema, api_method=api_method
     )
     round_trip = read_gbq(
-        table_id, dtypes=dict(zip(expected_df.columns, expected_df.dtypes)),
+        table_id,
+        dtypes=dict(zip(expected_df.columns, expected_df.dtypes)),
+        # BigQuery Storage API is required to avoid out-of-bound due to extra
+        # day from rounding error which was fixed in google-cloud-bigquery
+        # 2.6.0. https://github.com/googleapis/python-bigquery/pull/402
+        use_bqstorage_api=True,
     )
     round_trip.sort_values("row_num", inplace=True)
     pandas.testing.assert_frame_equal(expected_df, round_trip)

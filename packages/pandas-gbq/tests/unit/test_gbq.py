@@ -74,9 +74,10 @@ def default_bigquery_client(mock_bigquery_client):
         ("SOME_NEW_UNKNOWN_TYPE", None),
         ("INTEGER", "Int64"),
         ("FLOAT", numpy.dtype(float)),
-        # TIMESTAMP will be localized after DataFrame construction.
-        ("TIMESTAMP", "datetime64[ns]"),
-        ("DATETIME", "datetime64[ns]"),
+        # TIMESTAMP/DATETIME might require object dtype for out-of-bounds
+        # values.
+        ("TIMESTAMP", None),
+        ("DATETIME", None),
     ],
 )
 def test__bqschema_to_nullsafe_dtypes(type_, expected):
@@ -618,9 +619,17 @@ def test_read_gbq_use_bqstorage_api(
     assert df is not None
 
     mock_list_rows = mock_bigquery_client.list_rows("dest", max_results=100)
-    mock_list_rows.to_dataframe.assert_called_once_with(
-        create_bqstorage_client=True, dtypes=mock.ANY, progress_bar_type=mock.ANY,
-    )
+    if FEATURES.bigquery_needs_date_as_object:
+        mock_list_rows.to_dataframe.assert_called_once_with(
+            create_bqstorage_client=True,
+            dtypes=mock.ANY,
+            progress_bar_type=mock.ANY,
+            date_as_object=True,
+        )
+    else:
+        mock_list_rows.to_dataframe.assert_called_once_with(
+            create_bqstorage_client=True, dtypes=mock.ANY, progress_bar_type=mock.ANY,
+        )
 
 
 def test_read_gbq_calls_tqdm(mock_bigquery_client, mock_service_account_credentials):

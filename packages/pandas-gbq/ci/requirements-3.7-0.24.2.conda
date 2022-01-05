@@ -4,7 +4,8 @@ db-dtypes==0.3.1
 fastavro
 flake8
 numpy==1.16.6
-google-cloud-bigquery==1.11.1
+google-cloud-bigquery==1.27.2
+google-cloud-bigquery-storage==1.1.0
 pyarrow==3.0.0
 pydata-google-auth
 pytest

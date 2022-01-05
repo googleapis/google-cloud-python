@@ -28,12 +28,19 @@ dependencies = [
     "pandas >=0.24.2",
     "pyarrow >=3.0.0, <7.0dev",
     "pydata-google-auth",
-    "google-api-core >=1.14.0",
-    "google-auth >=1.4.1",
+    # Note: google-api-core and google-auth are also included via transitive
+    # dependency on google-cloud-bigquery, but this library also uses them
+    # directly.
+    "google-api-core >=1.21.0",
+    "google-auth >=1.18.0",
     "google-auth-oauthlib >=0.0.1",
-    # 2.4.* has a bug where waiting for the query can hang indefinitely.
-    # https://github.com/pydata/pandas-gbq/issues/343
-    "google-cloud-bigquery[bqstorage,pandas] >=1.11.1,<4.0.0dev,!=2.4.*",
+    # Require 1.27.* because it has a fix for out-of-bounds timestamps.  See:
+    # https://github.com/googleapis/python-bigquery/pull/209 and
+    # https://github.com/googleapis/python-bigquery-pandas/issues/365
+    # Exclude 2.4.* because it has a bug where waiting for the query can hang
+    # indefinitely. https://github.com/pydata/pandas-gbq/issues/343
+    "google-cloud-bigquery >=1.27.2,<4.0.0dev,!=2.4.*",
+    "google-cloud-bigquery-storage >=1.1.0,<3.0.0dev",
 ]
 extras = {
     "tqdm": "tqdm>=4.23.0",

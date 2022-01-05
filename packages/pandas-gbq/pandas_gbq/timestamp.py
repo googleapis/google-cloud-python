@@ -30,11 +30,6 @@ def localize_df(df, schema_fields):
     pandas.DataFrame
         DataFrame with localized TIMESTAMP columns.
     """
-    if len(df.index) == 0:
-        # If there are no rows, there is nothing to do.
-        # Fix for https://github.com/pydata/pandas-gbq/issues/299
-        return df
-
     for field in schema_fields:
         column = str(field["name"])
         if "mode" in field and field["mode"].upper() == "REPEATED":
