@@ -46,6 +46,7 @@ for more detailed instructions.
     <summary><b>List of Samples</b></summary>
 
 * [Activate HMAC Key](#activate-hmac-key)
+* [Batch Request](#batch-request)
 * [Add Bucket Conditional IAM Binding](#add-bucket-conditional-iam-binding)
 * [Add Bucket Default Owner](#add-bucket-default-owner)
 * [Add Bucket IAM Member](#add-bucket-iam-member)
@@ -156,6 +157,15 @@ View the [source code](https://github.com/googleapis/python-storage/blob/main/sa
 
 
 `python storage_activate_hmac_key.py <ACCESS_ID> <PROJECT_ID>`
+
+-----
+### Batch Request
+[![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/python-storage&page=editor&open_in_editor=samples/snippets/storage_batch_request.py,samples/README.md)
+
+View the [source code](https://github.com/googleapis/python-storage/blob/main/samples/snippets/storage_batch_request.py). To run this sample:
+
+
+`python storage_batch_request.py <BUCKET_NAME> <PREFIX>`
 
 -----
 
