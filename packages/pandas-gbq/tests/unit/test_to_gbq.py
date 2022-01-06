@@ -49,6 +49,25 @@ def test_to_gbq_create_dataset_translates_exception(mock_bigquery_client):
         gbq.to_gbq(DataFrame([[1]]), "my_dataset.my_table", project_id="1234")
 
 
+def test_to_gbq_load_method_translates_exception(
+    mock_bigquery_client, expected_load_method
+):
+    mock_bigquery_client.get_table.side_effect = google.api_core.exceptions.NotFound(
+        "my_table"
+    )
+    expected_load_method.side_effect = google.api_core.exceptions.InternalServerError(
+        "error loading data"
+    )
+
+    with pytest.raises(gbq.GenericGBQException):
+        gbq.to_gbq(
+            DataFrame({"int_cole": [1, 2, 3]}),
+            "my_dataset.my_table",
+            project_id="myproj",
+        )
+    expected_load_method.assert_called_once()
+
+
 def test_to_gbq_with_if_exists_append(mock_bigquery_client, expected_load_method):
     from google.cloud.bigquery import SchemaField
 

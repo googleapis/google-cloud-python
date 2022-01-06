@@ -18,21 +18,10 @@ import numpy as np
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     import pandas
 
-# Required dependencies, but treat as optional so that _test_google_api_imports
-# can provide a better error message.
-try:
-    from google.api_core import exceptions as google_exceptions
-    from google.cloud import bigquery
-except ImportError:  # pragma: NO COVER
-    bigquery = None
-    google_exceptions = None
-
 from pandas_gbq.exceptions import (
     AccessDenied,
     GenericGBQException,
-    PerformanceWarning,
 )
-from pandas_gbq import features
 from pandas_gbq.features import FEATURES
 import pandas_gbq.schema
 import pandas_gbq.timestamp
@@ -48,32 +37,32 @@ logger = logging.getLogger(__name__)
 def _test_google_api_imports():
     try:
         import pkg_resources  # noqa
-    except ImportError as ex:
+    except ImportError as ex:  # pragma: NO COVER
         raise ImportError("pandas-gbq requires setuptools") from ex
 
     try:
         import db_dtypes  # noqa
-    except ImportError as ex:
+    except ImportError as ex:  # pragma: NO COVER
         raise ImportError("pandas-gbq requires db-dtypes") from ex
 
     try:
         import pydata_google_auth  # noqa
-    except ImportError as ex:
+    except ImportError as ex:  # pragma: NO COVER
         raise ImportError("pandas-gbq requires pydata-google-auth") from ex
 
     try:
         from google_auth_oauthlib.flow import InstalledAppFlow  # noqa
-    except ImportError as ex:
+    except ImportError as ex:  # pragma: NO COVER
         raise ImportError("pandas-gbq requires google-auth-oauthlib") from ex
 
     try:
         import google.auth  # noqa
-    except ImportError as ex:
+    except ImportError as ex:  # pragma: NO COVER
         raise ImportError("pandas-gbq requires google-auth") from ex
 
     try:
         from google.cloud import bigquery  # noqa
-    except ImportError as ex:
+    except ImportError as ex:  # pragma: NO COVER
         raise ImportError("pandas-gbq requires google-cloud-bigquery") from ex
 
 
@@ -372,23 +361,17 @@ class GbqConnector(object):
 
     def get_client(self):
         import google.api_core.client_info
+        from google.cloud import bigquery
         import pandas
 
         client_info = google.api_core.client_info.ClientInfo(
             user_agent="pandas-{}".format(pandas.__version__)
         )
-
-        # In addition to new enough version of google-api-core, a new enough
-        # version of google-cloud-bigquery is required to populate the
-        # client_info.
-        if FEATURES.bigquery_has_client_info:
-            return bigquery.Client(
-                project=self.project_id,
-                credentials=self.credentials,
-                client_info=client_info,
-            )
-
-        return bigquery.Client(project=self.project_id, credentials=self.credentials)
+        return bigquery.Client(
+            project=self.project_id,
+            credentials=self.credentials,
+            client_info=client_info,
+        )
 
     @staticmethod
     def process_http_error(ex):
@@ -404,6 +387,8 @@ class GbqConnector(object):
         progress_bar_type: Optional[str] = None,
         dtypes: Optional[Dict[str, Union[str, Any]]] = None,
     ) -> "pandas.DataFrame":
+        from google.cloud import bigquery
+
         self._start_timer()
 
         try:
@@ -424,6 +409,7 @@ class GbqConnector(object):
     def run_query(self, query, max_results=None, progress_bar_type=None, **kwargs):
         from concurrent.futures import TimeoutError
         from google.auth.exceptions import RefreshError
+        from google.cloud import bigquery
 
         job_config = {
             "query": {
@@ -529,27 +515,11 @@ class GbqConnector(object):
         if user_dtypes is None:
             user_dtypes = {}
 
-        if self.use_bqstorage_api and not FEATURES.bigquery_has_bqstorage:
-            warnings.warn(
-                (
-                    "use_bqstorage_api was set, but have google-cloud-bigquery "
-                    "version {}. Requires google-cloud-bigquery version "
-                    "{} or later."
-                ).format(
-                    FEATURES.bigquery_installed_version,
-                    features.BIGQUERY_BQSTORAGE_VERSION,
-                ),
-                PerformanceWarning,
-                stacklevel=4,
-            )
-
         create_bqstorage_client = self.use_bqstorage_api
         if max_results is not None:
             create_bqstorage_client = False
 
         to_dataframe_kwargs = {}
-        if FEATURES.bigquery_has_bqstorage:
-            to_dataframe_kwargs["create_bqstorage_client"] = create_bqstorage_client
         if FEATURES.bigquery_needs_date_as_object:
             to_dataframe_kwargs["date_as_object"] = True
 
@@ -560,6 +530,7 @@ class GbqConnector(object):
             df = rows_iter.to_dataframe(
                 dtypes=conversion_dtypes,
                 progress_bar_type=progress_bar_type,
+                create_bqstorage_client=create_bqstorage_client,
                 **to_dataframe_kwargs,
             )
         except self.http_error as ex:
@@ -1050,6 +1021,9 @@ def to_gbq(
     """
 
     _test_google_api_imports()
+
+    from google.api_core import exceptions as google_exceptions
+    from google.cloud import bigquery
 
     if verbose is not None and FEATURES.pandas_has_deprecated_verbose:
         warnings.warn(

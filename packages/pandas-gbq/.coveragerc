@@ -22,7 +22,7 @@ omit =
   google/cloud/__init__.py
 
 [report]
-fail_under = 94
+fail_under = 96
 show_missing = True
 exclude_lines =
     # Re-enable the standard pragma

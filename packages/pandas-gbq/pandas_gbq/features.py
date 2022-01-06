@@ -5,9 +5,7 @@
 """Module for checking dependency versions and supported features."""
 
 # https://github.com/googleapis/python-bigquery/blob/master/CHANGELOG.md
-BIGQUERY_MINIMUM_VERSION = "1.11.1"
-BIGQUERY_CLIENT_INFO_VERSION = "1.12.0"
-BIGQUERY_BQSTORAGE_VERSION = "1.24.0"
+BIGQUERY_MINIMUM_VERSION = "1.27.2"
 BIGQUERY_ACCURATE_TIMESTAMP_VERSION = "2.6.0"
 BIGQUERY_FROM_DATAFRAME_CSV_VERSION = "2.6.0"
 BIGQUERY_SUPPORTS_BIGNUMERIC_VERSION = "2.10.0"
@@ -53,29 +51,11 @@ class Features:
         return self.bigquery_installed_version >= min_version
 
     @property
-    def bigquery_has_client_info(self):
-        import pkg_resources
-
-        bigquery_client_info_version = pkg_resources.parse_version(
-            BIGQUERY_CLIENT_INFO_VERSION
-        )
-        return self.bigquery_installed_version >= bigquery_client_info_version
-
-    @property
     def bigquery_has_bignumeric(self):
         import pkg_resources
 
         min_version = pkg_resources.parse_version(BIGQUERY_SUPPORTS_BIGNUMERIC_VERSION)
         return self.bigquery_installed_version >= min_version
-
-    @property
-    def bigquery_has_bqstorage(self):
-        import pkg_resources
-
-        bigquery_bqstorage_version = pkg_resources.parse_version(
-            BIGQUERY_BQSTORAGE_VERSION
-        )
-        return self.bigquery_installed_version >= bigquery_bqstorage_version
 
     @property
     def bigquery_has_from_dataframe_with_csv(self):

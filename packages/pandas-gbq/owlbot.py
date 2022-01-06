@@ -29,12 +29,17 @@ common = gcp.CommonTemplates()
 # Add templated files
 # ----------------------------------------------------------------------------
 
+extras_by_python = {
+    # Use a middle version of Python to test when no extras are installed.
+    "3.9": []
+}
 extras = ["tqdm"]
 templated_files = common.py_library(
     unit_test_python_versions=["3.7", "3.8", "3.9", "3.10"],
     system_test_python_versions=["3.7", "3.8", "3.9", "3.10"],
-    cov_level=94,
+    cov_level=96,
     unit_test_extras=extras,
+    unit_test_extras_by_python=extras_by_python,
     system_test_extras=extras,
     intersphinx_dependencies={
         "pandas": "https://pandas.pydata.org/pandas-docs/stable/",
@@ -69,6 +74,11 @@ s.replace(
 
 s.replace(
     ["noxfile.py"], "--cov=google", "--cov=pandas_gbq",
+)
+
+# Workaround for https://github.com/googleapis/synthtool/issues/1317
+s.replace(
+    ["noxfile.py"], r'extras = "\[\]"', 'extras = ""',
 )
 
 s.replace(

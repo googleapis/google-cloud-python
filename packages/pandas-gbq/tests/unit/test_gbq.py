@@ -109,25 +109,8 @@ def test__is_query(query_or_table, expected):
     assert result == expected
 
 
-def test_GbqConnector_get_client_w_old_bq(monkeypatch, mock_bigquery_client):
-    gbq._test_google_api_imports()
-    connector = _make_connector()
-    monkeypatch.setattr(
-        type(FEATURES),
-        "bigquery_has_client_info",
-        mock.PropertyMock(return_value=False),
-    )
-
-    connector.get_client()
-
-    # No client_info argument.
-    mock_bigquery_client.assert_called_with(credentials=mock.ANY, project=mock.ANY)
-
-
 def test_GbqConnector_get_client_w_new_bq(mock_bigquery_client):
     gbq._test_google_api_imports()
-    if not FEATURES.bigquery_has_client_info:
-        pytest.skip("google-cloud-bigquery missing client_info feature")
     pytest.importorskip("google.api_core.client_info")
 
     connector = _make_connector()
@@ -606,9 +589,6 @@ def test_read_gbq_passes_dtypes(mock_bigquery_client, mock_service_account_crede
 def test_read_gbq_use_bqstorage_api(
     mock_bigquery_client, mock_service_account_credentials
 ):
-    if not FEATURES.bigquery_has_bqstorage:  # pragma: NO COVER
-        pytest.skip("requires BigQuery Storage API")
-
     mock_service_account_credentials.project_id = "service_account_project_id"
     df = gbq.read_gbq(
         "SELECT 1 AS int_col",
@@ -716,3 +696,25 @@ def test_read_gbq_with_list_rows_error_translates_exception(
             "my-project.my_dataset.read_gbq_table",
             credentials=mock_service_account_credentials,
         )
+
+
+@pytest.mark.parametrize(
+    ["size_in_bytes", "formatted_text"],
+    [
+        (999, "999.0 B"),
+        (1024, "1.0 KB"),
+        (1099, "1.1 KB"),
+        (1044480, "1020.0 KB"),
+        (1048576, "1.0 MB"),
+        (1048576000, "1000.0 MB"),
+        (1073741824, "1.0 GB"),
+        (1.099512e12, "1.0 TB"),
+        (1.125900e15, "1.0 PB"),
+        (1.152922e18, "1.0 EB"),
+        (1.180592e21, "1.0 ZB"),
+        (1.208926e24, "1.0 YB"),
+        (1.208926e28, "10000.0 YB"),
+    ],
+)
+def test_query_response_bytes(size_in_bytes, formatted_text):
+    assert gbq.GbqConnector.sizeof_fmt(size_in_bytes) == formatted_text

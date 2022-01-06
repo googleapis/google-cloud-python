@@ -500,21 +500,6 @@ class TestReadGBQIntegration(object):
                     configuration=config,
                 )
 
-    def test_query_response_bytes(self):
-        assert self.gbq_connector.sizeof_fmt(999) == "999.0 B"
-        assert self.gbq_connector.sizeof_fmt(1024) == "1.0 KB"
-        assert self.gbq_connector.sizeof_fmt(1099) == "1.1 KB"
-        assert self.gbq_connector.sizeof_fmt(1044480) == "1020.0 KB"
-        assert self.gbq_connector.sizeof_fmt(1048576) == "1.0 MB"
-        assert self.gbq_connector.sizeof_fmt(1048576000) == "1000.0 MB"
-        assert self.gbq_connector.sizeof_fmt(1073741824) == "1.0 GB"
-        assert self.gbq_connector.sizeof_fmt(1.099512e12) == "1.0 TB"
-        assert self.gbq_connector.sizeof_fmt(1.125900e15) == "1.0 PB"
-        assert self.gbq_connector.sizeof_fmt(1.152922e18) == "1.0 EB"
-        assert self.gbq_connector.sizeof_fmt(1.180592e21) == "1.0 ZB"
-        assert self.gbq_connector.sizeof_fmt(1.208926e24) == "1.0 YB"
-        assert self.gbq_connector.sizeof_fmt(1.208926e28) == "10000.0 YB"
-
     def test_struct(self, project_id):
         query = """SELECT 1 int_field,
                    STRUCT("a" as letter, 1 as num) struct_field"""
