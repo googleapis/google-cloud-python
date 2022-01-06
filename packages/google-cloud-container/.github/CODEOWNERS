@@ -8,5 +8,5 @@
 # @googleapis/yoshi-python @googleapis/anthos-dpe are the default owners for changes in this repo
 *     @googleapis/yoshi-python @googleapis/anthos-dpe
 
-# @googleapis/python-samples-owners @googleapis/anthos-dpe are the default owners for samples changes
-/samples/   @googleapis/python-samples-owners @googleapis/anthos-dpe
+# @googleapis/python-samples-reviewers @googleapis/anthos-dpe are the default owners for samples changes
+/samples/   @googleapis/python-samples-reviewers @googleapis/anthos-dpe
