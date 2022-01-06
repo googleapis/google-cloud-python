@@ -8,5 +8,5 @@
 # @googleapis/yoshi-python @googleapis/cx-eng are the default owners for changes in this repo
 *     @googleapis/yoshi-python @googleapis/cx-eng
 
-# @googleapis/python-samples-owners @googleapis/cx-eng are the default owners for samples changes
-/samples/   @googleapis/python-samples-owners @googleapis/cx-eng
+# @googleapis/python-samples-reviewers @googleapis/cx-eng are the default owners for samples changes
+/samples/   @googleapis/python-samples-reviewers @googleapis/cx-eng
