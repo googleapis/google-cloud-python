@@ -61,19 +61,11 @@ class TestCursor(unittest.TestCase):
         self.assertIsNotNone(cursor.description)
         self.assertIsInstance(cursor.description[0], ColumnInfo)
 
-    @mock.patch("warnings.warn")
-    def test_property_rowcount(self, warn_mock):
+    def test_property_rowcount(self):
         connection = self._make_connection(self.INSTANCE, self.DATABASE)
         cursor = self._make_one(connection)
 
-        cursor.rowcount
-        warn_mock.assert_called_once_with(
-            "The `rowcount` property is non-operational. Request "
-            "resulting rows are streamed by the `fetch*()` methods "
-            "and can't be counted before they are all streamed.",
-            UserWarning,
-            stacklevel=2,
-        )
+        assert cursor.rowcount == -1
 
     def test_callproc(self):
         from google.cloud.spanner_dbapi.exceptions import InterfaceError

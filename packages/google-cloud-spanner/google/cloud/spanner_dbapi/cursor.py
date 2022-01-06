@@ -14,7 +14,6 @@
 
 """Database cursor for Google Cloud Spanner DB API."""
 
-import warnings
 from collections import namedtuple
 
 import sqlparse
@@ -137,15 +136,11 @@ class Cursor(object):
     def rowcount(self):
         """The number of rows produced by the last `execute()` call.
 
-        :raises: :class:`NotImplemented`.
+        The property is non-operational and always returns -1. Request
+        resulting rows are streamed by the `fetch*()` methods and
+        can't be counted before they are all streamed.
         """
-        warnings.warn(
-            "The `rowcount` property is non-operational. Request "
-            "resulting rows are streamed by the `fetch*()` methods "
-            "and can't be counted before they are all streamed.",
-            UserWarning,
-            stacklevel=2,
-        )
+        return -1
 
     @check_not_closed
     def callproc(self, procname, args=None):
