@@ -8,5 +8,5 @@
 # @googleapis/yoshi-python @googleapis/firestore-dpe @googleapis/api-firestore are the default owners for changes in this repo
 *     @googleapis/yoshi-python @googleapis/firestore-dpe @googleapis/api-firestore
 
-# @googleapis/python-samples-owners @googleapis/firestore-dpe @googleapis/api-firestore are the default owners for samples changes
-/samples/   @googleapis/python-samples-owners @googleapis/firestore-dpe @googleapis/api-firestore
+# @googleapis/python-samples-reviewers @googleapis/firestore-dpe @googleapis/api-firestore are the default owners for samples changes
+/samples/   @googleapis/python-samples-reviewers @googleapis/firestore-dpe @googleapis/api-firestore
