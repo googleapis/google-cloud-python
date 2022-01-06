@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+### [3.12.1](https://www.github.com/googleapis/python-spanner/compare/v3.12.0...v3.12.1) (2022-01-06)
+
+
+### Bug Fixes
+
+* Django and SQLAlchemy APIs are failing to use rowcount ([#654](https://www.github.com/googleapis/python-spanner/issues/654)) ([698260e](https://www.github.com/googleapis/python-spanner/commit/698260e4597badd38e5ad77dda43506a016826d8))
+
 ## [3.12.0](https://www.github.com/googleapis/python-spanner/compare/v3.11.1...v3.12.0) (2021-11-25)
 
 
