@@ -20,7 +20,7 @@ import sys
 import freezegun
 import mock
 import OpenSSL
-import pytest
+import pytest  # type: ignore
 import requests
 import requests.adapters
 from six.moves import http_client

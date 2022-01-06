@@ -16,7 +16,7 @@ import json
 import os
 
 import mock
-import pytest
+import pytest  # type: ignore
 
 from google.auth import _default
 from google.auth import app_engine

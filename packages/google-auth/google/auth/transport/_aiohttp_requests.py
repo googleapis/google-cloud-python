@@ -23,9 +23,9 @@ from __future__ import absolute_import
 import asyncio
 import functools
 
-import aiohttp
+import aiohttp  # type: ignore
 import six
-import urllib3
+import urllib3  # type: ignore
 
 from google.auth import exceptions
 from google.auth import transport

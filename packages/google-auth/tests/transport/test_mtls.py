@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import mock
-import pytest
+import pytest  # type: ignore
 
 from google.auth import exceptions
 from google.auth.transport import mtls

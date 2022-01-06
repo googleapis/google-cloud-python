@@ -14,9 +14,9 @@
 
 import time
 
-import flask
-import pytest
-from pytest_localserver.http import WSGIServer
+import flask  # type: ignore
+import pytest  # type: ignore
+from pytest_localserver.http import WSGIServer  # type: ignore
 from six.moves import http_client
 
 from google.auth import exceptions

@@ -30,9 +30,9 @@ from google.auth import crypt
 
 # pytype: disable=import-error
 try:
-    from google.appengine.api import app_identity
+    from google.appengine.api import app_identity  # type: ignore
 except ImportError:
-    app_identity = None
+    app_identity = None  # type: ignore
 # pytype: enable=import-error
 
 
@@ -168,12 +168,12 @@ class Credentials(
     def sign_bytes(self, message):
         return self._signer.sign(message)
 
-    @property
+    @property  # type: ignore
     @_helpers.copy_docstring(credentials.Signing)
     def signer_email(self):
         return self.service_account_email
 
-    @property
+    @property  # type: ignore
     @_helpers.copy_docstring(credentials.Signing)
     def signer(self):
         return self._signer

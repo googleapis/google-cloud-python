@@ -16,8 +16,11 @@ import datetime
 import json
 import os
 
+# Because Python 2.7
+# from typing import List
+
 import mock
-import pytest
+import pytest  # type: ignore
 from six.moves import http_client
 
 from google.auth import _helpers
@@ -46,7 +49,7 @@ ID_TOKEN_DATA = (
 )
 ID_TOKEN_EXPIRY = 1564475051
 
-with open(SERVICE_ACCOUNT_JSON_FILE, "r") as fh:
+with open(SERVICE_ACCOUNT_JSON_FILE, "rb") as fh:
     SERVICE_ACCOUNT_INFO = json.load(fh)
 
 SIGNER = crypt.RSASigner.from_string(PRIVATE_KEY_BYTES, "1")
@@ -98,7 +101,9 @@ class TestImpersonatedCredentials(object):
     SERVICE_ACCOUNT_EMAIL = "service-account@example.com"
     TARGET_PRINCIPAL = "impersonated@project.iam.gserviceaccount.com"
     TARGET_SCOPES = ["https://www.googleapis.com/auth/devstorage.read_only"]
-    DELEGATES = []
+    # DELEGATES: List[str] = []
+    # Because Python 2.7:
+    DELEGATES = []  # type: ignore
     LIFETIME = 3600
     SOURCE_CREDENTIALS = service_account.Credentials(
         SIGNER, SERVICE_ACCOUNT_EMAIL, TOKEN_URI

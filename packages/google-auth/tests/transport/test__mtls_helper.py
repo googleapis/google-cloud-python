@@ -17,14 +17,12 @@ import re
 
 import mock
 from OpenSSL import crypto
-import pytest
+import pytest  # type: ignore
 
 from google.auth import exceptions
 from google.auth.transport import _mtls_helper
 
 CONTEXT_AWARE_METADATA = {"cert_provider_command": ["some command"]}
-
-CONTEXT_AWARE_METADATA_NO_CERT_PROVIDER_COMMAND = {}
 
 ENCRYPTED_EC_PRIVATE_KEY = b"""-----BEGIN ENCRYPTED PRIVATE KEY-----
 MIHkME8GCSqGSIb3DQEFDTBCMCkGCSqGSIb3DQEFDDAcBAgl2/yVgs1h3QICCAAw

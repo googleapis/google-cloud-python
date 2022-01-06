@@ -21,11 +21,11 @@ certificates. There is no support for p12 files.
 
 from __future__ import absolute_import
 
-from pyasn1.codec.der import decoder
-from pyasn1_modules import pem
-from pyasn1_modules.rfc2459 import Certificate
-from pyasn1_modules.rfc5208 import PrivateKeyInfo
-import rsa
+from pyasn1.codec.der import decoder  # type: ignore
+from pyasn1_modules import pem  # type: ignore
+from pyasn1_modules.rfc2459 import Certificate  # type: ignore
+from pyasn1_modules.rfc5208 import PrivateKeyInfo  # type: ignore
+import rsa  # type: ignore
 import six
 
 from google.auth import _helpers
@@ -125,7 +125,7 @@ class RSASigner(base.Signer, base.FromServiceAccountMixin):
         self._key = private_key
         self._key_id = key_id
 
-    @property
+    @property  # type: ignore
     @_helpers.copy_docstring(base.Signer)
     def key_id(self):
         return self._key_id

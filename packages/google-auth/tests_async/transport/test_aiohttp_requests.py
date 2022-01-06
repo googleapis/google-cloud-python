@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import aiohttp
-from aioresponses import aioresponses, core
+import aiohttp  # type: ignore
+from aioresponses import aioresponses, core  # type: ignore
 import mock
-import pytest
+import pytest  # type: ignore
 from tests_async.transport import async_compliance
 
 import google.auth._credentials_async

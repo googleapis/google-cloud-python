@@ -379,7 +379,7 @@ class IDTokenCredentials(credentials.CredentialsWithQuotaProject, credentials.Si
             self.token = access_token
             self.expiry = expiry
 
-    @property
+    @property  # type: ignore
     @_helpers.copy_docstring(credentials.Signing)
     def signer(self):
         return self._signer

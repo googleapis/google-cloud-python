@@ -16,7 +16,7 @@ import os
 import sys
 
 import mock
-import pytest
+import pytest  # type: ignore
 
 
 def pytest_configure():

@@ -62,6 +62,24 @@ def blacken(session):
     session.run("black", *BLACK_PATHS)
 
 
+@nox.session(python="3.6")
+def mypy(session):
+    """Verify type hints are mypy compatible."""
+    session.install("-e", ".")
+    session.install(
+        "mypy",
+        "types-cachetools",
+        "types-certifi",
+        "types-freezegun",
+        "types-pyOpenSSL",
+        "types-requests",
+        "types-setuptools",
+        "types-six",
+        "types-mock",
+    )
+    session.run("mypy", "google/", "tests/", "tests_async/")
+
+
 @nox.session(python=["3.6", "3.7", "3.8", "3.9", "3.10"])
 def unit(session):
     constraints_path = str(

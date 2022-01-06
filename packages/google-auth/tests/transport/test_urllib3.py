@@ -17,9 +17,9 @@ import sys
 
 import mock
 import OpenSSL
-import pytest
+import pytest  # type: ignore
 from six.moves import http_client
-import urllib3
+import urllib3  # type: ignore
 
 from google.auth import environment_vars
 from google.auth import exceptions

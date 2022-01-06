@@ -18,7 +18,7 @@ import json
 import os
 
 import mock
-import pytest
+import pytest  # type: ignore
 
 from google.auth import _helpers
 from google.auth import crypt
@@ -45,7 +45,7 @@ with open(os.path.join(DATA_DIR, "es256_public_cert.pem"), "rb") as fh:
 
 SERVICE_ACCOUNT_JSON_FILE = os.path.join(DATA_DIR, "service_account.json")
 
-with open(SERVICE_ACCOUNT_JSON_FILE, "r") as fh:
+with open(SERVICE_ACCOUNT_JSON_FILE, "rb") as fh:
     SERVICE_ACCOUNT_INFO = json.load(fh)
 
 

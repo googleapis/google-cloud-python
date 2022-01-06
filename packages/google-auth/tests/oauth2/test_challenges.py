@@ -18,8 +18,8 @@ import base64
 import sys
 
 import mock
-import pytest
-import pyu2f
+import pytest  # type: ignore
+import pyu2f  # type: ignore
 
 from google.auth import exceptions
 from google.oauth2 import challenges

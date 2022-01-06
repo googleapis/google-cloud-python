@@ -19,7 +19,7 @@ import pickle
 import sys
 
 import mock
-import pytest
+import pytest  # type: ignore
 
 from google.auth import _helpers
 from google.auth import exceptions

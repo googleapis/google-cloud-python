@@ -17,10 +17,10 @@ import os
 import sys
 
 import mock
-import oauth2client.client
-import oauth2client.contrib.gce
-import oauth2client.service_account
-import pytest
+import oauth2client.client  # type: ignore
+import oauth2client.contrib.gce  # type: ignore
+import oauth2client.service_account  # type: ignore
+import pytest  # type: ignore
 from six.moves import reload_module
 
 from google.auth import _oauth2client
@@ -109,7 +109,7 @@ def test__convert_appengine_app_assertion_credentials(
     app_identity, mock_oauth2client_gae_imports
 ):
 
-    import oauth2client.contrib.appengine
+    import oauth2client.contrib.appengine  # type: ignore
 
     service_account_id = "service_account_id"
     old_credentials = oauth2client.contrib.appengine.AppAssertionCredentials(

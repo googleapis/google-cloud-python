@@ -45,7 +45,7 @@ from google.auth.crypt import rsa
 try:
     from google.auth.crypt import es256
 except ImportError:  # pragma: NO COVER
-    es256 = None
+    es256 = None  # type: ignore
 
 if es256 is not None:  # pragma: NO COVER
     __all__ = [

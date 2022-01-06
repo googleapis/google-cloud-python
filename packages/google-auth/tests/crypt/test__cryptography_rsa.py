@@ -16,7 +16,7 @@ import json
 import os
 
 from cryptography.hazmat.primitives.asymmetric import rsa
-import pytest
+import pytest  # type: ignore
 
 from google.auth import _helpers
 from google.auth.crypt import _cryptography_rsa
@@ -55,7 +55,7 @@ with open(os.path.join(DATA_DIR, "privatekey.p12"), "rb") as fh:
 # The service account JSON file can be generated from the Google Cloud Console.
 SERVICE_ACCOUNT_JSON_FILE = os.path.join(DATA_DIR, "service_account.json")
 
-with open(SERVICE_ACCOUNT_JSON_FILE, "r") as fh:
+with open(SERVICE_ACCOUNT_JSON_FILE, "rb") as fh:
     SERVICE_ACCOUNT_INFO = json.load(fh)
 
 

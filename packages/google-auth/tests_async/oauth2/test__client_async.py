@@ -16,7 +16,7 @@ import datetime
 import json
 
 import mock
-import pytest
+import pytest  # type: ignore
 import six
 from six.moves import http_client
 from six.moves import urllib

@@ -15,7 +15,7 @@
 """ECDSA (ES256) verifier and signer that use the ``cryptography`` library.
 """
 
-from cryptography import utils
+from cryptography import utils  # type: ignore
 import cryptography.exceptions
 from cryptography.hazmat import backends
 from cryptography.hazmat.primitives import hashes
@@ -117,7 +117,7 @@ class ES256Signer(base.Signer, base.FromServiceAccountMixin):
         self._key = private_key
         self._key_id = key_id
 
-    @property
+    @property  # type: ignore
     @_helpers.copy_docstring(base.Signer)
     def key_id(self):
         return self._key_id

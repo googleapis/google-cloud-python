@@ -26,5 +26,5 @@ except ImportError:  # pragma: NO COVER
     # unavailable.
     from google.auth.crypt import _python_rsa
 
-    RSASigner = _python_rsa.RSASigner
-    RSAVerifier = _python_rsa.RSAVerifier
+    RSASigner = _python_rsa.RSASigner  # type: ignore
+    RSAVerifier = _python_rsa.RSAVerifier  # type: ignore

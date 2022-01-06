@@ -16,7 +16,7 @@ import datetime
 import json
 
 import mock
-import pytest
+import pytest  # type: ignore
 
 from google.auth import _jwt_async as jwt_async
 from google.auth import crypt

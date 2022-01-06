@@ -30,14 +30,14 @@ import google.oauth2.credentials
 import google.oauth2.service_account
 
 try:
-    import oauth2client.client
-    import oauth2client.contrib.gce
-    import oauth2client.service_account
+    import oauth2client.client  # type: ignore
+    import oauth2client.contrib.gce  # type: ignore
+    import oauth2client.service_account  # type: ignore
 except ImportError as caught_exc:
     six.raise_from(ImportError("oauth2client is not installed."), caught_exc)
 
 try:
-    import oauth2client.contrib.appengine  # pytype: disable=import-error
+    import oauth2client.contrib.appengine  # type: ignore
 
     _HAS_APPENGINE = True
 except ImportError:

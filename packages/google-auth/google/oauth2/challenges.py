@@ -114,9 +114,9 @@ class SecurityKeyChallenge(ReauthChallenge):
     @_helpers.copy_docstring(ReauthChallenge)
     def obtain_challenge_input(self, metadata):
         try:
-            import pyu2f.convenience.authenticator
-            import pyu2f.errors
-            import pyu2f.model
+            import pyu2f.convenience.authenticator  # type: ignore
+            import pyu2f.errors  # type: ignore
+            import pyu2f.model  # type: ignore
         except ImportError:
             raise exceptions.ReauthFailError(
                 "pyu2f dependency is required to use Security key reauth feature. "

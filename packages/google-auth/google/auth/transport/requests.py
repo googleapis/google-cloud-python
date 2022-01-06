@@ -205,7 +205,7 @@ class _MutualTlsAdapter(requests.adapters.HTTPAdapter):
     def __init__(self, cert, key):
         import certifi
         from OpenSSL import crypto
-        import urllib3.contrib.pyopenssl
+        import urllib3.contrib.pyopenssl  # type: ignore
 
         urllib3.contrib.pyopenssl.inject_into_urllib3()
 

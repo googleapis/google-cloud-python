@@ -14,7 +14,7 @@
 
 import json
 
-import pytest
+import pytest  # type: ignore
 
 from google.auth import exceptions
 from google.oauth2 import utils

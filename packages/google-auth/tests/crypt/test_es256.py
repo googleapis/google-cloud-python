@@ -17,7 +17,7 @@ import json
 import os
 
 from cryptography.hazmat.primitives.asymmetric import ec
-import pytest
+import pytest  # type: ignore
 
 from google.auth import _helpers
 from google.auth.crypt import base
@@ -45,7 +45,7 @@ with open(os.path.join(DATA_DIR, "es256_public_cert.pem"), "rb") as fh:
 
 SERVICE_ACCOUNT_JSON_FILE = os.path.join(DATA_DIR, "es256_service_account.json")
 
-with open(SERVICE_ACCOUNT_JSON_FILE, "r") as fh:
+with open(SERVICE_ACCOUNT_JSON_FILE, "rb") as fh:
     SERVICE_ACCOUNT_INFO = json.load(fh)
 
 

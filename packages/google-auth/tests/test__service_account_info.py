@@ -15,7 +15,7 @@
 import json
 import os
 
-import pytest
+import pytest  # type: ignore
 import six
 
 from google.auth import _service_account_info

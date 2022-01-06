@@ -16,9 +16,9 @@ import json
 import os
 
 import mock
-from pyasn1_modules import pem
-import pytest
-import rsa
+from pyasn1_modules import pem  # type: ignore
+import pytest  # type: ignore
+import rsa  # type: ignore
 import six
 
 from google.auth import _helpers
@@ -58,7 +58,7 @@ with open(os.path.join(DATA_DIR, "privatekey.p12"), "rb") as fh:
 # The service account JSON file can be generated from the Google Cloud Console.
 SERVICE_ACCOUNT_JSON_FILE = os.path.join(DATA_DIR, "service_account.json")
 
-with open(SERVICE_ACCOUNT_JSON_FILE, "r") as fh:
+with open(SERVICE_ACCOUNT_JSON_FILE, "rb") as fh:
     SERVICE_ACCOUNT_INFO = json.load(fh)
 
 

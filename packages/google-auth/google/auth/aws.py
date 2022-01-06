@@ -45,14 +45,9 @@ import os
 import posixpath
 import re
 
-try:
-    from urllib.parse import urljoin
-# Python 2.7 compatibility
-except ImportError:  # pragma: NO COVER
-    from urlparse import urljoin
-
 from six.moves import http_client
 from six.moves import urllib
+from six.moves.urllib.parse import urljoin
 
 from google.auth import _helpers
 from google.auth import environment_vars

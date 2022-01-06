@@ -27,7 +27,7 @@ from google.auth.transport import _mtls_helper
 from google.oauth2 import service_account
 
 try:
-    import grpc
+    import grpc  # type: ignore
 except ImportError as caught_exc:  # pragma: NO COVER
     six.raise_from(
         ImportError(

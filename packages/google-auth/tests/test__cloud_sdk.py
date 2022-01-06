@@ -18,7 +18,7 @@ import os
 import subprocess
 
 import mock
-import pytest
+import pytest  # type: ignore
 
 from google.auth import _cloud_sdk
 from google.auth import environment_vars
@@ -28,12 +28,12 @@ from google.auth import exceptions
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 AUTHORIZED_USER_FILE = os.path.join(DATA_DIR, "authorized_user.json")
 
-with io.open(AUTHORIZED_USER_FILE) as fh:
+with io.open(AUTHORIZED_USER_FILE, "rb") as fh:
     AUTHORIZED_USER_FILE_DATA = json.load(fh)
 
 SERVICE_ACCOUNT_FILE = os.path.join(DATA_DIR, "service_account.json")
 
-with io.open(SERVICE_ACCOUNT_FILE) as fh:
+with io.open(SERVICE_ACCOUNT_FILE, "rb") as fh:
     SERVICE_ACCOUNT_FILE_DATA = json.load(fh)
 
 with io.open(os.path.join(DATA_DIR, "cloud_sdk_config.json"), "rb") as fh:
@@ -63,7 +63,7 @@ def test_get_project_id(data, expected_project_id):
 @mock.patch(
     "subprocess.check_output",
     autospec=True,
-    side_effect=subprocess.CalledProcessError(-1, None),
+    side_effect=subprocess.CalledProcessError(-1, "testing"),
 )
 def test_get_project_id_call_error(check_output):
     project_id = _cloud_sdk.get_project_id()

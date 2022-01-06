@@ -17,7 +17,7 @@ import os
 import time
 
 import mock
-import pytest
+import pytest  # type: ignore
 
 from google.auth import _helpers
 from google.auth import credentials
@@ -28,7 +28,7 @@ from google.oauth2 import service_account
 
 try:
     # pylint: disable=ungrouped-imports
-    import grpc
+    import grpc  # type: ignore
     import google.auth.transport.grpc
 
     HAS_GRPC = True

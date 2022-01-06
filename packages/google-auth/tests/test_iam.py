@@ -17,7 +17,7 @@ import datetime
 import json
 
 import mock
-import pytest
+import pytest  # type: ignore
 from six.moves import http_client
 
 from google.auth import _helpers
