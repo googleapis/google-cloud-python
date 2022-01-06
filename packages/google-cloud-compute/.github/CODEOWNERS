@@ -8,5 +8,5 @@
 # @googleapis/yoshi-python @googleapis/api-compute are the default owners for changes in this repo
 *     @googleapis/yoshi-python @googleapis/api-compute
 
-# @googleapis/python-samples-owners @googleapis/api-compute are the default owners for samples changes
-/samples/   @googleapis/python-samples-owners @googleapis/api-compute
+# @googleapis/python-samples-reviewers @googleapis/api-compute are the default owners for samples changes
+/samples/   @googleapis/python-samples-reviewers @googleapis/api-compute
