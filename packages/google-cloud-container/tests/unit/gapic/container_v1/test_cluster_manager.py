@@ -247,20 +247,20 @@ def test_cluster_manager_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -319,7 +319,7 @@ def test_cluster_manager_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -414,7 +414,7 @@ def test_cluster_manager_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -445,7 +445,7 @@ def test_cluster_manager_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -478,9 +478,8 @@ def test_cluster_manager_client_client_options_from_dict():
         )
 
 
-def test_list_clusters(
-    transport: str = "grpc", request_type=cluster_service.ListClustersRequest
-):
+@pytest.mark.parametrize("request_type", [cluster_service.ListClustersRequest, dict,])
+def test_list_clusters(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -505,10 +504,6 @@ def test_list_clusters(
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.ListClustersResponse)
     assert response.missing_zones == ["missing_zones_value"]
-
-
-def test_list_clusters_from_dict():
-    test_list_clusters(request_type=dict)
 
 
 def test_list_clusters_empty_call():
@@ -708,9 +703,8 @@ async def test_list_clusters_flattened_error_async():
         )
 
 
-def test_get_cluster(
-    transport: str = "grpc", request_type=cluster_service.GetClusterRequest
-):
+@pytest.mark.parametrize("request_type", [cluster_service.GetClusterRequest, dict,])
+def test_get_cluster(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -789,10 +783,6 @@ def test_get_cluster(
     assert response.location == "location_value"
     assert response.enable_tpu is True
     assert response.tpu_ipv4_cidr_block == "tpu_ipv4_cidr_block_value"
-
-
-def test_get_cluster_from_dict():
-    test_get_cluster(request_type=dict)
 
 
 def test_get_cluster_empty_call():
@@ -1062,9 +1052,8 @@ async def test_get_cluster_flattened_error_async():
         )
 
 
-def test_create_cluster(
-    transport: str = "grpc", request_type=cluster_service.CreateClusterRequest
-):
+@pytest.mark.parametrize("request_type", [cluster_service.CreateClusterRequest, dict,])
+def test_create_cluster(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1109,10 +1098,6 @@ def test_create_cluster(
     assert response.location == "location_value"
     assert response.start_time == "start_time_value"
     assert response.end_time == "end_time_value"
-
-
-def test_create_cluster_from_dict():
-    test_create_cluster(request_type=dict)
 
 
 def test_create_cluster_empty_call():
@@ -1348,9 +1333,8 @@ async def test_create_cluster_flattened_error_async():
         )
 
 
-def test_update_cluster(
-    transport: str = "grpc", request_type=cluster_service.UpdateClusterRequest
-):
+@pytest.mark.parametrize("request_type", [cluster_service.UpdateClusterRequest, dict,])
+def test_update_cluster(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1395,10 +1379,6 @@ def test_update_cluster(
     assert response.location == "location_value"
     assert response.start_time == "start_time_value"
     assert response.end_time == "end_time_value"
-
-
-def test_update_cluster_from_dict():
-    test_update_cluster(request_type=dict)
 
 
 def test_update_cluster_empty_call():
@@ -1656,9 +1636,8 @@ async def test_update_cluster_flattened_error_async():
         )
 
 
-def test_update_node_pool(
-    transport: str = "grpc", request_type=cluster_service.UpdateNodePoolRequest
-):
+@pytest.mark.parametrize("request_type", [cluster_service.UpdateNodePoolRequest, dict,])
+def test_update_node_pool(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1703,10 +1682,6 @@ def test_update_node_pool(
     assert response.location == "location_value"
     assert response.start_time == "start_time_value"
     assert response.end_time == "end_time_value"
-
-
-def test_update_node_pool_from_dict():
-    test_update_node_pool(request_type=dict)
 
 
 def test_update_node_pool_empty_call():
@@ -1834,9 +1809,10 @@ async def test_update_node_pool_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_set_node_pool_autoscaling(
-    transport: str = "grpc", request_type=cluster_service.SetNodePoolAutoscalingRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cluster_service.SetNodePoolAutoscalingRequest, dict,]
+)
+def test_set_node_pool_autoscaling(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1883,10 +1859,6 @@ def test_set_node_pool_autoscaling(
     assert response.location == "location_value"
     assert response.start_time == "start_time_value"
     assert response.end_time == "end_time_value"
-
-
-def test_set_node_pool_autoscaling_from_dict():
-    test_set_node_pool_autoscaling(request_type=dict)
 
 
 def test_set_node_pool_autoscaling_empty_call():
@@ -2023,9 +1995,10 @@ async def test_set_node_pool_autoscaling_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_set_logging_service(
-    transport: str = "grpc", request_type=cluster_service.SetLoggingServiceRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cluster_service.SetLoggingServiceRequest, dict,]
+)
+def test_set_logging_service(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2072,10 +2045,6 @@ def test_set_logging_service(
     assert response.location == "location_value"
     assert response.start_time == "start_time_value"
     assert response.end_time == "end_time_value"
-
-
-def test_set_logging_service_from_dict():
-    test_set_logging_service(request_type=dict)
 
 
 def test_set_logging_service_empty_call():
@@ -2334,9 +2303,10 @@ async def test_set_logging_service_flattened_error_async():
         )
 
 
-def test_set_monitoring_service(
-    transport: str = "grpc", request_type=cluster_service.SetMonitoringServiceRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cluster_service.SetMonitoringServiceRequest, dict,]
+)
+def test_set_monitoring_service(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2383,10 +2353,6 @@ def test_set_monitoring_service(
     assert response.location == "location_value"
     assert response.start_time == "start_time_value"
     assert response.end_time == "end_time_value"
-
-
-def test_set_monitoring_service_from_dict():
-    test_set_monitoring_service(request_type=dict)
 
 
 def test_set_monitoring_service_empty_call():
@@ -2645,9 +2611,10 @@ async def test_set_monitoring_service_flattened_error_async():
         )
 
 
-def test_set_addons_config(
-    transport: str = "grpc", request_type=cluster_service.SetAddonsConfigRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cluster_service.SetAddonsConfigRequest, dict,]
+)
+def test_set_addons_config(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2694,10 +2661,6 @@ def test_set_addons_config(
     assert response.location == "location_value"
     assert response.start_time == "start_time_value"
     assert response.end_time == "end_time_value"
-
-
-def test_set_addons_config_from_dict():
-    test_set_addons_config(request_type=dict)
 
 
 def test_set_addons_config_empty_call():
@@ -2967,9 +2930,8 @@ async def test_set_addons_config_flattened_error_async():
         )
 
 
-def test_set_locations(
-    transport: str = "grpc", request_type=cluster_service.SetLocationsRequest
-):
+@pytest.mark.parametrize("request_type", [cluster_service.SetLocationsRequest, dict,])
+def test_set_locations(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3014,10 +2976,6 @@ def test_set_locations(
     assert response.location == "location_value"
     assert response.start_time == "start_time_value"
     assert response.end_time == "end_time_value"
-
-
-def test_set_locations_from_dict():
-    test_set_locations(request_type=dict)
 
 
 def test_set_locations_empty_call():
@@ -3263,9 +3221,8 @@ async def test_set_locations_flattened_error_async():
         )
 
 
-def test_update_master(
-    transport: str = "grpc", request_type=cluster_service.UpdateMasterRequest
-):
+@pytest.mark.parametrize("request_type", [cluster_service.UpdateMasterRequest, dict,])
+def test_update_master(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3310,10 +3267,6 @@ def test_update_master(
     assert response.location == "location_value"
     assert response.start_time == "start_time_value"
     assert response.end_time == "end_time_value"
-
-
-def test_update_master_from_dict():
-    test_update_master(request_type=dict)
 
 
 def test_update_master_empty_call():
@@ -3559,9 +3512,8 @@ async def test_update_master_flattened_error_async():
         )
 
 
-def test_set_master_auth(
-    transport: str = "grpc", request_type=cluster_service.SetMasterAuthRequest
-):
+@pytest.mark.parametrize("request_type", [cluster_service.SetMasterAuthRequest, dict,])
+def test_set_master_auth(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3606,10 +3558,6 @@ def test_set_master_auth(
     assert response.location == "location_value"
     assert response.start_time == "start_time_value"
     assert response.end_time == "end_time_value"
-
-
-def test_set_master_auth_from_dict():
-    test_set_master_auth(request_type=dict)
 
 
 def test_set_master_auth_empty_call():
@@ -3737,9 +3685,8 @@ async def test_set_master_auth_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_delete_cluster(
-    transport: str = "grpc", request_type=cluster_service.DeleteClusterRequest
-):
+@pytest.mark.parametrize("request_type", [cluster_service.DeleteClusterRequest, dict,])
+def test_delete_cluster(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3784,10 +3731,6 @@ def test_delete_cluster(
     assert response.location == "location_value"
     assert response.start_time == "start_time_value"
     assert response.end_time == "end_time_value"
-
-
-def test_delete_cluster_from_dict():
-    test_delete_cluster(request_type=dict)
 
 
 def test_delete_cluster_empty_call():
@@ -4023,9 +3966,8 @@ async def test_delete_cluster_flattened_error_async():
         )
 
 
-def test_list_operations(
-    transport: str = "grpc", request_type=cluster_service.ListOperationsRequest
-):
+@pytest.mark.parametrize("request_type", [cluster_service.ListOperationsRequest, dict,])
+def test_list_operations(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4050,10 +3992,6 @@ def test_list_operations(
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.ListOperationsResponse)
     assert response.missing_zones == ["missing_zones_value"]
-
-
-def test_list_operations_from_dict():
-    test_list_operations(request_type=dict)
 
 
 def test_list_operations_empty_call():
@@ -4247,9 +4185,8 @@ async def test_list_operations_flattened_error_async():
         )
 
 
-def test_get_operation(
-    transport: str = "grpc", request_type=cluster_service.GetOperationRequest
-):
+@pytest.mark.parametrize("request_type", [cluster_service.GetOperationRequest, dict,])
+def test_get_operation(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4294,10 +4231,6 @@ def test_get_operation(
     assert response.location == "location_value"
     assert response.start_time == "start_time_value"
     assert response.end_time == "end_time_value"
-
-
-def test_get_operation_from_dict():
-    test_get_operation(request_type=dict)
 
 
 def test_get_operation_empty_call():
@@ -4533,9 +4466,10 @@ async def test_get_operation_flattened_error_async():
         )
 
 
-def test_cancel_operation(
-    transport: str = "grpc", request_type=cluster_service.CancelOperationRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cluster_service.CancelOperationRequest, dict,]
+)
+def test_cancel_operation(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4557,10 +4491,6 @@ def test_cancel_operation(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_cancel_operation_from_dict():
-    test_cancel_operation(request_type=dict)
 
 
 def test_cancel_operation_empty_call():
@@ -4767,9 +4697,10 @@ async def test_cancel_operation_flattened_error_async():
         )
 
 
-def test_get_server_config(
-    transport: str = "grpc", request_type=cluster_service.GetServerConfigRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cluster_service.GetServerConfigRequest, dict,]
+)
+def test_get_server_config(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4804,10 +4735,6 @@ def test_get_server_config(
     assert response.default_image_type == "default_image_type_value"
     assert response.valid_image_types == ["valid_image_types_value"]
     assert response.valid_master_versions == ["valid_master_versions_value"]
-
-
-def test_get_server_config_from_dict():
-    test_get_server_config(request_type=dict)
 
 
 def test_get_server_config_empty_call():
@@ -5029,9 +4956,8 @@ async def test_get_server_config_flattened_error_async():
         )
 
 
-def test_get_json_web_keys(
-    transport: str = "grpc", request_type=cluster_service.GetJSONWebKeysRequest
-):
+@pytest.mark.parametrize("request_type", [cluster_service.GetJSONWebKeysRequest, dict,])
+def test_get_json_web_keys(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5055,10 +4981,6 @@ def test_get_json_web_keys(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.GetJSONWebKeysResponse)
-
-
-def test_get_json_web_keys_from_dict():
-    test_get_json_web_keys(request_type=dict)
 
 
 def test_get_json_web_keys_empty_call():
@@ -5171,9 +5093,8 @@ async def test_get_json_web_keys_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_list_node_pools(
-    transport: str = "grpc", request_type=cluster_service.ListNodePoolsRequest
-):
+@pytest.mark.parametrize("request_type", [cluster_service.ListNodePoolsRequest, dict,])
+def test_list_node_pools(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5195,10 +5116,6 @@ def test_list_node_pools(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cluster_service.ListNodePoolsResponse)
-
-
-def test_list_node_pools_from_dict():
-    test_list_node_pools(request_type=dict)
 
 
 def test_list_node_pools_empty_call():
@@ -5411,9 +5328,8 @@ async def test_list_node_pools_flattened_error_async():
         )
 
 
-def test_get_node_pool(
-    transport: str = "grpc", request_type=cluster_service.GetNodePoolRequest
-):
+@pytest.mark.parametrize("request_type", [cluster_service.GetNodePoolRequest, dict,])
+def test_get_node_pool(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5454,10 +5370,6 @@ def test_get_node_pool(
     assert response.status == cluster_service.NodePool.Status.PROVISIONING
     assert response.status_message == "status_message_value"
     assert response.pod_ipv4_cidr_size == 1856
-
-
-def test_get_node_pool_from_dict():
-    test_get_node_pool(request_type=dict)
 
 
 def test_get_node_pool_empty_call():
@@ -5699,9 +5611,8 @@ async def test_get_node_pool_flattened_error_async():
         )
 
 
-def test_create_node_pool(
-    transport: str = "grpc", request_type=cluster_service.CreateNodePoolRequest
-):
+@pytest.mark.parametrize("request_type", [cluster_service.CreateNodePoolRequest, dict,])
+def test_create_node_pool(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5746,10 +5657,6 @@ def test_create_node_pool(
     assert response.location == "location_value"
     assert response.start_time == "start_time_value"
     assert response.end_time == "end_time_value"
-
-
-def test_create_node_pool_from_dict():
-    test_create_node_pool(request_type=dict)
 
 
 def test_create_node_pool_empty_call():
@@ -5995,9 +5902,8 @@ async def test_create_node_pool_flattened_error_async():
         )
 
 
-def test_delete_node_pool(
-    transport: str = "grpc", request_type=cluster_service.DeleteNodePoolRequest
-):
+@pytest.mark.parametrize("request_type", [cluster_service.DeleteNodePoolRequest, dict,])
+def test_delete_node_pool(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -6042,10 +5948,6 @@ def test_delete_node_pool(
     assert response.location == "location_value"
     assert response.start_time == "start_time_value"
     assert response.end_time == "end_time_value"
-
-
-def test_delete_node_pool_from_dict():
-    test_delete_node_pool(request_type=dict)
 
 
 def test_delete_node_pool_empty_call():
@@ -6291,9 +6193,10 @@ async def test_delete_node_pool_flattened_error_async():
         )
 
 
-def test_rollback_node_pool_upgrade(
-    transport: str = "grpc", request_type=cluster_service.RollbackNodePoolUpgradeRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cluster_service.RollbackNodePoolUpgradeRequest, dict,]
+)
+def test_rollback_node_pool_upgrade(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -6340,10 +6243,6 @@ def test_rollback_node_pool_upgrade(
     assert response.location == "location_value"
     assert response.start_time == "start_time_value"
     assert response.end_time == "end_time_value"
-
-
-def test_rollback_node_pool_upgrade_from_dict():
-    test_rollback_node_pool_upgrade(request_type=dict)
 
 
 def test_rollback_node_pool_upgrade_empty_call():
@@ -6602,9 +6501,10 @@ async def test_rollback_node_pool_upgrade_flattened_error_async():
         )
 
 
-def test_set_node_pool_management(
-    transport: str = "grpc", request_type=cluster_service.SetNodePoolManagementRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cluster_service.SetNodePoolManagementRequest, dict,]
+)
+def test_set_node_pool_management(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -6651,10 +6551,6 @@ def test_set_node_pool_management(
     assert response.location == "location_value"
     assert response.start_time == "start_time_value"
     assert response.end_time == "end_time_value"
-
-
-def test_set_node_pool_management_from_dict():
-    test_set_node_pool_management(request_type=dict)
 
 
 def test_set_node_pool_management_empty_call():
@@ -6791,9 +6687,8 @@ async def test_set_node_pool_management_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_set_labels(
-    transport: str = "grpc", request_type=cluster_service.SetLabelsRequest
-):
+@pytest.mark.parametrize("request_type", [cluster_service.SetLabelsRequest, dict,])
+def test_set_labels(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -6838,10 +6733,6 @@ def test_set_labels(
     assert response.location == "location_value"
     assert response.start_time == "start_time_value"
     assert response.end_time == "end_time_value"
-
-
-def test_set_labels_from_dict():
-    test_set_labels(request_type=dict)
 
 
 def test_set_labels_empty_call():
@@ -6969,9 +6860,8 @@ async def test_set_labels_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_set_legacy_abac(
-    transport: str = "grpc", request_type=cluster_service.SetLegacyAbacRequest
-):
+@pytest.mark.parametrize("request_type", [cluster_service.SetLegacyAbacRequest, dict,])
+def test_set_legacy_abac(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -7016,10 +6906,6 @@ def test_set_legacy_abac(
     assert response.location == "location_value"
     assert response.start_time == "start_time_value"
     assert response.end_time == "end_time_value"
-
-
-def test_set_legacy_abac_from_dict():
-    test_set_legacy_abac(request_type=dict)
 
 
 def test_set_legacy_abac_empty_call():
@@ -7265,9 +7151,10 @@ async def test_set_legacy_abac_flattened_error_async():
         )
 
 
-def test_start_ip_rotation(
-    transport: str = "grpc", request_type=cluster_service.StartIPRotationRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cluster_service.StartIPRotationRequest, dict,]
+)
+def test_start_ip_rotation(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -7314,10 +7201,6 @@ def test_start_ip_rotation(
     assert response.location == "location_value"
     assert response.start_time == "start_time_value"
     assert response.end_time == "end_time_value"
-
-
-def test_start_ip_rotation_from_dict():
-    test_start_ip_rotation(request_type=dict)
 
 
 def test_start_ip_rotation_empty_call():
@@ -7565,9 +7448,10 @@ async def test_start_ip_rotation_flattened_error_async():
         )
 
 
-def test_complete_ip_rotation(
-    transport: str = "grpc", request_type=cluster_service.CompleteIPRotationRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cluster_service.CompleteIPRotationRequest, dict,]
+)
+def test_complete_ip_rotation(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -7614,10 +7498,6 @@ def test_complete_ip_rotation(
     assert response.location == "location_value"
     assert response.start_time == "start_time_value"
     assert response.end_time == "end_time_value"
-
-
-def test_complete_ip_rotation_from_dict():
-    test_complete_ip_rotation(request_type=dict)
 
 
 def test_complete_ip_rotation_empty_call():
@@ -7866,9 +7746,10 @@ async def test_complete_ip_rotation_flattened_error_async():
         )
 
 
-def test_set_node_pool_size(
-    transport: str = "grpc", request_type=cluster_service.SetNodePoolSizeRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cluster_service.SetNodePoolSizeRequest, dict,]
+)
+def test_set_node_pool_size(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -7915,10 +7796,6 @@ def test_set_node_pool_size(
     assert response.location == "location_value"
     assert response.start_time == "start_time_value"
     assert response.end_time == "end_time_value"
-
-
-def test_set_node_pool_size_from_dict():
-    test_set_node_pool_size(request_type=dict)
 
 
 def test_set_node_pool_size_empty_call():
@@ -8054,9 +7931,10 @@ async def test_set_node_pool_size_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_set_network_policy(
-    transport: str = "grpc", request_type=cluster_service.SetNetworkPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cluster_service.SetNetworkPolicyRequest, dict,]
+)
+def test_set_network_policy(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -8103,10 +7981,6 @@ def test_set_network_policy(
     assert response.location == "location_value"
     assert response.start_time == "start_time_value"
     assert response.end_time == "end_time_value"
-
-
-def test_set_network_policy_from_dict():
-    test_set_network_policy(request_type=dict)
 
 
 def test_set_network_policy_empty_call():
@@ -8377,9 +8251,10 @@ async def test_set_network_policy_flattened_error_async():
         )
 
 
-def test_set_maintenance_policy(
-    transport: str = "grpc", request_type=cluster_service.SetMaintenancePolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cluster_service.SetMaintenancePolicyRequest, dict,]
+)
+def test_set_maintenance_policy(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -8426,10 +8301,6 @@ def test_set_maintenance_policy(
     assert response.location == "location_value"
     assert response.start_time == "start_time_value"
     assert response.end_time == "end_time_value"
-
-
-def test_set_maintenance_policy_from_dict():
-    test_set_maintenance_policy(request_type=dict)
 
 
 def test_set_maintenance_policy_empty_call():
@@ -8724,9 +8595,10 @@ async def test_set_maintenance_policy_flattened_error_async():
         )
 
 
-def test_list_usable_subnetworks(
-    transport: str = "grpc", request_type=cluster_service.ListUsableSubnetworksRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cluster_service.ListUsableSubnetworksRequest, dict,]
+)
+def test_list_usable_subnetworks(request_type, transport: str = "grpc"):
     client = ClusterManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -8753,10 +8625,6 @@ def test_list_usable_subnetworks(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListUsableSubnetworksPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_usable_subnetworks_from_dict():
-    test_list_usable_subnetworks(request_type=dict)
 
 
 def test_list_usable_subnetworks_empty_call():
@@ -8873,8 +8741,10 @@ async def test_list_usable_subnetworks_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_list_usable_subnetworks_pager():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_usable_subnetworks_pager(transport_name: str = "grpc"):
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8919,8 +8789,10 @@ def test_list_usable_subnetworks_pager():
         assert all(isinstance(i, cluster_service.UsableSubnetwork) for i in results)
 
 
-def test_list_usable_subnetworks_pages():
-    client = ClusterManagerClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_usable_subnetworks_pages(transport_name: str = "grpc"):
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9564,7 +9436,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
