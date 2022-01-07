@@ -251,20 +251,20 @@ def test_beta_analytics_data_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -333,7 +333,7 @@ def test_beta_analytics_data_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -428,7 +428,7 @@ def test_beta_analytics_data_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -459,7 +459,7 @@ def test_beta_analytics_data_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -492,9 +492,8 @@ def test_beta_analytics_data_client_client_options_from_dict():
         )
 
 
-def test_run_report(
-    transport: str = "grpc", request_type=analytics_data_api.RunReportRequest
-):
+@pytest.mark.parametrize("request_type", [analytics_data_api.RunReportRequest, dict,])
+def test_run_report(request_type, transport: str = "grpc"):
     client = BetaAnalyticsDataClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -520,10 +519,6 @@ def test_run_report(
     assert isinstance(response, analytics_data_api.RunReportResponse)
     assert response.row_count == 992
     assert response.kind == "kind_value"
-
-
-def test_run_report_from_dict():
-    test_run_report(request_type=dict)
 
 
 def test_run_report_empty_call():
@@ -630,9 +625,10 @@ async def test_run_report_field_headers_async():
     assert ("x-goog-request-params", "property=property/value",) in kw["metadata"]
 
 
-def test_run_pivot_report(
-    transport: str = "grpc", request_type=analytics_data_api.RunPivotReportRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [analytics_data_api.RunPivotReportRequest, dict,]
+)
+def test_run_pivot_report(request_type, transport: str = "grpc"):
     client = BetaAnalyticsDataClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -657,10 +653,6 @@ def test_run_pivot_report(
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.RunPivotReportResponse)
     assert response.kind == "kind_value"
-
-
-def test_run_pivot_report_from_dict():
-    test_run_pivot_report(request_type=dict)
 
 
 def test_run_pivot_report_empty_call():
@@ -767,9 +759,10 @@ async def test_run_pivot_report_field_headers_async():
     assert ("x-goog-request-params", "property=property/value",) in kw["metadata"]
 
 
-def test_batch_run_reports(
-    transport: str = "grpc", request_type=analytics_data_api.BatchRunReportsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [analytics_data_api.BatchRunReportsRequest, dict,]
+)
+def test_batch_run_reports(request_type, transport: str = "grpc"):
     client = BetaAnalyticsDataClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -796,10 +789,6 @@ def test_batch_run_reports(
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.BatchRunReportsResponse)
     assert response.kind == "kind_value"
-
-
-def test_batch_run_reports_from_dict():
-    test_batch_run_reports(request_type=dict)
 
 
 def test_batch_run_reports_empty_call():
@@ -914,9 +903,10 @@ async def test_batch_run_reports_field_headers_async():
     assert ("x-goog-request-params", "property=property/value",) in kw["metadata"]
 
 
-def test_batch_run_pivot_reports(
-    transport: str = "grpc", request_type=analytics_data_api.BatchRunPivotReportsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [analytics_data_api.BatchRunPivotReportsRequest, dict,]
+)
+def test_batch_run_pivot_reports(request_type, transport: str = "grpc"):
     client = BetaAnalyticsDataClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -943,10 +933,6 @@ def test_batch_run_pivot_reports(
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.BatchRunPivotReportsResponse)
     assert response.kind == "kind_value"
-
-
-def test_batch_run_pivot_reports_from_dict():
-    test_batch_run_pivot_reports(request_type=dict)
 
 
 def test_batch_run_pivot_reports_empty_call():
@@ -1061,9 +1047,8 @@ async def test_batch_run_pivot_reports_field_headers_async():
     assert ("x-goog-request-params", "property=property/value",) in kw["metadata"]
 
 
-def test_get_metadata(
-    transport: str = "grpc", request_type=analytics_data_api.GetMetadataRequest
-):
+@pytest.mark.parametrize("request_type", [analytics_data_api.GetMetadataRequest, dict,])
+def test_get_metadata(request_type, transport: str = "grpc"):
     client = BetaAnalyticsDataClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1086,10 +1071,6 @@ def test_get_metadata(
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.Metadata)
     assert response.name == "name_value"
-
-
-def test_get_metadata_from_dict():
-    test_get_metadata(request_type=dict)
 
 
 def test_get_metadata_empty_call():
@@ -1267,9 +1248,10 @@ async def test_get_metadata_flattened_error_async():
         )
 
 
-def test_run_realtime_report(
-    transport: str = "grpc", request_type=analytics_data_api.RunRealtimeReportRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [analytics_data_api.RunRealtimeReportRequest, dict,]
+)
+def test_run_realtime_report(request_type, transport: str = "grpc"):
     client = BetaAnalyticsDataClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1297,10 +1279,6 @@ def test_run_realtime_report(
     assert isinstance(response, analytics_data_api.RunRealtimeReportResponse)
     assert response.row_count == 992
     assert response.kind == "kind_value"
-
-
-def test_run_realtime_report_from_dict():
-    test_run_realtime_report(request_type=dict)
 
 
 def test_run_realtime_report_empty_call():
@@ -1418,9 +1396,10 @@ async def test_run_realtime_report_field_headers_async():
     assert ("x-goog-request-params", "property=property/value",) in kw["metadata"]
 
 
-def test_check_compatibility(
-    transport: str = "grpc", request_type=analytics_data_api.CheckCompatibilityRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [analytics_data_api.CheckCompatibilityRequest, dict,]
+)
+def test_check_compatibility(request_type, transport: str = "grpc"):
     client = BetaAnalyticsDataClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1444,10 +1423,6 @@ def test_check_compatibility(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.CheckCompatibilityResponse)
-
-
-def test_check_compatibility_from_dict():
-    test_check_compatibility(request_type=dict)
 
 
 def test_check_compatibility_empty_call():
@@ -2089,7 +2064,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
