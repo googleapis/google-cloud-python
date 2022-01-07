@@ -251,20 +251,20 @@ def test_system_policy_v1_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -323,7 +323,7 @@ def test_system_policy_v1_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -418,7 +418,7 @@ def test_system_policy_v1_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -449,7 +449,7 @@ def test_system_policy_v1_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -482,9 +482,8 @@ def test_system_policy_v1_client_client_options_from_dict():
         )
 
 
-def test_get_system_policy(
-    transport: str = "grpc", request_type=service.GetSystemPolicyRequest
-):
+@pytest.mark.parametrize("request_type", [service.GetSystemPolicyRequest, dict,])
+def test_get_system_policy(request_type, transport: str = "grpc"):
     client = SystemPolicyV1Client(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -518,10 +517,6 @@ def test_get_system_policy(
         response.global_policy_evaluation_mode
         == resources.Policy.GlobalPolicyEvaluationMode.ENABLE
     )
-
-
-def test_get_system_policy_from_dict():
-    test_get_system_policy(request_type=dict)
 
 
 def test_get_system_policy_empty_call():
@@ -1222,7 +1217,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
