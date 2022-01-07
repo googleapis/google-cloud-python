@@ -250,20 +250,20 @@ def test_access_approval_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -322,7 +322,7 @@ def test_access_approval_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -417,7 +417,7 @@ def test_access_approval_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -448,7 +448,7 @@ def test_access_approval_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -481,9 +481,10 @@ def test_access_approval_client_client_options_from_dict():
         )
 
 
-def test_list_approval_requests(
-    transport: str = "grpc", request_type=accessapproval.ListApprovalRequestsMessage
-):
+@pytest.mark.parametrize(
+    "request_type", [accessapproval.ListApprovalRequestsMessage, dict,]
+)
+def test_list_approval_requests(request_type, transport: str = "grpc"):
     client = AccessApprovalClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -510,10 +511,6 @@ def test_list_approval_requests(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListApprovalRequestsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_approval_requests_from_dict():
-    test_list_approval_requests(request_type=dict)
 
 
 def test_list_approval_requests_empty_call():
@@ -706,8 +703,10 @@ async def test_list_approval_requests_flattened_error_async():
         )
 
 
-def test_list_approval_requests_pager():
-    client = AccessApprovalClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_approval_requests_pager(transport_name: str = "grpc"):
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -752,8 +751,10 @@ def test_list_approval_requests_pager():
         assert all(isinstance(i, accessapproval.ApprovalRequest) for i in results)
 
 
-def test_list_approval_requests_pages():
-    client = AccessApprovalClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_approval_requests_pages(transport_name: str = "grpc"):
+    client = AccessApprovalClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -876,9 +877,10 @@ async def test_list_approval_requests_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_approval_request(
-    transport: str = "grpc", request_type=accessapproval.GetApprovalRequestMessage
-):
+@pytest.mark.parametrize(
+    "request_type", [accessapproval.GetApprovalRequestMessage, dict,]
+)
+def test_get_approval_request(request_type, transport: str = "grpc"):
     client = AccessApprovalClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -910,10 +912,6 @@ def test_get_approval_request(
     assert isinstance(response, accessapproval.ApprovalRequest)
     assert response.name == "name_value"
     assert response.requested_resource_name == "requested_resource_name_value"
-
-
-def test_get_approval_request_from_dict():
-    test_get_approval_request(request_type=dict)
 
 
 def test_get_approval_request_empty_call():
@@ -1108,9 +1106,10 @@ async def test_get_approval_request_flattened_error_async():
         )
 
 
-def test_approve_approval_request(
-    transport: str = "grpc", request_type=accessapproval.ApproveApprovalRequestMessage
-):
+@pytest.mark.parametrize(
+    "request_type", [accessapproval.ApproveApprovalRequestMessage, dict,]
+)
+def test_approve_approval_request(request_type, transport: str = "grpc"):
     client = AccessApprovalClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1142,10 +1141,6 @@ def test_approve_approval_request(
     assert isinstance(response, accessapproval.ApprovalRequest)
     assert response.name == "name_value"
     assert response.requested_resource_name == "requested_resource_name_value"
-
-
-def test_approve_approval_request_from_dict():
-    test_approve_approval_request(request_type=dict)
 
 
 def test_approve_approval_request_empty_call():
@@ -1264,9 +1259,10 @@ async def test_approve_approval_request_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_dismiss_approval_request(
-    transport: str = "grpc", request_type=accessapproval.DismissApprovalRequestMessage
-):
+@pytest.mark.parametrize(
+    "request_type", [accessapproval.DismissApprovalRequestMessage, dict,]
+)
+def test_dismiss_approval_request(request_type, transport: str = "grpc"):
     client = AccessApprovalClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1298,10 +1294,6 @@ def test_dismiss_approval_request(
     assert isinstance(response, accessapproval.ApprovalRequest)
     assert response.name == "name_value"
     assert response.requested_resource_name == "requested_resource_name_value"
-
-
-def test_dismiss_approval_request_from_dict():
-    test_dismiss_approval_request(request_type=dict)
 
 
 def test_dismiss_approval_request_empty_call():
@@ -1420,10 +1412,10 @@ async def test_dismiss_approval_request_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_get_access_approval_settings(
-    transport: str = "grpc",
-    request_type=accessapproval.GetAccessApprovalSettingsMessage,
-):
+@pytest.mark.parametrize(
+    "request_type", [accessapproval.GetAccessApprovalSettingsMessage, dict,]
+)
+def test_get_access_approval_settings(request_type, transport: str = "grpc"):
     client = AccessApprovalClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1454,10 +1446,6 @@ def test_get_access_approval_settings(
     assert response.name == "name_value"
     assert response.notification_emails == ["notification_emails_value"]
     assert response.enrolled_ancestor is True
-
-
-def test_get_access_approval_settings_from_dict():
-    test_get_access_approval_settings(request_type=dict)
 
 
 def test_get_access_approval_settings_empty_call():
@@ -1654,10 +1642,10 @@ async def test_get_access_approval_settings_flattened_error_async():
         )
 
 
-def test_update_access_approval_settings(
-    transport: str = "grpc",
-    request_type=accessapproval.UpdateAccessApprovalSettingsMessage,
-):
+@pytest.mark.parametrize(
+    "request_type", [accessapproval.UpdateAccessApprovalSettingsMessage, dict,]
+)
+def test_update_access_approval_settings(request_type, transport: str = "grpc"):
     client = AccessApprovalClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1688,10 +1676,6 @@ def test_update_access_approval_settings(
     assert response.name == "name_value"
     assert response.notification_emails == ["notification_emails_value"]
     assert response.enrolled_ancestor is True
-
-
-def test_update_access_approval_settings_from_dict():
-    test_update_access_approval_settings(request_type=dict)
 
 
 def test_update_access_approval_settings_empty_call():
@@ -1908,10 +1892,10 @@ async def test_update_access_approval_settings_flattened_error_async():
         )
 
 
-def test_delete_access_approval_settings(
-    transport: str = "grpc",
-    request_type=accessapproval.DeleteAccessApprovalSettingsMessage,
-):
+@pytest.mark.parametrize(
+    "request_type", [accessapproval.DeleteAccessApprovalSettingsMessage, dict,]
+)
+def test_delete_access_approval_settings(request_type, transport: str = "grpc"):
     client = AccessApprovalClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1935,10 +1919,6 @@ def test_delete_access_approval_settings(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_access_approval_settings_from_dict():
-    test_delete_access_approval_settings(request_type=dict)
 
 
 def test_delete_access_approval_settings_empty_call():
@@ -2618,7 +2598,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
