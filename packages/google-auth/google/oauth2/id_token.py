@@ -158,6 +158,7 @@ def verify_oauth2_token(id_token, request, audience=None, clock_skew_in_seconds=
 
     Raises:
         exceptions.GoogleAuthError: If the issuer is invalid.
+        ValueError: If token verification fails
     """
     idinfo = verify_token(
         id_token,
