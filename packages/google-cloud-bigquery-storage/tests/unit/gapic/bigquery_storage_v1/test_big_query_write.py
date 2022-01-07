@@ -256,20 +256,20 @@ def test_big_query_write_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -328,7 +328,7 @@ def test_big_query_write_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -423,7 +423,7 @@ def test_big_query_write_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -454,7 +454,7 @@ def test_big_query_write_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -487,9 +487,8 @@ def test_big_query_write_client_client_options_from_dict():
         )
 
 
-def test_create_write_stream(
-    transport: str = "grpc", request_type=storage.CreateWriteStreamRequest
-):
+@pytest.mark.parametrize("request_type", [storage.CreateWriteStreamRequest, dict,])
+def test_create_write_stream(request_type, transport: str = "grpc"):
     client = BigQueryWriteClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -520,10 +519,6 @@ def test_create_write_stream(
     assert response.name == "name_value"
     assert response.type_ == stream.WriteStream.Type.COMMITTED
     assert response.write_mode == stream.WriteStream.WriteMode.INSERT
-
-
-def test_create_write_stream_from_dict():
-    test_create_write_stream(request_type=dict)
 
 
 def test_create_write_stream_empty_call():
@@ -729,7 +724,8 @@ async def test_create_write_stream_flattened_error_async():
         )
 
 
-def test_append_rows(transport: str = "grpc", request_type=storage.AppendRowsRequest):
+@pytest.mark.parametrize("request_type", [storage.AppendRowsRequest, dict,])
+def test_append_rows(request_type, transport: str = "grpc"):
     client = BigQueryWriteClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -753,10 +749,6 @@ def test_append_rows(transport: str = "grpc", request_type=storage.AppendRowsReq
     # Establish that the response is the type that we expect.
     for message in response:
         assert isinstance(message, storage.AppendRowsResponse)
-
-
-def test_append_rows_from_dict():
-    test_append_rows(request_type=dict)
 
 
 @pytest.mark.asyncio
@@ -796,9 +788,8 @@ async def test_append_rows_async_from_dict():
     await test_append_rows_async(request_type=dict)
 
 
-def test_get_write_stream(
-    transport: str = "grpc", request_type=storage.GetWriteStreamRequest
-):
+@pytest.mark.parametrize("request_type", [storage.GetWriteStreamRequest, dict,])
+def test_get_write_stream(request_type, transport: str = "grpc"):
     client = BigQueryWriteClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -827,10 +818,6 @@ def test_get_write_stream(
     assert response.name == "name_value"
     assert response.type_ == stream.WriteStream.Type.COMMITTED
     assert response.write_mode == stream.WriteStream.WriteMode.INSERT
-
-
-def test_get_write_stream_from_dict():
-    test_get_write_stream(request_type=dict)
 
 
 def test_get_write_stream_empty_call():
@@ -1010,9 +997,8 @@ async def test_get_write_stream_flattened_error_async():
         )
 
 
-def test_finalize_write_stream(
-    transport: str = "grpc", request_type=storage.FinalizeWriteStreamRequest
-):
+@pytest.mark.parametrize("request_type", [storage.FinalizeWriteStreamRequest, dict,])
+def test_finalize_write_stream(request_type, transport: str = "grpc"):
     client = BigQueryWriteClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1037,10 +1023,6 @@ def test_finalize_write_stream(
     # Establish that the response is the type that we expect.
     assert isinstance(response, storage.FinalizeWriteStreamResponse)
     assert response.row_count == 992
-
-
-def test_finalize_write_stream_from_dict():
-    test_finalize_write_stream(request_type=dict)
 
 
 def test_finalize_write_stream_empty_call():
@@ -1230,9 +1212,10 @@ async def test_finalize_write_stream_flattened_error_async():
         )
 
 
-def test_batch_commit_write_streams(
-    transport: str = "grpc", request_type=storage.BatchCommitWriteStreamsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [storage.BatchCommitWriteStreamsRequest, dict,]
+)
+def test_batch_commit_write_streams(request_type, transport: str = "grpc"):
     client = BigQueryWriteClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1256,10 +1239,6 @@ def test_batch_commit_write_streams(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, storage.BatchCommitWriteStreamsResponse)
-
-
-def test_batch_commit_write_streams_from_dict():
-    test_batch_commit_write_streams(request_type=dict)
 
 
 def test_batch_commit_write_streams_empty_call():
@@ -1448,7 +1427,8 @@ async def test_batch_commit_write_streams_flattened_error_async():
         )
 
 
-def test_flush_rows(transport: str = "grpc", request_type=storage.FlushRowsRequest):
+@pytest.mark.parametrize("request_type", [storage.FlushRowsRequest, dict,])
+def test_flush_rows(request_type, transport: str = "grpc"):
     client = BigQueryWriteClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1471,10 +1451,6 @@ def test_flush_rows(transport: str = "grpc", request_type=storage.FlushRowsReque
     # Establish that the response is the type that we expect.
     assert isinstance(response, storage.FlushRowsResponse)
     assert response.offset == 647
-
-
-def test_flush_rows_from_dict():
-    test_flush_rows(request_type=dict)
 
 
 def test_flush_rows_empty_call():
@@ -2217,7 +2193,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
