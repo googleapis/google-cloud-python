@@ -270,20 +270,20 @@ def test_cloud_channel_service_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -352,7 +352,7 @@ def test_cloud_channel_service_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -451,7 +451,7 @@ def test_cloud_channel_service_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -486,7 +486,7 @@ def test_cloud_channel_service_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -519,9 +519,8 @@ def test_cloud_channel_service_client_client_options_from_dict():
         )
 
 
-def test_list_customers(
-    transport: str = "grpc", request_type=service.ListCustomersRequest
-):
+@pytest.mark.parametrize("request_type", [service.ListCustomersRequest, dict,])
+def test_list_customers(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -546,10 +545,6 @@ def test_list_customers(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCustomersPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_customers_from_dict():
-    test_list_customers(request_type=dict)
 
 
 def test_list_customers_empty_call():
@@ -657,8 +652,10 @@ async def test_list_customers_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_list_customers_pager():
-    client = CloudChannelServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_customers_pager(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_customers), "__call__") as call:
@@ -695,8 +692,10 @@ def test_list_customers_pager():
         assert all(isinstance(i, customers.Customer) for i in results)
 
 
-def test_list_customers_pages():
-    client = CloudChannelServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_customers_pages(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_customers), "__call__") as call:
@@ -799,7 +798,8 @@ async def test_list_customers_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_customer(transport: str = "grpc", request_type=service.GetCustomerRequest):
+@pytest.mark.parametrize("request_type", [service.GetCustomerRequest, dict,])
+def test_get_customer(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -836,10 +836,6 @@ def test_get_customer(transport: str = "grpc", request_type=service.GetCustomerR
     assert response.cloud_identity_id == "cloud_identity_id_value"
     assert response.language_code == "language_code_value"
     assert response.channel_partner_id == "channel_partner_id_value"
-
-
-def test_get_customer_from_dict():
-    test_get_customer(request_type=dict)
 
 
 def test_get_customer_empty_call():
@@ -1033,9 +1029,10 @@ async def test_get_customer_flattened_error_async():
         )
 
 
-def test_check_cloud_identity_accounts_exist(
-    transport: str = "grpc", request_type=service.CheckCloudIdentityAccountsExistRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [service.CheckCloudIdentityAccountsExistRequest, dict,]
+)
+def test_check_cloud_identity_accounts_exist(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1059,10 +1056,6 @@ def test_check_cloud_identity_accounts_exist(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.CheckCloudIdentityAccountsExistResponse)
-
-
-def test_check_cloud_identity_accounts_exist_from_dict():
-    test_check_cloud_identity_accounts_exist(request_type=dict)
 
 
 def test_check_cloud_identity_accounts_exist_empty_call():
@@ -1178,9 +1171,8 @@ async def test_check_cloud_identity_accounts_exist_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_create_customer(
-    transport: str = "grpc", request_type=service.CreateCustomerRequest
-):
+@pytest.mark.parametrize("request_type", [service.CreateCustomerRequest, dict,])
+def test_create_customer(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1217,10 +1209,6 @@ def test_create_customer(
     assert response.cloud_identity_id == "cloud_identity_id_value"
     assert response.language_code == "language_code_value"
     assert response.channel_partner_id == "channel_partner_id_value"
-
-
-def test_create_customer_from_dict():
-    test_create_customer(request_type=dict)
 
 
 def test_create_customer_empty_call():
@@ -1340,9 +1328,8 @@ async def test_create_customer_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_update_customer(
-    transport: str = "grpc", request_type=service.UpdateCustomerRequest
-):
+@pytest.mark.parametrize("request_type", [service.UpdateCustomerRequest, dict,])
+def test_update_customer(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1379,10 +1366,6 @@ def test_update_customer(
     assert response.cloud_identity_id == "cloud_identity_id_value"
     assert response.language_code == "language_code_value"
     assert response.channel_partner_id == "channel_partner_id_value"
-
-
-def test_update_customer_from_dict():
-    test_update_customer(request_type=dict)
 
 
 def test_update_customer_empty_call():
@@ -1506,9 +1489,8 @@ async def test_update_customer_field_headers_async():
     ]
 
 
-def test_delete_customer(
-    transport: str = "grpc", request_type=service.DeleteCustomerRequest
-):
+@pytest.mark.parametrize("request_type", [service.DeleteCustomerRequest, dict,])
+def test_delete_customer(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1530,10 +1512,6 @@ def test_delete_customer(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_customer_from_dict():
-    test_delete_customer(request_type=dict)
 
 
 def test_delete_customer_empty_call():
@@ -1710,9 +1688,8 @@ async def test_delete_customer_flattened_error_async():
         )
 
 
-def test_import_customer(
-    transport: str = "grpc", request_type=service.ImportCustomerRequest
-):
+@pytest.mark.parametrize("request_type", [service.ImportCustomerRequest, dict,])
+def test_import_customer(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1749,10 +1726,6 @@ def test_import_customer(
     assert response.cloud_identity_id == "cloud_identity_id_value"
     assert response.language_code == "language_code_value"
     assert response.channel_partner_id == "channel_partner_id_value"
-
-
-def test_import_customer_from_dict():
-    test_import_customer(request_type=dict)
 
 
 def test_import_customer_empty_call():
@@ -1872,9 +1845,8 @@ async def test_import_customer_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_provision_cloud_identity(
-    transport: str = "grpc", request_type=service.ProvisionCloudIdentityRequest
-):
+@pytest.mark.parametrize("request_type", [service.ProvisionCloudIdentityRequest, dict,])
+def test_provision_cloud_identity(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1898,10 +1870,6 @@ def test_provision_cloud_identity(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_provision_cloud_identity_from_dict():
-    test_provision_cloud_identity(request_type=dict)
 
 
 def test_provision_cloud_identity_empty_call():
@@ -2016,9 +1984,8 @@ async def test_provision_cloud_identity_field_headers_async():
     assert ("x-goog-request-params", "customer=customer/value",) in kw["metadata"]
 
 
-def test_list_entitlements(
-    transport: str = "grpc", request_type=service.ListEntitlementsRequest
-):
+@pytest.mark.parametrize("request_type", [service.ListEntitlementsRequest, dict,])
+def test_list_entitlements(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2045,10 +2012,6 @@ def test_list_entitlements(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEntitlementsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_entitlements_from_dict():
-    test_list_entitlements(request_type=dict)
 
 
 def test_list_entitlements_empty_call():
@@ -2164,8 +2127,10 @@ async def test_list_entitlements_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_list_entitlements_pager():
-    client = CloudChannelServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_entitlements_pager(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2204,8 +2169,10 @@ def test_list_entitlements_pager():
         assert all(isinstance(i, entitlements.Entitlement) for i in results)
 
 
-def test_list_entitlements_pages():
-    client = CloudChannelServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_entitlements_pages(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2314,9 +2281,8 @@ async def test_list_entitlements_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_list_transferable_skus(
-    transport: str = "grpc", request_type=service.ListTransferableSkusRequest
-):
+@pytest.mark.parametrize("request_type", [service.ListTransferableSkusRequest, dict,])
+def test_list_transferable_skus(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2343,10 +2309,6 @@ def test_list_transferable_skus(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTransferableSkusPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_transferable_skus_from_dict():
-    test_list_transferable_skus(request_type=dict)
 
 
 def test_list_transferable_skus_empty_call():
@@ -2464,8 +2426,10 @@ async def test_list_transferable_skus_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_list_transferable_skus_pager():
-    client = CloudChannelServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_transferable_skus_pager(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2510,8 +2474,10 @@ def test_list_transferable_skus_pager():
         assert all(isinstance(i, entitlements.TransferableSku) for i in results)
 
 
-def test_list_transferable_skus_pages():
-    client = CloudChannelServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_transferable_skus_pages(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2638,9 +2604,8 @@ async def test_list_transferable_skus_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_list_transferable_offers(
-    transport: str = "grpc", request_type=service.ListTransferableOffersRequest
-):
+@pytest.mark.parametrize("request_type", [service.ListTransferableOffersRequest, dict,])
+def test_list_transferable_offers(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2667,10 +2632,6 @@ def test_list_transferable_offers(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTransferableOffersPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_transferable_offers_from_dict():
-    test_list_transferable_offers(request_type=dict)
 
 
 def test_list_transferable_offers_empty_call():
@@ -2788,8 +2749,10 @@ async def test_list_transferable_offers_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_list_transferable_offers_pager():
-    client = CloudChannelServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_transferable_offers_pager(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2834,8 +2797,10 @@ def test_list_transferable_offers_pager():
         assert all(isinstance(i, service.TransferableOffer) for i in results)
 
 
-def test_list_transferable_offers_pages():
-    client = CloudChannelServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_transferable_offers_pages(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2962,9 +2927,8 @@ async def test_list_transferable_offers_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_entitlement(
-    transport: str = "grpc", request_type=service.GetEntitlementRequest
-):
+@pytest.mark.parametrize("request_type", [service.GetEntitlementRequest, dict,])
+def test_get_entitlement(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3003,10 +2967,6 @@ def test_get_entitlement(
         entitlements.Entitlement.SuspensionReason.RESELLER_INITIATED
     ]
     assert response.purchase_order_id == "purchase_order_id_value"
-
-
-def test_get_entitlement_from_dict():
-    test_get_entitlement(request_type=dict)
 
 
 def test_get_entitlement_empty_call():
@@ -3130,9 +3090,8 @@ async def test_get_entitlement_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_create_entitlement(
-    transport: str = "grpc", request_type=service.CreateEntitlementRequest
-):
+@pytest.mark.parametrize("request_type", [service.CreateEntitlementRequest, dict,])
+def test_create_entitlement(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3156,10 +3115,6 @@ def test_create_entitlement(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_entitlement_from_dict():
-    test_create_entitlement(request_type=dict)
 
 
 def test_create_entitlement_empty_call():
@@ -3274,9 +3229,8 @@ async def test_create_entitlement_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_change_parameters(
-    transport: str = "grpc", request_type=service.ChangeParametersRequest
-):
+@pytest.mark.parametrize("request_type", [service.ChangeParametersRequest, dict,])
+def test_change_parameters(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3300,10 +3254,6 @@ def test_change_parameters(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_change_parameters_from_dict():
-    test_change_parameters(request_type=dict)
 
 
 def test_change_parameters_empty_call():
@@ -3418,9 +3368,8 @@ async def test_change_parameters_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_change_renewal_settings(
-    transport: str = "grpc", request_type=service.ChangeRenewalSettingsRequest
-):
+@pytest.mark.parametrize("request_type", [service.ChangeRenewalSettingsRequest, dict,])
+def test_change_renewal_settings(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3444,10 +3393,6 @@ def test_change_renewal_settings(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_change_renewal_settings_from_dict():
-    test_change_renewal_settings(request_type=dict)
 
 
 def test_change_renewal_settings_empty_call():
@@ -3562,7 +3507,8 @@ async def test_change_renewal_settings_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_change_offer(transport: str = "grpc", request_type=service.ChangeOfferRequest):
+@pytest.mark.parametrize("request_type", [service.ChangeOfferRequest, dict,])
+def test_change_offer(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3584,10 +3530,6 @@ def test_change_offer(transport: str = "grpc", request_type=service.ChangeOfferR
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_change_offer_from_dict():
-    test_change_offer(request_type=dict)
 
 
 def test_change_offer_empty_call():
@@ -3694,9 +3636,8 @@ async def test_change_offer_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_start_paid_service(
-    transport: str = "grpc", request_type=service.StartPaidServiceRequest
-):
+@pytest.mark.parametrize("request_type", [service.StartPaidServiceRequest, dict,])
+def test_start_paid_service(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3720,10 +3661,6 @@ def test_start_paid_service(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_start_paid_service_from_dict():
-    test_start_paid_service(request_type=dict)
 
 
 def test_start_paid_service_empty_call():
@@ -3838,9 +3775,8 @@ async def test_start_paid_service_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_suspend_entitlement(
-    transport: str = "grpc", request_type=service.SuspendEntitlementRequest
-):
+@pytest.mark.parametrize("request_type", [service.SuspendEntitlementRequest, dict,])
+def test_suspend_entitlement(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3864,10 +3800,6 @@ def test_suspend_entitlement(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_suspend_entitlement_from_dict():
-    test_suspend_entitlement(request_type=dict)
 
 
 def test_suspend_entitlement_empty_call():
@@ -3982,9 +3914,8 @@ async def test_suspend_entitlement_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_cancel_entitlement(
-    transport: str = "grpc", request_type=service.CancelEntitlementRequest
-):
+@pytest.mark.parametrize("request_type", [service.CancelEntitlementRequest, dict,])
+def test_cancel_entitlement(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4008,10 +3939,6 @@ def test_cancel_entitlement(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_cancel_entitlement_from_dict():
-    test_cancel_entitlement(request_type=dict)
 
 
 def test_cancel_entitlement_empty_call():
@@ -4126,9 +4053,8 @@ async def test_cancel_entitlement_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_activate_entitlement(
-    transport: str = "grpc", request_type=service.ActivateEntitlementRequest
-):
+@pytest.mark.parametrize("request_type", [service.ActivateEntitlementRequest, dict,])
+def test_activate_entitlement(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4152,10 +4078,6 @@ def test_activate_entitlement(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_activate_entitlement_from_dict():
-    test_activate_entitlement(request_type=dict)
 
 
 def test_activate_entitlement_empty_call():
@@ -4270,9 +4192,8 @@ async def test_activate_entitlement_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_transfer_entitlements(
-    transport: str = "grpc", request_type=service.TransferEntitlementsRequest
-):
+@pytest.mark.parametrize("request_type", [service.TransferEntitlementsRequest, dict,])
+def test_transfer_entitlements(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4296,10 +4217,6 @@ def test_transfer_entitlements(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_transfer_entitlements_from_dict():
-    test_transfer_entitlements(request_type=dict)
 
 
 def test_transfer_entitlements_empty_call():
@@ -4414,9 +4331,10 @@ async def test_transfer_entitlements_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_transfer_entitlements_to_google(
-    transport: str = "grpc", request_type=service.TransferEntitlementsToGoogleRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [service.TransferEntitlementsToGoogleRequest, dict,]
+)
+def test_transfer_entitlements_to_google(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4440,10 +4358,6 @@ def test_transfer_entitlements_to_google(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_transfer_entitlements_to_google_from_dict():
-    test_transfer_entitlements_to_google(request_type=dict)
 
 
 def test_transfer_entitlements_to_google_empty_call():
@@ -4559,9 +4473,10 @@ async def test_transfer_entitlements_to_google_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_list_channel_partner_links(
-    transport: str = "grpc", request_type=service.ListChannelPartnerLinksRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [service.ListChannelPartnerLinksRequest, dict,]
+)
+def test_list_channel_partner_links(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4588,10 +4503,6 @@ def test_list_channel_partner_links(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListChannelPartnerLinksPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_channel_partner_links_from_dict():
-    test_list_channel_partner_links(request_type=dict)
 
 
 def test_list_channel_partner_links_empty_call():
@@ -4709,8 +4620,10 @@ async def test_list_channel_partner_links_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_list_channel_partner_links_pager():
-    client = CloudChannelServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_channel_partner_links_pager(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4757,8 +4670,10 @@ def test_list_channel_partner_links_pager():
         )
 
 
-def test_list_channel_partner_links_pages():
-    client = CloudChannelServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_channel_partner_links_pages(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4887,9 +4802,8 @@ async def test_list_channel_partner_links_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_channel_partner_link(
-    transport: str = "grpc", request_type=service.GetChannelPartnerLinkRequest
-):
+@pytest.mark.parametrize("request_type", [service.GetChannelPartnerLinkRequest, dict,])
+def test_get_channel_partner_link(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4924,10 +4838,6 @@ def test_get_channel_partner_link(
     assert response.link_state == channel_partner_links.ChannelPartnerLinkState.INVITED
     assert response.invite_link_uri == "invite_link_uri_value"
     assert response.public_id == "public_id_value"
-
-
-def test_get_channel_partner_link_from_dict():
-    test_get_channel_partner_link(request_type=dict)
 
 
 def test_get_channel_partner_link_empty_call():
@@ -5053,9 +4963,10 @@ async def test_get_channel_partner_link_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_create_channel_partner_link(
-    transport: str = "grpc", request_type=service.CreateChannelPartnerLinkRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [service.CreateChannelPartnerLinkRequest, dict,]
+)
+def test_create_channel_partner_link(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5090,10 +5001,6 @@ def test_create_channel_partner_link(
     assert response.link_state == channel_partner_links.ChannelPartnerLinkState.INVITED
     assert response.invite_link_uri == "invite_link_uri_value"
     assert response.public_id == "public_id_value"
-
-
-def test_create_channel_partner_link_from_dict():
-    test_create_channel_partner_link(request_type=dict)
 
 
 def test_create_channel_partner_link_empty_call():
@@ -5220,9 +5127,10 @@ async def test_create_channel_partner_link_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_update_channel_partner_link(
-    transport: str = "grpc", request_type=service.UpdateChannelPartnerLinkRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [service.UpdateChannelPartnerLinkRequest, dict,]
+)
+def test_update_channel_partner_link(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5257,10 +5165,6 @@ def test_update_channel_partner_link(
     assert response.link_state == channel_partner_links.ChannelPartnerLinkState.INVITED
     assert response.invite_link_uri == "invite_link_uri_value"
     assert response.public_id == "public_id_value"
-
-
-def test_update_channel_partner_link_from_dict():
-    test_update_channel_partner_link(request_type=dict)
 
 
 def test_update_channel_partner_link_empty_call():
@@ -5387,7 +5291,8 @@ async def test_update_channel_partner_link_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_lookup_offer(transport: str = "grpc", request_type=service.LookupOfferRequest):
+@pytest.mark.parametrize("request_type", [service.LookupOfferRequest, dict,])
+def test_lookup_offer(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5410,10 +5315,6 @@ def test_lookup_offer(transport: str = "grpc", request_type=service.LookupOfferR
     # Establish that the response is the type that we expect.
     assert isinstance(response, offers.Offer)
     assert response.name == "name_value"
-
-
-def test_lookup_offer_from_dict():
-    test_lookup_offer(request_type=dict)
 
 
 def test_lookup_offer_empty_call():
@@ -5519,9 +5420,8 @@ async def test_lookup_offer_field_headers_async():
     assert ("x-goog-request-params", "entitlement=entitlement/value",) in kw["metadata"]
 
 
-def test_list_products(
-    transport: str = "grpc", request_type=service.ListProductsRequest
-):
+@pytest.mark.parametrize("request_type", [service.ListProductsRequest, dict,])
+def test_list_products(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5546,10 +5446,6 @@ def test_list_products(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProductsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_products_from_dict():
-    test_list_products(request_type=dict)
 
 
 def test_list_products_empty_call():
@@ -5602,8 +5498,10 @@ async def test_list_products_async_from_dict():
     await test_list_products_async(request_type=dict)
 
 
-def test_list_products_pager():
-    client = CloudChannelServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_products_pager(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_products), "__call__") as call:
@@ -5633,8 +5531,10 @@ def test_list_products_pager():
         assert all(isinstance(i, products.Product) for i in results)
 
 
-def test_list_products_pages():
-    client = CloudChannelServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_products_pages(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_products), "__call__") as call:
@@ -5725,7 +5625,8 @@ async def test_list_products_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_list_skus(transport: str = "grpc", request_type=service.ListSkusRequest):
+@pytest.mark.parametrize("request_type", [service.ListSkusRequest, dict,])
+def test_list_skus(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5750,10 +5651,6 @@ def test_list_skus(transport: str = "grpc", request_type=service.ListSkusRequest
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSkusPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_skus_from_dict():
-    test_list_skus(request_type=dict)
 
 
 def test_list_skus_empty_call():
@@ -5861,8 +5758,10 @@ async def test_list_skus_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_list_skus_pager():
-    client = CloudChannelServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_skus_pager(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_skus), "__call__") as call:
@@ -5891,8 +5790,10 @@ def test_list_skus_pager():
         assert all(isinstance(i, products.Sku) for i in results)
 
 
-def test_list_skus_pages():
-    client = CloudChannelServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_skus_pages(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_skus), "__call__") as call:
@@ -5971,7 +5872,8 @@ async def test_list_skus_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_list_offers(transport: str = "grpc", request_type=service.ListOffersRequest):
+@pytest.mark.parametrize("request_type", [service.ListOffersRequest, dict,])
+def test_list_offers(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5996,10 +5898,6 @@ def test_list_offers(transport: str = "grpc", request_type=service.ListOffersReq
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOffersPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_offers_from_dict():
-    test_list_offers(request_type=dict)
 
 
 def test_list_offers_empty_call():
@@ -6107,8 +6005,10 @@ async def test_list_offers_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_list_offers_pager():
-    client = CloudChannelServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_offers_pager(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_offers), "__call__") as call:
@@ -6139,8 +6039,10 @@ def test_list_offers_pager():
         assert all(isinstance(i, offers.Offer) for i in results)
 
 
-def test_list_offers_pages():
-    client = CloudChannelServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_offers_pages(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_offers), "__call__") as call:
@@ -6225,9 +6127,8 @@ async def test_list_offers_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_list_purchasable_skus(
-    transport: str = "grpc", request_type=service.ListPurchasableSkusRequest
-):
+@pytest.mark.parametrize("request_type", [service.ListPurchasableSkusRequest, dict,])
+def test_list_purchasable_skus(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -6254,10 +6155,6 @@ def test_list_purchasable_skus(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPurchasableSkusPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_purchasable_skus_from_dict():
-    test_list_purchasable_skus(request_type=dict)
 
 
 def test_list_purchasable_skus_empty_call():
@@ -6375,8 +6272,10 @@ async def test_list_purchasable_skus_field_headers_async():
     assert ("x-goog-request-params", "customer=customer/value",) in kw["metadata"]
 
 
-def test_list_purchasable_skus_pager():
-    client = CloudChannelServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_purchasable_skus_pager(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6417,8 +6316,10 @@ def test_list_purchasable_skus_pager():
         assert all(isinstance(i, service.PurchasableSku) for i in results)
 
 
-def test_list_purchasable_skus_pages():
-    client = CloudChannelServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_purchasable_skus_pages(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6533,9 +6434,8 @@ async def test_list_purchasable_skus_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_list_purchasable_offers(
-    transport: str = "grpc", request_type=service.ListPurchasableOffersRequest
-):
+@pytest.mark.parametrize("request_type", [service.ListPurchasableOffersRequest, dict,])
+def test_list_purchasable_offers(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -6562,10 +6462,6 @@ def test_list_purchasable_offers(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPurchasableOffersPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_purchasable_offers_from_dict():
-    test_list_purchasable_offers(request_type=dict)
 
 
 def test_list_purchasable_offers_empty_call():
@@ -6683,8 +6579,10 @@ async def test_list_purchasable_offers_field_headers_async():
     assert ("x-goog-request-params", "customer=customer/value",) in kw["metadata"]
 
 
-def test_list_purchasable_offers_pager():
-    client = CloudChannelServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_purchasable_offers_pager(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6728,8 +6626,10 @@ def test_list_purchasable_offers_pager():
         assert all(isinstance(i, service.PurchasableOffer) for i in results)
 
 
-def test_list_purchasable_offers_pages():
-    client = CloudChannelServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_purchasable_offers_pages(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6853,9 +6753,8 @@ async def test_list_purchasable_offers_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_register_subscriber(
-    transport: str = "grpc", request_type=service.RegisterSubscriberRequest
-):
+@pytest.mark.parametrize("request_type", [service.RegisterSubscriberRequest, dict,])
+def test_register_subscriber(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -6880,10 +6779,6 @@ def test_register_subscriber(
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.RegisterSubscriberResponse)
     assert response.topic == "topic_value"
-
-
-def test_register_subscriber_from_dict():
-    test_register_subscriber(request_type=dict)
 
 
 def test_register_subscriber_empty_call():
@@ -6999,9 +6894,8 @@ async def test_register_subscriber_field_headers_async():
     assert ("x-goog-request-params", "account=account/value",) in kw["metadata"]
 
 
-def test_unregister_subscriber(
-    transport: str = "grpc", request_type=service.UnregisterSubscriberRequest
-):
+@pytest.mark.parametrize("request_type", [service.UnregisterSubscriberRequest, dict,])
+def test_unregister_subscriber(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -7026,10 +6920,6 @@ def test_unregister_subscriber(
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.UnregisterSubscriberResponse)
     assert response.topic == "topic_value"
-
-
-def test_unregister_subscriber_from_dict():
-    test_unregister_subscriber(request_type=dict)
 
 
 def test_unregister_subscriber_empty_call():
@@ -7145,9 +7035,8 @@ async def test_unregister_subscriber_field_headers_async():
     assert ("x-goog-request-params", "account=account/value",) in kw["metadata"]
 
 
-def test_list_subscribers(
-    transport: str = "grpc", request_type=service.ListSubscribersRequest
-):
+@pytest.mark.parametrize("request_type", [service.ListSubscribersRequest, dict,])
+def test_list_subscribers(request_type, transport: str = "grpc"):
     client = CloudChannelServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -7176,10 +7065,6 @@ def test_list_subscribers(
     assert response.topic == "topic_value"
     assert response.service_accounts == ["service_accounts_value"]
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_subscribers_from_dict():
-    test_list_subscribers(request_type=dict)
 
 
 def test_list_subscribers_empty_call():
@@ -7293,8 +7178,10 @@ async def test_list_subscribers_field_headers_async():
     assert ("x-goog-request-params", "account=account/value",) in kw["metadata"]
 
 
-def test_list_subscribers_pager():
-    client = CloudChannelServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_subscribers_pager(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_subscribers), "__call__") as call:
@@ -7326,8 +7213,10 @@ def test_list_subscribers_pager():
         assert all(isinstance(i, str) for i in results)
 
 
-def test_list_subscribers_pages():
-    client = CloudChannelServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_subscribers_pages(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_subscribers), "__call__") as call:
@@ -8102,7 +7991,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
