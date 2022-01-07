@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.2](https://www.github.com/googleapis/python-artifact-registry/compare/v1.0.1...v1.0.2) (2022-01-07)
+
+
+### Bug Fixes
+
+* fix resource pattern ID segment name ([#107](https://www.github.com/googleapis/python-artifact-registry/issues/107)) ([254dc73](https://www.github.com/googleapis/python-artifact-registry/commit/254dc73dbbc52d41014e0d2db81f3cc6cd864058))
+
 ### [1.0.1](https://www.github.com/googleapis/python-artifact-registry/compare/v1.0.0...v1.0.1) (2021-11-01)
 
 
