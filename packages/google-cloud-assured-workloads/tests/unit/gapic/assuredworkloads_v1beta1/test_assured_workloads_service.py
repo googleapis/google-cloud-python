@@ -18,7 +18,6 @@ import mock
 
 import grpc
 from grpc.experimental import aio
-import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
@@ -30,7 +29,6 @@ from google.api_core import future
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
-from google.api_core import operation
 from google.api_core import operation_async  # type: ignore
 from google.api_core import operations_v1
 from google.api_core import path_template
@@ -53,7 +51,6 @@ from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 import google.auth
 
@@ -269,20 +266,20 @@ def test_assured_workloads_service_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -351,7 +348,7 @@ def test_assured_workloads_service_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -450,7 +447,7 @@ def test_assured_workloads_service_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -485,7 +482,7 @@ def test_assured_workloads_service_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -518,9 +515,10 @@ def test_assured_workloads_service_client_client_options_from_dict():
         )
 
 
-def test_create_workload(
-    transport: str = "grpc", request_type=assuredworkloads_v1beta1.CreateWorkloadRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [assuredworkloads_v1beta1.CreateWorkloadRequest, dict,]
+)
+def test_create_workload(request_type, transport: str = "grpc"):
     client = AssuredWorkloadsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -542,10 +540,6 @@ def test_create_workload(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_workload_from_dict():
-    test_create_workload(request_type=dict)
 
 
 def test_create_workload_empty_call():
@@ -745,9 +739,10 @@ async def test_create_workload_flattened_error_async():
         )
 
 
-def test_update_workload(
-    transport: str = "grpc", request_type=assuredworkloads_v1beta1.UpdateWorkloadRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [assuredworkloads_v1beta1.UpdateWorkloadRequest, dict,]
+)
+def test_update_workload(request_type, transport: str = "grpc"):
     client = AssuredWorkloadsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -797,10 +792,6 @@ def test_update_workload(
         == assuredworkloads_v1beta1.Workload.KajEnrollmentState.KAJ_ENROLLMENT_STATE_PENDING
     )
     assert response.enable_sovereign_controls is True
-
-
-def test_update_workload_from_dict():
-    test_update_workload(request_type=dict)
 
 
 def test_update_workload_empty_call():
@@ -1027,9 +1018,10 @@ async def test_update_workload_flattened_error_async():
         )
 
 
-def test_delete_workload(
-    transport: str = "grpc", request_type=assuredworkloads_v1beta1.DeleteWorkloadRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [assuredworkloads_v1beta1.DeleteWorkloadRequest, dict,]
+)
+def test_delete_workload(request_type, transport: str = "grpc"):
     client = AssuredWorkloadsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1051,10 +1043,6 @@ def test_delete_workload(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_workload_from_dict():
-    test_delete_workload(request_type=dict)
 
 
 def test_delete_workload_empty_call():
@@ -1232,9 +1220,10 @@ async def test_delete_workload_flattened_error_async():
         )
 
 
-def test_get_workload(
-    transport: str = "grpc", request_type=assuredworkloads_v1beta1.GetWorkloadRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [assuredworkloads_v1beta1.GetWorkloadRequest, dict,]
+)
+def test_get_workload(request_type, transport: str = "grpc"):
     client = AssuredWorkloadsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1284,10 +1273,6 @@ def test_get_workload(
         == assuredworkloads_v1beta1.Workload.KajEnrollmentState.KAJ_ENROLLMENT_STATE_PENDING
     )
     assert response.enable_sovereign_controls is True
-
-
-def test_get_workload_from_dict():
-    test_get_workload(request_type=dict)
 
 
 def test_get_workload_empty_call():
@@ -1494,9 +1479,10 @@ async def test_get_workload_flattened_error_async():
         )
 
 
-def test_list_workloads(
-    transport: str = "grpc", request_type=assuredworkloads_v1beta1.ListWorkloadsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [assuredworkloads_v1beta1.ListWorkloadsRequest, dict,]
+)
+def test_list_workloads(request_type, transport: str = "grpc"):
     client = AssuredWorkloadsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1521,10 +1507,6 @@ def test_list_workloads(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWorkloadsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_workloads_from_dict():
-    test_list_workloads(request_type=dict)
 
 
 def test_list_workloads_empty_call():
@@ -1711,9 +1693,9 @@ async def test_list_workloads_flattened_error_async():
         )
 
 
-def test_list_workloads_pager():
+def test_list_workloads_pager(transport_name: str = "grpc"):
     client = AssuredWorkloadsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1756,9 +1738,9 @@ def test_list_workloads_pager():
         assert all(isinstance(i, assuredworkloads_v1beta1.Workload) for i in results)
 
 
-def test_list_workloads_pages():
+def test_list_workloads_pages(transport_name: str = "grpc"):
     client = AssuredWorkloadsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2436,7 +2418,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
