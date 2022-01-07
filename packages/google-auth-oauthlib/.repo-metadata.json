@@ -3,7 +3,7 @@
     "name_pretty": "Google Auth OAuthlib",
     "client_documentation": "https://googleapis.dev/python/google-auth-oauthlib/latest",
     "issue_tracker": "https://github.com/googleapis/google-auth-library-python-oauthlib/issues",
-    "release_level": "alpha",
+    "release_level": "preview",
     "language": "python",
     "library_type": "AUTH",
     "repo": "googleapis/google-auth-library-python-oauthlib",
