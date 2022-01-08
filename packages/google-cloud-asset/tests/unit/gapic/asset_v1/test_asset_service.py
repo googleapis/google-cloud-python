@@ -246,20 +246,20 @@ def test_asset_service_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -316,7 +316,7 @@ def test_asset_service_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -411,7 +411,7 @@ def test_asset_service_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -442,7 +442,7 @@ def test_asset_service_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -473,9 +473,8 @@ def test_asset_service_client_client_options_from_dict():
         )
 
 
-def test_export_assets(
-    transport: str = "grpc", request_type=asset_service.ExportAssetsRequest
-):
+@pytest.mark.parametrize("request_type", [asset_service.ExportAssetsRequest, dict,])
+def test_export_assets(request_type, transport: str = "grpc"):
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -497,10 +496,6 @@ def test_export_assets(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_export_assets_from_dict():
-    test_export_assets(request_type=dict)
 
 
 def test_export_assets_empty_call():
@@ -603,9 +598,8 @@ async def test_export_assets_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_list_assets(
-    transport: str = "grpc", request_type=asset_service.ListAssetsRequest
-):
+@pytest.mark.parametrize("request_type", [asset_service.ListAssetsRequest, dict,])
+def test_list_assets(request_type, transport: str = "grpc"):
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -630,10 +624,6 @@ def test_list_assets(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAssetsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_assets_from_dict():
-    test_list_assets(request_type=dict)
 
 
 def test_list_assets_empty_call():
@@ -805,8 +795,10 @@ async def test_list_assets_flattened_error_async():
         )
 
 
-def test_list_assets_pager():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_assets_pager(transport_name: str = "grpc"):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
@@ -837,8 +829,10 @@ def test_list_assets_pager():
         assert all(isinstance(i, assets.Asset) for i in results)
 
 
-def test_list_assets_pages():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_assets_pages(transport_name: str = "grpc"):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
@@ -919,9 +913,10 @@ async def test_list_assets_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_batch_get_assets_history(
-    transport: str = "grpc", request_type=asset_service.BatchGetAssetsHistoryRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [asset_service.BatchGetAssetsHistoryRequest, dict,]
+)
+def test_batch_get_assets_history(request_type, transport: str = "grpc"):
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -945,10 +940,6 @@ def test_batch_get_assets_history(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.BatchGetAssetsHistoryResponse)
-
-
-def test_batch_get_assets_history_from_dict():
-    test_batch_get_assets_history(request_type=dict)
 
 
 def test_batch_get_assets_history_empty_call():
@@ -1060,9 +1051,8 @@ async def test_batch_get_assets_history_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_create_feed(
-    transport: str = "grpc", request_type=asset_service.CreateFeedRequest
-):
+@pytest.mark.parametrize("request_type", [asset_service.CreateFeedRequest, dict,])
+def test_create_feed(request_type, transport: str = "grpc"):
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1095,10 +1085,6 @@ def test_create_feed(
     assert response.asset_types == ["asset_types_value"]
     assert response.content_type == asset_service.ContentType.RESOURCE
     assert response.relationship_types == ["relationship_types_value"]
-
-
-def test_create_feed_from_dict():
-    test_create_feed(request_type=dict)
 
 
 def test_create_feed_empty_call():
@@ -1276,7 +1262,8 @@ async def test_create_feed_flattened_error_async():
         )
 
 
-def test_get_feed(transport: str = "grpc", request_type=asset_service.GetFeedRequest):
+@pytest.mark.parametrize("request_type", [asset_service.GetFeedRequest, dict,])
+def test_get_feed(request_type, transport: str = "grpc"):
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1309,10 +1296,6 @@ def test_get_feed(transport: str = "grpc", request_type=asset_service.GetFeedReq
     assert response.asset_types == ["asset_types_value"]
     assert response.content_type == asset_service.ContentType.RESOURCE
     assert response.relationship_types == ["relationship_types_value"]
-
-
-def test_get_feed_from_dict():
-    test_get_feed(request_type=dict)
 
 
 def test_get_feed_empty_call():
@@ -1490,9 +1473,8 @@ async def test_get_feed_flattened_error_async():
         )
 
 
-def test_list_feeds(
-    transport: str = "grpc", request_type=asset_service.ListFeedsRequest
-):
+@pytest.mark.parametrize("request_type", [asset_service.ListFeedsRequest, dict,])
+def test_list_feeds(request_type, transport: str = "grpc"):
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1514,10 +1496,6 @@ def test_list_feeds(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.ListFeedsResponse)
-
-
-def test_list_feeds_from_dict():
-    test_list_feeds(request_type=dict)
 
 
 def test_list_feeds_empty_call():
@@ -1688,9 +1666,8 @@ async def test_list_feeds_flattened_error_async():
         )
 
 
-def test_update_feed(
-    transport: str = "grpc", request_type=asset_service.UpdateFeedRequest
-):
+@pytest.mark.parametrize("request_type", [asset_service.UpdateFeedRequest, dict,])
+def test_update_feed(request_type, transport: str = "grpc"):
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1723,10 +1700,6 @@ def test_update_feed(
     assert response.asset_types == ["asset_types_value"]
     assert response.content_type == asset_service.ContentType.RESOURCE
     assert response.relationship_types == ["relationship_types_value"]
-
-
-def test_update_feed_from_dict():
-    test_update_feed(request_type=dict)
 
 
 def test_update_feed_empty_call():
@@ -1906,9 +1879,8 @@ async def test_update_feed_flattened_error_async():
         )
 
 
-def test_delete_feed(
-    transport: str = "grpc", request_type=asset_service.DeleteFeedRequest
-):
+@pytest.mark.parametrize("request_type", [asset_service.DeleteFeedRequest, dict,])
+def test_delete_feed(request_type, transport: str = "grpc"):
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1930,10 +1902,6 @@ def test_delete_feed(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_feed_from_dict():
-    test_delete_feed(request_type=dict)
 
 
 def test_delete_feed_empty_call():
@@ -2098,9 +2066,10 @@ async def test_delete_feed_flattened_error_async():
         )
 
 
-def test_search_all_resources(
-    transport: str = "grpc", request_type=asset_service.SearchAllResourcesRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [asset_service.SearchAllResourcesRequest, dict,]
+)
+def test_search_all_resources(request_type, transport: str = "grpc"):
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2127,10 +2096,6 @@ def test_search_all_resources(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchAllResourcesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_search_all_resources_from_dict():
-    test_search_all_resources(request_type=dict)
 
 
 def test_search_all_resources_empty_call():
@@ -2339,8 +2304,10 @@ async def test_search_all_resources_flattened_error_async():
         )
 
 
-def test_search_all_resources_pager():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_search_all_resources_pager(transport_name: str = "grpc"):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2381,8 +2348,10 @@ def test_search_all_resources_pager():
         assert all(isinstance(i, assets.ResourceSearchResult) for i in results)
 
 
-def test_search_all_resources_pages():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_search_all_resources_pages(transport_name: str = "grpc"):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2493,9 +2462,10 @@ async def test_search_all_resources_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_search_all_iam_policies(
-    transport: str = "grpc", request_type=asset_service.SearchAllIamPoliciesRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [asset_service.SearchAllIamPoliciesRequest, dict,]
+)
+def test_search_all_iam_policies(request_type, transport: str = "grpc"):
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2522,10 +2492,6 @@ def test_search_all_iam_policies(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchAllIamPoliciesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_search_all_iam_policies_from_dict():
-    test_search_all_iam_policies(request_type=dict)
 
 
 def test_search_all_iam_policies_empty_call():
@@ -2726,8 +2692,10 @@ async def test_search_all_iam_policies_flattened_error_async():
         )
 
 
-def test_search_all_iam_policies_pager():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_search_all_iam_policies_pager(transport_name: str = "grpc"):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2771,8 +2739,10 @@ def test_search_all_iam_policies_pager():
         assert all(isinstance(i, assets.IamPolicySearchResult) for i in results)
 
 
-def test_search_all_iam_policies_pages():
-    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_search_all_iam_policies_pages(transport_name: str = "grpc"):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2892,9 +2862,8 @@ async def test_search_all_iam_policies_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_analyze_iam_policy(
-    transport: str = "grpc", request_type=asset_service.AnalyzeIamPolicyRequest
-):
+@pytest.mark.parametrize("request_type", [asset_service.AnalyzeIamPolicyRequest, dict,])
+def test_analyze_iam_policy(request_type, transport: str = "grpc"):
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2919,10 +2888,6 @@ def test_analyze_iam_policy(
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.AnalyzeIamPolicyResponse)
     assert response.fully_explored is True
-
-
-def test_analyze_iam_policy_from_dict():
-    test_analyze_iam_policy(request_type=dict)
 
 
 def test_analyze_iam_policy_empty_call():
@@ -3040,10 +3005,10 @@ async def test_analyze_iam_policy_field_headers_async():
     ) in kw["metadata"]
 
 
-def test_analyze_iam_policy_longrunning(
-    transport: str = "grpc",
-    request_type=asset_service.AnalyzeIamPolicyLongrunningRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [asset_service.AnalyzeIamPolicyLongrunningRequest, dict,]
+)
+def test_analyze_iam_policy_longrunning(request_type, transport: str = "grpc"):
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3067,10 +3032,6 @@ def test_analyze_iam_policy_longrunning(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_analyze_iam_policy_longrunning_from_dict():
-    test_analyze_iam_policy_longrunning(request_type=dict)
 
 
 def test_analyze_iam_policy_longrunning_empty_call():
@@ -3188,9 +3149,8 @@ async def test_analyze_iam_policy_longrunning_field_headers_async():
     ) in kw["metadata"]
 
 
-def test_analyze_move(
-    transport: str = "grpc", request_type=asset_service.AnalyzeMoveRequest
-):
+@pytest.mark.parametrize("request_type", [asset_service.AnalyzeMoveRequest, dict,])
+def test_analyze_move(request_type, transport: str = "grpc"):
     client = AssetServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3212,10 +3172,6 @@ def test_analyze_move(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.AnalyzeMoveResponse)
-
-
-def test_analyze_move_from_dict():
-    test_analyze_move(request_type=dict)
 
 
 def test_analyze_move_empty_call():
@@ -3952,7 +3908,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
