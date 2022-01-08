@@ -250,20 +250,20 @@ def test_schema_service_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -322,7 +322,7 @@ def test_schema_service_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -417,7 +417,7 @@ def test_schema_service_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -448,7 +448,7 @@ def test_schema_service_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -481,9 +481,8 @@ def test_schema_service_client_client_options_from_dict():
         )
 
 
-def test_create_schema(
-    transport: str = "grpc", request_type=gp_schema.CreateSchemaRequest
-):
+@pytest.mark.parametrize("request_type", [gp_schema.CreateSchemaRequest, dict,])
+def test_create_schema(request_type, transport: str = "grpc"):
     client = SchemaServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -512,10 +511,6 @@ def test_create_schema(
     assert response.name == "name_value"
     assert response.type_ == gp_schema.Schema.Type.PROTOCOL_BUFFER
     assert response.definition == "definition_value"
-
-
-def test_create_schema_from_dict():
-    test_create_schema(request_type=dict)
 
 
 def test_create_schema_empty_call():
@@ -721,7 +716,8 @@ async def test_create_schema_flattened_error_async():
         )
 
 
-def test_get_schema(transport: str = "grpc", request_type=schema.GetSchemaRequest):
+@pytest.mark.parametrize("request_type", [schema.GetSchemaRequest, dict,])
+def test_get_schema(request_type, transport: str = "grpc"):
     client = SchemaServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -750,10 +746,6 @@ def test_get_schema(transport: str = "grpc", request_type=schema.GetSchemaReques
     assert response.name == "name_value"
     assert response.type_ == schema.Schema.Type.PROTOCOL_BUFFER
     assert response.definition == "definition_value"
-
-
-def test_get_schema_from_dict():
-    test_get_schema(request_type=dict)
 
 
 def test_get_schema_empty_call():
@@ -933,7 +925,8 @@ async def test_get_schema_flattened_error_async():
         )
 
 
-def test_list_schemas(transport: str = "grpc", request_type=schema.ListSchemasRequest):
+@pytest.mark.parametrize("request_type", [schema.ListSchemasRequest, dict,])
+def test_list_schemas(request_type, transport: str = "grpc"):
     client = SchemaServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -958,10 +951,6 @@ def test_list_schemas(transport: str = "grpc", request_type=schema.ListSchemasRe
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSchemasPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_schemas_from_dict():
-    test_list_schemas(request_type=dict)
 
 
 def test_list_schemas_empty_call():
@@ -1139,8 +1128,10 @@ async def test_list_schemas_flattened_error_async():
         )
 
 
-def test_list_schemas_pager():
-    client = SchemaServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_schemas_pager(transport_name: str = "grpc"):
+    client = SchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_schemas), "__call__") as call:
@@ -1171,8 +1162,10 @@ def test_list_schemas_pager():
         assert all(isinstance(i, schema.Schema) for i in results)
 
 
-def test_list_schemas_pages():
-    client = SchemaServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_schemas_pages(transport_name: str = "grpc"):
+    client = SchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_schemas), "__call__") as call:
@@ -1253,9 +1246,8 @@ async def test_list_schemas_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_delete_schema(
-    transport: str = "grpc", request_type=schema.DeleteSchemaRequest
-):
+@pytest.mark.parametrize("request_type", [schema.DeleteSchemaRequest, dict,])
+def test_delete_schema(request_type, transport: str = "grpc"):
     client = SchemaServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1277,10 +1269,6 @@ def test_delete_schema(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_schema_from_dict():
-    test_delete_schema(request_type=dict)
 
 
 def test_delete_schema_empty_call():
@@ -1451,9 +1439,8 @@ async def test_delete_schema_flattened_error_async():
         )
 
 
-def test_validate_schema(
-    transport: str = "grpc", request_type=gp_schema.ValidateSchemaRequest
-):
+@pytest.mark.parametrize("request_type", [gp_schema.ValidateSchemaRequest, dict,])
+def test_validate_schema(request_type, transport: str = "grpc"):
     client = SchemaServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1475,10 +1462,6 @@ def test_validate_schema(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gp_schema.ValidateSchemaResponse)
-
-
-def test_validate_schema_from_dict():
-    test_validate_schema(request_type=dict)
 
 
 def test_validate_schema_empty_call():
@@ -1669,9 +1652,8 @@ async def test_validate_schema_flattened_error_async():
         )
 
 
-def test_validate_message(
-    transport: str = "grpc", request_type=schema.ValidateMessageRequest
-):
+@pytest.mark.parametrize("request_type", [schema.ValidateMessageRequest, dict,])
+def test_validate_message(request_type, transport: str = "grpc"):
     client = SchemaServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1693,10 +1675,6 @@ def test_validate_message(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, schema.ValidateMessageResponse)
-
-
-def test_validate_message_from_dict():
-    test_validate_message(request_type=dict)
 
 
 def test_validate_message_empty_call():
@@ -2335,7 +2313,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(

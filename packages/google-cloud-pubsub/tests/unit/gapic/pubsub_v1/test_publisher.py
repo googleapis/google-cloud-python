@@ -240,20 +240,20 @@ def test_publisher_client_client_options(client_class, transport_class, transpor
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -310,7 +310,7 @@ def test_publisher_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -405,7 +405,7 @@ def test_publisher_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -436,7 +436,7 @@ def test_publisher_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -467,7 +467,8 @@ def test_publisher_client_client_options_from_dict():
         )
 
 
-def test_create_topic(transport: str = "grpc", request_type=pubsub.Topic):
+@pytest.mark.parametrize("request_type", [pubsub.Topic, dict,])
+def test_create_topic(request_type, transport: str = "grpc"):
     client = PublisherClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -494,10 +495,6 @@ def test_create_topic(transport: str = "grpc", request_type=pubsub.Topic):
     assert response.name == "name_value"
     assert response.kms_key_name == "kms_key_name_value"
     assert response.satisfies_pzs is True
-
-
-def test_create_topic_from_dict():
-    test_create_topic(request_type=dict)
 
 
 def test_create_topic_empty_call():
@@ -671,7 +668,8 @@ async def test_create_topic_flattened_error_async():
         )
 
 
-def test_update_topic(transport: str = "grpc", request_type=pubsub.UpdateTopicRequest):
+@pytest.mark.parametrize("request_type", [pubsub.UpdateTopicRequest, dict,])
+def test_update_topic(request_type, transport: str = "grpc"):
     client = PublisherClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -698,10 +696,6 @@ def test_update_topic(transport: str = "grpc", request_type=pubsub.UpdateTopicRe
     assert response.name == "name_value"
     assert response.kms_key_name == "kms_key_name_value"
     assert response.satisfies_pzs is True
-
-
-def test_update_topic_from_dict():
-    test_update_topic(request_type=dict)
 
 
 def test_update_topic_empty_call():
@@ -809,7 +803,8 @@ async def test_update_topic_field_headers_async():
     assert ("x-goog-request-params", "topic.name=topic.name/value",) in kw["metadata"]
 
 
-def test_publish(transport: str = "grpc", request_type=pubsub.PublishRequest):
+@pytest.mark.parametrize("request_type", [pubsub.PublishRequest, dict,])
+def test_publish(request_type, transport: str = "grpc"):
     client = PublisherClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -832,10 +827,6 @@ def test_publish(transport: str = "grpc", request_type=pubsub.PublishRequest):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pubsub.PublishResponse)
     assert response.message_ids == ["message_ids_value"]
-
-
-def test_publish_from_dict():
-    test_publish(request_type=dict)
 
 
 def test_publish_empty_call():
@@ -1021,7 +1012,8 @@ async def test_publish_flattened_error_async():
         )
 
 
-def test_get_topic(transport: str = "grpc", request_type=pubsub.GetTopicRequest):
+@pytest.mark.parametrize("request_type", [pubsub.GetTopicRequest, dict,])
+def test_get_topic(request_type, transport: str = "grpc"):
     client = PublisherClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1048,10 +1040,6 @@ def test_get_topic(transport: str = "grpc", request_type=pubsub.GetTopicRequest)
     assert response.name == "name_value"
     assert response.kms_key_name == "kms_key_name_value"
     assert response.satisfies_pzs is True
-
-
-def test_get_topic_from_dict():
-    test_get_topic(request_type=dict)
 
 
 def test_get_topic_empty_call():
@@ -1225,7 +1213,8 @@ async def test_get_topic_flattened_error_async():
         )
 
 
-def test_list_topics(transport: str = "grpc", request_type=pubsub.ListTopicsRequest):
+@pytest.mark.parametrize("request_type", [pubsub.ListTopicsRequest, dict,])
+def test_list_topics(request_type, transport: str = "grpc"):
     client = PublisherClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1250,10 +1239,6 @@ def test_list_topics(transport: str = "grpc", request_type=pubsub.ListTopicsRequ
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTopicsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_topics_from_dict():
-    test_list_topics(request_type=dict)
 
 
 def test_list_topics_empty_call():
@@ -1425,8 +1410,10 @@ async def test_list_topics_flattened_error_async():
         )
 
 
-def test_list_topics_pager():
-    client = PublisherClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_topics_pager(transport_name: str = "grpc"):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_topics), "__call__") as call:
@@ -1455,8 +1442,10 @@ def test_list_topics_pager():
         assert all(isinstance(i, pubsub.Topic) for i in results)
 
 
-def test_list_topics_pages():
-    client = PublisherClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_topics_pages(transport_name: str = "grpc"):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_topics), "__call__") as call:
@@ -1531,9 +1520,8 @@ async def test_list_topics_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_list_topic_subscriptions(
-    transport: str = "grpc", request_type=pubsub.ListTopicSubscriptionsRequest
-):
+@pytest.mark.parametrize("request_type", [pubsub.ListTopicSubscriptionsRequest, dict,])
+def test_list_topic_subscriptions(request_type, transport: str = "grpc"):
     client = PublisherClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1562,10 +1550,6 @@ def test_list_topic_subscriptions(
     assert isinstance(response, pagers.ListTopicSubscriptionsPager)
     assert response.subscriptions == ["subscriptions_value"]
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_topic_subscriptions_from_dict():
-    test_list_topic_subscriptions(request_type=dict)
 
 
 def test_list_topic_subscriptions_empty_call():
@@ -1753,8 +1737,10 @@ async def test_list_topic_subscriptions_flattened_error_async():
         )
 
 
-def test_list_topic_subscriptions_pager():
-    client = PublisherClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_topic_subscriptions_pager(transport_name: str = "grpc"):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1788,8 +1774,10 @@ def test_list_topic_subscriptions_pager():
         assert all(isinstance(i, str) for i in results)
 
 
-def test_list_topic_subscriptions_pages():
-    client = PublisherClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_topic_subscriptions_pages(transport_name: str = "grpc"):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1879,9 +1867,8 @@ async def test_list_topic_subscriptions_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_list_topic_snapshots(
-    transport: str = "grpc", request_type=pubsub.ListTopicSnapshotsRequest
-):
+@pytest.mark.parametrize("request_type", [pubsub.ListTopicSnapshotsRequest, dict,])
+def test_list_topic_snapshots(request_type, transport: str = "grpc"):
     client = PublisherClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1909,10 +1896,6 @@ def test_list_topic_snapshots(
     assert isinstance(response, pagers.ListTopicSnapshotsPager)
     assert response.snapshots == ["snapshots_value"]
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_topic_snapshots_from_dict():
-    test_list_topic_snapshots(request_type=dict)
 
 
 def test_list_topic_snapshots_empty_call():
@@ -2099,8 +2082,10 @@ async def test_list_topic_snapshots_flattened_error_async():
         )
 
 
-def test_list_topic_snapshots_pager():
-    client = PublisherClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_topic_snapshots_pager(transport_name: str = "grpc"):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2132,8 +2117,10 @@ def test_list_topic_snapshots_pager():
         assert all(isinstance(i, str) for i in results)
 
 
-def test_list_topic_snapshots_pages():
-    client = PublisherClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_topic_snapshots_pages(transport_name: str = "grpc"):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2217,7 +2204,8 @@ async def test_list_topic_snapshots_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_delete_topic(transport: str = "grpc", request_type=pubsub.DeleteTopicRequest):
+@pytest.mark.parametrize("request_type", [pubsub.DeleteTopicRequest, dict,])
+def test_delete_topic(request_type, transport: str = "grpc"):
     client = PublisherClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2239,10 +2227,6 @@ def test_delete_topic(transport: str = "grpc", request_type=pubsub.DeleteTopicRe
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_topic_from_dict():
-    test_delete_topic(request_type=dict)
 
 
 def test_delete_topic_empty_call():
@@ -2407,9 +2391,8 @@ async def test_delete_topic_flattened_error_async():
         )
 
 
-def test_detach_subscription(
-    transport: str = "grpc", request_type=pubsub.DetachSubscriptionRequest
-):
+@pytest.mark.parametrize("request_type", [pubsub.DetachSubscriptionRequest, dict,])
+def test_detach_subscription(request_type, transport: str = "grpc"):
     client = PublisherClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2433,10 +2416,6 @@ def test_detach_subscription(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pubsub.DetachSubscriptionResponse)
-
-
-def test_detach_subscription_from_dict():
-    test_detach_subscription(request_type=dict)
 
 
 def test_detach_subscription_empty_call():
@@ -3115,7 +3094,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
