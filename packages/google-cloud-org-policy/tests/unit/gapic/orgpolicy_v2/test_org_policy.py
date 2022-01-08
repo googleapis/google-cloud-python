@@ -238,20 +238,20 @@ def test_org_policy_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -308,7 +308,7 @@ def test_org_policy_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -403,7 +403,7 @@ def test_org_policy_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -434,7 +434,7 @@ def test_org_policy_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -465,9 +465,8 @@ def test_org_policy_client_client_options_from_dict():
         )
 
 
-def test_list_constraints(
-    transport: str = "grpc", request_type=orgpolicy.ListConstraintsRequest
-):
+@pytest.mark.parametrize("request_type", [orgpolicy.ListConstraintsRequest, dict,])
+def test_list_constraints(request_type, transport: str = "grpc"):
     client = OrgPolicyClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -492,10 +491,6 @@ def test_list_constraints(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListConstraintsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_constraints_from_dict():
-    test_list_constraints(request_type=dict)
 
 
 def test_list_constraints_empty_call():
@@ -667,8 +662,10 @@ async def test_list_constraints_flattened_error_async():
         )
 
 
-def test_list_constraints_pager():
-    client = OrgPolicyClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_constraints_pager(transport_name: str = "grpc"):
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_constraints), "__call__") as call:
@@ -705,8 +702,10 @@ def test_list_constraints_pager():
         assert all(isinstance(i, constraint.Constraint) for i in results)
 
 
-def test_list_constraints_pages():
-    client = OrgPolicyClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_constraints_pages(transport_name: str = "grpc"):
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_constraints), "__call__") as call:
@@ -805,9 +804,8 @@ async def test_list_constraints_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_list_policies(
-    transport: str = "grpc", request_type=orgpolicy.ListPoliciesRequest
-):
+@pytest.mark.parametrize("request_type", [orgpolicy.ListPoliciesRequest, dict,])
+def test_list_policies(request_type, transport: str = "grpc"):
     client = OrgPolicyClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -832,10 +830,6 @@ def test_list_policies(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPoliciesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_policies_from_dict():
-    test_list_policies(request_type=dict)
 
 
 def test_list_policies_empty_call():
@@ -1007,8 +1001,10 @@ async def test_list_policies_flattened_error_async():
         )
 
 
-def test_list_policies_pager():
-    client = OrgPolicyClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_policies_pager(transport_name: str = "grpc"):
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_policies), "__call__") as call:
@@ -1041,8 +1037,10 @@ def test_list_policies_pager():
         assert all(isinstance(i, orgpolicy.Policy) for i in results)
 
 
-def test_list_policies_pages():
-    client = OrgPolicyClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_policies_pages(transport_name: str = "grpc"):
+    client = OrgPolicyClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_policies), "__call__") as call:
@@ -1129,7 +1127,8 @@ async def test_list_policies_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_policy(transport: str = "grpc", request_type=orgpolicy.GetPolicyRequest):
+@pytest.mark.parametrize("request_type", [orgpolicy.GetPolicyRequest, dict,])
+def test_get_policy(request_type, transport: str = "grpc"):
     client = OrgPolicyClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1152,10 +1151,6 @@ def test_get_policy(transport: str = "grpc", request_type=orgpolicy.GetPolicyReq
     # Establish that the response is the type that we expect.
     assert isinstance(response, orgpolicy.Policy)
     assert response.name == "name_value"
-
-
-def test_get_policy_from_dict():
-    test_get_policy(request_type=dict)
 
 
 def test_get_policy_empty_call():
@@ -1323,9 +1318,8 @@ async def test_get_policy_flattened_error_async():
         )
 
 
-def test_get_effective_policy(
-    transport: str = "grpc", request_type=orgpolicy.GetEffectivePolicyRequest
-):
+@pytest.mark.parametrize("request_type", [orgpolicy.GetEffectivePolicyRequest, dict,])
+def test_get_effective_policy(request_type, transport: str = "grpc"):
     client = OrgPolicyClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1350,10 +1344,6 @@ def test_get_effective_policy(
     # Establish that the response is the type that we expect.
     assert isinstance(response, orgpolicy.Policy)
     assert response.name == "name_value"
-
-
-def test_get_effective_policy_from_dict():
-    test_get_effective_policy(request_type=dict)
 
 
 def test_get_effective_policy_empty_call():
@@ -1533,9 +1523,8 @@ async def test_get_effective_policy_flattened_error_async():
         )
 
 
-def test_create_policy(
-    transport: str = "grpc", request_type=orgpolicy.CreatePolicyRequest
-):
+@pytest.mark.parametrize("request_type", [orgpolicy.CreatePolicyRequest, dict,])
+def test_create_policy(request_type, transport: str = "grpc"):
     client = OrgPolicyClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1558,10 +1547,6 @@ def test_create_policy(
     # Establish that the response is the type that we expect.
     assert isinstance(response, orgpolicy.Policy)
     assert response.name == "name_value"
-
-
-def test_create_policy_from_dict():
-    test_create_policy(request_type=dict)
 
 
 def test_create_policy_empty_call():
@@ -1743,9 +1728,8 @@ async def test_create_policy_flattened_error_async():
         )
 
 
-def test_update_policy(
-    transport: str = "grpc", request_type=orgpolicy.UpdatePolicyRequest
-):
+@pytest.mark.parametrize("request_type", [orgpolicy.UpdatePolicyRequest, dict,])
+def test_update_policy(request_type, transport: str = "grpc"):
     client = OrgPolicyClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1768,10 +1752,6 @@ def test_update_policy(
     # Establish that the response is the type that we expect.
     assert isinstance(response, orgpolicy.Policy)
     assert response.name == "name_value"
-
-
-def test_update_policy_from_dict():
-    test_update_policy(request_type=dict)
 
 
 def test_update_policy_empty_call():
@@ -1941,9 +1921,8 @@ async def test_update_policy_flattened_error_async():
         )
 
 
-def test_delete_policy(
-    transport: str = "grpc", request_type=orgpolicy.DeletePolicyRequest
-):
+@pytest.mark.parametrize("request_type", [orgpolicy.DeletePolicyRequest, dict,])
+def test_delete_policy(request_type, transport: str = "grpc"):
     client = OrgPolicyClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1965,10 +1944,6 @@ def test_delete_policy(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_policy_from_dict():
-    test_delete_policy(request_type=dict)
 
 
 def test_delete_policy_empty_call():
@@ -2656,7 +2631,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
