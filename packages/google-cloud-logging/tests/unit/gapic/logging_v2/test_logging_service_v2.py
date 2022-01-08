@@ -257,20 +257,20 @@ def test_logging_service_v2_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -339,7 +339,7 @@ def test_logging_service_v2_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -434,7 +434,7 @@ def test_logging_service_v2_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -465,7 +465,7 @@ def test_logging_service_v2_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -498,7 +498,8 @@ def test_logging_service_v2_client_client_options_from_dict():
         )
 
 
-def test_delete_log(transport: str = "grpc", request_type=logging.DeleteLogRequest):
+@pytest.mark.parametrize("request_type", [logging.DeleteLogRequest, dict,])
+def test_delete_log(request_type, transport: str = "grpc"):
     client = LoggingServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -520,10 +521,6 @@ def test_delete_log(transport: str = "grpc", request_type=logging.DeleteLogReque
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_log_from_dict():
-    test_delete_log(request_type=dict)
 
 
 def test_delete_log_empty_call():
@@ -694,9 +691,8 @@ async def test_delete_log_flattened_error_async():
         )
 
 
-def test_write_log_entries(
-    transport: str = "grpc", request_type=logging.WriteLogEntriesRequest
-):
+@pytest.mark.parametrize("request_type", [logging.WriteLogEntriesRequest, dict,])
+def test_write_log_entries(request_type, transport: str = "grpc"):
     client = LoggingServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -720,10 +716,6 @@ def test_write_log_entries(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, logging.WriteLogEntriesResponse)
-
-
-def test_write_log_entries_from_dict():
-    test_write_log_entries(request_type=dict)
 
 
 def test_write_log_entries_empty_call():
@@ -891,9 +883,8 @@ async def test_write_log_entries_flattened_error_async():
         )
 
 
-def test_list_log_entries(
-    transport: str = "grpc", request_type=logging.ListLogEntriesRequest
-):
+@pytest.mark.parametrize("request_type", [logging.ListLogEntriesRequest, dict,])
+def test_list_log_entries(request_type, transport: str = "grpc"):
     client = LoggingServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -918,10 +909,6 @@ def test_list_log_entries(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLogEntriesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_log_entries_from_dict():
-    test_list_log_entries(request_type=dict)
 
 
 def test_list_log_entries_empty_call():
@@ -1072,8 +1059,10 @@ async def test_list_log_entries_flattened_error_async():
         )
 
 
-def test_list_log_entries_pager():
-    client = LoggingServiceV2Client(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_log_entries_pager(transport_name: str = "grpc"):
+    client = LoggingServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_log_entries), "__call__") as call:
@@ -1107,8 +1096,10 @@ def test_list_log_entries_pager():
         assert all(isinstance(i, log_entry.LogEntry) for i in results)
 
 
-def test_list_log_entries_pages():
-    client = LoggingServiceV2Client(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_log_entries_pages(transport_name: str = "grpc"):
+    client = LoggingServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_log_entries), "__call__") as call:
@@ -1211,10 +1202,10 @@ async def test_list_log_entries_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_list_monitored_resource_descriptors(
-    transport: str = "grpc",
-    request_type=logging.ListMonitoredResourceDescriptorsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [logging.ListMonitoredResourceDescriptorsRequest, dict,]
+)
+def test_list_monitored_resource_descriptors(request_type, transport: str = "grpc"):
     client = LoggingServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1241,10 +1232,6 @@ def test_list_monitored_resource_descriptors(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMonitoredResourceDescriptorsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_monitored_resource_descriptors_from_dict():
-    test_list_monitored_resource_descriptors(request_type=dict)
 
 
 def test_list_monitored_resource_descriptors_empty_call():
@@ -1304,8 +1291,10 @@ async def test_list_monitored_resource_descriptors_async_from_dict():
     await test_list_monitored_resource_descriptors_async(request_type=dict)
 
 
-def test_list_monitored_resource_descriptors_pager():
-    client = LoggingServiceV2Client(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_monitored_resource_descriptors_pager(transport_name: str = "grpc"):
+    client = LoggingServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1352,8 +1341,10 @@ def test_list_monitored_resource_descriptors_pager():
         )
 
 
-def test_list_monitored_resource_descriptors_pages():
-    client = LoggingServiceV2Client(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_monitored_resource_descriptors_pages(transport_name: str = "grpc"):
+    client = LoggingServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1491,7 +1482,8 @@ async def test_list_monitored_resource_descriptors_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_list_logs(transport: str = "grpc", request_type=logging.ListLogsRequest):
+@pytest.mark.parametrize("request_type", [logging.ListLogsRequest, dict,])
+def test_list_logs(request_type, transport: str = "grpc"):
     client = LoggingServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1517,10 +1509,6 @@ def test_list_logs(transport: str = "grpc", request_type=logging.ListLogsRequest
     assert isinstance(response, pagers.ListLogsPager)
     assert response.log_names == ["log_names_value"]
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_logs_from_dict():
-    test_list_logs(request_type=dict)
 
 
 def test_list_logs_empty_call():
@@ -1701,8 +1689,10 @@ async def test_list_logs_flattened_error_async():
         )
 
 
-def test_list_logs_pager():
-    client = LoggingServiceV2Client(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_logs_pager(transport_name: str = "grpc"):
+    client = LoggingServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_logs), "__call__") as call:
@@ -1730,8 +1720,10 @@ def test_list_logs_pager():
         assert all(isinstance(i, str) for i in results)
 
 
-def test_list_logs_pages():
-    client = LoggingServiceV2Client(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_logs_pages(transport_name: str = "grpc"):
+    client = LoggingServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_logs), "__call__") as call:
@@ -1807,9 +1799,8 @@ async def test_list_logs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_tail_log_entries(
-    transport: str = "grpc", request_type=logging.TailLogEntriesRequest
-):
+@pytest.mark.parametrize("request_type", [logging.TailLogEntriesRequest, dict,])
+def test_tail_log_entries(request_type, transport: str = "grpc"):
     client = LoggingServiceV2Client(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1833,10 +1824,6 @@ def test_tail_log_entries(
     # Establish that the response is the type that we expect.
     for message in response:
         assert isinstance(message, logging.TailLogEntriesResponse)
-
-
-def test_tail_log_entries_from_dict():
-    test_tail_log_entries(request_type=dict)
 
 
 @pytest.mark.asyncio
@@ -2415,7 +2402,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
