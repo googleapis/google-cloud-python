@@ -270,20 +270,20 @@ def test_managed_identities_service_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -352,7 +352,7 @@ def test_managed_identities_service_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -451,7 +451,7 @@ def test_managed_identities_service_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -486,7 +486,7 @@ def test_managed_identities_service_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -519,10 +519,10 @@ def test_managed_identities_service_client_client_options_from_dict():
         )
 
 
-def test_create_microsoft_ad_domain(
-    transport: str = "grpc",
-    request_type=managed_identities_service.CreateMicrosoftAdDomainRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [managed_identities_service.CreateMicrosoftAdDomainRequest, dict,]
+)
+def test_create_microsoft_ad_domain(request_type, transport: str = "grpc"):
     client = ManagedIdentitiesServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -546,10 +546,6 @@ def test_create_microsoft_ad_domain(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_microsoft_ad_domain_from_dict():
-    test_create_microsoft_ad_domain(request_type=dict)
 
 
 def test_create_microsoft_ad_domain_empty_call():
@@ -771,10 +767,10 @@ async def test_create_microsoft_ad_domain_flattened_error_async():
         )
 
 
-def test_reset_admin_password(
-    transport: str = "grpc",
-    request_type=managed_identities_service.ResetAdminPasswordRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [managed_identities_service.ResetAdminPasswordRequest, dict,]
+)
+def test_reset_admin_password(request_type, transport: str = "grpc"):
     client = ManagedIdentitiesServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -801,10 +797,6 @@ def test_reset_admin_password(
     # Establish that the response is the type that we expect.
     assert isinstance(response, managed_identities_service.ResetAdminPasswordResponse)
     assert response.password == "password_value"
-
-
-def test_reset_admin_password_from_dict():
-    test_reset_admin_password(request_type=dict)
 
 
 def test_reset_admin_password_empty_call():
@@ -1003,9 +995,10 @@ async def test_reset_admin_password_flattened_error_async():
         )
 
 
-def test_list_domains(
-    transport: str = "grpc", request_type=managed_identities_service.ListDomainsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [managed_identities_service.ListDomainsRequest, dict,]
+)
+def test_list_domains(request_type, transport: str = "grpc"):
     client = ManagedIdentitiesServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1031,10 +1024,6 @@ def test_list_domains(
     assert isinstance(response, pagers.ListDomainsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_domains_from_dict():
-    test_list_domains(request_type=dict)
 
 
 def test_list_domains_empty_call():
@@ -1223,9 +1212,9 @@ async def test_list_domains_flattened_error_async():
         )
 
 
-def test_list_domains_pager():
+def test_list_domains_pager(transport_name: str = "grpc"):
     client = ManagedIdentitiesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1261,9 +1250,9 @@ def test_list_domains_pager():
         assert all(isinstance(i, resource.Domain) for i in results)
 
 
-def test_list_domains_pages():
+def test_list_domains_pages(transport_name: str = "grpc"):
     client = ManagedIdentitiesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1361,9 +1350,10 @@ async def test_list_domains_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_domain(
-    transport: str = "grpc", request_type=managed_identities_service.GetDomainRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [managed_identities_service.GetDomainRequest, dict,]
+)
+def test_get_domain(request_type, transport: str = "grpc"):
     client = ManagedIdentitiesServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1402,10 +1392,6 @@ def test_get_domain(
     assert response.fqdn == "fqdn_value"
     assert response.state == resource.Domain.State.CREATING
     assert response.status_message == "status_message_value"
-
-
-def test_get_domain_from_dict():
-    test_get_domain(request_type=dict)
 
 
 def test_get_domain_empty_call():
@@ -1602,9 +1588,10 @@ async def test_get_domain_flattened_error_async():
         )
 
 
-def test_update_domain(
-    transport: str = "grpc", request_type=managed_identities_service.UpdateDomainRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [managed_identities_service.UpdateDomainRequest, dict,]
+)
+def test_update_domain(request_type, transport: str = "grpc"):
     client = ManagedIdentitiesServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1626,10 +1613,6 @@ def test_update_domain(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_domain_from_dict():
-    test_update_domain(request_type=dict)
 
 
 def test_update_domain_empty_call():
@@ -1829,9 +1812,10 @@ async def test_update_domain_flattened_error_async():
         )
 
 
-def test_delete_domain(
-    transport: str = "grpc", request_type=managed_identities_service.DeleteDomainRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [managed_identities_service.DeleteDomainRequest, dict,]
+)
+def test_delete_domain(request_type, transport: str = "grpc"):
     client = ManagedIdentitiesServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1853,10 +1837,6 @@ def test_delete_domain(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_domain_from_dict():
-    test_delete_domain(request_type=dict)
 
 
 def test_delete_domain_empty_call():
@@ -2040,9 +2020,10 @@ async def test_delete_domain_flattened_error_async():
         )
 
 
-def test_attach_trust(
-    transport: str = "grpc", request_type=managed_identities_service.AttachTrustRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [managed_identities_service.AttachTrustRequest, dict,]
+)
+def test_attach_trust(request_type, transport: str = "grpc"):
     client = ManagedIdentitiesServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2064,10 +2045,6 @@ def test_attach_trust(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_attach_trust_from_dict():
-    test_attach_trust(request_type=dict)
 
 
 def test_attach_trust_empty_call():
@@ -2267,10 +2244,10 @@ async def test_attach_trust_flattened_error_async():
         )
 
 
-def test_reconfigure_trust(
-    transport: str = "grpc",
-    request_type=managed_identities_service.ReconfigureTrustRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [managed_identities_service.ReconfigureTrustRequest, dict,]
+)
+def test_reconfigure_trust(request_type, transport: str = "grpc"):
     client = ManagedIdentitiesServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2294,10 +2271,6 @@ def test_reconfigure_trust(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_reconfigure_trust_from_dict():
-    test_reconfigure_trust(request_type=dict)
 
 
 def test_reconfigure_trust_empty_call():
@@ -2519,9 +2492,10 @@ async def test_reconfigure_trust_flattened_error_async():
         )
 
 
-def test_detach_trust(
-    transport: str = "grpc", request_type=managed_identities_service.DetachTrustRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [managed_identities_service.DetachTrustRequest, dict,]
+)
+def test_detach_trust(request_type, transport: str = "grpc"):
     client = ManagedIdentitiesServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2543,10 +2517,6 @@ def test_detach_trust(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_detach_trust_from_dict():
-    test_detach_trust(request_type=dict)
 
 
 def test_detach_trust_empty_call():
@@ -2746,10 +2716,10 @@ async def test_detach_trust_flattened_error_async():
         )
 
 
-def test_validate_trust(
-    transport: str = "grpc",
-    request_type=managed_identities_service.ValidateTrustRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [managed_identities_service.ValidateTrustRequest, dict,]
+)
+def test_validate_trust(request_type, transport: str = "grpc"):
     client = ManagedIdentitiesServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2771,10 +2741,6 @@ def test_validate_trust(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_validate_trust_from_dict():
-    test_validate_trust(request_type=dict)
 
 
 def test_validate_trust_empty_call():
@@ -3536,7 +3502,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
