@@ -263,20 +263,20 @@ def test_key_management_service_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -345,7 +345,7 @@ def test_key_management_service_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -444,7 +444,7 @@ def test_key_management_service_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -479,7 +479,7 @@ def test_key_management_service_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -512,9 +512,8 @@ def test_key_management_service_client_client_options_from_dict():
         )
 
 
-def test_list_key_rings(
-    transport: str = "grpc", request_type=service.ListKeyRingsRequest
-):
+@pytest.mark.parametrize("request_type", [service.ListKeyRingsRequest, dict,])
+def test_list_key_rings(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -540,10 +539,6 @@ def test_list_key_rings(
     assert isinstance(response, pagers.ListKeyRingsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-def test_list_key_rings_from_dict():
-    test_list_key_rings(request_type=dict)
 
 
 def test_list_key_rings_empty_call():
@@ -730,9 +725,9 @@ async def test_list_key_rings_flattened_error_async():
         )
 
 
-def test_list_key_rings_pager():
+def test_list_key_rings_pager(transport_name: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -770,9 +765,9 @@ def test_list_key_rings_pager():
         assert all(isinstance(i, resources.KeyRing) for i in results)
 
 
-def test_list_key_rings_pages():
+def test_list_key_rings_pages(transport_name: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -876,9 +871,8 @@ async def test_list_key_rings_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_list_crypto_keys(
-    transport: str = "grpc", request_type=service.ListCryptoKeysRequest
-):
+@pytest.mark.parametrize("request_type", [service.ListCryptoKeysRequest, dict,])
+def test_list_crypto_keys(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -904,10 +898,6 @@ def test_list_crypto_keys(
     assert isinstance(response, pagers.ListCryptoKeysPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-def test_list_crypto_keys_from_dict():
-    test_list_crypto_keys(request_type=dict)
 
 
 def test_list_crypto_keys_empty_call():
@@ -1094,9 +1084,9 @@ async def test_list_crypto_keys_flattened_error_async():
         )
 
 
-def test_list_crypto_keys_pager():
+def test_list_crypto_keys_pager(transport_name: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1134,9 +1124,9 @@ def test_list_crypto_keys_pager():
         assert all(isinstance(i, resources.CryptoKey) for i in results)
 
 
-def test_list_crypto_keys_pages():
+def test_list_crypto_keys_pages(transport_name: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1240,9 +1230,8 @@ async def test_list_crypto_keys_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_list_crypto_key_versions(
-    transport: str = "grpc", request_type=service.ListCryptoKeyVersionsRequest
-):
+@pytest.mark.parametrize("request_type", [service.ListCryptoKeyVersionsRequest, dict,])
+def test_list_crypto_key_versions(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1270,10 +1259,6 @@ def test_list_crypto_key_versions(
     assert isinstance(response, pagers.ListCryptoKeyVersionsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-def test_list_crypto_key_versions_from_dict():
-    test_list_crypto_key_versions(request_type=dict)
 
 
 def test_list_crypto_key_versions_empty_call():
@@ -1472,9 +1457,9 @@ async def test_list_crypto_key_versions_flattened_error_async():
         )
 
 
-def test_list_crypto_key_versions_pager():
+def test_list_crypto_key_versions_pager(transport_name: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1520,9 +1505,9 @@ def test_list_crypto_key_versions_pager():
         assert all(isinstance(i, resources.CryptoKeyVersion) for i in results)
 
 
-def test_list_crypto_key_versions_pages():
+def test_list_crypto_key_versions_pages(transport_name: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1650,9 +1635,8 @@ async def test_list_crypto_key_versions_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_list_import_jobs(
-    transport: str = "grpc", request_type=service.ListImportJobsRequest
-):
+@pytest.mark.parametrize("request_type", [service.ListImportJobsRequest, dict,])
+def test_list_import_jobs(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1678,10 +1662,6 @@ def test_list_import_jobs(
     assert isinstance(response, pagers.ListImportJobsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-def test_list_import_jobs_from_dict():
-    test_list_import_jobs(request_type=dict)
 
 
 def test_list_import_jobs_empty_call():
@@ -1868,9 +1848,9 @@ async def test_list_import_jobs_flattened_error_async():
         )
 
 
-def test_list_import_jobs_pager():
+def test_list_import_jobs_pager(transport_name: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1908,9 +1888,9 @@ def test_list_import_jobs_pager():
         assert all(isinstance(i, resources.ImportJob) for i in results)
 
 
-def test_list_import_jobs_pages():
+def test_list_import_jobs_pages(transport_name: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2014,7 +1994,8 @@ async def test_list_import_jobs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_key_ring(transport: str = "grpc", request_type=service.GetKeyRingRequest):
+@pytest.mark.parametrize("request_type", [service.GetKeyRingRequest, dict,])
+def test_get_key_ring(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2037,10 +2018,6 @@ def test_get_key_ring(transport: str = "grpc", request_type=service.GetKeyRingRe
     # Establish that the response is the type that we expect.
     assert isinstance(response, resources.KeyRing)
     assert response.name == "name_value"
-
-
-def test_get_key_ring_from_dict():
-    test_get_key_ring(request_type=dict)
 
 
 def test_get_key_ring_empty_call():
@@ -2220,9 +2197,8 @@ async def test_get_key_ring_flattened_error_async():
         )
 
 
-def test_get_crypto_key(
-    transport: str = "grpc", request_type=service.GetCryptoKeyRequest
-):
+@pytest.mark.parametrize("request_type", [service.GetCryptoKeyRequest, dict,])
+def test_get_crypto_key(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2252,10 +2228,6 @@ def test_get_crypto_key(
     assert response.name == "name_value"
     assert response.purpose == resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT
     assert response.import_only is True
-
-
-def test_get_crypto_key_from_dict():
-    test_get_crypto_key(request_type=dict)
 
 
 def test_get_crypto_key_empty_call():
@@ -2441,9 +2413,8 @@ async def test_get_crypto_key_flattened_error_async():
         )
 
 
-def test_get_crypto_key_version(
-    transport: str = "grpc", request_type=service.GetCryptoKeyVersionRequest
-):
+@pytest.mark.parametrize("request_type", [service.GetCryptoKeyVersionRequest, dict,])
+def test_get_crypto_key_version(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2488,10 +2459,6 @@ def test_get_crypto_key_version(
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
     assert response.reimport_eligible is True
-
-
-def test_get_crypto_key_version_from_dict():
-    test_get_crypto_key_version(request_type=dict)
 
 
 def test_get_crypto_key_version_empty_call():
@@ -2707,9 +2674,8 @@ async def test_get_crypto_key_version_flattened_error_async():
         )
 
 
-def test_get_public_key(
-    transport: str = "grpc", request_type=service.GetPublicKeyRequest
-):
+@pytest.mark.parametrize("request_type", [service.GetPublicKeyRequest, dict,])
+def test_get_public_key(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2743,10 +2709,6 @@ def test_get_public_key(
     )
     assert response.name == "name_value"
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
-
-
-def test_get_public_key_from_dict():
-    test_get_public_key(request_type=dict)
 
 
 def test_get_public_key_empty_call():
@@ -2937,9 +2899,8 @@ async def test_get_public_key_flattened_error_async():
         )
 
 
-def test_get_import_job(
-    transport: str = "grpc", request_type=service.GetImportJobRequest
-):
+@pytest.mark.parametrize("request_type", [service.GetImportJobRequest, dict,])
+def test_get_import_job(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2973,10 +2934,6 @@ def test_get_import_job(
     )
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.state == resources.ImportJob.ImportJobState.PENDING_GENERATION
-
-
-def test_get_import_job_from_dict():
-    test_get_import_job(request_type=dict)
 
 
 def test_get_import_job_empty_call():
@@ -3167,9 +3124,8 @@ async def test_get_import_job_flattened_error_async():
         )
 
 
-def test_create_key_ring(
-    transport: str = "grpc", request_type=service.CreateKeyRingRequest
-):
+@pytest.mark.parametrize("request_type", [service.CreateKeyRingRequest, dict,])
+def test_create_key_ring(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3192,10 +3148,6 @@ def test_create_key_ring(
     # Establish that the response is the type that we expect.
     assert isinstance(response, resources.KeyRing)
     assert response.name == "name_value"
-
-
-def test_create_key_ring_from_dict():
-    test_create_key_ring(request_type=dict)
 
 
 def test_create_key_ring_empty_call():
@@ -3401,9 +3353,8 @@ async def test_create_key_ring_flattened_error_async():
         )
 
 
-def test_create_crypto_key(
-    transport: str = "grpc", request_type=service.CreateCryptoKeyRequest
-):
+@pytest.mark.parametrize("request_type", [service.CreateCryptoKeyRequest, dict,])
+def test_create_crypto_key(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3435,10 +3386,6 @@ def test_create_crypto_key(
     assert response.name == "name_value"
     assert response.purpose == resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT
     assert response.import_only is True
-
-
-def test_create_crypto_key_from_dict():
-    test_create_crypto_key(request_type=dict)
 
 
 def test_create_crypto_key_empty_call():
@@ -3662,9 +3609,8 @@ async def test_create_crypto_key_flattened_error_async():
         )
 
 
-def test_create_crypto_key_version(
-    transport: str = "grpc", request_type=service.CreateCryptoKeyVersionRequest
-):
+@pytest.mark.parametrize("request_type", [service.CreateCryptoKeyVersionRequest, dict,])
+def test_create_crypto_key_version(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3709,10 +3655,6 @@ def test_create_crypto_key_version(
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
     assert response.reimport_eligible is True
-
-
-def test_create_crypto_key_version_from_dict():
-    test_create_crypto_key_version(request_type=dict)
 
 
 def test_create_crypto_key_version_empty_call():
@@ -3944,9 +3886,8 @@ async def test_create_crypto_key_version_flattened_error_async():
         )
 
 
-def test_import_crypto_key_version(
-    transport: str = "grpc", request_type=service.ImportCryptoKeyVersionRequest
-):
+@pytest.mark.parametrize("request_type", [service.ImportCryptoKeyVersionRequest, dict,])
+def test_import_crypto_key_version(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3991,10 +3932,6 @@ def test_import_crypto_key_version(
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
     assert response.reimport_eligible is True
-
-
-def test_import_crypto_key_version_from_dict():
-    test_import_crypto_key_version(request_type=dict)
 
 
 def test_import_crypto_key_version_empty_call():
@@ -4130,9 +4067,8 @@ async def test_import_crypto_key_version_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_create_import_job(
-    transport: str = "grpc", request_type=service.CreateImportJobRequest
-):
+@pytest.mark.parametrize("request_type", [service.CreateImportJobRequest, dict,])
+def test_create_import_job(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4168,10 +4104,6 @@ def test_create_import_job(
     )
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.state == resources.ImportJob.ImportJobState.PENDING_GENERATION
-
-
-def test_create_import_job_from_dict():
-    test_create_import_job(request_type=dict)
 
 
 def test_create_import_job_empty_call():
@@ -4400,9 +4332,8 @@ async def test_create_import_job_flattened_error_async():
         )
 
 
-def test_update_crypto_key(
-    transport: str = "grpc", request_type=service.UpdateCryptoKeyRequest
-):
+@pytest.mark.parametrize("request_type", [service.UpdateCryptoKeyRequest, dict,])
+def test_update_crypto_key(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4434,10 +4365,6 @@ def test_update_crypto_key(
     assert response.name == "name_value"
     assert response.purpose == resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT
     assert response.import_only is True
-
-
-def test_update_crypto_key_from_dict():
-    test_update_crypto_key(request_type=dict)
 
 
 def test_update_crypto_key_empty_call():
@@ -4655,9 +4582,8 @@ async def test_update_crypto_key_flattened_error_async():
         )
 
 
-def test_update_crypto_key_version(
-    transport: str = "grpc", request_type=service.UpdateCryptoKeyVersionRequest
-):
+@pytest.mark.parametrize("request_type", [service.UpdateCryptoKeyVersionRequest, dict,])
+def test_update_crypto_key_version(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4702,10 +4628,6 @@ def test_update_crypto_key_version(
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
     assert response.reimport_eligible is True
-
-
-def test_update_crypto_key_version_from_dict():
-    test_update_crypto_key_version(request_type=dict)
 
 
 def test_update_crypto_key_version_empty_call():
@@ -4943,9 +4865,10 @@ async def test_update_crypto_key_version_flattened_error_async():
         )
 
 
-def test_update_crypto_key_primary_version(
-    transport: str = "grpc", request_type=service.UpdateCryptoKeyPrimaryVersionRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [service.UpdateCryptoKeyPrimaryVersionRequest, dict,]
+)
+def test_update_crypto_key_primary_version(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4977,10 +4900,6 @@ def test_update_crypto_key_primary_version(
     assert response.name == "name_value"
     assert response.purpose == resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT
     assert response.import_only is True
-
-
-def test_update_crypto_key_primary_version_from_dict():
-    test_update_crypto_key_primary_version(request_type=dict)
 
 
 def test_update_crypto_key_primary_version_empty_call():
@@ -5193,9 +5112,10 @@ async def test_update_crypto_key_primary_version_flattened_error_async():
         )
 
 
-def test_destroy_crypto_key_version(
-    transport: str = "grpc", request_type=service.DestroyCryptoKeyVersionRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [service.DestroyCryptoKeyVersionRequest, dict,]
+)
+def test_destroy_crypto_key_version(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5240,10 +5160,6 @@ def test_destroy_crypto_key_version(
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
     assert response.reimport_eligible is True
-
-
-def test_destroy_crypto_key_version_from_dict():
-    test_destroy_crypto_key_version(request_type=dict)
 
 
 def test_destroy_crypto_key_version_empty_call():
@@ -5459,9 +5375,10 @@ async def test_destroy_crypto_key_version_flattened_error_async():
         )
 
 
-def test_restore_crypto_key_version(
-    transport: str = "grpc", request_type=service.RestoreCryptoKeyVersionRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [service.RestoreCryptoKeyVersionRequest, dict,]
+)
+def test_restore_crypto_key_version(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5506,10 +5423,6 @@ def test_restore_crypto_key_version(
     assert response.import_job == "import_job_value"
     assert response.import_failure_reason == "import_failure_reason_value"
     assert response.reimport_eligible is True
-
-
-def test_restore_crypto_key_version_from_dict():
-    test_restore_crypto_key_version(request_type=dict)
 
 
 def test_restore_crypto_key_version_empty_call():
@@ -5725,7 +5638,8 @@ async def test_restore_crypto_key_version_flattened_error_async():
         )
 
 
-def test_encrypt(transport: str = "grpc", request_type=service.EncryptRequest):
+@pytest.mark.parametrize("request_type", [service.EncryptRequest, dict,])
+def test_encrypt(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5758,10 +5672,6 @@ def test_encrypt(transport: str = "grpc", request_type=service.EncryptRequest):
     assert response.verified_plaintext_crc32c is True
     assert response.verified_additional_authenticated_data_crc32c is True
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
-
-
-def test_encrypt_from_dict():
-    test_encrypt(request_type=dict)
 
 
 def test_encrypt_empty_call():
@@ -5963,7 +5873,8 @@ async def test_encrypt_flattened_error_async():
         )
 
 
-def test_decrypt(transport: str = "grpc", request_type=service.DecryptRequest):
+@pytest.mark.parametrize("request_type", [service.DecryptRequest, dict,])
+def test_decrypt(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5992,10 +5903,6 @@ def test_decrypt(transport: str = "grpc", request_type=service.DecryptRequest):
     assert response.plaintext == b"plaintext_blob"
     assert response.used_primary is True
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
-
-
-def test_decrypt_from_dict():
-    test_decrypt(request_type=dict)
 
 
 def test_decrypt_empty_call():
@@ -6195,9 +6102,8 @@ async def test_decrypt_flattened_error_async():
         )
 
 
-def test_asymmetric_sign(
-    transport: str = "grpc", request_type=service.AsymmetricSignRequest
-):
+@pytest.mark.parametrize("request_type", [service.AsymmetricSignRequest, dict,])
+def test_asymmetric_sign(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -6230,10 +6136,6 @@ def test_asymmetric_sign(
     assert response.name == "name_value"
     assert response.verified_data_crc32c is True
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
-
-
-def test_asymmetric_sign_from_dict():
-    test_asymmetric_sign(request_type=dict)
 
 
 def test_asymmetric_sign_empty_call():
@@ -6441,9 +6343,8 @@ async def test_asymmetric_sign_flattened_error_async():
         )
 
 
-def test_asymmetric_decrypt(
-    transport: str = "grpc", request_type=service.AsymmetricDecryptRequest
-):
+@pytest.mark.parametrize("request_type", [service.AsymmetricDecryptRequest, dict,])
+def test_asymmetric_decrypt(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -6474,10 +6375,6 @@ def test_asymmetric_decrypt(
     assert response.plaintext == b"plaintext_blob"
     assert response.verified_ciphertext_crc32c is True
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
-
-
-def test_asymmetric_decrypt_from_dict():
-    test_asymmetric_decrypt(request_type=dict)
 
 
 def test_asymmetric_decrypt_empty_call():
@@ -6693,7 +6590,8 @@ async def test_asymmetric_decrypt_flattened_error_async():
         )
 
 
-def test_mac_sign(transport: str = "grpc", request_type=service.MacSignRequest):
+@pytest.mark.parametrize("request_type", [service.MacSignRequest, dict,])
+def test_mac_sign(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -6724,10 +6622,6 @@ def test_mac_sign(transport: str = "grpc", request_type=service.MacSignRequest):
     assert response.mac == b"mac_blob"
     assert response.verified_data_crc32c is True
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
-
-
-def test_mac_sign_from_dict():
-    test_mac_sign(request_type=dict)
 
 
 def test_mac_sign_empty_call():
@@ -6927,7 +6821,8 @@ async def test_mac_sign_flattened_error_async():
         )
 
 
-def test_mac_verify(transport: str = "grpc", request_type=service.MacVerifyRequest):
+@pytest.mark.parametrize("request_type", [service.MacVerifyRequest, dict,])
+def test_mac_verify(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -6962,10 +6857,6 @@ def test_mac_verify(transport: str = "grpc", request_type=service.MacVerifyReque
     assert response.verified_mac_crc32c is True
     assert response.verified_success_integrity is True
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
-
-
-def test_mac_verify_from_dict():
-    test_mac_verify(request_type=dict)
 
 
 def test_mac_verify_empty_call():
@@ -7183,9 +7074,8 @@ async def test_mac_verify_flattened_error_async():
         )
 
 
-def test_generate_random_bytes(
-    transport: str = "grpc", request_type=service.GenerateRandomBytesRequest
-):
+@pytest.mark.parametrize("request_type", [service.GenerateRandomBytesRequest, dict,])
+def test_generate_random_bytes(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -7210,10 +7100,6 @@ def test_generate_random_bytes(
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.GenerateRandomBytesResponse)
     assert response.data == b"data_blob"
-
-
-def test_generate_random_bytes_from_dict():
-    test_generate_random_bytes(request_type=dict)
 
 
 def test_generate_random_bytes_empty_call():
@@ -8117,7 +8003,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
