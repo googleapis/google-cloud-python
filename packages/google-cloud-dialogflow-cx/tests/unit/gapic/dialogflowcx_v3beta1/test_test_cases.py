@@ -251,20 +251,20 @@ def test_test_cases_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -321,7 +321,7 @@ def test_test_cases_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -416,7 +416,7 @@ def test_test_cases_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -447,7 +447,7 @@ def test_test_cases_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -478,9 +478,8 @@ def test_test_cases_client_client_options_from_dict():
         )
 
 
-def test_list_test_cases(
-    transport: str = "grpc", request_type=test_case.ListTestCasesRequest
-):
+@pytest.mark.parametrize("request_type", [test_case.ListTestCasesRequest, dict,])
+def test_list_test_cases(request_type, transport: str = "grpc"):
     client = TestCasesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -505,10 +504,6 @@ def test_list_test_cases(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTestCasesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_test_cases_from_dict():
-    test_list_test_cases(request_type=dict)
 
 
 def test_list_test_cases_empty_call():
@@ -680,8 +675,10 @@ async def test_list_test_cases_flattened_error_async():
         )
 
 
-def test_list_test_cases_pager():
-    client = TestCasesClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_test_cases_pager(transport_name: str = "grpc"):
+    client = TestCasesClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_test_cases), "__call__") as call:
@@ -718,8 +715,10 @@ def test_list_test_cases_pager():
         assert all(isinstance(i, test_case.TestCase) for i in results)
 
 
-def test_list_test_cases_pages():
-    client = TestCasesClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_test_cases_pages(transport_name: str = "grpc"):
+    client = TestCasesClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_test_cases), "__call__") as call:
@@ -818,9 +817,8 @@ async def test_list_test_cases_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_batch_delete_test_cases(
-    transport: str = "grpc", request_type=test_case.BatchDeleteTestCasesRequest
-):
+@pytest.mark.parametrize("request_type", [test_case.BatchDeleteTestCasesRequest, dict,])
+def test_batch_delete_test_cases(request_type, transport: str = "grpc"):
     client = TestCasesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -844,10 +842,6 @@ def test_batch_delete_test_cases(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_batch_delete_test_cases_from_dict():
-    test_batch_delete_test_cases(request_type=dict)
 
 
 def test_batch_delete_test_cases_empty_call():
@@ -1024,9 +1018,8 @@ async def test_batch_delete_test_cases_flattened_error_async():
         )
 
 
-def test_get_test_case(
-    transport: str = "grpc", request_type=test_case.GetTestCaseRequest
-):
+@pytest.mark.parametrize("request_type", [test_case.GetTestCaseRequest, dict,])
+def test_get_test_case(request_type, transport: str = "grpc"):
     client = TestCasesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1057,10 +1050,6 @@ def test_get_test_case(
     assert response.tags == ["tags_value"]
     assert response.display_name == "display_name_value"
     assert response.notes == "notes_value"
-
-
-def test_get_test_case_from_dict():
-    test_get_test_case(request_type=dict)
 
 
 def test_get_test_case_empty_call():
@@ -1236,9 +1225,8 @@ async def test_get_test_case_flattened_error_async():
         )
 
 
-def test_create_test_case(
-    transport: str = "grpc", request_type=gcdc_test_case.CreateTestCaseRequest
-):
+@pytest.mark.parametrize("request_type", [gcdc_test_case.CreateTestCaseRequest, dict,])
+def test_create_test_case(request_type, transport: str = "grpc"):
     client = TestCasesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1269,10 +1257,6 @@ def test_create_test_case(
     assert response.tags == ["tags_value"]
     assert response.display_name == "display_name_value"
     assert response.notes == "notes_value"
-
-
-def test_create_test_case_from_dict():
-    test_create_test_case(request_type=dict)
 
 
 def test_create_test_case_empty_call():
@@ -1466,9 +1450,8 @@ async def test_create_test_case_flattened_error_async():
         )
 
 
-def test_update_test_case(
-    transport: str = "grpc", request_type=gcdc_test_case.UpdateTestCaseRequest
-):
+@pytest.mark.parametrize("request_type", [gcdc_test_case.UpdateTestCaseRequest, dict,])
+def test_update_test_case(request_type, transport: str = "grpc"):
     client = TestCasesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1499,10 +1482,6 @@ def test_update_test_case(
     assert response.tags == ["tags_value"]
     assert response.display_name == "display_name_value"
     assert response.notes == "notes_value"
-
-
-def test_update_test_case_from_dict():
-    test_update_test_case(request_type=dict)
 
 
 def test_update_test_case_empty_call():
@@ -1702,9 +1681,8 @@ async def test_update_test_case_flattened_error_async():
         )
 
 
-def test_run_test_case(
-    transport: str = "grpc", request_type=test_case.RunTestCaseRequest
-):
+@pytest.mark.parametrize("request_type", [test_case.RunTestCaseRequest, dict,])
+def test_run_test_case(request_type, transport: str = "grpc"):
     client = TestCasesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1726,10 +1704,6 @@ def test_run_test_case(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_run_test_case_from_dict():
-    test_run_test_case(request_type=dict)
 
 
 def test_run_test_case_empty_call():
@@ -1832,9 +1806,8 @@ async def test_run_test_case_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_batch_run_test_cases(
-    transport: str = "grpc", request_type=test_case.BatchRunTestCasesRequest
-):
+@pytest.mark.parametrize("request_type", [test_case.BatchRunTestCasesRequest, dict,])
+def test_batch_run_test_cases(request_type, transport: str = "grpc"):
     client = TestCasesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1858,10 +1831,6 @@ def test_batch_run_test_cases(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_batch_run_test_cases_from_dict():
-    test_batch_run_test_cases(request_type=dict)
 
 
 def test_batch_run_test_cases_empty_call():
@@ -1972,9 +1941,8 @@ async def test_batch_run_test_cases_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_calculate_coverage(
-    transport: str = "grpc", request_type=test_case.CalculateCoverageRequest
-):
+@pytest.mark.parametrize("request_type", [test_case.CalculateCoverageRequest, dict,])
+def test_calculate_coverage(request_type, transport: str = "grpc"):
     client = TestCasesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2004,10 +1972,6 @@ def test_calculate_coverage(
     # Establish that the response is the type that we expect.
     assert isinstance(response, test_case.CalculateCoverageResponse)
     assert response.agent == "agent_value"
-
-
-def test_calculate_coverage_from_dict():
-    test_calculate_coverage(request_type=dict)
 
 
 def test_calculate_coverage_empty_call():
@@ -2119,9 +2083,8 @@ async def test_calculate_coverage_field_headers_async():
     assert ("x-goog-request-params", "agent=agent/value",) in kw["metadata"]
 
 
-def test_import_test_cases(
-    transport: str = "grpc", request_type=test_case.ImportTestCasesRequest
-):
+@pytest.mark.parametrize("request_type", [test_case.ImportTestCasesRequest, dict,])
+def test_import_test_cases(request_type, transport: str = "grpc"):
     client = TestCasesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2145,10 +2108,6 @@ def test_import_test_cases(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_import_test_cases_from_dict():
-    test_import_test_cases(request_type=dict)
 
 
 def test_import_test_cases_empty_call():
@@ -2259,9 +2218,8 @@ async def test_import_test_cases_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_export_test_cases(
-    transport: str = "grpc", request_type=test_case.ExportTestCasesRequest
-):
+@pytest.mark.parametrize("request_type", [test_case.ExportTestCasesRequest, dict,])
+def test_export_test_cases(request_type, transport: str = "grpc"):
     client = TestCasesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2285,10 +2243,6 @@ def test_export_test_cases(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_export_test_cases_from_dict():
-    test_export_test_cases(request_type=dict)
 
 
 def test_export_test_cases_empty_call():
@@ -2399,9 +2353,8 @@ async def test_export_test_cases_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_list_test_case_results(
-    transport: str = "grpc", request_type=test_case.ListTestCaseResultsRequest
-):
+@pytest.mark.parametrize("request_type", [test_case.ListTestCaseResultsRequest, dict,])
+def test_list_test_case_results(request_type, transport: str = "grpc"):
     client = TestCasesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2428,10 +2381,6 @@ def test_list_test_case_results(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTestCaseResultsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_test_case_results_from_dict():
-    test_list_test_case_results(request_type=dict)
 
 
 def test_list_test_case_results_empty_call():
@@ -2617,8 +2566,10 @@ async def test_list_test_case_results_flattened_error_async():
         )
 
 
-def test_list_test_case_results_pager():
-    client = TestCasesClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_test_case_results_pager(transport_name: str = "grpc"):
+    client = TestCasesClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2662,8 +2613,10 @@ def test_list_test_case_results_pager():
         assert all(isinstance(i, test_case.TestCaseResult) for i in results)
 
 
-def test_list_test_case_results_pages():
-    client = TestCasesClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_test_case_results_pages(transport_name: str = "grpc"):
+    client = TestCasesClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2783,9 +2736,8 @@ async def test_list_test_case_results_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_test_case_result(
-    transport: str = "grpc", request_type=test_case.GetTestCaseResultRequest
-):
+@pytest.mark.parametrize("request_type", [test_case.GetTestCaseResultRequest, dict,])
+def test_get_test_case_result(request_type, transport: str = "grpc"):
     client = TestCasesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2816,10 +2768,6 @@ def test_get_test_case_result(
     assert response.name == "name_value"
     assert response.environment == "environment_value"
     assert response.test_result == test_case.TestResult.PASSED
-
-
-def test_get_test_case_result_from_dict():
-    test_get_test_case_result(request_type=dict)
 
 
 def test_get_test_case_result_empty_call():
@@ -3812,7 +3760,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
