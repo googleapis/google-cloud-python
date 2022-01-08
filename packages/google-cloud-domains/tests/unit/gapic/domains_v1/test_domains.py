@@ -232,20 +232,20 @@ def test_domains_client_client_options(client_class, transport_class, transport_
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -300,7 +300,7 @@ def test_domains_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -391,7 +391,7 @@ def test_domains_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -418,7 +418,7 @@ def test_domains_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -449,9 +449,8 @@ def test_domains_client_client_options_from_dict():
         )
 
 
-def test_search_domains(
-    transport: str = "grpc", request_type=domains.SearchDomainsRequest
-):
+@pytest.mark.parametrize("request_type", [domains.SearchDomainsRequest, dict,])
+def test_search_domains(request_type, transport: str = "grpc"):
     client = DomainsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -473,10 +472,6 @@ def test_search_domains(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, domains.SearchDomainsResponse)
-
-
-def test_search_domains_from_dict():
-    test_search_domains(request_type=dict)
 
 
 def test_search_domains_empty_call():
@@ -661,9 +656,10 @@ async def test_search_domains_flattened_error_async():
         )
 
 
-def test_retrieve_register_parameters(
-    transport: str = "grpc", request_type=domains.RetrieveRegisterParametersRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [domains.RetrieveRegisterParametersRequest, dict,]
+)
+def test_retrieve_register_parameters(request_type, transport: str = "grpc"):
     client = DomainsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -687,10 +683,6 @@ def test_retrieve_register_parameters(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, domains.RetrieveRegisterParametersResponse)
-
-
-def test_retrieve_register_parameters_from_dict():
-    test_retrieve_register_parameters(request_type=dict)
 
 
 def test_retrieve_register_parameters_empty_call():
@@ -888,9 +880,8 @@ async def test_retrieve_register_parameters_flattened_error_async():
         )
 
 
-def test_register_domain(
-    transport: str = "grpc", request_type=domains.RegisterDomainRequest
-):
+@pytest.mark.parametrize("request_type", [domains.RegisterDomainRequest, dict,])
+def test_register_domain(request_type, transport: str = "grpc"):
     client = DomainsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -912,10 +903,6 @@ def test_register_domain(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_register_domain_from_dict():
-    test_register_domain(request_type=dict)
 
 
 def test_register_domain_empty_call():
@@ -1112,9 +1099,10 @@ async def test_register_domain_flattened_error_async():
         )
 
 
-def test_retrieve_transfer_parameters(
-    transport: str = "grpc", request_type=domains.RetrieveTransferParametersRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [domains.RetrieveTransferParametersRequest, dict,]
+)
+def test_retrieve_transfer_parameters(request_type, transport: str = "grpc"):
     client = DomainsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1138,10 +1126,6 @@ def test_retrieve_transfer_parameters(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, domains.RetrieveTransferParametersResponse)
-
-
-def test_retrieve_transfer_parameters_from_dict():
-    test_retrieve_transfer_parameters(request_type=dict)
 
 
 def test_retrieve_transfer_parameters_empty_call():
@@ -1339,9 +1323,8 @@ async def test_retrieve_transfer_parameters_flattened_error_async():
         )
 
 
-def test_transfer_domain(
-    transport: str = "grpc", request_type=domains.TransferDomainRequest
-):
+@pytest.mark.parametrize("request_type", [domains.TransferDomainRequest, dict,])
+def test_transfer_domain(request_type, transport: str = "grpc"):
     client = DomainsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1363,10 +1346,6 @@ def test_transfer_domain(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_transfer_domain_from_dict():
-    test_transfer_domain(request_type=dict)
 
 
 def test_transfer_domain_empty_call():
@@ -1573,9 +1552,8 @@ async def test_transfer_domain_flattened_error_async():
         )
 
 
-def test_list_registrations(
-    transport: str = "grpc", request_type=domains.ListRegistrationsRequest
-):
+@pytest.mark.parametrize("request_type", [domains.ListRegistrationsRequest, dict,])
+def test_list_registrations(request_type, transport: str = "grpc"):
     client = DomainsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1602,10 +1580,6 @@ def test_list_registrations(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRegistrationsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_registrations_from_dict():
-    test_list_registrations(request_type=dict)
 
 
 def test_list_registrations_empty_call():
@@ -1789,8 +1763,10 @@ async def test_list_registrations_flattened_error_async():
         )
 
 
-def test_list_registrations_pager():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_registrations_pager(transport_name: str = "grpc"):
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1829,8 +1805,10 @@ def test_list_registrations_pager():
         assert all(isinstance(i, domains.Registration) for i in results)
 
 
-def test_list_registrations_pages():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_registrations_pages(transport_name: str = "grpc"):
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1935,9 +1913,8 @@ async def test_list_registrations_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_registration(
-    transport: str = "grpc", request_type=domains.GetRegistrationRequest
-):
+@pytest.mark.parametrize("request_type", [domains.GetRegistrationRequest, dict,])
+def test_get_registration(request_type, transport: str = "grpc"):
     client = DomainsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1970,10 +1947,6 @@ def test_get_registration(
     assert response.state == domains.Registration.State.REGISTRATION_PENDING
     assert response.issues == [domains.Registration.Issue.CONTACT_SUPPORT]
     assert response.supported_privacy == [domains.ContactPrivacy.PUBLIC_CONTACT_DATA]
-
-
-def test_get_registration_from_dict():
-    test_get_registration(request_type=dict)
 
 
 def test_get_registration_empty_call():
@@ -2155,9 +2128,8 @@ async def test_get_registration_flattened_error_async():
         )
 
 
-def test_update_registration(
-    transport: str = "grpc", request_type=domains.UpdateRegistrationRequest
-):
+@pytest.mark.parametrize("request_type", [domains.UpdateRegistrationRequest, dict,])
+def test_update_registration(request_type, transport: str = "grpc"):
     client = DomainsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2181,10 +2153,6 @@ def test_update_registration(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_registration_from_dict():
-    test_update_registration(request_type=dict)
 
 
 def test_update_registration_empty_call():
@@ -2389,9 +2357,10 @@ async def test_update_registration_flattened_error_async():
         )
 
 
-def test_configure_management_settings(
-    transport: str = "grpc", request_type=domains.ConfigureManagementSettingsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [domains.ConfigureManagementSettingsRequest, dict,]
+)
+def test_configure_management_settings(request_type, transport: str = "grpc"):
     client = DomainsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2415,10 +2384,6 @@ def test_configure_management_settings(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_configure_management_settings_from_dict():
-    test_configure_management_settings(request_type=dict)
 
 
 def test_configure_management_settings_empty_call():
@@ -2644,9 +2609,8 @@ async def test_configure_management_settings_flattened_error_async():
         )
 
 
-def test_configure_dns_settings(
-    transport: str = "grpc", request_type=domains.ConfigureDnsSettingsRequest
-):
+@pytest.mark.parametrize("request_type", [domains.ConfigureDnsSettingsRequest, dict,])
+def test_configure_dns_settings(request_type, transport: str = "grpc"):
     client = DomainsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2670,10 +2634,6 @@ def test_configure_dns_settings(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_configure_dns_settings_from_dict():
-    test_configure_dns_settings(request_type=dict)
 
 
 def test_configure_dns_settings_empty_call():
@@ -2910,9 +2870,10 @@ async def test_configure_dns_settings_flattened_error_async():
         )
 
 
-def test_configure_contact_settings(
-    transport: str = "grpc", request_type=domains.ConfigureContactSettingsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [domains.ConfigureContactSettingsRequest, dict,]
+)
+def test_configure_contact_settings(request_type, transport: str = "grpc"):
     client = DomainsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2936,10 +2897,6 @@ def test_configure_contact_settings(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_configure_contact_settings_from_dict():
-    test_configure_contact_settings(request_type=dict)
 
 
 def test_configure_contact_settings_empty_call():
@@ -3165,9 +3122,8 @@ async def test_configure_contact_settings_flattened_error_async():
         )
 
 
-def test_export_registration(
-    transport: str = "grpc", request_type=domains.ExportRegistrationRequest
-):
+@pytest.mark.parametrize("request_type", [domains.ExportRegistrationRequest, dict,])
+def test_export_registration(request_type, transport: str = "grpc"):
     client = DomainsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3191,10 +3147,6 @@ def test_export_registration(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_export_registration_from_dict():
-    test_export_registration(request_type=dict)
 
 
 def test_export_registration_empty_call():
@@ -3377,9 +3329,8 @@ async def test_export_registration_flattened_error_async():
         )
 
 
-def test_delete_registration(
-    transport: str = "grpc", request_type=domains.DeleteRegistrationRequest
-):
+@pytest.mark.parametrize("request_type", [domains.DeleteRegistrationRequest, dict,])
+def test_delete_registration(request_type, transport: str = "grpc"):
     client = DomainsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3403,10 +3354,6 @@ def test_delete_registration(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_registration_from_dict():
-    test_delete_registration(request_type=dict)
 
 
 def test_delete_registration_empty_call():
@@ -3589,9 +3536,10 @@ async def test_delete_registration_flattened_error_async():
         )
 
 
-def test_retrieve_authorization_code(
-    transport: str = "grpc", request_type=domains.RetrieveAuthorizationCodeRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [domains.RetrieveAuthorizationCodeRequest, dict,]
+)
+def test_retrieve_authorization_code(request_type, transport: str = "grpc"):
     client = DomainsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3616,10 +3564,6 @@ def test_retrieve_authorization_code(
     # Establish that the response is the type that we expect.
     assert isinstance(response, domains.AuthorizationCode)
     assert response.code == "code_value"
-
-
-def test_retrieve_authorization_code_from_dict():
-    test_retrieve_authorization_code(request_type=dict)
 
 
 def test_retrieve_authorization_code_empty_call():
@@ -3812,9 +3756,8 @@ async def test_retrieve_authorization_code_flattened_error_async():
         )
 
 
-def test_reset_authorization_code(
-    transport: str = "grpc", request_type=domains.ResetAuthorizationCodeRequest
-):
+@pytest.mark.parametrize("request_type", [domains.ResetAuthorizationCodeRequest, dict,])
+def test_reset_authorization_code(request_type, transport: str = "grpc"):
     client = DomainsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3839,10 +3782,6 @@ def test_reset_authorization_code(
     # Establish that the response is the type that we expect.
     assert isinstance(response, domains.AuthorizationCode)
     assert response.code == "code_value"
-
-
-def test_reset_authorization_code_from_dict():
-    test_reset_authorization_code(request_type=dict)
 
 
 def test_reset_authorization_code_empty_call():
@@ -4574,7 +4513,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
