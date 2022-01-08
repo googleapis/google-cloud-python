@@ -268,20 +268,20 @@ def test_essential_contacts_service_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -350,7 +350,7 @@ def test_essential_contacts_service_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -449,7 +449,7 @@ def test_essential_contacts_service_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -484,7 +484,7 @@ def test_essential_contacts_service_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -517,9 +517,8 @@ def test_essential_contacts_service_client_client_options_from_dict():
         )
 
 
-def test_create_contact(
-    transport: str = "grpc", request_type=service.CreateContactRequest
-):
+@pytest.mark.parametrize("request_type", [service.CreateContactRequest, dict,])
+def test_create_contact(request_type, transport: str = "grpc"):
     client = EssentialContactsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -554,10 +553,6 @@ def test_create_contact(
     ]
     assert response.language_tag == "language_tag_value"
     assert response.validation_state == enums.ValidationState.VALID
-
-
-def test_create_contact_from_dict():
-    test_create_contact(request_type=dict)
 
 
 def test_create_contact_empty_call():
@@ -763,9 +758,8 @@ async def test_create_contact_flattened_error_async():
         )
 
 
-def test_update_contact(
-    transport: str = "grpc", request_type=service.UpdateContactRequest
-):
+@pytest.mark.parametrize("request_type", [service.UpdateContactRequest, dict,])
+def test_update_contact(request_type, transport: str = "grpc"):
     client = EssentialContactsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -800,10 +794,6 @@ def test_update_contact(
     ]
     assert response.language_tag == "language_tag_value"
     assert response.validation_state == enums.ValidationState.VALID
-
-
-def test_update_contact_from_dict():
-    test_update_contact(request_type=dict)
 
 
 def test_update_contact_empty_call():
@@ -1015,9 +1005,8 @@ async def test_update_contact_flattened_error_async():
         )
 
 
-def test_list_contacts(
-    transport: str = "grpc", request_type=service.ListContactsRequest
-):
+@pytest.mark.parametrize("request_type", [service.ListContactsRequest, dict,])
+def test_list_contacts(request_type, transport: str = "grpc"):
     client = EssentialContactsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1042,10 +1031,6 @@ def test_list_contacts(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListContactsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_contacts_from_dict():
-    test_list_contacts(request_type=dict)
 
 
 def test_list_contacts_empty_call():
@@ -1229,9 +1214,9 @@ async def test_list_contacts_flattened_error_async():
         )
 
 
-def test_list_contacts_pager():
+def test_list_contacts_pager(transport_name: str = "grpc"):
     client = EssentialContactsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1265,9 +1250,9 @@ def test_list_contacts_pager():
         assert all(isinstance(i, service.Contact) for i in results)
 
 
-def test_list_contacts_pages():
+def test_list_contacts_pages(transport_name: str = "grpc"):
     client = EssentialContactsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1359,7 +1344,8 @@ async def test_list_contacts_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_contact(transport: str = "grpc", request_type=service.GetContactRequest):
+@pytest.mark.parametrize("request_type", [service.GetContactRequest, dict,])
+def test_get_contact(request_type, transport: str = "grpc"):
     client = EssentialContactsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1394,10 +1380,6 @@ def test_get_contact(transport: str = "grpc", request_type=service.GetContactReq
     ]
     assert response.language_tag == "language_tag_value"
     assert response.validation_state == enums.ValidationState.VALID
-
-
-def test_get_contact_from_dict():
-    test_get_contact(request_type=dict)
 
 
 def test_get_contact_empty_call():
@@ -1589,9 +1571,8 @@ async def test_get_contact_flattened_error_async():
         )
 
 
-def test_delete_contact(
-    transport: str = "grpc", request_type=service.DeleteContactRequest
-):
+@pytest.mark.parametrize("request_type", [service.DeleteContactRequest, dict,])
+def test_delete_contact(request_type, transport: str = "grpc"):
     client = EssentialContactsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1613,10 +1594,6 @@ def test_delete_contact(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_contact_from_dict():
-    test_delete_contact(request_type=dict)
 
 
 def test_delete_contact_empty_call():
@@ -1793,9 +1770,8 @@ async def test_delete_contact_flattened_error_async():
         )
 
 
-def test_compute_contacts(
-    transport: str = "grpc", request_type=service.ComputeContactsRequest
-):
+@pytest.mark.parametrize("request_type", [service.ComputeContactsRequest, dict,])
+def test_compute_contacts(request_type, transport: str = "grpc"):
     client = EssentialContactsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1820,10 +1796,6 @@ def test_compute_contacts(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ComputeContactsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_compute_contacts_from_dict():
-    test_compute_contacts(request_type=dict)
 
 
 def test_compute_contacts_empty_call():
@@ -1931,9 +1903,9 @@ async def test_compute_contacts_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_compute_contacts_pager():
+def test_compute_contacts_pager(transport_name: str = "grpc"):
     client = EssentialContactsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1967,9 +1939,9 @@ def test_compute_contacts_pager():
         assert all(isinstance(i, service.Contact) for i in results)
 
 
-def test_compute_contacts_pages():
+def test_compute_contacts_pages(transport_name: str = "grpc"):
     client = EssentialContactsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2061,9 +2033,8 @@ async def test_compute_contacts_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_send_test_message(
-    transport: str = "grpc", request_type=service.SendTestMessageRequest
-):
+@pytest.mark.parametrize("request_type", [service.SendTestMessageRequest, dict,])
+def test_send_test_message(request_type, transport: str = "grpc"):
     client = EssentialContactsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2087,10 +2058,6 @@ def test_send_test_message(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_send_test_message_from_dict():
-    test_send_test_message(request_type=dict)
 
 
 def test_send_test_message_empty_call():
@@ -2727,7 +2694,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
