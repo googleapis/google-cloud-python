@@ -269,20 +269,20 @@ def test_registration_service_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -351,7 +351,7 @@ def test_registration_service_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -450,7 +450,7 @@ def test_registration_service_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -485,7 +485,7 @@ def test_registration_service_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -518,9 +518,10 @@ def test_registration_service_client_client_options_from_dict():
         )
 
 
-def test_create_namespace(
-    transport: str = "grpc", request_type=registration_service.CreateNamespaceRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [registration_service.CreateNamespaceRequest, dict,]
+)
+def test_create_namespace(request_type, transport: str = "grpc"):
     client = RegistrationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -543,10 +544,6 @@ def test_create_namespace(
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_namespace.Namespace)
     assert response.name == "name_value"
-
-
-def test_create_namespace_from_dict():
-    test_create_namespace(request_type=dict)
 
 
 def test_create_namespace_empty_call():
@@ -757,9 +754,10 @@ async def test_create_namespace_flattened_error_async():
         )
 
 
-def test_list_namespaces(
-    transport: str = "grpc", request_type=registration_service.ListNamespacesRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [registration_service.ListNamespacesRequest, dict,]
+)
+def test_list_namespaces(request_type, transport: str = "grpc"):
     client = RegistrationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -784,10 +782,6 @@ def test_list_namespaces(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListNamespacesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_namespaces_from_dict():
-    test_list_namespaces(request_type=dict)
 
 
 def test_list_namespaces_empty_call():
@@ -974,8 +968,10 @@ async def test_list_namespaces_flattened_error_async():
         )
 
 
-def test_list_namespaces_pager():
-    client = RegistrationServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_namespaces_pager(transport_name: str = "grpc"):
+    client = RegistrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_namespaces), "__call__") as call:
@@ -1014,8 +1010,10 @@ def test_list_namespaces_pager():
         assert all(isinstance(i, namespace.Namespace) for i in results)
 
 
-def test_list_namespaces_pages():
-    client = RegistrationServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_namespaces_pages(transport_name: str = "grpc"):
+    client = RegistrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_namespaces), "__call__") as call:
@@ -1124,9 +1122,10 @@ async def test_list_namespaces_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_namespace(
-    transport: str = "grpc", request_type=registration_service.GetNamespaceRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [registration_service.GetNamespaceRequest, dict,]
+)
+def test_get_namespace(request_type, transport: str = "grpc"):
     client = RegistrationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1149,10 +1148,6 @@ def test_get_namespace(
     # Establish that the response is the type that we expect.
     assert isinstance(response, namespace.Namespace)
     assert response.name == "name_value"
-
-
-def test_get_namespace_from_dict():
-    test_get_namespace(request_type=dict)
 
 
 def test_get_namespace_empty_call():
@@ -1333,9 +1328,10 @@ async def test_get_namespace_flattened_error_async():
         )
 
 
-def test_update_namespace(
-    transport: str = "grpc", request_type=registration_service.UpdateNamespaceRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [registration_service.UpdateNamespaceRequest, dict,]
+)
+def test_update_namespace(request_type, transport: str = "grpc"):
     client = RegistrationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1358,10 +1354,6 @@ def test_update_namespace(
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_namespace.Namespace)
     assert response.name == "name_value"
-
-
-def test_update_namespace_from_dict():
-    test_update_namespace(request_type=dict)
 
 
 def test_update_namespace_empty_call():
@@ -1566,9 +1558,10 @@ async def test_update_namespace_flattened_error_async():
         )
 
 
-def test_delete_namespace(
-    transport: str = "grpc", request_type=registration_service.DeleteNamespaceRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [registration_service.DeleteNamespaceRequest, dict,]
+)
+def test_delete_namespace(request_type, transport: str = "grpc"):
     client = RegistrationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1590,10 +1583,6 @@ def test_delete_namespace(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_namespace_from_dict():
-    test_delete_namespace(request_type=dict)
 
 
 def test_delete_namespace_empty_call():
@@ -1771,9 +1760,10 @@ async def test_delete_namespace_flattened_error_async():
         )
 
 
-def test_create_service(
-    transport: str = "grpc", request_type=registration_service.CreateServiceRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [registration_service.CreateServiceRequest, dict,]
+)
+def test_create_service(request_type, transport: str = "grpc"):
     client = RegistrationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1796,10 +1786,6 @@ def test_create_service(
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_service.Service)
     assert response.name == "name_value"
-
-
-def test_create_service_from_dict():
-    test_create_service(request_type=dict)
 
 
 def test_create_service_empty_call():
@@ -2006,9 +1992,10 @@ async def test_create_service_flattened_error_async():
         )
 
 
-def test_list_services(
-    transport: str = "grpc", request_type=registration_service.ListServicesRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [registration_service.ListServicesRequest, dict,]
+)
+def test_list_services(request_type, transport: str = "grpc"):
     client = RegistrationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2033,10 +2020,6 @@ def test_list_services(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListServicesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_services_from_dict():
-    test_list_services(request_type=dict)
 
 
 def test_list_services_empty_call():
@@ -2223,8 +2206,10 @@ async def test_list_services_flattened_error_async():
         )
 
 
-def test_list_services_pager():
-    client = RegistrationServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_services_pager(transport_name: str = "grpc"):
+    client = RegistrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_services), "__call__") as call:
@@ -2259,8 +2244,10 @@ def test_list_services_pager():
         assert all(isinstance(i, service.Service) for i in results)
 
 
-def test_list_services_pages():
-    client = RegistrationServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_services_pages(transport_name: str = "grpc"):
+    client = RegistrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_services), "__call__") as call:
@@ -2357,9 +2344,10 @@ async def test_list_services_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_service(
-    transport: str = "grpc", request_type=registration_service.GetServiceRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [registration_service.GetServiceRequest, dict,]
+)
+def test_get_service(request_type, transport: str = "grpc"):
     client = RegistrationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2382,10 +2370,6 @@ def test_get_service(
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Service)
     assert response.name == "name_value"
-
-
-def test_get_service_from_dict():
-    test_get_service(request_type=dict)
 
 
 def test_get_service_empty_call():
@@ -2565,9 +2549,10 @@ async def test_get_service_flattened_error_async():
         )
 
 
-def test_update_service(
-    transport: str = "grpc", request_type=registration_service.UpdateServiceRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [registration_service.UpdateServiceRequest, dict,]
+)
+def test_update_service(request_type, transport: str = "grpc"):
     client = RegistrationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2590,10 +2575,6 @@ def test_update_service(
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_service.Service)
     assert response.name == "name_value"
-
-
-def test_update_service_from_dict():
-    test_update_service(request_type=dict)
 
 
 def test_update_service_empty_call():
@@ -2794,9 +2775,10 @@ async def test_update_service_flattened_error_async():
         )
 
 
-def test_delete_service(
-    transport: str = "grpc", request_type=registration_service.DeleteServiceRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [registration_service.DeleteServiceRequest, dict,]
+)
+def test_delete_service(request_type, transport: str = "grpc"):
     client = RegistrationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2818,10 +2800,6 @@ def test_delete_service(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_service_from_dict():
-    test_delete_service(request_type=dict)
 
 
 def test_delete_service_empty_call():
@@ -2999,9 +2977,10 @@ async def test_delete_service_flattened_error_async():
         )
 
 
-def test_create_endpoint(
-    transport: str = "grpc", request_type=registration_service.CreateEndpointRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [registration_service.CreateEndpointRequest, dict,]
+)
+def test_create_endpoint(request_type, transport: str = "grpc"):
     client = RegistrationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3032,10 +3011,6 @@ def test_create_endpoint(
     assert response.address == "address_value"
     assert response.port == 453
     assert response.network == "network_value"
-
-
-def test_create_endpoint_from_dict():
-    test_create_endpoint(request_type=dict)
 
 
 def test_create_endpoint_empty_call():
@@ -3254,9 +3229,10 @@ async def test_create_endpoint_flattened_error_async():
         )
 
 
-def test_list_endpoints(
-    transport: str = "grpc", request_type=registration_service.ListEndpointsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [registration_service.ListEndpointsRequest, dict,]
+)
+def test_list_endpoints(request_type, transport: str = "grpc"):
     client = RegistrationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3281,10 +3257,6 @@ def test_list_endpoints(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEndpointsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_endpoints_from_dict():
-    test_list_endpoints(request_type=dict)
 
 
 def test_list_endpoints_empty_call():
@@ -3471,8 +3443,10 @@ async def test_list_endpoints_flattened_error_async():
         )
 
 
-def test_list_endpoints_pager():
-    client = RegistrationServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_endpoints_pager(transport_name: str = "grpc"):
+    client = RegistrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_endpoints), "__call__") as call:
@@ -3511,8 +3485,10 @@ def test_list_endpoints_pager():
         assert all(isinstance(i, endpoint.Endpoint) for i in results)
 
 
-def test_list_endpoints_pages():
-    client = RegistrationServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_endpoints_pages(transport_name: str = "grpc"):
+    client = RegistrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_endpoints), "__call__") as call:
@@ -3621,9 +3597,10 @@ async def test_list_endpoints_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_endpoint(
-    transport: str = "grpc", request_type=registration_service.GetEndpointRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [registration_service.GetEndpointRequest, dict,]
+)
+def test_get_endpoint(request_type, transport: str = "grpc"):
     client = RegistrationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3654,10 +3631,6 @@ def test_get_endpoint(
     assert response.address == "address_value"
     assert response.port == 453
     assert response.network == "network_value"
-
-
-def test_get_endpoint_from_dict():
-    test_get_endpoint(request_type=dict)
 
 
 def test_get_endpoint_empty_call():
@@ -3846,9 +3819,10 @@ async def test_get_endpoint_flattened_error_async():
         )
 
 
-def test_update_endpoint(
-    transport: str = "grpc", request_type=registration_service.UpdateEndpointRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [registration_service.UpdateEndpointRequest, dict,]
+)
+def test_update_endpoint(request_type, transport: str = "grpc"):
     client = RegistrationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3879,10 +3853,6 @@ def test_update_endpoint(
     assert response.address == "address_value"
     assert response.port == 453
     assert response.network == "network_value"
-
-
-def test_update_endpoint_from_dict():
-    test_update_endpoint(request_type=dict)
 
 
 def test_update_endpoint_empty_call():
@@ -4095,9 +4065,10 @@ async def test_update_endpoint_flattened_error_async():
         )
 
 
-def test_delete_endpoint(
-    transport: str = "grpc", request_type=registration_service.DeleteEndpointRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [registration_service.DeleteEndpointRequest, dict,]
+)
+def test_delete_endpoint(request_type, transport: str = "grpc"):
     client = RegistrationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4119,10 +4090,6 @@ def test_delete_endpoint(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_endpoint_from_dict():
-    test_delete_endpoint(request_type=dict)
 
 
 def test_delete_endpoint_empty_call():
@@ -4300,9 +4267,8 @@ async def test_delete_endpoint_flattened_error_async():
         )
 
 
-def test_get_iam_policy(
-    transport: str = "grpc", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
+@pytest.mark.parametrize("request_type", [iam_policy_pb2.GetIamPolicyRequest, dict,])
+def test_get_iam_policy(request_type, transport: str = "grpc"):
     client = RegistrationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4326,10 +4292,6 @@ def test_get_iam_policy(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-def test_get_iam_policy_from_dict():
-    test_get_iam_policy(request_type=dict)
 
 
 def test_get_iam_policy_empty_call():
@@ -4453,9 +4415,8 @@ def test_get_iam_policy_from_dict_foreign():
         call.assert_called()
 
 
-def test_set_iam_policy(
-    transport: str = "grpc", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
+@pytest.mark.parametrize("request_type", [iam_policy_pb2.SetIamPolicyRequest, dict,])
+def test_set_iam_policy(request_type, transport: str = "grpc"):
     client = RegistrationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4479,10 +4440,6 @@ def test_set_iam_policy(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-def test_set_iam_policy_from_dict():
-    test_set_iam_policy(request_type=dict)
 
 
 def test_set_iam_policy_empty_call():
@@ -4606,9 +4563,10 @@ def test_set_iam_policy_from_dict_foreign():
         call.assert_called()
 
 
-def test_test_iam_permissions(
-    transport: str = "grpc", request_type=iam_policy_pb2.TestIamPermissionsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [iam_policy_pb2.TestIamPermissionsRequest, dict,]
+)
+def test_test_iam_permissions(request_type, transport: str = "grpc"):
     client = RegistrationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4635,10 +4593,6 @@ def test_test_iam_permissions(
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
     assert response.permissions == ["permissions_value"]
-
-
-def test_test_iam_permissions_from_dict():
-    test_test_iam_permissions(request_type=dict)
 
 
 def test_test_iam_permissions_empty_call():
@@ -5395,7 +5349,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
