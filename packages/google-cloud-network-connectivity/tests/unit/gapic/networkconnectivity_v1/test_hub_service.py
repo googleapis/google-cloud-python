@@ -247,20 +247,20 @@ def test_hub_service_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -317,7 +317,7 @@ def test_hub_service_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -412,7 +412,7 @@ def test_hub_service_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -443,7 +443,7 @@ def test_hub_service_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -474,7 +474,8 @@ def test_hub_service_client_client_options_from_dict():
         )
 
 
-def test_list_hubs(transport: str = "grpc", request_type=hub.ListHubsRequest):
+@pytest.mark.parametrize("request_type", [hub.ListHubsRequest, dict,])
+def test_list_hubs(request_type, transport: str = "grpc"):
     client = HubServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -500,10 +501,6 @@ def test_list_hubs(transport: str = "grpc", request_type=hub.ListHubsRequest):
     assert isinstance(response, pagers.ListHubsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_hubs_from_dict():
-    test_list_hubs(request_type=dict)
 
 
 def test_list_hubs_empty_call():
@@ -679,8 +676,10 @@ async def test_list_hubs_flattened_error_async():
         )
 
 
-def test_list_hubs_pager():
-    client = HubServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_hubs_pager(transport_name: str = "grpc"):
+    client = HubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_hubs), "__call__") as call:
@@ -708,8 +707,10 @@ def test_list_hubs_pager():
         assert all(isinstance(i, hub.Hub) for i in results)
 
 
-def test_list_hubs_pages():
-    client = HubServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_hubs_pages(transport_name: str = "grpc"):
+    client = HubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_hubs), "__call__") as call:
@@ -781,7 +782,8 @@ async def test_list_hubs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_hub(transport: str = "grpc", request_type=hub.GetHubRequest):
+@pytest.mark.parametrize("request_type", [hub.GetHubRequest, dict,])
+def test_get_hub(request_type, transport: str = "grpc"):
     client = HubServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -812,10 +814,6 @@ def test_get_hub(transport: str = "grpc", request_type=hub.GetHubRequest):
     assert response.description == "description_value"
     assert response.unique_id == "unique_id_value"
     assert response.state == hub.State.CREATING
-
-
-def test_get_hub_from_dict():
-    test_get_hub(request_type=dict)
 
 
 def test_get_hub_empty_call():
@@ -991,7 +989,8 @@ async def test_get_hub_flattened_error_async():
         )
 
 
-def test_create_hub(transport: str = "grpc", request_type=gcn_hub.CreateHubRequest):
+@pytest.mark.parametrize("request_type", [gcn_hub.CreateHubRequest, dict,])
+def test_create_hub(request_type, transport: str = "grpc"):
     client = HubServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1013,10 +1012,6 @@ def test_create_hub(transport: str = "grpc", request_type=gcn_hub.CreateHubReque
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_hub_from_dict():
-    test_create_hub(request_type=dict)
 
 
 def test_create_hub_empty_call():
@@ -1213,7 +1208,8 @@ async def test_create_hub_flattened_error_async():
         )
 
 
-def test_update_hub(transport: str = "grpc", request_type=gcn_hub.UpdateHubRequest):
+@pytest.mark.parametrize("request_type", [gcn_hub.UpdateHubRequest, dict,])
+def test_update_hub(request_type, transport: str = "grpc"):
     client = HubServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1235,10 +1231,6 @@ def test_update_hub(transport: str = "grpc", request_type=gcn_hub.UpdateHubReque
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_hub_from_dict():
-    test_update_hub(request_type=dict)
 
 
 def test_update_hub_empty_call():
@@ -1425,7 +1417,8 @@ async def test_update_hub_flattened_error_async():
         )
 
 
-def test_delete_hub(transport: str = "grpc", request_type=hub.DeleteHubRequest):
+@pytest.mark.parametrize("request_type", [hub.DeleteHubRequest, dict,])
+def test_delete_hub(request_type, transport: str = "grpc"):
     client = HubServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1447,10 +1440,6 @@ def test_delete_hub(transport: str = "grpc", request_type=hub.DeleteHubRequest):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_hub_from_dict():
-    test_delete_hub(request_type=dict)
 
 
 def test_delete_hub_empty_call():
@@ -1621,7 +1610,8 @@ async def test_delete_hub_flattened_error_async():
         )
 
 
-def test_list_spokes(transport: str = "grpc", request_type=hub.ListSpokesRequest):
+@pytest.mark.parametrize("request_type", [hub.ListSpokesRequest, dict,])
+def test_list_spokes(request_type, transport: str = "grpc"):
     client = HubServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1647,10 +1637,6 @@ def test_list_spokes(transport: str = "grpc", request_type=hub.ListSpokesRequest
     assert isinstance(response, pagers.ListSpokesPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_spokes_from_dict():
-    test_list_spokes(request_type=dict)
 
 
 def test_list_spokes_empty_call():
@@ -1826,8 +1812,10 @@ async def test_list_spokes_flattened_error_async():
         )
 
 
-def test_list_spokes_pager():
-    client = HubServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_spokes_pager(transport_name: str = "grpc"):
+    client = HubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_spokes), "__call__") as call:
@@ -1855,8 +1843,10 @@ def test_list_spokes_pager():
         assert all(isinstance(i, hub.Spoke) for i in results)
 
 
-def test_list_spokes_pages():
-    client = HubServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_spokes_pages(transport_name: str = "grpc"):
+    client = HubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_spokes), "__call__") as call:
@@ -1928,7 +1918,8 @@ async def test_list_spokes_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_spoke(transport: str = "grpc", request_type=hub.GetSpokeRequest):
+@pytest.mark.parametrize("request_type", [hub.GetSpokeRequest, dict,])
+def test_get_spoke(request_type, transport: str = "grpc"):
     client = HubServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1961,10 +1952,6 @@ def test_get_spoke(transport: str = "grpc", request_type=hub.GetSpokeRequest):
     assert response.hub == "hub_value"
     assert response.unique_id == "unique_id_value"
     assert response.state == hub.State.CREATING
-
-
-def test_get_spoke_from_dict():
-    test_get_spoke(request_type=dict)
 
 
 def test_get_spoke_empty_call():
@@ -2142,7 +2129,8 @@ async def test_get_spoke_flattened_error_async():
         )
 
 
-def test_create_spoke(transport: str = "grpc", request_type=hub.CreateSpokeRequest):
+@pytest.mark.parametrize("request_type", [hub.CreateSpokeRequest, dict,])
+def test_create_spoke(request_type, transport: str = "grpc"):
     client = HubServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2164,10 +2152,6 @@ def test_create_spoke(transport: str = "grpc", request_type=hub.CreateSpokeReque
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_spoke_from_dict():
-    test_create_spoke(request_type=dict)
 
 
 def test_create_spoke_empty_call():
@@ -2364,7 +2348,8 @@ async def test_create_spoke_flattened_error_async():
         )
 
 
-def test_update_spoke(transport: str = "grpc", request_type=hub.UpdateSpokeRequest):
+@pytest.mark.parametrize("request_type", [hub.UpdateSpokeRequest, dict,])
+def test_update_spoke(request_type, transport: str = "grpc"):
     client = HubServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2386,10 +2371,6 @@ def test_update_spoke(transport: str = "grpc", request_type=hub.UpdateSpokeReque
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_spoke_from_dict():
-    test_update_spoke(request_type=dict)
 
 
 def test_update_spoke_empty_call():
@@ -2576,7 +2557,8 @@ async def test_update_spoke_flattened_error_async():
         )
 
 
-def test_delete_spoke(transport: str = "grpc", request_type=hub.DeleteSpokeRequest):
+@pytest.mark.parametrize("request_type", [hub.DeleteSpokeRequest, dict,])
+def test_delete_spoke(request_type, transport: str = "grpc"):
     client = HubServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2598,10 +2580,6 @@ def test_delete_spoke(transport: str = "grpc", request_type=hub.DeleteSpokeReque
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_spoke_from_dict():
-    test_delete_spoke(request_type=dict)
 
 
 def test_delete_spoke_empty_call():
@@ -3425,7 +3403,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
