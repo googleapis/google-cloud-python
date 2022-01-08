@@ -243,20 +243,20 @@ def test_cloud_deploy_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -313,7 +313,7 @@ def test_cloud_deploy_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -408,7 +408,7 @@ def test_cloud_deploy_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -439,7 +439,7 @@ def test_cloud_deploy_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -470,9 +470,10 @@ def test_cloud_deploy_client_client_options_from_dict():
         )
 
 
-def test_list_delivery_pipelines(
-    transport: str = "grpc", request_type=cloud_deploy.ListDeliveryPipelinesRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cloud_deploy.ListDeliveryPipelinesRequest, dict,]
+)
+def test_list_delivery_pipelines(request_type, transport: str = "grpc"):
     client = CloudDeployClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -500,10 +501,6 @@ def test_list_delivery_pipelines(
     assert isinstance(response, pagers.ListDeliveryPipelinesPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_delivery_pipelines_from_dict():
-    test_list_delivery_pipelines(request_type=dict)
 
 
 def test_list_delivery_pipelines_empty_call():
@@ -692,8 +689,10 @@ async def test_list_delivery_pipelines_flattened_error_async():
         )
 
 
-def test_list_delivery_pipelines_pager():
-    client = CloudDeployClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_delivery_pipelines_pager(transport_name: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -738,8 +737,10 @@ def test_list_delivery_pipelines_pager():
         assert all(isinstance(i, cloud_deploy.DeliveryPipeline) for i in results)
 
 
-def test_list_delivery_pipelines_pages():
-    client = CloudDeployClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_delivery_pipelines_pages(transport_name: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -862,9 +863,10 @@ async def test_list_delivery_pipelines_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_delivery_pipeline(
-    transport: str = "grpc", request_type=cloud_deploy.GetDeliveryPipelineRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cloud_deploy.GetDeliveryPipelineRequest, dict,]
+)
+def test_get_delivery_pipeline(request_type, transport: str = "grpc"):
     client = CloudDeployClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -900,10 +902,6 @@ def test_get_delivery_pipeline(
     assert response.uid == "uid_value"
     assert response.description == "description_value"
     assert response.etag == "etag_value"
-
-
-def test_get_delivery_pipeline_from_dict():
-    test_get_delivery_pipeline(request_type=dict)
 
 
 def test_get_delivery_pipeline_empty_call():
@@ -1096,9 +1094,10 @@ async def test_get_delivery_pipeline_flattened_error_async():
         )
 
 
-def test_create_delivery_pipeline(
-    transport: str = "grpc", request_type=cloud_deploy.CreateDeliveryPipelineRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cloud_deploy.CreateDeliveryPipelineRequest, dict,]
+)
+def test_create_delivery_pipeline(request_type, transport: str = "grpc"):
     client = CloudDeployClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1122,10 +1121,6 @@ def test_create_delivery_pipeline(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_delivery_pipeline_from_dict():
-    test_create_delivery_pipeline(request_type=dict)
 
 
 def test_create_delivery_pipeline_empty_call():
@@ -1335,9 +1330,10 @@ async def test_create_delivery_pipeline_flattened_error_async():
         )
 
 
-def test_update_delivery_pipeline(
-    transport: str = "grpc", request_type=cloud_deploy.UpdateDeliveryPipelineRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cloud_deploy.UpdateDeliveryPipelineRequest, dict,]
+)
+def test_update_delivery_pipeline(request_type, transport: str = "grpc"):
     client = CloudDeployClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1361,10 +1357,6 @@ def test_update_delivery_pipeline(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_delivery_pipeline_from_dict():
-    test_update_delivery_pipeline(request_type=dict)
 
 
 def test_update_delivery_pipeline_empty_call():
@@ -1570,9 +1562,10 @@ async def test_update_delivery_pipeline_flattened_error_async():
         )
 
 
-def test_delete_delivery_pipeline(
-    transport: str = "grpc", request_type=cloud_deploy.DeleteDeliveryPipelineRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cloud_deploy.DeleteDeliveryPipelineRequest, dict,]
+)
+def test_delete_delivery_pipeline(request_type, transport: str = "grpc"):
     client = CloudDeployClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1596,10 +1589,6 @@ def test_delete_delivery_pipeline(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_delivery_pipeline_from_dict():
-    test_delete_delivery_pipeline(request_type=dict)
 
 
 def test_delete_delivery_pipeline_empty_call():
@@ -1783,9 +1772,8 @@ async def test_delete_delivery_pipeline_flattened_error_async():
         )
 
 
-def test_list_targets(
-    transport: str = "grpc", request_type=cloud_deploy.ListTargetsRequest
-):
+@pytest.mark.parametrize("request_type", [cloud_deploy.ListTargetsRequest, dict,])
+def test_list_targets(request_type, transport: str = "grpc"):
     client = CloudDeployClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1811,10 +1799,6 @@ def test_list_targets(
     assert isinstance(response, pagers.ListTargetsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_targets_from_dict():
-    test_list_targets(request_type=dict)
 
 
 def test_list_targets_empty_call():
@@ -1990,8 +1974,10 @@ async def test_list_targets_flattened_error_async():
         )
 
 
-def test_list_targets_pager():
-    client = CloudDeployClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_targets_pager(transport_name: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_targets), "__call__") as call:
@@ -2028,8 +2014,10 @@ def test_list_targets_pager():
         assert all(isinstance(i, cloud_deploy.Target) for i in results)
 
 
-def test_list_targets_pages():
-    client = CloudDeployClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_targets_pages(transport_name: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_targets), "__call__") as call:
@@ -2128,9 +2116,8 @@ async def test_list_targets_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_target(
-    transport: str = "grpc", request_type=cloud_deploy.GetTargetRequest
-):
+@pytest.mark.parametrize("request_type", [cloud_deploy.GetTargetRequest, dict,])
+def test_get_target(request_type, transport: str = "grpc"):
     client = CloudDeployClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2166,10 +2153,6 @@ def test_get_target(
     assert response.description == "description_value"
     assert response.require_approval is True
     assert response.etag == "etag_value"
-
-
-def test_get_target_from_dict():
-    test_get_target(request_type=dict)
 
 
 def test_get_target_empty_call():
@@ -2349,9 +2332,8 @@ async def test_get_target_flattened_error_async():
         )
 
 
-def test_create_target(
-    transport: str = "grpc", request_type=cloud_deploy.CreateTargetRequest
-):
+@pytest.mark.parametrize("request_type", [cloud_deploy.CreateTargetRequest, dict,])
+def test_create_target(request_type, transport: str = "grpc"):
     client = CloudDeployClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2373,10 +2355,6 @@ def test_create_target(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_target_from_dict():
-    test_create_target(request_type=dict)
 
 
 def test_create_target_empty_call():
@@ -2573,9 +2551,8 @@ async def test_create_target_flattened_error_async():
         )
 
 
-def test_update_target(
-    transport: str = "grpc", request_type=cloud_deploy.UpdateTargetRequest
-):
+@pytest.mark.parametrize("request_type", [cloud_deploy.UpdateTargetRequest, dict,])
+def test_update_target(request_type, transport: str = "grpc"):
     client = CloudDeployClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2597,10 +2574,6 @@ def test_update_target(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_target_from_dict():
-    test_update_target(request_type=dict)
 
 
 def test_update_target_empty_call():
@@ -2787,9 +2760,8 @@ async def test_update_target_flattened_error_async():
         )
 
 
-def test_delete_target(
-    transport: str = "grpc", request_type=cloud_deploy.DeleteTargetRequest
-):
+@pytest.mark.parametrize("request_type", [cloud_deploy.DeleteTargetRequest, dict,])
+def test_delete_target(request_type, transport: str = "grpc"):
     client = CloudDeployClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2811,10 +2783,6 @@ def test_delete_target(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_target_from_dict():
-    test_delete_target(request_type=dict)
 
 
 def test_delete_target_empty_call():
@@ -2985,9 +2953,8 @@ async def test_delete_target_flattened_error_async():
         )
 
 
-def test_list_releases(
-    transport: str = "grpc", request_type=cloud_deploy.ListReleasesRequest
-):
+@pytest.mark.parametrize("request_type", [cloud_deploy.ListReleasesRequest, dict,])
+def test_list_releases(request_type, transport: str = "grpc"):
     client = CloudDeployClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3013,10 +2980,6 @@ def test_list_releases(
     assert isinstance(response, pagers.ListReleasesPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_releases_from_dict():
-    test_list_releases(request_type=dict)
 
 
 def test_list_releases_empty_call():
@@ -3192,8 +3155,10 @@ async def test_list_releases_flattened_error_async():
         )
 
 
-def test_list_releases_pager():
-    client = CloudDeployClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_releases_pager(transport_name: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_releases), "__call__") as call:
@@ -3230,8 +3195,10 @@ def test_list_releases_pager():
         assert all(isinstance(i, cloud_deploy.Release) for i in results)
 
 
-def test_list_releases_pages():
-    client = CloudDeployClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_releases_pages(transport_name: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_releases), "__call__") as call:
@@ -3330,9 +3297,8 @@ async def test_list_releases_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_release(
-    transport: str = "grpc", request_type=cloud_deploy.GetReleaseRequest
-):
+@pytest.mark.parametrize("request_type", [cloud_deploy.GetReleaseRequest, dict,])
+def test_get_release(request_type, transport: str = "grpc"):
     client = CloudDeployClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3371,10 +3337,6 @@ def test_get_release(
     assert response.render_state == cloud_deploy.Release.RenderState.SUCCEEDED
     assert response.etag == "etag_value"
     assert response.skaffold_version == "skaffold_version_value"
-
-
-def test_get_release_from_dict():
-    test_get_release(request_type=dict)
 
 
 def test_get_release_empty_call():
@@ -3562,9 +3524,8 @@ async def test_get_release_flattened_error_async():
         )
 
 
-def test_create_release(
-    transport: str = "grpc", request_type=cloud_deploy.CreateReleaseRequest
-):
+@pytest.mark.parametrize("request_type", [cloud_deploy.CreateReleaseRequest, dict,])
+def test_create_release(request_type, transport: str = "grpc"):
     client = CloudDeployClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3586,10 +3547,6 @@ def test_create_release(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_release_from_dict():
-    test_create_release(request_type=dict)
 
 
 def test_create_release_empty_call():
@@ -3786,9 +3743,8 @@ async def test_create_release_flattened_error_async():
         )
 
 
-def test_approve_rollout(
-    transport: str = "grpc", request_type=cloud_deploy.ApproveRolloutRequest
-):
+@pytest.mark.parametrize("request_type", [cloud_deploy.ApproveRolloutRequest, dict,])
+def test_approve_rollout(request_type, transport: str = "grpc"):
     client = CloudDeployClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3810,10 +3766,6 @@ def test_approve_rollout(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_deploy.ApproveRolloutResponse)
-
-
-def test_approve_rollout_from_dict():
-    test_approve_rollout(request_type=dict)
 
 
 def test_approve_rollout_empty_call():
@@ -3984,9 +3936,8 @@ async def test_approve_rollout_flattened_error_async():
         )
 
 
-def test_list_rollouts(
-    transport: str = "grpc", request_type=cloud_deploy.ListRolloutsRequest
-):
+@pytest.mark.parametrize("request_type", [cloud_deploy.ListRolloutsRequest, dict,])
+def test_list_rollouts(request_type, transport: str = "grpc"):
     client = CloudDeployClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4012,10 +3963,6 @@ def test_list_rollouts(
     assert isinstance(response, pagers.ListRolloutsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_rollouts_from_dict():
-    test_list_rollouts(request_type=dict)
 
 
 def test_list_rollouts_empty_call():
@@ -4191,8 +4138,10 @@ async def test_list_rollouts_flattened_error_async():
         )
 
 
-def test_list_rollouts_pager():
-    client = CloudDeployClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_rollouts_pager(transport_name: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_rollouts), "__call__") as call:
@@ -4229,8 +4178,10 @@ def test_list_rollouts_pager():
         assert all(isinstance(i, cloud_deploy.Rollout) for i in results)
 
 
-def test_list_rollouts_pages():
-    client = CloudDeployClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_rollouts_pages(transport_name: str = "grpc"):
+    client = CloudDeployClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_rollouts), "__call__") as call:
@@ -4329,9 +4280,8 @@ async def test_list_rollouts_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_rollout(
-    transport: str = "grpc", request_type=cloud_deploy.GetRolloutRequest
-):
+@pytest.mark.parametrize("request_type", [cloud_deploy.GetRolloutRequest, dict,])
+def test_get_rollout(request_type, transport: str = "grpc"):
     client = CloudDeployClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4372,10 +4322,6 @@ def test_get_rollout(
     assert response.failure_reason == "failure_reason_value"
     assert response.deploying_build == "deploying_build_value"
     assert response.etag == "etag_value"
-
-
-def test_get_rollout_from_dict():
-    test_get_rollout(request_type=dict)
 
 
 def test_get_rollout_empty_call():
@@ -4565,9 +4511,8 @@ async def test_get_rollout_flattened_error_async():
         )
 
 
-def test_create_rollout(
-    transport: str = "grpc", request_type=cloud_deploy.CreateRolloutRequest
-):
+@pytest.mark.parametrize("request_type", [cloud_deploy.CreateRolloutRequest, dict,])
+def test_create_rollout(request_type, transport: str = "grpc"):
     client = CloudDeployClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4589,10 +4534,6 @@ def test_create_rollout(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_rollout_from_dict():
-    test_create_rollout(request_type=dict)
 
 
 def test_create_rollout_empty_call():
@@ -4789,9 +4730,8 @@ async def test_create_rollout_flattened_error_async():
         )
 
 
-def test_get_config(
-    transport: str = "grpc", request_type=cloud_deploy.GetConfigRequest
-):
+@pytest.mark.parametrize("request_type", [cloud_deploy.GetConfigRequest, dict,])
+def test_get_config(request_type, transport: str = "grpc"):
     client = CloudDeployClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4818,10 +4758,6 @@ def test_get_config(
     assert isinstance(response, cloud_deploy.Config)
     assert response.name == "name_value"
     assert response.default_skaffold_version == "default_skaffold_version_value"
-
-
-def test_get_config_from_dict():
-    test_get_config(request_type=dict)
 
 
 def test_get_config_empty_call():
@@ -5723,7 +5659,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
