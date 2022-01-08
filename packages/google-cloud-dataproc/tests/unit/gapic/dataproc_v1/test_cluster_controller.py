@@ -258,20 +258,20 @@ def test_cluster_controller_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -340,7 +340,7 @@ def test_cluster_controller_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -435,7 +435,7 @@ def test_cluster_controller_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -466,7 +466,7 @@ def test_cluster_controller_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -499,9 +499,8 @@ def test_cluster_controller_client_client_options_from_dict():
         )
 
 
-def test_create_cluster(
-    transport: str = "grpc", request_type=clusters.CreateClusterRequest
-):
+@pytest.mark.parametrize("request_type", [clusters.CreateClusterRequest, dict,])
+def test_create_cluster(request_type, transport: str = "grpc"):
     client = ClusterControllerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -523,10 +522,6 @@ def test_create_cluster(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_cluster_from_dict():
-    test_create_cluster(request_type=dict)
 
 
 def test_create_cluster_empty_call():
@@ -676,9 +671,8 @@ async def test_create_cluster_flattened_error_async():
         )
 
 
-def test_update_cluster(
-    transport: str = "grpc", request_type=clusters.UpdateClusterRequest
-):
+@pytest.mark.parametrize("request_type", [clusters.UpdateClusterRequest, dict,])
+def test_update_cluster(request_type, transport: str = "grpc"):
     client = ClusterControllerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -700,10 +694,6 @@ def test_update_cluster(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_cluster_from_dict():
-    test_update_cluster(request_type=dict)
 
 
 def test_update_cluster_empty_call():
@@ -873,9 +863,8 @@ async def test_update_cluster_flattened_error_async():
         )
 
 
-def test_stop_cluster(
-    transport: str = "grpc", request_type=clusters.StopClusterRequest
-):
+@pytest.mark.parametrize("request_type", [clusters.StopClusterRequest, dict,])
+def test_stop_cluster(request_type, transport: str = "grpc"):
     client = ClusterControllerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -897,10 +886,6 @@ def test_stop_cluster(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_stop_cluster_from_dict():
-    test_stop_cluster(request_type=dict)
 
 
 def test_stop_cluster_empty_call():
@@ -952,9 +937,8 @@ async def test_stop_cluster_async_from_dict():
     await test_stop_cluster_async(request_type=dict)
 
 
-def test_start_cluster(
-    transport: str = "grpc", request_type=clusters.StartClusterRequest
-):
+@pytest.mark.parametrize("request_type", [clusters.StartClusterRequest, dict,])
+def test_start_cluster(request_type, transport: str = "grpc"):
     client = ClusterControllerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -976,10 +960,6 @@ def test_start_cluster(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_start_cluster_from_dict():
-    test_start_cluster(request_type=dict)
 
 
 def test_start_cluster_empty_call():
@@ -1031,9 +1011,8 @@ async def test_start_cluster_async_from_dict():
     await test_start_cluster_async(request_type=dict)
 
 
-def test_delete_cluster(
-    transport: str = "grpc", request_type=clusters.DeleteClusterRequest
-):
+@pytest.mark.parametrize("request_type", [clusters.DeleteClusterRequest, dict,])
+def test_delete_cluster(request_type, transport: str = "grpc"):
     client = ClusterControllerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1055,10 +1034,6 @@ def test_delete_cluster(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_cluster_from_dict():
-    test_delete_cluster(request_type=dict)
 
 
 def test_delete_cluster_empty_call():
@@ -1208,7 +1183,8 @@ async def test_delete_cluster_flattened_error_async():
         )
 
 
-def test_get_cluster(transport: str = "grpc", request_type=clusters.GetClusterRequest):
+@pytest.mark.parametrize("request_type", [clusters.GetClusterRequest, dict,])
+def test_get_cluster(request_type, transport: str = "grpc"):
     client = ClusterControllerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1237,10 +1213,6 @@ def test_get_cluster(transport: str = "grpc", request_type=clusters.GetClusterRe
     assert response.project_id == "project_id_value"
     assert response.cluster_name == "cluster_name_value"
     assert response.cluster_uuid == "cluster_uuid_value"
-
-
-def test_get_cluster_from_dict():
-    test_get_cluster(request_type=dict)
 
 
 def test_get_cluster_empty_call():
@@ -1395,9 +1367,8 @@ async def test_get_cluster_flattened_error_async():
         )
 
 
-def test_list_clusters(
-    transport: str = "grpc", request_type=clusters.ListClustersRequest
-):
+@pytest.mark.parametrize("request_type", [clusters.ListClustersRequest, dict,])
+def test_list_clusters(request_type, transport: str = "grpc"):
     client = ClusterControllerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1422,10 +1393,6 @@ def test_list_clusters(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListClustersPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_clusters_from_dict():
-    test_list_clusters(request_type=dict)
 
 
 def test_list_clusters_empty_call():
@@ -1572,8 +1539,10 @@ async def test_list_clusters_flattened_error_async():
         )
 
 
-def test_list_clusters_pager():
-    client = ClusterControllerClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_clusters_pager(transport_name: str = "grpc"):
+    client = ClusterControllerClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_clusters), "__call__") as call:
@@ -1603,8 +1572,10 @@ def test_list_clusters_pager():
         assert all(isinstance(i, clusters.Cluster) for i in results)
 
 
-def test_list_clusters_pages():
-    client = ClusterControllerClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_clusters_pages(transport_name: str = "grpc"):
+    client = ClusterControllerClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_clusters), "__call__") as call:
@@ -1695,9 +1666,8 @@ async def test_list_clusters_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_diagnose_cluster(
-    transport: str = "grpc", request_type=clusters.DiagnoseClusterRequest
-):
+@pytest.mark.parametrize("request_type", [clusters.DiagnoseClusterRequest, dict,])
+def test_diagnose_cluster(request_type, transport: str = "grpc"):
     client = ClusterControllerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1719,10 +1689,6 @@ def test_diagnose_cluster(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_diagnose_cluster_from_dict():
-    test_diagnose_cluster(request_type=dict)
 
 
 def test_diagnose_cluster_empty_call():
@@ -2448,7 +2414,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
