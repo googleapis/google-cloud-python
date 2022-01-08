@@ -254,20 +254,20 @@ def test_templates_service_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -336,7 +336,7 @@ def test_templates_service_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -431,7 +431,7 @@ def test_templates_service_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -462,7 +462,7 @@ def test_templates_service_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -495,9 +495,10 @@ def test_templates_service_client_client_options_from_dict():
         )
 
 
-def test_create_job_from_template(
-    transport: str = "grpc", request_type=templates.CreateJobFromTemplateRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [templates.CreateJobFromTemplateRequest, dict,]
+)
+def test_create_job_from_template(request_type, transport: str = "grpc"):
     client = TemplatesServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -550,10 +551,6 @@ def test_create_job_from_template(
     assert response.location == "location_value"
     assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
     assert response.satisfies_pzs is True
-
-
-def test_create_job_from_template_from_dict():
-    test_create_job_from_template(request_type=dict)
 
 
 def test_create_job_from_template_empty_call():
@@ -638,9 +635,8 @@ async def test_create_job_from_template_async_from_dict():
     await test_create_job_from_template_async(request_type=dict)
 
 
-def test_launch_template(
-    transport: str = "grpc", request_type=templates.LaunchTemplateRequest
-):
+@pytest.mark.parametrize("request_type", [templates.LaunchTemplateRequest, dict,])
+def test_launch_template(request_type, transport: str = "grpc"):
     client = TemplatesServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -662,10 +658,6 @@ def test_launch_template(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, templates.LaunchTemplateResponse)
-
-
-def test_launch_template_from_dict():
-    test_launch_template(request_type=dict)
 
 
 def test_launch_template_empty_call():
@@ -717,9 +709,8 @@ async def test_launch_template_async_from_dict():
     await test_launch_template_async(request_type=dict)
 
 
-def test_get_template(
-    transport: str = "grpc", request_type=templates.GetTemplateRequest
-):
+@pytest.mark.parametrize("request_type", [templates.GetTemplateRequest, dict,])
+def test_get_template(request_type, transport: str = "grpc"):
     client = TemplatesServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -744,10 +735,6 @@ def test_get_template(
     # Establish that the response is the type that we expect.
     assert isinstance(response, templates.GetTemplateResponse)
     assert response.template_type == templates.GetTemplateResponse.TemplateType.LEGACY
-
-
-def test_get_template_from_dict():
-    test_get_template(request_type=dict)
 
 
 def test_get_template_empty_call():
@@ -1314,7 +1301,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
