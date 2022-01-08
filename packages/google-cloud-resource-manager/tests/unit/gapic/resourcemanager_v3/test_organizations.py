@@ -253,20 +253,20 @@ def test_organizations_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -325,7 +325,7 @@ def test_organizations_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -420,7 +420,7 @@ def test_organizations_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -451,7 +451,7 @@ def test_organizations_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -484,9 +484,8 @@ def test_organizations_client_client_options_from_dict():
         )
 
 
-def test_get_organization(
-    transport: str = "grpc", request_type=organizations.GetOrganizationRequest
-):
+@pytest.mark.parametrize("request_type", [organizations.GetOrganizationRequest, dict,])
+def test_get_organization(request_type, transport: str = "grpc"):
     client = OrganizationsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -518,10 +517,6 @@ def test_get_organization(
     assert response.display_name == "display_name_value"
     assert response.state == organizations.Organization.State.ACTIVE
     assert response.etag == "etag_value"
-
-
-def test_get_organization_from_dict():
-    test_get_organization(request_type=dict)
 
 
 def test_get_organization_empty_call():
@@ -707,9 +702,10 @@ async def test_get_organization_flattened_error_async():
         )
 
 
-def test_search_organizations(
-    transport: str = "grpc", request_type=organizations.SearchOrganizationsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [organizations.SearchOrganizationsRequest, dict,]
+)
+def test_search_organizations(request_type, transport: str = "grpc"):
     client = OrganizationsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -736,10 +732,6 @@ def test_search_organizations(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchOrganizationsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_search_organizations_from_dict():
-    test_search_organizations(request_type=dict)
 
 
 def test_search_organizations_empty_call():
@@ -875,8 +867,10 @@ async def test_search_organizations_flattened_error_async():
         )
 
 
-def test_search_organizations_pager():
-    client = OrganizationsClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_search_organizations_pager(transport_name: str = "grpc"):
+    client = OrganizationsClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -917,8 +911,10 @@ def test_search_organizations_pager():
         assert all(isinstance(i, organizations.Organization) for i in results)
 
 
-def test_search_organizations_pages():
-    client = OrganizationsClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_search_organizations_pages(transport_name: str = "grpc"):
+    client = OrganizationsClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1038,9 +1034,8 @@ async def test_search_organizations_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_iam_policy(
-    transport: str = "grpc", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
+@pytest.mark.parametrize("request_type", [iam_policy_pb2.GetIamPolicyRequest, dict,])
+def test_get_iam_policy(request_type, transport: str = "grpc"):
     client = OrganizationsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1064,10 +1059,6 @@ def test_get_iam_policy(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-def test_get_iam_policy_from_dict():
-    test_get_iam_policy(request_type=dict)
 
 
 def test_get_iam_policy_empty_call():
@@ -1257,9 +1248,8 @@ async def test_get_iam_policy_flattened_error_async():
         )
 
 
-def test_set_iam_policy(
-    transport: str = "grpc", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
+@pytest.mark.parametrize("request_type", [iam_policy_pb2.SetIamPolicyRequest, dict,])
+def test_set_iam_policy(request_type, transport: str = "grpc"):
     client = OrganizationsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1283,10 +1273,6 @@ def test_set_iam_policy(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-def test_set_iam_policy_from_dict():
-    test_set_iam_policy(request_type=dict)
 
 
 def test_set_iam_policy_empty_call():
@@ -1476,9 +1462,10 @@ async def test_set_iam_policy_flattened_error_async():
         )
 
 
-def test_test_iam_permissions(
-    transport: str = "grpc", request_type=iam_policy_pb2.TestIamPermissionsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [iam_policy_pb2.TestIamPermissionsRequest, dict,]
+)
+def test_test_iam_permissions(request_type, transport: str = "grpc"):
     client = OrganizationsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1505,10 +1492,6 @@ def test_test_iam_permissions(
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
     assert response.permissions == ["permissions_value"]
-
-
-def test_test_iam_permissions_from_dict():
-    test_test_iam_permissions(request_type=dict)
 
 
 def test_test_iam_permissions_empty_call():
@@ -2254,7 +2237,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
