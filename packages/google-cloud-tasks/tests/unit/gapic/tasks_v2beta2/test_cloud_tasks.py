@@ -251,20 +251,20 @@ def test_cloud_tasks_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -321,7 +321,7 @@ def test_cloud_tasks_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -416,7 +416,7 @@ def test_cloud_tasks_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -447,7 +447,7 @@ def test_cloud_tasks_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -478,9 +478,8 @@ def test_cloud_tasks_client_client_options_from_dict():
         )
 
 
-def test_list_queues(
-    transport: str = "grpc", request_type=cloudtasks.ListQueuesRequest
-):
+@pytest.mark.parametrize("request_type", [cloudtasks.ListQueuesRequest, dict,])
+def test_list_queues(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -505,10 +504,6 @@ def test_list_queues(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListQueuesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_queues_from_dict():
-    test_list_queues(request_type=dict)
 
 
 def test_list_queues_empty_call():
@@ -680,8 +675,10 @@ async def test_list_queues_flattened_error_async():
         )
 
 
-def test_list_queues_pager():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_queues_pager(transport_name: str = "grpc"):
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_queues), "__call__") as call:
@@ -712,8 +709,10 @@ def test_list_queues_pager():
         assert all(isinstance(i, queue.Queue) for i in results)
 
 
-def test_list_queues_pages():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_queues_pages(transport_name: str = "grpc"):
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_queues), "__call__") as call:
@@ -794,7 +793,8 @@ async def test_list_queues_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_queue(transport: str = "grpc", request_type=cloudtasks.GetQueueRequest):
+@pytest.mark.parametrize("request_type", [cloudtasks.GetQueueRequest, dict,])
+def test_get_queue(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -826,10 +826,6 @@ def test_get_queue(transport: str = "grpc", request_type=cloudtasks.GetQueueRequ
     assert isinstance(response, queue.Queue)
     assert response.name == "name_value"
     assert response.state == queue.Queue.State.RUNNING
-
-
-def test_get_queue_from_dict():
-    test_get_queue(request_type=dict)
 
 
 def test_get_queue_empty_call():
@@ -998,9 +994,8 @@ async def test_get_queue_flattened_error_async():
         )
 
 
-def test_create_queue(
-    transport: str = "grpc", request_type=cloudtasks.CreateQueueRequest
-):
+@pytest.mark.parametrize("request_type", [cloudtasks.CreateQueueRequest, dict,])
+def test_create_queue(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1032,10 +1027,6 @@ def test_create_queue(
     assert isinstance(response, gct_queue.Queue)
     assert response.name == "name_value"
     assert response.state == gct_queue.Queue.State.RUNNING
-
-
-def test_create_queue_from_dict():
-    test_create_queue(request_type=dict)
 
 
 def test_create_queue_empty_call():
@@ -1218,9 +1209,8 @@ async def test_create_queue_flattened_error_async():
         )
 
 
-def test_update_queue(
-    transport: str = "grpc", request_type=cloudtasks.UpdateQueueRequest
-):
+@pytest.mark.parametrize("request_type", [cloudtasks.UpdateQueueRequest, dict,])
+def test_update_queue(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1252,10 +1242,6 @@ def test_update_queue(
     assert isinstance(response, gct_queue.Queue)
     assert response.name == "name_value"
     assert response.state == gct_queue.Queue.State.RUNNING
-
-
-def test_update_queue_from_dict():
-    test_update_queue(request_type=dict)
 
 
 def test_update_queue_empty_call():
@@ -1440,9 +1426,8 @@ async def test_update_queue_flattened_error_async():
         )
 
 
-def test_delete_queue(
-    transport: str = "grpc", request_type=cloudtasks.DeleteQueueRequest
-):
+@pytest.mark.parametrize("request_type", [cloudtasks.DeleteQueueRequest, dict,])
+def test_delete_queue(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1464,10 +1449,6 @@ def test_delete_queue(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_queue_from_dict():
-    test_delete_queue(request_type=dict)
 
 
 def test_delete_queue_empty_call():
@@ -1632,9 +1613,8 @@ async def test_delete_queue_flattened_error_async():
         )
 
 
-def test_purge_queue(
-    transport: str = "grpc", request_type=cloudtasks.PurgeQueueRequest
-):
+@pytest.mark.parametrize("request_type", [cloudtasks.PurgeQueueRequest, dict,])
+def test_purge_queue(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1666,10 +1646,6 @@ def test_purge_queue(
     assert isinstance(response, queue.Queue)
     assert response.name == "name_value"
     assert response.state == queue.Queue.State.RUNNING
-
-
-def test_purge_queue_from_dict():
-    test_purge_queue(request_type=dict)
 
 
 def test_purge_queue_empty_call():
@@ -1838,9 +1814,8 @@ async def test_purge_queue_flattened_error_async():
         )
 
 
-def test_pause_queue(
-    transport: str = "grpc", request_type=cloudtasks.PauseQueueRequest
-):
+@pytest.mark.parametrize("request_type", [cloudtasks.PauseQueueRequest, dict,])
+def test_pause_queue(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1872,10 +1847,6 @@ def test_pause_queue(
     assert isinstance(response, queue.Queue)
     assert response.name == "name_value"
     assert response.state == queue.Queue.State.RUNNING
-
-
-def test_pause_queue_from_dict():
-    test_pause_queue(request_type=dict)
 
 
 def test_pause_queue_empty_call():
@@ -2044,9 +2015,8 @@ async def test_pause_queue_flattened_error_async():
         )
 
 
-def test_resume_queue(
-    transport: str = "grpc", request_type=cloudtasks.ResumeQueueRequest
-):
+@pytest.mark.parametrize("request_type", [cloudtasks.ResumeQueueRequest, dict,])
+def test_resume_queue(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2078,10 +2048,6 @@ def test_resume_queue(
     assert isinstance(response, queue.Queue)
     assert response.name == "name_value"
     assert response.state == queue.Queue.State.RUNNING
-
-
-def test_resume_queue_from_dict():
-    test_resume_queue(request_type=dict)
 
 
 def test_resume_queue_empty_call():
@@ -2250,9 +2216,8 @@ async def test_resume_queue_flattened_error_async():
         )
 
 
-def test_get_iam_policy(
-    transport: str = "grpc", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
+@pytest.mark.parametrize("request_type", [iam_policy_pb2.GetIamPolicyRequest, dict,])
+def test_get_iam_policy(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2276,10 +2241,6 @@ def test_get_iam_policy(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-def test_get_iam_policy_from_dict():
-    test_get_iam_policy(request_type=dict)
 
 
 def test_get_iam_policy_empty_call():
@@ -2463,9 +2424,8 @@ async def test_get_iam_policy_flattened_error_async():
         )
 
 
-def test_set_iam_policy(
-    transport: str = "grpc", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
+@pytest.mark.parametrize("request_type", [iam_policy_pb2.SetIamPolicyRequest, dict,])
+def test_set_iam_policy(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2489,10 +2449,6 @@ def test_set_iam_policy(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-def test_set_iam_policy_from_dict():
-    test_set_iam_policy(request_type=dict)
 
 
 def test_set_iam_policy_empty_call():
@@ -2676,9 +2632,10 @@ async def test_set_iam_policy_flattened_error_async():
         )
 
 
-def test_test_iam_permissions(
-    transport: str = "grpc", request_type=iam_policy_pb2.TestIamPermissionsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [iam_policy_pb2.TestIamPermissionsRequest, dict,]
+)
+def test_test_iam_permissions(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2705,10 +2662,6 @@ def test_test_iam_permissions(
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
     assert response.permissions == ["permissions_value"]
-
-
-def test_test_iam_permissions_from_dict():
-    test_test_iam_permissions(request_type=dict)
 
 
 def test_test_iam_permissions_empty_call():
@@ -2926,7 +2879,8 @@ async def test_test_iam_permissions_flattened_error_async():
         )
 
 
-def test_list_tasks(transport: str = "grpc", request_type=cloudtasks.ListTasksRequest):
+@pytest.mark.parametrize("request_type", [cloudtasks.ListTasksRequest, dict,])
+def test_list_tasks(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2951,10 +2905,6 @@ def test_list_tasks(transport: str = "grpc", request_type=cloudtasks.ListTasksRe
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTasksPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_tasks_from_dict():
-    test_list_tasks(request_type=dict)
 
 
 def test_list_tasks_empty_call():
@@ -3126,8 +3076,10 @@ async def test_list_tasks_flattened_error_async():
         )
 
 
-def test_list_tasks_pager():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_tasks_pager(transport_name: str = "grpc"):
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
@@ -3155,8 +3107,10 @@ def test_list_tasks_pager():
         assert all(isinstance(i, task.Task) for i in results)
 
 
-def test_list_tasks_pages():
-    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_tasks_pages(transport_name: str = "grpc"):
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
@@ -3228,7 +3182,8 @@ async def test_list_tasks_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_task(transport: str = "grpc", request_type=cloudtasks.GetTaskRequest):
+@pytest.mark.parametrize("request_type", [cloudtasks.GetTaskRequest, dict,])
+def test_get_task(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3258,10 +3213,6 @@ def test_get_task(transport: str = "grpc", request_type=cloudtasks.GetTaskReques
     assert isinstance(response, task.Task)
     assert response.name == "name_value"
     assert response.view == task.Task.View.BASIC
-
-
-def test_get_task_from_dict():
-    test_get_task(request_type=dict)
 
 
 def test_get_task_empty_call():
@@ -3430,9 +3381,8 @@ async def test_get_task_flattened_error_async():
         )
 
 
-def test_create_task(
-    transport: str = "grpc", request_type=cloudtasks.CreateTaskRequest
-):
+@pytest.mark.parametrize("request_type", [cloudtasks.CreateTaskRequest, dict,])
+def test_create_task(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3462,10 +3412,6 @@ def test_create_task(
     assert isinstance(response, gct_task.Task)
     assert response.name == "name_value"
     assert response.view == gct_task.Task.View.BASIC
-
-
-def test_create_task_from_dict():
-    test_create_task(request_type=dict)
 
 
 def test_create_task_empty_call():
@@ -3648,9 +3594,8 @@ async def test_create_task_flattened_error_async():
         )
 
 
-def test_delete_task(
-    transport: str = "grpc", request_type=cloudtasks.DeleteTaskRequest
-):
+@pytest.mark.parametrize("request_type", [cloudtasks.DeleteTaskRequest, dict,])
+def test_delete_task(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3672,10 +3617,6 @@ def test_delete_task(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_task_from_dict():
-    test_delete_task(request_type=dict)
 
 
 def test_delete_task_empty_call():
@@ -3840,9 +3781,8 @@ async def test_delete_task_flattened_error_async():
         )
 
 
-def test_lease_tasks(
-    transport: str = "grpc", request_type=cloudtasks.LeaseTasksRequest
-):
+@pytest.mark.parametrize("request_type", [cloudtasks.LeaseTasksRequest, dict,])
+def test_lease_tasks(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3864,10 +3804,6 @@ def test_lease_tasks(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloudtasks.LeaseTasksResponse)
-
-
-def test_lease_tasks_from_dict():
-    test_lease_tasks(request_type=dict)
 
 
 def test_lease_tasks_empty_call():
@@ -4052,9 +3988,8 @@ async def test_lease_tasks_flattened_error_async():
         )
 
 
-def test_acknowledge_task(
-    transport: str = "grpc", request_type=cloudtasks.AcknowledgeTaskRequest
-):
+@pytest.mark.parametrize("request_type", [cloudtasks.AcknowledgeTaskRequest, dict,])
+def test_acknowledge_task(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4076,10 +4011,6 @@ def test_acknowledge_task(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_acknowledge_task_from_dict():
-    test_acknowledge_task(request_type=dict)
 
 
 def test_acknowledge_task_empty_call():
@@ -4258,9 +4189,8 @@ async def test_acknowledge_task_flattened_error_async():
         )
 
 
-def test_renew_lease(
-    transport: str = "grpc", request_type=cloudtasks.RenewLeaseRequest
-):
+@pytest.mark.parametrize("request_type", [cloudtasks.RenewLeaseRequest, dict,])
+def test_renew_lease(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4290,10 +4220,6 @@ def test_renew_lease(
     assert isinstance(response, task.Task)
     assert response.name == "name_value"
     assert response.view == task.Task.View.BASIC
-
-
-def test_renew_lease_from_dict():
-    test_renew_lease(request_type=dict)
 
 
 def test_renew_lease_empty_call():
@@ -4488,9 +4414,8 @@ async def test_renew_lease_flattened_error_async():
         )
 
 
-def test_cancel_lease(
-    transport: str = "grpc", request_type=cloudtasks.CancelLeaseRequest
-):
+@pytest.mark.parametrize("request_type", [cloudtasks.CancelLeaseRequest, dict,])
+def test_cancel_lease(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4520,10 +4445,6 @@ def test_cancel_lease(
     assert isinstance(response, task.Task)
     assert response.name == "name_value"
     assert response.view == task.Task.View.BASIC
-
-
-def test_cancel_lease_from_dict():
-    test_cancel_lease(request_type=dict)
 
 
 def test_cancel_lease_empty_call():
@@ -4706,7 +4627,8 @@ async def test_cancel_lease_flattened_error_async():
         )
 
 
-def test_run_task(transport: str = "grpc", request_type=cloudtasks.RunTaskRequest):
+@pytest.mark.parametrize("request_type", [cloudtasks.RunTaskRequest, dict,])
+def test_run_task(request_type, transport: str = "grpc"):
     client = CloudTasksClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4736,10 +4658,6 @@ def test_run_task(transport: str = "grpc", request_type=cloudtasks.RunTaskReques
     assert isinstance(response, task.Task)
     assert response.name == "name_value"
     assert response.view == task.Task.View.BASIC
-
-
-def test_run_task_from_dict():
-    test_run_task(request_type=dict)
 
 
 def test_run_task_empty_call():
@@ -5450,7 +5368,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
