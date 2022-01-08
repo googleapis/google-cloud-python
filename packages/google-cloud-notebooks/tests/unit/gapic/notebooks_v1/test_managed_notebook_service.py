@@ -265,20 +265,20 @@ def test_managed_notebook_service_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -347,7 +347,7 @@ def test_managed_notebook_service_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -446,7 +446,7 @@ def test_managed_notebook_service_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -481,7 +481,7 @@ def test_managed_notebook_service_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -514,9 +514,8 @@ def test_managed_notebook_service_client_client_options_from_dict():
         )
 
 
-def test_list_runtimes(
-    transport: str = "grpc", request_type=managed_service.ListRuntimesRequest
-):
+@pytest.mark.parametrize("request_type", [managed_service.ListRuntimesRequest, dict,])
+def test_list_runtimes(request_type, transport: str = "grpc"):
     client = ManagedNotebookServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -542,10 +541,6 @@ def test_list_runtimes(
     assert isinstance(response, pagers.ListRuntimesPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_runtimes_from_dict():
-    test_list_runtimes(request_type=dict)
 
 
 def test_list_runtimes_empty_call():
@@ -733,9 +728,9 @@ async def test_list_runtimes_flattened_error_async():
         )
 
 
-def test_list_runtimes_pager():
+def test_list_runtimes_pager(transport_name: str = "grpc"):
     client = ManagedNotebookServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -769,9 +764,9 @@ def test_list_runtimes_pager():
         assert all(isinstance(i, runtime.Runtime) for i in results)
 
 
-def test_list_runtimes_pages():
+def test_list_runtimes_pages(transport_name: str = "grpc"):
     client = ManagedNotebookServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -863,9 +858,8 @@ async def test_list_runtimes_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_runtime(
-    transport: str = "grpc", request_type=managed_service.GetRuntimeRequest
-):
+@pytest.mark.parametrize("request_type", [managed_service.GetRuntimeRequest, dict,])
+def test_get_runtime(request_type, transport: str = "grpc"):
     client = ManagedNotebookServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -895,10 +889,6 @@ def test_get_runtime(
     assert response.name == "name_value"
     assert response.state == runtime.Runtime.State.STARTING
     assert response.health_state == runtime.Runtime.HealthState.HEALTHY
-
-
-def test_get_runtime_from_dict():
-    test_get_runtime(request_type=dict)
 
 
 def test_get_runtime_empty_call():
@@ -1084,9 +1074,8 @@ async def test_get_runtime_flattened_error_async():
         )
 
 
-def test_create_runtime(
-    transport: str = "grpc", request_type=managed_service.CreateRuntimeRequest
-):
+@pytest.mark.parametrize("request_type", [managed_service.CreateRuntimeRequest, dict,])
+def test_create_runtime(request_type, transport: str = "grpc"):
     client = ManagedNotebookServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1108,10 +1097,6 @@ def test_create_runtime(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_runtime_from_dict():
-    test_create_runtime(request_type=dict)
 
 
 def test_create_runtime_empty_call():
@@ -1320,9 +1305,8 @@ async def test_create_runtime_flattened_error_async():
         )
 
 
-def test_delete_runtime(
-    transport: str = "grpc", request_type=managed_service.DeleteRuntimeRequest
-):
+@pytest.mark.parametrize("request_type", [managed_service.DeleteRuntimeRequest, dict,])
+def test_delete_runtime(request_type, transport: str = "grpc"):
     client = ManagedNotebookServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1344,10 +1328,6 @@ def test_delete_runtime(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_runtime_from_dict():
-    test_delete_runtime(request_type=dict)
 
 
 def test_delete_runtime_empty_call():
@@ -1530,9 +1510,8 @@ async def test_delete_runtime_flattened_error_async():
         )
 
 
-def test_start_runtime(
-    transport: str = "grpc", request_type=managed_service.StartRuntimeRequest
-):
+@pytest.mark.parametrize("request_type", [managed_service.StartRuntimeRequest, dict,])
+def test_start_runtime(request_type, transport: str = "grpc"):
     client = ManagedNotebookServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1554,10 +1533,6 @@ def test_start_runtime(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_start_runtime_from_dict():
-    test_start_runtime(request_type=dict)
 
 
 def test_start_runtime_empty_call():
@@ -1740,9 +1715,8 @@ async def test_start_runtime_flattened_error_async():
         )
 
 
-def test_stop_runtime(
-    transport: str = "grpc", request_type=managed_service.StopRuntimeRequest
-):
+@pytest.mark.parametrize("request_type", [managed_service.StopRuntimeRequest, dict,])
+def test_stop_runtime(request_type, transport: str = "grpc"):
     client = ManagedNotebookServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1764,10 +1738,6 @@ def test_stop_runtime(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_stop_runtime_from_dict():
-    test_stop_runtime(request_type=dict)
 
 
 def test_stop_runtime_empty_call():
@@ -1950,9 +1920,8 @@ async def test_stop_runtime_flattened_error_async():
         )
 
 
-def test_switch_runtime(
-    transport: str = "grpc", request_type=managed_service.SwitchRuntimeRequest
-):
+@pytest.mark.parametrize("request_type", [managed_service.SwitchRuntimeRequest, dict,])
+def test_switch_runtime(request_type, transport: str = "grpc"):
     client = ManagedNotebookServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1974,10 +1943,6 @@ def test_switch_runtime(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_switch_runtime_from_dict():
-    test_switch_runtime(request_type=dict)
 
 
 def test_switch_runtime_empty_call():
@@ -2160,9 +2125,8 @@ async def test_switch_runtime_flattened_error_async():
         )
 
 
-def test_reset_runtime(
-    transport: str = "grpc", request_type=managed_service.ResetRuntimeRequest
-):
+@pytest.mark.parametrize("request_type", [managed_service.ResetRuntimeRequest, dict,])
+def test_reset_runtime(request_type, transport: str = "grpc"):
     client = ManagedNotebookServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2184,10 +2148,6 @@ def test_reset_runtime(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_reset_runtime_from_dict():
-    test_reset_runtime(request_type=dict)
 
 
 def test_reset_runtime_empty_call():
@@ -2370,9 +2330,10 @@ async def test_reset_runtime_flattened_error_async():
         )
 
 
-def test_report_runtime_event(
-    transport: str = "grpc", request_type=managed_service.ReportRuntimeEventRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [managed_service.ReportRuntimeEventRequest, dict,]
+)
+def test_report_runtime_event(request_type, transport: str = "grpc"):
     client = ManagedNotebookServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2396,10 +2357,6 @@ def test_report_runtime_event(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_report_runtime_event_from_dict():
-    test_report_runtime_event(request_type=dict)
 
 
 def test_report_runtime_event_empty_call():
@@ -3154,7 +3111,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
