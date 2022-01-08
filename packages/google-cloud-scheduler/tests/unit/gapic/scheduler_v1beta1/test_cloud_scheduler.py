@@ -256,20 +256,20 @@ def test_cloud_scheduler_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -328,7 +328,7 @@ def test_cloud_scheduler_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -423,7 +423,7 @@ def test_cloud_scheduler_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -454,7 +454,7 @@ def test_cloud_scheduler_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -487,9 +487,8 @@ def test_cloud_scheduler_client_client_options_from_dict():
         )
 
 
-def test_list_jobs(
-    transport: str = "grpc", request_type=cloudscheduler.ListJobsRequest
-):
+@pytest.mark.parametrize("request_type", [cloudscheduler.ListJobsRequest, dict,])
+def test_list_jobs(request_type, transport: str = "grpc"):
     client = CloudSchedulerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -514,10 +513,6 @@ def test_list_jobs(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListJobsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_jobs_from_dict():
-    test_list_jobs(request_type=dict)
 
 
 def test_list_jobs_empty_call():
@@ -695,8 +690,10 @@ async def test_list_jobs_flattened_error_async():
         )
 
 
-def test_list_jobs_pager():
-    client = CloudSchedulerClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_jobs_pager(transport_name: str = "grpc"):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
@@ -724,8 +721,10 @@ def test_list_jobs_pager():
         assert all(isinstance(i, job.Job) for i in results)
 
 
-def test_list_jobs_pages():
-    client = CloudSchedulerClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_jobs_pages(transport_name: str = "grpc"):
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
@@ -797,7 +796,8 @@ async def test_list_jobs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_job(transport: str = "grpc", request_type=cloudscheduler.GetJobRequest):
+@pytest.mark.parametrize("request_type", [cloudscheduler.GetJobRequest, dict,])
+def test_get_job(request_type, transport: str = "grpc"):
     client = CloudSchedulerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -831,10 +831,6 @@ def test_get_job(transport: str = "grpc", request_type=cloudscheduler.GetJobRequ
     assert response.schedule == "schedule_value"
     assert response.time_zone == "time_zone_value"
     assert response.state == job.Job.State.ENABLED
-
-
-def test_get_job_from_dict():
-    test_get_job(request_type=dict)
 
 
 def test_get_job_empty_call():
@@ -1018,9 +1014,8 @@ async def test_get_job_flattened_error_async():
         )
 
 
-def test_create_job(
-    transport: str = "grpc", request_type=cloudscheduler.CreateJobRequest
-):
+@pytest.mark.parametrize("request_type", [cloudscheduler.CreateJobRequest, dict,])
+def test_create_job(request_type, transport: str = "grpc"):
     client = CloudSchedulerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1054,10 +1049,6 @@ def test_create_job(
     assert response.schedule == "schedule_value"
     assert response.time_zone == "time_zone_value"
     assert response.state == gcs_job.Job.State.ENABLED
-
-
-def test_create_job_from_dict():
-    test_create_job(request_type=dict)
 
 
 def test_create_job_empty_call():
@@ -1255,9 +1246,8 @@ async def test_create_job_flattened_error_async():
         )
 
 
-def test_update_job(
-    transport: str = "grpc", request_type=cloudscheduler.UpdateJobRequest
-):
+@pytest.mark.parametrize("request_type", [cloudscheduler.UpdateJobRequest, dict,])
+def test_update_job(request_type, transport: str = "grpc"):
     client = CloudSchedulerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1291,10 +1281,6 @@ def test_update_job(
     assert response.schedule == "schedule_value"
     assert response.time_zone == "time_zone_value"
     assert response.state == gcs_job.Job.State.ENABLED
-
-
-def test_update_job_from_dict():
-    test_update_job(request_type=dict)
 
 
 def test_update_job_empty_call():
@@ -1494,9 +1480,8 @@ async def test_update_job_flattened_error_async():
         )
 
 
-def test_delete_job(
-    transport: str = "grpc", request_type=cloudscheduler.DeleteJobRequest
-):
+@pytest.mark.parametrize("request_type", [cloudscheduler.DeleteJobRequest, dict,])
+def test_delete_job(request_type, transport: str = "grpc"):
     client = CloudSchedulerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1518,10 +1503,6 @@ def test_delete_job(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_job_from_dict():
-    test_delete_job(request_type=dict)
 
 
 def test_delete_job_empty_call():
@@ -1692,9 +1673,8 @@ async def test_delete_job_flattened_error_async():
         )
 
 
-def test_pause_job(
-    transport: str = "grpc", request_type=cloudscheduler.PauseJobRequest
-):
+@pytest.mark.parametrize("request_type", [cloudscheduler.PauseJobRequest, dict,])
+def test_pause_job(request_type, transport: str = "grpc"):
     client = CloudSchedulerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1728,10 +1708,6 @@ def test_pause_job(
     assert response.schedule == "schedule_value"
     assert response.time_zone == "time_zone_value"
     assert response.state == job.Job.State.ENABLED
-
-
-def test_pause_job_from_dict():
-    test_pause_job(request_type=dict)
 
 
 def test_pause_job_empty_call():
@@ -1915,9 +1891,8 @@ async def test_pause_job_flattened_error_async():
         )
 
 
-def test_resume_job(
-    transport: str = "grpc", request_type=cloudscheduler.ResumeJobRequest
-):
+@pytest.mark.parametrize("request_type", [cloudscheduler.ResumeJobRequest, dict,])
+def test_resume_job(request_type, transport: str = "grpc"):
     client = CloudSchedulerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1951,10 +1926,6 @@ def test_resume_job(
     assert response.schedule == "schedule_value"
     assert response.time_zone == "time_zone_value"
     assert response.state == job.Job.State.ENABLED
-
-
-def test_resume_job_from_dict():
-    test_resume_job(request_type=dict)
 
 
 def test_resume_job_empty_call():
@@ -2138,7 +2109,8 @@ async def test_resume_job_flattened_error_async():
         )
 
 
-def test_run_job(transport: str = "grpc", request_type=cloudscheduler.RunJobRequest):
+@pytest.mark.parametrize("request_type", [cloudscheduler.RunJobRequest, dict,])
+def test_run_job(request_type, transport: str = "grpc"):
     client = CloudSchedulerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2172,10 +2144,6 @@ def test_run_job(transport: str = "grpc", request_type=cloudscheduler.RunJobRequ
     assert response.schedule == "schedule_value"
     assert response.time_zone == "time_zone_value"
     assert response.state == job.Job.State.ENABLED
-
-
-def test_run_job_from_dict():
-    test_run_job(request_type=dict)
 
 
 def test_run_job_empty_call():
@@ -2900,7 +2868,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
