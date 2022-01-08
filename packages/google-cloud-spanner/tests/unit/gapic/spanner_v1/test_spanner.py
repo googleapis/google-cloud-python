@@ -234,20 +234,20 @@ def test_spanner_client_client_options(client_class, transport_class, transport_
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -302,7 +302,7 @@ def test_spanner_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -393,7 +393,7 @@ def test_spanner_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -420,7 +420,7 @@ def test_spanner_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -451,9 +451,8 @@ def test_spanner_client_client_options_from_dict():
         )
 
 
-def test_create_session(
-    transport: str = "grpc", request_type=spanner.CreateSessionRequest
-):
+@pytest.mark.parametrize("request_type", [spanner.CreateSessionRequest, dict,])
+def test_create_session(request_type, transport: str = "grpc"):
     client = SpannerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -476,10 +475,6 @@ def test_create_session(
     # Establish that the response is the type that we expect.
     assert isinstance(response, spanner.Session)
     assert response.name == "name_value"
-
-
-def test_create_session_from_dict():
-    test_create_session(request_type=dict)
 
 
 def test_create_session_empty_call():
@@ -647,9 +642,8 @@ async def test_create_session_flattened_error_async():
         )
 
 
-def test_batch_create_sessions(
-    transport: str = "grpc", request_type=spanner.BatchCreateSessionsRequest
-):
+@pytest.mark.parametrize("request_type", [spanner.BatchCreateSessionsRequest, dict,])
+def test_batch_create_sessions(request_type, transport: str = "grpc"):
     client = SpannerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -673,10 +667,6 @@ def test_batch_create_sessions(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, spanner.BatchCreateSessionsResponse)
-
-
-def test_batch_create_sessions_from_dict():
-    test_batch_create_sessions(request_type=dict)
 
 
 def test_batch_create_sessions_empty_call():
@@ -873,7 +863,8 @@ async def test_batch_create_sessions_flattened_error_async():
         )
 
 
-def test_get_session(transport: str = "grpc", request_type=spanner.GetSessionRequest):
+@pytest.mark.parametrize("request_type", [spanner.GetSessionRequest, dict,])
+def test_get_session(request_type, transport: str = "grpc"):
     client = SpannerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -896,10 +887,6 @@ def test_get_session(transport: str = "grpc", request_type=spanner.GetSessionReq
     # Establish that the response is the type that we expect.
     assert isinstance(response, spanner.Session)
     assert response.name == "name_value"
-
-
-def test_get_session_from_dict():
-    test_get_session(request_type=dict)
 
 
 def test_get_session_empty_call():
@@ -1067,9 +1054,8 @@ async def test_get_session_flattened_error_async():
         )
 
 
-def test_list_sessions(
-    transport: str = "grpc", request_type=spanner.ListSessionsRequest
-):
+@pytest.mark.parametrize("request_type", [spanner.ListSessionsRequest, dict,])
+def test_list_sessions(request_type, transport: str = "grpc"):
     client = SpannerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1094,10 +1080,6 @@ def test_list_sessions(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSessionsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_sessions_from_dict():
-    test_list_sessions(request_type=dict)
 
 
 def test_list_sessions_empty_call():
@@ -1269,8 +1251,10 @@ async def test_list_sessions_flattened_error_async():
         )
 
 
-def test_list_sessions_pager():
-    client = SpannerClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_sessions_pager(transport_name: str = "grpc"):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
@@ -1303,8 +1287,10 @@ def test_list_sessions_pager():
         assert all(isinstance(i, spanner.Session) for i in results)
 
 
-def test_list_sessions_pages():
-    client = SpannerClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_sessions_pages(transport_name: str = "grpc"):
+    client = SpannerClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
@@ -1391,9 +1377,8 @@ async def test_list_sessions_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_delete_session(
-    transport: str = "grpc", request_type=spanner.DeleteSessionRequest
-):
+@pytest.mark.parametrize("request_type", [spanner.DeleteSessionRequest, dict,])
+def test_delete_session(request_type, transport: str = "grpc"):
     client = SpannerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1415,10 +1400,6 @@ def test_delete_session(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_session_from_dict():
-    test_delete_session(request_type=dict)
 
 
 def test_delete_session_empty_call():
@@ -1583,7 +1564,8 @@ async def test_delete_session_flattened_error_async():
         )
 
 
-def test_execute_sql(transport: str = "grpc", request_type=spanner.ExecuteSqlRequest):
+@pytest.mark.parametrize("request_type", [spanner.ExecuteSqlRequest, dict,])
+def test_execute_sql(request_type, transport: str = "grpc"):
     client = SpannerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1605,10 +1587,6 @@ def test_execute_sql(transport: str = "grpc", request_type=spanner.ExecuteSqlReq
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, result_set.ResultSet)
-
-
-def test_execute_sql_from_dict():
-    test_execute_sql(request_type=dict)
 
 
 def test_execute_sql_empty_call():
@@ -1711,9 +1689,8 @@ async def test_execute_sql_field_headers_async():
     assert ("x-goog-request-params", "session=session/value",) in kw["metadata"]
 
 
-def test_execute_streaming_sql(
-    transport: str = "grpc", request_type=spanner.ExecuteSqlRequest
-):
+@pytest.mark.parametrize("request_type", [spanner.ExecuteSqlRequest, dict,])
+def test_execute_streaming_sql(request_type, transport: str = "grpc"):
     client = SpannerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1738,10 +1715,6 @@ def test_execute_streaming_sql(
     # Establish that the response is the type that we expect.
     for message in response:
         assert isinstance(message, result_set.PartialResultSet)
-
-
-def test_execute_streaming_sql_from_dict():
-    test_execute_streaming_sql(request_type=dict)
 
 
 def test_execute_streaming_sql_empty_call():
@@ -1855,9 +1828,8 @@ async def test_execute_streaming_sql_field_headers_async():
     assert ("x-goog-request-params", "session=session/value",) in kw["metadata"]
 
 
-def test_execute_batch_dml(
-    transport: str = "grpc", request_type=spanner.ExecuteBatchDmlRequest
-):
+@pytest.mark.parametrize("request_type", [spanner.ExecuteBatchDmlRequest, dict,])
+def test_execute_batch_dml(request_type, transport: str = "grpc"):
     client = SpannerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1881,10 +1853,6 @@ def test_execute_batch_dml(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, spanner.ExecuteBatchDmlResponse)
-
-
-def test_execute_batch_dml_from_dict():
-    test_execute_batch_dml(request_type=dict)
 
 
 def test_execute_batch_dml_empty_call():
@@ -1995,7 +1963,8 @@ async def test_execute_batch_dml_field_headers_async():
     assert ("x-goog-request-params", "session=session/value",) in kw["metadata"]
 
 
-def test_read(transport: str = "grpc", request_type=spanner.ReadRequest):
+@pytest.mark.parametrize("request_type", [spanner.ReadRequest, dict,])
+def test_read(request_type, transport: str = "grpc"):
     client = SpannerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2017,10 +1986,6 @@ def test_read(transport: str = "grpc", request_type=spanner.ReadRequest):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, result_set.ResultSet)
-
-
-def test_read_from_dict():
-    test_read(request_type=dict)
 
 
 def test_read_empty_call():
@@ -2123,7 +2088,8 @@ async def test_read_field_headers_async():
     assert ("x-goog-request-params", "session=session/value",) in kw["metadata"]
 
 
-def test_streaming_read(transport: str = "grpc", request_type=spanner.ReadRequest):
+@pytest.mark.parametrize("request_type", [spanner.ReadRequest, dict,])
+def test_streaming_read(request_type, transport: str = "grpc"):
     client = SpannerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2146,10 +2112,6 @@ def test_streaming_read(transport: str = "grpc", request_type=spanner.ReadReques
     # Establish that the response is the type that we expect.
     for message in response:
         assert isinstance(message, result_set.PartialResultSet)
-
-
-def test_streaming_read_from_dict():
-    test_streaming_read(request_type=dict)
 
 
 def test_streaming_read_empty_call():
@@ -2255,9 +2217,8 @@ async def test_streaming_read_field_headers_async():
     assert ("x-goog-request-params", "session=session/value",) in kw["metadata"]
 
 
-def test_begin_transaction(
-    transport: str = "grpc", request_type=spanner.BeginTransactionRequest
-):
+@pytest.mark.parametrize("request_type", [spanner.BeginTransactionRequest, dict,])
+def test_begin_transaction(request_type, transport: str = "grpc"):
     client = SpannerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2282,10 +2243,6 @@ def test_begin_transaction(
     # Establish that the response is the type that we expect.
     assert isinstance(response, transaction.Transaction)
     assert response.id == b"id_blob"
-
-
-def test_begin_transaction_from_dict():
-    test_begin_transaction(request_type=dict)
 
 
 def test_begin_transaction_empty_call():
@@ -2485,7 +2442,8 @@ async def test_begin_transaction_flattened_error_async():
         )
 
 
-def test_commit(transport: str = "grpc", request_type=spanner.CommitRequest):
+@pytest.mark.parametrize("request_type", [spanner.CommitRequest, dict,])
+def test_commit(request_type, transport: str = "grpc"):
     client = SpannerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2507,10 +2465,6 @@ def test_commit(transport: str = "grpc", request_type=spanner.CommitRequest):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, commit_response.CommitResponse)
-
-
-def test_commit_from_dict():
-    test_commit(request_type=dict)
 
 
 def test_commit_empty_call():
@@ -2723,7 +2677,8 @@ async def test_commit_flattened_error_async():
         )
 
 
-def test_rollback(transport: str = "grpc", request_type=spanner.RollbackRequest):
+@pytest.mark.parametrize("request_type", [spanner.RollbackRequest, dict,])
+def test_rollback(request_type, transport: str = "grpc"):
     client = SpannerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2745,10 +2700,6 @@ def test_rollback(transport: str = "grpc", request_type=spanner.RollbackRequest)
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_rollback_from_dict():
-    test_rollback(request_type=dict)
 
 
 def test_rollback_empty_call():
@@ -2927,9 +2878,8 @@ async def test_rollback_flattened_error_async():
         )
 
 
-def test_partition_query(
-    transport: str = "grpc", request_type=spanner.PartitionQueryRequest
-):
+@pytest.mark.parametrize("request_type", [spanner.PartitionQueryRequest, dict,])
+def test_partition_query(request_type, transport: str = "grpc"):
     client = SpannerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2951,10 +2901,6 @@ def test_partition_query(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, spanner.PartitionResponse)
-
-
-def test_partition_query_from_dict():
-    test_partition_query(request_type=dict)
 
 
 def test_partition_query_empty_call():
@@ -3057,9 +3003,8 @@ async def test_partition_query_field_headers_async():
     assert ("x-goog-request-params", "session=session/value",) in kw["metadata"]
 
 
-def test_partition_read(
-    transport: str = "grpc", request_type=spanner.PartitionReadRequest
-):
+@pytest.mark.parametrize("request_type", [spanner.PartitionReadRequest, dict,])
+def test_partition_read(request_type, transport: str = "grpc"):
     client = SpannerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3081,10 +3026,6 @@ def test_partition_read(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, spanner.PartitionResponse)
-
-
-def test_partition_read_from_dict():
-    test_partition_read(request_type=dict)
 
 
 def test_partition_read_empty_call():
@@ -3736,7 +3677,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(

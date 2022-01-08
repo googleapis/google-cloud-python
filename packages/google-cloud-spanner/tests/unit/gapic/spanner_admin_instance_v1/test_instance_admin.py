@@ -259,20 +259,20 @@ def test_instance_admin_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -331,7 +331,7 @@ def test_instance_admin_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -426,7 +426,7 @@ def test_instance_admin_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -457,7 +457,7 @@ def test_instance_admin_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -490,10 +490,10 @@ def test_instance_admin_client_client_options_from_dict():
         )
 
 
-def test_list_instance_configs(
-    transport: str = "grpc",
-    request_type=spanner_instance_admin.ListInstanceConfigsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [spanner_instance_admin.ListInstanceConfigsRequest, dict,]
+)
+def test_list_instance_configs(request_type, transport: str = "grpc"):
     client = InstanceAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -520,10 +520,6 @@ def test_list_instance_configs(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInstanceConfigsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_instance_configs_from_dict():
-    test_list_instance_configs(request_type=dict)
 
 
 def test_list_instance_configs_empty_call():
@@ -716,8 +712,10 @@ async def test_list_instance_configs_flattened_error_async():
         )
 
 
-def test_list_instance_configs_pager():
-    client = InstanceAdminClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_instance_configs_pager(transport_name: str = "grpc"):
+    client = InstanceAdminClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -764,8 +762,10 @@ def test_list_instance_configs_pager():
         )
 
 
-def test_list_instance_configs_pages():
-    client = InstanceAdminClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_instance_configs_pages(transport_name: str = "grpc"):
+    client = InstanceAdminClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -890,10 +890,10 @@ async def test_list_instance_configs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_instance_config(
-    transport: str = "grpc",
-    request_type=spanner_instance_admin.GetInstanceConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [spanner_instance_admin.GetInstanceConfigRequest, dict,]
+)
+def test_get_instance_config(request_type, transport: str = "grpc"):
     client = InstanceAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -924,10 +924,6 @@ def test_get_instance_config(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.leader_options == ["leader_options_value"]
-
-
-def test_get_instance_config_from_dict():
-    test_get_instance_config(request_type=dict)
 
 
 def test_get_instance_config_empty_call():
@@ -1124,9 +1120,10 @@ async def test_get_instance_config_flattened_error_async():
         )
 
 
-def test_list_instances(
-    transport: str = "grpc", request_type=spanner_instance_admin.ListInstancesRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [spanner_instance_admin.ListInstancesRequest, dict,]
+)
+def test_list_instances(request_type, transport: str = "grpc"):
     client = InstanceAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1151,10 +1148,6 @@ def test_list_instances(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInstancesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_instances_from_dict():
-    test_list_instances(request_type=dict)
 
 
 def test_list_instances_empty_call():
@@ -1335,8 +1328,10 @@ async def test_list_instances_flattened_error_async():
         )
 
 
-def test_list_instances_pager():
-    client = InstanceAdminClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_instances_pager(transport_name: str = "grpc"):
+    client = InstanceAdminClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
@@ -1378,8 +1373,10 @@ def test_list_instances_pager():
         assert all(isinstance(i, spanner_instance_admin.Instance) for i in results)
 
 
-def test_list_instances_pages():
-    client = InstanceAdminClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_instances_pages(transport_name: str = "grpc"):
+    client = InstanceAdminClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
@@ -1493,9 +1490,10 @@ async def test_list_instances_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_instance(
-    transport: str = "grpc", request_type=spanner_instance_admin.GetInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [spanner_instance_admin.GetInstanceRequest, dict,]
+)
+def test_get_instance(request_type, transport: str = "grpc"):
     client = InstanceAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1532,10 +1530,6 @@ def test_get_instance(
     assert response.processing_units == 1743
     assert response.state == spanner_instance_admin.Instance.State.CREATING
     assert response.endpoint_uris == ["endpoint_uris_value"]
-
-
-def test_get_instance_from_dict():
-    test_get_instance(request_type=dict)
 
 
 def test_get_instance_empty_call():
@@ -1728,9 +1722,10 @@ async def test_get_instance_flattened_error_async():
         )
 
 
-def test_create_instance(
-    transport: str = "grpc", request_type=spanner_instance_admin.CreateInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [spanner_instance_admin.CreateInstanceRequest, dict,]
+)
+def test_create_instance(request_type, transport: str = "grpc"):
     client = InstanceAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1752,10 +1747,6 @@ def test_create_instance(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_instance_from_dict():
-    test_create_instance(request_type=dict)
 
 
 def test_create_instance_empty_call():
@@ -1959,9 +1950,10 @@ async def test_create_instance_flattened_error_async():
         )
 
 
-def test_update_instance(
-    transport: str = "grpc", request_type=spanner_instance_admin.UpdateInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [spanner_instance_admin.UpdateInstanceRequest, dict,]
+)
+def test_update_instance(request_type, transport: str = "grpc"):
     client = InstanceAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1983,10 +1975,6 @@ def test_update_instance(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_instance_from_dict():
-    test_update_instance(request_type=dict)
 
 
 def test_update_instance_empty_call():
@@ -2184,9 +2172,10 @@ async def test_update_instance_flattened_error_async():
         )
 
 
-def test_delete_instance(
-    transport: str = "grpc", request_type=spanner_instance_admin.DeleteInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [spanner_instance_admin.DeleteInstanceRequest, dict,]
+)
+def test_delete_instance(request_type, transport: str = "grpc"):
     client = InstanceAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2208,10 +2197,6 @@ def test_delete_instance(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_instance_from_dict():
-    test_delete_instance(request_type=dict)
 
 
 def test_delete_instance_empty_call():
@@ -2383,9 +2368,8 @@ async def test_delete_instance_flattened_error_async():
         )
 
 
-def test_set_iam_policy(
-    transport: str = "grpc", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
+@pytest.mark.parametrize("request_type", [iam_policy_pb2.SetIamPolicyRequest, dict,])
+def test_set_iam_policy(request_type, transport: str = "grpc"):
     client = InstanceAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2409,10 +2393,6 @@ def test_set_iam_policy(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-def test_set_iam_policy_from_dict():
-    test_set_iam_policy(request_type=dict)
 
 
 def test_set_iam_policy_empty_call():
@@ -2602,9 +2582,8 @@ async def test_set_iam_policy_flattened_error_async():
         )
 
 
-def test_get_iam_policy(
-    transport: str = "grpc", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
+@pytest.mark.parametrize("request_type", [iam_policy_pb2.GetIamPolicyRequest, dict,])
+def test_get_iam_policy(request_type, transport: str = "grpc"):
     client = InstanceAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2628,10 +2607,6 @@ def test_get_iam_policy(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-def test_get_iam_policy_from_dict():
-    test_get_iam_policy(request_type=dict)
 
 
 def test_get_iam_policy_empty_call():
@@ -2821,9 +2796,10 @@ async def test_get_iam_policy_flattened_error_async():
         )
 
 
-def test_test_iam_permissions(
-    transport: str = "grpc", request_type=iam_policy_pb2.TestIamPermissionsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [iam_policy_pb2.TestIamPermissionsRequest, dict,]
+)
+def test_test_iam_permissions(request_type, transport: str = "grpc"):
     client = InstanceAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2850,10 +2826,6 @@ def test_test_iam_permissions(
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
     assert response.permissions == ["permissions_value"]
-
-
-def test_test_iam_permissions_from_dict():
-    test_test_iam_permissions(request_type=dict)
 
 
 def test_test_iam_permissions_empty_call():
@@ -3661,7 +3633,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
