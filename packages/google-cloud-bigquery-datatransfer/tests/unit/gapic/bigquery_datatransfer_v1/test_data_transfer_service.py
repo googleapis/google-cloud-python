@@ -263,20 +263,20 @@ def test_data_transfer_service_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -345,7 +345,7 @@ def test_data_transfer_service_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -444,7 +444,7 @@ def test_data_transfer_service_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -479,7 +479,7 @@ def test_data_transfer_service_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -512,9 +512,8 @@ def test_data_transfer_service_client_client_options_from_dict():
         )
 
 
-def test_get_data_source(
-    transport: str = "grpc", request_type=datatransfer.GetDataSourceRequest
-):
+@pytest.mark.parametrize("request_type", [datatransfer.GetDataSourceRequest, dict,])
+def test_get_data_source(request_type, transport: str = "grpc"):
     client = DataTransferServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -575,10 +574,6 @@ def test_get_data_source(
     )
     assert response.default_data_refresh_window_days == 3379
     assert response.manual_runs_disabled is True
-
-
-def test_get_data_source_from_dict():
-    test_get_data_source(request_type=dict)
 
 
 def test_get_data_source_empty_call():
@@ -800,9 +795,8 @@ async def test_get_data_source_flattened_error_async():
         )
 
 
-def test_list_data_sources(
-    transport: str = "grpc", request_type=datatransfer.ListDataSourcesRequest
-):
+@pytest.mark.parametrize("request_type", [datatransfer.ListDataSourcesRequest, dict,])
+def test_list_data_sources(request_type, transport: str = "grpc"):
     client = DataTransferServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -829,10 +823,6 @@ def test_list_data_sources(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataSourcesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_data_sources_from_dict():
-    test_list_data_sources(request_type=dict)
 
 
 def test_list_data_sources_empty_call():
@@ -1030,8 +1020,10 @@ async def test_list_data_sources_flattened_error_async():
         )
 
 
-def test_list_data_sources_pager():
-    client = DataTransferServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_data_sources_pager(transport_name: str = "grpc"):
+    client = DataTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1072,8 +1064,10 @@ def test_list_data_sources_pager():
         assert all(isinstance(i, datatransfer.DataSource) for i in results)
 
 
-def test_list_data_sources_pages():
-    client = DataTransferServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_data_sources_pages(transport_name: str = "grpc"):
+    client = DataTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1188,9 +1182,10 @@ async def test_list_data_sources_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_create_transfer_config(
-    transport: str = "grpc", request_type=datatransfer.CreateTransferConfigRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [datatransfer.CreateTransferConfigRequest, dict,]
+)
+def test_create_transfer_config(request_type, transport: str = "grpc"):
     client = DataTransferServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1236,10 +1231,6 @@ def test_create_transfer_config(
     assert response.user_id == 747
     assert response.dataset_region == "dataset_region_value"
     assert response.notification_pubsub_topic == "notification_pubsub_topic_value"
-
-
-def test_create_transfer_config_from_dict():
-    test_create_transfer_config(request_type=dict)
 
 
 def test_create_transfer_config_empty_call():
@@ -1472,9 +1463,10 @@ async def test_create_transfer_config_flattened_error_async():
         )
 
 
-def test_update_transfer_config(
-    transport: str = "grpc", request_type=datatransfer.UpdateTransferConfigRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [datatransfer.UpdateTransferConfigRequest, dict,]
+)
+def test_update_transfer_config(request_type, transport: str = "grpc"):
     client = DataTransferServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1520,10 +1512,6 @@ def test_update_transfer_config(
     assert response.user_id == 747
     assert response.dataset_region == "dataset_region_value"
     assert response.notification_pubsub_topic == "notification_pubsub_topic_value"
-
-
-def test_update_transfer_config_from_dict():
-    test_update_transfer_config(request_type=dict)
 
 
 def test_update_transfer_config_empty_call():
@@ -1762,9 +1750,10 @@ async def test_update_transfer_config_flattened_error_async():
         )
 
 
-def test_delete_transfer_config(
-    transport: str = "grpc", request_type=datatransfer.DeleteTransferConfigRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [datatransfer.DeleteTransferConfigRequest, dict,]
+)
+def test_delete_transfer_config(request_type, transport: str = "grpc"):
     client = DataTransferServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1788,10 +1777,6 @@ def test_delete_transfer_config(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_transfer_config_from_dict():
-    test_delete_transfer_config(request_type=dict)
 
 
 def test_delete_transfer_config_empty_call():
@@ -1981,9 +1966,8 @@ async def test_delete_transfer_config_flattened_error_async():
         )
 
 
-def test_get_transfer_config(
-    transport: str = "grpc", request_type=datatransfer.GetTransferConfigRequest
-):
+@pytest.mark.parametrize("request_type", [datatransfer.GetTransferConfigRequest, dict,])
+def test_get_transfer_config(request_type, transport: str = "grpc"):
     client = DataTransferServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2029,10 +2013,6 @@ def test_get_transfer_config(
     assert response.user_id == 747
     assert response.dataset_region == "dataset_region_value"
     assert response.notification_pubsub_topic == "notification_pubsub_topic_value"
-
-
-def test_get_transfer_config_from_dict():
-    test_get_transfer_config(request_type=dict)
 
 
 def test_get_transfer_config_empty_call():
@@ -2248,9 +2228,10 @@ async def test_get_transfer_config_flattened_error_async():
         )
 
 
-def test_list_transfer_configs(
-    transport: str = "grpc", request_type=datatransfer.ListTransferConfigsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [datatransfer.ListTransferConfigsRequest, dict,]
+)
+def test_list_transfer_configs(request_type, transport: str = "grpc"):
     client = DataTransferServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2277,10 +2258,6 @@ def test_list_transfer_configs(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTransferConfigsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_transfer_configs_from_dict():
-    test_list_transfer_configs(request_type=dict)
 
 
 def test_list_transfer_configs_empty_call():
@@ -2479,8 +2456,10 @@ async def test_list_transfer_configs_flattened_error_async():
         )
 
 
-def test_list_transfer_configs_pager():
-    client = DataTransferServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_transfer_configs_pager(transport_name: str = "grpc"):
+    client = DataTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2524,8 +2503,10 @@ def test_list_transfer_configs_pager():
         assert all(isinstance(i, transfer.TransferConfig) for i in results)
 
 
-def test_list_transfer_configs_pages():
-    client = DataTransferServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_transfer_configs_pages(transport_name: str = "grpc"):
+    client = DataTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2649,9 +2630,10 @@ async def test_list_transfer_configs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_schedule_transfer_runs(
-    transport: str = "grpc", request_type=datatransfer.ScheduleTransferRunsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [datatransfer.ScheduleTransferRunsRequest, dict,]
+)
+def test_schedule_transfer_runs(request_type, transport: str = "grpc"):
     client = DataTransferServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2675,10 +2657,6 @@ def test_schedule_transfer_runs(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datatransfer.ScheduleTransferRunsResponse)
-
-
-def test_schedule_transfer_runs_from_dict():
-    test_schedule_transfer_runs(request_type=dict)
 
 
 def test_schedule_transfer_runs_empty_call():
@@ -2900,9 +2878,10 @@ async def test_schedule_transfer_runs_flattened_error_async():
         )
 
 
-def test_start_manual_transfer_runs(
-    transport: str = "grpc", request_type=datatransfer.StartManualTransferRunsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [datatransfer.StartManualTransferRunsRequest, dict,]
+)
+def test_start_manual_transfer_runs(request_type, transport: str = "grpc"):
     client = DataTransferServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2926,10 +2905,6 @@ def test_start_manual_transfer_runs(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datatransfer.StartManualTransferRunsResponse)
-
-
-def test_start_manual_transfer_runs_from_dict():
-    test_start_manual_transfer_runs(request_type=dict)
 
 
 def test_start_manual_transfer_runs_empty_call():
@@ -3045,9 +3020,8 @@ async def test_start_manual_transfer_runs_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_get_transfer_run(
-    transport: str = "grpc", request_type=datatransfer.GetTransferRunRequest
-):
+@pytest.mark.parametrize("request_type", [datatransfer.GetTransferRunRequest, dict,])
+def test_get_transfer_run(request_type, transport: str = "grpc"):
     client = DataTransferServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3083,10 +3057,6 @@ def test_get_transfer_run(
     assert response.user_id == 747
     assert response.schedule == "schedule_value"
     assert response.notification_pubsub_topic == "notification_pubsub_topic_value"
-
-
-def test_get_transfer_run_from_dict():
-    test_get_transfer_run(request_type=dict)
 
 
 def test_get_transfer_run_empty_call():
@@ -3282,9 +3252,8 @@ async def test_get_transfer_run_flattened_error_async():
         )
 
 
-def test_delete_transfer_run(
-    transport: str = "grpc", request_type=datatransfer.DeleteTransferRunRequest
-):
+@pytest.mark.parametrize("request_type", [datatransfer.DeleteTransferRunRequest, dict,])
+def test_delete_transfer_run(request_type, transport: str = "grpc"):
     client = DataTransferServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3308,10 +3277,6 @@ def test_delete_transfer_run(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_transfer_run_from_dict():
-    test_delete_transfer_run(request_type=dict)
 
 
 def test_delete_transfer_run_empty_call():
@@ -3500,9 +3465,8 @@ async def test_delete_transfer_run_flattened_error_async():
         )
 
 
-def test_list_transfer_runs(
-    transport: str = "grpc", request_type=datatransfer.ListTransferRunsRequest
-):
+@pytest.mark.parametrize("request_type", [datatransfer.ListTransferRunsRequest, dict,])
+def test_list_transfer_runs(request_type, transport: str = "grpc"):
     client = DataTransferServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3529,10 +3493,6 @@ def test_list_transfer_runs(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTransferRunsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_transfer_runs_from_dict():
-    test_list_transfer_runs(request_type=dict)
 
 
 def test_list_transfer_runs_empty_call():
@@ -3730,8 +3690,10 @@ async def test_list_transfer_runs_flattened_error_async():
         )
 
 
-def test_list_transfer_runs_pager():
-    client = DataTransferServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_transfer_runs_pager(transport_name: str = "grpc"):
+    client = DataTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3772,8 +3734,10 @@ def test_list_transfer_runs_pager():
         assert all(isinstance(i, transfer.TransferRun) for i in results)
 
 
-def test_list_transfer_runs_pages():
-    client = DataTransferServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_transfer_runs_pages(transport_name: str = "grpc"):
+    client = DataTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3888,9 +3852,8 @@ async def test_list_transfer_runs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_list_transfer_logs(
-    transport: str = "grpc", request_type=datatransfer.ListTransferLogsRequest
-):
+@pytest.mark.parametrize("request_type", [datatransfer.ListTransferLogsRequest, dict,])
+def test_list_transfer_logs(request_type, transport: str = "grpc"):
     client = DataTransferServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3917,10 +3880,6 @@ def test_list_transfer_logs(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTransferLogsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_transfer_logs_from_dict():
-    test_list_transfer_logs(request_type=dict)
 
 
 def test_list_transfer_logs_empty_call():
@@ -4118,8 +4077,10 @@ async def test_list_transfer_logs_flattened_error_async():
         )
 
 
-def test_list_transfer_logs_pager():
-    client = DataTransferServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_transfer_logs_pager(transport_name: str = "grpc"):
+    client = DataTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4163,8 +4124,10 @@ def test_list_transfer_logs_pager():
         assert all(isinstance(i, transfer.TransferMessage) for i in results)
 
 
-def test_list_transfer_logs_pages():
-    client = DataTransferServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_transfer_logs_pages(transport_name: str = "grpc"):
+    client = DataTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4288,9 +4251,8 @@ async def test_list_transfer_logs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_check_valid_creds(
-    transport: str = "grpc", request_type=datatransfer.CheckValidCredsRequest
-):
+@pytest.mark.parametrize("request_type", [datatransfer.CheckValidCredsRequest, dict,])
+def test_check_valid_creds(request_type, transport: str = "grpc"):
     client = DataTransferServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4315,10 +4277,6 @@ def test_check_valid_creds(
     # Establish that the response is the type that we expect.
     assert isinstance(response, datatransfer.CheckValidCredsResponse)
     assert response.has_valid_creds is True
-
-
-def test_check_valid_creds_from_dict():
-    test_check_valid_creds(request_type=dict)
 
 
 def test_check_valid_creds_empty_call():
@@ -5089,7 +5047,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
