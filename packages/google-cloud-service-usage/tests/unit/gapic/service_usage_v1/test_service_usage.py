@@ -242,20 +242,20 @@ def test_service_usage_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -312,7 +312,7 @@ def test_service_usage_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -407,7 +407,7 @@ def test_service_usage_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -438,7 +438,7 @@ def test_service_usage_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -469,9 +469,8 @@ def test_service_usage_client_client_options_from_dict():
         )
 
 
-def test_enable_service(
-    transport: str = "grpc", request_type=serviceusage.EnableServiceRequest
-):
+@pytest.mark.parametrize("request_type", [serviceusage.EnableServiceRequest, dict,])
+def test_enable_service(request_type, transport: str = "grpc"):
     client = ServiceUsageClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -493,10 +492,6 @@ def test_enable_service(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_enable_service_from_dict():
-    test_enable_service(request_type=dict)
 
 
 def test_enable_service_empty_call():
@@ -599,9 +594,8 @@ async def test_enable_service_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_disable_service(
-    transport: str = "grpc", request_type=serviceusage.DisableServiceRequest
-):
+@pytest.mark.parametrize("request_type", [serviceusage.DisableServiceRequest, dict,])
+def test_disable_service(request_type, transport: str = "grpc"):
     client = ServiceUsageClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -623,10 +617,6 @@ def test_disable_service(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_disable_service_from_dict():
-    test_disable_service(request_type=dict)
 
 
 def test_disable_service_empty_call():
@@ -729,9 +719,8 @@ async def test_disable_service_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_get_service(
-    transport: str = "grpc", request_type=serviceusage.GetServiceRequest
-):
+@pytest.mark.parametrize("request_type", [serviceusage.GetServiceRequest, dict,])
+def test_get_service(request_type, transport: str = "grpc"):
     client = ServiceUsageClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -758,10 +747,6 @@ def test_get_service(
     assert response.name == "name_value"
     assert response.parent == "parent_value"
     assert response.state == resources.State.DISABLED
-
-
-def test_get_service_from_dict():
-    test_get_service(request_type=dict)
 
 
 def test_get_service_empty_call():
@@ -869,9 +854,8 @@ async def test_get_service_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_list_services(
-    transport: str = "grpc", request_type=serviceusage.ListServicesRequest
-):
+@pytest.mark.parametrize("request_type", [serviceusage.ListServicesRequest, dict,])
+def test_list_services(request_type, transport: str = "grpc"):
     client = ServiceUsageClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -896,10 +880,6 @@ def test_list_services(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListServicesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_services_from_dict():
-    test_list_services(request_type=dict)
 
 
 def test_list_services_empty_call():
@@ -1003,8 +983,10 @@ async def test_list_services_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_list_services_pager():
-    client = ServiceUsageClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_services_pager(transport_name: str = "grpc"):
+    client = ServiceUsageClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_services), "__call__") as call:
@@ -1041,8 +1023,10 @@ def test_list_services_pager():
         assert all(isinstance(i, resources.Service) for i in results)
 
 
-def test_list_services_pages():
-    client = ServiceUsageClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_services_pages(transport_name: str = "grpc"):
+    client = ServiceUsageClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_services), "__call__") as call:
@@ -1141,9 +1125,10 @@ async def test_list_services_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_batch_enable_services(
-    transport: str = "grpc", request_type=serviceusage.BatchEnableServicesRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [serviceusage.BatchEnableServicesRequest, dict,]
+)
+def test_batch_enable_services(request_type, transport: str = "grpc"):
     client = ServiceUsageClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1167,10 +1152,6 @@ def test_batch_enable_services(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_batch_enable_services_from_dict():
-    test_batch_enable_services(request_type=dict)
 
 
 def test_batch_enable_services_empty_call():
@@ -1282,9 +1263,8 @@ async def test_batch_enable_services_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_batch_get_services(
-    transport: str = "grpc", request_type=serviceusage.BatchGetServicesRequest
-):
+@pytest.mark.parametrize("request_type", [serviceusage.BatchGetServicesRequest, dict,])
+def test_batch_get_services(request_type, transport: str = "grpc"):
     client = ServiceUsageClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1308,10 +1288,6 @@ def test_batch_get_services(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, serviceusage.BatchGetServicesResponse)
-
-
-def test_batch_get_services_from_dict():
-    test_batch_get_services(request_type=dict)
 
 
 def test_batch_get_services_empty_call():
@@ -1953,7 +1929,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
