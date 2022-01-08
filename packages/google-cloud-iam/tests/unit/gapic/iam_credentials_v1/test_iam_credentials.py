@@ -251,20 +251,20 @@ def test_iam_credentials_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -323,7 +323,7 @@ def test_iam_credentials_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -418,7 +418,7 @@ def test_iam_credentials_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -449,7 +449,7 @@ def test_iam_credentials_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -482,9 +482,8 @@ def test_iam_credentials_client_client_options_from_dict():
         )
 
 
-def test_generate_access_token(
-    transport: str = "grpc", request_type=common.GenerateAccessTokenRequest
-):
+@pytest.mark.parametrize("request_type", [common.GenerateAccessTokenRequest, dict,])
+def test_generate_access_token(request_type, transport: str = "grpc"):
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -511,10 +510,6 @@ def test_generate_access_token(
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.GenerateAccessTokenResponse)
     assert response.access_token == "access_token_value"
-
-
-def test_generate_access_token_from_dict():
-    test_generate_access_token(request_type=dict)
 
 
 def test_generate_access_token_empty_call():
@@ -740,9 +735,8 @@ async def test_generate_access_token_flattened_error_async():
         )
 
 
-def test_generate_id_token(
-    transport: str = "grpc", request_type=common.GenerateIdTokenRequest
-):
+@pytest.mark.parametrize("request_type", [common.GenerateIdTokenRequest, dict,])
+def test_generate_id_token(request_type, transport: str = "grpc"):
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -767,10 +761,6 @@ def test_generate_id_token(
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.GenerateIdTokenResponse)
     assert response.token == "token_value"
-
-
-def test_generate_id_token_from_dict():
-    test_generate_id_token(request_type=dict)
 
 
 def test_generate_id_token_empty_call():
@@ -996,7 +986,8 @@ async def test_generate_id_token_flattened_error_async():
         )
 
 
-def test_sign_blob(transport: str = "grpc", request_type=common.SignBlobRequest):
+@pytest.mark.parametrize("request_type", [common.SignBlobRequest, dict,])
+def test_sign_blob(request_type, transport: str = "grpc"):
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1022,10 +1013,6 @@ def test_sign_blob(transport: str = "grpc", request_type=common.SignBlobRequest)
     assert isinstance(response, common.SignBlobResponse)
     assert response.key_id == "key_id_value"
     assert response.signed_blob == b"signed_blob_blob"
-
-
-def test_sign_blob_from_dict():
-    test_sign_blob(request_type=dict)
 
 
 def test_sign_blob_empty_call():
@@ -1228,7 +1215,8 @@ async def test_sign_blob_flattened_error_async():
         )
 
 
-def test_sign_jwt(transport: str = "grpc", request_type=common.SignJwtRequest):
+@pytest.mark.parametrize("request_type", [common.SignJwtRequest, dict,])
+def test_sign_jwt(request_type, transport: str = "grpc"):
     client = IAMCredentialsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1254,10 +1242,6 @@ def test_sign_jwt(transport: str = "grpc", request_type=common.SignJwtRequest):
     assert isinstance(response, common.SignJwtResponse)
     assert response.key_id == "key_id_value"
     assert response.signed_jwt == "signed_jwt_value"
-
-
-def test_sign_jwt_from_dict():
-    test_sign_jwt(request_type=dict)
 
 
 def test_sign_jwt_empty_call():
@@ -1975,7 +1959,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
