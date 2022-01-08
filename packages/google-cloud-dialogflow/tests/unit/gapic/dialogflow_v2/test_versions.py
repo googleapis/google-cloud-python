@@ -232,20 +232,20 @@ def test_versions_client_client_options(client_class, transport_class, transport
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -302,7 +302,7 @@ def test_versions_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -393,7 +393,7 @@ def test_versions_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -420,7 +420,7 @@ def test_versions_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -451,9 +451,8 @@ def test_versions_client_client_options_from_dict():
         )
 
 
-def test_list_versions(
-    transport: str = "grpc", request_type=version.ListVersionsRequest
-):
+@pytest.mark.parametrize("request_type", [version.ListVersionsRequest, dict,])
+def test_list_versions(request_type, transport: str = "grpc"):
     client = VersionsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -478,10 +477,6 @@ def test_list_versions(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListVersionsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_versions_from_dict():
-    test_list_versions(request_type=dict)
 
 
 def test_list_versions_empty_call():
@@ -653,8 +648,10 @@ async def test_list_versions_flattened_error_async():
         )
 
 
-def test_list_versions_pager():
-    client = VersionsClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_versions_pager(transport_name: str = "grpc"):
+    client = VersionsClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_versions), "__call__") as call:
@@ -687,8 +684,10 @@ def test_list_versions_pager():
         assert all(isinstance(i, version.Version) for i in results)
 
 
-def test_list_versions_pages():
-    client = VersionsClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_versions_pages(transport_name: str = "grpc"):
+    client = VersionsClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_versions), "__call__") as call:
@@ -775,7 +774,8 @@ async def test_list_versions_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_version(transport: str = "grpc", request_type=version.GetVersionRequest):
+@pytest.mark.parametrize("request_type", [version.GetVersionRequest, dict,])
+def test_get_version(request_type, transport: str = "grpc"):
     client = VersionsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -806,10 +806,6 @@ def test_get_version(transport: str = "grpc", request_type=version.GetVersionReq
     assert response.description == "description_value"
     assert response.version_number == 1518
     assert response.status == version.Version.VersionStatus.IN_PROGRESS
-
-
-def test_get_version_from_dict():
-    test_get_version(request_type=dict)
 
 
 def test_get_version_empty_call():
@@ -985,9 +981,8 @@ async def test_get_version_flattened_error_async():
         )
 
 
-def test_create_version(
-    transport: str = "grpc", request_type=gcd_version.CreateVersionRequest
-):
+@pytest.mark.parametrize("request_type", [gcd_version.CreateVersionRequest, dict,])
+def test_create_version(request_type, transport: str = "grpc"):
     client = VersionsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1018,10 +1013,6 @@ def test_create_version(
     assert response.description == "description_value"
     assert response.version_number == 1518
     assert response.status == gcd_version.Version.VersionStatus.IN_PROGRESS
-
-
-def test_create_version_from_dict():
-    test_create_version(request_type=dict)
 
 
 def test_create_version_empty_call():
@@ -1211,9 +1202,8 @@ async def test_create_version_flattened_error_async():
         )
 
 
-def test_update_version(
-    transport: str = "grpc", request_type=gcd_version.UpdateVersionRequest
-):
+@pytest.mark.parametrize("request_type", [gcd_version.UpdateVersionRequest, dict,])
+def test_update_version(request_type, transport: str = "grpc"):
     client = VersionsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1244,10 +1234,6 @@ def test_update_version(
     assert response.description == "description_value"
     assert response.version_number == 1518
     assert response.status == gcd_version.Version.VersionStatus.IN_PROGRESS
-
-
-def test_update_version_from_dict():
-    test_update_version(request_type=dict)
 
 
 def test_update_version_empty_call():
@@ -1443,9 +1429,8 @@ async def test_update_version_flattened_error_async():
         )
 
 
-def test_delete_version(
-    transport: str = "grpc", request_type=version.DeleteVersionRequest
-):
+@pytest.mark.parametrize("request_type", [version.DeleteVersionRequest, dict,])
+def test_delete_version(request_type, transport: str = "grpc"):
     client = VersionsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1467,10 +1452,6 @@ def test_delete_version(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_version_from_dict():
-    test_delete_version(request_type=dict)
 
 
 def test_delete_version_empty_call():
@@ -2146,7 +2127,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(

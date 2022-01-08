@@ -52,6 +52,8 @@ class ParticipantsAsyncClient:
     DEFAULT_ENDPOINT = ParticipantsClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = ParticipantsClient.DEFAULT_MTLS_ENDPOINT
 
+    answer_record_path = staticmethod(ParticipantsClient.answer_record_path)
+    parse_answer_record_path = staticmethod(ParticipantsClient.parse_answer_record_path)
     context_path = staticmethod(ParticipantsClient.context_path)
     parse_context_path = staticmethod(ParticipantsClient.parse_context_path)
     document_path = staticmethod(ParticipantsClient.document_path)

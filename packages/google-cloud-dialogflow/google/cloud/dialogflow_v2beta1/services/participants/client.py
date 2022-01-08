@@ -164,6 +164,21 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         return self._transport
 
     @staticmethod
+    def answer_record_path(project: str, answer_record: str,) -> str:
+        """Returns a fully-qualified answer_record string."""
+        return "projects/{project}/answerRecords/{answer_record}".format(
+            project=project, answer_record=answer_record,
+        )
+
+    @staticmethod
+    def parse_answer_record_path(path: str) -> Dict[str, str]:
+        """Parses a answer_record path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/answerRecords/(?P<answer_record>.+?)$", path
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def context_path(project: str, session: str, context: str,) -> str:
         """Returns a fully-qualified context string."""
         return "projects/{project}/agent/sessions/{session}/contexts/{context}".format(

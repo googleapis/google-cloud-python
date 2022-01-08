@@ -250,20 +250,20 @@ def test_participants_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -320,7 +320,7 @@ def test_participants_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -415,7 +415,7 @@ def test_participants_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -446,7 +446,7 @@ def test_participants_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -477,9 +477,10 @@ def test_participants_client_client_options_from_dict():
         )
 
 
-def test_create_participant(
-    transport: str = "grpc", request_type=gcd_participant.CreateParticipantRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [gcd_participant.CreateParticipantRequest, dict,]
+)
+def test_create_participant(request_type, transport: str = "grpc"):
     client = ParticipantsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -510,10 +511,6 @@ def test_create_participant(
     assert response.name == "name_value"
     assert response.role == gcd_participant.Participant.Role.HUMAN_AGENT
     assert response.obfuscated_external_user_id == "obfuscated_external_user_id_value"
-
-
-def test_create_participant_from_dict():
-    test_create_participant(request_type=dict)
 
 
 def test_create_participant_empty_call():
@@ -720,9 +717,8 @@ async def test_create_participant_flattened_error_async():
         )
 
 
-def test_get_participant(
-    transport: str = "grpc", request_type=participant.GetParticipantRequest
-):
+@pytest.mark.parametrize("request_type", [participant.GetParticipantRequest, dict,])
+def test_get_participant(request_type, transport: str = "grpc"):
     client = ParticipantsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -751,10 +747,6 @@ def test_get_participant(
     assert response.name == "name_value"
     assert response.role == participant.Participant.Role.HUMAN_AGENT
     assert response.obfuscated_external_user_id == "obfuscated_external_user_id_value"
-
-
-def test_get_participant_from_dict():
-    test_get_participant(request_type=dict)
 
 
 def test_get_participant_empty_call():
@@ -932,9 +924,8 @@ async def test_get_participant_flattened_error_async():
         )
 
 
-def test_list_participants(
-    transport: str = "grpc", request_type=participant.ListParticipantsRequest
-):
+@pytest.mark.parametrize("request_type", [participant.ListParticipantsRequest, dict,])
+def test_list_participants(request_type, transport: str = "grpc"):
     client = ParticipantsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -961,10 +952,6 @@ def test_list_participants(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListParticipantsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_participants_from_dict():
-    test_list_participants(request_type=dict)
 
 
 def test_list_participants_empty_call():
@@ -1150,8 +1137,10 @@ async def test_list_participants_flattened_error_async():
         )
 
 
-def test_list_participants_pager():
-    client = ParticipantsClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_participants_pager(transport_name: str = "grpc"):
+    client = ParticipantsClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1192,8 +1181,10 @@ def test_list_participants_pager():
         assert all(isinstance(i, participant.Participant) for i in results)
 
 
-def test_list_participants_pages():
-    client = ParticipantsClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_participants_pages(transport_name: str = "grpc"):
+    client = ParticipantsClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1304,9 +1295,10 @@ async def test_list_participants_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_update_participant(
-    transport: str = "grpc", request_type=gcd_participant.UpdateParticipantRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [gcd_participant.UpdateParticipantRequest, dict,]
+)
+def test_update_participant(request_type, transport: str = "grpc"):
     client = ParticipantsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1337,10 +1329,6 @@ def test_update_participant(
     assert response.name == "name_value"
     assert response.role == gcd_participant.Participant.Role.HUMAN_AGENT
     assert response.obfuscated_external_user_id == "obfuscated_external_user_id_value"
-
-
-def test_update_participant_from_dict():
-    test_update_participant(request_type=dict)
 
 
 def test_update_participant_empty_call():
@@ -1551,9 +1539,8 @@ async def test_update_participant_flattened_error_async():
         )
 
 
-def test_analyze_content(
-    transport: str = "grpc", request_type=gcd_participant.AnalyzeContentRequest
-):
+@pytest.mark.parametrize("request_type", [gcd_participant.AnalyzeContentRequest, dict,])
+def test_analyze_content(request_type, transport: str = "grpc"):
     client = ParticipantsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1578,10 +1565,6 @@ def test_analyze_content(
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_participant.AnalyzeContentResponse)
     assert response.reply_text == "reply_text_value"
-
-
-def test_analyze_content_from_dict():
-    test_analyze_content(request_type=dict)
 
 
 def test_analyze_content_empty_call():
@@ -1769,9 +1752,8 @@ async def test_analyze_content_flattened_error_async():
         )
 
 
-def test_suggest_articles(
-    transport: str = "grpc", request_type=participant.SuggestArticlesRequest
-):
+@pytest.mark.parametrize("request_type", [participant.SuggestArticlesRequest, dict,])
+def test_suggest_articles(request_type, transport: str = "grpc"):
     client = ParticipantsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1797,10 +1779,6 @@ def test_suggest_articles(
     assert isinstance(response, participant.SuggestArticlesResponse)
     assert response.latest_message == "latest_message_value"
     assert response.context_size == 1311
-
-
-def test_suggest_articles_from_dict():
-    test_suggest_articles(request_type=dict)
 
 
 def test_suggest_articles_empty_call():
@@ -1975,9 +1953,8 @@ async def test_suggest_articles_flattened_error_async():
         )
 
 
-def test_suggest_faq_answers(
-    transport: str = "grpc", request_type=participant.SuggestFaqAnswersRequest
-):
+@pytest.mark.parametrize("request_type", [participant.SuggestFaqAnswersRequest, dict,])
+def test_suggest_faq_answers(request_type, transport: str = "grpc"):
     client = ParticipantsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2005,10 +1982,6 @@ def test_suggest_faq_answers(
     assert isinstance(response, participant.SuggestFaqAnswersResponse)
     assert response.latest_message == "latest_message_value"
     assert response.context_size == 1311
-
-
-def test_suggest_faq_answers_from_dict():
-    test_suggest_faq_answers(request_type=dict)
 
 
 def test_suggest_faq_answers_empty_call():
@@ -2195,9 +2168,10 @@ async def test_suggest_faq_answers_flattened_error_async():
         )
 
 
-def test_suggest_smart_replies(
-    transport: str = "grpc", request_type=participant.SuggestSmartRepliesRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [participant.SuggestSmartRepliesRequest, dict,]
+)
+def test_suggest_smart_replies(request_type, transport: str = "grpc"):
     client = ParticipantsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2225,10 +2199,6 @@ def test_suggest_smart_replies(
     assert isinstance(response, participant.SuggestSmartRepliesResponse)
     assert response.latest_message == "latest_message_value"
     assert response.context_size == 1311
-
-
-def test_suggest_smart_replies_from_dict():
-    test_suggest_smart_replies(request_type=dict)
 
 
 def test_suggest_smart_replies_empty_call():
@@ -2415,9 +2385,8 @@ async def test_suggest_smart_replies_flattened_error_async():
         )
 
 
-def test_list_suggestions(
-    transport: str = "grpc", request_type=participant.ListSuggestionsRequest
-):
+@pytest.mark.parametrize("request_type", [participant.ListSuggestionsRequest, dict,])
+def test_list_suggestions(request_type, transport: str = "grpc"):
     client = ParticipantsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2442,10 +2411,6 @@ def test_list_suggestions(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSuggestionsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_suggestions_from_dict():
-    test_list_suggestions(request_type=dict)
 
 
 def test_list_suggestions_empty_call():
@@ -2551,8 +2516,10 @@ async def test_list_suggestions_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_list_suggestions_pager():
-    client = ParticipantsClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_suggestions_pager(transport_name: str = "grpc"):
+    client = ParticipantsClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_suggestions), "__call__") as call:
@@ -2589,8 +2556,10 @@ def test_list_suggestions_pager():
         assert all(isinstance(i, participant.Suggestion) for i in results)
 
 
-def test_list_suggestions_pages():
-    client = ParticipantsClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_suggestions_pages(transport_name: str = "grpc"):
+    client = ParticipantsClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_suggestions), "__call__") as call:
@@ -2689,9 +2658,8 @@ async def test_list_suggestions_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_compile_suggestion(
-    transport: str = "grpc", request_type=participant.CompileSuggestionRequest
-):
+@pytest.mark.parametrize("request_type", [participant.CompileSuggestionRequest, dict,])
+def test_compile_suggestion(request_type, transport: str = "grpc"):
     client = ParticipantsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2719,10 +2687,6 @@ def test_compile_suggestion(
     assert isinstance(response, participant.CompileSuggestionResponse)
     assert response.latest_message == "latest_message_value"
     assert response.context_size == 1311
-
-
-def test_compile_suggestion_from_dict():
-    test_compile_suggestion(request_type=dict)
 
 
 def test_compile_suggestion_empty_call():
@@ -3241,10 +3205,32 @@ def test_participants_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_context_path():
+def test_answer_record_path():
     project = "squid"
-    session = "clam"
-    context = "whelk"
+    answer_record = "clam"
+    expected = "projects/{project}/answerRecords/{answer_record}".format(
+        project=project, answer_record=answer_record,
+    )
+    actual = ParticipantsClient.answer_record_path(project, answer_record)
+    assert expected == actual
+
+
+def test_parse_answer_record_path():
+    expected = {
+        "project": "whelk",
+        "answer_record": "octopus",
+    }
+    path = ParticipantsClient.answer_record_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ParticipantsClient.parse_answer_record_path(path)
+    assert expected == actual
+
+
+def test_context_path():
+    project = "oyster"
+    session = "nudibranch"
+    context = "cuttlefish"
     expected = "projects/{project}/agent/sessions/{session}/contexts/{context}".format(
         project=project, session=session, context=context,
     )
@@ -3254,9 +3240,9 @@ def test_context_path():
 
 def test_parse_context_path():
     expected = {
-        "project": "octopus",
-        "session": "oyster",
-        "context": "nudibranch",
+        "project": "mussel",
+        "session": "winkle",
+        "context": "nautilus",
     }
     path = ParticipantsClient.context_path(**expected)
 
@@ -3266,9 +3252,9 @@ def test_parse_context_path():
 
 
 def test_document_path():
-    project = "cuttlefish"
-    knowledge_base = "mussel"
-    document = "winkle"
+    project = "scallop"
+    knowledge_base = "abalone"
+    document = "squid"
     expected = "projects/{project}/knowledgeBases/{knowledge_base}/documents/{document}".format(
         project=project, knowledge_base=knowledge_base, document=document,
     )
@@ -3278,9 +3264,9 @@ def test_document_path():
 
 def test_parse_document_path():
     expected = {
-        "project": "nautilus",
-        "knowledge_base": "scallop",
-        "document": "abalone",
+        "project": "clam",
+        "knowledge_base": "whelk",
+        "document": "octopus",
     }
     path = ParticipantsClient.document_path(**expected)
 
@@ -3290,8 +3276,8 @@ def test_parse_document_path():
 
 
 def test_intent_path():
-    project = "squid"
-    intent = "clam"
+    project = "oyster"
+    intent = "nudibranch"
     expected = "projects/{project}/agent/intents/{intent}".format(
         project=project, intent=intent,
     )
@@ -3301,8 +3287,8 @@ def test_intent_path():
 
 def test_parse_intent_path():
     expected = {
-        "project": "whelk",
-        "intent": "octopus",
+        "project": "cuttlefish",
+        "intent": "mussel",
     }
     path = ParticipantsClient.intent_path(**expected)
 
@@ -3312,9 +3298,9 @@ def test_parse_intent_path():
 
 
 def test_message_path():
-    project = "oyster"
-    conversation = "nudibranch"
-    message = "cuttlefish"
+    project = "winkle"
+    conversation = "nautilus"
+    message = "scallop"
     expected = "projects/{project}/conversations/{conversation}/messages/{message}".format(
         project=project, conversation=conversation, message=message,
     )
@@ -3324,9 +3310,9 @@ def test_message_path():
 
 def test_parse_message_path():
     expected = {
-        "project": "mussel",
-        "conversation": "winkle",
-        "message": "nautilus",
+        "project": "abalone",
+        "conversation": "squid",
+        "message": "clam",
     }
     path = ParticipantsClient.message_path(**expected)
 
@@ -3336,9 +3322,9 @@ def test_parse_message_path():
 
 
 def test_participant_path():
-    project = "scallop"
-    conversation = "abalone"
-    participant = "squid"
+    project = "whelk"
+    conversation = "octopus"
+    participant = "oyster"
     expected = "projects/{project}/conversations/{conversation}/participants/{participant}".format(
         project=project, conversation=conversation, participant=participant,
     )
@@ -3348,9 +3334,9 @@ def test_participant_path():
 
 def test_parse_participant_path():
     expected = {
-        "project": "clam",
-        "conversation": "whelk",
-        "participant": "octopus",
+        "project": "nudibranch",
+        "conversation": "cuttlefish",
+        "participant": "mussel",
     }
     path = ParticipantsClient.participant_path(**expected)
 
@@ -3360,9 +3346,9 @@ def test_parse_participant_path():
 
 
 def test_session_entity_type_path():
-    project = "oyster"
-    session = "nudibranch"
-    entity_type = "cuttlefish"
+    project = "winkle"
+    session = "nautilus"
+    entity_type = "scallop"
     expected = "projects/{project}/agent/sessions/{session}/entityTypes/{entity_type}".format(
         project=project, session=session, entity_type=entity_type,
     )
@@ -3372,9 +3358,9 @@ def test_session_entity_type_path():
 
 def test_parse_session_entity_type_path():
     expected = {
-        "project": "mussel",
-        "session": "winkle",
-        "entity_type": "nautilus",
+        "project": "abalone",
+        "session": "squid",
+        "entity_type": "clam",
     }
     path = ParticipantsClient.session_entity_type_path(**expected)
 
@@ -3384,7 +3370,7 @@ def test_parse_session_entity_type_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "scallop"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -3394,7 +3380,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "abalone",
+        "billing_account": "octopus",
     }
     path = ParticipantsClient.common_billing_account_path(**expected)
 
@@ -3404,7 +3390,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "squid"
+    folder = "oyster"
     expected = "folders/{folder}".format(folder=folder,)
     actual = ParticipantsClient.common_folder_path(folder)
     assert expected == actual
@@ -3412,7 +3398,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "clam",
+        "folder": "nudibranch",
     }
     path = ParticipantsClient.common_folder_path(**expected)
 
@@ -3422,7 +3408,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "whelk"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(organization=organization,)
     actual = ParticipantsClient.common_organization_path(organization)
     assert expected == actual
@@ -3430,7 +3416,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "octopus",
+        "organization": "mussel",
     }
     path = ParticipantsClient.common_organization_path(**expected)
 
@@ -3440,7 +3426,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "oyster"
+    project = "winkle"
     expected = "projects/{project}".format(project=project,)
     actual = ParticipantsClient.common_project_path(project)
     assert expected == actual
@@ -3448,7 +3434,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nudibranch",
+        "project": "nautilus",
     }
     path = ParticipantsClient.common_project_path(**expected)
 
@@ -3458,8 +3444,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "cuttlefish"
-    location = "mussel"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -3469,8 +3455,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
+        "project": "squid",
+        "location": "clam",
     }
     path = ParticipantsClient.common_location_path(**expected)
 
@@ -3479,7 +3465,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(

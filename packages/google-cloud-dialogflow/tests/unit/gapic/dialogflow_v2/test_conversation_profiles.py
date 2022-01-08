@@ -261,20 +261,20 @@ def test_conversation_profiles_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -343,7 +343,7 @@ def test_conversation_profiles_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -442,7 +442,7 @@ def test_conversation_profiles_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -477,7 +477,7 @@ def test_conversation_profiles_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -510,10 +510,10 @@ def test_conversation_profiles_client_client_options_from_dict():
         )
 
 
-def test_list_conversation_profiles(
-    transport: str = "grpc",
-    request_type=conversation_profile.ListConversationProfilesRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [conversation_profile.ListConversationProfilesRequest, dict,]
+)
+def test_list_conversation_profiles(request_type, transport: str = "grpc"):
     client = ConversationProfilesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -540,10 +540,6 @@ def test_list_conversation_profiles(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListConversationProfilesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_conversation_profiles_from_dict():
-    test_list_conversation_profiles(request_type=dict)
 
 
 def test_list_conversation_profiles_empty_call():
@@ -744,9 +740,9 @@ async def test_list_conversation_profiles_flattened_error_async():
         )
 
 
-def test_list_conversation_profiles_pager():
+def test_list_conversation_profiles_pager(transport_name: str = "grpc"):
     client = ConversationProfilesClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -794,9 +790,9 @@ def test_list_conversation_profiles_pager():
         )
 
 
-def test_list_conversation_profiles_pages():
+def test_list_conversation_profiles_pages(transport_name: str = "grpc"):
     client = ConversationProfilesClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -926,10 +922,10 @@ async def test_list_conversation_profiles_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_conversation_profile(
-    transport: str = "grpc",
-    request_type=conversation_profile.GetConversationProfileRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [conversation_profile.GetConversationProfileRequest, dict,]
+)
+def test_get_conversation_profile(request_type, transport: str = "grpc"):
     client = ConversationProfilesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -964,10 +960,6 @@ def test_get_conversation_profile(
     assert response.language_code == "language_code_value"
     assert response.time_zone == "time_zone_value"
     assert response.security_settings == "security_settings_value"
-
-
-def test_get_conversation_profile_from_dict():
-    test_get_conversation_profile(request_type=dict)
 
 
 def test_get_conversation_profile_empty_call():
@@ -1174,10 +1166,10 @@ async def test_get_conversation_profile_flattened_error_async():
         )
 
 
-def test_create_conversation_profile(
-    transport: str = "grpc",
-    request_type=gcd_conversation_profile.CreateConversationProfileRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [gcd_conversation_profile.CreateConversationProfileRequest, dict,]
+)
+def test_create_conversation_profile(request_type, transport: str = "grpc"):
     client = ConversationProfilesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1212,10 +1204,6 @@ def test_create_conversation_profile(
     assert response.language_code == "language_code_value"
     assert response.time_zone == "time_zone_value"
     assert response.security_settings == "security_settings_value"
-
-
-def test_create_conversation_profile_from_dict():
-    test_create_conversation_profile(request_type=dict)
 
 
 def test_create_conversation_profile_empty_call():
@@ -1446,10 +1434,10 @@ async def test_create_conversation_profile_flattened_error_async():
         )
 
 
-def test_update_conversation_profile(
-    transport: str = "grpc",
-    request_type=gcd_conversation_profile.UpdateConversationProfileRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [gcd_conversation_profile.UpdateConversationProfileRequest, dict,]
+)
+def test_update_conversation_profile(request_type, transport: str = "grpc"):
     client = ConversationProfilesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1484,10 +1472,6 @@ def test_update_conversation_profile(
     assert response.language_code == "language_code_value"
     assert response.time_zone == "time_zone_value"
     assert response.security_settings == "security_settings_value"
-
-
-def test_update_conversation_profile_from_dict():
-    test_update_conversation_profile(request_type=dict)
 
 
 def test_update_conversation_profile_empty_call():
@@ -1724,10 +1708,10 @@ async def test_update_conversation_profile_flattened_error_async():
         )
 
 
-def test_delete_conversation_profile(
-    transport: str = "grpc",
-    request_type=conversation_profile.DeleteConversationProfileRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [conversation_profile.DeleteConversationProfileRequest, dict,]
+)
+def test_delete_conversation_profile(request_type, transport: str = "grpc"):
     client = ConversationProfilesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1751,10 +1735,6 @@ def test_delete_conversation_profile(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_conversation_profile_from_dict():
-    test_delete_conversation_profile(request_type=dict)
 
 
 def test_delete_conversation_profile_empty_call():
@@ -2594,7 +2574,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(

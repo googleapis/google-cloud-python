@@ -253,20 +253,20 @@ def test_conversations_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -325,7 +325,7 @@ def test_conversations_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -420,7 +420,7 @@ def test_conversations_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -451,7 +451,7 @@ def test_conversations_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -484,9 +484,10 @@ def test_conversations_client_client_options_from_dict():
         )
 
 
-def test_create_conversation(
-    transport: str = "grpc", request_type=gcd_conversation.CreateConversationRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [gcd_conversation.CreateConversationRequest, dict,]
+)
+def test_create_conversation(request_type, transport: str = "grpc"):
     client = ConversationsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -525,10 +526,6 @@ def test_create_conversation(
         response.conversation_stage
         == gcd_conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE
     )
-
-
-def test_create_conversation_from_dict():
-    test_create_conversation(request_type=dict)
 
 
 def test_create_conversation_empty_call():
@@ -749,9 +746,8 @@ async def test_create_conversation_flattened_error_async():
         )
 
 
-def test_list_conversations(
-    transport: str = "grpc", request_type=conversation.ListConversationsRequest
-):
+@pytest.mark.parametrize("request_type", [conversation.ListConversationsRequest, dict,])
+def test_list_conversations(request_type, transport: str = "grpc"):
     client = ConversationsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -778,10 +774,6 @@ def test_list_conversations(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListConversationsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_conversations_from_dict():
-    test_list_conversations(request_type=dict)
 
 
 def test_list_conversations_empty_call():
@@ -973,8 +965,10 @@ async def test_list_conversations_flattened_error_async():
         )
 
 
-def test_list_conversations_pager():
-    client = ConversationsClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_conversations_pager(transport_name: str = "grpc"):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1018,8 +1012,10 @@ def test_list_conversations_pager():
         assert all(isinstance(i, conversation.Conversation) for i in results)
 
 
-def test_list_conversations_pages():
-    client = ConversationsClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_conversations_pages(transport_name: str = "grpc"):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1139,9 +1135,8 @@ async def test_list_conversations_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_conversation(
-    transport: str = "grpc", request_type=conversation.GetConversationRequest
-):
+@pytest.mark.parametrize("request_type", [conversation.GetConversationRequest, dict,])
+def test_get_conversation(request_type, transport: str = "grpc"):
     client = ConversationsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1177,10 +1172,6 @@ def test_get_conversation(
         response.conversation_stage
         == conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE
     )
-
-
-def test_get_conversation_from_dict():
-    test_get_conversation(request_type=dict)
 
 
 def test_get_conversation_empty_call():
@@ -1371,9 +1362,10 @@ async def test_get_conversation_flattened_error_async():
         )
 
 
-def test_complete_conversation(
-    transport: str = "grpc", request_type=conversation.CompleteConversationRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [conversation.CompleteConversationRequest, dict,]
+)
+def test_complete_conversation(request_type, transport: str = "grpc"):
     client = ConversationsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1411,10 +1403,6 @@ def test_complete_conversation(
         response.conversation_stage
         == conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE
     )
-
-
-def test_complete_conversation_from_dict():
-    test_complete_conversation(request_type=dict)
 
 
 def test_complete_conversation_empty_call():
@@ -1618,9 +1606,10 @@ async def test_complete_conversation_flattened_error_async():
         )
 
 
-def test_batch_create_messages(
-    transport: str = "grpc", request_type=conversation.BatchCreateMessagesRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [conversation.BatchCreateMessagesRequest, dict,]
+)
+def test_batch_create_messages(request_type, transport: str = "grpc"):
     client = ConversationsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1644,10 +1633,6 @@ def test_batch_create_messages(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, conversation.BatchCreateMessagesResponse)
-
-
-def test_batch_create_messages_from_dict():
-    test_batch_create_messages(request_type=dict)
 
 
 def test_batch_create_messages_empty_call():
@@ -1837,9 +1822,8 @@ async def test_batch_create_messages_flattened_error_async():
         )
 
 
-def test_list_messages(
-    transport: str = "grpc", request_type=conversation.ListMessagesRequest
-):
+@pytest.mark.parametrize("request_type", [conversation.ListMessagesRequest, dict,])
+def test_list_messages(request_type, transport: str = "grpc"):
     client = ConversationsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1864,10 +1848,6 @@ def test_list_messages(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMessagesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_messages_from_dict():
-    test_list_messages(request_type=dict)
 
 
 def test_list_messages_empty_call():
@@ -2045,8 +2025,10 @@ async def test_list_messages_flattened_error_async():
         )
 
 
-def test_list_messages_pager():
-    client = ConversationsClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_messages_pager(transport_name: str = "grpc"):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_messages), "__call__") as call:
@@ -2083,8 +2065,10 @@ def test_list_messages_pager():
         assert all(isinstance(i, participant.Message) for i in results)
 
 
-def test_list_messages_pages():
-    client = ConversationsClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_messages_pages(transport_name: str = "grpc"):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_messages), "__call__") as call:
@@ -2758,7 +2742,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
