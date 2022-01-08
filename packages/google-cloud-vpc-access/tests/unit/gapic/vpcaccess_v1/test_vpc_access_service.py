@@ -253,20 +253,20 @@ def test_vpc_access_service_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -335,7 +335,7 @@ def test_vpc_access_service_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -430,7 +430,7 @@ def test_vpc_access_service_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -461,7 +461,7 @@ def test_vpc_access_service_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -494,9 +494,8 @@ def test_vpc_access_service_client_client_options_from_dict():
         )
 
 
-def test_create_connector(
-    transport: str = "grpc", request_type=vpc_access.CreateConnectorRequest
-):
+@pytest.mark.parametrize("request_type", [vpc_access.CreateConnectorRequest, dict,])
+def test_create_connector(request_type, transport: str = "grpc"):
     client = VpcAccessServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -518,10 +517,6 @@ def test_create_connector(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_connector_from_dict():
-    test_create_connector(request_type=dict)
 
 
 def test_create_connector_empty_call():
@@ -724,9 +719,8 @@ async def test_create_connector_flattened_error_async():
         )
 
 
-def test_get_connector(
-    transport: str = "grpc", request_type=vpc_access.GetConnectorRequest
-):
+@pytest.mark.parametrize("request_type", [vpc_access.GetConnectorRequest, dict,])
+def test_get_connector(request_type, transport: str = "grpc"):
     client = VpcAccessServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -763,10 +757,6 @@ def test_get_connector(
     assert response.min_throughput == 1533
     assert response.max_throughput == 1535
     assert response.connected_projects == ["connected_projects_value"]
-
-
-def test_get_connector_from_dict():
-    test_get_connector(request_type=dict)
 
 
 def test_get_connector_empty_call():
@@ -958,9 +948,8 @@ async def test_get_connector_flattened_error_async():
         )
 
 
-def test_list_connectors(
-    transport: str = "grpc", request_type=vpc_access.ListConnectorsRequest
-):
+@pytest.mark.parametrize("request_type", [vpc_access.ListConnectorsRequest, dict,])
+def test_list_connectors(request_type, transport: str = "grpc"):
     client = VpcAccessServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -985,10 +974,6 @@ def test_list_connectors(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListConnectorsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_connectors_from_dict():
-    test_list_connectors(request_type=dict)
 
 
 def test_list_connectors_empty_call():
@@ -1166,8 +1151,10 @@ async def test_list_connectors_flattened_error_async():
         )
 
 
-def test_list_connectors_pager():
-    client = VpcAccessServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_connectors_pager(transport_name: str = "grpc"):
+    client = VpcAccessServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_connectors), "__call__") as call:
@@ -1204,8 +1191,10 @@ def test_list_connectors_pager():
         assert all(isinstance(i, vpc_access.Connector) for i in results)
 
 
-def test_list_connectors_pages():
-    client = VpcAccessServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_connectors_pages(transport_name: str = "grpc"):
+    client = VpcAccessServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_connectors), "__call__") as call:
@@ -1308,9 +1297,8 @@ async def test_list_connectors_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_delete_connector(
-    transport: str = "grpc", request_type=vpc_access.DeleteConnectorRequest
-):
+@pytest.mark.parametrize("request_type", [vpc_access.DeleteConnectorRequest, dict,])
+def test_delete_connector(request_type, transport: str = "grpc"):
     client = VpcAccessServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1332,10 +1320,6 @@ def test_delete_connector(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_connector_from_dict():
-    test_delete_connector(request_type=dict)
 
 
 def test_delete_connector_empty_call():
@@ -2060,7 +2044,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
