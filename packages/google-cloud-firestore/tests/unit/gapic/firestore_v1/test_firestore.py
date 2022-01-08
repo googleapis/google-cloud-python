@@ -243,20 +243,20 @@ def test_firestore_client_client_options(client_class, transport_class, transpor
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -313,7 +313,7 @@ def test_firestore_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -408,7 +408,7 @@ def test_firestore_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -439,7 +439,7 @@ def test_firestore_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -470,9 +470,8 @@ def test_firestore_client_client_options_from_dict():
         )
 
 
-def test_get_document(
-    transport: str = "grpc", request_type=firestore.GetDocumentRequest
-):
+@pytest.mark.parametrize("request_type", [firestore.GetDocumentRequest, dict,])
+def test_get_document(request_type, transport: str = "grpc"):
     client = FirestoreClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -495,10 +494,6 @@ def test_get_document(
     # Establish that the response is the type that we expect.
     assert isinstance(response, document.Document)
     assert response.name == "name_value"
-
-
-def test_get_document_from_dict():
-    test_get_document(request_type=dict)
 
 
 def test_get_document_empty_call():
@@ -600,9 +595,8 @@ async def test_get_document_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_list_documents(
-    transport: str = "grpc", request_type=firestore.ListDocumentsRequest
-):
+@pytest.mark.parametrize("request_type", [firestore.ListDocumentsRequest, dict,])
+def test_list_documents(request_type, transport: str = "grpc"):
     client = FirestoreClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -627,10 +621,6 @@ def test_list_documents(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDocumentsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_documents_from_dict():
-    test_list_documents(request_type=dict)
 
 
 def test_list_documents_empty_call():
@@ -734,8 +724,10 @@ async def test_list_documents_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_list_documents_pager():
-    client = FirestoreClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_documents_pager(transport_name: str = "grpc"):
+    client = FirestoreClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_documents), "__call__") as call:
@@ -772,8 +764,10 @@ def test_list_documents_pager():
         assert all(isinstance(i, document.Document) for i in results)
 
 
-def test_list_documents_pages():
-    client = FirestoreClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_documents_pages(transport_name: str = "grpc"):
+    client = FirestoreClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_documents), "__call__") as call:
@@ -872,9 +866,8 @@ async def test_list_documents_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_update_document(
-    transport: str = "grpc", request_type=firestore.UpdateDocumentRequest
-):
+@pytest.mark.parametrize("request_type", [firestore.UpdateDocumentRequest, dict,])
+def test_update_document(request_type, transport: str = "grpc"):
     client = FirestoreClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -897,10 +890,6 @@ def test_update_document(
     # Establish that the response is the type that we expect.
     assert isinstance(response, gf_document.Document)
     assert response.name == "name_value"
-
-
-def test_update_document_from_dict():
-    test_update_document(request_type=dict)
 
 
 def test_update_document_empty_call():
@@ -1092,9 +1081,8 @@ async def test_update_document_flattened_error_async():
         )
 
 
-def test_delete_document(
-    transport: str = "grpc", request_type=firestore.DeleteDocumentRequest
-):
+@pytest.mark.parametrize("request_type", [firestore.DeleteDocumentRequest, dict,])
+def test_delete_document(request_type, transport: str = "grpc"):
     client = FirestoreClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1116,10 +1104,6 @@ def test_delete_document(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_document_from_dict():
-    test_delete_document(request_type=dict)
 
 
 def test_delete_document_empty_call():
@@ -1284,9 +1268,8 @@ async def test_delete_document_flattened_error_async():
         )
 
 
-def test_batch_get_documents(
-    transport: str = "grpc", request_type=firestore.BatchGetDocumentsRequest
-):
+@pytest.mark.parametrize("request_type", [firestore.BatchGetDocumentsRequest, dict,])
+def test_batch_get_documents(request_type, transport: str = "grpc"):
     client = FirestoreClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1311,10 +1294,6 @@ def test_batch_get_documents(
     # Establish that the response is the type that we expect.
     for message in response:
         assert isinstance(message, firestore.BatchGetDocumentsResponse)
-
-
-def test_batch_get_documents_from_dict():
-    test_batch_get_documents(request_type=dict)
 
 
 def test_batch_get_documents_empty_call():
@@ -1428,9 +1407,8 @@ async def test_batch_get_documents_field_headers_async():
     assert ("x-goog-request-params", "database=database/value",) in kw["metadata"]
 
 
-def test_begin_transaction(
-    transport: str = "grpc", request_type=firestore.BeginTransactionRequest
-):
+@pytest.mark.parametrize("request_type", [firestore.BeginTransactionRequest, dict,])
+def test_begin_transaction(request_type, transport: str = "grpc"):
     client = FirestoreClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1457,10 +1435,6 @@ def test_begin_transaction(
     # Establish that the response is the type that we expect.
     assert isinstance(response, firestore.BeginTransactionResponse)
     assert response.transaction == b"transaction_blob"
-
-
-def test_begin_transaction_from_dict():
-    test_begin_transaction(request_type=dict)
 
 
 def test_begin_transaction_empty_call():
@@ -1644,7 +1618,8 @@ async def test_begin_transaction_flattened_error_async():
         )
 
 
-def test_commit(transport: str = "grpc", request_type=firestore.CommitRequest):
+@pytest.mark.parametrize("request_type", [firestore.CommitRequest, dict,])
+def test_commit(request_type, transport: str = "grpc"):
     client = FirestoreClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1666,10 +1641,6 @@ def test_commit(transport: str = "grpc", request_type=firestore.CommitRequest):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, firestore.CommitResponse)
-
-
-def test_commit_from_dict():
-    test_commit(request_type=dict)
 
 
 def test_commit_empty_call():
@@ -1856,7 +1827,8 @@ async def test_commit_flattened_error_async():
         )
 
 
-def test_rollback(transport: str = "grpc", request_type=firestore.RollbackRequest):
+@pytest.mark.parametrize("request_type", [firestore.RollbackRequest, dict,])
+def test_rollback(request_type, transport: str = "grpc"):
     client = FirestoreClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1878,10 +1850,6 @@ def test_rollback(transport: str = "grpc", request_type=firestore.RollbackReques
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_rollback_from_dict():
-    test_rollback(request_type=dict)
 
 
 def test_rollback_empty_call():
@@ -2060,7 +2028,8 @@ async def test_rollback_flattened_error_async():
         )
 
 
-def test_run_query(transport: str = "grpc", request_type=firestore.RunQueryRequest):
+@pytest.mark.parametrize("request_type", [firestore.RunQueryRequest, dict,])
+def test_run_query(request_type, transport: str = "grpc"):
     client = FirestoreClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2083,10 +2052,6 @@ def test_run_query(transport: str = "grpc", request_type=firestore.RunQueryReque
     # Establish that the response is the type that we expect.
     for message in response:
         assert isinstance(message, firestore.RunQueryResponse)
-
-
-def test_run_query_from_dict():
-    test_run_query(request_type=dict)
 
 
 def test_run_query_empty_call():
@@ -2192,9 +2157,8 @@ async def test_run_query_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_partition_query(
-    transport: str = "grpc", request_type=firestore.PartitionQueryRequest
-):
+@pytest.mark.parametrize("request_type", [firestore.PartitionQueryRequest, dict,])
+def test_partition_query(request_type, transport: str = "grpc"):
     client = FirestoreClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2219,10 +2183,6 @@ def test_partition_query(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.PartitionQueryPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_partition_query_from_dict():
-    test_partition_query(request_type=dict)
 
 
 def test_partition_query_empty_call():
@@ -2326,8 +2286,10 @@ async def test_partition_query_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_partition_query_pager():
-    client = FirestoreClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_partition_query_pager(transport_name: str = "grpc"):
+    client = FirestoreClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.partition_query), "__call__") as call:
@@ -2360,8 +2322,10 @@ def test_partition_query_pager():
         assert all(isinstance(i, query.Cursor) for i in results)
 
 
-def test_partition_query_pages():
-    client = FirestoreClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_partition_query_pages(transport_name: str = "grpc"):
+    client = FirestoreClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.partition_query), "__call__") as call:
@@ -2448,7 +2412,8 @@ async def test_partition_query_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_write(transport: str = "grpc", request_type=firestore.WriteRequest):
+@pytest.mark.parametrize("request_type", [firestore.WriteRequest, dict,])
+def test_write(request_type, transport: str = "grpc"):
     client = FirestoreClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2472,10 +2437,6 @@ def test_write(transport: str = "grpc", request_type=firestore.WriteRequest):
     # Establish that the response is the type that we expect.
     for message in response:
         assert isinstance(message, firestore.WriteResponse)
-
-
-def test_write_from_dict():
-    test_write(request_type=dict)
 
 
 @pytest.mark.asyncio
@@ -2513,7 +2474,8 @@ async def test_write_async_from_dict():
     await test_write_async(request_type=dict)
 
 
-def test_listen(transport: str = "grpc", request_type=firestore.ListenRequest):
+@pytest.mark.parametrize("request_type", [firestore.ListenRequest, dict,])
+def test_listen(request_type, transport: str = "grpc"):
     client = FirestoreClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2537,10 +2499,6 @@ def test_listen(transport: str = "grpc", request_type=firestore.ListenRequest):
     # Establish that the response is the type that we expect.
     for message in response:
         assert isinstance(message, firestore.ListenResponse)
-
-
-def test_listen_from_dict():
-    test_listen(request_type=dict)
 
 
 @pytest.mark.asyncio
@@ -2580,9 +2538,8 @@ async def test_listen_async_from_dict():
     await test_listen_async(request_type=dict)
 
 
-def test_list_collection_ids(
-    transport: str = "grpc", request_type=firestore.ListCollectionIdsRequest
-):
+@pytest.mark.parametrize("request_type", [firestore.ListCollectionIdsRequest, dict,])
+def test_list_collection_ids(request_type, transport: str = "grpc"):
     client = FirestoreClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2611,10 +2568,6 @@ def test_list_collection_ids(
     assert isinstance(response, pagers.ListCollectionIdsPager)
     assert response.collection_ids == ["collection_ids_value"]
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_collection_ids_from_dict():
-    test_list_collection_ids(request_type=dict)
 
 
 def test_list_collection_ids_empty_call():
@@ -2802,8 +2755,10 @@ async def test_list_collection_ids_flattened_error_async():
         )
 
 
-def test_list_collection_ids_pager():
-    client = FirestoreClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_collection_ids_pager(transport_name: str = "grpc"):
+    client = FirestoreClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2837,8 +2792,10 @@ def test_list_collection_ids_pager():
         assert all(isinstance(i, str) for i in results)
 
 
-def test_list_collection_ids_pages():
-    client = FirestoreClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_collection_ids_pages(transport_name: str = "grpc"):
+    client = FirestoreClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2928,7 +2885,8 @@ async def test_list_collection_ids_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_batch_write(transport: str = "grpc", request_type=firestore.BatchWriteRequest):
+@pytest.mark.parametrize("request_type", [firestore.BatchWriteRequest, dict,])
+def test_batch_write(request_type, transport: str = "grpc"):
     client = FirestoreClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2950,10 +2908,6 @@ def test_batch_write(transport: str = "grpc", request_type=firestore.BatchWriteR
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, firestore.BatchWriteResponse)
-
-
-def test_batch_write_from_dict():
-    test_batch_write(request_type=dict)
 
 
 def test_batch_write_empty_call():
@@ -3056,9 +3010,8 @@ async def test_batch_write_field_headers_async():
     assert ("x-goog-request-params", "database=database/value",) in kw["metadata"]
 
 
-def test_create_document(
-    transport: str = "grpc", request_type=firestore.CreateDocumentRequest
-):
+@pytest.mark.parametrize("request_type", [firestore.CreateDocumentRequest, dict,])
+def test_create_document(request_type, transport: str = "grpc"):
     client = FirestoreClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3081,10 +3034,6 @@ def test_create_document(
     # Establish that the response is the type that we expect.
     assert isinstance(response, document.Document)
     assert response.name == "name_value"
-
-
-def test_create_document_from_dict():
-    test_create_document(request_type=dict)
 
 
 def test_create_document_empty_call():
@@ -3685,7 +3634,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
