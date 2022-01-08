@@ -267,20 +267,20 @@ def test_storage_transfer_service_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -349,7 +349,7 @@ def test_storage_transfer_service_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -448,7 +448,7 @@ def test_storage_transfer_service_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -483,7 +483,7 @@ def test_storage_transfer_service_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -516,9 +516,10 @@ def test_storage_transfer_service_client_client_options_from_dict():
         )
 
 
-def test_get_google_service_account(
-    transport: str = "grpc", request_type=transfer.GetGoogleServiceAccountRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [transfer.GetGoogleServiceAccountRequest, dict,]
+)
+def test_get_google_service_account(request_type, transport: str = "grpc"):
     client = StorageTransferServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -546,10 +547,6 @@ def test_get_google_service_account(
     assert isinstance(response, transfer_types.GoogleServiceAccount)
     assert response.account_email == "account_email_value"
     assert response.subject_id == "subject_id_value"
-
-
-def test_get_google_service_account_from_dict():
-    test_get_google_service_account(request_type=dict)
 
 
 def test_get_google_service_account_empty_call():
@@ -610,9 +607,8 @@ async def test_get_google_service_account_async_from_dict():
     await test_get_google_service_account_async(request_type=dict)
 
 
-def test_create_transfer_job(
-    transport: str = "grpc", request_type=transfer.CreateTransferJobRequest
-):
+@pytest.mark.parametrize("request_type", [transfer.CreateTransferJobRequest, dict,])
+def test_create_transfer_job(request_type, transport: str = "grpc"):
     client = StorageTransferServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -647,10 +643,6 @@ def test_create_transfer_job(
     assert response.project_id == "project_id_value"
     assert response.status == transfer_types.TransferJob.Status.ENABLED
     assert response.latest_operation_name == "latest_operation_name_value"
-
-
-def test_create_transfer_job_from_dict():
-    test_create_transfer_job(request_type=dict)
 
 
 def test_create_transfer_job_empty_call():
@@ -717,9 +709,8 @@ async def test_create_transfer_job_async_from_dict():
     await test_create_transfer_job_async(request_type=dict)
 
 
-def test_update_transfer_job(
-    transport: str = "grpc", request_type=transfer.UpdateTransferJobRequest
-):
+@pytest.mark.parametrize("request_type", [transfer.UpdateTransferJobRequest, dict,])
+def test_update_transfer_job(request_type, transport: str = "grpc"):
     client = StorageTransferServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -754,10 +745,6 @@ def test_update_transfer_job(
     assert response.project_id == "project_id_value"
     assert response.status == transfer_types.TransferJob.Status.ENABLED
     assert response.latest_operation_name == "latest_operation_name_value"
-
-
-def test_update_transfer_job_from_dict():
-    test_update_transfer_job(request_type=dict)
 
 
 def test_update_transfer_job_empty_call():
@@ -883,9 +870,8 @@ async def test_update_transfer_job_field_headers_async():
     assert ("x-goog-request-params", "job_name=job_name/value",) in kw["metadata"]
 
 
-def test_get_transfer_job(
-    transport: str = "grpc", request_type=transfer.GetTransferJobRequest
-):
+@pytest.mark.parametrize("request_type", [transfer.GetTransferJobRequest, dict,])
+def test_get_transfer_job(request_type, transport: str = "grpc"):
     client = StorageTransferServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -918,10 +904,6 @@ def test_get_transfer_job(
     assert response.project_id == "project_id_value"
     assert response.status == transfer_types.TransferJob.Status.ENABLED
     assert response.latest_operation_name == "latest_operation_name_value"
-
-
-def test_get_transfer_job_from_dict():
-    test_get_transfer_job(request_type=dict)
 
 
 def test_get_transfer_job_empty_call():
@@ -1039,9 +1021,8 @@ async def test_get_transfer_job_field_headers_async():
     assert ("x-goog-request-params", "job_name=job_name/value",) in kw["metadata"]
 
 
-def test_list_transfer_jobs(
-    transport: str = "grpc", request_type=transfer.ListTransferJobsRequest
-):
+@pytest.mark.parametrize("request_type", [transfer.ListTransferJobsRequest, dict,])
+def test_list_transfer_jobs(request_type, transport: str = "grpc"):
     client = StorageTransferServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1068,10 +1049,6 @@ def test_list_transfer_jobs(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTransferJobsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_transfer_jobs_from_dict():
-    test_list_transfer_jobs(request_type=dict)
 
 
 def test_list_transfer_jobs_empty_call():
@@ -1128,9 +1105,9 @@ async def test_list_transfer_jobs_async_from_dict():
     await test_list_transfer_jobs_async(request_type=dict)
 
 
-def test_list_transfer_jobs_pager():
+def test_list_transfer_jobs_pager(transport_name: str = "grpc"):
     client = StorageTransferServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1170,9 +1147,9 @@ def test_list_transfer_jobs_pager():
         assert all(isinstance(i, transfer_types.TransferJob) for i in results)
 
 
-def test_list_transfer_jobs_pages():
+def test_list_transfer_jobs_pages(transport_name: str = "grpc"):
     client = StorageTransferServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1291,9 +1268,10 @@ async def test_list_transfer_jobs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_pause_transfer_operation(
-    transport: str = "grpc", request_type=transfer.PauseTransferOperationRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [transfer.PauseTransferOperationRequest, dict,]
+)
+def test_pause_transfer_operation(request_type, transport: str = "grpc"):
     client = StorageTransferServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1317,10 +1295,6 @@ def test_pause_transfer_operation(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_pause_transfer_operation_from_dict():
-    test_pause_transfer_operation(request_type=dict)
 
 
 def test_pause_transfer_operation_empty_call():
@@ -1431,9 +1405,10 @@ async def test_pause_transfer_operation_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_resume_transfer_operation(
-    transport: str = "grpc", request_type=transfer.ResumeTransferOperationRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [transfer.ResumeTransferOperationRequest, dict,]
+)
+def test_resume_transfer_operation(request_type, transport: str = "grpc"):
     client = StorageTransferServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1457,10 +1432,6 @@ def test_resume_transfer_operation(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_resume_transfer_operation_from_dict():
-    test_resume_transfer_operation(request_type=dict)
 
 
 def test_resume_transfer_operation_empty_call():
@@ -1572,9 +1543,8 @@ async def test_resume_transfer_operation_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_run_transfer_job(
-    transport: str = "grpc", request_type=transfer.RunTransferJobRequest
-):
+@pytest.mark.parametrize("request_type", [transfer.RunTransferJobRequest, dict,])
+def test_run_transfer_job(request_type, transport: str = "grpc"):
     client = StorageTransferServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1596,10 +1566,6 @@ def test_run_transfer_job(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_run_transfer_job_from_dict():
-    test_run_transfer_job(request_type=dict)
 
 
 def test_run_transfer_job_empty_call():
@@ -2240,7 +2206,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
