@@ -247,20 +247,20 @@ def test_language_service_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -329,7 +329,7 @@ def test_language_service_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -424,7 +424,7 @@ def test_language_service_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -455,7 +455,7 @@ def test_language_service_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -488,9 +488,10 @@ def test_language_service_client_client_options_from_dict():
         )
 
 
-def test_analyze_sentiment(
-    transport: str = "grpc", request_type=language_service.AnalyzeSentimentRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [language_service.AnalyzeSentimentRequest, dict,]
+)
+def test_analyze_sentiment(request_type, transport: str = "grpc"):
     client = LanguageServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -517,10 +518,6 @@ def test_analyze_sentiment(
     # Establish that the response is the type that we expect.
     assert isinstance(response, language_service.AnalyzeSentimentResponse)
     assert response.language == "language_value"
-
-
-def test_analyze_sentiment_from_dict():
-    test_analyze_sentiment(request_type=dict)
 
 
 def test_analyze_sentiment_empty_call():
@@ -682,9 +679,10 @@ async def test_analyze_sentiment_flattened_error_async():
         )
 
 
-def test_analyze_entities(
-    transport: str = "grpc", request_type=language_service.AnalyzeEntitiesRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [language_service.AnalyzeEntitiesRequest, dict,]
+)
+def test_analyze_entities(request_type, transport: str = "grpc"):
     client = LanguageServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -709,10 +707,6 @@ def test_analyze_entities(
     # Establish that the response is the type that we expect.
     assert isinstance(response, language_service.AnalyzeEntitiesResponse)
     assert response.language == "language_value"
-
-
-def test_analyze_entities_from_dict():
-    test_analyze_entities(request_type=dict)
 
 
 def test_analyze_entities_empty_call():
@@ -866,9 +860,10 @@ async def test_analyze_entities_flattened_error_async():
         )
 
 
-def test_analyze_entity_sentiment(
-    transport: str = "grpc", request_type=language_service.AnalyzeEntitySentimentRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [language_service.AnalyzeEntitySentimentRequest, dict,]
+)
+def test_analyze_entity_sentiment(request_type, transport: str = "grpc"):
     client = LanguageServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -895,10 +890,6 @@ def test_analyze_entity_sentiment(
     # Establish that the response is the type that we expect.
     assert isinstance(response, language_service.AnalyzeEntitySentimentResponse)
     assert response.language == "language_value"
-
-
-def test_analyze_entity_sentiment_from_dict():
-    test_analyze_entity_sentiment(request_type=dict)
 
 
 def test_analyze_entity_sentiment_empty_call():
@@ -1060,9 +1051,8 @@ async def test_analyze_entity_sentiment_flattened_error_async():
         )
 
 
-def test_analyze_syntax(
-    transport: str = "grpc", request_type=language_service.AnalyzeSyntaxRequest
-):
+@pytest.mark.parametrize("request_type", [language_service.AnalyzeSyntaxRequest, dict,])
+def test_analyze_syntax(request_type, transport: str = "grpc"):
     client = LanguageServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1087,10 +1077,6 @@ def test_analyze_syntax(
     # Establish that the response is the type that we expect.
     assert isinstance(response, language_service.AnalyzeSyntaxResponse)
     assert response.language == "language_value"
-
-
-def test_analyze_syntax_from_dict():
-    test_analyze_syntax(request_type=dict)
 
 
 def test_analyze_syntax_empty_call():
@@ -1243,9 +1229,8 @@ async def test_analyze_syntax_flattened_error_async():
         )
 
 
-def test_classify_text(
-    transport: str = "grpc", request_type=language_service.ClassifyTextRequest
-):
+@pytest.mark.parametrize("request_type", [language_service.ClassifyTextRequest, dict,])
+def test_classify_text(request_type, transport: str = "grpc"):
     client = LanguageServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1267,10 +1252,6 @@ def test_classify_text(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, language_service.ClassifyTextResponse)
-
-
-def test_classify_text_from_dict():
-    test_classify_text(request_type=dict)
 
 
 def test_classify_text_empty_call():
@@ -1412,9 +1393,8 @@ async def test_classify_text_flattened_error_async():
         )
 
 
-def test_annotate_text(
-    transport: str = "grpc", request_type=language_service.AnnotateTextRequest
-):
+@pytest.mark.parametrize("request_type", [language_service.AnnotateTextRequest, dict,])
+def test_annotate_text(request_type, transport: str = "grpc"):
     client = LanguageServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1439,10 +1419,6 @@ def test_annotate_text(
     # Establish that the response is the type that we expect.
     assert isinstance(response, language_service.AnnotateTextResponse)
     assert response.language == "language_value"
-
-
-def test_annotate_text_from_dict():
-    test_annotate_text(request_type=dict)
 
 
 def test_annotate_text_empty_call():
@@ -2112,7 +2088,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
