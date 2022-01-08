@@ -48,11 +48,14 @@ class firestore_adminCallTransformer(cst.CSTTransformer):
         'create_index': ('parent', 'index', ),
         'delete_index': ('name', ),
         'export_documents': ('name', 'collection_ids', 'output_uri_prefix', ),
+        'get_database': ('name', ),
         'get_field': ('name', ),
         'get_index': ('name', ),
         'import_documents': ('name', 'collection_ids', 'input_uri_prefix', ),
+        'list_databases': ('parent', ),
         'list_fields': ('parent', 'filter', 'page_size', 'page_token', ),
         'list_indexes': ('parent', 'filter', 'page_size', 'page_token', ),
+        'update_database': ('database', 'update_mask', ),
         'update_field': ('field', 'update_mask', ),
     }
 

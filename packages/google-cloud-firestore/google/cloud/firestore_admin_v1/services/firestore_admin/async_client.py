@@ -34,6 +34,8 @@ except AttributeError:  # pragma: NO COVER
 from google.api_core import operation as gac_operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.firestore_admin_v1.services.firestore_admin import pagers
+from google.cloud.firestore_admin_v1.types import database
+from google.cloud.firestore_admin_v1.types import database as gfa_database
 from google.cloud.firestore_admin_v1.types import field
 from google.cloud.firestore_admin_v1.types import field as gfa_field
 from google.cloud.firestore_admin_v1.types import firestore_admin
@@ -41,13 +43,43 @@ from google.cloud.firestore_admin_v1.types import index
 from google.cloud.firestore_admin_v1.types import index as gfa_index
 from google.cloud.firestore_admin_v1.types import operation as gfa_operation
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from .transports.base import FirestoreAdminTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import FirestoreAdminGrpcAsyncIOTransport
 from .client import FirestoreAdminClient
 
 
 class FirestoreAdminAsyncClient:
-    """Operations are created by service ``FirestoreAdmin``, but are
+    """The Cloud Firestore Admin API.
+
+    This API provides several administrative services for Cloud
+    Firestore.
+
+    Project, Database, Namespace, Collection, Collection Group, and
+    Document are used as defined in the Google Cloud Firestore API.
+
+    Operation: An Operation represents work being performed in the
+    background.
+
+    The index service manages Cloud Firestore indexes.
+
+    Index creation is performed asynchronously. An Operation resource is
+    created for each such asynchronous operation. The state of the
+    operation (including any errors encountered) may be queried via the
+    Operation resource.
+
+    The Operations collection provides a record of actions performed for
+    the specified Project (including any Operations in progress).
+    Operations are not created directly but through calls on other
+    collections or resources.
+
+    An Operation that is done may be deleted so that it is no longer
+    listed as part of the Operation collection. Operations are garbage
+    collected after 30 days. By default, ListOperations will only return
+    in progress and failed operations. To list completed operation,
+    issue a ListOperations request with the filter ``done: true``.
+
+    Operations are created by service ``FirestoreAdmin``, but are
     accessed via service ``google.longrunning.Operations``.
     """
 
@@ -730,7 +762,8 @@ class FirestoreAdminAsyncClient:
         only supports listing fields that have been explicitly
         overridden. To issue this query, call
         [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields]
-        with the filter set to ``indexConfig.usesAncestorConfig:false``.
+        with the filter set to ``indexConfig.usesAncestorConfig:false``
+        .
 
         Args:
             request (Union[google.cloud.firestore_admin_v1.types.ListFieldsRequest, dict]):
@@ -831,6 +864,11 @@ class FirestoreAdminAsyncClient:
         operation is done. If an export operation is cancelled
         before completion it may leave partial data behind in
         Google Cloud Storage.
+
+        For more details on export behavior and output format,
+        refer to:
+        https://cloud.google.com/firestore/docs/manage-
+        data/export-import
 
         Args:
             request (Union[google.cloud.firestore_admin_v1.types.ExportDocumentsRequest, dict]):
@@ -998,6 +1036,239 @@ class FirestoreAdminAsyncClient:
             self._client._transport.operations_client,
             empty_pb2.Empty,
             metadata_type=gfa_operation.ImportDocumentsMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_database(
+        self,
+        request: Union[firestore_admin.GetDatabaseRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> database.Database:
+        r"""Gets information about a database.
+
+        Args:
+            request (Union[google.cloud.firestore_admin_v1.types.GetDatabaseRequest, dict]):
+                The request object. The request for
+                [FirestoreAdmin.GetDatabase][google.firestore.admin.v1.FirestoreAdmin.GetDatabase].
+            name (:class:`str`):
+                Required. A name of the form
+                ``projects/{project_id}/databases/{database_id}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.firestore_admin_v1.types.Database:
+                A Cloud Firestore Database.
+                   Currently only one database is allowed per cloud
+                   project; this database must have a database_id of
+                   '(default)'.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = firestore_admin.GetDatabaseRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_database,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def list_databases(
+        self,
+        request: Union[firestore_admin.ListDatabasesRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> firestore_admin.ListDatabasesResponse:
+        r"""List all the databases in the project.
+
+        Args:
+            request (Union[google.cloud.firestore_admin_v1.types.ListDatabasesRequest, dict]):
+                The request object. A request to list the Firestore
+                Databases in all locations for a project.
+            parent (:class:`str`):
+                Required. A parent name of the form
+                ``projects/{project_id}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.firestore_admin_v1.types.ListDatabasesResponse:
+                The list of databases for a project.
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = firestore_admin.ListDatabasesRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_databases,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def update_database(
+        self,
+        request: Union[firestore_admin.UpdateDatabaseRequest, dict] = None,
+        *,
+        database: gfa_database.Database = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Updates a database.
+
+        Args:
+            request (Union[google.cloud.firestore_admin_v1.types.UpdateDatabaseRequest, dict]):
+                The request object. The request for
+                [FirestoreAdmin.UpdateDatabase][google.firestore.admin.v1.FirestoreAdmin.UpdateDatabase].
+            database (:class:`google.cloud.firestore_admin_v1.types.Database`):
+                Required. The database to update.
+                This corresponds to the ``database`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                The list of fields to be updated.
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.firestore_admin_v1.types.Database` A Cloud Firestore Database.
+                   Currently only one database is allowed per cloud
+                   project; this database must have a database_id of
+                   '(default)'.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([database, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = firestore_admin.UpdateDatabaseRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if database is not None:
+            request.database = database
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_database,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("database.name", request.database.name),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            gfa_database.Database,
+            metadata_type=firestore_admin.UpdateDatabaseMetadata,
         )
 
         # Done; return the response.

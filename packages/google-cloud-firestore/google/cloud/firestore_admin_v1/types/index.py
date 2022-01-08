@@ -96,8 +96,8 @@ class Index(proto.Message):
                 the name of the field or may be omitted.
             order (google.cloud.firestore_admin_v1.types.Index.IndexField.Order):
                 Indicates that this field supports ordering
-                by the specified order or comparing using =, <,
-                <=, >, >=.
+                by the specified order or comparing using =, !=,
+                <, <=, >, >=.
 
                 This field is a member of `oneof`_ ``value_mode``.
             array_config (google.cloud.firestore_admin_v1.types.Index.IndexField.ArrayConfig):

@@ -25,6 +25,11 @@
                 "export_documents"
               ]
             },
+            "GetDatabase": {
+              "methods": [
+                "get_database"
+              ]
+            },
             "GetField": {
               "methods": [
                 "get_field"
@@ -40,6 +45,11 @@
                 "import_documents"
               ]
             },
+            "ListDatabases": {
+              "methods": [
+                "list_databases"
+              ]
+            },
             "ListFields": {
               "methods": [
                 "list_fields"
@@ -48,6 +58,11 @@
             "ListIndexes": {
               "methods": [
                 "list_indexes"
+              ]
+            },
+            "UpdateDatabase": {
+              "methods": [
+                "update_database"
               ]
             },
             "UpdateField": {
@@ -75,6 +90,11 @@
                 "export_documents"
               ]
             },
+            "GetDatabase": {
+              "methods": [
+                "get_database"
+              ]
+            },
             "GetField": {
               "methods": [
                 "get_field"
@@ -90,6 +110,11 @@
                 "import_documents"
               ]
             },
+            "ListDatabases": {
+              "methods": [
+                "list_databases"
+              ]
+            },
             "ListFields": {
               "methods": [
                 "list_fields"
@@ -98,6 +123,11 @@
             "ListIndexes": {
               "methods": [
                 "list_indexes"
+              ]
+            },
+            "UpdateDatabase": {
+              "methods": [
+                "update_database"
               ]
             },
             "UpdateField": {

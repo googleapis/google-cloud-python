@@ -25,6 +25,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
+from google.cloud.firestore_admin_v1.types import database
 from google.cloud.firestore_admin_v1.types import field
 from google.cloud.firestore_admin_v1.types import firestore_admin
 from google.cloud.firestore_admin_v1.types import index
@@ -36,6 +37,35 @@ from .grpc import FirestoreAdminGrpcTransport
 
 class FirestoreAdminGrpcAsyncIOTransport(FirestoreAdminTransport):
     """gRPC AsyncIO backend transport for FirestoreAdmin.
+
+    The Cloud Firestore Admin API.
+
+    This API provides several administrative services for Cloud
+    Firestore.
+
+    Project, Database, Namespace, Collection, Collection Group, and
+    Document are used as defined in the Google Cloud Firestore API.
+
+    Operation: An Operation represents work being performed in the
+    background.
+
+    The index service manages Cloud Firestore indexes.
+
+    Index creation is performed asynchronously. An Operation resource is
+    created for each such asynchronous operation. The state of the
+    operation (including any errors encountered) may be queried via the
+    Operation resource.
+
+    The Operations collection provides a record of actions performed for
+    the specified Project (including any Operations in progress).
+    Operations are not created directly but through calls on other
+    collections or resources.
+
+    An Operation that is done may be deleted so that it is no longer
+    listed as part of the Operation collection. Operations are garbage
+    collected after 30 days. By default, ListOperations will only return
+    in progress and failed operations. To list completed operation,
+    issue a ListOperations request with the filter ``done: true``.
 
     Operations are created by service ``FirestoreAdmin``, but are
     accessed via service ``google.longrunning.Operations``.
@@ -448,7 +478,8 @@ class FirestoreAdminGrpcAsyncIOTransport(FirestoreAdminTransport):
         only supports listing fields that have been explicitly
         overridden. To issue this query, call
         [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields]
-        with the filter set to ``indexConfig.usesAncestorConfig:false``.
+        with the filter set to ``indexConfig.usesAncestorConfig:false``
+        .
 
         Returns:
             Callable[[~.ListFieldsRequest],
@@ -486,6 +517,11 @@ class FirestoreAdminGrpcAsyncIOTransport(FirestoreAdminTransport):
         operation is done. If an export operation is cancelled
         before completion it may leave partial data behind in
         Google Cloud Storage.
+
+        For more details on export behavior and output format,
+        refer to:
+        https://cloud.google.com/firestore/docs/manage-
+        data/export-import
 
         Returns:
             Callable[[~.ExportDocumentsRequest],
@@ -538,6 +574,89 @@ class FirestoreAdminGrpcAsyncIOTransport(FirestoreAdminTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["import_documents"]
+
+    @property
+    def get_database(
+        self,
+    ) -> Callable[[firestore_admin.GetDatabaseRequest], Awaitable[database.Database]]:
+        r"""Return a callable for the get database method over gRPC.
+
+        Gets information about a database.
+
+        Returns:
+            Callable[[~.GetDatabaseRequest],
+                    Awaitable[~.Database]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_database" not in self._stubs:
+            self._stubs["get_database"] = self.grpc_channel.unary_unary(
+                "/google.firestore.admin.v1.FirestoreAdmin/GetDatabase",
+                request_serializer=firestore_admin.GetDatabaseRequest.serialize,
+                response_deserializer=database.Database.deserialize,
+            )
+        return self._stubs["get_database"]
+
+    @property
+    def list_databases(
+        self,
+    ) -> Callable[
+        [firestore_admin.ListDatabasesRequest],
+        Awaitable[firestore_admin.ListDatabasesResponse],
+    ]:
+        r"""Return a callable for the list databases method over gRPC.
+
+        List all the databases in the project.
+
+        Returns:
+            Callable[[~.ListDatabasesRequest],
+                    Awaitable[~.ListDatabasesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_databases" not in self._stubs:
+            self._stubs["list_databases"] = self.grpc_channel.unary_unary(
+                "/google.firestore.admin.v1.FirestoreAdmin/ListDatabases",
+                request_serializer=firestore_admin.ListDatabasesRequest.serialize,
+                response_deserializer=firestore_admin.ListDatabasesResponse.deserialize,
+            )
+        return self._stubs["list_databases"]
+
+    @property
+    def update_database(
+        self,
+    ) -> Callable[
+        [firestore_admin.UpdateDatabaseRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the update database method over gRPC.
+
+        Updates a database.
+
+        Returns:
+            Callable[[~.UpdateDatabaseRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_database" not in self._stubs:
+            self._stubs["update_database"] = self.grpc_channel.unary_unary(
+                "/google.firestore.admin.v1.FirestoreAdmin/UpdateDatabase",
+                request_serializer=firestore_admin.UpdateDatabaseRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_database"]
 
     def close(self):
         return self.grpc_channel.close()
