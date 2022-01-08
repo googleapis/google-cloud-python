@@ -282,20 +282,20 @@ def test_service_manager_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -354,7 +354,7 @@ def test_service_manager_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -449,7 +449,7 @@ def test_service_manager_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -480,7 +480,7 @@ def test_service_manager_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -513,9 +513,8 @@ def test_service_manager_client_client_options_from_dict():
         )
 
 
-def test_list_services(
-    transport: str = "grpc", request_type=servicemanager.ListServicesRequest
-):
+@pytest.mark.parametrize("request_type", [servicemanager.ListServicesRequest, dict,])
+def test_list_services(request_type, transport: str = "grpc"):
     client = ServiceManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -540,10 +539,6 @@ def test_list_services(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListServicesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_services_from_dict():
-    test_list_services(request_type=dict)
 
 
 def test_list_services_empty_call():
@@ -686,8 +681,10 @@ async def test_list_services_flattened_error_async():
         )
 
 
-def test_list_services_pager():
-    client = ServiceManagerClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_services_pager(transport_name: str = "grpc"):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_services), "__call__") as call:
@@ -721,8 +718,10 @@ def test_list_services_pager():
         assert all(isinstance(i, resources.ManagedService) for i in results)
 
 
-def test_list_services_pages():
-    client = ServiceManagerClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_services_pages(transport_name: str = "grpc"):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_services), "__call__") as call:
@@ -821,9 +820,8 @@ async def test_list_services_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_service(
-    transport: str = "grpc", request_type=servicemanager.GetServiceRequest
-):
+@pytest.mark.parametrize("request_type", [servicemanager.GetServiceRequest, dict,])
+def test_get_service(request_type, transport: str = "grpc"):
     client = ServiceManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -850,10 +848,6 @@ def test_get_service(
     assert isinstance(response, resources.ManagedService)
     assert response.service_name == "service_name_value"
     assert response.producer_project_id == "producer_project_id_value"
-
-
-def test_get_service_from_dict():
-    test_get_service(request_type=dict)
 
 
 def test_get_service_empty_call():
@@ -982,9 +976,8 @@ async def test_get_service_flattened_error_async():
         )
 
 
-def test_create_service(
-    transport: str = "grpc", request_type=servicemanager.CreateServiceRequest
-):
+@pytest.mark.parametrize("request_type", [servicemanager.CreateServiceRequest, dict,])
+def test_create_service(request_type, transport: str = "grpc"):
     client = ServiceManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1006,10 +999,6 @@ def test_create_service(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_service_from_dict():
-    test_create_service(request_type=dict)
 
 
 def test_create_service_empty_call():
@@ -1139,9 +1128,8 @@ async def test_create_service_flattened_error_async():
         )
 
 
-def test_delete_service(
-    transport: str = "grpc", request_type=servicemanager.DeleteServiceRequest
-):
+@pytest.mark.parametrize("request_type", [servicemanager.DeleteServiceRequest, dict,])
+def test_delete_service(request_type, transport: str = "grpc"):
     client = ServiceManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1163,10 +1151,6 @@ def test_delete_service(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_service_from_dict():
-    test_delete_service(request_type=dict)
 
 
 def test_delete_service_empty_call():
@@ -1290,9 +1274,8 @@ async def test_delete_service_flattened_error_async():
         )
 
 
-def test_undelete_service(
-    transport: str = "grpc", request_type=servicemanager.UndeleteServiceRequest
-):
+@pytest.mark.parametrize("request_type", [servicemanager.UndeleteServiceRequest, dict,])
+def test_undelete_service(request_type, transport: str = "grpc"):
     client = ServiceManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1314,10 +1297,6 @@ def test_undelete_service(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_undelete_service_from_dict():
-    test_undelete_service(request_type=dict)
 
 
 def test_undelete_service_empty_call():
@@ -1441,9 +1420,10 @@ async def test_undelete_service_flattened_error_async():
         )
 
 
-def test_list_service_configs(
-    transport: str = "grpc", request_type=servicemanager.ListServiceConfigsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [servicemanager.ListServiceConfigsRequest, dict,]
+)
+def test_list_service_configs(request_type, transport: str = "grpc"):
     client = ServiceManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1470,10 +1450,6 @@ def test_list_service_configs(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListServiceConfigsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_service_configs_from_dict():
-    test_list_service_configs(request_type=dict)
 
 
 def test_list_service_configs_empty_call():
@@ -1611,8 +1587,10 @@ async def test_list_service_configs_flattened_error_async():
         )
 
 
-def test_list_service_configs_pager():
-    client = ServiceManagerClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_service_configs_pager(transport_name: str = "grpc"):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1650,8 +1628,10 @@ def test_list_service_configs_pager():
         assert all(isinstance(i, service_pb2.Service) for i in results)
 
 
-def test_list_service_configs_pages():
-    client = ServiceManagerClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_service_configs_pages(transport_name: str = "grpc"):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1762,9 +1742,10 @@ async def test_list_service_configs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_service_config(
-    transport: str = "grpc", request_type=servicemanager.GetServiceConfigRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [servicemanager.GetServiceConfigRequest, dict,]
+)
+def test_get_service_config(request_type, transport: str = "grpc"):
     client = ServiceManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1797,10 +1778,6 @@ def test_get_service_config(
     assert response.title == "title_value"
     assert response.producer_project_id == "producer_project_id_value"
     assert response.id == "id_value"
-
-
-def test_get_service_config_from_dict():
-    test_get_service_config(request_type=dict)
 
 
 def test_get_service_config_empty_call():
@@ -1965,9 +1942,10 @@ async def test_get_service_config_flattened_error_async():
         )
 
 
-def test_create_service_config(
-    transport: str = "grpc", request_type=servicemanager.CreateServiceConfigRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [servicemanager.CreateServiceConfigRequest, dict,]
+)
+def test_create_service_config(request_type, transport: str = "grpc"):
     client = ServiceManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2000,10 +1978,6 @@ def test_create_service_config(
     assert response.title == "title_value"
     assert response.producer_project_id == "producer_project_id_value"
     assert response.id == "id_value"
-
-
-def test_create_service_config_from_dict():
-    test_create_service_config(request_type=dict)
 
 
 def test_create_service_config_empty_call():
@@ -2159,9 +2133,10 @@ async def test_create_service_config_flattened_error_async():
         )
 
 
-def test_submit_config_source(
-    transport: str = "grpc", request_type=servicemanager.SubmitConfigSourceRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [servicemanager.SubmitConfigSourceRequest, dict,]
+)
+def test_submit_config_source(request_type, transport: str = "grpc"):
     client = ServiceManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2185,10 +2160,6 @@ def test_submit_config_source(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_submit_config_source_from_dict():
-    test_submit_config_source(request_type=dict)
 
 
 def test_submit_config_source_empty_call():
@@ -2347,9 +2318,10 @@ async def test_submit_config_source_flattened_error_async():
         )
 
 
-def test_list_service_rollouts(
-    transport: str = "grpc", request_type=servicemanager.ListServiceRolloutsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [servicemanager.ListServiceRolloutsRequest, dict,]
+)
+def test_list_service_rollouts(request_type, transport: str = "grpc"):
     client = ServiceManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2376,10 +2348,6 @@ def test_list_service_rollouts(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListServiceRolloutsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_service_rollouts_from_dict():
-    test_list_service_rollouts(request_type=dict)
 
 
 def test_list_service_rollouts_empty_call():
@@ -2529,8 +2497,10 @@ async def test_list_service_rollouts_flattened_error_async():
         )
 
 
-def test_list_service_rollouts_pager():
-    client = ServiceManagerClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_service_rollouts_pager(transport_name: str = "grpc"):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2568,8 +2538,10 @@ def test_list_service_rollouts_pager():
         assert all(isinstance(i, resources.Rollout) for i in results)
 
 
-def test_list_service_rollouts_pages():
-    client = ServiceManagerClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_service_rollouts_pages(transport_name: str = "grpc"):
+    client = ServiceManagerClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2680,9 +2652,10 @@ async def test_list_service_rollouts_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_service_rollout(
-    transport: str = "grpc", request_type=servicemanager.GetServiceRolloutRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [servicemanager.GetServiceRolloutRequest, dict,]
+)
+def test_get_service_rollout(request_type, transport: str = "grpc"):
     client = ServiceManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2718,10 +2691,6 @@ def test_get_service_rollout(
     assert response.created_by == "created_by_value"
     assert response.status == resources.Rollout.RolloutStatus.IN_PROGRESS
     assert response.service_name == "service_name_value"
-
-
-def test_get_service_rollout_from_dict():
-    test_get_service_rollout(request_type=dict)
 
 
 def test_get_service_rollout_empty_call():
@@ -2875,9 +2844,10 @@ async def test_get_service_rollout_flattened_error_async():
         )
 
 
-def test_create_service_rollout(
-    transport: str = "grpc", request_type=servicemanager.CreateServiceRolloutRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [servicemanager.CreateServiceRolloutRequest, dict,]
+)
+def test_create_service_rollout(request_type, transport: str = "grpc"):
     client = ServiceManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2901,10 +2871,6 @@ def test_create_service_rollout(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_service_rollout_from_dict():
-    test_create_service_rollout(request_type=dict)
 
 
 def test_create_service_rollout_empty_call():
@@ -3053,9 +3019,10 @@ async def test_create_service_rollout_flattened_error_async():
         )
 
 
-def test_generate_config_report(
-    transport: str = "grpc", request_type=servicemanager.GenerateConfigReportRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [servicemanager.GenerateConfigReportRequest, dict,]
+)
+def test_generate_config_report(request_type, transport: str = "grpc"):
     client = ServiceManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3083,10 +3050,6 @@ def test_generate_config_report(
     assert isinstance(response, servicemanager.GenerateConfigReportResponse)
     assert response.service_name == "service_name_value"
     assert response.id == "id_value"
-
-
-def test_generate_config_report_from_dict():
-    test_generate_config_report(request_type=dict)
 
 
 def test_generate_config_report_empty_call():
@@ -3239,9 +3202,8 @@ async def test_generate_config_report_flattened_error_async():
         )
 
 
-def test_enable_service(
-    transport: str = "grpc", request_type=servicemanager.EnableServiceRequest
-):
+@pytest.mark.parametrize("request_type", [servicemanager.EnableServiceRequest, dict,])
+def test_enable_service(request_type, transport: str = "grpc"):
     client = ServiceManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3263,10 +3225,6 @@ def test_enable_service(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_enable_service_from_dict():
-    test_enable_service(request_type=dict)
 
 
 def test_enable_service_empty_call():
@@ -3404,9 +3362,8 @@ async def test_enable_service_flattened_error_async():
         )
 
 
-def test_disable_service(
-    transport: str = "grpc", request_type=servicemanager.DisableServiceRequest
-):
+@pytest.mark.parametrize("request_type", [servicemanager.DisableServiceRequest, dict,])
+def test_disable_service(request_type, transport: str = "grpc"):
     client = ServiceManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3428,10 +3385,6 @@ def test_disable_service(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_disable_service_from_dict():
-    test_disable_service(request_type=dict)
 
 
 def test_disable_service_empty_call():
@@ -4124,7 +4077,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
