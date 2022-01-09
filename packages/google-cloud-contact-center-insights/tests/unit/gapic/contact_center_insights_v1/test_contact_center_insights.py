@@ -539,6 +539,7 @@ def test_create_conversation(request_type, transport: str = "grpc"):
             agent_id="agent_id_value",
             medium=resources.Conversation.Medium.PHONE_CALL,
             turn_count=1105,
+            obfuscated_user_id="obfuscated_user_id_value",
             call_metadata=resources.Conversation.CallMetadata(customer_channel=1706),
             expire_time=timestamp_pb2.Timestamp(seconds=751),
         )
@@ -556,6 +557,7 @@ def test_create_conversation(request_type, transport: str = "grpc"):
     assert response.agent_id == "agent_id_value"
     assert response.medium == resources.Conversation.Medium.PHONE_CALL
     assert response.turn_count == 1105
+    assert response.obfuscated_user_id == "obfuscated_user_id_value"
 
 
 def test_create_conversation_empty_call():
@@ -600,6 +602,7 @@ async def test_create_conversation_async(
                 agent_id="agent_id_value",
                 medium=resources.Conversation.Medium.PHONE_CALL,
                 turn_count=1105,
+                obfuscated_user_id="obfuscated_user_id_value",
             )
         )
         response = await client.create_conversation(request)
@@ -616,6 +619,7 @@ async def test_create_conversation_async(
     assert response.agent_id == "agent_id_value"
     assert response.medium == resources.Conversation.Medium.PHONE_CALL
     assert response.turn_count == 1105
+    assert response.obfuscated_user_id == "obfuscated_user_id_value"
 
 
 @pytest.mark.asyncio
@@ -823,6 +827,7 @@ def test_update_conversation(request_type, transport: str = "grpc"):
             agent_id="agent_id_value",
             medium=resources.Conversation.Medium.PHONE_CALL,
             turn_count=1105,
+            obfuscated_user_id="obfuscated_user_id_value",
             call_metadata=resources.Conversation.CallMetadata(customer_channel=1706),
             expire_time=timestamp_pb2.Timestamp(seconds=751),
         )
@@ -840,6 +845,7 @@ def test_update_conversation(request_type, transport: str = "grpc"):
     assert response.agent_id == "agent_id_value"
     assert response.medium == resources.Conversation.Medium.PHONE_CALL
     assert response.turn_count == 1105
+    assert response.obfuscated_user_id == "obfuscated_user_id_value"
 
 
 def test_update_conversation_empty_call():
@@ -884,6 +890,7 @@ async def test_update_conversation_async(
                 agent_id="agent_id_value",
                 medium=resources.Conversation.Medium.PHONE_CALL,
                 turn_count=1105,
+                obfuscated_user_id="obfuscated_user_id_value",
             )
         )
         response = await client.update_conversation(request)
@@ -900,6 +907,7 @@ async def test_update_conversation_async(
     assert response.agent_id == "agent_id_value"
     assert response.medium == resources.Conversation.Medium.PHONE_CALL
     assert response.turn_count == 1105
+    assert response.obfuscated_user_id == "obfuscated_user_id_value"
 
 
 @pytest.mark.asyncio
@@ -1101,6 +1109,7 @@ def test_get_conversation(request_type, transport: str = "grpc"):
             agent_id="agent_id_value",
             medium=resources.Conversation.Medium.PHONE_CALL,
             turn_count=1105,
+            obfuscated_user_id="obfuscated_user_id_value",
             call_metadata=resources.Conversation.CallMetadata(customer_channel=1706),
             expire_time=timestamp_pb2.Timestamp(seconds=751),
         )
@@ -1118,6 +1127,7 @@ def test_get_conversation(request_type, transport: str = "grpc"):
     assert response.agent_id == "agent_id_value"
     assert response.medium == resources.Conversation.Medium.PHONE_CALL
     assert response.turn_count == 1105
+    assert response.obfuscated_user_id == "obfuscated_user_id_value"
 
 
 def test_get_conversation_empty_call():
@@ -1158,6 +1168,7 @@ async def test_get_conversation_async(
                 agent_id="agent_id_value",
                 medium=resources.Conversation.Medium.PHONE_CALL,
                 turn_count=1105,
+                obfuscated_user_id="obfuscated_user_id_value",
             )
         )
         response = await client.get_conversation(request)
@@ -1174,6 +1185,7 @@ async def test_get_conversation_async(
     assert response.agent_id == "agent_id_value"
     assert response.medium == resources.Conversation.Medium.PHONE_CALL
     assert response.turn_count == 1105
+    assert response.obfuscated_user_id == "obfuscated_user_id_value"
 
 
 @pytest.mark.asyncio
@@ -7670,6 +7682,1229 @@ async def test_update_settings_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type", [contact_center_insights.CreateViewRequest, dict,]
+)
+def test_create_view(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_view), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.View(
+            name="name_value", display_name="display_name_value", value="value_value",
+        )
+        response = client.create_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.CreateViewRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.View)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.value == "value_value"
+
+
+def test_create_view_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_view), "__call__") as call:
+        client.create_view()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.CreateViewRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_view_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.CreateViewRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_view), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.View(
+                name="name_value",
+                display_name="display_name_value",
+                value="value_value",
+            )
+        )
+        response = await client.create_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.CreateViewRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.View)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.value == "value_value"
+
+
+@pytest.mark.asyncio
+async def test_create_view_async_from_dict():
+    await test_create_view_async(request_type=dict)
+
+
+def test_create_view_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.CreateViewRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_view), "__call__") as call:
+        call.return_value = resources.View()
+        client.create_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_view_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.CreateViewRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_view), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.View())
+        await client.create_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+def test_create_view_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_view), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.View()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_view(
+            parent="parent_value", view=resources.View(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].view
+        mock_val = resources.View(name="name_value")
+        assert arg == mock_val
+
+
+def test_create_view_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_view(
+            contact_center_insights.CreateViewRequest(),
+            parent="parent_value",
+            view=resources.View(name="name_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_view_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_view), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.View()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.View())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_view(
+            parent="parent_value", view=resources.View(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].view
+        mock_val = resources.View(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_view_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_view(
+            contact_center_insights.CreateViewRequest(),
+            parent="parent_value",
+            view=resources.View(name="name_value"),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type", [contact_center_insights.GetViewRequest, dict,]
+)
+def test_get_view(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_view), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.View(
+            name="name_value", display_name="display_name_value", value="value_value",
+        )
+        response = client.get_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.GetViewRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.View)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.value == "value_value"
+
+
+def test_get_view_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_view), "__call__") as call:
+        client.get_view()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.GetViewRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_view_async(
+    transport: str = "grpc_asyncio", request_type=contact_center_insights.GetViewRequest
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_view), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.View(
+                name="name_value",
+                display_name="display_name_value",
+                value="value_value",
+            )
+        )
+        response = await client.get_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.GetViewRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.View)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.value == "value_value"
+
+
+@pytest.mark.asyncio
+async def test_get_view_async_from_dict():
+    await test_get_view_async(request_type=dict)
+
+
+def test_get_view_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.GetViewRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_view), "__call__") as call:
+        call.return_value = resources.View()
+        client.get_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_view_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.GetViewRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_view), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.View())
+        await client.get_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_get_view_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_view), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.View()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_view(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_view_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_view(
+            contact_center_insights.GetViewRequest(), name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_view_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_view), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.View()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.View())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_view(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_view_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_view(
+            contact_center_insights.GetViewRequest(), name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type", [contact_center_insights.ListViewsRequest, dict,]
+)
+def test_list_views(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_views), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = contact_center_insights.ListViewsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_views(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.ListViewsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListViewsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_views_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_views), "__call__") as call:
+        client.list_views()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.ListViewsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_views_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.ListViewsRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_views), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            contact_center_insights.ListViewsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_views(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.ListViewsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListViewsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_views_async_from_dict():
+    await test_list_views_async(request_type=dict)
+
+
+def test_list_views_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.ListViewsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_views), "__call__") as call:
+        call.return_value = contact_center_insights.ListViewsResponse()
+        client.list_views(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_views_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.ListViewsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_views), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            contact_center_insights.ListViewsResponse()
+        )
+        await client.list_views(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+def test_list_views_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_views), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = contact_center_insights.ListViewsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_views(parent="parent_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_views_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_views(
+            contact_center_insights.ListViewsRequest(), parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_views_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_views), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = contact_center_insights.ListViewsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            contact_center_insights.ListViewsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_views(parent="parent_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_views_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_views(
+            contact_center_insights.ListViewsRequest(), parent="parent_value",
+        )
+
+
+def test_list_views_pager(transport_name: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_views), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            contact_center_insights.ListViewsResponse(
+                views=[resources.View(), resources.View(), resources.View(),],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListViewsResponse(views=[], next_page_token="def",),
+            contact_center_insights.ListViewsResponse(
+                views=[resources.View(),], next_page_token="ghi",
+            ),
+            contact_center_insights.ListViewsResponse(
+                views=[resources.View(), resources.View(),],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_views(request={})
+
+        assert pager._metadata == metadata
+
+        results = [i for i in pager]
+        assert len(results) == 6
+        assert all(isinstance(i, resources.View) for i in results)
+
+
+def test_list_views_pages(transport_name: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_views), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            contact_center_insights.ListViewsResponse(
+                views=[resources.View(), resources.View(), resources.View(),],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListViewsResponse(views=[], next_page_token="def",),
+            contact_center_insights.ListViewsResponse(
+                views=[resources.View(),], next_page_token="ghi",
+            ),
+            contact_center_insights.ListViewsResponse(
+                views=[resources.View(), resources.View(),],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_views(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_views_async_pager():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_views), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            contact_center_insights.ListViewsResponse(
+                views=[resources.View(), resources.View(), resources.View(),],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListViewsResponse(views=[], next_page_token="def",),
+            contact_center_insights.ListViewsResponse(
+                views=[resources.View(),], next_page_token="ghi",
+            ),
+            contact_center_insights.ListViewsResponse(
+                views=[resources.View(), resources.View(),],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_views(request={},)
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, resources.View) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_views_async_pages():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_views), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            contact_center_insights.ListViewsResponse(
+                views=[resources.View(), resources.View(), resources.View(),],
+                next_page_token="abc",
+            ),
+            contact_center_insights.ListViewsResponse(views=[], next_page_token="def",),
+            contact_center_insights.ListViewsResponse(
+                views=[resources.View(),], next_page_token="ghi",
+            ),
+            contact_center_insights.ListViewsResponse(
+                views=[resources.View(), resources.View(),],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (await client.list_views(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type", [contact_center_insights.UpdateViewRequest, dict,]
+)
+def test_update_view(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_view), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.View(
+            name="name_value", display_name="display_name_value", value="value_value",
+        )
+        response = client.update_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.UpdateViewRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.View)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.value == "value_value"
+
+
+def test_update_view_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_view), "__call__") as call:
+        client.update_view()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.UpdateViewRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_view_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.UpdateViewRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_view), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.View(
+                name="name_value",
+                display_name="display_name_value",
+                value="value_value",
+            )
+        )
+        response = await client.update_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.UpdateViewRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.View)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.value == "value_value"
+
+
+@pytest.mark.asyncio
+async def test_update_view_async_from_dict():
+    await test_update_view_async(request_type=dict)
+
+
+def test_update_view_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.UpdateViewRequest()
+
+    request.view.name = "view.name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_view), "__call__") as call:
+        call.return_value = resources.View()
+        client.update_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "view.name=view.name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_view_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.UpdateViewRequest()
+
+    request.view.name = "view.name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_view), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.View())
+        await client.update_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "view.name=view.name/value",) in kw["metadata"]
+
+
+def test_update_view_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_view), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.View()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_view(
+            view=resources.View(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].view
+        mock_val = resources.View(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_view_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_view(
+            contact_center_insights.UpdateViewRequest(),
+            view=resources.View(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_view_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_view), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.View()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.View())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_view(
+            view=resources.View(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].view
+        mock_val = resources.View(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_view_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_view(
+            contact_center_insights.UpdateViewRequest(),
+            view=resources.View(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type", [contact_center_insights.DeleteViewRequest, dict,]
+)
+def test_delete_view(request_type, transport: str = "grpc"):
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_view), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.DeleteViewRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_view_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_view), "__call__") as call:
+        client.delete_view()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.DeleteViewRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_view_async(
+    transport: str = "grpc_asyncio",
+    request_type=contact_center_insights.DeleteViewRequest,
+):
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_view), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == contact_center_insights.DeleteViewRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_view_async_from_dict():
+    await test_delete_view_async(request_type=dict)
+
+
+def test_delete_view_field_headers():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.DeleteViewRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_view), "__call__") as call:
+        call.return_value = None
+        client.delete_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_view_field_headers_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = contact_center_insights.DeleteViewRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_view), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_delete_view_flattened():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_view), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_view(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_view_flattened_error():
+    client = ContactCenterInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_view(
+            contact_center_insights.DeleteViewRequest(), name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_view_flattened_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_view), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_view(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_view_flattened_error_async():
+    client = ContactCenterInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_view(
+            contact_center_insights.DeleteViewRequest(), name="name_value",
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ContactCenterInsightsGrpcTransport(
@@ -7798,6 +9033,11 @@ def test_contact_center_insights_base_transport():
         "calculate_stats",
         "get_settings",
         "update_settings",
+        "create_view",
+        "get_view",
+        "list_views",
+        "update_view",
+        "delete_view",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -8314,8 +9554,32 @@ def test_parse_settings_path():
     assert expected == actual
 
 
+def test_view_path():
+    project = "winkle"
+    location = "nautilus"
+    view = "scallop"
+    expected = "projects/{project}/locations/{location}/views/{view}".format(
+        project=project, location=location, view=view,
+    )
+    actual = ContactCenterInsightsClient.view_path(project, location, view)
+    assert expected == actual
+
+
+def test_parse_view_path():
+    expected = {
+        "project": "abalone",
+        "location": "squid",
+        "view": "clam",
+    }
+    path = ContactCenterInsightsClient.view_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ContactCenterInsightsClient.parse_view_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -8325,7 +9589,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "octopus",
     }
     path = ContactCenterInsightsClient.common_billing_account_path(**expected)
 
@@ -8335,7 +9599,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "oyster"
     expected = "folders/{folder}".format(folder=folder,)
     actual = ContactCenterInsightsClient.common_folder_path(folder)
     assert expected == actual
@@ -8343,7 +9607,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "nudibranch",
     }
     path = ContactCenterInsightsClient.common_folder_path(**expected)
 
@@ -8353,7 +9617,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(organization=organization,)
     actual = ContactCenterInsightsClient.common_organization_path(organization)
     assert expected == actual
@@ -8361,7 +9625,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "mussel",
     }
     path = ContactCenterInsightsClient.common_organization_path(**expected)
 
@@ -8371,7 +9635,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "winkle"
     expected = "projects/{project}".format(project=project,)
     actual = ContactCenterInsightsClient.common_project_path(project)
     assert expected == actual
@@ -8379,7 +9643,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "nautilus",
     }
     path = ContactCenterInsightsClient.common_project_path(**expected)
 
@@ -8389,8 +9653,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -8400,8 +9664,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "squid",
+        "location": "clam",
     }
     path = ContactCenterInsightsClient.common_location_path(**expected)
 

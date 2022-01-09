@@ -40,6 +40,11 @@
                 "create_phrase_matcher"
               ]
             },
+            "CreateView": {
+              "methods": [
+                "create_view"
+              ]
+            },
             "DeleteAnalysis": {
               "methods": [
                 "delete_analysis"
@@ -58,6 +63,11 @@
             "DeletePhraseMatcher": {
               "methods": [
                 "delete_phrase_matcher"
+              ]
+            },
+            "DeleteView": {
+              "methods": [
+                "delete_view"
               ]
             },
             "DeployIssueModel": {
@@ -100,6 +110,11 @@
                 "get_settings"
               ]
             },
+            "GetView": {
+              "methods": [
+                "get_view"
+              ]
+            },
             "ListAnalyses": {
               "methods": [
                 "list_analyses"
@@ -123,6 +138,11 @@
             "ListPhraseMatchers": {
               "methods": [
                 "list_phrase_matchers"
+              ]
+            },
+            "ListViews": {
+              "methods": [
+                "list_views"
               ]
             },
             "UndeployIssueModel": {
@@ -153,6 +173,11 @@
             "UpdateSettings": {
               "methods": [
                 "update_settings"
+              ]
+            },
+            "UpdateView": {
+              "methods": [
+                "update_view"
               ]
             }
           }
@@ -190,6 +215,11 @@
                 "create_phrase_matcher"
               ]
             },
+            "CreateView": {
+              "methods": [
+                "create_view"
+              ]
+            },
             "DeleteAnalysis": {
               "methods": [
                 "delete_analysis"
@@ -208,6 +238,11 @@
             "DeletePhraseMatcher": {
               "methods": [
                 "delete_phrase_matcher"
+              ]
+            },
+            "DeleteView": {
+              "methods": [
+                "delete_view"
               ]
             },
             "DeployIssueModel": {
@@ -250,6 +285,11 @@
                 "get_settings"
               ]
             },
+            "GetView": {
+              "methods": [
+                "get_view"
+              ]
+            },
             "ListAnalyses": {
               "methods": [
                 "list_analyses"
@@ -273,6 +313,11 @@
             "ListPhraseMatchers": {
               "methods": [
                 "list_phrase_matchers"
+              ]
+            },
+            "ListViews": {
+              "methods": [
+                "list_views"
               ]
             },
             "UndeployIssueModel": {
@@ -303,6 +348,11 @@
             "UpdateSettings": {
               "methods": [
                 "update_settings"
+              ]
+            },
+            "UpdateView": {
+              "methods": [
+                "update_view"
               ]
             }
           }

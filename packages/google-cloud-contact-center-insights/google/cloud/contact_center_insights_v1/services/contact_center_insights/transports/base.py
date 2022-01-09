@@ -225,6 +225,21 @@ class ContactCenterInsightsTransport(abc.ABC):
             self.update_settings: gapic_v1.method.wrap_method(
                 self.update_settings, default_timeout=None, client_info=client_info,
             ),
+            self.create_view: gapic_v1.method.wrap_method(
+                self.create_view, default_timeout=None, client_info=client_info,
+            ),
+            self.get_view: gapic_v1.method.wrap_method(
+                self.get_view, default_timeout=None, client_info=client_info,
+            ),
+            self.list_views: gapic_v1.method.wrap_method(
+                self.list_views, default_timeout=None, client_info=client_info,
+            ),
+            self.update_view: gapic_v1.method.wrap_method(
+                self.update_view, default_timeout=None, client_info=client_info,
+            ),
+            self.delete_view: gapic_v1.method.wrap_method(
+                self.delete_view, default_timeout=None, client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -520,6 +535,54 @@ class ContactCenterInsightsTransport(abc.ABC):
     ) -> Callable[
         [contact_center_insights.UpdateSettingsRequest],
         Union[resources.Settings, Awaitable[resources.Settings]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_view(
+        self,
+    ) -> Callable[
+        [contact_center_insights.CreateViewRequest],
+        Union[resources.View, Awaitable[resources.View]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_view(
+        self,
+    ) -> Callable[
+        [contact_center_insights.GetViewRequest],
+        Union[resources.View, Awaitable[resources.View]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_views(
+        self,
+    ) -> Callable[
+        [contact_center_insights.ListViewsRequest],
+        Union[
+            contact_center_insights.ListViewsResponse,
+            Awaitable[contact_center_insights.ListViewsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_view(
+        self,
+    ) -> Callable[
+        [contact_center_insights.UpdateViewRequest],
+        Union[resources.View, Awaitable[resources.View]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_view(
+        self,
+    ) -> Callable[
+        [contact_center_insights.DeleteViewRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 

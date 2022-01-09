@@ -27,11 +27,13 @@ from .types.contact_center_insights import CreateConversationRequest
 from .types.contact_center_insights import CreateIssueModelMetadata
 from .types.contact_center_insights import CreateIssueModelRequest
 from .types.contact_center_insights import CreatePhraseMatcherRequest
+from .types.contact_center_insights import CreateViewRequest
 from .types.contact_center_insights import DeleteAnalysisRequest
 from .types.contact_center_insights import DeleteConversationRequest
 from .types.contact_center_insights import DeleteIssueModelMetadata
 from .types.contact_center_insights import DeleteIssueModelRequest
 from .types.contact_center_insights import DeletePhraseMatcherRequest
+from .types.contact_center_insights import DeleteViewRequest
 from .types.contact_center_insights import DeployIssueModelMetadata
 from .types.contact_center_insights import DeployIssueModelRequest
 from .types.contact_center_insights import DeployIssueModelResponse
@@ -44,6 +46,7 @@ from .types.contact_center_insights import GetIssueModelRequest
 from .types.contact_center_insights import GetIssueRequest
 from .types.contact_center_insights import GetPhraseMatcherRequest
 from .types.contact_center_insights import GetSettingsRequest
+from .types.contact_center_insights import GetViewRequest
 from .types.contact_center_insights import ListAnalysesRequest
 from .types.contact_center_insights import ListAnalysesResponse
 from .types.contact_center_insights import ListConversationsRequest
@@ -54,6 +57,8 @@ from .types.contact_center_insights import ListIssuesRequest
 from .types.contact_center_insights import ListIssuesResponse
 from .types.contact_center_insights import ListPhraseMatchersRequest
 from .types.contact_center_insights import ListPhraseMatchersResponse
+from .types.contact_center_insights import ListViewsRequest
+from .types.contact_center_insights import ListViewsResponse
 from .types.contact_center_insights import UndeployIssueModelMetadata
 from .types.contact_center_insights import UndeployIssueModelRequest
 from .types.contact_center_insights import UndeployIssueModelResponse
@@ -62,6 +67,7 @@ from .types.contact_center_insights import UpdateIssueModelRequest
 from .types.contact_center_insights import UpdateIssueRequest
 from .types.contact_center_insights import UpdatePhraseMatcherRequest
 from .types.contact_center_insights import UpdateSettingsRequest
+from .types.contact_center_insights import UpdateViewRequest
 from .types.contact_center_insights import ConversationView
 from .types.resources import Analysis
 from .types.resources import AnalysisResult
@@ -101,6 +107,7 @@ from .types.resources import Settings
 from .types.resources import SilenceData
 from .types.resources import SmartComposeSuggestionData
 from .types.resources import SmartReplyData
+from .types.resources import View
 
 __all__ = (
     "ContactCenterInsightsAsyncClient",
@@ -126,11 +133,13 @@ __all__ = (
     "CreateIssueModelMetadata",
     "CreateIssueModelRequest",
     "CreatePhraseMatcherRequest",
+    "CreateViewRequest",
     "DeleteAnalysisRequest",
     "DeleteConversationRequest",
     "DeleteIssueModelMetadata",
     "DeleteIssueModelRequest",
     "DeletePhraseMatcherRequest",
+    "DeleteViewRequest",
     "DeployIssueModelMetadata",
     "DeployIssueModelRequest",
     "DeployIssueModelResponse",
@@ -151,6 +160,7 @@ __all__ = (
     "GetIssueRequest",
     "GetPhraseMatcherRequest",
     "GetSettingsRequest",
+    "GetViewRequest",
     "HoldData",
     "Intent",
     "IntentMatchData",
@@ -170,6 +180,8 @@ __all__ = (
     "ListIssuesResponse",
     "ListPhraseMatchersRequest",
     "ListPhraseMatchersResponse",
+    "ListViewsRequest",
+    "ListViewsResponse",
     "PhraseMatchData",
     "PhraseMatchRule",
     "PhraseMatchRuleConfig",
@@ -189,4 +201,6 @@ __all__ = (
     "UpdateIssueRequest",
     "UpdatePhraseMatcherRequest",
     "UpdateSettingsRequest",
+    "UpdateViewRequest",
+    "View",
 )

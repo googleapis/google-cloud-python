@@ -1087,6 +1087,145 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
             )
         return self._stubs["update_settings"]
 
+    @property
+    def create_view(
+        self,
+    ) -> Callable[
+        [contact_center_insights.CreateViewRequest], Awaitable[resources.View]
+    ]:
+        r"""Return a callable for the create view method over gRPC.
+
+        Creates a view.
+
+        Returns:
+            Callable[[~.CreateViewRequest],
+                    Awaitable[~.View]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_view" not in self._stubs:
+            self._stubs["create_view"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/CreateView",
+                request_serializer=contact_center_insights.CreateViewRequest.serialize,
+                response_deserializer=resources.View.deserialize,
+            )
+        return self._stubs["create_view"]
+
+    @property
+    def get_view(
+        self,
+    ) -> Callable[[contact_center_insights.GetViewRequest], Awaitable[resources.View]]:
+        r"""Return a callable for the get view method over gRPC.
+
+        Gets a view.
+
+        Returns:
+            Callable[[~.GetViewRequest],
+                    Awaitable[~.View]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_view" not in self._stubs:
+            self._stubs["get_view"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/GetView",
+                request_serializer=contact_center_insights.GetViewRequest.serialize,
+                response_deserializer=resources.View.deserialize,
+            )
+        return self._stubs["get_view"]
+
+    @property
+    def list_views(
+        self,
+    ) -> Callable[
+        [contact_center_insights.ListViewsRequest],
+        Awaitable[contact_center_insights.ListViewsResponse],
+    ]:
+        r"""Return a callable for the list views method over gRPC.
+
+        Lists views.
+
+        Returns:
+            Callable[[~.ListViewsRequest],
+                    Awaitable[~.ListViewsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_views" not in self._stubs:
+            self._stubs["list_views"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/ListViews",
+                request_serializer=contact_center_insights.ListViewsRequest.serialize,
+                response_deserializer=contact_center_insights.ListViewsResponse.deserialize,
+            )
+        return self._stubs["list_views"]
+
+    @property
+    def update_view(
+        self,
+    ) -> Callable[
+        [contact_center_insights.UpdateViewRequest], Awaitable[resources.View]
+    ]:
+        r"""Return a callable for the update view method over gRPC.
+
+        Updates a view.
+
+        Returns:
+            Callable[[~.UpdateViewRequest],
+                    Awaitable[~.View]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_view" not in self._stubs:
+            self._stubs["update_view"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/UpdateView",
+                request_serializer=contact_center_insights.UpdateViewRequest.serialize,
+                response_deserializer=resources.View.deserialize,
+            )
+        return self._stubs["update_view"]
+
+    @property
+    def delete_view(
+        self,
+    ) -> Callable[
+        [contact_center_insights.DeleteViewRequest], Awaitable[empty_pb2.Empty]
+    ]:
+        r"""Return a callable for the delete view method over gRPC.
+
+        Deletes a view.
+
+        Returns:
+            Callable[[~.DeleteViewRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_view" not in self._stubs:
+            self._stubs["delete_view"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/DeleteView",
+                request_serializer=contact_center_insights.DeleteViewRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_view"]
+
     def close(self):
         return self.grpc_channel.close()
 

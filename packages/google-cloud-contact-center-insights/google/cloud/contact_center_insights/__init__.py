@@ -52,6 +52,9 @@ from google.cloud.contact_center_insights_v1.types.contact_center_insights impor
     CreatePhraseMatcherRequest,
 )
 from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
+    CreateViewRequest,
+)
+from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
     DeleteAnalysisRequest,
 )
 from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
@@ -65,6 +68,9 @@ from google.cloud.contact_center_insights_v1.types.contact_center_insights impor
 )
 from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
     DeletePhraseMatcherRequest,
+)
+from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
+    DeleteViewRequest,
 )
 from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
     DeployIssueModelMetadata,
@@ -103,6 +109,9 @@ from google.cloud.contact_center_insights_v1.types.contact_center_insights impor
     GetSettingsRequest,
 )
 from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
+    GetViewRequest,
+)
+from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
     ListAnalysesRequest,
 )
 from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
@@ -133,6 +142,12 @@ from google.cloud.contact_center_insights_v1.types.contact_center_insights impor
     ListPhraseMatchersResponse,
 )
 from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
+    ListViewsRequest,
+)
+from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
+    ListViewsResponse,
+)
+from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
     UndeployIssueModelMetadata,
 )
 from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
@@ -155,6 +170,9 @@ from google.cloud.contact_center_insights_v1.types.contact_center_insights impor
 )
 from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
     UpdateSettingsRequest,
+)
+from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
+    UpdateViewRequest,
 )
 from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
     ConversationView,
@@ -211,6 +229,7 @@ from google.cloud.contact_center_insights_v1.types.resources import (
     SmartComposeSuggestionData,
 )
 from google.cloud.contact_center_insights_v1.types.resources import SmartReplyData
+from google.cloud.contact_center_insights_v1.types.resources import View
 
 __all__ = (
     "ContactCenterInsightsClient",
@@ -225,11 +244,13 @@ __all__ = (
     "CreateIssueModelMetadata",
     "CreateIssueModelRequest",
     "CreatePhraseMatcherRequest",
+    "CreateViewRequest",
     "DeleteAnalysisRequest",
     "DeleteConversationRequest",
     "DeleteIssueModelMetadata",
     "DeleteIssueModelRequest",
     "DeletePhraseMatcherRequest",
+    "DeleteViewRequest",
     "DeployIssueModelMetadata",
     "DeployIssueModelRequest",
     "DeployIssueModelResponse",
@@ -242,6 +263,7 @@ __all__ = (
     "GetIssueRequest",
     "GetPhraseMatcherRequest",
     "GetSettingsRequest",
+    "GetViewRequest",
     "ListAnalysesRequest",
     "ListAnalysesResponse",
     "ListConversationsRequest",
@@ -252,6 +274,8 @@ __all__ = (
     "ListIssuesResponse",
     "ListPhraseMatchersRequest",
     "ListPhraseMatchersResponse",
+    "ListViewsRequest",
+    "ListViewsResponse",
     "UndeployIssueModelMetadata",
     "UndeployIssueModelRequest",
     "UndeployIssueModelResponse",
@@ -260,6 +284,7 @@ __all__ = (
     "UpdateIssueRequest",
     "UpdatePhraseMatcherRequest",
     "UpdateSettingsRequest",
+    "UpdateViewRequest",
     "ConversationView",
     "Analysis",
     "AnalysisResult",
@@ -299,4 +324,5 @@ __all__ = (
     "SilenceData",
     "SmartComposeSuggestionData",
     "SmartReplyData",
+    "View",
 )

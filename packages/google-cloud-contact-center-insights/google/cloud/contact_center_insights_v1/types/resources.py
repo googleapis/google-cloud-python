@@ -60,6 +60,7 @@ __protobuf__ = proto.module(
         "SmartComposeSuggestionData",
         "DialogflowInteractionData",
         "ConversationParticipant",
+        "View",
     },
 )
 
@@ -140,6 +141,9 @@ class Conversation(proto.Message):
             intents in the call. The key corresponds to a
             Dialogflow intent, format:
             projects/{project}/agent/{agent}/intents/{intent}
+        obfuscated_user_id (str):
+            Obfuscated user ID which the customer sent to
+            us.
     """
 
     class Medium(proto.Enum):
@@ -306,6 +310,7 @@ class Conversation(proto.Message):
     dialogflow_intents = proto.MapField(
         proto.STRING, proto.MESSAGE, number=18, message="DialogflowIntent",
     )
+    obfuscated_user_id = proto.Field(proto.STRING, number=21,)
 
 
 class Analysis(proto.Message):
@@ -468,7 +473,8 @@ class IssueModelResult(proto.Message):
 
     Attributes:
         issue_model (str):
-            Issue model that generates the result.
+            Issue model that generates the result. Format:
+            projects/{project}/locations/{location}/issueModels/{issue_model}
         issues (Sequence[google.cloud.contact_center_insights_v1.types.IssueAssignment]):
             All the matched issues.
     """
@@ -1428,6 +1434,33 @@ class ConversationParticipant(proto.Message):
     dialogflow_participant = proto.Field(proto.STRING, number=1,)
     obfuscated_external_user_id = proto.Field(proto.STRING, number=3,)
     role = proto.Field(proto.ENUM, number=2, enum=Role,)
+
+
+class View(proto.Message):
+    r"""The View resource.
+
+    Attributes:
+        name (str):
+            Immutable. The resource name of the view.
+            Format:
+            projects/{project}/locations/{location}/views/{view}
+        display_name (str):
+            The human-readable display name of the view.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time at which this view was
+            created.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The most recent time at which
+            the view was updated.
+        value (str):
+            String with specific view properties.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+    display_name = proto.Field(proto.STRING, number=2,)
+    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
+    value = proto.Field(proto.STRING, number=5,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

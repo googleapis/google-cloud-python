@@ -71,6 +71,12 @@ __protobuf__ = proto.module(
         "UpdatePhraseMatcherRequest",
         "GetSettingsRequest",
         "UpdateSettingsRequest",
+        "CreateViewRequest",
+        "GetViewRequest",
+        "ListViewsRequest",
+        "ListViewsResponse",
+        "UpdateViewRequest",
+        "DeleteViewRequest",
     },
 )
 
@@ -936,6 +942,105 @@ class UpdateSettingsRequest(proto.Message):
     update_mask = proto.Field(
         proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
     )
+
+
+class CreateViewRequest(proto.Message):
+    r"""The request to create a view.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource of the view. Required. The
+            location to create a view for. Format:
+            ``projects/<Project ID>/locations/<Location ID>`` or
+            ``projects/<Project Number>/locations/<Location ID>``
+        view (google.cloud.contact_center_insights_v1.types.View):
+            Required. The view resource to create.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    view = proto.Field(proto.MESSAGE, number=2, message=resources.View,)
+
+
+class GetViewRequest(proto.Message):
+    r"""The request to get a view.
+
+    Attributes:
+        name (str):
+            Required. The name of the view to get.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class ListViewsRequest(proto.Message):
+    r"""The request to list views.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource of the views.
+        page_size (int):
+            The maximum number of views to return in the response. If
+            this value is zero, the service will select a default size.
+            A call may return fewer objects than requested. A non-empty
+            ``next_page_token`` in the response indicates that more data
+            is available.
+        page_token (str):
+            The value returned by the last ``ListViewsResponse``;
+            indicates that this is a continuation of a prior
+            ``ListViews`` call and the system should return the next
+            page of data.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
+
+
+class ListViewsResponse(proto.Message):
+    r"""The response of listing views.
+
+    Attributes:
+        views (Sequence[google.cloud.contact_center_insights_v1.types.View]):
+            The views that match the request.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    views = proto.RepeatedField(proto.MESSAGE, number=1, message=resources.View,)
+    next_page_token = proto.Field(proto.STRING, number=2,)
+
+
+class UpdateViewRequest(proto.Message):
+    r"""The request to update a view.
+
+    Attributes:
+        view (google.cloud.contact_center_insights_v1.types.View):
+            Required. The new view.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            The list of fields to be updated.
+    """
+
+    view = proto.Field(proto.MESSAGE, number=1, message=resources.View,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
+
+
+class DeleteViewRequest(proto.Message):
+    r"""The request to delete a view.
+
+    Attributes:
+        name (str):
+            Required. The name of the view to delete.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
