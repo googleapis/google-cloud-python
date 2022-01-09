@@ -4,7 +4,7 @@
     "product_documentation": "",
     "client_documentation": "https://github.com/googleapis/python-test-utils",
     "issue_tracker": "https://github.com/googleapis/python-test-utils/issues",
-    "release_level": "beta",
+    "release_level": "preview",
     "language": "python",
     "library_type": "OTHER",
     "repo": "googleapis/python-test-utils",

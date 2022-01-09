@@ -42,7 +42,7 @@ def parse_error_msg(msg: str) -> List[str]:
     """
     match = PACKAGE_LIST_REGEX.search(msg)
 
-    reqs = []
+    reqs: List[str] = []
 
     if match:
         reqs = match.groups(1)[0].split(",")  # type: ignore
