@@ -4,7 +4,7 @@
     "product_documentation": "https://cloud.google.com/dataproc",
     "client_documentation": "https://cloud.google.com/python/docs/reference/dataproc/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/559745",
-    "release_level": "ga",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-dataproc",
@@ -12,5 +12,6 @@
     "api_id": "dataproc.googleapis.com",
     "requires_billing": true,
     "codeowner_team": "@googleapis/api-dataproc",
-    "default_version": "v1"
+    "default_version": "v1",
+    "api_shortname": "dataproc"
 }
