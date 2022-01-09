@@ -45,6 +45,10 @@ from .grpc import NetworkSecurityGrpcTransport
 class NetworkSecurityGrpcAsyncIOTransport(NetworkSecurityTransport):
     """gRPC AsyncIO backend transport for NetworkSecurity.
 
+    Network Security API provides resources to configure
+    authentication and authorization policies. Refer to per API
+    resource documentation for more information.
+
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
     and call it.

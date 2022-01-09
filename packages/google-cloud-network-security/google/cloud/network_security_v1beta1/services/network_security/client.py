@@ -93,7 +93,10 @@ class NetworkSecurityClientMeta(type):
 
 
 class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
-    """"""
+    """Network Security API provides resources to configure
+    authentication and authorization policies. Refer to per API
+    resource documentation for more information.
+    """
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
