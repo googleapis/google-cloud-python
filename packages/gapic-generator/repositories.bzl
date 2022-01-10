@@ -15,13 +15,15 @@ def gapic_generator_python():
         requirements = "@gapic_generator_python//:requirements.txt",
     )
 
-    _protobuf_version = "3.15.8"
-    _protobuf_version_in_link = "v%s" % _protobuf_version
+    _protobuf_version = "3.19.2"
+    _protobuf_sha256 = "9ceef0daf7e8be16cd99ac759271eb08021b53b1c7b6edd399953a76390234cd"
+    _protobuf_version_in_link = "v{}".format(_protobuf_version)
     _maybe(
         http_archive,
         name = "com_google_protobuf",
-        urls = ["https://github.com/protocolbuffers/protobuf/archive/%s.zip" % _protobuf_version_in_link],
-        strip_prefix = "protobuf-%s" % _protobuf_version,
+        sha256 = _protobuf_sha256,
+        url = "https://github.com/protocolbuffers/protobuf/archive/refs/tags/{}.zip".format(_protobuf_version_in_link),
+        strip_prefix = "protobuf-{}".format(_protobuf_version),
     )
 
     _maybe(
@@ -31,11 +33,14 @@ def gapic_generator_python():
         urls = ["https://github.com/bazelbuild/bazel-skylib/archive/2169ae1c374aab4a09aa90e65efe1a3aad4e279b.tar.gz"],
     )
 
+    _grpc_version = "1.43.0"
+    _grpc_sha256 = "9647220c699cea4dafa92ec0917c25c7812be51a18143af047e20f3fb05adddc"
     _maybe(
         http_archive,
         name = "com_github_grpc_grpc",
-        strip_prefix = "grpc-1.36.4",
-        urls = ["https://github.com/grpc/grpc/archive/v1.36.4.zip"],
+        sha256 = _grpc_sha256,
+        strip_prefix = "grpc-{}".format(_grpc_version),
+        url = "https://github.com/grpc/grpc/archive/v{}.tar.gz".format(_grpc_version),
     )
 
     _maybe(

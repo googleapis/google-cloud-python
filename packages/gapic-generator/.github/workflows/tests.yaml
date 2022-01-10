@@ -326,7 +326,7 @@ jobs:
         run: nox -s fragment${{ matrix.variant }}-${{ matrix.python }}
   integration:
     runs-on: ubuntu-latest
-    container: gcr.io/gapic-images/googleapis-bazel:20210105
+    container: gcr.io/gapic-images/googleapis
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.7.0
