@@ -91,7 +91,7 @@ class DummyMessage:
 
 
 DummyService = namedtuple("DummyService", [
-                          "methods", "client_name", "async_client_name", "resource_messages_dict"])
+                          "name", "methods", "client_name", "async_client_name", "resource_messages_dict"])
 DummyService.__new__.__defaults__ = (False,) * len(DummyService._fields)
 
 DummyApiSchema = namedtuple("DummyApiSchema",
