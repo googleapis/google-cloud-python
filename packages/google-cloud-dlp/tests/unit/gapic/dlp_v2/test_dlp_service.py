@@ -246,20 +246,20 @@ def test_dlp_service_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -316,7 +316,7 @@ def test_dlp_service_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -411,7 +411,7 @@ def test_dlp_service_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -442,7 +442,7 @@ def test_dlp_service_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -473,9 +473,8 @@ def test_dlp_service_client_client_options_from_dict():
         )
 
 
-def test_inspect_content(
-    transport: str = "grpc", request_type=dlp.InspectContentRequest
-):
+@pytest.mark.parametrize("request_type", [dlp.InspectContentRequest, dict,])
+def test_inspect_content(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -497,10 +496,6 @@ def test_inspect_content(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.InspectContentResponse)
-
-
-def test_inspect_content_from_dict():
-    test_inspect_content(request_type=dict)
 
 
 def test_inspect_content_empty_call():
@@ -603,7 +598,8 @@ async def test_inspect_content_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_redact_image(transport: str = "grpc", request_type=dlp.RedactImageRequest):
+@pytest.mark.parametrize("request_type", [dlp.RedactImageRequest, dict,])
+def test_redact_image(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -630,10 +626,6 @@ def test_redact_image(transport: str = "grpc", request_type=dlp.RedactImageReque
     assert isinstance(response, dlp.RedactImageResponse)
     assert response.redacted_image == b"redacted_image_blob"
     assert response.extracted_text == "extracted_text_value"
-
-
-def test_redact_image_from_dict():
-    test_redact_image(request_type=dict)
 
 
 def test_redact_image_empty_call():
@@ -741,9 +733,8 @@ async def test_redact_image_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_deidentify_content(
-    transport: str = "grpc", request_type=dlp.DeidentifyContentRequest
-):
+@pytest.mark.parametrize("request_type", [dlp.DeidentifyContentRequest, dict,])
+def test_deidentify_content(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -767,10 +758,6 @@ def test_deidentify_content(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.DeidentifyContentResponse)
-
-
-def test_deidentify_content_from_dict():
-    test_deidentify_content(request_type=dict)
 
 
 def test_deidentify_content_empty_call():
@@ -881,9 +868,8 @@ async def test_deidentify_content_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_reidentify_content(
-    transport: str = "grpc", request_type=dlp.ReidentifyContentRequest
-):
+@pytest.mark.parametrize("request_type", [dlp.ReidentifyContentRequest, dict,])
+def test_reidentify_content(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -907,10 +893,6 @@ def test_reidentify_content(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.ReidentifyContentResponse)
-
-
-def test_reidentify_content_from_dict():
-    test_reidentify_content(request_type=dict)
 
 
 def test_reidentify_content_empty_call():
@@ -1021,9 +1003,8 @@ async def test_reidentify_content_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_list_info_types(
-    transport: str = "grpc", request_type=dlp.ListInfoTypesRequest
-):
+@pytest.mark.parametrize("request_type", [dlp.ListInfoTypesRequest, dict,])
+def test_list_info_types(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1045,10 +1026,6 @@ def test_list_info_types(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.ListInfoTypesResponse)
-
-
-def test_list_info_types_from_dict():
-    test_list_info_types(request_type=dict)
 
 
 def test_list_info_types_empty_call():
@@ -1168,9 +1145,8 @@ async def test_list_info_types_flattened_error_async():
         )
 
 
-def test_create_inspect_template(
-    transport: str = "grpc", request_type=dlp.CreateInspectTemplateRequest
-):
+@pytest.mark.parametrize("request_type", [dlp.CreateInspectTemplateRequest, dict,])
+def test_create_inspect_template(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1201,10 +1177,6 @@ def test_create_inspect_template(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-def test_create_inspect_template_from_dict():
-    test_create_inspect_template(request_type=dict)
 
 
 def test_create_inspect_template_empty_call():
@@ -1406,9 +1378,8 @@ async def test_create_inspect_template_flattened_error_async():
         )
 
 
-def test_update_inspect_template(
-    transport: str = "grpc", request_type=dlp.UpdateInspectTemplateRequest
-):
+@pytest.mark.parametrize("request_type", [dlp.UpdateInspectTemplateRequest, dict,])
+def test_update_inspect_template(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1439,10 +1410,6 @@ def test_update_inspect_template(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-def test_update_inspect_template_from_dict():
-    test_update_inspect_template(request_type=dict)
 
 
 def test_update_inspect_template_empty_call():
@@ -1654,9 +1621,8 @@ async def test_update_inspect_template_flattened_error_async():
         )
 
 
-def test_get_inspect_template(
-    transport: str = "grpc", request_type=dlp.GetInspectTemplateRequest
-):
+@pytest.mark.parametrize("request_type", [dlp.GetInspectTemplateRequest, dict,])
+def test_get_inspect_template(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1687,10 +1653,6 @@ def test_get_inspect_template(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-def test_get_inspect_template_from_dict():
-    test_get_inspect_template(request_type=dict)
 
 
 def test_get_inspect_template_empty_call():
@@ -1876,9 +1838,8 @@ async def test_get_inspect_template_flattened_error_async():
         )
 
 
-def test_list_inspect_templates(
-    transport: str = "grpc", request_type=dlp.ListInspectTemplatesRequest
-):
+@pytest.mark.parametrize("request_type", [dlp.ListInspectTemplatesRequest, dict,])
+def test_list_inspect_templates(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1905,10 +1866,6 @@ def test_list_inspect_templates(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInspectTemplatesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_inspect_templates_from_dict():
-    test_list_inspect_templates(request_type=dict)
 
 
 def test_list_inspect_templates_empty_call():
@@ -2092,8 +2049,10 @@ async def test_list_inspect_templates_flattened_error_async():
         )
 
 
-def test_list_inspect_templates_pager():
-    client = DlpServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_inspect_templates_pager(transport_name: str = "grpc"):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2134,8 +2093,10 @@ def test_list_inspect_templates_pager():
         assert all(isinstance(i, dlp.InspectTemplate) for i in results)
 
 
-def test_list_inspect_templates_pages():
-    client = DlpServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_inspect_templates_pages(transport_name: str = "grpc"):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2246,9 +2207,8 @@ async def test_list_inspect_templates_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_delete_inspect_template(
-    transport: str = "grpc", request_type=dlp.DeleteInspectTemplateRequest
-):
+@pytest.mark.parametrize("request_type", [dlp.DeleteInspectTemplateRequest, dict,])
+def test_delete_inspect_template(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2272,10 +2232,6 @@ def test_delete_inspect_template(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_inspect_template_from_dict():
-    test_delete_inspect_template(request_type=dict)
 
 
 def test_delete_inspect_template_empty_call():
@@ -2452,9 +2408,8 @@ async def test_delete_inspect_template_flattened_error_async():
         )
 
 
-def test_create_deidentify_template(
-    transport: str = "grpc", request_type=dlp.CreateDeidentifyTemplateRequest
-):
+@pytest.mark.parametrize("request_type", [dlp.CreateDeidentifyTemplateRequest, dict,])
+def test_create_deidentify_template(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2485,10 +2440,6 @@ def test_create_deidentify_template(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-def test_create_deidentify_template_from_dict():
-    test_create_deidentify_template(request_type=dict)
 
 
 def test_create_deidentify_template_empty_call():
@@ -2694,9 +2645,8 @@ async def test_create_deidentify_template_flattened_error_async():
         )
 
 
-def test_update_deidentify_template(
-    transport: str = "grpc", request_type=dlp.UpdateDeidentifyTemplateRequest
-):
+@pytest.mark.parametrize("request_type", [dlp.UpdateDeidentifyTemplateRequest, dict,])
+def test_update_deidentify_template(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2727,10 +2677,6 @@ def test_update_deidentify_template(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-def test_update_deidentify_template_from_dict():
-    test_update_deidentify_template(request_type=dict)
 
 
 def test_update_deidentify_template_empty_call():
@@ -2946,9 +2892,8 @@ async def test_update_deidentify_template_flattened_error_async():
         )
 
 
-def test_get_deidentify_template(
-    transport: str = "grpc", request_type=dlp.GetDeidentifyTemplateRequest
-):
+@pytest.mark.parametrize("request_type", [dlp.GetDeidentifyTemplateRequest, dict,])
+def test_get_deidentify_template(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2979,10 +2924,6 @@ def test_get_deidentify_template(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-def test_get_deidentify_template_from_dict():
-    test_get_deidentify_template(request_type=dict)
 
 
 def test_get_deidentify_template_empty_call():
@@ -3172,9 +3113,8 @@ async def test_get_deidentify_template_flattened_error_async():
         )
 
 
-def test_list_deidentify_templates(
-    transport: str = "grpc", request_type=dlp.ListDeidentifyTemplatesRequest
-):
+@pytest.mark.parametrize("request_type", [dlp.ListDeidentifyTemplatesRequest, dict,])
+def test_list_deidentify_templates(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3201,10 +3141,6 @@ def test_list_deidentify_templates(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDeidentifyTemplatesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_deidentify_templates_from_dict():
-    test_list_deidentify_templates(request_type=dict)
 
 
 def test_list_deidentify_templates_empty_call():
@@ -3390,8 +3326,10 @@ async def test_list_deidentify_templates_flattened_error_async():
         )
 
 
-def test_list_deidentify_templates_pager():
-    client = DlpServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_deidentify_templates_pager(transport_name: str = "grpc"):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3435,8 +3373,10 @@ def test_list_deidentify_templates_pager():
         assert all(isinstance(i, dlp.DeidentifyTemplate) for i in results)
 
 
-def test_list_deidentify_templates_pages():
-    client = DlpServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_deidentify_templates_pages(transport_name: str = "grpc"):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3556,9 +3496,8 @@ async def test_list_deidentify_templates_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_delete_deidentify_template(
-    transport: str = "grpc", request_type=dlp.DeleteDeidentifyTemplateRequest
-):
+@pytest.mark.parametrize("request_type", [dlp.DeleteDeidentifyTemplateRequest, dict,])
+def test_delete_deidentify_template(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3582,10 +3521,6 @@ def test_delete_deidentify_template(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_deidentify_template_from_dict():
-    test_delete_deidentify_template(request_type=dict)
 
 
 def test_delete_deidentify_template_empty_call():
@@ -3762,9 +3697,8 @@ async def test_delete_deidentify_template_flattened_error_async():
         )
 
 
-def test_create_job_trigger(
-    transport: str = "grpc", request_type=dlp.CreateJobTriggerRequest
-):
+@pytest.mark.parametrize("request_type", [dlp.CreateJobTriggerRequest, dict,])
+def test_create_job_trigger(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3804,10 +3738,6 @@ def test_create_job_trigger(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.status == dlp.JobTrigger.Status.HEALTHY
-
-
-def test_create_job_trigger_from_dict():
-    test_create_job_trigger(request_type=dict)
 
 
 def test_create_job_trigger_empty_call():
@@ -4009,9 +3939,8 @@ async def test_create_job_trigger_flattened_error_async():
         )
 
 
-def test_update_job_trigger(
-    transport: str = "grpc", request_type=dlp.UpdateJobTriggerRequest
-):
+@pytest.mark.parametrize("request_type", [dlp.UpdateJobTriggerRequest, dict,])
+def test_update_job_trigger(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4051,10 +3980,6 @@ def test_update_job_trigger(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.status == dlp.JobTrigger.Status.HEALTHY
-
-
-def test_update_job_trigger_from_dict():
-    test_update_job_trigger(request_type=dict)
 
 
 def test_update_job_trigger_empty_call():
@@ -4268,9 +4193,8 @@ async def test_update_job_trigger_flattened_error_async():
         )
 
 
-def test_hybrid_inspect_job_trigger(
-    transport: str = "grpc", request_type=dlp.HybridInspectJobTriggerRequest
-):
+@pytest.mark.parametrize("request_type", [dlp.HybridInspectJobTriggerRequest, dict,])
+def test_hybrid_inspect_job_trigger(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4294,10 +4218,6 @@ def test_hybrid_inspect_job_trigger(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.HybridInspectResponse)
-
-
-def test_hybrid_inspect_job_trigger_from_dict():
-    test_hybrid_inspect_job_trigger(request_type=dict)
 
 
 def test_hybrid_inspect_job_trigger_empty_call():
@@ -4480,9 +4400,8 @@ async def test_hybrid_inspect_job_trigger_flattened_error_async():
         )
 
 
-def test_get_job_trigger(
-    transport: str = "grpc", request_type=dlp.GetJobTriggerRequest
-):
+@pytest.mark.parametrize("request_type", [dlp.GetJobTriggerRequest, dict,])
+def test_get_job_trigger(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4520,10 +4439,6 @@ def test_get_job_trigger(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.status == dlp.JobTrigger.Status.HEALTHY
-
-
-def test_get_job_trigger_from_dict():
-    test_get_job_trigger(request_type=dict)
 
 
 def test_get_job_trigger_empty_call():
@@ -4699,9 +4614,8 @@ async def test_get_job_trigger_flattened_error_async():
         )
 
 
-def test_list_job_triggers(
-    transport: str = "grpc", request_type=dlp.ListJobTriggersRequest
-):
+@pytest.mark.parametrize("request_type", [dlp.ListJobTriggersRequest, dict,])
+def test_list_job_triggers(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4728,10 +4642,6 @@ def test_list_job_triggers(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListJobTriggersPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_job_triggers_from_dict():
-    test_list_job_triggers(request_type=dict)
 
 
 def test_list_job_triggers_empty_call():
@@ -4915,8 +4825,10 @@ async def test_list_job_triggers_flattened_error_async():
         )
 
 
-def test_list_job_triggers_pager():
-    client = DlpServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_job_triggers_pager(transport_name: str = "grpc"):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4951,8 +4863,10 @@ def test_list_job_triggers_pager():
         assert all(isinstance(i, dlp.JobTrigger) for i in results)
 
 
-def test_list_job_triggers_pages():
-    client = DlpServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_job_triggers_pages(transport_name: str = "grpc"):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5045,9 +4959,8 @@ async def test_list_job_triggers_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_delete_job_trigger(
-    transport: str = "grpc", request_type=dlp.DeleteJobTriggerRequest
-):
+@pytest.mark.parametrize("request_type", [dlp.DeleteJobTriggerRequest, dict,])
+def test_delete_job_trigger(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5071,10 +4984,6 @@ def test_delete_job_trigger(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_job_trigger_from_dict():
-    test_delete_job_trigger(request_type=dict)
 
 
 def test_delete_job_trigger_empty_call():
@@ -5251,9 +5160,8 @@ async def test_delete_job_trigger_flattened_error_async():
         )
 
 
-def test_activate_job_trigger(
-    transport: str = "grpc", request_type=dlp.ActivateJobTriggerRequest
-):
+@pytest.mark.parametrize("request_type", [dlp.ActivateJobTriggerRequest, dict,])
+def test_activate_job_trigger(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5293,10 +5201,6 @@ def test_activate_job_trigger(
     assert response.type_ == dlp.DlpJobType.INSPECT_JOB
     assert response.state == dlp.DlpJob.JobState.PENDING
     assert response.job_trigger_name == "job_trigger_name_value"
-
-
-def test_activate_job_trigger_from_dict():
-    test_activate_job_trigger(request_type=dict)
 
 
 def test_activate_job_trigger_empty_call():
@@ -5414,7 +5318,8 @@ async def test_activate_job_trigger_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_create_dlp_job(transport: str = "grpc", request_type=dlp.CreateDlpJobRequest):
+@pytest.mark.parametrize("request_type", [dlp.CreateDlpJobRequest, dict,])
+def test_create_dlp_job(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5452,10 +5357,6 @@ def test_create_dlp_job(transport: str = "grpc", request_type=dlp.CreateDlpJobRe
     assert response.type_ == dlp.DlpJobType.INSPECT_JOB
     assert response.state == dlp.DlpJob.JobState.PENDING
     assert response.job_trigger_name == "job_trigger_name_value"
-
-
-def test_create_dlp_job_from_dict():
-    test_create_dlp_job(request_type=dict)
 
 
 def test_create_dlp_job_empty_call():
@@ -5707,7 +5608,8 @@ async def test_create_dlp_job_flattened_error_async():
         )
 
 
-def test_list_dlp_jobs(transport: str = "grpc", request_type=dlp.ListDlpJobsRequest):
+@pytest.mark.parametrize("request_type", [dlp.ListDlpJobsRequest, dict,])
+def test_list_dlp_jobs(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5732,10 +5634,6 @@ def test_list_dlp_jobs(transport: str = "grpc", request_type=dlp.ListDlpJobsRequ
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDlpJobsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_dlp_jobs_from_dict():
-    test_list_dlp_jobs(request_type=dict)
 
 
 def test_list_dlp_jobs_empty_call():
@@ -5907,8 +5805,10 @@ async def test_list_dlp_jobs_flattened_error_async():
         )
 
 
-def test_list_dlp_jobs_pager():
-    client = DlpServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_dlp_jobs_pager(transport_name: str = "grpc"):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_dlp_jobs), "__call__") as call:
@@ -5936,8 +5836,10 @@ def test_list_dlp_jobs_pager():
         assert all(isinstance(i, dlp.DlpJob) for i in results)
 
 
-def test_list_dlp_jobs_pages():
-    client = DlpServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_dlp_jobs_pages(transport_name: str = "grpc"):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_dlp_jobs), "__call__") as call:
@@ -6009,7 +5911,8 @@ async def test_list_dlp_jobs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_dlp_job(transport: str = "grpc", request_type=dlp.GetDlpJobRequest):
+@pytest.mark.parametrize("request_type", [dlp.GetDlpJobRequest, dict,])
+def test_get_dlp_job(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -6047,10 +5950,6 @@ def test_get_dlp_job(transport: str = "grpc", request_type=dlp.GetDlpJobRequest)
     assert response.type_ == dlp.DlpJobType.INSPECT_JOB
     assert response.state == dlp.DlpJob.JobState.PENDING
     assert response.job_trigger_name == "job_trigger_name_value"
-
-
-def test_get_dlp_job_from_dict():
-    test_get_dlp_job(request_type=dict)
 
 
 def test_get_dlp_job_empty_call():
@@ -6226,7 +6125,8 @@ async def test_get_dlp_job_flattened_error_async():
         )
 
 
-def test_delete_dlp_job(transport: str = "grpc", request_type=dlp.DeleteDlpJobRequest):
+@pytest.mark.parametrize("request_type", [dlp.DeleteDlpJobRequest, dict,])
+def test_delete_dlp_job(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -6248,10 +6148,6 @@ def test_delete_dlp_job(transport: str = "grpc", request_type=dlp.DeleteDlpJobRe
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_dlp_job_from_dict():
-    test_delete_dlp_job(request_type=dict)
 
 
 def test_delete_dlp_job_empty_call():
@@ -6416,7 +6312,8 @@ async def test_delete_dlp_job_flattened_error_async():
         )
 
 
-def test_cancel_dlp_job(transport: str = "grpc", request_type=dlp.CancelDlpJobRequest):
+@pytest.mark.parametrize("request_type", [dlp.CancelDlpJobRequest, dict,])
+def test_cancel_dlp_job(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -6438,10 +6335,6 @@ def test_cancel_dlp_job(transport: str = "grpc", request_type=dlp.CancelDlpJobRe
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_cancel_dlp_job_from_dict():
-    test_cancel_dlp_job(request_type=dict)
 
 
 def test_cancel_dlp_job_empty_call():
@@ -6540,9 +6433,8 @@ async def test_cancel_dlp_job_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_create_stored_info_type(
-    transport: str = "grpc", request_type=dlp.CreateStoredInfoTypeRequest
-):
+@pytest.mark.parametrize("request_type", [dlp.CreateStoredInfoTypeRequest, dict,])
+def test_create_stored_info_type(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -6567,10 +6459,6 @@ def test_create_stored_info_type(
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.StoredInfoType)
     assert response.name == "name_value"
-
-
-def test_create_stored_info_type_from_dict():
-    test_create_stored_info_type(request_type=dict)
 
 
 def test_create_stored_info_type_empty_call():
@@ -6766,9 +6654,8 @@ async def test_create_stored_info_type_flattened_error_async():
         )
 
 
-def test_update_stored_info_type(
-    transport: str = "grpc", request_type=dlp.UpdateStoredInfoTypeRequest
-):
+@pytest.mark.parametrize("request_type", [dlp.UpdateStoredInfoTypeRequest, dict,])
+def test_update_stored_info_type(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -6793,10 +6680,6 @@ def test_update_stored_info_type(
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.StoredInfoType)
     assert response.name == "name_value"
-
-
-def test_update_stored_info_type_from_dict():
-    test_update_stored_info_type(request_type=dict)
 
 
 def test_update_stored_info_type_empty_call():
@@ -7002,9 +6885,8 @@ async def test_update_stored_info_type_flattened_error_async():
         )
 
 
-def test_get_stored_info_type(
-    transport: str = "grpc", request_type=dlp.GetStoredInfoTypeRequest
-):
+@pytest.mark.parametrize("request_type", [dlp.GetStoredInfoTypeRequest, dict,])
+def test_get_stored_info_type(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -7029,10 +6911,6 @@ def test_get_stored_info_type(
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.StoredInfoType)
     assert response.name == "name_value"
-
-
-def test_get_stored_info_type_from_dict():
-    test_get_stored_info_type(request_type=dict)
 
 
 def test_get_stored_info_type_empty_call():
@@ -7212,9 +7090,8 @@ async def test_get_stored_info_type_flattened_error_async():
         )
 
 
-def test_list_stored_info_types(
-    transport: str = "grpc", request_type=dlp.ListStoredInfoTypesRequest
-):
+@pytest.mark.parametrize("request_type", [dlp.ListStoredInfoTypesRequest, dict,])
+def test_list_stored_info_types(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -7241,10 +7118,6 @@ def test_list_stored_info_types(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListStoredInfoTypesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_stored_info_types_from_dict():
-    test_list_stored_info_types(request_type=dict)
 
 
 def test_list_stored_info_types_empty_call():
@@ -7428,8 +7301,10 @@ async def test_list_stored_info_types_flattened_error_async():
         )
 
 
-def test_list_stored_info_types_pager():
-    client = DlpServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_stored_info_types_pager(transport_name: str = "grpc"):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7470,8 +7345,10 @@ def test_list_stored_info_types_pager():
         assert all(isinstance(i, dlp.StoredInfoType) for i in results)
 
 
-def test_list_stored_info_types_pages():
-    client = DlpServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_stored_info_types_pages(transport_name: str = "grpc"):
+    client = DlpServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7582,9 +7459,8 @@ async def test_list_stored_info_types_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_delete_stored_info_type(
-    transport: str = "grpc", request_type=dlp.DeleteStoredInfoTypeRequest
-):
+@pytest.mark.parametrize("request_type", [dlp.DeleteStoredInfoTypeRequest, dict,])
+def test_delete_stored_info_type(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -7608,10 +7484,6 @@ def test_delete_stored_info_type(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_stored_info_type_from_dict():
-    test_delete_stored_info_type(request_type=dict)
 
 
 def test_delete_stored_info_type_empty_call():
@@ -7788,9 +7660,8 @@ async def test_delete_stored_info_type_flattened_error_async():
         )
 
 
-def test_hybrid_inspect_dlp_job(
-    transport: str = "grpc", request_type=dlp.HybridInspectDlpJobRequest
-):
+@pytest.mark.parametrize("request_type", [dlp.HybridInspectDlpJobRequest, dict,])
+def test_hybrid_inspect_dlp_job(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -7814,10 +7685,6 @@ def test_hybrid_inspect_dlp_job(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dlp.HybridInspectResponse)
-
-
-def test_hybrid_inspect_dlp_job_from_dict():
-    test_hybrid_inspect_dlp_job(request_type=dict)
 
 
 def test_hybrid_inspect_dlp_job_empty_call():
@@ -8000,7 +7867,8 @@ async def test_hybrid_inspect_dlp_job_flattened_error_async():
         )
 
 
-def test_finish_dlp_job(transport: str = "grpc", request_type=dlp.FinishDlpJobRequest):
+@pytest.mark.parametrize("request_type", [dlp.FinishDlpJobRequest, dict,])
+def test_finish_dlp_job(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -8022,10 +7890,6 @@ def test_finish_dlp_job(transport: str = "grpc", request_type=dlp.FinishDlpJobRe
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_finish_dlp_job_from_dict():
-    test_finish_dlp_job(request_type=dict)
 
 
 def test_finish_dlp_job_empty_call():
@@ -8782,7 +8646,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
