@@ -75,9 +75,10 @@ class Cluster(proto.Message):
             within a project must be unique. Names of
             deleted clusters can be reused.
         config (google.cloud.dataproc_v1.types.ClusterConfig):
-            Required. The cluster config. Note that
-            Dataproc may set default values, and values may
-            change when clusters are updated.
+            Optional. The cluster config for a cluster of
+            Compute Engine Instances. Note that Dataproc may
+            set default values, and values may change when
+            clusters are updated.
         labels (Sequence[google.cloud.dataproc_v1.types.Cluster.LabelsEntry]):
             Optional. The labels to associate with this cluster. Label
             **keys** must contain 1 to 63 characters, and must conform
@@ -682,11 +683,17 @@ class DiskConfig(proto.Message):
             data. If one or more SSDs are attached, this runtime bulk
             data is spread across them, and the boot disk contains only
             basic config and installed binaries.
+        local_ssd_interface (str):
+            Optional. Interface type of local SSDs (default is "scsi").
+            Valid values: "scsi" (Small Computer System Interface),
+            "nvme" (Non-Volatile Memory Express). See `SSD Interface
+            types <https://cloud.google.com/compute/docs/disks/local-ssd#performance>`__.
     """
 
     boot_disk_type = proto.Field(proto.STRING, number=3,)
     boot_disk_size_gb = proto.Field(proto.INT32, number=1,)
     num_local_ssds = proto.Field(proto.INT32, number=2,)
+    local_ssd_interface = proto.Field(proto.STRING, number=4,)
 
 
 class NodeInitializationAction(proto.Message):

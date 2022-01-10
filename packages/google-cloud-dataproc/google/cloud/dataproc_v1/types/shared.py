@@ -61,12 +61,20 @@ class RuntimeConfig(proto.Message):
     r"""Runtime configuration for a workload.
 
     Attributes:
+        version (str):
+            Optional. Version of the batch runtime.
+        container_image (str):
+            Optional. Optional custom container image for
+            the job runtime environment. If not specified, a
+            default container image will be used.
         properties (Sequence[google.cloud.dataproc_v1.types.RuntimeConfig.PropertiesEntry]):
             Optional. A mapping of property names to
             values, which are used to configure workload
             execution.
     """
 
+    version = proto.Field(proto.STRING, number=1,)
+    container_image = proto.Field(proto.STRING, number=2,)
     properties = proto.MapField(proto.STRING, proto.STRING, number=3,)
 
 
@@ -174,10 +182,14 @@ class RuntimeInfo(proto.Message):
         output_uri (str):
             Output only. A URI pointing to the location
             of the stdout and stderr of the workload.
+        diagnostic_output_uri (str):
+            Output only. A URI pointing to the location
+            of the diagnostics tarball.
     """
 
     endpoints = proto.MapField(proto.STRING, proto.STRING, number=1,)
     output_uri = proto.Field(proto.STRING, number=2,)
+    diagnostic_output_uri = proto.Field(proto.STRING, number=3,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

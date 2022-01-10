@@ -207,7 +207,7 @@ class WorkflowTemplateServiceAsyncClient:
                 as described in
                 https://cloud.google.com/apis/design/resource_names.
 
-                -  For ``projects.regions.workflowTemplates,create``,
+                -  For ``projects.regions.workflowTemplates.create``,
                    the resource name of the region has the following
                    format: ``projects/{project_id}/regions/{region}``
 
