@@ -1616,6 +1616,9 @@ class ExecutionOptionsTest(fixtures.TestBase, unittest.TestCase):
         with self._engine.connect() as connection:
             assert connection.connection.staleness is None
 
+        with self._engine.connect() as connection:
+            del connection.staleness
+
 
 class LimitOffsetTest(fixtures.TestBase):
     """
