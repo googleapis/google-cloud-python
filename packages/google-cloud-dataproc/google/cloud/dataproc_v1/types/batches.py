@@ -50,7 +50,7 @@ class CreateBatchRequest(proto.Message):
             final component of the batch's resource name.
 
             This value must be 4-63 characters. Valid characters are
-            /[a-z][0-9]-/.
+            ``/[a-z][0-9]-/``.
         request_id (str):
             Optional. A unique ID used to identify the request. If the
             service receives two

@@ -400,7 +400,7 @@ class BatchControllerClient(metaclass=BatchControllerClientMeta):
                 the final component of the batch's resource name.
 
                 This value must be 4-63 characters. Valid characters are
-                /[a-z][0-9]-/.
+                ``/[a-z][0-9]-/``.
 
                 This corresponds to the ``batch_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
