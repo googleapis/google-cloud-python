@@ -196,7 +196,7 @@
 
 ### ⚠ BREAKING CHANGES
 
-* This release has breaking changes. See the [2.0.0 Migration Guide](https://github.com/googleapis/python-datacatalog/blob/main/UPGRADING.rst) for details.
+* This release has breaking changes. See the [2.0.0 Migration Guide](https://github.com/googleapis/python-datacatalog/blob/main/UPGRADING.md) for details.
 
 ### Features
 
