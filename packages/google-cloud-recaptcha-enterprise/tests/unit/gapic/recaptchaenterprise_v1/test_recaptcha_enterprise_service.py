@@ -269,20 +269,20 @@ def test_recaptcha_enterprise_service_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -351,7 +351,7 @@ def test_recaptcha_enterprise_service_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -450,7 +450,7 @@ def test_recaptcha_enterprise_service_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -485,7 +485,7 @@ def test_recaptcha_enterprise_service_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -518,9 +518,10 @@ def test_recaptcha_enterprise_service_client_client_options_from_dict():
         )
 
 
-def test_create_assessment(
-    transport: str = "grpc", request_type=recaptchaenterprise.CreateAssessmentRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [recaptchaenterprise.CreateAssessmentRequest, dict,]
+)
+def test_create_assessment(request_type, transport: str = "grpc"):
     client = RecaptchaEnterpriseServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -545,10 +546,6 @@ def test_create_assessment(
     # Establish that the response is the type that we expect.
     assert isinstance(response, recaptchaenterprise.Assessment)
     assert response.name == "name_value"
-
-
-def test_create_assessment_from_dict():
-    test_create_assessment(request_type=dict)
 
 
 def test_create_assessment_empty_call():
@@ -761,9 +758,10 @@ async def test_create_assessment_flattened_error_async():
         )
 
 
-def test_annotate_assessment(
-    transport: str = "grpc", request_type=recaptchaenterprise.AnnotateAssessmentRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [recaptchaenterprise.AnnotateAssessmentRequest, dict,]
+)
+def test_annotate_assessment(request_type, transport: str = "grpc"):
     client = RecaptchaEnterpriseServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -787,10 +785,6 @@ def test_annotate_assessment(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, recaptchaenterprise.AnnotateAssessmentResponse)
-
-
-def test_annotate_assessment_from_dict():
-    test_annotate_assessment(request_type=dict)
 
 
 def test_annotate_assessment_empty_call():
@@ -1002,9 +996,8 @@ async def test_annotate_assessment_flattened_error_async():
         )
 
 
-def test_create_key(
-    transport: str = "grpc", request_type=recaptchaenterprise.CreateKeyRequest
-):
+@pytest.mark.parametrize("request_type", [recaptchaenterprise.CreateKeyRequest, dict,])
+def test_create_key(request_type, transport: str = "grpc"):
     client = RecaptchaEnterpriseServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1032,10 +1025,6 @@ def test_create_key(
     assert isinstance(response, recaptchaenterprise.Key)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-
-
-def test_create_key_from_dict():
-    test_create_key(request_type=dict)
 
 
 def test_create_key_empty_call():
@@ -1146,9 +1135,8 @@ async def test_create_key_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_list_keys(
-    transport: str = "grpc", request_type=recaptchaenterprise.ListKeysRequest
-):
+@pytest.mark.parametrize("request_type", [recaptchaenterprise.ListKeysRequest, dict,])
+def test_list_keys(request_type, transport: str = "grpc"):
     client = RecaptchaEnterpriseServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1173,10 +1161,6 @@ def test_list_keys(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListKeysPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_keys_from_dict():
-    test_list_keys(request_type=dict)
 
 
 def test_list_keys_empty_call():
@@ -1286,9 +1270,9 @@ async def test_list_keys_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_list_keys_pager():
+def test_list_keys_pager(transport_name: str = "grpc"):
     client = RecaptchaEnterpriseServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1326,9 +1310,9 @@ def test_list_keys_pager():
         assert all(isinstance(i, recaptchaenterprise.Key) for i in results)
 
 
-def test_list_keys_pages():
+def test_list_keys_pages(transport_name: str = "grpc"):
     client = RecaptchaEnterpriseServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1432,9 +1416,8 @@ async def test_list_keys_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_key(
-    transport: str = "grpc", request_type=recaptchaenterprise.GetKeyRequest
-):
+@pytest.mark.parametrize("request_type", [recaptchaenterprise.GetKeyRequest, dict,])
+def test_get_key(request_type, transport: str = "grpc"):
     client = RecaptchaEnterpriseServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1462,10 +1445,6 @@ def test_get_key(
     assert isinstance(response, recaptchaenterprise.Key)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-
-
-def test_get_key_from_dict():
-    test_get_key(request_type=dict)
 
 
 def test_get_key_empty_call():
@@ -1576,9 +1555,8 @@ async def test_get_key_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_update_key(
-    transport: str = "grpc", request_type=recaptchaenterprise.UpdateKeyRequest
-):
+@pytest.mark.parametrize("request_type", [recaptchaenterprise.UpdateKeyRequest, dict,])
+def test_update_key(request_type, transport: str = "grpc"):
     client = RecaptchaEnterpriseServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1606,10 +1584,6 @@ def test_update_key(
     assert isinstance(response, recaptchaenterprise.Key)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-
-
-def test_update_key_from_dict():
-    test_update_key(request_type=dict)
 
 
 def test_update_key_empty_call():
@@ -1720,9 +1694,8 @@ async def test_update_key_field_headers_async():
     assert ("x-goog-request-params", "key.name=key.name/value",) in kw["metadata"]
 
 
-def test_delete_key(
-    transport: str = "grpc", request_type=recaptchaenterprise.DeleteKeyRequest
-):
+@pytest.mark.parametrize("request_type", [recaptchaenterprise.DeleteKeyRequest, dict,])
+def test_delete_key(request_type, transport: str = "grpc"):
     client = RecaptchaEnterpriseServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1744,10 +1717,6 @@ def test_delete_key(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_key_from_dict():
-    test_delete_key(request_type=dict)
 
 
 def test_delete_key_empty_call():
@@ -1850,9 +1819,8 @@ async def test_delete_key_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_migrate_key(
-    transport: str = "grpc", request_type=recaptchaenterprise.MigrateKeyRequest
-):
+@pytest.mark.parametrize("request_type", [recaptchaenterprise.MigrateKeyRequest, dict,])
+def test_migrate_key(request_type, transport: str = "grpc"):
     client = RecaptchaEnterpriseServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1880,10 +1848,6 @@ def test_migrate_key(
     assert isinstance(response, recaptchaenterprise.Key)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-
-
-def test_migrate_key_from_dict():
-    test_migrate_key(request_type=dict)
 
 
 def test_migrate_key_empty_call():
@@ -1994,9 +1958,8 @@ async def test_migrate_key_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_get_metrics(
-    transport: str = "grpc", request_type=recaptchaenterprise.GetMetricsRequest
-):
+@pytest.mark.parametrize("request_type", [recaptchaenterprise.GetMetricsRequest, dict,])
+def test_get_metrics(request_type, transport: str = "grpc"):
     client = RecaptchaEnterpriseServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2019,10 +1982,6 @@ def test_get_metrics(
     # Establish that the response is the type that we expect.
     assert isinstance(response, recaptchaenterprise.Metrics)
     assert response.name == "name_value"
-
-
-def test_get_metrics_from_dict():
-    test_get_metrics(request_type=dict)
 
 
 def test_get_metrics_empty_call():
@@ -2206,10 +2165,10 @@ async def test_get_metrics_flattened_error_async():
         )
 
 
-def test_list_related_account_groups(
-    transport: str = "grpc",
-    request_type=recaptchaenterprise.ListRelatedAccountGroupsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [recaptchaenterprise.ListRelatedAccountGroupsRequest, dict,]
+)
+def test_list_related_account_groups(request_type, transport: str = "grpc"):
     client = RecaptchaEnterpriseServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2236,10 +2195,6 @@ def test_list_related_account_groups(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRelatedAccountGroupsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_related_account_groups_from_dict():
-    test_list_related_account_groups(request_type=dict)
 
 
 def test_list_related_account_groups_empty_call():
@@ -2440,9 +2395,9 @@ async def test_list_related_account_groups_flattened_error_async():
         )
 
 
-def test_list_related_account_groups_pager():
+def test_list_related_account_groups_pager(transport_name: str = "grpc"):
     client = RecaptchaEnterpriseServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2490,9 +2445,9 @@ def test_list_related_account_groups_pager():
         )
 
 
-def test_list_related_account_groups_pages():
+def test_list_related_account_groups_pages(transport_name: str = "grpc"):
     client = RecaptchaEnterpriseServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2622,10 +2577,11 @@ async def test_list_related_account_groups_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_list_related_account_group_memberships(
-    transport: str = "grpc",
-    request_type=recaptchaenterprise.ListRelatedAccountGroupMembershipsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [recaptchaenterprise.ListRelatedAccountGroupMembershipsRequest, dict,],
+)
+def test_list_related_account_group_memberships(request_type, transport: str = "grpc"):
     client = RecaptchaEnterpriseServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2654,10 +2610,6 @@ def test_list_related_account_group_memberships(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRelatedAccountGroupMembershipsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_related_account_group_memberships_from_dict():
-    test_list_related_account_group_memberships(request_type=dict)
 
 
 def test_list_related_account_group_memberships_empty_call():
@@ -2870,9 +2822,9 @@ async def test_list_related_account_group_memberships_flattened_error_async():
         )
 
 
-def test_list_related_account_group_memberships_pager():
+def test_list_related_account_group_memberships_pager(transport_name: str = "grpc"):
     client = RecaptchaEnterpriseServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2923,9 +2875,9 @@ def test_list_related_account_group_memberships_pager():
         )
 
 
-def test_list_related_account_group_memberships_pages():
+def test_list_related_account_group_memberships_pages(transport_name: str = "grpc"):
     client = RecaptchaEnterpriseServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3064,9 +3016,12 @@ async def test_list_related_account_group_memberships_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest, dict,],
+)
 def test_search_related_account_group_memberships(
-    transport: str = "grpc",
-    request_type=recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest,
+    request_type, transport: str = "grpc"
 ):
     client = RecaptchaEnterpriseServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
@@ -3096,10 +3051,6 @@ def test_search_related_account_group_memberships(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchRelatedAccountGroupMembershipsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_search_related_account_group_memberships_from_dict():
-    test_search_related_account_group_memberships(request_type=dict)
 
 
 def test_search_related_account_group_memberships_empty_call():
@@ -3322,9 +3273,9 @@ async def test_search_related_account_group_memberships_flattened_error_async():
         )
 
 
-def test_search_related_account_group_memberships_pager():
+def test_search_related_account_group_memberships_pager(transport_name: str = "grpc"):
     client = RecaptchaEnterpriseServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3375,9 +3326,9 @@ def test_search_related_account_group_memberships_pager():
         )
 
 
-def test_search_related_account_group_memberships_pages():
+def test_search_related_account_group_memberships_pages(transport_name: str = "grpc"):
     client = RecaptchaEnterpriseServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4143,7 +4094,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
