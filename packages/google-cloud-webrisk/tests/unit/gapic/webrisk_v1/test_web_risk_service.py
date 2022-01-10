@@ -246,20 +246,20 @@ def test_web_risk_service_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -318,7 +318,7 @@ def test_web_risk_service_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -413,7 +413,7 @@ def test_web_risk_service_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -444,7 +444,7 @@ def test_web_risk_service_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -477,9 +477,8 @@ def test_web_risk_service_client_client_options_from_dict():
         )
 
 
-def test_compute_threat_list_diff(
-    transport: str = "grpc", request_type=webrisk.ComputeThreatListDiffRequest
-):
+@pytest.mark.parametrize("request_type", [webrisk.ComputeThreatListDiffRequest, dict,])
+def test_compute_threat_list_diff(request_type, transport: str = "grpc"):
     client = WebRiskServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -511,10 +510,6 @@ def test_compute_threat_list_diff(
         == webrisk.ComputeThreatListDiffResponse.ResponseType.DIFF
     )
     assert response.new_version_token == b"new_version_token_blob"
-
-
-def test_compute_threat_list_diff_from_dict():
-    test_compute_threat_list_diff(request_type=dict)
 
 
 def test_compute_threat_list_diff_empty_call():
@@ -692,7 +687,8 @@ async def test_compute_threat_list_diff_flattened_error_async():
         )
 
 
-def test_search_uris(transport: str = "grpc", request_type=webrisk.SearchUrisRequest):
+@pytest.mark.parametrize("request_type", [webrisk.SearchUrisRequest, dict,])
+def test_search_uris(request_type, transport: str = "grpc"):
     client = WebRiskServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -714,10 +710,6 @@ def test_search_uris(transport: str = "grpc", request_type=webrisk.SearchUrisReq
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, webrisk.SearchUrisResponse)
-
-
-def test_search_uris_from_dict():
-    test_search_uris(request_type=dict)
 
 
 def test_search_uris_empty_call():
@@ -855,9 +847,8 @@ async def test_search_uris_flattened_error_async():
         )
 
 
-def test_search_hashes(
-    transport: str = "grpc", request_type=webrisk.SearchHashesRequest
-):
+@pytest.mark.parametrize("request_type", [webrisk.SearchHashesRequest, dict,])
+def test_search_hashes(request_type, transport: str = "grpc"):
     client = WebRiskServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -879,10 +870,6 @@ def test_search_hashes(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, webrisk.SearchHashesResponse)
-
-
-def test_search_hashes_from_dict():
-    test_search_hashes(request_type=dict)
 
 
 def test_search_hashes_empty_call():
@@ -1020,9 +1007,8 @@ async def test_search_hashes_flattened_error_async():
         )
 
 
-def test_create_submission(
-    transport: str = "grpc", request_type=webrisk.CreateSubmissionRequest
-):
+@pytest.mark.parametrize("request_type", [webrisk.CreateSubmissionRequest, dict,])
+def test_create_submission(request_type, transport: str = "grpc"):
     client = WebRiskServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1047,10 +1033,6 @@ def test_create_submission(
     # Establish that the response is the type that we expect.
     assert isinstance(response, webrisk.Submission)
     assert response.uri == "uri_value"
-
-
-def test_create_submission_from_dict():
-    test_create_submission(request_type=dict)
 
 
 def test_create_submission_empty_call():
@@ -1743,7 +1725,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
