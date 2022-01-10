@@ -92,6 +92,10 @@ class AnalyticsAdminServiceAsyncClient:
     parse_data_sharing_settings_path = staticmethod(
         AnalyticsAdminServiceClient.parse_data_sharing_settings_path
     )
+    data_stream_path = staticmethod(AnalyticsAdminServiceClient.data_stream_path)
+    parse_data_stream_path = staticmethod(
+        AnalyticsAdminServiceClient.parse_data_stream_path
+    )
     display_video360_advertiser_link_path = staticmethod(
         AnalyticsAdminServiceClient.display_video360_advertiser_link_path
     )
@@ -103,12 +107,6 @@ class AnalyticsAdminServiceAsyncClient:
     )
     parse_display_video360_advertiser_link_proposal_path = staticmethod(
         AnalyticsAdminServiceClient.parse_display_video360_advertiser_link_proposal_path
-    )
-    enhanced_measurement_settings_path = staticmethod(
-        AnalyticsAdminServiceClient.enhanced_measurement_settings_path
-    )
-    parse_enhanced_measurement_settings_path = staticmethod(
-        AnalyticsAdminServiceClient.parse_enhanced_measurement_settings_path
     )
     firebase_link_path = staticmethod(AnalyticsAdminServiceClient.firebase_link_path)
     parse_firebase_link_path = staticmethod(
@@ -2689,182 +2687,6 @@ class AnalyticsAdminServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_enhanced_measurement_settings(
-        self,
-        request: Union[
-            analytics_admin.GetEnhancedMeasurementSettingsRequest, dict
-        ] = None,
-        *,
-        name: str = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resources.EnhancedMeasurementSettings:
-        r"""Returns the singleton enhanced measurement settings
-        for this web stream. Note that the stream must enable
-        enhanced measurement for these settings to take effect.
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.GetEnhancedMeasurementSettingsRequest, dict]):
-                The request object. Request message for
-                GetEnhancedMeasurementSettings RPC.
-            name (:class:`str`):
-                Required. The name of the settings to lookup. Format:
-                properties/{property_id}/webDataStreams/{stream_id}/enhancedMeasurementSettings
-                Example:
-                "properties/1000/webDataStreams/2000/enhancedMeasurementSettings"
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.EnhancedMeasurementSettings:
-                Singleton resource under a
-                WebDataStream, configuring measurement
-                of additional site interactions and
-                content.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        request = analytics_admin.GetEnhancedMeasurementSettingsRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_enhanced_measurement_settings,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Done; return the response.
-        return response
-
-    async def update_enhanced_measurement_settings(
-        self,
-        request: Union[
-            analytics_admin.UpdateEnhancedMeasurementSettingsRequest, dict
-        ] = None,
-        *,
-        enhanced_measurement_settings: resources.EnhancedMeasurementSettings = None,
-        update_mask: field_mask_pb2.FieldMask = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resources.EnhancedMeasurementSettings:
-        r"""Updates the singleton enhanced measurement settings
-        for this web stream. Note that the stream must enable
-        enhanced measurement for these settings to take effect.
-
-        Args:
-            request (Union[google.analytics.admin_v1alpha.types.UpdateEnhancedMeasurementSettingsRequest, dict]):
-                The request object. Request message for
-                UpdateEnhancedMeasurementSettings RPC.
-            enhanced_measurement_settings (:class:`google.analytics.admin_v1alpha.types.EnhancedMeasurementSettings`):
-                Required. The settings to update. The ``name`` field is
-                used to identify the settings to be updated.
-
-                This corresponds to the ``enhanced_measurement_settings`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. The list of fields to be updated. Field names
-                must be in snake case (e.g., "field_to_update"). Omitted
-                fields will not be updated. To replace the entire
-                entity, use one path with the string "*" to match all
-                fields.
-
-                This corresponds to the ``update_mask`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.analytics.admin_v1alpha.types.EnhancedMeasurementSettings:
-                Singleton resource under a
-                WebDataStream, configuring measurement
-                of additional site interactions and
-                content.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([enhanced_measurement_settings, update_mask])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        request = analytics_admin.UpdateEnhancedMeasurementSettingsRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if enhanced_measurement_settings is not None:
-            request.enhanced_measurement_settings = enhanced_measurement_settings
-        if update_mask is not None:
-            request.update_mask = update_mask
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_enhanced_measurement_settings,
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "enhanced_measurement_settings.name",
-                        request.enhanced_measurement_settings.name,
-                    ),
-                )
-            ),
-        )
-
-        # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Done; return the response.
-        return response
-
     async def create_firebase_link(
         self,
         request: Union[analytics_admin.CreateFirebaseLinkRequest, dict] = None,
@@ -2904,7 +2726,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.FirebaseLink:
-                A link between an GA4 property and a
+                A link between a GA4 property and a
                 Firebase project.
 
         """
@@ -3208,7 +3030,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.GoogleAdsLink:
-                A link between an GA4 property and a
+                A link between a GA4 property and a
                 Google Ads account.
 
         """
@@ -3290,7 +3112,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.GoogleAdsLink:
-                A link between an GA4 property and a
+                A link between a GA4 property and a
                 Google Ads account.
 
         """
@@ -3959,6 +3781,61 @@ class AnalyticsAdminServiceAsyncClient:
                     ),
                 )
             ),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def acknowledge_user_data_collection(
+        self,
+        request: Union[
+            analytics_admin.AcknowledgeUserDataCollectionRequest, dict
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> analytics_admin.AcknowledgeUserDataCollectionResponse:
+        r"""Acknowledges the terms of user data collection for
+        the specified property.
+        This acknowledgement must be completed (either in the
+        Google Analytics UI or via this API) before
+        MeasurementProtocolSecret resources may be created.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.AcknowledgeUserDataCollectionRequest, dict]):
+                The request object. Request message for
+                AcknowledgeUserDataCollection RPC.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.AcknowledgeUserDataCollectionResponse:
+                Response message for
+                AcknowledgeUserDataCollection RPC.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = analytics_admin.AcknowledgeUserDataCollectionRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.acknowledge_user_data_collection,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("property", request.property),)),
         )
 
         # Send the request.
@@ -4942,7 +4819,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLinkProposal:
-                A proposal for a link between an GA4
+                A proposal for a link between a GA4
                 property and a Display & Video 360
                 advertiser.
                 A proposal is converted to a
@@ -5118,7 +4995,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLinkProposal:
-                A proposal for a link between an GA4
+                A proposal for a link between a GA4
                 property and a Display & Video 360
                 advertiser.
                 A proposal is converted to a
@@ -5329,7 +5206,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             google.analytics.admin_v1alpha.types.DisplayVideo360AdvertiserLinkProposal:
-                A proposal for a link between an GA4
+                A proposal for a link between a GA4
                 property and a Display & Video 360
                 advertiser.
                 A proposal is converted to a
@@ -6273,6 +6150,385 @@ class AnalyticsAdminServiceAsyncClient:
                     ),
                 )
             ),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def create_data_stream(
+        self,
+        request: Union[analytics_admin.CreateDataStreamRequest, dict] = None,
+        *,
+        parent: str = None,
+        data_stream: resources.DataStream = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.DataStream:
+        r"""Creates a DataStream.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.CreateDataStreamRequest, dict]):
+                The request object. Request message for CreateDataStream
+                RPC.
+            parent (:class:`str`):
+                Required. Example format:
+                properties/1234
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            data_stream (:class:`google.analytics.admin_v1alpha.types.DataStream`):
+                Required. The DataStream to create.
+                This corresponds to the ``data_stream`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.DataStream:
+                A resource message representing a
+                data stream.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, data_stream])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analytics_admin.CreateDataStreamRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if data_stream is not None:
+            request.data_stream = data_stream
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_data_stream,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def delete_data_stream(
+        self,
+        request: Union[analytics_admin.DeleteDataStreamRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a DataStream on a property.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.DeleteDataStreamRequest, dict]):
+                The request object. Request message for DeleteDataStream
+                RPC.
+            name (:class:`str`):
+                Required. The name of the DataStream
+                to delete. Example format:
+                properties/1234/dataStreams/5678
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analytics_admin.DeleteDataStreamRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_data_stream,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request, retry=retry, timeout=timeout, metadata=metadata,
+        )
+
+    async def update_data_stream(
+        self,
+        request: Union[analytics_admin.UpdateDataStreamRequest, dict] = None,
+        *,
+        data_stream: resources.DataStream = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.DataStream:
+        r"""Updates a DataStream on a property.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.UpdateDataStreamRequest, dict]):
+                The request object. Request message for UpdateDataStream
+                RPC.
+            data_stream (:class:`google.analytics.admin_v1alpha.types.DataStream`):
+                The DataStream to update
+                This corresponds to the ``data_stream`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. The list of fields to be updated. Omitted
+                fields will not be updated. To replace the entire
+                entity, use one path with the string "*" to match all
+                fields.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.DataStream:
+                A resource message representing a
+                data stream.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([data_stream, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analytics_admin.UpdateDataStreamRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if data_stream is not None:
+            request.data_stream = data_stream
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_data_stream,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("data_stream.name", request.data_stream.name),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def list_data_streams(
+        self,
+        request: Union[analytics_admin.ListDataStreamsRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListDataStreamsAsyncPager:
+        r"""Lists DataStreams on a property.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.ListDataStreamsRequest, dict]):
+                The request object. Request message for ListDataStreams
+                RPC.
+            parent (:class:`str`):
+                Required. Example format:
+                properties/1234
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListDataStreamsAsyncPager:
+                Response message for ListDataStreams
+                RPC.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analytics_admin.ListDataStreamsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_data_streams,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListDataStreamsAsyncPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_data_stream(
+        self,
+        request: Union[analytics_admin.GetDataStreamRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.DataStream:
+        r"""Lookup for a single DataStream.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.GetDataStreamRequest, dict]):
+                The request object. Request message for GetDataStream
+                RPC.
+            name (:class:`str`):
+                Required. The name of the DataStream
+                to get. Example format:
+                properties/1234/dataStreams/5678
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.DataStream:
+                A resource message representing a
+                data stream.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analytics_admin.GetDataStreamRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_data_stream,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.

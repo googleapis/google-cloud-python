@@ -264,16 +264,6 @@ class AnalyticsAdminServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_enhanced_measurement_settings: gapic_v1.method.wrap_method(
-                self.get_enhanced_measurement_settings,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
-            self.update_enhanced_measurement_settings: gapic_v1.method.wrap_method(
-                self.update_enhanced_measurement_settings,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
             self.create_firebase_link: gapic_v1.method.wrap_method(
                 self.create_firebase_link,
                 default_timeout=60.0,
@@ -337,6 +327,11 @@ class AnalyticsAdminServiceTransport(abc.ABC):
             ),
             self.update_measurement_protocol_secret: gapic_v1.method.wrap_method(
                 self.update_measurement_protocol_secret,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.acknowledge_user_data_collection: gapic_v1.method.wrap_method(
+                self.acknowledge_user_data_collection,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -485,6 +480,21 @@ class AnalyticsAdminServiceTransport(abc.ABC):
                 self.update_data_retention_settings,
                 default_timeout=None,
                 client_info=client_info,
+            ),
+            self.create_data_stream: gapic_v1.method.wrap_method(
+                self.create_data_stream, default_timeout=None, client_info=client_info,
+            ),
+            self.delete_data_stream: gapic_v1.method.wrap_method(
+                self.delete_data_stream, default_timeout=None, client_info=client_info,
+            ),
+            self.update_data_stream: gapic_v1.method.wrap_method(
+                self.update_data_stream, default_timeout=None, client_info=client_info,
+            ),
+            self.list_data_streams: gapic_v1.method.wrap_method(
+                self.list_data_streams, default_timeout=None, client_info=client_info,
+            ),
+            self.get_data_stream: gapic_v1.method.wrap_method(
+                self.get_data_stream, default_timeout=None, client_info=client_info,
             ),
         }
 
@@ -844,30 +854,6 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def get_enhanced_measurement_settings(
-        self,
-    ) -> Callable[
-        [analytics_admin.GetEnhancedMeasurementSettingsRequest],
-        Union[
-            resources.EnhancedMeasurementSettings,
-            Awaitable[resources.EnhancedMeasurementSettings],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def update_enhanced_measurement_settings(
-        self,
-    ) -> Callable[
-        [analytics_admin.UpdateEnhancedMeasurementSettingsRequest],
-        Union[
-            resources.EnhancedMeasurementSettings,
-            Awaitable[resources.EnhancedMeasurementSettings],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
     def create_firebase_link(
         self,
     ) -> Callable[
@@ -1007,6 +993,18 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         Union[
             resources.MeasurementProtocolSecret,
             Awaitable[resources.MeasurementProtocolSecret],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def acknowledge_user_data_collection(
+        self,
+    ) -> Callable[
+        [analytics_admin.AcknowledgeUserDataCollectionRequest],
+        Union[
+            analytics_admin.AcknowledgeUserDataCollectionResponse,
+            Awaitable[analytics_admin.AcknowledgeUserDataCollectionResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -1329,6 +1327,54 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         Union[
             resources.DataRetentionSettings, Awaitable[resources.DataRetentionSettings]
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_data_stream(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateDataStreamRequest],
+        Union[resources.DataStream, Awaitable[resources.DataStream]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_data_stream(
+        self,
+    ) -> Callable[
+        [analytics_admin.DeleteDataStreamRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_data_stream(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateDataStreamRequest],
+        Union[resources.DataStream, Awaitable[resources.DataStream]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_data_streams(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListDataStreamsRequest],
+        Union[
+            analytics_admin.ListDataStreamsResponse,
+            Awaitable[analytics_admin.ListDataStreamsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_data_stream(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetDataStreamRequest],
+        Union[resources.DataStream, Awaitable[resources.DataStream]],
     ]:
         raise NotImplementedError()
 

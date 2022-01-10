@@ -22,6 +22,12 @@ from google.analytics.admin_v1alpha.services.analytics_admin_service.async_clien
 )
 
 from google.analytics.admin_v1alpha.types.analytics_admin import (
+    AcknowledgeUserDataCollectionRequest,
+)
+from google.analytics.admin_v1alpha.types.analytics_admin import (
+    AcknowledgeUserDataCollectionResponse,
+)
+from google.analytics.admin_v1alpha.types.analytics_admin import (
     ApproveDisplayVideo360AdvertiserLinkProposalRequest,
 )
 from google.analytics.admin_v1alpha.types.analytics_admin import (
@@ -68,6 +74,7 @@ from google.analytics.admin_v1alpha.types.analytics_admin import (
 from google.analytics.admin_v1alpha.types.analytics_admin import (
     CreateCustomMetricRequest,
 )
+from google.analytics.admin_v1alpha.types.analytics_admin import CreateDataStreamRequest
 from google.analytics.admin_v1alpha.types.analytics_admin import (
     CreateDisplayVideo360AdvertiserLinkProposalRequest,
 )
@@ -95,6 +102,7 @@ from google.analytics.admin_v1alpha.types.analytics_admin import (
 from google.analytics.admin_v1alpha.types.analytics_admin import (
     DeleteConversionEventRequest,
 )
+from google.analytics.admin_v1alpha.types.analytics_admin import DeleteDataStreamRequest
 from google.analytics.admin_v1alpha.types.analytics_admin import (
     DeleteDisplayVideo360AdvertiserLinkProposalRequest,
 )
@@ -135,14 +143,12 @@ from google.analytics.admin_v1alpha.types.analytics_admin import (
 from google.analytics.admin_v1alpha.types.analytics_admin import (
     GetDataSharingSettingsRequest,
 )
+from google.analytics.admin_v1alpha.types.analytics_admin import GetDataStreamRequest
 from google.analytics.admin_v1alpha.types.analytics_admin import (
     GetDisplayVideo360AdvertiserLinkProposalRequest,
 )
 from google.analytics.admin_v1alpha.types.analytics_admin import (
     GetDisplayVideo360AdvertiserLinkRequest,
-)
-from google.analytics.admin_v1alpha.types.analytics_admin import (
-    GetEnhancedMeasurementSettingsRequest,
 )
 from google.analytics.admin_v1alpha.types.analytics_admin import GetGlobalSiteTagRequest
 from google.analytics.admin_v1alpha.types.analytics_admin import (
@@ -189,6 +195,8 @@ from google.analytics.admin_v1alpha.types.analytics_admin import (
 from google.analytics.admin_v1alpha.types.analytics_admin import (
     ListCustomMetricsResponse,
 )
+from google.analytics.admin_v1alpha.types.analytics_admin import ListDataStreamsRequest
+from google.analytics.admin_v1alpha.types.analytics_admin import ListDataStreamsResponse
 from google.analytics.admin_v1alpha.types.analytics_admin import (
     ListDisplayVideo360AdvertiserLinkProposalsRequest,
 )
@@ -260,11 +268,9 @@ from google.analytics.admin_v1alpha.types.analytics_admin import (
 from google.analytics.admin_v1alpha.types.analytics_admin import (
     UpdateDataRetentionSettingsRequest,
 )
+from google.analytics.admin_v1alpha.types.analytics_admin import UpdateDataStreamRequest
 from google.analytics.admin_v1alpha.types.analytics_admin import (
     UpdateDisplayVideo360AdvertiserLinkRequest,
-)
-from google.analytics.admin_v1alpha.types.analytics_admin import (
-    UpdateEnhancedMeasurementSettingsRequest,
 )
 from google.analytics.admin_v1alpha.types.analytics_admin import (
     UpdateGoogleAdsLinkRequest,
@@ -294,11 +300,11 @@ from google.analytics.admin_v1alpha.types.resources import CustomDimension
 from google.analytics.admin_v1alpha.types.resources import CustomMetric
 from google.analytics.admin_v1alpha.types.resources import DataRetentionSettings
 from google.analytics.admin_v1alpha.types.resources import DataSharingSettings
+from google.analytics.admin_v1alpha.types.resources import DataStream
 from google.analytics.admin_v1alpha.types.resources import DisplayVideo360AdvertiserLink
 from google.analytics.admin_v1alpha.types.resources import (
     DisplayVideo360AdvertiserLinkProposal,
 )
-from google.analytics.admin_v1alpha.types.resources import EnhancedMeasurementSettings
 from google.analytics.admin_v1alpha.types.resources import FirebaseLink
 from google.analytics.admin_v1alpha.types.resources import GlobalSiteTag
 from google.analytics.admin_v1alpha.types.resources import GoogleAdsLink
@@ -323,6 +329,8 @@ from google.analytics.admin_v1alpha.types.resources import ServiceLevel
 __all__ = (
     "AnalyticsAdminServiceClient",
     "AnalyticsAdminServiceAsyncClient",
+    "AcknowledgeUserDataCollectionRequest",
+    "AcknowledgeUserDataCollectionResponse",
     "ApproveDisplayVideo360AdvertiserLinkProposalRequest",
     "ApproveDisplayVideo360AdvertiserLinkProposalResponse",
     "ArchiveCustomDimensionRequest",
@@ -340,6 +348,7 @@ __all__ = (
     "CreateConversionEventRequest",
     "CreateCustomDimensionRequest",
     "CreateCustomMetricRequest",
+    "CreateDataStreamRequest",
     "CreateDisplayVideo360AdvertiserLinkProposalRequest",
     "CreateDisplayVideo360AdvertiserLinkRequest",
     "CreateFirebaseLinkRequest",
@@ -351,6 +360,7 @@ __all__ = (
     "DeleteAccountRequest",
     "DeleteAndroidAppDataStreamRequest",
     "DeleteConversionEventRequest",
+    "DeleteDataStreamRequest",
     "DeleteDisplayVideo360AdvertiserLinkProposalRequest",
     "DeleteDisplayVideo360AdvertiserLinkRequest",
     "DeleteFirebaseLinkRequest",
@@ -367,9 +377,9 @@ __all__ = (
     "GetCustomMetricRequest",
     "GetDataRetentionSettingsRequest",
     "GetDataSharingSettingsRequest",
+    "GetDataStreamRequest",
     "GetDisplayVideo360AdvertiserLinkProposalRequest",
     "GetDisplayVideo360AdvertiserLinkRequest",
-    "GetEnhancedMeasurementSettingsRequest",
     "GetGlobalSiteTagRequest",
     "GetGoogleSignalsSettingsRequest",
     "GetIosAppDataStreamRequest",
@@ -389,6 +399,8 @@ __all__ = (
     "ListCustomDimensionsResponse",
     "ListCustomMetricsRequest",
     "ListCustomMetricsResponse",
+    "ListDataStreamsRequest",
+    "ListDataStreamsResponse",
     "ListDisplayVideo360AdvertiserLinkProposalsRequest",
     "ListDisplayVideo360AdvertiserLinkProposalsResponse",
     "ListDisplayVideo360AdvertiserLinksRequest",
@@ -416,8 +428,8 @@ __all__ = (
     "UpdateCustomDimensionRequest",
     "UpdateCustomMetricRequest",
     "UpdateDataRetentionSettingsRequest",
+    "UpdateDataStreamRequest",
     "UpdateDisplayVideo360AdvertiserLinkRequest",
-    "UpdateEnhancedMeasurementSettingsRequest",
     "UpdateGoogleAdsLinkRequest",
     "UpdateGoogleSignalsSettingsRequest",
     "UpdateIosAppDataStreamRequest",
@@ -436,9 +448,9 @@ __all__ = (
     "CustomMetric",
     "DataRetentionSettings",
     "DataSharingSettings",
+    "DataStream",
     "DisplayVideo360AdvertiserLink",
     "DisplayVideo360AdvertiserLinkProposal",
-    "EnhancedMeasurementSettings",
     "FirebaseLink",
     "GlobalSiteTag",
     "GoogleAdsLink",

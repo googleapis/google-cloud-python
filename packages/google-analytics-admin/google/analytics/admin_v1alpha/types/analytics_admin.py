@@ -67,8 +67,6 @@ __protobuf__ = proto.module(
         "UpdateAndroidAppDataStreamRequest",
         "ListAndroidAppDataStreamsRequest",
         "ListAndroidAppDataStreamsResponse",
-        "GetEnhancedMeasurementSettingsRequest",
-        "UpdateEnhancedMeasurementSettingsRequest",
         "CreateFirebaseLinkRequest",
         "DeleteFirebaseLinkRequest",
         "ListFirebaseLinksRequest",
@@ -82,6 +80,8 @@ __protobuf__ = proto.module(
         "GetDataSharingSettingsRequest",
         "ListAccountSummariesRequest",
         "ListAccountSummariesResponse",
+        "AcknowledgeUserDataCollectionRequest",
+        "AcknowledgeUserDataCollectionResponse",
         "SearchChangeHistoryEventsRequest",
         "SearchChangeHistoryEventsResponse",
         "GetMeasurementProtocolSecretRequest",
@@ -125,6 +125,12 @@ __protobuf__ = proto.module(
         "GetCustomMetricRequest",
         "GetDataRetentionSettingsRequest",
         "UpdateDataRetentionSettingsRequest",
+        "CreateDataStreamRequest",
+        "DeleteDataStreamRequest",
+        "UpdateDataStreamRequest",
+        "ListDataStreamsRequest",
+        "ListDataStreamsResponse",
+        "GetDataStreamRequest",
     },
 )
 
@@ -979,42 +985,6 @@ class ListAndroidAppDataStreamsResponse(proto.Message):
     next_page_token = proto.Field(proto.STRING, number=2,)
 
 
-class GetEnhancedMeasurementSettingsRequest(proto.Message):
-    r"""Request message for GetEnhancedMeasurementSettings RPC.
-
-    Attributes:
-        name (str):
-            Required. The name of the settings to lookup. Format:
-            properties/{property_id}/webDataStreams/{stream_id}/enhancedMeasurementSettings
-            Example:
-            "properties/1000/webDataStreams/2000/enhancedMeasurementSettings".
-    """
-
-    name = proto.Field(proto.STRING, number=1,)
-
-
-class UpdateEnhancedMeasurementSettingsRequest(proto.Message):
-    r"""Request message for UpdateEnhancedMeasurementSettings RPC.
-
-    Attributes:
-        enhanced_measurement_settings (google.analytics.admin_v1alpha.types.EnhancedMeasurementSettings):
-            Required. The settings to update. The ``name`` field is used
-            to identify the settings to be updated.
-        update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. The list of fields to be updated. Field names must
-            be in snake case (e.g., "field_to_update"). Omitted fields
-            will not be updated. To replace the entire entity, use one
-            path with the string "*" to match all fields.
-    """
-
-    enhanced_measurement_settings = proto.Field(
-        proto.MESSAGE, number=1, message=resources.EnhancedMeasurementSettings,
-    )
-    update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
-    )
-
-
 class CreateFirebaseLinkRequest(proto.Message):
     r"""Request message for CreateFirebaseLink RPC
 
@@ -1265,6 +1235,35 @@ class ListAccountSummariesResponse(proto.Message):
         proto.MESSAGE, number=1, message=resources.AccountSummary,
     )
     next_page_token = proto.Field(proto.STRING, number=2,)
+
+
+class AcknowledgeUserDataCollectionRequest(proto.Message):
+    r"""Request message for AcknowledgeUserDataCollection RPC.
+
+    Attributes:
+        property (str):
+            Required. The property for which to
+            acknowledge user data collection.
+        acknowledgement (str):
+            Required. An acknowledgement that the caller
+            of this method understands the terms of user
+            data collection.
+            This field must contain the exact value:
+            "I acknowledge that I have the necessary privacy
+            disclosures and rights from my end users for the
+            collection and processing of their data,
+            including the association of such data with the
+            visitation information Google Analytics collects
+            from my site and/or app property.".
+    """
+
+    property = proto.Field(proto.STRING, number=1,)
+    acknowledgement = proto.Field(proto.STRING, number=2,)
+
+
+class AcknowledgeUserDataCollectionResponse(proto.Message):
+    r"""Response message for AcknowledgeUserDataCollection RPC.
+    """
 
 
 class SearchChangeHistoryEventsRequest(proto.Message):
@@ -2116,6 +2115,110 @@ class UpdateDataRetentionSettingsRequest(proto.Message):
     update_mask = proto.Field(
         proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
     )
+
+
+class CreateDataStreamRequest(proto.Message):
+    r"""Request message for CreateDataStream RPC.
+
+    Attributes:
+        parent (str):
+            Required. Example format: properties/1234
+        data_stream (google.analytics.admin_v1alpha.types.DataStream):
+            Required. The DataStream to create.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    data_stream = proto.Field(proto.MESSAGE, number=2, message=resources.DataStream,)
+
+
+class DeleteDataStreamRequest(proto.Message):
+    r"""Request message for DeleteDataStream RPC.
+
+    Attributes:
+        name (str):
+            Required. The name of the DataStream to
+            delete. Example format:
+            properties/1234/dataStreams/5678
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class UpdateDataStreamRequest(proto.Message):
+    r"""Request message for UpdateDataStream RPC.
+
+    Attributes:
+        data_stream (google.analytics.admin_v1alpha.types.DataStream):
+            The DataStream to update
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to be updated. Omitted fields
+            will not be updated. To replace the entire entity, use one
+            path with the string "*" to match all fields.
+    """
+
+    data_stream = proto.Field(proto.MESSAGE, number=1, message=resources.DataStream,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
+
+
+class ListDataStreamsRequest(proto.Message):
+    r"""Request message for ListDataStreams RPC.
+
+    Attributes:
+        parent (str):
+            Required. Example format: properties/1234
+        page_size (int):
+            The maximum number of resources to return.
+            If unspecified, at most 50 resources will be
+            returned. The maximum value is 200 (higher
+            values will be coerced to the maximum).
+        page_token (str):
+            A page token, received from a previous ``ListDataStreams``
+            call. Provide this to retrieve the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListDataStreams`` must match the call that provided the
+            page token.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
+
+
+class ListDataStreamsResponse(proto.Message):
+    r"""Response message for ListDataStreams RPC.
+
+    Attributes:
+        data_streams (Sequence[google.analytics.admin_v1alpha.types.DataStream]):
+            List of DataStreams.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    data_streams = proto.RepeatedField(
+        proto.MESSAGE, number=1, message=resources.DataStream,
+    )
+    next_page_token = proto.Field(proto.STRING, number=2,)
+
+
+class GetDataStreamRequest(proto.Message):
+    r"""Request message for GetDataStream RPC.
+
+    Attributes:
+        name (str):
+            Required. The name of the DataStream to get.
+            Example format: properties/1234/dataStreams/5678
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

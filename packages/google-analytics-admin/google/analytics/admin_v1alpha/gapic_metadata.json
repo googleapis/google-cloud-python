@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "AnalyticsAdminServiceClient",
           "rpcs": {
+            "AcknowledgeUserDataCollection": {
+              "methods": [
+                "acknowledge_user_data_collection"
+              ]
+            },
             "ApproveDisplayVideo360AdvertiserLinkProposal": {
               "methods": [
                 "approve_display_video360_advertiser_link_proposal"
@@ -70,6 +75,11 @@
                 "create_custom_metric"
               ]
             },
+            "CreateDataStream": {
+              "methods": [
+                "create_data_stream"
+              ]
+            },
             "CreateDisplayVideo360AdvertiserLink": {
               "methods": [
                 "create_display_video360_advertiser_link"
@@ -123,6 +133,11 @@
             "DeleteConversionEvent": {
               "methods": [
                 "delete_conversion_event"
+              ]
+            },
+            "DeleteDataStream": {
+              "methods": [
+                "delete_data_stream"
               ]
             },
             "DeleteDisplayVideo360AdvertiserLink": {
@@ -205,6 +220,11 @@
                 "get_data_sharing_settings"
               ]
             },
+            "GetDataStream": {
+              "methods": [
+                "get_data_stream"
+              ]
+            },
             "GetDisplayVideo360AdvertiserLink": {
               "methods": [
                 "get_display_video360_advertiser_link"
@@ -213,11 +233,6 @@
             "GetDisplayVideo360AdvertiserLinkProposal": {
               "methods": [
                 "get_display_video360_advertiser_link_proposal"
-              ]
-            },
-            "GetEnhancedMeasurementSettings": {
-              "methods": [
-                "get_enhanced_measurement_settings"
               ]
             },
             "GetGlobalSiteTag": {
@@ -283,6 +298,11 @@
             "ListCustomMetrics": {
               "methods": [
                 "list_custom_metrics"
+              ]
+            },
+            "ListDataStreams": {
+              "methods": [
+                "list_data_streams"
               ]
             },
             "ListDisplayVideo360AdvertiserLinkProposals": {
@@ -365,14 +385,14 @@
                 "update_data_retention_settings"
               ]
             },
+            "UpdateDataStream": {
+              "methods": [
+                "update_data_stream"
+              ]
+            },
             "UpdateDisplayVideo360AdvertiserLink": {
               "methods": [
                 "update_display_video360_advertiser_link"
-              ]
-            },
-            "UpdateEnhancedMeasurementSettings": {
-              "methods": [
-                "update_enhanced_measurement_settings"
               ]
             },
             "UpdateGoogleAdsLink": {
@@ -415,6 +435,11 @@
         "grpc-async": {
           "libraryClient": "AnalyticsAdminServiceAsyncClient",
           "rpcs": {
+            "AcknowledgeUserDataCollection": {
+              "methods": [
+                "acknowledge_user_data_collection"
+              ]
+            },
             "ApproveDisplayVideo360AdvertiserLinkProposal": {
               "methods": [
                 "approve_display_video360_advertiser_link_proposal"
@@ -475,6 +500,11 @@
                 "create_custom_metric"
               ]
             },
+            "CreateDataStream": {
+              "methods": [
+                "create_data_stream"
+              ]
+            },
             "CreateDisplayVideo360AdvertiserLink": {
               "methods": [
                 "create_display_video360_advertiser_link"
@@ -528,6 +558,11 @@
             "DeleteConversionEvent": {
               "methods": [
                 "delete_conversion_event"
+              ]
+            },
+            "DeleteDataStream": {
+              "methods": [
+                "delete_data_stream"
               ]
             },
             "DeleteDisplayVideo360AdvertiserLink": {
@@ -610,6 +645,11 @@
                 "get_data_sharing_settings"
               ]
             },
+            "GetDataStream": {
+              "methods": [
+                "get_data_stream"
+              ]
+            },
             "GetDisplayVideo360AdvertiserLink": {
               "methods": [
                 "get_display_video360_advertiser_link"
@@ -618,11 +658,6 @@
             "GetDisplayVideo360AdvertiserLinkProposal": {
               "methods": [
                 "get_display_video360_advertiser_link_proposal"
-              ]
-            },
-            "GetEnhancedMeasurementSettings": {
-              "methods": [
-                "get_enhanced_measurement_settings"
               ]
             },
             "GetGlobalSiteTag": {
@@ -688,6 +723,11 @@
             "ListCustomMetrics": {
               "methods": [
                 "list_custom_metrics"
+              ]
+            },
+            "ListDataStreams": {
+              "methods": [
+                "list_data_streams"
               ]
             },
             "ListDisplayVideo360AdvertiserLinkProposals": {
@@ -770,14 +810,14 @@
                 "update_data_retention_settings"
               ]
             },
+            "UpdateDataStream": {
+              "methods": [
+                "update_data_stream"
+              ]
+            },
             "UpdateDisplayVideo360AdvertiserLink": {
               "methods": [
                 "update_display_video360_advertiser_link"
-              ]
-            },
-            "UpdateEnhancedMeasurementSettings": {
-              "methods": [
-                "update_enhanced_measurement_settings"
               ]
             },
             "UpdateGoogleAdsLink": {

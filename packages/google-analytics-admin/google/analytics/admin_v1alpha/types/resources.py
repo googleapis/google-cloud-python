@@ -36,9 +36,9 @@ __protobuf__ = proto.module(
         "AndroidAppDataStream",
         "IosAppDataStream",
         "WebDataStream",
+        "DataStream",
         "UserLink",
         "AuditUserLink",
-        "EnhancedMeasurementSettings",
         "FirebaseLink",
         "GlobalSiteTag",
         "GoogleAdsLink",
@@ -136,6 +136,8 @@ class ChangeHistoryResourceType(proto.Enum):
     CUSTOM_DIMENSION = 11
     CUSTOM_METRIC = 12
     DATA_RETENTION_SETTINGS = 13
+    DISPLAY_VIDEO_360_ADVERTISER_LINK = 14
+    DISPLAY_VIDEO_360_ADVERTISER_LINK_PROPOSAL = 15
 
 
 class GoogleSignalsState(proto.Enum):
@@ -267,6 +269,9 @@ class Property(proto.Message):
             trashed property will be permanently deleted. If
             not set, then this property is not currently in
             the trash can and is not slated to be deleted.
+        account (str):
+            Immutable. The resource name of the parent account Format:
+            accounts/{account_id} Example: "accounts/123".
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -284,6 +289,7 @@ class Property(proto.Message):
     expire_time = proto.Field(
         proto.MESSAGE, number=12, message=timestamp_pb2.Timestamp,
     )
+    account = proto.Field(proto.STRING, number=13,)
 
 
 class AndroidAppDataStream(proto.Message):
@@ -392,7 +398,7 @@ class WebDataStream(proto.Message):
         display_name (str):
             Required. Human-readable display name for the
             Data Stream.
-            The max allowed display name length is 100
+            The max allowed display name length is 255
             UTF-16 code units.
     """
 
@@ -403,6 +409,133 @@ class WebDataStream(proto.Message):
     update_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
     default_uri = proto.Field(proto.STRING, number=6,)
     display_name = proto.Field(proto.STRING, number=7,)
+
+
+class DataStream(proto.Message):
+    r"""A resource message representing a data stream.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        web_stream_data (google.analytics.admin_v1alpha.types.DataStream.WebStreamData):
+            Data specific to web streams. Must be populated if type is
+            WEB_DATA_STREAM.
+
+            This field is a member of `oneof`_ ``stream_data``.
+        android_app_stream_data (google.analytics.admin_v1alpha.types.DataStream.AndroidAppStreamData):
+            Data specific to Android app streams. Must be populated if
+            type is ANDROID_APP_DATA_STREAM.
+
+            This field is a member of `oneof`_ ``stream_data``.
+        ios_app_stream_data (google.analytics.admin_v1alpha.types.DataStream.IosAppStreamData):
+            Data specific to iOS app streams. Must be populated if type
+            is IOS_APP_DATA_STREAM.
+
+            This field is a member of `oneof`_ ``stream_data``.
+        name (str):
+            Output only. Resource name of this Data Stream. Format:
+            properties/{property_id}/dataStreams/{stream_id} Example:
+            "properties/1000/dataStreams/2000".
+        type_ (google.analytics.admin_v1alpha.types.DataStream.DataStreamType):
+            Required. Immutable. The type of this
+            DataStream resource.
+        display_name (str):
+            Human-readable display name for the Data
+            Stream.
+            Required for web data streams.
+
+            The max allowed display name length is 255
+            UTF-16 code units.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Time when this stream was
+            originally created.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Time when stream payload fields
+            were last updated.
+    """
+
+    class DataStreamType(proto.Enum):
+        r"""The type of the data stream."""
+        DATA_STREAM_TYPE_UNSPECIFIED = 0
+        WEB_DATA_STREAM = 1
+        ANDROID_APP_DATA_STREAM = 2
+        IOS_APP_DATA_STREAM = 3
+
+    class WebStreamData(proto.Message):
+        r"""Data specific to web streams.
+
+        Attributes:
+            measurement_id (str):
+                Output only. Analytics "Measurement ID",
+                without the "G-" prefix. Example: "G-1A2BCD345E"
+                would just be "1A2BCD345E".
+            firebase_app_id (str):
+                Output only. ID of the corresponding web app
+                in Firebase, if any. This ID can change if the
+                web app is deleted and recreated.
+            default_uri (str):
+                Immutable. Domain name of the web app being
+                measured, or empty. Example:
+                "http://www.google.com",
+                "https://www.google.com".
+        """
+
+        measurement_id = proto.Field(proto.STRING, number=1,)
+        firebase_app_id = proto.Field(proto.STRING, number=2,)
+        default_uri = proto.Field(proto.STRING, number=3,)
+
+    class AndroidAppStreamData(proto.Message):
+        r"""Data specific to Android app streams.
+
+        Attributes:
+            firebase_app_id (str):
+                Output only. ID of the corresponding Android
+                app in Firebase, if any. This ID can change if
+                the Android app is deleted and recreated.
+            package_name (str):
+                Immutable. The package name for the app being
+                measured. Example: "com.example.myandroidapp".
+        """
+
+        firebase_app_id = proto.Field(proto.STRING, number=1,)
+        package_name = proto.Field(proto.STRING, number=2,)
+
+    class IosAppStreamData(proto.Message):
+        r"""Data specific to iOS app streams.
+
+        Attributes:
+            firebase_app_id (str):
+                Output only. ID of the corresponding iOS app
+                in Firebase, if any. This ID can change if the
+                iOS app is deleted and recreated.
+            bundle_id (str):
+                Required. Immutable. The Apple App Store
+                Bundle ID for the app Example:
+                "com.example.myiosapp".
+        """
+
+        firebase_app_id = proto.Field(proto.STRING, number=1,)
+        bundle_id = proto.Field(proto.STRING, number=2,)
+
+    web_stream_data = proto.Field(
+        proto.MESSAGE, number=6, oneof="stream_data", message=WebStreamData,
+    )
+    android_app_stream_data = proto.Field(
+        proto.MESSAGE, number=7, oneof="stream_data", message=AndroidAppStreamData,
+    )
+    ios_app_stream_data = proto.Field(
+        proto.MESSAGE, number=8, oneof="stream_data", message=IosAppStreamData,
+    )
+    name = proto.Field(proto.STRING, number=1,)
+    type_ = proto.Field(proto.ENUM, number=2, enum=DataStreamType,)
+    display_name = proto.Field(proto.STRING, number=3,)
+    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
 
 
 class UserLink(proto.Message):
@@ -419,9 +552,9 @@ class UserLink(proto.Message):
             Roles directly assigned to this user for this account or
             property.
 
-            Valid values: predefinedRoles/read
-            predefinedRoles/collaborate predefinedRoles/edit
-            predefinedRoles/manage-users
+            Valid values: predefinedRoles/viewer predefinedRoles/analyst
+            predefinedRoles/editor predefinedRoles/admin
+            predefinedRoles/no-cost-data predefinedRoles/no-revenue-data
 
             Excludes roles that are inherited from a higher-level
             entity, group, or organization admin role.
@@ -448,7 +581,7 @@ class AuditUserLink(proto.Message):
         direct_roles (Sequence[str]):
             Roles directly assigned to this user for this
             entity.
-            Format: predefinedRoles/read
+            Format: predefinedRoles/viewer
 
             Excludes roles that are inherited from an
             account (if this is for a property), group, or
@@ -457,7 +590,7 @@ class AuditUserLink(proto.Message):
             Union of all permissions a user has at this
             account or property (includes direct
             permissions, group-inherited permissions, etc.).
-            Format: predefinedRoles/read
+            Format: predefinedRoles/viewer
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -466,79 +599,8 @@ class AuditUserLink(proto.Message):
     effective_roles = proto.RepeatedField(proto.STRING, number=4,)
 
 
-class EnhancedMeasurementSettings(proto.Message):
-    r"""Singleton resource under a WebDataStream, configuring
-    measurement of additional site interactions and content.
-
-    Attributes:
-        name (str):
-            Output only. Resource name of this Data Stream. Format:
-            properties/{property_id}/webDataStreams/{stream_id}/enhancedMeasurementSettings
-            Example:
-            "properties/1000/webDataStreams/2000/enhancedMeasurementSettings".
-        stream_enabled (bool):
-            Indicates whether Enhanced Measurement
-            Settings will be used to automatically measure
-            interactions and content on this web stream.
-            Changing this value does not affect the settings
-            themselves, but determines whether they are
-            respected.
-        page_views_enabled (bool):
-            Output only. If enabled, capture a page view
-            event each time a page loads or the website
-            changes the browser history state.
-        scrolls_enabled (bool):
-            If enabled, capture scroll events each time a
-            visitor gets to the bottom of a page.
-        outbound_clicks_enabled (bool):
-            If enabled, capture an outbound click event
-            each time a visitor clicks a link that leads
-            them away from your domain.
-        site_search_enabled (bool):
-            If enabled, capture a view search results
-            event each time a visitor performs a search on
-            your site (based on a query parameter).
-        video_engagement_enabled (bool):
-            If enabled, capture video play, progress, and
-            complete events as visitors view embedded videos
-            on your site.
-        file_downloads_enabled (bool):
-            If enabled, capture a file download event
-            each time a link is clicked with a common
-            document, compressed file, application, video,
-            or audio extension.
-        page_loads_enabled (bool):
-            Output only. If enabled, capture a page view
-            event each time a page loads.
-        page_changes_enabled (bool):
-            If enabled, capture a page view event each
-            time the website changes the browser history
-            state.
-        search_query_parameter (str):
-            Required. URL query parameters to interpret
-            as site search parameters. Max length is 1024
-            characters. Must not be empty.
-        uri_query_parameter (str):
-            Additional URL query parameters.
-            Max length is 1024 characters.
-    """
-
-    name = proto.Field(proto.STRING, number=1,)
-    stream_enabled = proto.Field(proto.BOOL, number=2,)
-    page_views_enabled = proto.Field(proto.BOOL, number=3,)
-    scrolls_enabled = proto.Field(proto.BOOL, number=4,)
-    outbound_clicks_enabled = proto.Field(proto.BOOL, number=5,)
-    site_search_enabled = proto.Field(proto.BOOL, number=7,)
-    video_engagement_enabled = proto.Field(proto.BOOL, number=9,)
-    file_downloads_enabled = proto.Field(proto.BOOL, number=10,)
-    page_loads_enabled = proto.Field(proto.BOOL, number=12,)
-    page_changes_enabled = proto.Field(proto.BOOL, number=13,)
-    search_query_parameter = proto.Field(proto.STRING, number=16,)
-    uri_query_parameter = proto.Field(proto.STRING, number=17,)
-
-
 class FirebaseLink(proto.Message):
-    r"""A link between an GA4 property and a Firebase project.
+    r"""A link between a GA4 property and a Firebase project.
 
     Attributes:
         name (str):
@@ -582,7 +644,7 @@ class GlobalSiteTag(proto.Message):
 
 
 class GoogleAdsLink(proto.Message):
-    r"""A link between an GA4 property and a Google Ads account.
+    r"""A link between a GA4 property and a Google Ads account.
 
     Attributes:
         name (str):
@@ -694,7 +756,7 @@ class AccountSummary(proto.Message):
 
 
 class PropertySummary(proto.Message):
-    r"""A virtual resource representing metadata for an GA4 property.
+    r"""A virtual resource representing metadata for a GA4 property.
 
     Attributes:
         property (str):
@@ -703,7 +765,7 @@ class PropertySummary(proto.Message):
             "properties/1000".
         display_name (str):
             Display name for the property referred to in
-            this account summary.
+            this property summary.
     """
 
     property = proto.Field(proto.STRING, number=1,)
@@ -982,7 +1044,7 @@ class DisplayVideo360AdvertiserLink(proto.Message):
         cost_data_sharing_enabled (google.protobuf.wrappers_pb2.BoolValue):
             Immutable. Enables the import of cost data from Display &
             Video 360 into the GA4 property. This can only be enabled if
-            campaign_data_import_enabled is enabled. After link
+            campaign_data_sharing_enabled is enabled. After link
             creation, this can only be updated from the Display & Video
             360 product. If this field is not set on create, it will be
             defaulted to true.
@@ -1003,7 +1065,7 @@ class DisplayVideo360AdvertiserLink(proto.Message):
 
 
 class DisplayVideo360AdvertiserLinkProposal(proto.Message):
-    r"""A proposal for a link between an GA4 property and a Display &
+    r"""A proposal for a link between a GA4 property and a Display &
     Video 360 advertiser.
 
     A proposal is converted to a DisplayVideo360AdvertiserLink once
@@ -1049,7 +1111,7 @@ class DisplayVideo360AdvertiserLinkProposal(proto.Message):
         cost_data_sharing_enabled (google.protobuf.wrappers_pb2.BoolValue):
             Immutable. Enables the import of cost data from Display &
             Video 360. This can only be enabled if
-            campaign_data_import_enabled is enabled. If this field is
+            campaign_data_sharing_enabled is enabled. If this field is
             not set on create, it will be defaulted to true.
     """
 
