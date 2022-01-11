@@ -17,13 +17,10 @@ import time
 import google.api_core.exceptions
 
 from google.cloud.compute_v1.services.firewalls.client import FirewallsClient
-from google.cloud.compute_v1.services.images.client import ImagesClient
 from google.cloud.compute_v1.services.instances.client import InstancesClient
 from google.cloud.compute_v1.types import (
     Allowed,
     Firewall,
-    Image,
-    InsertImageRequest,
     InsertInstanceRequest,
     Instance,
     AttachedDisk,
@@ -193,32 +190,6 @@ class TestComputeSmoke(TestBase):
         operation = self.client.insert_unary(request=request)
         self.wait_for_zonal_operation(operation.name)
         self.instances.append(self.name)
-
-
-class TestComputeImages(TestBase):
-    def setUp(self) -> None:
-        super().setUp()
-
-    def test_int64(self):
-        # we want to test a field with format:int64
-        name = self.get_unique_name("image")
-        license_codes = [5543610867827062957]
-        image = Image(
-            name=name,
-            license_codes=license_codes,
-            source_image="projects/debian-cloud/global/images/debian-10-buster-v20210721",
-        )
-        images_client = ImagesClient(transport="rest")
-        request = InsertImageRequest(project=self.DEFAULT_PROJECT, image_resource=image)
-        op = images_client.insert_unary(request)
-        try:
-            self.wait_for_global_operation(op.name)
-
-            fetched = images_client.get(project=self.DEFAULT_PROJECT, image=name)
-            self.assertEqual(fetched.license_codes, license_codes)
-            self.assertEqual(fetched.name, name)
-        finally:
-            images_client.delete_unary(project=self.DEFAULT_PROJECT, image=name)
 
 
 class TestComputeFirewalls(TestBase):
