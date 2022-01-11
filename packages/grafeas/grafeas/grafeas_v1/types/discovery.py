@@ -58,6 +58,9 @@ class DiscoveryOccurrence(proto.Message):
             The CPE of the resource being scanned.
         last_scan_time (google.protobuf.timestamp_pb2.Timestamp):
             The last time this resource was scanned.
+        archive_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time occurrences related to this
+            discovery occurrence were archived.
     """
 
     class ContinuousAnalysis(proto.Enum):
@@ -85,6 +88,9 @@ class DiscoveryOccurrence(proto.Message):
     cpe = proto.Field(proto.STRING, number=4,)
     last_scan_time = proto.Field(
         proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,
+    )
+    archive_time = proto.Field(
+        proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,
     )
 
 

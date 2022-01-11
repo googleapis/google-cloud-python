@@ -54,6 +54,7 @@ from grafeas.grafeas_v1.types import intoto_provenance
 from grafeas.grafeas_v1.types import intoto_statement
 from grafeas.grafeas_v1.types import package
 from grafeas.grafeas_v1.types import provenance
+from grafeas.grafeas_v1.types import severity
 from grafeas.grafeas_v1.types import slsa_provenance
 from grafeas.grafeas_v1.types import upgrade
 from grafeas.grafeas_v1.types import vulnerability

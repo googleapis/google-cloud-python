@@ -31,6 +31,7 @@ from .types.compliance import ComplianceNote
 from .types.compliance import ComplianceOccurrence
 from .types.compliance import ComplianceVersion
 from .types.compliance import NonCompliantFile
+from .types.cvss import CVSS
 from .types.cvss import CVSSv3
 from .types.deployment import DeploymentNote
 from .types.deployment import DeploymentOccurrence
@@ -89,6 +90,7 @@ from .types.provenance import ProjectRepoId
 from .types.provenance import RepoId
 from .types.provenance import Source
 from .types.provenance import SourceContext
+from .types.severity import Severity
 from .types.slsa_provenance import SlsaProvenance
 from .types.upgrade import UpgradeDistribution
 from .types.upgrade import UpgradeNote
@@ -96,7 +98,6 @@ from .types.upgrade import UpgradeOccurrence
 from .types.upgrade import WindowsUpdate
 from .types.vulnerability import VulnerabilityNote
 from .types.vulnerability import VulnerabilityOccurrence
-from .types.vulnerability import Severity
 
 __all__ = (
     "GrafeasAsyncClient",
@@ -113,6 +114,7 @@ __all__ = (
     "BuildOccurrence",
     "BuildProvenance",
     "BuilderConfig",
+    "CVSS",
     "CVSSv3",
     "CloudRepoSourceContext",
     "Command",

@@ -15,7 +15,7 @@
 #
 import proto  # type: ignore
 
-from grafeas.grafeas_v1.types import vulnerability
+from grafeas.grafeas_v1.types import severity as g_severity
 
 
 __protobuf__ = proto.module(
@@ -68,7 +68,7 @@ class ComplianceNote(proto.Message):
         """
 
         profile_level = proto.Field(proto.INT32, number=1,)
-        severity = proto.Field(proto.ENUM, number=2, enum=vulnerability.Severity,)
+        severity = proto.Field(proto.ENUM, number=2, enum=g_severity.Severity,)
 
     title = proto.Field(proto.STRING, number=1,)
     description = proto.Field(proto.STRING, number=2,)

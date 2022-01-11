@@ -35,7 +35,10 @@ from .compliance import (
     ComplianceVersion,
     NonCompliantFile,
 )
-from .cvss import CVSSv3
+from .cvss import (
+    CVSS,
+    CVSSv3,
+)
 from .deployment import (
     DeploymentNote,
     DeploymentOccurrence,
@@ -121,7 +124,6 @@ from .upgrade import (
 from .vulnerability import (
     VulnerabilityNote,
     VulnerabilityOccurrence,
-    Severity,
 )
 
 __all__ = (
@@ -139,6 +141,7 @@ __all__ = (
     "ComplianceOccurrence",
     "ComplianceVersion",
     "NonCompliantFile",
+    "CVSS",
     "CVSSv3",
     "DeploymentNote",
     "DeploymentOccurrence",
@@ -197,6 +200,7 @@ __all__ = (
     "RepoId",
     "Source",
     "SourceContext",
+    "Severity",
     "SlsaProvenance",
     "UpgradeDistribution",
     "UpgradeNote",
@@ -204,5 +208,4 @@ __all__ = (
     "WindowsUpdate",
     "VulnerabilityNote",
     "VulnerabilityOccurrence",
-    "Severity",
 )

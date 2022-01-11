@@ -31,6 +31,7 @@ from grafeas.grafeas_v1.types.compliance import ComplianceNote
 from grafeas.grafeas_v1.types.compliance import ComplianceOccurrence
 from grafeas.grafeas_v1.types.compliance import ComplianceVersion
 from grafeas.grafeas_v1.types.compliance import NonCompliantFile
+from grafeas.grafeas_v1.types.cvss import CVSS
 from grafeas.grafeas_v1.types.cvss import CVSSv3
 from grafeas.grafeas_v1.types.deployment import DeploymentNote
 from grafeas.grafeas_v1.types.deployment import DeploymentOccurrence
@@ -89,6 +90,7 @@ from grafeas.grafeas_v1.types.provenance import ProjectRepoId
 from grafeas.grafeas_v1.types.provenance import RepoId
 from grafeas.grafeas_v1.types.provenance import Source
 from grafeas.grafeas_v1.types.provenance import SourceContext
+from grafeas.grafeas_v1.types.severity import Severity
 from grafeas.grafeas_v1.types.slsa_provenance import SlsaProvenance
 from grafeas.grafeas_v1.types.upgrade import UpgradeDistribution
 from grafeas.grafeas_v1.types.upgrade import UpgradeNote
@@ -96,7 +98,6 @@ from grafeas.grafeas_v1.types.upgrade import UpgradeOccurrence
 from grafeas.grafeas_v1.types.upgrade import WindowsUpdate
 from grafeas.grafeas_v1.types.vulnerability import VulnerabilityNote
 from grafeas.grafeas_v1.types.vulnerability import VulnerabilityOccurrence
-from grafeas.grafeas_v1.types.vulnerability import Severity
 
 __all__ = (
     "GrafeasClient",
@@ -115,6 +116,7 @@ __all__ = (
     "ComplianceOccurrence",
     "ComplianceVersion",
     "NonCompliantFile",
+    "CVSS",
     "CVSSv3",
     "DeploymentNote",
     "DeploymentOccurrence",
@@ -173,6 +175,7 @@ __all__ = (
     "RepoId",
     "Source",
     "SourceContext",
+    "Severity",
     "SlsaProvenance",
     "UpgradeDistribution",
     "UpgradeNote",
@@ -180,5 +183,4 @@ __all__ = (
     "WindowsUpdate",
     "VulnerabilityNote",
     "VulnerabilityOccurrence",
-    "Severity",
 )
