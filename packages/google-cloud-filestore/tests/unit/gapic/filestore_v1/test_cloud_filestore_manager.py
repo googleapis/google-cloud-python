@@ -263,20 +263,20 @@ def test_cloud_filestore_manager_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -345,7 +345,7 @@ def test_cloud_filestore_manager_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -444,7 +444,7 @@ def test_cloud_filestore_manager_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -479,7 +479,7 @@ def test_cloud_filestore_manager_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -512,9 +512,10 @@ def test_cloud_filestore_manager_client_client_options_from_dict():
         )
 
 
-def test_list_instances(
-    transport: str = "grpc", request_type=cloud_filestore_service.ListInstancesRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cloud_filestore_service.ListInstancesRequest, dict,]
+)
+def test_list_instances(request_type, transport: str = "grpc"):
     client = CloudFilestoreManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -540,10 +541,6 @@ def test_list_instances(
     assert isinstance(response, pagers.ListInstancesPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_instances_from_dict():
-    test_list_instances(request_type=dict)
 
 
 def test_list_instances_empty_call():
@@ -732,9 +729,9 @@ async def test_list_instances_flattened_error_async():
         )
 
 
-def test_list_instances_pager():
+def test_list_instances_pager(transport_name: str = "grpc"):
     client = CloudFilestoreManagerClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -777,9 +774,9 @@ def test_list_instances_pager():
         assert all(isinstance(i, cloud_filestore_service.Instance) for i in results)
 
 
-def test_list_instances_pages():
+def test_list_instances_pages(transport_name: str = "grpc"):
     client = CloudFilestoreManagerClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -898,9 +895,10 @@ async def test_list_instances_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_instance(
-    transport: str = "grpc", request_type=cloud_filestore_service.GetInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cloud_filestore_service.GetInstanceRequest, dict,]
+)
+def test_get_instance(request_type, transport: str = "grpc"):
     client = CloudFilestoreManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -935,10 +933,6 @@ def test_get_instance(
     assert response.status_message == "status_message_value"
     assert response.tier == cloud_filestore_service.Instance.Tier.STANDARD
     assert response.etag == "etag_value"
-
-
-def test_get_instance_from_dict():
-    test_get_instance(request_type=dict)
 
 
 def test_get_instance_empty_call():
@@ -1135,9 +1129,10 @@ async def test_get_instance_flattened_error_async():
         )
 
 
-def test_create_instance(
-    transport: str = "grpc", request_type=cloud_filestore_service.CreateInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cloud_filestore_service.CreateInstanceRequest, dict,]
+)
+def test_create_instance(request_type, transport: str = "grpc"):
     client = CloudFilestoreManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1159,10 +1154,6 @@ def test_create_instance(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_instance_from_dict():
-    test_create_instance(request_type=dict)
 
 
 def test_create_instance_empty_call():
@@ -1372,9 +1363,10 @@ async def test_create_instance_flattened_error_async():
         )
 
 
-def test_update_instance(
-    transport: str = "grpc", request_type=cloud_filestore_service.UpdateInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cloud_filestore_service.UpdateInstanceRequest, dict,]
+)
+def test_update_instance(request_type, transport: str = "grpc"):
     client = CloudFilestoreManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1396,10 +1388,6 @@ def test_update_instance(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_instance_from_dict():
-    test_update_instance(request_type=dict)
 
 
 def test_update_instance_empty_call():
@@ -1603,9 +1591,10 @@ async def test_update_instance_flattened_error_async():
         )
 
 
-def test_restore_instance(
-    transport: str = "grpc", request_type=cloud_filestore_service.RestoreInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cloud_filestore_service.RestoreInstanceRequest, dict,]
+)
+def test_restore_instance(request_type, transport: str = "grpc"):
     client = CloudFilestoreManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1627,10 +1616,6 @@ def test_restore_instance(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_restore_instance_from_dict():
-    test_restore_instance(request_type=dict)
 
 
 def test_restore_instance_empty_call():
@@ -1738,9 +1723,10 @@ async def test_restore_instance_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_delete_instance(
-    transport: str = "grpc", request_type=cloud_filestore_service.DeleteInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cloud_filestore_service.DeleteInstanceRequest, dict,]
+)
+def test_delete_instance(request_type, transport: str = "grpc"):
     client = CloudFilestoreManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1762,10 +1748,6 @@ def test_delete_instance(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_instance_from_dict():
-    test_delete_instance(request_type=dict)
 
 
 def test_delete_instance_empty_call():
@@ -1949,9 +1931,10 @@ async def test_delete_instance_flattened_error_async():
         )
 
 
-def test_list_backups(
-    transport: str = "grpc", request_type=cloud_filestore_service.ListBackupsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cloud_filestore_service.ListBackupsRequest, dict,]
+)
+def test_list_backups(request_type, transport: str = "grpc"):
     client = CloudFilestoreManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1977,10 +1960,6 @@ def test_list_backups(
     assert isinstance(response, pagers.ListBackupsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_backups_from_dict():
-    test_list_backups(request_type=dict)
 
 
 def test_list_backups_empty_call():
@@ -2169,9 +2148,9 @@ async def test_list_backups_flattened_error_async():
         )
 
 
-def test_list_backups_pager():
+def test_list_backups_pager(transport_name: str = "grpc"):
     client = CloudFilestoreManagerClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2214,9 +2193,9 @@ def test_list_backups_pager():
         assert all(isinstance(i, cloud_filestore_service.Backup) for i in results)
 
 
-def test_list_backups_pages():
+def test_list_backups_pages(transport_name: str = "grpc"):
     client = CloudFilestoreManagerClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2335,9 +2314,10 @@ async def test_list_backups_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_backup(
-    transport: str = "grpc", request_type=cloud_filestore_service.GetBackupRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cloud_filestore_service.GetBackupRequest, dict,]
+)
+def test_get_backup(request_type, transport: str = "grpc"):
     client = CloudFilestoreManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2380,10 +2360,6 @@ def test_get_backup(
         response.source_instance_tier == cloud_filestore_service.Instance.Tier.STANDARD
     )
     assert response.download_bytes == 1502
-
-
-def test_get_backup_from_dict():
-    test_get_backup(request_type=dict)
 
 
 def test_get_backup_empty_call():
@@ -2588,9 +2564,10 @@ async def test_get_backup_flattened_error_async():
         )
 
 
-def test_create_backup(
-    transport: str = "grpc", request_type=cloud_filestore_service.CreateBackupRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cloud_filestore_service.CreateBackupRequest, dict,]
+)
+def test_create_backup(request_type, transport: str = "grpc"):
     client = CloudFilestoreManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2612,10 +2589,6 @@ def test_create_backup(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_backup_from_dict():
-    test_create_backup(request_type=dict)
 
 
 def test_create_backup_empty_call():
@@ -2825,9 +2798,10 @@ async def test_create_backup_flattened_error_async():
         )
 
 
-def test_delete_backup(
-    transport: str = "grpc", request_type=cloud_filestore_service.DeleteBackupRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cloud_filestore_service.DeleteBackupRequest, dict,]
+)
+def test_delete_backup(request_type, transport: str = "grpc"):
     client = CloudFilestoreManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2849,10 +2823,6 @@ def test_delete_backup(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_backup_from_dict():
-    test_delete_backup(request_type=dict)
 
 
 def test_delete_backup_empty_call():
@@ -3036,9 +3006,10 @@ async def test_delete_backup_flattened_error_async():
         )
 
 
-def test_update_backup(
-    transport: str = "grpc", request_type=cloud_filestore_service.UpdateBackupRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [cloud_filestore_service.UpdateBackupRequest, dict,]
+)
+def test_update_backup(request_type, transport: str = "grpc"):
     client = CloudFilestoreManagerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3060,10 +3031,6 @@ def test_update_backup(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_backup_from_dict():
-    test_update_backup(request_type=dict)
 
 
 def test_update_backup_empty_call():
@@ -3846,7 +3813,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
