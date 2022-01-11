@@ -103,7 +103,6 @@ class VmMigrationTransport(abc.ABC):
             credentials, _ = google.auth.load_credentials_from_file(
                 credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
             )
-
         elif credentials is None:
             credentials, _ = google.auth.default(
                 **scopes_kwargs, quota_project_id=quota_project_id

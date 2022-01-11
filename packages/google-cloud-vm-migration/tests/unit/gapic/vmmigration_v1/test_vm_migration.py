@@ -246,20 +246,20 @@ def test_vm_migration_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -316,7 +316,7 @@ def test_vm_migration_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -411,7 +411,7 @@ def test_vm_migration_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -442,7 +442,7 @@ def test_vm_migration_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -473,9 +473,8 @@ def test_vm_migration_client_client_options_from_dict():
         )
 
 
-def test_list_sources(
-    transport: str = "grpc", request_type=vmmigration.ListSourcesRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.ListSourcesRequest, dict,])
+def test_list_sources(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -501,10 +500,6 @@ def test_list_sources(
     assert isinstance(response, pagers.ListSourcesPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_sources_from_dict():
-    test_list_sources(request_type=dict)
 
 
 def test_list_sources_empty_call():
@@ -680,8 +675,10 @@ async def test_list_sources_flattened_error_async():
         )
 
 
-def test_list_sources_pager():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_sources_pager(transport_name: str = "grpc"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_sources), "__call__") as call:
@@ -718,8 +715,10 @@ def test_list_sources_pager():
         assert all(isinstance(i, vmmigration.Source) for i in results)
 
 
-def test_list_sources_pages():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_sources_pages(transport_name: str = "grpc"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_sources), "__call__") as call:
@@ -818,7 +817,8 @@ async def test_list_sources_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_source(transport: str = "grpc", request_type=vmmigration.GetSourceRequest):
+@pytest.mark.parametrize("request_type", [vmmigration.GetSourceRequest, dict,])
+def test_get_source(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -846,10 +846,6 @@ def test_get_source(transport: str = "grpc", request_type=vmmigration.GetSourceR
     assert isinstance(response, vmmigration.Source)
     assert response.name == "name_value"
     assert response.description == "description_value"
-
-
-def test_get_source_from_dict():
-    test_get_source(request_type=dict)
 
 
 def test_get_source_empty_call():
@@ -1018,9 +1014,8 @@ async def test_get_source_flattened_error_async():
         )
 
 
-def test_create_source(
-    transport: str = "grpc", request_type=vmmigration.CreateSourceRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.CreateSourceRequest, dict,])
+def test_create_source(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1042,10 +1037,6 @@ def test_create_source(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_source_from_dict():
-    test_create_source(request_type=dict)
 
 
 def test_create_source_empty_call():
@@ -1254,9 +1245,8 @@ async def test_create_source_flattened_error_async():
         )
 
 
-def test_update_source(
-    transport: str = "grpc", request_type=vmmigration.UpdateSourceRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.UpdateSourceRequest, dict,])
+def test_update_source(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1278,10 +1268,6 @@ def test_update_source(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_source_from_dict():
-    test_update_source(request_type=dict)
 
 
 def test_update_source_empty_call():
@@ -1480,9 +1466,8 @@ async def test_update_source_flattened_error_async():
         )
 
 
-def test_delete_source(
-    transport: str = "grpc", request_type=vmmigration.DeleteSourceRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.DeleteSourceRequest, dict,])
+def test_delete_source(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1504,10 +1489,6 @@ def test_delete_source(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_source_from_dict():
-    test_delete_source(request_type=dict)
 
 
 def test_delete_source_empty_call():
@@ -1678,9 +1659,8 @@ async def test_delete_source_flattened_error_async():
         )
 
 
-def test_fetch_inventory(
-    transport: str = "grpc", request_type=vmmigration.FetchInventoryRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.FetchInventoryRequest, dict,])
+def test_fetch_inventory(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1706,10 +1686,6 @@ def test_fetch_inventory(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmmigration.FetchInventoryResponse)
-
-
-def test_fetch_inventory_from_dict():
-    test_fetch_inventory(request_type=dict)
 
 
 def test_fetch_inventory_empty_call():
@@ -1880,9 +1856,10 @@ async def test_fetch_inventory_flattened_error_async():
         )
 
 
-def test_list_utilization_reports(
-    transport: str = "grpc", request_type=vmmigration.ListUtilizationReportsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [vmmigration.ListUtilizationReportsRequest, dict,]
+)
+def test_list_utilization_reports(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1910,10 +1887,6 @@ def test_list_utilization_reports(
     assert isinstance(response, pagers.ListUtilizationReportsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_utilization_reports_from_dict():
-    test_list_utilization_reports(request_type=dict)
 
 
 def test_list_utilization_reports_empty_call():
@@ -2102,8 +2075,10 @@ async def test_list_utilization_reports_flattened_error_async():
         )
 
 
-def test_list_utilization_reports_pager():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_utilization_reports_pager(transport_name: str = "grpc"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2148,8 +2123,10 @@ def test_list_utilization_reports_pager():
         assert all(isinstance(i, vmmigration.UtilizationReport) for i in results)
 
 
-def test_list_utilization_reports_pages():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_utilization_reports_pages(transport_name: str = "grpc"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2272,9 +2249,10 @@ async def test_list_utilization_reports_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_utilization_report(
-    transport: str = "grpc", request_type=vmmigration.GetUtilizationReportRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [vmmigration.GetUtilizationReportRequest, dict,]
+)
+def test_get_utilization_report(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2309,10 +2287,6 @@ def test_get_utilization_report(
     assert response.state == vmmigration.UtilizationReport.State.CREATING
     assert response.time_frame == vmmigration.UtilizationReport.TimeFrame.WEEK
     assert response.vm_count == 875
-
-
-def test_get_utilization_report_from_dict():
-    test_get_utilization_report(request_type=dict)
 
 
 def test_get_utilization_report_empty_call():
@@ -2507,9 +2481,10 @@ async def test_get_utilization_report_flattened_error_async():
         )
 
 
-def test_create_utilization_report(
-    transport: str = "grpc", request_type=vmmigration.CreateUtilizationReportRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [vmmigration.CreateUtilizationReportRequest, dict,]
+)
+def test_create_utilization_report(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2533,10 +2508,6 @@ def test_create_utilization_report(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_utilization_report_from_dict():
-    test_create_utilization_report(request_type=dict)
 
 
 def test_create_utilization_report_empty_call():
@@ -2746,9 +2717,10 @@ async def test_create_utilization_report_flattened_error_async():
         )
 
 
-def test_delete_utilization_report(
-    transport: str = "grpc", request_type=vmmigration.DeleteUtilizationReportRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [vmmigration.DeleteUtilizationReportRequest, dict,]
+)
+def test_delete_utilization_report(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2772,10 +2744,6 @@ def test_delete_utilization_report(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_utilization_report_from_dict():
-    test_delete_utilization_report(request_type=dict)
 
 
 def test_delete_utilization_report_empty_call():
@@ -2959,9 +2927,10 @@ async def test_delete_utilization_report_flattened_error_async():
         )
 
 
-def test_list_datacenter_connectors(
-    transport: str = "grpc", request_type=vmmigration.ListDatacenterConnectorsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [vmmigration.ListDatacenterConnectorsRequest, dict,]
+)
+def test_list_datacenter_connectors(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2989,10 +2958,6 @@ def test_list_datacenter_connectors(
     assert isinstance(response, pagers.ListDatacenterConnectorsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_datacenter_connectors_from_dict():
-    test_list_datacenter_connectors(request_type=dict)
 
 
 def test_list_datacenter_connectors_empty_call():
@@ -3181,8 +3146,10 @@ async def test_list_datacenter_connectors_flattened_error_async():
         )
 
 
-def test_list_datacenter_connectors_pager():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_datacenter_connectors_pager(transport_name: str = "grpc"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3227,8 +3194,10 @@ def test_list_datacenter_connectors_pager():
         assert all(isinstance(i, vmmigration.DatacenterConnector) for i in results)
 
 
-def test_list_datacenter_connectors_pages():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_datacenter_connectors_pages(transport_name: str = "grpc"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3351,9 +3320,10 @@ async def test_list_datacenter_connectors_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_datacenter_connector(
-    transport: str = "grpc", request_type=vmmigration.GetDatacenterConnectorRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [vmmigration.GetDatacenterConnectorRequest, dict,]
+)
+def test_get_datacenter_connector(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3390,10 +3360,6 @@ def test_get_datacenter_connector(
     assert response.version == "version_value"
     assert response.bucket == "bucket_value"
     assert response.state == vmmigration.DatacenterConnector.State.PENDING
-
-
-def test_get_datacenter_connector_from_dict():
-    test_get_datacenter_connector(request_type=dict)
 
 
 def test_get_datacenter_connector_empty_call():
@@ -3590,9 +3556,10 @@ async def test_get_datacenter_connector_flattened_error_async():
         )
 
 
-def test_create_datacenter_connector(
-    transport: str = "grpc", request_type=vmmigration.CreateDatacenterConnectorRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [vmmigration.CreateDatacenterConnectorRequest, dict,]
+)
+def test_create_datacenter_connector(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3616,10 +3583,6 @@ def test_create_datacenter_connector(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_datacenter_connector_from_dict():
-    test_create_datacenter_connector(request_type=dict)
 
 
 def test_create_datacenter_connector_empty_call():
@@ -3841,9 +3804,10 @@ async def test_create_datacenter_connector_flattened_error_async():
         )
 
 
-def test_delete_datacenter_connector(
-    transport: str = "grpc", request_type=vmmigration.DeleteDatacenterConnectorRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [vmmigration.DeleteDatacenterConnectorRequest, dict,]
+)
+def test_delete_datacenter_connector(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3867,10 +3831,6 @@ def test_delete_datacenter_connector(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_datacenter_connector_from_dict():
-    test_delete_datacenter_connector(request_type=dict)
 
 
 def test_delete_datacenter_connector_empty_call():
@@ -4054,9 +4014,8 @@ async def test_delete_datacenter_connector_flattened_error_async():
         )
 
 
-def test_create_migrating_vm(
-    transport: str = "grpc", request_type=vmmigration.CreateMigratingVmRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.CreateMigratingVmRequest, dict,])
+def test_create_migrating_vm(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4080,10 +4039,6 @@ def test_create_migrating_vm(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_migrating_vm_from_dict():
-    test_create_migrating_vm(request_type=dict)
 
 
 def test_create_migrating_vm_empty_call():
@@ -4316,9 +4271,8 @@ async def test_create_migrating_vm_flattened_error_async():
         )
 
 
-def test_list_migrating_vms(
-    transport: str = "grpc", request_type=vmmigration.ListMigratingVmsRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.ListMigratingVmsRequest, dict,])
+def test_list_migrating_vms(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4346,10 +4300,6 @@ def test_list_migrating_vms(
     assert isinstance(response, pagers.ListMigratingVmsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_migrating_vms_from_dict():
-    test_list_migrating_vms(request_type=dict)
 
 
 def test_list_migrating_vms_empty_call():
@@ -4537,8 +4487,10 @@ async def test_list_migrating_vms_flattened_error_async():
         )
 
 
-def test_list_migrating_vms_pager():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_migrating_vms_pager(transport_name: str = "grpc"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4579,8 +4531,10 @@ def test_list_migrating_vms_pager():
         assert all(isinstance(i, vmmigration.MigratingVm) for i in results)
 
 
-def test_list_migrating_vms_pages():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_migrating_vms_pages(transport_name: str = "grpc"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4691,9 +4645,8 @@ async def test_list_migrating_vms_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_migrating_vm(
-    transport: str = "grpc", request_type=vmmigration.GetMigratingVmRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.GetMigratingVmRequest, dict,])
+def test_get_migrating_vm(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4731,10 +4684,6 @@ def test_get_migrating_vm(
     assert response.description == "description_value"
     assert response.state == vmmigration.MigratingVm.State.PENDING
     assert response.group == "group_value"
-
-
-def test_get_migrating_vm_from_dict():
-    test_get_migrating_vm(request_type=dict)
 
 
 def test_get_migrating_vm_empty_call():
@@ -4918,9 +4867,8 @@ async def test_get_migrating_vm_flattened_error_async():
         )
 
 
-def test_update_migrating_vm(
-    transport: str = "grpc", request_type=vmmigration.UpdateMigratingVmRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.UpdateMigratingVmRequest, dict,])
+def test_update_migrating_vm(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4944,10 +4892,6 @@ def test_update_migrating_vm(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_migrating_vm_from_dict():
-    test_update_migrating_vm(request_type=dict)
 
 
 def test_update_migrating_vm_empty_call():
@@ -5176,9 +5120,8 @@ async def test_update_migrating_vm_flattened_error_async():
         )
 
 
-def test_delete_migrating_vm(
-    transport: str = "grpc", request_type=vmmigration.DeleteMigratingVmRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.DeleteMigratingVmRequest, dict,])
+def test_delete_migrating_vm(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5202,10 +5145,6 @@ def test_delete_migrating_vm(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_migrating_vm_from_dict():
-    test_delete_migrating_vm(request_type=dict)
 
 
 def test_delete_migrating_vm_empty_call():
@@ -5388,9 +5327,8 @@ async def test_delete_migrating_vm_flattened_error_async():
         )
 
 
-def test_start_migration(
-    transport: str = "grpc", request_type=vmmigration.StartMigrationRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.StartMigrationRequest, dict,])
+def test_start_migration(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5412,10 +5350,6 @@ def test_start_migration(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_start_migration_from_dict():
-    test_start_migration(request_type=dict)
 
 
 def test_start_migration_empty_call():
@@ -5590,9 +5524,8 @@ async def test_start_migration_flattened_error_async():
         )
 
 
-def test_resume_migration(
-    transport: str = "grpc", request_type=vmmigration.ResumeMigrationRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.ResumeMigrationRequest, dict,])
+def test_resume_migration(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5614,10 +5547,6 @@ def test_resume_migration(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_resume_migration_from_dict():
-    test_resume_migration(request_type=dict)
 
 
 def test_resume_migration_empty_call():
@@ -5724,9 +5653,8 @@ async def test_resume_migration_field_headers_async():
     ]
 
 
-def test_pause_migration(
-    transport: str = "grpc", request_type=vmmigration.PauseMigrationRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.PauseMigrationRequest, dict,])
+def test_pause_migration(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5748,10 +5676,6 @@ def test_pause_migration(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_pause_migration_from_dict():
-    test_pause_migration(request_type=dict)
 
 
 def test_pause_migration_empty_call():
@@ -5858,9 +5782,8 @@ async def test_pause_migration_field_headers_async():
     ]
 
 
-def test_finalize_migration(
-    transport: str = "grpc", request_type=vmmigration.FinalizeMigrationRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.FinalizeMigrationRequest, dict,])
+def test_finalize_migration(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5884,10 +5807,6 @@ def test_finalize_migration(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_finalize_migration_from_dict():
-    test_finalize_migration(request_type=dict)
 
 
 def test_finalize_migration_empty_call():
@@ -6074,9 +5993,8 @@ async def test_finalize_migration_flattened_error_async():
         )
 
 
-def test_create_clone_job(
-    transport: str = "grpc", request_type=vmmigration.CreateCloneJobRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.CreateCloneJobRequest, dict,])
+def test_create_clone_job(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -6098,10 +6016,6 @@ def test_create_clone_job(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_clone_job_from_dict():
-    test_create_clone_job(request_type=dict)
 
 
 def test_create_clone_job_empty_call():
@@ -6322,9 +6236,8 @@ async def test_create_clone_job_flattened_error_async():
         )
 
 
-def test_cancel_clone_job(
-    transport: str = "grpc", request_type=vmmigration.CancelCloneJobRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.CancelCloneJobRequest, dict,])
+def test_cancel_clone_job(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -6346,10 +6259,6 @@ def test_cancel_clone_job(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_cancel_clone_job_from_dict():
-    test_cancel_clone_job(request_type=dict)
 
 
 def test_cancel_clone_job_empty_call():
@@ -6520,9 +6429,8 @@ async def test_cancel_clone_job_flattened_error_async():
         )
 
 
-def test_list_clone_jobs(
-    transport: str = "grpc", request_type=vmmigration.ListCloneJobsRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.ListCloneJobsRequest, dict,])
+def test_list_clone_jobs(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -6548,10 +6456,6 @@ def test_list_clone_jobs(
     assert isinstance(response, pagers.ListCloneJobsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_clone_jobs_from_dict():
-    test_list_clone_jobs(request_type=dict)
 
 
 def test_list_clone_jobs_empty_call():
@@ -6727,8 +6631,10 @@ async def test_list_clone_jobs_flattened_error_async():
         )
 
 
-def test_list_clone_jobs_pager():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_clone_jobs_pager(transport_name: str = "grpc"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_clone_jobs), "__call__") as call:
@@ -6765,8 +6671,10 @@ def test_list_clone_jobs_pager():
         assert all(isinstance(i, vmmigration.CloneJob) for i in results)
 
 
-def test_list_clone_jobs_pages():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_clone_jobs_pages(transport_name: str = "grpc"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_clone_jobs), "__call__") as call:
@@ -6865,9 +6773,8 @@ async def test_list_clone_jobs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_clone_job(
-    transport: str = "grpc", request_type=vmmigration.GetCloneJobRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.GetCloneJobRequest, dict,])
+def test_get_clone_job(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -6897,10 +6804,6 @@ def test_get_clone_job(
     assert isinstance(response, vmmigration.CloneJob)
     assert response.name == "name_value"
     assert response.state == vmmigration.CloneJob.State.PENDING
-
-
-def test_get_clone_job_from_dict():
-    test_get_clone_job(request_type=dict)
 
 
 def test_get_clone_job_empty_call():
@@ -7075,9 +6978,8 @@ async def test_get_clone_job_flattened_error_async():
         )
 
 
-def test_create_cutover_job(
-    transport: str = "grpc", request_type=vmmigration.CreateCutoverJobRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.CreateCutoverJobRequest, dict,])
+def test_create_cutover_job(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -7101,10 +7003,6 @@ def test_create_cutover_job(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_cutover_job_from_dict():
-    test_create_cutover_job(request_type=dict)
 
 
 def test_create_cutover_job_empty_call():
@@ -7337,9 +7235,8 @@ async def test_create_cutover_job_flattened_error_async():
         )
 
 
-def test_cancel_cutover_job(
-    transport: str = "grpc", request_type=vmmigration.CancelCutoverJobRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.CancelCutoverJobRequest, dict,])
+def test_cancel_cutover_job(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -7363,10 +7260,6 @@ def test_cancel_cutover_job(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_cancel_cutover_job_from_dict():
-    test_cancel_cutover_job(request_type=dict)
 
 
 def test_cancel_cutover_job_empty_call():
@@ -7549,9 +7442,8 @@ async def test_cancel_cutover_job_flattened_error_async():
         )
 
 
-def test_list_cutover_jobs(
-    transport: str = "grpc", request_type=vmmigration.ListCutoverJobsRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.ListCutoverJobsRequest, dict,])
+def test_list_cutover_jobs(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -7579,10 +7471,6 @@ def test_list_cutover_jobs(
     assert isinstance(response, pagers.ListCutoverJobsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_cutover_jobs_from_dict():
-    test_list_cutover_jobs(request_type=dict)
 
 
 def test_list_cutover_jobs_empty_call():
@@ -7770,8 +7658,10 @@ async def test_list_cutover_jobs_flattened_error_async():
         )
 
 
-def test_list_cutover_jobs_pager():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_cutover_jobs_pager(transport_name: str = "grpc"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7812,8 +7702,10 @@ def test_list_cutover_jobs_pager():
         assert all(isinstance(i, vmmigration.CutoverJob) for i in results)
 
 
-def test_list_cutover_jobs_pages():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_cutover_jobs_pages(transport_name: str = "grpc"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7924,9 +7816,8 @@ async def test_list_cutover_jobs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_cutover_job(
-    transport: str = "grpc", request_type=vmmigration.GetCutoverJobRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.GetCutoverJobRequest, dict,])
+def test_get_cutover_job(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -7960,10 +7851,6 @@ def test_get_cutover_job(
     assert response.state == vmmigration.CutoverJob.State.PENDING
     assert response.progress_percent == 1733
     assert response.state_message == "state_message_value"
-
-
-def test_get_cutover_job_from_dict():
-    test_get_cutover_job(request_type=dict)
 
 
 def test_get_cutover_job_empty_call():
@@ -8143,9 +8030,8 @@ async def test_get_cutover_job_flattened_error_async():
         )
 
 
-def test_list_groups(
-    transport: str = "grpc", request_type=vmmigration.ListGroupsRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.ListGroupsRequest, dict,])
+def test_list_groups(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -8171,10 +8057,6 @@ def test_list_groups(
     assert isinstance(response, pagers.ListGroupsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_groups_from_dict():
-    test_list_groups(request_type=dict)
 
 
 def test_list_groups_empty_call():
@@ -8350,8 +8232,10 @@ async def test_list_groups_flattened_error_async():
         )
 
 
-def test_list_groups_pager():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_groups_pager(transport_name: str = "grpc"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
@@ -8384,8 +8268,10 @@ def test_list_groups_pager():
         assert all(isinstance(i, vmmigration.Group) for i in results)
 
 
-def test_list_groups_pages():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_groups_pages(transport_name: str = "grpc"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
@@ -8472,7 +8358,8 @@ async def test_list_groups_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_group(transport: str = "grpc", request_type=vmmigration.GetGroupRequest):
+@pytest.mark.parametrize("request_type", [vmmigration.GetGroupRequest, dict,])
+def test_get_group(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -8501,10 +8388,6 @@ def test_get_group(transport: str = "grpc", request_type=vmmigration.GetGroupReq
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.display_name == "display_name_value"
-
-
-def test_get_group_from_dict():
-    test_get_group(request_type=dict)
 
 
 def test_get_group_empty_call():
@@ -8678,9 +8561,8 @@ async def test_get_group_flattened_error_async():
         )
 
 
-def test_create_group(
-    transport: str = "grpc", request_type=vmmigration.CreateGroupRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.CreateGroupRequest, dict,])
+def test_create_group(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -8702,10 +8584,6 @@ def test_create_group(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_group_from_dict():
-    test_create_group(request_type=dict)
 
 
 def test_create_group_empty_call():
@@ -8902,9 +8780,8 @@ async def test_create_group_flattened_error_async():
         )
 
 
-def test_update_group(
-    transport: str = "grpc", request_type=vmmigration.UpdateGroupRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.UpdateGroupRequest, dict,])
+def test_update_group(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -8926,10 +8803,6 @@ def test_update_group(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_group_from_dict():
-    test_update_group(request_type=dict)
 
 
 def test_update_group_empty_call():
@@ -9116,9 +8989,8 @@ async def test_update_group_flattened_error_async():
         )
 
 
-def test_delete_group(
-    transport: str = "grpc", request_type=vmmigration.DeleteGroupRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.DeleteGroupRequest, dict,])
+def test_delete_group(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -9140,10 +9012,6 @@ def test_delete_group(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_group_from_dict():
-    test_delete_group(request_type=dict)
 
 
 def test_delete_group_empty_call():
@@ -9314,9 +9182,8 @@ async def test_delete_group_flattened_error_async():
         )
 
 
-def test_add_group_migration(
-    transport: str = "grpc", request_type=vmmigration.AddGroupMigrationRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.AddGroupMigrationRequest, dict,])
+def test_add_group_migration(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -9340,10 +9207,6 @@ def test_add_group_migration(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_add_group_migration_from_dict():
-    test_add_group_migration(request_type=dict)
 
 
 def test_add_group_migration_empty_call():
@@ -9526,9 +9389,10 @@ async def test_add_group_migration_flattened_error_async():
         )
 
 
-def test_remove_group_migration(
-    transport: str = "grpc", request_type=vmmigration.RemoveGroupMigrationRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [vmmigration.RemoveGroupMigrationRequest, dict,]
+)
+def test_remove_group_migration(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -9552,10 +9416,6 @@ def test_remove_group_migration(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_remove_group_migration_from_dict():
-    test_remove_group_migration(request_type=dict)
 
 
 def test_remove_group_migration_empty_call():
@@ -9739,9 +9599,8 @@ async def test_remove_group_migration_flattened_error_async():
         )
 
 
-def test_list_target_projects(
-    transport: str = "grpc", request_type=vmmigration.ListTargetProjectsRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.ListTargetProjectsRequest, dict,])
+def test_list_target_projects(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -9769,10 +9628,6 @@ def test_list_target_projects(
     assert isinstance(response, pagers.ListTargetProjectsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_target_projects_from_dict():
-    test_list_target_projects(request_type=dict)
 
 
 def test_list_target_projects_empty_call():
@@ -9960,8 +9815,10 @@ async def test_list_target_projects_flattened_error_async():
         )
 
 
-def test_list_target_projects_pager():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_target_projects_pager(transport_name: str = "grpc"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10005,8 +9862,10 @@ def test_list_target_projects_pager():
         assert all(isinstance(i, vmmigration.TargetProject) for i in results)
 
 
-def test_list_target_projects_pages():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_target_projects_pages(transport_name: str = "grpc"):
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10126,9 +9985,8 @@ async def test_list_target_projects_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_target_project(
-    transport: str = "grpc", request_type=vmmigration.GetTargetProjectRequest
-):
+@pytest.mark.parametrize("request_type", [vmmigration.GetTargetProjectRequest, dict,])
+def test_get_target_project(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -10157,10 +10015,6 @@ def test_get_target_project(
     assert response.name == "name_value"
     assert response.project == "project_value"
     assert response.description == "description_value"
-
-
-def test_get_target_project_from_dict():
-    test_get_target_project(request_type=dict)
 
 
 def test_get_target_project_empty_call():
@@ -10350,9 +10204,10 @@ async def test_get_target_project_flattened_error_async():
         )
 
 
-def test_create_target_project(
-    transport: str = "grpc", request_type=vmmigration.CreateTargetProjectRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [vmmigration.CreateTargetProjectRequest, dict,]
+)
+def test_create_target_project(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -10376,10 +10231,6 @@ def test_create_target_project(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_target_project_from_dict():
-    test_create_target_project(request_type=dict)
 
 
 def test_create_target_project_empty_call():
@@ -10588,9 +10439,10 @@ async def test_create_target_project_flattened_error_async():
         )
 
 
-def test_update_target_project(
-    transport: str = "grpc", request_type=vmmigration.UpdateTargetProjectRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [vmmigration.UpdateTargetProjectRequest, dict,]
+)
+def test_update_target_project(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -10614,10 +10466,6 @@ def test_update_target_project(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_target_project_from_dict():
-    test_update_target_project(request_type=dict)
 
 
 def test_update_target_project_empty_call():
@@ -10822,9 +10670,10 @@ async def test_update_target_project_flattened_error_async():
         )
 
 
-def test_delete_target_project(
-    transport: str = "grpc", request_type=vmmigration.DeleteTargetProjectRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [vmmigration.DeleteTargetProjectRequest, dict,]
+)
+def test_delete_target_project(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -10848,10 +10697,6 @@ def test_delete_target_project(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_target_project_from_dict():
-    test_delete_target_project(request_type=dict)
 
 
 def test_delete_target_project_empty_call():
@@ -11810,7 +11655,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
