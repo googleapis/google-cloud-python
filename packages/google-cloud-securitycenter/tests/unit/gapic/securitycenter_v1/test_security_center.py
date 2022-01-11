@@ -281,20 +281,20 @@ def test_security_center_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -353,7 +353,7 @@ def test_security_center_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -448,7 +448,7 @@ def test_security_center_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -479,7 +479,7 @@ def test_security_center_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -512,9 +512,10 @@ def test_security_center_client_client_options_from_dict():
         )
 
 
-def test_bulk_mute_findings(
-    transport: str = "grpc", request_type=securitycenter_service.BulkMuteFindingsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.BulkMuteFindingsRequest, dict,]
+)
+def test_bulk_mute_findings(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -538,10 +539,6 @@ def test_bulk_mute_findings(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_bulk_mute_findings_from_dict():
-    test_bulk_mute_findings(request_type=dict)
 
 
 def test_bulk_mute_findings_empty_call():
@@ -731,9 +728,10 @@ async def test_bulk_mute_findings_flattened_error_async():
         )
 
 
-def test_create_source(
-    transport: str = "grpc", request_type=securitycenter_service.CreateSourceRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.CreateSourceRequest, dict,]
+)
+def test_create_source(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -764,10 +762,6 @@ def test_create_source(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.canonical_name == "canonical_name_value"
-
-
-def test_create_source_from_dict():
-    test_create_source(request_type=dict)
 
 
 def test_create_source_empty_call():
@@ -964,9 +958,10 @@ async def test_create_source_flattened_error_async():
         )
 
 
-def test_create_finding(
-    transport: str = "grpc", request_type=securitycenter_service.CreateFindingRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.CreateFindingRequest, dict,]
+)
+def test_create_finding(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1011,10 +1006,6 @@ def test_create_finding(
     assert response.mute == gcs_finding.Finding.Mute.MUTED
     assert response.finding_class == gcs_finding.Finding.FindingClass.THREAT
     assert response.mute_initiator == "mute_initiator_value"
-
-
-def test_create_finding_from_dict():
-    test_create_finding(request_type=dict)
 
 
 def test_create_finding_empty_call():
@@ -1237,9 +1228,10 @@ async def test_create_finding_flattened_error_async():
         )
 
 
-def test_create_mute_config(
-    transport: str = "grpc", request_type=securitycenter_service.CreateMuteConfigRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.CreateMuteConfigRequest, dict,]
+)
+def test_create_mute_config(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1274,10 +1266,6 @@ def test_create_mute_config(
     assert response.description == "description_value"
     assert response.filter == "filter_value"
     assert response.most_recent_editor == "most_recent_editor_value"
-
-
-def test_create_mute_config_from_dict():
-    test_create_mute_config(request_type=dict)
 
 
 def test_create_mute_config_empty_call():
@@ -1504,10 +1492,10 @@ async def test_create_mute_config_flattened_error_async():
         )
 
 
-def test_create_notification_config(
-    transport: str = "grpc",
-    request_type=securitycenter_service.CreateNotificationConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.CreateNotificationConfigRequest, dict,]
+)
+def test_create_notification_config(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1543,10 +1531,6 @@ def test_create_notification_config(
     assert response.description == "description_value"
     assert response.pubsub_topic == "pubsub_topic_value"
     assert response.service_account == "service_account_value"
-
-
-def test_create_notification_config_from_dict():
-    test_create_notification_config(request_type=dict)
 
 
 def test_create_notification_config_empty_call():
@@ -1779,9 +1763,10 @@ async def test_create_notification_config_flattened_error_async():
         )
 
 
-def test_delete_mute_config(
-    transport: str = "grpc", request_type=securitycenter_service.DeleteMuteConfigRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.DeleteMuteConfigRequest, dict,]
+)
+def test_delete_mute_config(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1805,10 +1790,6 @@ def test_delete_mute_config(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_mute_config_from_dict():
-    test_delete_mute_config(request_type=dict)
 
 
 def test_delete_mute_config_empty_call():
@@ -1992,10 +1973,10 @@ async def test_delete_mute_config_flattened_error_async():
         )
 
 
-def test_delete_notification_config(
-    transport: str = "grpc",
-    request_type=securitycenter_service.DeleteNotificationConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.DeleteNotificationConfigRequest, dict,]
+)
+def test_delete_notification_config(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2019,10 +2000,6 @@ def test_delete_notification_config(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_notification_config_from_dict():
-    test_delete_notification_config(request_type=dict)
 
 
 def test_delete_notification_config_empty_call():
@@ -2206,9 +2183,8 @@ async def test_delete_notification_config_flattened_error_async():
         )
 
 
-def test_get_iam_policy(
-    transport: str = "grpc", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
+@pytest.mark.parametrize("request_type", [iam_policy_pb2.GetIamPolicyRequest, dict,])
+def test_get_iam_policy(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2232,10 +2208,6 @@ def test_get_iam_policy(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-def test_get_iam_policy_from_dict():
-    test_get_iam_policy(request_type=dict)
 
 
 def test_get_iam_policy_empty_call():
@@ -2425,9 +2397,10 @@ async def test_get_iam_policy_flattened_error_async():
         )
 
 
-def test_get_mute_config(
-    transport: str = "grpc", request_type=securitycenter_service.GetMuteConfigRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.GetMuteConfigRequest, dict,]
+)
+def test_get_mute_config(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2460,10 +2433,6 @@ def test_get_mute_config(
     assert response.description == "description_value"
     assert response.filter == "filter_value"
     assert response.most_recent_editor == "most_recent_editor_value"
-
-
-def test_get_mute_config_from_dict():
-    test_get_mute_config(request_type=dict)
 
 
 def test_get_mute_config_empty_call():
@@ -2652,10 +2621,10 @@ async def test_get_mute_config_flattened_error_async():
         )
 
 
-def test_get_notification_config(
-    transport: str = "grpc",
-    request_type=securitycenter_service.GetNotificationConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.GetNotificationConfigRequest, dict,]
+)
+def test_get_notification_config(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2691,10 +2660,6 @@ def test_get_notification_config(
     assert response.description == "description_value"
     assert response.pubsub_topic == "pubsub_topic_value"
     assert response.service_account == "service_account_value"
-
-
-def test_get_notification_config_from_dict():
-    test_get_notification_config(request_type=dict)
 
 
 def test_get_notification_config_empty_call():
@@ -2893,10 +2858,10 @@ async def test_get_notification_config_flattened_error_async():
         )
 
 
-def test_get_organization_settings(
-    transport: str = "grpc",
-    request_type=securitycenter_service.GetOrganizationSettingsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.GetOrganizationSettingsRequest, dict,]
+)
+def test_get_organization_settings(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2924,10 +2889,6 @@ def test_get_organization_settings(
     assert isinstance(response, organization_settings.OrganizationSettings)
     assert response.name == "name_value"
     assert response.enable_asset_discovery is True
-
-
-def test_get_organization_settings_from_dict():
-    test_get_organization_settings(request_type=dict)
 
 
 def test_get_organization_settings_empty_call():
@@ -3121,9 +3082,10 @@ async def test_get_organization_settings_flattened_error_async():
         )
 
 
-def test_get_source(
-    transport: str = "grpc", request_type=securitycenter_service.GetSourceRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.GetSourceRequest, dict,]
+)
+def test_get_source(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3154,10 +3116,6 @@ def test_get_source(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.canonical_name == "canonical_name_value"
-
-
-def test_get_source_from_dict():
-    test_get_source(request_type=dict)
 
 
 def test_get_source_empty_call():
@@ -3340,9 +3298,10 @@ async def test_get_source_flattened_error_async():
         )
 
 
-def test_group_assets(
-    transport: str = "grpc", request_type=securitycenter_service.GroupAssetsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.GroupAssetsRequest, dict,]
+)
+def test_group_assets(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3368,10 +3327,6 @@ def test_group_assets(
     assert isinstance(response, pagers.GroupAssetsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-def test_group_assets_from_dict():
-    test_group_assets(request_type=dict)
 
 
 def test_group_assets_empty_call():
@@ -3481,8 +3436,10 @@ async def test_group_assets_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_group_assets_pager():
-    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_group_assets_pager(transport_name: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.group_assets), "__call__") as call:
@@ -3525,8 +3482,10 @@ def test_group_assets_pager():
         assert all(isinstance(i, securitycenter_service.GroupResult) for i in results)
 
 
-def test_group_assets_pages():
-    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_group_assets_pages(transport_name: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.group_assets), "__call__") as call:
@@ -3643,9 +3602,10 @@ async def test_group_assets_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_group_findings(
-    transport: str = "grpc", request_type=securitycenter_service.GroupFindingsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.GroupFindingsRequest, dict,]
+)
+def test_group_findings(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3671,10 +3631,6 @@ def test_group_findings(
     assert isinstance(response, pagers.GroupFindingsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-def test_group_findings_from_dict():
-    test_group_findings(request_type=dict)
 
 
 def test_group_findings_empty_call():
@@ -3870,8 +3826,10 @@ async def test_group_findings_flattened_error_async():
         )
 
 
-def test_group_findings_pager():
-    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_group_findings_pager(transport_name: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.group_findings), "__call__") as call:
@@ -3914,8 +3872,10 @@ def test_group_findings_pager():
         assert all(isinstance(i, securitycenter_service.GroupResult) for i in results)
 
 
-def test_group_findings_pages():
-    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_group_findings_pages(transport_name: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.group_findings), "__call__") as call:
@@ -4032,9 +3992,10 @@ async def test_group_findings_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_list_assets(
-    transport: str = "grpc", request_type=securitycenter_service.ListAssetsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.ListAssetsRequest, dict,]
+)
+def test_list_assets(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4060,10 +4021,6 @@ def test_list_assets(
     assert isinstance(response, pagers.ListAssetsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-def test_list_assets_from_dict():
-    test_list_assets(request_type=dict)
 
 
 def test_list_assets_empty_call():
@@ -4173,8 +4130,10 @@ async def test_list_assets_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_list_assets_pager():
-    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_assets_pager(transport_name: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
@@ -4222,8 +4181,10 @@ def test_list_assets_pager():
         )
 
 
-def test_list_assets_pages():
-    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_assets_pages(transport_name: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
@@ -4349,9 +4310,10 @@ async def test_list_assets_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_list_findings(
-    transport: str = "grpc", request_type=securitycenter_service.ListFindingsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.ListFindingsRequest, dict,]
+)
+def test_list_findings(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4377,10 +4339,6 @@ def test_list_findings(
     assert isinstance(response, pagers.ListFindingsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-def test_list_findings_from_dict():
-    test_list_findings(request_type=dict)
 
 
 def test_list_findings_empty_call():
@@ -4490,8 +4448,10 @@ async def test_list_findings_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_list_findings_pager():
-    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_findings_pager(transport_name: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_findings), "__call__") as call:
@@ -4541,8 +4501,10 @@ def test_list_findings_pager():
         )
 
 
-def test_list_findings_pages():
-    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_findings_pages(transport_name: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_findings), "__call__") as call:
@@ -4670,9 +4632,10 @@ async def test_list_findings_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_list_mute_configs(
-    transport: str = "grpc", request_type=securitycenter_service.ListMuteConfigsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.ListMuteConfigsRequest, dict,]
+)
+def test_list_mute_configs(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4699,10 +4662,6 @@ def test_list_mute_configs(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMuteConfigsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_mute_configs_from_dict():
-    test_list_mute_configs(request_type=dict)
 
 
 def test_list_mute_configs_empty_call():
@@ -4895,8 +4854,10 @@ async def test_list_mute_configs_flattened_error_async():
         )
 
 
-def test_list_mute_configs_pager():
-    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_mute_configs_pager(transport_name: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4937,8 +4898,10 @@ def test_list_mute_configs_pager():
         assert all(isinstance(i, mute_config.MuteConfig) for i in results)
 
 
-def test_list_mute_configs_pages():
-    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_mute_configs_pages(transport_name: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5049,10 +5012,10 @@ async def test_list_mute_configs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_list_notification_configs(
-    transport: str = "grpc",
-    request_type=securitycenter_service.ListNotificationConfigsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.ListNotificationConfigsRequest, dict,]
+)
+def test_list_notification_configs(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5079,10 +5042,6 @@ def test_list_notification_configs(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListNotificationConfigsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_notification_configs_from_dict():
-    test_list_notification_configs(request_type=dict)
 
 
 def test_list_notification_configs_empty_call():
@@ -5277,8 +5236,10 @@ async def test_list_notification_configs_flattened_error_async():
         )
 
 
-def test_list_notification_configs_pager():
-    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_notification_configs_pager(transport_name: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5325,8 +5286,10 @@ def test_list_notification_configs_pager():
         )
 
 
-def test_list_notification_configs_pages():
-    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_notification_configs_pages(transport_name: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5451,9 +5414,10 @@ async def test_list_notification_configs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_list_sources(
-    transport: str = "grpc", request_type=securitycenter_service.ListSourcesRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.ListSourcesRequest, dict,]
+)
+def test_list_sources(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5478,10 +5442,6 @@ def test_list_sources(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSourcesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_sources_from_dict():
-    test_list_sources(request_type=dict)
 
 
 def test_list_sources_empty_call():
@@ -5662,8 +5622,10 @@ async def test_list_sources_flattened_error_async():
         )
 
 
-def test_list_sources_pager():
-    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_sources_pager(transport_name: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_sources), "__call__") as call:
@@ -5698,8 +5660,10 @@ def test_list_sources_pager():
         assert all(isinstance(i, source.Source) for i in results)
 
 
-def test_list_sources_pages():
-    client = SecurityCenterClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_sources_pages(transport_name: str = "grpc"):
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_sources), "__call__") as call:
@@ -5792,10 +5756,10 @@ async def test_list_sources_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_run_asset_discovery(
-    transport: str = "grpc",
-    request_type=securitycenter_service.RunAssetDiscoveryRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.RunAssetDiscoveryRequest, dict,]
+)
+def test_run_asset_discovery(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5819,10 +5783,6 @@ def test_run_asset_discovery(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_run_asset_discovery_from_dict():
-    test_run_asset_discovery(request_type=dict)
 
 
 def test_run_asset_discovery_empty_call():
@@ -6012,9 +5972,10 @@ async def test_run_asset_discovery_flattened_error_async():
         )
 
 
-def test_set_finding_state(
-    transport: str = "grpc", request_type=securitycenter_service.SetFindingStateRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.SetFindingStateRequest, dict,]
+)
+def test_set_finding_state(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -6061,10 +6022,6 @@ def test_set_finding_state(
     assert response.mute == finding.Finding.Mute.MUTED
     assert response.finding_class == finding.Finding.FindingClass.THREAT
     assert response.mute_initiator == "mute_initiator_value"
-
-
-def test_set_finding_state_from_dict():
-    test_set_finding_state(request_type=dict)
 
 
 def test_set_finding_state_empty_call():
@@ -6299,9 +6256,8 @@ async def test_set_finding_state_flattened_error_async():
         )
 
 
-def test_set_mute(
-    transport: str = "grpc", request_type=securitycenter_service.SetMuteRequest
-):
+@pytest.mark.parametrize("request_type", [securitycenter_service.SetMuteRequest, dict,])
+def test_set_mute(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -6346,10 +6302,6 @@ def test_set_mute(
     assert response.mute == finding.Finding.Mute.MUTED
     assert response.finding_class == finding.Finding.FindingClass.THREAT
     assert response.mute_initiator == "mute_initiator_value"
-
-
-def test_set_mute_from_dict():
-    test_set_mute(request_type=dict)
 
 
 def test_set_mute_empty_call():
@@ -6559,9 +6511,8 @@ async def test_set_mute_flattened_error_async():
         )
 
 
-def test_set_iam_policy(
-    transport: str = "grpc", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
+@pytest.mark.parametrize("request_type", [iam_policy_pb2.SetIamPolicyRequest, dict,])
+def test_set_iam_policy(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -6585,10 +6536,6 @@ def test_set_iam_policy(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-def test_set_iam_policy_from_dict():
-    test_set_iam_policy(request_type=dict)
 
 
 def test_set_iam_policy_empty_call():
@@ -6778,9 +6725,10 @@ async def test_set_iam_policy_flattened_error_async():
         )
 
 
-def test_test_iam_permissions(
-    transport: str = "grpc", request_type=iam_policy_pb2.TestIamPermissionsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [iam_policy_pb2.TestIamPermissionsRequest, dict,]
+)
+def test_test_iam_permissions(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -6807,10 +6755,6 @@ def test_test_iam_permissions(
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
     assert response.permissions == ["permissions_value"]
-
-
-def test_test_iam_permissions_from_dict():
-    test_test_iam_permissions(request_type=dict)
 
 
 def test_test_iam_permissions_empty_call():
@@ -7034,10 +6978,10 @@ async def test_test_iam_permissions_flattened_error_async():
         )
 
 
-def test_update_external_system(
-    transport: str = "grpc",
-    request_type=securitycenter_service.UpdateExternalSystemRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.UpdateExternalSystemRequest, dict,]
+)
+def test_update_external_system(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -7070,10 +7014,6 @@ def test_update_external_system(
     assert response.assignees == ["assignees_value"]
     assert response.external_uid == "external_uid_value"
     assert response.status == "status_value"
-
-
-def test_update_external_system_from_dict():
-    test_update_external_system(request_type=dict)
 
 
 def test_update_external_system_empty_call():
@@ -7294,9 +7234,10 @@ async def test_update_external_system_flattened_error_async():
         )
 
 
-def test_update_finding(
-    transport: str = "grpc", request_type=securitycenter_service.UpdateFindingRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.UpdateFindingRequest, dict,]
+)
+def test_update_finding(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -7341,10 +7282,6 @@ def test_update_finding(
     assert response.mute == gcs_finding.Finding.Mute.MUTED
     assert response.finding_class == gcs_finding.Finding.FindingClass.THREAT
     assert response.mute_initiator == "mute_initiator_value"
-
-
-def test_update_finding_from_dict():
-    test_update_finding(request_type=dict)
 
 
 def test_update_finding_empty_call():
@@ -7549,9 +7486,10 @@ async def test_update_finding_flattened_error_async():
         )
 
 
-def test_update_mute_config(
-    transport: str = "grpc", request_type=securitycenter_service.UpdateMuteConfigRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.UpdateMuteConfigRequest, dict,]
+)
+def test_update_mute_config(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -7586,10 +7524,6 @@ def test_update_mute_config(
     assert response.description == "description_value"
     assert response.filter == "filter_value"
     assert response.most_recent_editor == "most_recent_editor_value"
-
-
-def test_update_mute_config_from_dict():
-    test_update_mute_config(request_type=dict)
 
 
 def test_update_mute_config_empty_call():
@@ -7810,10 +7744,10 @@ async def test_update_mute_config_flattened_error_async():
         )
 
 
-def test_update_notification_config(
-    transport: str = "grpc",
-    request_type=securitycenter_service.UpdateNotificationConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.UpdateNotificationConfigRequest, dict,]
+)
+def test_update_notification_config(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -7849,10 +7783,6 @@ def test_update_notification_config(
     assert response.description == "description_value"
     assert response.pubsub_topic == "pubsub_topic_value"
     assert response.service_account == "service_account_value"
-
-
-def test_update_notification_config_from_dict():
-    test_update_notification_config(request_type=dict)
 
 
 def test_update_notification_config_empty_call():
@@ -8081,10 +8011,10 @@ async def test_update_notification_config_flattened_error_async():
         )
 
 
-def test_update_organization_settings(
-    transport: str = "grpc",
-    request_type=securitycenter_service.UpdateOrganizationSettingsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.UpdateOrganizationSettingsRequest, dict,]
+)
+def test_update_organization_settings(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -8112,10 +8042,6 @@ def test_update_organization_settings(
     assert isinstance(response, gcs_organization_settings.OrganizationSettings)
     assert response.name == "name_value"
     assert response.enable_asset_discovery is True
-
-
-def test_update_organization_settings_from_dict():
-    test_update_organization_settings(request_type=dict)
 
 
 def test_update_organization_settings_empty_call():
@@ -8329,9 +8255,10 @@ async def test_update_organization_settings_flattened_error_async():
         )
 
 
-def test_update_source(
-    transport: str = "grpc", request_type=securitycenter_service.UpdateSourceRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.UpdateSourceRequest, dict,]
+)
+def test_update_source(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -8362,10 +8289,6 @@ def test_update_source(
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
     assert response.canonical_name == "canonical_name_value"
-
-
-def test_update_source_from_dict():
-    test_update_source(request_type=dict)
 
 
 def test_update_source_empty_call():
@@ -8552,10 +8475,10 @@ async def test_update_source_flattened_error_async():
         )
 
 
-def test_update_security_marks(
-    transport: str = "grpc",
-    request_type=securitycenter_service.UpdateSecurityMarksRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [securitycenter_service.UpdateSecurityMarksRequest, dict,]
+)
+def test_update_security_marks(request_type, transport: str = "grpc"):
     client = SecurityCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -8583,10 +8506,6 @@ def test_update_security_marks(
     assert isinstance(response, gcs_security_marks.SecurityMarks)
     assert response.name == "name_value"
     assert response.canonical_name == "canonical_name_value"
-
-
-def test_update_security_marks_from_dict():
-    test_update_security_marks(request_type=dict)
 
 
 def test_update_security_marks_empty_call():
@@ -9550,7 +9469,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
