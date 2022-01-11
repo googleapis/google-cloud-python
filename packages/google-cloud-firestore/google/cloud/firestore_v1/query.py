@@ -329,9 +329,7 @@ class Query(BaseQuery):
             # Terminate this watch
             query_watch.unsubscribe()
         """
-        return Watch.for_query(
-            self, callback, document.DocumentSnapshot, document.DocumentReference
-        )
+        return Watch.for_query(self, callback, document.DocumentSnapshot)
 
     @staticmethod
     def _get_collection_reference_class() -> Type[

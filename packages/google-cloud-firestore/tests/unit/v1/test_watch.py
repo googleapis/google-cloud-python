@@ -183,7 +183,6 @@ def _make_watch_no_mocks(
         comparator=comparator,
         snapshot_callback=snapshot_callback,
         document_snapshot_cls=DummyDocumentSnapshot,
-        document_reference_cls=DummyDocumentReference,
     )
 
 
@@ -224,16 +223,11 @@ def test_watch_for_document(snapshots):
         snapshots.append(args)
 
     docref = DummyDocumentReference()
-    snapshot_class_instance = DummyDocumentSnapshot
-    document_reference_class_instance = DummyDocumentReference
 
     with mock.patch("google.cloud.firestore_v1.watch.ResumableBidiRpc"):
         with mock.patch("google.cloud.firestore_v1.watch.BackgroundConsumer"):
             inst = Watch.for_document(
-                docref,
-                snapshot_callback,
-                snapshot_class_instance,
-                document_reference_class_instance,
+                docref, snapshot_callback, document_snapshot_cls=DummyDocumentSnapshot,
             )
 
     inst._consumer.start.assert_called_once_with()
@@ -246,8 +240,6 @@ def test_watch_for_query(snapshots):
     def snapshot_callback(*args):  # pragma: NO COVER
         snapshots.append(args)
 
-    snapshot_class_instance = DummyDocumentSnapshot
-    document_reference_class_instance = DummyDocumentReference
     client = DummyFirestore()
     parent = DummyCollection(client)
     query = DummyQuery(parent=parent)
@@ -258,8 +250,7 @@ def test_watch_for_query(snapshots):
                 inst = Watch.for_query(
                     query,
                     snapshot_callback,
-                    snapshot_class_instance,
-                    document_reference_class_instance,
+                    document_snapshot_cls=DummyDocumentSnapshot,
                 )
 
     inst._consumer.start.assert_called_once_with()
@@ -278,8 +269,6 @@ def test_watch_for_query_nested(snapshots):
     def snapshot_callback(*args):  # pragma: NO COVER
         snapshots.append(args)
 
-    snapshot_class_instance = DummyDocumentSnapshot
-    document_reference_class_instance = DummyDocumentReference
     client = DummyFirestore()
     root = DummyCollection(client)
     grandparent = DummyDocument("document", parent=root)
@@ -292,8 +281,7 @@ def test_watch_for_query_nested(snapshots):
                 inst = Watch.for_query(
                     query,
                     snapshot_callback,
-                    snapshot_class_instance,
-                    document_reference_class_instance,
+                    document_snapshot_cls=DummyDocumentSnapshot,
                 )
 
     inst._consumer.start.assert_called_once_with()

@@ -216,7 +216,6 @@ def test_listen_testprotos(test_proto):  # pragma: NO COVER
     # 'docs' (list of 'google.firestore_v1.Document'),
     # 'changes' (list lof local 'DocChange', and 'read_time' timestamp.
     from google.cloud.firestore_v1 import Client
-    from google.cloud.firestore_v1 import DocumentReference
     from google.cloud.firestore_v1 import DocumentSnapshot
     from google.cloud.firestore_v1 import Watch
     import google.auth.credentials
@@ -226,6 +225,9 @@ def test_listen_testprotos(test_proto):  # pragma: NO COVER
 
     credentials = mock.Mock(spec=google.auth.credentials.Credentials)
     client = Client(project="project", credentials=credentials)
+    # conformance data has db string as this
+    db_str = "projects/projectID/databases/(default)"
+    client._database_string_internal = db_str
     with mock.patch("google.cloud.firestore_v1.watch.ResumableBidiRpc"):
         with mock.patch("google.cloud.firestore_v1.watch.BackgroundConsumer"):
             # conformance data sets WATCH_TARGET_ID to 1
@@ -237,12 +239,7 @@ def test_listen_testprotos(test_proto):  # pragma: NO COVER
 
                 collection = DummyCollection(client=client)
                 query = DummyQuery(parent=collection)
-                watch = Watch.for_query(
-                    query, callback, DocumentSnapshot, DocumentReference
-                )
-                # conformance data has db string as this
-                db_str = "projects/projectID/databases/(default)"
-                watch._firestore._database_string_internal = db_str
+                watch = Watch.for_query(query, callback, DocumentSnapshot)
 
                 wrapped_responses = [
                     firestore.ListenResponse.wrap(proto) for proto in testcase.responses
