@@ -9,4 +9,4 @@ google-api-core==1.28.0
 grpc-google-iam-v1==0.12.3
 proto-plus==1.4.0
 libcst==0.2.5
-grafeas==1.0.0
+grafeas==1.4.1

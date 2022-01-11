@@ -748,8 +748,8 @@ class ContainerAnalysisClient(metaclass=ContainerAnalysisClientMeta):
                 The request object. Request to get a vulnerability
                 summary for some set of occurrences.
             parent (str):
-                The name of the project to get a vulnerability summary
-                for in the form of ``projects/[PROJECT_ID]``.
+                Required. The name of the project to get a vulnerability
+                summary for in the form of ``projects/[PROJECT_ID]``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
