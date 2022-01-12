@@ -9,5 +9,4 @@ branchProtectionRules:
   requiredStatusCheckContexts:
     - 'Kokoro'
     - 'cla/google'
-    - 'Kokoro system-2.7'
     - 'Kokoro system-3.8'
