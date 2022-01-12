@@ -26,9 +26,9 @@ from .write_increment import write_increment
 from .write_simple import write_simple
 
 
-PROJECT = os.environ['GOOGLE_CLOUD_PROJECT']
-BIGTABLE_INSTANCE = os.environ['BIGTABLE_INSTANCE']
-TABLE_ID_PREFIX = 'mobile-time-series-{}'
+PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
+BIGTABLE_INSTANCE = os.environ["BIGTABLE_INSTANCE"]
+TABLE_ID_PREFIX = "mobile-time-series-{}"
 
 
 @pytest.fixture
@@ -48,7 +48,7 @@ def table_id(bigtable_instance):
     if table.exists():
         table.delete()
 
-    column_family_id = 'stats_summary'
+    column_family_id = "stats_summary"
     column_families = {column_family_id: None}
     table.create(column_families=column_families)
 
@@ -67,7 +67,7 @@ def test_writes(capsys, table_id):
 
     _write_simple()
     out, _ = capsys.readouterr()
-    assert 'Successfully wrote row' in out
+    assert "Successfully wrote row" in out
 
     @backoff.on_exception(backoff.expo, DeadlineExceeded, max_time=60)
     def _write_increment():
@@ -75,7 +75,7 @@ def test_writes(capsys, table_id):
 
     _write_increment()
     out, _ = capsys.readouterr()
-    assert 'Successfully updated row' in out
+    assert "Successfully updated row" in out
 
     @backoff.on_exception(backoff.expo, DeadlineExceeded, max_time=60)
     def _write_conditional():
@@ -83,7 +83,7 @@ def test_writes(capsys, table_id):
 
     _write_conditional()
     out, _ = capsys.readouterr()
-    assert 'Successfully updated row\'s os_name' in out
+    assert "Successfully updated row's os_name" in out
 
     @backoff.on_exception(backoff.expo, DeadlineExceeded, max_time=60)
     def _write_batch():
@@ -91,4 +91,4 @@ def test_writes(capsys, table_id):
 
     _write_batch()
     out, _ = capsys.readouterr()
-    assert 'Successfully wrote 2 rows' in out
+    assert "Successfully wrote 2 rows" in out

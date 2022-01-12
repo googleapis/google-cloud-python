@@ -21,9 +21,9 @@ import pytest
 from main import main
 
 
-PROJECT = os.environ['GOOGLE_CLOUD_PROJECT']
-BIGTABLE_INSTANCE = os.environ['BIGTABLE_INSTANCE']
-TABLE_ID_FORMAT = 'quickstart-hb-test-{}'
+PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
+BIGTABLE_INSTANCE = os.environ["BIGTABLE_INSTANCE"]
+TABLE_ID_FORMAT = "quickstart-hb-test-{}"
 
 
 @pytest.fixture()
@@ -32,7 +32,7 @@ def table():
     client = bigtable.Client(project=PROJECT, admin=True)
     instance = client.instance(BIGTABLE_INSTANCE)
     table = instance.table(table_id)
-    column_family_id = 'cf1'
+    column_family_id = "cf1"
     column_families = {column_family_id: None}
     table.create(column_families=column_families)
 
@@ -50,4 +50,4 @@ def test_main(capsys, table):
     main(PROJECT, BIGTABLE_INSTANCE, table_id)
 
     out, _ = capsys.readouterr()
-    assert 'Row key: r1\nData: test-value\n' in out
+    assert "Row key: r1\nData: test-value\n" in out

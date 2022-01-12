@@ -31,10 +31,10 @@ from metricscaler import main
 from metricscaler import scale_bigtable
 
 
-PROJECT = os.environ['GOOGLE_CLOUD_PROJECT']
-BIGTABLE_ZONE = os.environ['BIGTABLE_ZONE']
+PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
+BIGTABLE_ZONE = os.environ["BIGTABLE_ZONE"]
 SIZE_CHANGE_STEP = 3
-INSTANCE_ID_FORMAT = 'metric-scale-test-{}'
+INSTANCE_ID_FORMAT = "metric-scale-test-{}"
 BIGTABLE_INSTANCE = INSTANCE_ID_FORMAT.format(str(uuid.uuid4())[:10])
 BIGTABLE_DEV_INSTANCE = INSTANCE_ID_FORMAT.format(str(uuid.uuid4())[:10])
 
@@ -42,14 +42,14 @@ BIGTABLE_DEV_INSTANCE = INSTANCE_ID_FORMAT.format(str(uuid.uuid4())[:10])
 # System tests to verify API calls succeed
 
 
-@patch('metricscaler.query')
+@patch("metricscaler.query")
 def test_get_cpu_load(monitoring_v3_query):
     iter_mock = monitoring_v3_query.Query().select_resources().iter
     iter_mock.return_value = iter([Mock(points=[Mock(value=Mock(double_value=1.0))])])
     assert float(get_cpu_load(BIGTABLE_INSTANCE, BIGTABLE_INSTANCE)) > 0.0
 
 
-@patch('metricscaler.query')
+@patch("metricscaler.query")
 def test_get_storage_utilization(monitoring_v3_query):
     iter_mock = monitoring_v3_query.Query().select_resources().iter
     iter_mock.return_value = iter([Mock(points=[Mock(value=Mock(double_value=1.0))])])
@@ -65,14 +65,18 @@ def instance():
     serve_nodes = 1
     storage_type = enums.StorageType.SSD
     production = enums.Instance.Type.PRODUCTION
-    labels = {'prod-label': 'prod-label'}
-    instance = client.instance(BIGTABLE_INSTANCE, instance_type=production,
-                               labels=labels)
+    labels = {"prod-label": "prod-label"}
+    instance = client.instance(
+        BIGTABLE_INSTANCE, instance_type=production, labels=labels
+    )
 
     if not instance.exists():
-        cluster = instance.cluster(cluster_id, location_id=BIGTABLE_ZONE,
-                                   serve_nodes=serve_nodes,
-                                   default_storage_type=storage_type)
+        cluster = instance.cluster(
+            cluster_id,
+            location_id=BIGTABLE_ZONE,
+            serve_nodes=serve_nodes,
+            default_storage_type=storage_type,
+        )
         instance.create(clusters=[cluster])
 
         # Eventual consistency check
@@ -92,14 +96,15 @@ def dev_instance():
 
     storage_type = enums.StorageType.SSD
     development = enums.Instance.Type.DEVELOPMENT
-    labels = {'dev-label': 'dev-label'}
-    instance = client.instance(BIGTABLE_DEV_INSTANCE,
-                               instance_type=development,
-                               labels=labels)
+    labels = {"dev-label": "dev-label"}
+    instance = client.instance(
+        BIGTABLE_DEV_INSTANCE, instance_type=development, labels=labels
+    )
 
     if not instance.exists():
-        cluster = instance.cluster(cluster_id, location_id=BIGTABLE_ZONE,
-                                   default_storage_type=storage_type)
+        cluster = instance.cluster(
+            cluster_id, location_id=BIGTABLE_ZONE, default_storage_type=storage_type
+        )
         instance.create(clusters=[cluster])
 
         # Eventual consistency check
@@ -117,9 +122,7 @@ class ClusterNodeCountPredicate:
 
     def __call__(self, cluster):
         expected = self.expected_node_count
-        print(
-            f"Expected node count: {expected}; found: {cluster.serve_nodes}"
-        )
+        print(f"Expected node count: {expected}; found: {cluster.serve_nodes}")
         return cluster.serve_nodes == expected
 
 
@@ -146,7 +149,8 @@ def test_scale_bigtable(instance):
     )
     scaled_node_count_predicate.__name__ = "scaled_node_count_predicate"
     _scaled_node_count = RetryInstanceState(
-        instance_predicate=scaled_node_count_predicate, max_tries=10,
+        instance_predicate=scaled_node_count_predicate,
+        max_tries=10,
     )
     _scaled_node_count(cluster.reload)()
 
@@ -155,7 +159,8 @@ def test_scale_bigtable(instance):
     restored_node_count_predicate = ClusterNodeCountPredicate(original_node_count)
     restored_node_count_predicate.__name__ = "restored_node_count_predicate"
     _restored_node_count = RetryInstanceState(
-        instance_predicate=restored_node_count_predicate, max_tries=10,
+        instance_predicate=restored_node_count_predicate,
+        max_tries=10,
     )
     _restored_node_count(cluster.reload)()
 
@@ -165,10 +170,10 @@ def test_handle_dev_instance(capsys, dev_instance):
         scale_bigtable(BIGTABLE_DEV_INSTANCE, BIGTABLE_DEV_INSTANCE, True)
 
 
-@patch('time.sleep')
-@patch('metricscaler.get_storage_utilization')
-@patch('metricscaler.get_cpu_load')
-@patch('metricscaler.scale_bigtable')
+@patch("time.sleep")
+@patch("metricscaler.get_storage_utilization")
+@patch("metricscaler.get_cpu_load")
+@patch("metricscaler.scale_bigtable")
 def test_main(scale_bigtable, get_cpu_load, get_storage_utilization, sleep):
     SHORT_SLEEP = 5
     LONG_SLEEP = 10
@@ -177,57 +182,46 @@ def test_main(scale_bigtable, get_cpu_load, get_storage_utilization, sleep):
     get_cpu_load.return_value = 0.5
     get_storage_utilization.return_value = 0.5
 
-    main(BIGTABLE_INSTANCE, BIGTABLE_INSTANCE, 0.6, 0.3, 0.6, SHORT_SLEEP,
-         LONG_SLEEP)
+    main(BIGTABLE_INSTANCE, BIGTABLE_INSTANCE, 0.6, 0.3, 0.6, SHORT_SLEEP, LONG_SLEEP)
     scale_bigtable.assert_not_called()
     scale_bigtable.reset_mock()
 
     # Test high CPU, okay storage utilization
     get_cpu_load.return_value = 0.7
     get_storage_utilization.return_value = 0.5
-    main(BIGTABLE_INSTANCE, BIGTABLE_INSTANCE, 0.6, 0.3, 0.6, SHORT_SLEEP,
-         LONG_SLEEP)
-    scale_bigtable.assert_called_once_with(BIGTABLE_INSTANCE,
-                                           BIGTABLE_INSTANCE, True)
+    main(BIGTABLE_INSTANCE, BIGTABLE_INSTANCE, 0.6, 0.3, 0.6, SHORT_SLEEP, LONG_SLEEP)
+    scale_bigtable.assert_called_once_with(BIGTABLE_INSTANCE, BIGTABLE_INSTANCE, True)
     scale_bigtable.reset_mock()
 
     # Test low CPU, okay storage utilization
     get_storage_utilization.return_value = 0.5
     get_cpu_load.return_value = 0.2
-    main(BIGTABLE_INSTANCE, BIGTABLE_INSTANCE, 0.6, 0.3, 0.6, SHORT_SLEEP,
-         LONG_SLEEP)
-    scale_bigtable.assert_called_once_with(BIGTABLE_INSTANCE,
-                                           BIGTABLE_INSTANCE, False)
+    main(BIGTABLE_INSTANCE, BIGTABLE_INSTANCE, 0.6, 0.3, 0.6, SHORT_SLEEP, LONG_SLEEP)
+    scale_bigtable.assert_called_once_with(BIGTABLE_INSTANCE, BIGTABLE_INSTANCE, False)
     scale_bigtable.reset_mock()
 
     # Test okay CPU, high storage utilization
     get_cpu_load.return_value = 0.5
     get_storage_utilization.return_value = 0.7
 
-    main(BIGTABLE_INSTANCE, BIGTABLE_INSTANCE, 0.6, 0.3, 0.6, SHORT_SLEEP,
-         LONG_SLEEP)
-    scale_bigtable.assert_called_once_with(BIGTABLE_INSTANCE,
-                                           BIGTABLE_INSTANCE, True)
+    main(BIGTABLE_INSTANCE, BIGTABLE_INSTANCE, 0.6, 0.3, 0.6, SHORT_SLEEP, LONG_SLEEP)
+    scale_bigtable.assert_called_once_with(BIGTABLE_INSTANCE, BIGTABLE_INSTANCE, True)
     scale_bigtable.reset_mock()
 
     # Test high CPU, high storage utilization
     get_cpu_load.return_value = 0.7
     get_storage_utilization.return_value = 0.7
-    main(BIGTABLE_INSTANCE, BIGTABLE_INSTANCE, 0.6, 0.3, 0.6, SHORT_SLEEP,
-         LONG_SLEEP)
-    scale_bigtable.assert_called_once_with(BIGTABLE_INSTANCE,
-                                           BIGTABLE_INSTANCE, True)
+    main(BIGTABLE_INSTANCE, BIGTABLE_INSTANCE, 0.6, 0.3, 0.6, SHORT_SLEEP, LONG_SLEEP)
+    scale_bigtable.assert_called_once_with(BIGTABLE_INSTANCE, BIGTABLE_INSTANCE, True)
     scale_bigtable.reset_mock()
 
     # Test low CPU, high storage utilization
     get_cpu_load.return_value = 0.2
     get_storage_utilization.return_value = 0.7
-    main(BIGTABLE_INSTANCE, BIGTABLE_INSTANCE, 0.6, 0.3, 0.6, SHORT_SLEEP,
-         LONG_SLEEP)
-    scale_bigtable.assert_called_once_with(BIGTABLE_INSTANCE,
-                                           BIGTABLE_INSTANCE, True)
+    main(BIGTABLE_INSTANCE, BIGTABLE_INSTANCE, 0.6, 0.3, 0.6, SHORT_SLEEP, LONG_SLEEP)
+    scale_bigtable.assert_called_once_with(BIGTABLE_INSTANCE, BIGTABLE_INSTANCE, True)
     scale_bigtable.reset_mock()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     test_get_cpu_load()

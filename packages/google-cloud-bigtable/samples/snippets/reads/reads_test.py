@@ -21,9 +21,9 @@ import pytest
 import read_snippets
 
 
-PROJECT = os.environ['GOOGLE_CLOUD_PROJECT']
-BIGTABLE_INSTANCE = os.environ['BIGTABLE_INSTANCE']
-TABLE_ID_PREFIX = 'mobile-time-series-{}'
+PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
+BIGTABLE_INSTANCE = os.environ["BIGTABLE_INSTANCE"]
+TABLE_ID_PREFIX = "mobile-time-series-{}"
 
 
 @pytest.fixture(scope="module", autouse=True)
@@ -36,7 +36,7 @@ def table_id():
     if table.exists():
         table.delete()
 
-    table.create(column_families={'stats_summary': None})
+    table.create(column_families={"stats_summary": None})
 
     # table = instance.table(table_id)
 

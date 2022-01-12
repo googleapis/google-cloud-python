@@ -25,9 +25,9 @@ from google.cloud import monitoring_v3
 from google.cloud.bigtable import enums
 from google.cloud.monitoring_v3 import query
 
-PROJECT = os.environ['GOOGLE_CLOUD_PROJECT']
+PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
 
-logger = logging.getLogger('bigtable.metricscaler')
+logger = logging.getLogger("bigtable.metricscaler")
 logger.addHandler(logging.StreamHandler())
 logger.setLevel(logging.INFO)
 
@@ -40,12 +40,15 @@ def get_cpu_load(bigtable_instance, bigtable_cluster):
     """
     # [START bigtable_cpu]
     client = monitoring_v3.MetricServiceClient()
-    cpu_query = query.Query(client,
-                            project=PROJECT,
-                            metric_type='bigtable.googleapis.com/'
-                                        'cluster/cpu_load',
-                            minutes=5)
-    cpu_query = cpu_query.select_resources(instance=bigtable_instance, cluster=bigtable_cluster)
+    cpu_query = query.Query(
+        client,
+        project=PROJECT,
+        metric_type="bigtable.googleapis.com/" "cluster/cpu_load",
+        minutes=5,
+    )
+    cpu_query = cpu_query.select_resources(
+        instance=bigtable_instance, cluster=bigtable_cluster
+    )
     cpu = next(cpu_query.iter())
     return cpu.points[0].value.double_value
     # [END bigtable_cpu]
@@ -59,12 +62,15 @@ def get_storage_utilization(bigtable_instance, bigtable_cluster):
     """
     # [START bigtable_metric_scaler_storage_utilization]
     client = monitoring_v3.MetricServiceClient()
-    utilization_query = query.Query(client,
-                                    project=PROJECT,
-                                    metric_type='bigtable.googleapis.com/'
-                                                'cluster/storage_utilization',
-                                    minutes=5)
-    utilization_query = utilization_query.select_resources(instance=bigtable_instance, cluster=bigtable_cluster)
+    utilization_query = query.Query(
+        client,
+        project=PROJECT,
+        metric_type="bigtable.googleapis.com/" "cluster/storage_utilization",
+        minutes=5,
+    )
+    utilization_query = utilization_query.select_resources(
+        instance=bigtable_instance, cluster=bigtable_cluster
+    )
     utilization = next(utilization_query.iter())
     return utilization.points[0].value.double_value
     # [END bigtable_metric_scaler_storage_utilization]
@@ -114,20 +120,24 @@ def scale_bigtable(bigtable_instance, bigtable_cluster, scale_up):
 
     if scale_up:
         if current_node_count < max_node_count:
-            new_node_count = min(
-                current_node_count + size_change_step, max_node_count)
+            new_node_count = min(current_node_count + size_change_step, max_node_count)
             cluster.serve_nodes = new_node_count
             cluster.update()
-            logger.info('Scaled up from {} to {} nodes.'.format(
-                current_node_count, new_node_count))
+            logger.info(
+                "Scaled up from {} to {} nodes.".format(
+                    current_node_count, new_node_count
+                )
+            )
     else:
         if current_node_count > min_node_count:
-            new_node_count = max(
-                current_node_count - size_change_step, min_node_count)
+            new_node_count = max(current_node_count - size_change_step, min_node_count)
             cluster.serve_nodes = new_node_count
             cluster.update()
-            logger.info('Scaled down from {} to {} nodes.'.format(
-                current_node_count, new_node_count))
+            logger.info(
+                "Scaled down from {} to {} nodes.".format(
+                    current_node_count, new_node_count
+                )
+            )
     # [END bigtable_scale]
 
 
@@ -138,7 +148,7 @@ def main(
     low_cpu_threshold,
     high_storage_threshold,
     short_sleep,
-    long_sleep
+    long_sleep,
 ):
     """Main loop runner that autoscales Cloud Bigtable.
 
@@ -154,8 +164,8 @@ def main(
     """
     cluster_cpu = get_cpu_load(bigtable_instance, bigtable_cluster)
     cluster_storage = get_storage_utilization(bigtable_instance, bigtable_cluster)
-    logger.info('Detected cpu of {}'.format(cluster_cpu))
-    logger.info('Detected storage utilization of {}'.format(cluster_storage))
+    logger.info("Detected cpu of {}".format(cluster_cpu))
+    logger.info("Detected storage utilization of {}".format(cluster_storage))
     try:
         if cluster_cpu > high_cpu_threshold or cluster_storage > high_storage_threshold:
             scale_bigtable(bigtable_instance, bigtable_cluster, True)
@@ -165,44 +175,50 @@ def main(
                 scale_bigtable(bigtable_instance, bigtable_cluster, False)
                 time.sleep(long_sleep)
         else:
-            logger.info('CPU within threshold, sleeping.')
+            logger.info("CPU within threshold, sleeping.")
             time.sleep(short_sleep)
     except Exception as e:
         logger.error("Error during scaling: %s", e)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description='Scales Cloud Bigtable clusters based on CPU usage.')
+        description="Scales Cloud Bigtable clusters based on CPU usage."
+    )
     parser.add_argument(
-        'bigtable_instance',
-        help='ID of the Cloud Bigtable instance to connect to.')
+        "bigtable_instance", help="ID of the Cloud Bigtable instance to connect to."
+    )
     parser.add_argument(
-        'bigtable_cluster',
-        help='ID of the Cloud Bigtable cluster to connect to.')
+        "bigtable_cluster", help="ID of the Cloud Bigtable cluster to connect to."
+    )
     parser.add_argument(
-        '--high_cpu_threshold',
-        help='If Cloud Bigtable CPU usage is above this threshold, scale up',
-        default=0.6)
+        "--high_cpu_threshold",
+        help="If Cloud Bigtable CPU usage is above this threshold, scale up",
+        default=0.6,
+    )
     parser.add_argument(
-        '--low_cpu_threshold',
-        help='If Cloud Bigtable CPU usage is below this threshold, scale down',
-        default=0.2)
+        "--low_cpu_threshold",
+        help="If Cloud Bigtable CPU usage is below this threshold, scale down",
+        default=0.2,
+    )
     parser.add_argument(
-        '--high_storage_threshold',
-        help='If Cloud Bigtable storage utilization is above this threshold, '
-             'scale up',
-        default=0.6)
+        "--high_storage_threshold",
+        help="If Cloud Bigtable storage utilization is above this threshold, "
+        "scale up",
+        default=0.6,
+    )
     parser.add_argument(
-        '--short_sleep',
-        help='How long to sleep in seconds between checking metrics after no '
-             'scale operation',
-        default=60)
+        "--short_sleep",
+        help="How long to sleep in seconds between checking metrics after no "
+        "scale operation",
+        default=60,
+    )
     parser.add_argument(
-        '--long_sleep',
-        help='How long to sleep in seconds between checking metrics after a '
-             'scaling operation',
-        default=60 * 10)
+        "--long_sleep",
+        help="How long to sleep in seconds between checking metrics after a "
+        "scaling operation",
+        default=60 * 10,
+    )
     args = parser.parse_args()
 
     while True:
@@ -213,4 +229,5 @@ if __name__ == '__main__':
             float(args.low_cpu_threshold),
             float(args.high_storage_threshold),
             int(args.short_sleep),
-            int(args.long_sleep))
+            int(args.long_sleep),
+        )

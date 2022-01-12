@@ -217,20 +217,15 @@ s.replace(
 # Samples templates
 # ----------------------------------------------------------------------------
 
-sample_files = common.py_samples(samples=True)
-for path in sample_files:
-    s.move(path)
+python.py_samples(skip_readmes=True)
 
-# Note: python-docs-samples is not yet using 'main':
-#s.replace(
-#    "samples/**/*.md",
-#    r"python-docs-samples/blob/master/",
-#    "python-docs-samples/blob/main/",
-#)
 s.replace(
-    "samples/**/*.md",
-    r"google-cloud-python/blob/master/",
-    "google-cloud-python/blob/main/",
-)
+    "samples/beam/noxfile.py",
+    """INSTALL_LIBRARY_FROM_SOURCE \= os.environ.get\("INSTALL_LIBRARY_FROM_SOURCE", False\) in \(
+    "True",
+    "true",
+\)""",
+    """# todo(kolea2): temporary workaround to install pinned dep version
+INSTALL_LIBRARY_FROM_SOURCE = False""")
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
