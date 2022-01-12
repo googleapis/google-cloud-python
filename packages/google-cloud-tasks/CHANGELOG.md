@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+### [2.7.2](https://www.github.com/googleapis/python-tasks/compare/v2.7.1...v2.7.2) (2022-01-08)
+
+
+### Documentation
+
+* fix docstring formatting ([#196](https://www.github.com/googleapis/python-tasks/issues/196)) ([e7a3461](https://www.github.com/googleapis/python-tasks/commit/e7a3461a34229c210e63590370fa6eee4d06630a))
+
 ### [2.7.1](https://www.github.com/googleapis/python-tasks/compare/v2.7.0...v2.7.1) (2021-11-01)
 
 
