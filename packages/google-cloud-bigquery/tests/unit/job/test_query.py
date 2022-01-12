@@ -1360,13 +1360,19 @@ class TestQueryJob(_Base):
         exc_job_instance = getattr(exc_info.exception, "query_job", None)
         self.assertIs(exc_job_instance, job)
 
+        # Query text could contain sensitive information, so it must not be
+        # included in logs / exception representation.
         full_text = str(exc_info.exception)
         assert job.job_id in full_text
-        assert "Query Job SQL Follows" in full_text
+        assert "Query Job SQL Follows" not in full_text
 
+        # It is useful to have query text available, so it is provided in a
+        # debug_message property.
+        debug_message = exc_info.exception.debug_message
+        assert "Query Job SQL Follows" in debug_message
         for i, line in enumerate(query.splitlines(), start=1):
             expected_line = "{}:{}".format(i, line)
-            assert expected_line in full_text
+            assert expected_line in debug_message
 
     def test_result_transport_timeout_error(self):
         query = textwrap.dedent(
@@ -1452,13 +1458,19 @@ class TestQueryJob(_Base):
         exc_job_instance = getattr(exc_info.exception, "query_job", None)
         self.assertIs(exc_job_instance, job)
 
+        # Query text could contain sensitive information, so it must not be
+        # included in logs / exception representation.
         full_text = str(exc_info.exception)
         assert job.job_id in full_text
-        assert "Query Job SQL Follows" in full_text
+        assert "Query Job SQL Follows" not in full_text
 
+        # It is useful to have query text available, so it is provided in a
+        # debug_message property.
+        debug_message = exc_info.exception.debug_message
+        assert "Query Job SQL Follows" in debug_message
         for i, line in enumerate(query.splitlines(), start=1):
             expected_line = "{}:{}".format(i, line)
-            assert expected_line in full_text
+            assert expected_line in debug_message
 
     def test__begin_w_timeout(self):
         PATH = "/projects/%s/jobs" % (self.PROJECT,)

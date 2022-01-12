@@ -66,6 +66,7 @@ if typing.TYPE_CHECKING:  # pragma: NO COVER
 
 
 _CONTAINS_ORDER_BY = re.compile(r"ORDER\s+BY", re.IGNORECASE)
+_EXCEPTION_FOOTER_TEMPLATE = "{message}\n\nLocation: {location}\nJob ID: {job_id}\n"
 _TIMEOUT_BUFFER_SECS = 0.1
 
 
@@ -1196,17 +1197,17 @@ class QueryJob(_AsyncJob):
         super(QueryJob, self)._blocking_poll(timeout=timeout, **kwargs)
 
     @staticmethod
-    def _format_for_exception(query, job_id):
+    def _format_for_exception(message: str, query: str):
         """Format a query for the output in exception message.
 
         Args:
+            message (str): The original exception message.
             query (str): The SQL query to format.
-            job_id (str): The ID of the job that ran the query.
 
         Returns:
             str: A formatted query text.
         """
-        template = "\n\n(job ID: {job_id})\n\n{header}\n\n{ruler}\n{body}\n{ruler}"
+        template = "{message}\n\n{header}\n\n{ruler}\n{body}\n{ruler}"
 
         lines = query.splitlines()
         max_line_len = max(len(line) for line in lines)
@@ -1223,7 +1224,7 @@ class QueryJob(_AsyncJob):
             "{:4}:{}".format(n, line) for n, line in enumerate(lines, start=1)
         )
 
-        return template.format(job_id=job_id, header=header, ruler=ruler, body=body)
+        return template.format(message=message, header=header, ruler=ruler, body=body)
 
     def _begin(self, client=None, retry=DEFAULT_RETRY, timeout=None):
         """API call:  begin the job via a POST request
@@ -1248,7 +1249,10 @@ class QueryJob(_AsyncJob):
         try:
             super(QueryJob, self)._begin(client=client, retry=retry, timeout=timeout)
         except exceptions.GoogleAPICallError as exc:
-            exc.message += self._format_for_exception(self.query, self.job_id)
+            exc.message = _EXCEPTION_FOOTER_TEMPLATE.format(
+                message=exc.message, location=self.location, job_id=self.job_id
+            )
+            exc.debug_message = self._format_for_exception(exc.message, self.query)
             exc.query_job = self
             raise
 
@@ -1447,7 +1451,10 @@ class QueryJob(_AsyncJob):
             do_get_result()
 
         except exceptions.GoogleAPICallError as exc:
-            exc.message += self._format_for_exception(self.query, self.job_id)
+            exc.message = _EXCEPTION_FOOTER_TEMPLATE.format(
+                message=exc.message, location=self.location, job_id=self.job_id
+            )
+            exc.debug_message = self._format_for_exception(exc.message, self.query)  # type: ignore
             exc.query_job = self  # type: ignore
             raise
         except requests.exceptions.Timeout as exc:
