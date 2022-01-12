@@ -48,6 +48,7 @@ class BigQueryReadClient(big_query_read.BigQueryReadClient):
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=(),
+        retry_delay_callback=None,
     ):
         """
         Reads rows from the table in the format prescribed by the read
@@ -109,6 +110,12 @@ class BigQueryReadClient(big_query_read.BigQueryReadClient):
                 specified, the timeout applies to each individual attempt.
             metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
                 that is provided to the method.
+            retry_delay_callback (Optional[Callable[[float], None]]):
+                If the client receives a retryable error that asks the client to
+                delay its next attempt and retry_delay_callback is not None,
+                BigQueryReadClient will call retry_delay_callback with the delay
+                duration (in seconds) before it starts sleeping until the next
+                attempt.
 
         Returns:
             ~google.cloud.bigquery_storage_v1.reader.ReadRowsStream:
@@ -123,20 +130,15 @@ class BigQueryReadClient(big_query_read.BigQueryReadClient):
             ValueError: If the parameters are invalid.
         """
         gapic_client = super(BigQueryReadClient, self)
-        stream = gapic_client.read_rows(
-            read_stream=name,
-            offset=offset,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-        return reader.ReadRowsStream(
-            stream,
+        stream = reader.ReadRowsStream(
             gapic_client,
             name,
             offset,
             {"retry": retry, "timeout": timeout, "metadata": metadata},
+            retry_delay_callback=retry_delay_callback,
         )
+        stream._reconnect()
+        return stream
 
 
 class BigQueryWriteClient(big_query_write.BigQueryWriteClient):

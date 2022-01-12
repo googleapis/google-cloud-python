@@ -27,6 +27,7 @@ import pytest
 import google.api_core.exceptions
 from google.cloud.bigquery_storage import types
 from .helpers import SCALAR_COLUMNS, SCALAR_COLUMN_NAMES, SCALAR_BLOCKS
+import google.rpc.error_details_pb2
 
 
 PROJECT = "my-project"
@@ -97,6 +98,29 @@ def _pages_w_resumable_internal_error(avro_blocks):
     )
 
 
+def _pages_w_nonresumable_resource_exhausted_error(avro_blocks):
+    for block in avro_blocks:
+        yield block
+    raise google.api_core.exceptions.ResourceExhausted(
+        "RESOURCE_EXHAUSTED: do not retry"
+    )
+
+
+def _pages_w_resumable_resource_exhausted_error(
+    avro_blocks, delay_seconds, delay_nanos
+):
+    for block in avro_blocks:
+        yield block
+    retry_info = google.rpc.error_details_pb2.RetryInfo()
+    retry_info.retry_delay.seconds = delay_seconds
+    retry_info.retry_delay.nanos = delay_nanos
+    error = google.api_core.exceptions.ResourceExhausted(
+        "RESOURCE_EXHAUSTED: retry later"
+    )
+    error._details = (retry_info,)
+    raise error
+
+
 def _pages_w_unavailable(pages):
     for page in pages:
         yield page
@@ -144,7 +168,8 @@ def test_avro_rows_raises_import_error(
     monkeypatch.setattr(mut, "fastavro", None)
     avro_schema = _bq_to_avro_schema(SCALAR_COLUMNS)
     avro_blocks = _bq_to_avro_blocks(SCALAR_BLOCKS, avro_schema)
-    reader = class_under_test(avro_blocks, mock_gapic_client, "", 0, {})
+    mock_gapic_client.read_rows.return_value = avro_blocks
+    reader = class_under_test(mock_gapic_client, "", 0, {})
     rows = iter(reader.rows())
 
     # Since session isn't passed in, reader doesn't know serialization type
@@ -159,7 +184,8 @@ def test_rows_no_schema_set_raises_type_error(
     avro_schema = _bq_to_avro_schema(SCALAR_COLUMNS)
     avro_blocks = _bq_to_avro_blocks(SCALAR_BLOCKS, avro_schema)
     avro_blocks[0].avro_schema = None
-    reader = class_under_test(avro_blocks, mock_gapic_client, "", 0, {})
+    mock_gapic_client.read_rows.return_value = avro_blocks
+    reader = class_under_test(mock_gapic_client, "", 0, {})
     rows = iter(reader.rows())
 
     # Since session isn't passed in, reader doesn't know serialization type
@@ -169,7 +195,8 @@ def test_rows_no_schema_set_raises_type_error(
 
 
 def test_rows_w_empty_stream(class_under_test, mock_gapic_client):
-    reader = class_under_test([], mock_gapic_client, "", 0, {})
+    mock_gapic_client.read_rows.return_value = []
+    reader = class_under_test(mock_gapic_client, "", 0, {})
     got = reader.rows()
     assert tuple(got) == ()
 
@@ -177,8 +204,8 @@ def test_rows_w_empty_stream(class_under_test, mock_gapic_client):
 def test_rows_w_scalars(class_under_test, mock_gapic_client):
     avro_schema = _bq_to_avro_schema(SCALAR_COLUMNS)
     avro_blocks = _bq_to_avro_blocks(SCALAR_BLOCKS, avro_schema)
-
-    reader = class_under_test(avro_blocks, mock_gapic_client, "", 0, {})
+    mock_gapic_client.read_rows.return_value = avro_blocks
+    reader = class_under_test(mock_gapic_client, "", 0, {})
     got = tuple(reader.rows())
 
     expected = tuple(itertools.chain.from_iterable(SCALAR_BLOCKS))
@@ -198,22 +225,22 @@ def test_rows_w_timeout(class_under_test, mock_gapic_client):
     bq_blocks_2 = [[{"int_col": 567}, {"int_col": 789}], [{"int_col": 890}]]
     avro_blocks_2 = _bq_to_avro_blocks(bq_blocks_2, avro_schema)
 
-    mock_gapic_client.read_rows.return_value = avro_blocks_2
+    mock_gapic_client.read_rows.side_effect = (
+        avro_blocks_1,
+        avro_blocks_2,
+    )
 
     reader = class_under_test(
-        avro_blocks_1,
-        mock_gapic_client,
-        "teststream",
-        0,
-        {"metadata": {"test-key": "test-value"}},
+        mock_gapic_client, "teststream", 0, {"metadata": {"test-key": "test-value"}},
     )
 
     with pytest.raises(google.api_core.exceptions.DeadlineExceeded):
         list(reader.rows())
 
-    # Don't reconnect on DeadlineException. This allows user-specified timeouts
-    # to be respected.
-    mock_gapic_client.read_rows.assert_not_called()
+    # Don't reconnect on DeadlineException so user-specified timeouts
+    # are respected. This requires client.read_rows to be called
+    # exactly once which fails with DeadlineException.
+    mock_gapic_client.read_rows.assert_called_once()
 
 
 def test_rows_w_nonresumable_internal_error(class_under_test, mock_gapic_client):
@@ -223,15 +250,43 @@ def test_rows_w_nonresumable_internal_error(class_under_test, mock_gapic_client)
     avro_blocks = _pages_w_nonresumable_internal_error(
         _bq_to_avro_blocks(bq_blocks, avro_schema)
     )
-
-    reader = class_under_test(avro_blocks, mock_gapic_client, "teststream", 0, {})
+    mock_gapic_client.read_rows.return_value = avro_blocks
+    reader = class_under_test(mock_gapic_client, "teststream", 0, {})
 
     with pytest.raises(
         google.api_core.exceptions.InternalServerError, match="nonresumable error"
     ):
         list(reader.rows())
 
-    mock_gapic_client.read_rows.assert_not_called()
+    mock_gapic_client.read_rows.assert_called_once()
+
+
+def test_rows_w_nonresumable_resource_exhausted_error(
+    class_under_test, mock_gapic_client
+):
+    bq_columns = [{"name": "int_col", "type": "int64"}]
+    avro_schema = _bq_to_avro_schema(bq_columns)
+    bq_blocks = [[{"int_col": 1024}, {"int_col": 512}], [{"int_col": 256}]]
+    avro_blocks = _pages_w_nonresumable_resource_exhausted_error(
+        _bq_to_avro_blocks(bq_blocks, avro_schema)
+    )
+
+    retry_delay_num_calls = 0
+
+    def retry_delay_callback(delay):
+        nonlocal retry_delay_num_calls
+        retry_delay_num_calls += 1
+
+    mock_gapic_client.read_rows.return_value = avro_blocks
+    reader = class_under_test(mock_gapic_client, "teststream", 0, {})
+
+    with pytest.raises(
+        google.api_core.exceptions.ResourceExhausted, match="do not retry"
+    ):
+        list(reader.rows())
+
+    mock_gapic_client.read_rows.assert_called_once()
+    assert retry_delay_num_calls == 0
 
 
 def test_rows_w_reconnect(class_under_test, mock_gapic_client):
@@ -249,20 +304,37 @@ def test_rows_w_reconnect(class_under_test, mock_gapic_client):
     bq_blocks_3 = [[{"int_col": -1}, {"int_col": -2}], [{"int_col": -4}]]
     avro_blocks_3 = _pages_w_unknown(_bq_to_avro_blocks(bq_blocks_3, avro_schema))
     bq_blocks_4 = [[{"int_col": 567}, {"int_col": 789}], [{"int_col": 890}]]
-    avro_blocks_4 = _bq_to_avro_blocks(bq_blocks_4, avro_schema)
+    delay_seconds = 1
+    delay_nanos = 234
+    avro_blocks_4 = _pages_w_resumable_resource_exhausted_error(
+        _bq_to_avro_blocks(bq_blocks_4, avro_schema), delay_seconds, delay_nanos
+    )
+    bq_blocks_5 = [[{"int_col": 859}, {"int_col": 231}], [{"int_col": 777}]]
+    avro_blocks_5 = _bq_to_avro_blocks(bq_blocks_5, avro_schema)
 
     mock_gapic_client.read_rows.side_effect = (
+        avro_blocks_1,
         avro_blocks_2,
         avro_blocks_3,
         avro_blocks_4,
+        avro_blocks_5,
     )
 
+    retry_delay_num_calls = 0
+    retry_delay = 0
+
+    def retry_delay_callback(delay):
+        nonlocal retry_delay_num_calls
+        nonlocal retry_delay
+        retry_delay_num_calls += 1
+        retry_delay = delay
+
     reader = class_under_test(
-        avro_blocks_1,
         mock_gapic_client,
         "teststream",
         0,
         {"metadata": {"test-key": "test-value"}},
+        retry_delay_callback=retry_delay_callback,
     )
     got = reader.rows()
 
@@ -272,6 +344,7 @@ def test_rows_w_reconnect(class_under_test, mock_gapic_client):
             itertools.chain.from_iterable(bq_blocks_2),
             itertools.chain.from_iterable(bq_blocks_3),
             itertools.chain.from_iterable(bq_blocks_4),
+            itertools.chain.from_iterable(bq_blocks_5),
         )
     )
 
@@ -282,9 +355,14 @@ def test_rows_w_reconnect(class_under_test, mock_gapic_client):
     mock_gapic_client.read_rows.assert_any_call(
         read_stream="teststream", offset=7, metadata={"test-key": "test-value"}
     )
-    mock_gapic_client.read_rows.assert_called_with(
+    mock_gapic_client.read_rows.assert_any_call(
         read_stream="teststream", offset=10, metadata={"test-key": "test-value"}
     )
+    mock_gapic_client.read_rows.assert_called_with(
+        read_stream="teststream", offset=13, metadata={"test-key": "test-value"}
+    )
+    assert retry_delay_num_calls == 1
+    assert retry_delay == delay_seconds + (delay_nanos / 1e9)
 
 
 def test_rows_w_reconnect_by_page(class_under_test, mock_gapic_client):
@@ -298,14 +376,13 @@ def test_rows_w_reconnect_by_page(class_under_test, mock_gapic_client):
     bq_blocks_2 = [[{"int_col": 567}, {"int_col": 789}], [{"int_col": 890}]]
     avro_blocks_2 = _bq_to_avro_blocks(bq_blocks_2, avro_schema)
 
-    mock_gapic_client.read_rows.return_value = avro_blocks_2
+    mock_gapic_client.read_rows.side_effect = (
+        _pages_w_unavailable(avro_blocks_1),
+        avro_blocks_2,
+    )
 
     reader = class_under_test(
-        _pages_w_unavailable(avro_blocks_1),
-        mock_gapic_client,
-        "teststream",
-        0,
-        {"metadata": {"test-key": "test-value"}},
+        mock_gapic_client, "teststream", 0, {"metadata": {"test-key": "test-value"}},
     )
     got = reader.rows()
     pages = iter(got.pages)
@@ -341,7 +418,8 @@ def test_to_dataframe_no_pandas_raises_import_error(
     avro_schema = _bq_to_avro_schema(SCALAR_COLUMNS)
     avro_blocks = _bq_to_avro_blocks(SCALAR_BLOCKS, avro_schema)
 
-    reader = class_under_test(avro_blocks, mock_gapic_client, "", 0, {})
+    mock_gapic_client.read_rows.return_value = avro_blocks
+    reader = class_under_test(mock_gapic_client, "", 0, {})
 
     with pytest.raises(ImportError):
         reader.to_dataframe()
@@ -359,7 +437,8 @@ def test_to_dataframe_no_schema_set_raises_type_error(
     avro_schema = _bq_to_avro_schema(SCALAR_COLUMNS)
     avro_blocks = _bq_to_avro_blocks(SCALAR_BLOCKS, avro_schema)
     avro_blocks[0].avro_schema = None
-    reader = class_under_test(avro_blocks, mock_gapic_client, "", 0, {})
+    mock_gapic_client.read_rows.return_value = avro_blocks
+    reader = class_under_test(mock_gapic_client, "", 0, {})
     rows = reader.rows()
 
     # Since session isn't passed in, reader doesn't know serialization type
@@ -368,11 +447,12 @@ def test_to_dataframe_no_schema_set_raises_type_error(
         rows.to_dataframe()
 
 
-def test_to_dataframe_w_scalars(class_under_test):
+def test_to_dataframe_w_scalars(class_under_test, mock_gapic_client):
     avro_schema = _bq_to_avro_schema(SCALAR_COLUMNS)
     avro_blocks = _bq_to_avro_blocks(SCALAR_BLOCKS, avro_schema)
 
-    reader = class_under_test(avro_blocks, mock_gapic_client, "", 0, {})
+    mock_gapic_client.read_rows.return_value = avro_blocks
+    reader = class_under_test(mock_gapic_client, "", 0, {})
     got = reader.to_dataframe()
 
     expected = pandas.DataFrame(
@@ -397,7 +477,7 @@ def test_to_dataframe_w_scalars(class_under_test):
     )
 
 
-def test_to_dataframe_w_dtypes(class_under_test):
+def test_to_dataframe_w_dtypes(class_under_test, mock_gapic_client):
     avro_schema = _bq_to_avro_schema(
         [
             {"name": "bigfloat", "type": "float64"},
@@ -410,7 +490,8 @@ def test_to_dataframe_w_dtypes(class_under_test):
     ]
     avro_blocks = _bq_to_avro_blocks(blocks, avro_schema)
 
-    reader = class_under_test(avro_blocks, mock_gapic_client, "", 0, {})
+    mock_gapic_client.read_rows.return_value = avro_blocks
+    reader = class_under_test(mock_gapic_client, "", 0, {})
     got = reader.to_dataframe(dtypes={"lilfloat": "float16"})
 
     expected = pandas.DataFrame(
@@ -426,11 +507,12 @@ def test_to_dataframe_w_dtypes(class_under_test):
     )
 
 
-def test_to_dataframe_empty_w_scalars_avro(class_under_test):
+def test_to_dataframe_empty_w_scalars_avro(class_under_test, mock_gapic_client):
     avro_schema = _bq_to_avro_schema(SCALAR_COLUMNS)
     read_session = _generate_avro_read_session(avro_schema)
     avro_blocks = _bq_to_avro_blocks([], avro_schema)
-    reader = class_under_test(avro_blocks, mock_gapic_client, "", 0, {})
+    mock_gapic_client.read_rows.return_value = avro_blocks
+    reader = class_under_test(mock_gapic_client, "", 0, {})
 
     # Read session is needed to get a schema for empty streams.
     got = reader.to_dataframe(read_session)
@@ -458,7 +540,8 @@ def test_to_dataframe_empty_w_dtypes_avro(class_under_test, mock_gapic_client):
     )
     read_session = _generate_avro_read_session(avro_schema)
     avro_blocks = _bq_to_avro_blocks([], avro_schema)
-    reader = class_under_test(avro_blocks, mock_gapic_client, "", 0, {})
+    mock_gapic_client.read_rows.return_value = avro_blocks
+    reader = class_under_test(mock_gapic_client, "", 0, {})
 
     # Read session is needed to get a schema for empty streams.
     got = reader.to_dataframe(read_session, dtypes={"lilfloat": "float16"})
@@ -490,14 +573,13 @@ def test_to_dataframe_by_page(class_under_test, mock_gapic_client):
     avro_blocks_1 = _bq_to_avro_blocks(bq_blocks_1, avro_schema)
     avro_blocks_2 = _bq_to_avro_blocks(bq_blocks_2, avro_schema)
 
-    mock_gapic_client.read_rows.return_value = avro_blocks_2
+    mock_gapic_client.read_rows.side_effect = (
+        _pages_w_unavailable(avro_blocks_1),
+        avro_blocks_2,
+    )
 
     reader = class_under_test(
-        _pages_w_unavailable(avro_blocks_1),
-        mock_gapic_client,
-        "teststream",
-        0,
-        {"metadata": {"test-key": "test-value"}},
+        mock_gapic_client, "teststream", 0, {"metadata": {"test-key": "test-value"}},
     )
     got = reader.rows()
     pages = iter(got.pages)

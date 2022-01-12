@@ -17,12 +17,14 @@ from __future__ import absolute_import
 import collections
 import io
 import json
+import time
 
 try:
     import fastavro
 except ImportError:  # pragma: NO COVER
     fastavro = None
 import google.api_core.exceptions
+import google.rpc.error_details_pb2
 
 try:
     import pandas
@@ -79,16 +81,17 @@ class ReadRowsStream(object):
     If the pandas and fastavro libraries are installed, use the
     :func:`~google.cloud.bigquery_storage_v1.reader.ReadRowsStream.to_dataframe()`
     method to parse all messages into a :class:`pandas.DataFrame`.
+
+    This object should not be created directly, but is returned by
+    other methods in this library.
     """
 
-    def __init__(self, wrapped, client, name, offset, read_rows_kwargs):
+    def __init__(
+        self, client, name, offset, read_rows_kwargs, retry_delay_callback=None
+    ):
         """Construct a ReadRowsStream.
 
         Args:
-            wrapped (Iterable[ \
-                ~google.cloud.bigquery_storage.types.ReadRowsResponse \
-            ]):
-                The ReadRows stream to read.
             client ( \
                 ~google.cloud.bigquery_storage_v1.services. \
                     big_query_read.BigQueryReadClient \
@@ -106,6 +109,12 @@ class ReadRowsStream(object):
             read_rows_kwargs (dict):
                 Keyword arguments to use when reconnecting to a ReadRows
                 stream.
+            retry_delay_callback (Optional[Callable[[float], None]]):
+                If the client receives a retryable error that asks the client to
+                delay its next attempt and retry_delay_callback is not None,
+                ReadRowsStream will call retry_delay_callback with the delay
+                duration (in seconds) before it starts sleeping until the next
+                attempt.
 
         Returns:
             Iterable[ \
@@ -116,11 +125,12 @@ class ReadRowsStream(object):
 
         # Make a copy of the read position so that we can update it without
         # mutating the original input.
-        self._wrapped = wrapped
         self._client = client
         self._name = name
         self._offset = offset
         self._read_rows_kwargs = read_rows_kwargs
+        self._retry_delay_callback = retry_delay_callback
+        self._wrapped = None
 
     def __iter__(self):
         """An iterable of messages.
@@ -131,9 +141,12 @@ class ReadRowsStream(object):
             ]:
                 A sequence of row messages.
         """
-
         # Infinite loop to reconnect on reconnectable errors while processing
         # the row stream.
+
+        if self._wrapped is None:
+            self._reconnect()
+
         while True:
             try:
                 for message in self._wrapped:
@@ -152,14 +165,53 @@ class ReadRowsStream(object):
             except _STREAM_RESUMPTION_EXCEPTIONS:
                 # Transient error, so reconnect to the stream.
                 pass
+            except Exception as exc:
+                if not self._resource_exhausted_exception_is_retryable(exc):
+                    raise
 
             self._reconnect()
 
     def _reconnect(self):
         """Reconnect to the ReadRows stream using the most recent offset."""
-        self._wrapped = self._client.read_rows(
-            read_stream=self._name, offset=self._offset, **self._read_rows_kwargs
-        )
+        while True:
+            try:
+                self._wrapped = self._client.read_rows(
+                    read_stream=self._name,
+                    offset=self._offset,
+                    **self._read_rows_kwargs
+                )
+                break
+            except Exception as exc:
+                if not self._resource_exhausted_exception_is_retryable(exc):
+                    raise
+
+    def _resource_exhausted_exception_is_retryable(self, exc):
+        if isinstance(exc, google.api_core.exceptions.ResourceExhausted):
+            # ResourceExhausted errors are only retried if a valid
+            # RetryInfo is provided with the error.
+            #
+            # TODO: Remove hasattr logic when we require google-api-core >= 2.2.0.
+            #       ResourceExhausted added details/_details in google-api-core 2.2.0.
+            details = None
+            if hasattr(exc, "details"):
+                details = exc.details
+            elif hasattr(exc, "_details"):
+                details = exc._details
+            if details is not None:
+                for detail in details:
+                    if isinstance(detail, google.rpc.error_details_pb2.RetryInfo):
+                        retry_delay = detail.retry_delay
+                        if retry_delay is not None:
+                            delay = max(
+                                0,
+                                float(retry_delay.seconds)
+                                + (float(retry_delay.nanos) / 1e9),
+                            )
+                            if self._retry_delay_callback:
+                                self._retry_delay_callback(delay)
+                            time.sleep(delay)
+                            return True
+        return False
 
     def rows(self, read_session=None):
         """Iterate over all rows in the stream.
