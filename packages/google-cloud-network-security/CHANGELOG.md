@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.3.2](https://www.github.com/googleapis/python-network-security/compare/v0.3.1...v0.3.2) (2022-01-09)
+
+
+### Bug Fixes
+
+* updating metadata messages for all long running operations ([#57](https://www.github.com/googleapis/python-network-security/issues/57)) ([7adc601](https://www.github.com/googleapis/python-network-security/commit/7adc601de611fe0323185b2747c98a620e21a38f))
+
 ### [0.3.1](https://www.github.com/googleapis/python-network-security/compare/v0.3.0...v0.3.1) (2021-11-02)
 
 
