@@ -14,8 +14,6 @@
 
 import os
 
-import six
-
 from google.api_core import exceptions
 
 from test_utils.retry import RetryErrors
@@ -27,17 +25,7 @@ retry_429_harder = RetryErrors(exceptions.TooManyRequests, max_tries=10)
 retry_429_503 = RetryErrors(
     [exceptions.TooManyRequests, exceptions.ServiceUnavailable], max_tries=10
 )
-
-# Work around https://github.com/googleapis/python-test-utils/issues/36
-if six.PY3:
-    retry_failures = RetryErrors(AssertionError)
-else:
-
-    def retry_failures(decorated):  # no-op
-        wrapped = RetryErrors(AssertionError)(decorated)
-        wrapped.__wrapped__ = decorated
-        return wrapped
-
+retry_failures = RetryErrors(AssertionError)
 
 user_project = os.environ.get("GOOGLE_CLOUD_TESTS_USER_PROJECT")
 testing_mtls = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE") == "true"

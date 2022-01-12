@@ -35,14 +35,12 @@ import logging
 import mimetypes
 import os
 import re
+from urllib.parse import parse_qsl
+from urllib.parse import quote
+from urllib.parse import urlencode
+from urllib.parse import urlsplit
+from urllib.parse import urlunsplit
 import warnings
-
-import six
-from six.moves.urllib.parse import parse_qsl
-from six.moves.urllib.parse import quote
-from six.moves.urllib.parse import urlencode
-from six.moves.urllib.parse import urlsplit
-from six.moves.urllib.parse import urlunsplit
 
 from google import resumable_media
 from google.resumable_media.requests import ChunkedDownload
@@ -64,7 +62,6 @@ from google.cloud.storage._helpers import _add_generation_match_parameters
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
 from google.cloud.storage._helpers import _bucket_bound_hostname_url
-from google.cloud.storage._helpers import _convert_to_timestamp
 from google.cloud.storage._helpers import _raise_if_more_than_one_set
 from google.cloud.storage._helpers import _api_core_retry_to_resumable_media_retry
 from google.cloud.storage._signing import generate_signed_url_v2
@@ -1303,10 +1300,7 @@ class Blob(_PropertyMixin):
 
         updated = self.updated
         if updated is not None:
-            if six.PY2:
-                mtime = _convert_to_timestamp(updated)
-            else:
-                mtime = updated.timestamp()
+            mtime = updated.timestamp()
             os.utime(file_obj.name, (mtime, mtime))
 
     def download_as_bytes(

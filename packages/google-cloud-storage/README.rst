@@ -65,6 +65,9 @@ Unsupported Python Versions
 Python == 3.5: the last released version which supported Python 3.5 was
 ``google-cloud-storage 1.32.0``, released 2020-10-16.
 
+Python == 2.7: the last released version which supported Python 2.7 was
+``google-cloud-storage 1.44.0``, released 2022-01-05.
+
 Mac/Linux
 ^^^^^^^^^
 

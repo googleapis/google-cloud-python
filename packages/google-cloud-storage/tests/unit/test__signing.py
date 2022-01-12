@@ -21,11 +21,10 @@ import datetime
 import json
 import time
 import unittest
+import urllib.parse
 
 import mock
 import pytest
-import six
-from six.moves import urllib_parse
 
 from . import _read_local_json
 
@@ -45,21 +44,10 @@ def _utc_seconds(when):
 
 
 def _make_cet_timezone():
-    try:
-        from datetime import timezone
+    from datetime import timezone
+    from datetime import timedelta
 
-    except ImportError:  # Python 2.7
-        from google.cloud._helpers import _UTC
-
-        class CET(_UTC):
-            _tzname = "CET"
-            _utcoffset = datetime.timedelta(hours=1)
-
-        return CET()
-    else:
-        from datetime import timedelta
-
-        return timezone(timedelta(hours=1), name="CET")
+    return timezone(timedelta(hours=1), name="CET")
 
 
 class Test_get_expiration_seconds_v2(unittest.TestCase):
@@ -79,12 +67,6 @@ class Test_get_expiration_seconds_v2(unittest.TestCase):
 
     def test_w_expiration_int(self):
         self.assertEqual(self._call_fut(123), 123)
-
-    def test_w_expiration_long(self):
-        if not six.PY2:
-            raise unittest.SkipTest("No long on Python 3+")
-
-        self.assertEqual(self._call_fut(long(123)), 123)  # noqa: F821
 
     def test_w_expiration_naive_datetime(self):
         expiration_no_tz = datetime.datetime(2004, 8, 19, 0, 0, 0, 0)
@@ -368,7 +350,7 @@ class Test_generate_signed_url_v2(unittest.TestCase):
         headers=None,
         query_parameters=None,
     ):
-        from six.moves.urllib.parse import urlencode
+        from urllib.parse import urlencode
 
         resource = "/name/path"
         credentials = _make_credentials(signer_email="service@example.com")
@@ -429,8 +411,8 @@ class Test_generate_signed_url_v2(unittest.TestCase):
 
         credentials.sign_bytes.assert_called_once_with(string_to_sign.encode("ascii"))
 
-        scheme, netloc, path, qs, frag = urllib_parse.urlsplit(url)
-        expected_scheme, expected_netloc, _, _, _ = urllib_parse.urlsplit(
+        scheme, netloc, path, qs, frag = urllib.parse.urlsplit(url)
+        expected_scheme, expected_netloc, _, _, _ = urllib.parse.urlsplit(
             api_access_endpoint
         )
         self.assertEqual(scheme, expected_scheme)
@@ -439,7 +421,7 @@ class Test_generate_signed_url_v2(unittest.TestCase):
         self.assertEqual(frag, "")
 
         # Check the URL parameters.
-        params = dict(urllib_parse.parse_qsl(qs, keep_blank_values=True))
+        params = dict(urllib.parse.parse_qsl(qs, keep_blank_values=True))
 
         self.assertEqual(params["GoogleAccessId"], credentials.signer_email)
         self.assertEqual(params["Expires"], str(expiration))
@@ -571,9 +553,9 @@ class Test_generate_signed_url_v4(unittest.TestCase):
         # Check the mock was called.
         credentials.sign_bytes.assert_called_once()
 
-        scheme, netloc, path, qs, frag = urllib_parse.urlsplit(url)
+        scheme, netloc, path, qs, frag = urllib.parse.urlsplit(url)
 
-        expected_scheme, expected_netloc, _, _, _ = urllib_parse.urlsplit(
+        expected_scheme, expected_netloc, _, _, _ = urllib.parse.urlsplit(
             api_access_endpoint
         )
         self.assertEqual(scheme, expected_scheme)
@@ -582,7 +564,7 @@ class Test_generate_signed_url_v4(unittest.TestCase):
         self.assertEqual(frag, "")
 
         # Check the URL parameters.
-        params = dict(urllib_parse.parse_qsl(qs, keep_blank_values=True))
+        params = dict(urllib.parse.parse_qsl(qs, keep_blank_values=True))
         self.assertEqual(params["X-Goog-Algorithm"], "GOOG4-RSA-SHA256")
 
         now_date = now.date().strftime("%Y%m%d")

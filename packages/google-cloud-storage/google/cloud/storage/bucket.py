@@ -18,10 +18,8 @@ import base64
 import copy
 import datetime
 import json
+from urllib.parse import urlsplit
 import warnings
-
-import six
-from six.moves.urllib.parse import urlsplit
 
 from google.api_core import datetime_helpers
 from google.cloud._helpers import _datetime_to_rfc3339
@@ -1705,7 +1703,7 @@ class Bucket(_PropertyMixin):
         for blob in blobs:
             try:
                 blob_name = blob
-                if not isinstance(blob_name, six.string_types):
+                if not isinstance(blob_name, str):
                     blob_name = blob.name
                 self.delete_blob(
                     blob_name,

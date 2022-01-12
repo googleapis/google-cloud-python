@@ -20,12 +20,11 @@ import json
 import os
 import tempfile
 import unittest
+import http.client
+from urllib.parse import urlencode
 
 import mock
 import pytest
-import six
-from six.moves import http_client
-from six.moves.urllib.parse import urlencode
 
 from google.cloud.storage.retry import (
     DEFAULT_RETRY,
@@ -81,7 +80,7 @@ class Test_Blob(unittest.TestCase):
         blob = self._make_one(blob_name, bucket=None)
         unicode_name = u"wet \N{sailboat}"
         self.assertNotIsInstance(blob.name, bytes)
-        self.assertIsInstance(blob.name, six.text_type)
+        self.assertIsInstance(blob.name, str)
         self.assertEqual(blob.name, unicode_name)
 
     def test_ctor_w_encryption_key(self):
@@ -455,7 +454,7 @@ class Test_Blob(unittest.TestCase):
         bucket_bound_hostname=None,
         scheme="http",
     ):
-        from six.moves.urllib import parse
+        from urllib import parse
         from google.cloud._helpers import UTC
         from google.cloud.storage._helpers import _bucket_bound_hostname_url
         from google.cloud.storage.blob import _API_ACCESS_ENDPOINT
@@ -1066,7 +1065,7 @@ class Test_Blob(unittest.TestCase):
         blob = self._make_one(blob_name, bucket=bucket)
 
         response = self._mock_requests_response(
-            http_client.OK,
+            http.client.OK,
             headers={
                 "Content-Type": "application/json",
                 "Content-Language": "ko-kr",
@@ -1102,7 +1101,7 @@ class Test_Blob(unittest.TestCase):
         blob = self._make_one(blob_name, bucket=bucket)
 
         response = self._mock_requests_response(
-            http_client.OK,
+            http.client.OK,
             headers={
                 "Content-Type": "application/octet-stream",
                 "Content-Language": "en-US",
@@ -1139,7 +1138,7 @@ class Test_Blob(unittest.TestCase):
         blob = self._make_one(blob_name, bucket=bucket, properties=properties)
 
         response = self._mock_requests_response(
-            http_client.OK,
+            http.client.OK,
             headers={"X-Goog-Hash": ""},
             # { "x": 5 } gzipped
             content=b"\x1f\x8b\x08\x00\xcfo\x17_\x02\xff\xabVP\xaaP\xb2R0U\xa8\x05\x00\xa1\xcaQ\x93\n\x00\x00\x00",
@@ -1156,7 +1155,7 @@ class Test_Blob(unittest.TestCase):
         blob = self._make_one(blob_name, bucket=bucket)
 
         response = self._mock_requests_response(
-            http_client.OK,
+            http.client.OK,
             headers={"X-Goog-Hash": "bogus=4gcgLQ==,"},
             # { "x": 5 } gzipped
             content=b"",
@@ -1587,7 +1586,6 @@ class Test_Blob(unittest.TestCase):
         self, updated, raw_download, timeout=None, **extra_kwargs
     ):
         import os
-        from google.cloud.storage._helpers import _convert_to_timestamp
         from google.cloud._testing import _NamedTemporaryFile
 
         blob_name = "blob-name"
@@ -1616,10 +1614,7 @@ class Test_Blob(unittest.TestCase):
                 self.assertIsNone(blob.updated)
             else:
                 mtime = os.path.getmtime(temp.name)
-                if six.PY2:
-                    updated_time = _convert_to_timestamp(blob.updated)
-                else:
-                    updated_time = blob.updated.timestamp()
+                updated_time = blob.updated.timestamp()
                 self.assertEqual(mtime, updated_time)
 
         expected_timeout = self._get_default_timeout() if timeout is None else timeout
@@ -2276,7 +2271,7 @@ class Test_Blob(unittest.TestCase):
         # Create some mock arguments.
         if not client:
             # Create mocks to be checked for doing transport.
-            transport = self._mock_transport(http_client.OK, {})
+            transport = self._mock_transport(http.client.OK, {})
 
             client = mock.Mock(_http=transport, _connection=_Connection, spec=["_http"])
             client._connection.API_BASE_URL = "https://storage.googleapis.com"
@@ -2462,7 +2457,7 @@ class Test_Blob(unittest.TestCase):
 
     @mock.patch(u"google.resumable_media._upload.get_boundary", return_value=b"==0==")
     def test__do_multipart_upload_with_client(self, mock_get_boundary):
-        transport = self._mock_transport(http_client.OK, {})
+        transport = self._mock_transport(http.client.OK, {})
         client = mock.Mock(_http=transport, _connection=_Connection, spec=["_http"])
         client._connection.API_BASE_URL = "https://storage.googleapis.com"
         self._do_multipart_success(mock_get_boundary, client=client)
@@ -2537,7 +2532,7 @@ class Test_Blob(unittest.TestCase):
         if not client:
             # Create mocks to be checked for doing transport.
             response_headers = {"location": resumable_url}
-            transport = self._mock_transport(http_client.OK, response_headers)
+            transport = self._mock_transport(http.client.OK, response_headers)
 
             # Create some mock arguments and call the method under test.
             client = mock.Mock(
@@ -2752,7 +2747,7 @@ class Test_Blob(unittest.TestCase):
     def test__initiate_resumable_upload_with_client(self):
         resumable_url = "http://test.invalid?upload_id=hey-you"
         response_headers = {"location": resumable_url}
-        transport = self._mock_transport(http_client.OK, response_headers)
+        transport = self._mock_transport(http.client.OK, response_headers)
 
         client = mock.Mock(_http=transport, _connection=_Connection, spec=[u"_http"])
         client._connection.API_BASE_URL = "https://storage.googleapis.com"
@@ -2765,7 +2760,7 @@ class Test_Blob(unittest.TestCase):
 
         fake_transport = mock.Mock(spec=["request"])
 
-        fake_response1 = self._mock_requests_response(http_client.OK, headers1)
+        fake_response1 = self._mock_requests_response(http.client.OK, headers1)
         fake_response2 = self._mock_requests_response(
             resumable_media.PERMANENT_REDIRECT, headers2
         )
@@ -2774,7 +2769,7 @@ class Test_Blob(unittest.TestCase):
             fake_response3 = resumable_media.DataCorruption(None)
         else:
             fake_response3 = self._mock_requests_response(
-                http_client.OK, headers3, content=json_body.encode("utf-8")
+                http.client.OK, headers3, content=json_body.encode("utf-8")
             )
 
         responses = [fake_response1, fake_response2, fake_response3]
@@ -3251,7 +3246,7 @@ class Test_Blob(unittest.TestCase):
 
         message = "Someone is already in this spot."
         response = requests.Response()
-        response.status_code = http_client.CONFLICT
+        response.status_code = http.client.CONFLICT
         response.request = requests.Request("POST", "http://example.com").prepare()
         side_effect = InvalidResponse(response, message)
 
@@ -3506,7 +3501,7 @@ class Test_Blob(unittest.TestCase):
         # Create mocks to be checked for doing transport.
         resumable_url = "http://test.invalid?upload_id=clean-up-everybody"
         response_headers = {"location": resumable_url}
-        transport = self._mock_transport(http_client.OK, response_headers)
+        transport = self._mock_transport(http.client.OK, response_headers)
         if side_effect is not None:
             transport.request.side_effect = side_effect
 
@@ -3610,7 +3605,7 @@ class Test_Blob(unittest.TestCase):
 
         message = "5-oh-3 woe is me."
         response = self._mock_requests_response(
-            status_code=http_client.SERVICE_UNAVAILABLE, headers={}
+            status_code=http.client.SERVICE_UNAVAILABLE, headers={}
         )
         side_effect = InvalidResponse(response, message)
 
@@ -5674,7 +5669,7 @@ class Test__raise_from_invalid_response(unittest.TestCase):
 
         return _raise_from_invalid_response(error)
 
-    def _helper(self, message, code=http_client.BAD_REQUEST, reason=None, args=()):
+    def _helper(self, message, code=http.client.BAD_REQUEST, reason=None, args=()):
         import requests
 
         from google.resumable_media import InvalidResponse
@@ -5703,7 +5698,7 @@ class Test__raise_from_invalid_response(unittest.TestCase):
         reason = b"Not available"
         args = ("one", "two")
         exc_info = self._helper(
-            message, code=http_client.PARTIAL_CONTENT, reason=reason, args=args
+            message, code=http.client.PARTIAL_CONTENT, reason=reason, args=args
         )
         expected = "GET http://example.com/: {}: {}".format(
             reason.decode("utf-8"), (message,) + args

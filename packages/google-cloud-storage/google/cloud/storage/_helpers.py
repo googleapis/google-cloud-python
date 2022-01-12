@@ -19,11 +19,9 @@ These are *not* part of the API.
 
 import base64
 from hashlib import md5
-from datetime import datetime
 import os
+from urllib.parse import urlsplit
 
-from six import string_types
-from six.moves.urllib.parse import urlsplit
 from google import resumable_media
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.retry import DEFAULT_RETRY
@@ -453,20 +451,6 @@ def _base64_md5hash(buffer_object):
     return base64.b64encode(digest_bytes)
 
 
-def _convert_to_timestamp(value):
-    """Convert non-none datetime to timestamp.
-
-    :type value: :class:`datetime.datetime`
-    :param value: The datetime to convert.
-
-    :rtype: int
-    :returns: The timestamp.
-    """
-    utc_naive = value.replace(tzinfo=None) - value.utcoffset()
-    mtime = (utc_naive - datetime(1970, 1, 1)).total_seconds()
-    return mtime
-
-
 def _add_etag_match_headers(headers, **match_parameters):
     """Add generation match parameters into the given parameters list.
 
@@ -480,7 +464,7 @@ def _add_etag_match_headers(headers, **match_parameters):
         value = match_parameters.get(snakecase_name)
 
         if value is not None:
-            if isinstance(value, string_types):
+            if isinstance(value, str):
                 value = [value]
             headers[header_name] = ", ".join(value)
 

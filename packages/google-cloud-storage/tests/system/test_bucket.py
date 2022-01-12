@@ -15,7 +15,6 @@
 import datetime
 
 import pytest
-import six
 
 from google.api_core import exceptions
 from . import _helpers
@@ -430,7 +429,7 @@ def test_bucket_list_blobs_paginated(listable_bucket, listable_filenames):
     iterator = listable_bucket.list_blobs(max_results=count)
     page_iter = iterator.pages
 
-    page1 = six.next(page_iter)
+    page1 = next(page_iter)
     blobs = list(page1)
     assert len(blobs) == count
     assert iterator.next_page_token is not None
@@ -440,7 +439,7 @@ def test_bucket_list_blobs_paginated(listable_bucket, listable_filenames):
     # artificially stopping after ``count`` items.
     iterator.max_results = None
 
-    page2 = six.next(page_iter)
+    page2 = next(page_iter)
     last_blobs = list(page2)
     assert len(last_blobs) == truncation_size
 
@@ -459,7 +458,7 @@ def test_bucket_list_blobs_paginated_w_offset(listable_bucket, listable_filename
     )
     page_iter = iterator.pages
 
-    page1 = six.next(page_iter)
+    page1 = next(page_iter)
     blobs = list(page1)
     assert len(blobs) == count
     assert blobs[0].name == desired_files[0]
@@ -470,7 +469,7 @@ def test_bucket_list_blobs_paginated_w_offset(listable_bucket, listable_filename
     # artificially stopping after ``count`` items.
     iterator.max_results = None
 
-    page2 = six.next(page_iter)
+    page2 = next(page_iter)
     last_blobs = list(page2)
     assert len(last_blobs) == truncation_size
     assert last_blobs[-1].name == desired_files[-1]
@@ -489,7 +488,7 @@ def test_bucket_list_blobs_hierarchy_root_level(hierarchy_bucket, hierarchy_file
     expected_prefixes = set(["parent/"])
 
     iterator = hierarchy_bucket.list_blobs(delimiter="/")
-    page = six.next(iterator.pages)
+    page = next(iterator.pages)
     blobs = list(page)
 
     assert [blob.name for blob in blobs] == expected_names
@@ -503,7 +502,7 @@ def test_bucket_list_blobs_hierarchy_first_level(hierarchy_bucket, hierarchy_fil
     expected_prefixes = set(["parent/child/"])
 
     iterator = hierarchy_bucket.list_blobs(delimiter="/", prefix="parent/")
-    page = six.next(iterator.pages)
+    page = next(iterator.pages)
     blobs = list(page)
 
     assert [blob.name for blob in blobs] == expected_names
@@ -519,7 +518,7 @@ def test_bucket_list_blobs_hierarchy_second_level(
     expected_prefixes = set(["parent/child/grand/", "parent/child/other/"])
 
     iterator = hierarchy_bucket.list_blobs(delimiter="/", prefix="parent/child/")
-    page = six.next(iterator.pages)
+    page = next(iterator.pages)
     blobs = list(page)
     assert [blob.name for blob in blobs] == expected_names
     assert iterator.next_page_token is None
@@ -536,7 +535,7 @@ def test_bucket_list_blobs_hierarchy_third_level(hierarchy_bucket, hierarchy_fil
     expected_prefixes = set()
 
     iterator = hierarchy_bucket.list_blobs(delimiter="/", prefix="parent/child/grand/")
-    page = six.next(iterator.pages)
+    page = next(iterator.pages)
     blobs = list(page)
 
     assert [blob.name for blob in blobs] == expected_names
@@ -554,7 +553,7 @@ def test_bucket_list_blobs_hierarchy_w_include_trailing_delimiter(
     iterator = hierarchy_bucket.list_blobs(
         delimiter="/", include_trailing_delimiter=True
     )
-    page = six.next(iterator.pages)
+    page = next(iterator.pages)
     blobs = list(page)
 
     assert [blob.name for blob in blobs] == expected_names

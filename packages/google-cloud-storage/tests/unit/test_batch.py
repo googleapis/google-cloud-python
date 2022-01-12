@@ -12,11 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import http.client
+from http.client import SERVICE_UNAVAILABLE
+from http.client import NO_CONTENT
 import unittest
 
 import mock
 import requests
-from six.moves import http_client
 
 
 def _make_credentials():
@@ -25,7 +27,7 @@ def _make_credentials():
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
-def _make_response(status=http_client.OK, content=b"", headers={}):
+def _make_response(status=http.client.OK, content=b"", headers={}):
     response = requests.Response()
     response.status_code = status
     response._content = content
@@ -348,7 +350,7 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(response2.json(), {"foo": 1, "bar": 3})
 
         self.assertEqual(response3.headers, {"Content-Length": "0"})
-        self.assertEqual(response3.status_code, http_client.NO_CONTENT)
+        self.assertEqual(response3.status_code, NO_CONTENT)
 
         expected_url = "{}/batch/storage/v1".format(batch.API_BASE_URL)
         http.request.assert_called_once_with(
@@ -452,7 +454,7 @@ class TestBatch(unittest.TestCase):
 
         url = "http://api.example.com/other_api"
         expected_response = _make_response(
-            status=http_client.SERVICE_UNAVAILABLE,
+            status=SERVICE_UNAVAILABLE,
             headers={"content-type": 'multipart/mixed; boundary="DEADBEEF="'},
         )
         http = _make_requests_session([expected_response])
@@ -574,11 +576,11 @@ class Test__unpack_batch_response(unittest.TestCase):
         result = list(self._call_fut(response, content))
         self.assertEqual(len(result), 3)
 
-        self.assertEqual(result[0].status_code, http_client.OK)
+        self.assertEqual(result[0].status_code, http.client.OK)
         self.assertEqual(result[0].json(), {u"bar": 2, u"foo": 1})
-        self.assertEqual(result[1].status_code, http_client.OK)
+        self.assertEqual(result[1].status_code, http.client.OK)
         self.assertEqual(result[1].json(), {u"foo": 1, u"bar": 3})
-        self.assertEqual(result[2].status_code, http_client.NO_CONTENT)
+        self.assertEqual(result[2].status_code, http.client.NO_CONTENT)
 
     def test_bytes_headers(self):
         RESPONSE = {"content-type": b'multipart/mixed; boundary="DEADBEEF="'}

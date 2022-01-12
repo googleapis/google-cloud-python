@@ -20,19 +20,13 @@ from google.api_core import retry
 from google.auth import exceptions as auth_exceptions
 
 
-# ConnectionError is a built-in exception only in Python3 and not in Python2.
-try:
-    _RETRYABLE_STDLIB_TYPES = (ConnectionError,)
-except NameError:
-    _RETRYABLE_STDLIB_TYPES = ()
-
-
-_RETRYABLE_TYPES = _RETRYABLE_STDLIB_TYPES + (
+_RETRYABLE_TYPES = (
     api_exceptions.TooManyRequests,  # 429
     api_exceptions.InternalServerError,  # 500
     api_exceptions.BadGateway,  # 502
     api_exceptions.ServiceUnavailable,  # 503
     api_exceptions.GatewayTimeout,  # 504
+    ConnectionError,
     requests.ConnectionError,
     requests_exceptions.ChunkedEncodingError,
 )

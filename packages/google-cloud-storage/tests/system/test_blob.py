@@ -20,7 +20,6 @@ import tempfile
 import warnings
 
 import pytest
-import six
 import mock
 
 from google import resumable_media
@@ -33,7 +32,7 @@ encryption_key = "b23ff11bba187db8c37077e6af3b25b8"
 
 def _check_blob_hash(blob, info):
     md5_hash = blob.md5_hash
-    if not isinstance(md5_hash, six.binary_type):
+    if not isinstance(md5_hash, bytes):
         md5_hash = md5_hash.encode("utf-8")
 
     assert md5_hash == info["hash"]

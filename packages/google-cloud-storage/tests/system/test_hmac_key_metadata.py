@@ -15,7 +15,6 @@
 import datetime
 
 import pytest
-import six
 
 from google.cloud import _helpers as _cloud_helpers
 
@@ -62,7 +61,7 @@ def test_hmac_key_crud(storage_client, scrubbed_hmac_keys, service_account):
     metadata, secret = storage_client.create_hmac_key(email)
     hmac_keys_to_delete.append(metadata)
 
-    assert isinstance(secret, six.text_type)
+    assert isinstance(secret, str)
     assert len(secret) == 40
 
     after_hmac_keys = set(storage_client.list_hmac_keys())

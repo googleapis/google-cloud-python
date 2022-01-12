@@ -20,7 +20,8 @@ import datetime
 import hashlib
 import json
 
-import six
+import http
+import urllib
 
 import google.auth.credentials
 
@@ -110,7 +111,7 @@ def get_expiration_seconds_v2(expiration):
         micros = _helpers._microseconds_from_datetime(expiration)
         expiration = micros // 10 ** 6
 
-    if not isinstance(expiration, six.integer_types):
+    if not isinstance(expiration, int):
         raise TypeError(
             "Expected an integer timestamp, datetime, or "
             "timedelta. Got %s" % type(expiration)
@@ -118,7 +119,7 @@ def get_expiration_seconds_v2(expiration):
     return expiration
 
 
-_EXPIRATION_TYPES = six.integer_types + (datetime.datetime, datetime.timedelta)
+_EXPIRATION_TYPES = (int, datetime.datetime, datetime.timedelta)
 
 
 def get_expiration_seconds_v4(expiration):
@@ -142,7 +143,7 @@ def get_expiration_seconds_v4(expiration):
 
     now = NOW().replace(tzinfo=_helpers.UTC)
 
-    if isinstance(expiration, six.integer_types):
+    if isinstance(expiration, int):
         seconds = expiration
 
     if isinstance(expiration, datetime.datetime):
@@ -250,7 +251,7 @@ def canonicalize_v2(method, resource, query_parameters, headers):
         (key.lower(), value and value.strip() or "")
         for key, value in query_parameters.items()
     )
-    encoded_qp = six.moves.urllib.parse.urlencode(normalized_qp)
+    encoded_qp = urllib.parse.urlencode(normalized_qp)
     canonical_resource = "{}?{}".format(resource, encoded_qp)
     return _Canonical(method, canonical_resource, normalized_qp, headers)
 
@@ -410,7 +411,7 @@ def generate_signed_url_v2(
     return "{endpoint}{resource}?{querystring}".format(
         endpoint=api_access_endpoint,
         resource=resource,
-        querystring=six.moves.urllib.parse.urlencode(sorted_signed_query_params),
+        querystring=urllib.parse.urlencode(sorted_signed_query_params),
     )
 
 
@@ -563,7 +564,7 @@ def generate_signed_url_v4(
 
     header_names = [key.lower() for key in headers]
     if "host" not in header_names:
-        headers["Host"] = six.moves.urllib.parse.urlparse(api_access_endpoint).netloc
+        headers["Host"] = urllib.parse.urlparse(api_access_endpoint).netloc
 
     if method.upper() == "RESUMABLE":
         method = "POST"
@@ -686,7 +687,7 @@ def _sign_message(message, access_token, service_account_email):
     request = requests.Request()
     response = request(url=url, method=method, body=body, headers=headers)
 
-    if response.status != six.moves.http_client.OK:
+    if response.status != http.client.OK:
         raise exceptions.TransportError(
             "Error calling the IAM signBytes API: {}".format(response.data)
         )
@@ -723,4 +724,4 @@ def _quote_param(param):
     """
     if not isinstance(param, bytes):
         param = str(param)
-    return six.moves.urllib.parse.quote(param, safe="~")
+    return urllib.parse.quote(param, safe="~")

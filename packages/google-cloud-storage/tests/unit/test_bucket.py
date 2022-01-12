@@ -3820,7 +3820,7 @@ class Test_Bucket(unittest.TestCase):
         bucket_bound_hostname=None,
         scheme="http",
     ):
-        from six.moves.urllib import parse
+        from urllib import parse
         from google.cloud._helpers import UTC
         from google.cloud.storage._helpers import _bucket_bound_hostname_url
         from google.cloud.storage.blob import _API_ACCESS_ENDPOINT
