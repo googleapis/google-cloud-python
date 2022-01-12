@@ -20,7 +20,14 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.bigtable.admin.v2", manifest={"Instance", "Cluster", "AppProfile",},
+    package="google.bigtable.admin.v2",
+    manifest={
+        "Instance",
+        "AutoscalingTargets",
+        "AutoscalingLimits",
+        "Cluster",
+        "AppProfile",
+    },
 )
 
 
@@ -85,10 +92,45 @@ class Instance(proto.Message):
     create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
 
 
+class AutoscalingTargets(proto.Message):
+    r"""The Autoscaling targets for a Cluster. These determine the
+    recommended nodes.
+
+    Attributes:
+        cpu_utilization_percent (int):
+            The cpu utilization that the Autoscaler
+            should be trying to achieve. This number is on a
+            scale from 0 (no utilization) to 100 (total
+            utilization).
+    """
+
+    cpu_utilization_percent = proto.Field(proto.INT32, number=2,)
+
+
+class AutoscalingLimits(proto.Message):
+    r"""Limits for the number of nodes a Cluster can autoscale
+    up/down to.
+
+    Attributes:
+        min_serve_nodes (int):
+            Required. Minimum number of nodes to scale
+            down to.
+        max_serve_nodes (int):
+            Required. Maximum number of nodes to scale up
+            to.
+    """
+
+    min_serve_nodes = proto.Field(proto.INT32, number=1,)
+    max_serve_nodes = proto.Field(proto.INT32, number=2,)
+
+
 class Cluster(proto.Message):
     r"""A resizable group of nodes in a particular cloud location, capable
     of serving all [Tables][google.bigtable.admin.v2.Table] in the
     parent [Instance][google.bigtable.admin.v2.Instance].
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         name (str):
@@ -103,9 +145,13 @@ class Cluster(proto.Message):
         state (google.cloud.bigtable_admin_v2.types.Cluster.State):
             The current state of the cluster.
         serve_nodes (int):
-            Required. The number of nodes allocated to
-            this cluster. More nodes enable higher
-            throughput and more consistent performance.
+            The number of nodes allocated to this
+            cluster. More nodes enable higher throughput and
+            more consistent performance.
+        cluster_config (google.cloud.bigtable_admin_v2.types.Cluster.ClusterConfig):
+            Configuration for this cluster.
+
+            This field is a member of `oneof`_ ``config``.
         default_storage_type (google.cloud.bigtable_admin_v2.types.StorageType):
             (``CreationOnly``) The type of storage used by this cluster
             to serve its parent instance's tables, unless explicitly
@@ -122,6 +168,37 @@ class Cluster(proto.Message):
         CREATING = 2
         RESIZING = 3
         DISABLED = 4
+
+    class ClusterAutoscalingConfig(proto.Message):
+        r"""Autoscaling config for a cluster.
+
+        Attributes:
+            autoscaling_limits (google.cloud.bigtable_admin_v2.types.AutoscalingLimits):
+                Required. Autoscaling limits for this
+                cluster.
+            autoscaling_targets (google.cloud.bigtable_admin_v2.types.AutoscalingTargets):
+                Required. Autoscaling targets for this
+                cluster.
+        """
+
+        autoscaling_limits = proto.Field(
+            proto.MESSAGE, number=1, message="AutoscalingLimits",
+        )
+        autoscaling_targets = proto.Field(
+            proto.MESSAGE, number=2, message="AutoscalingTargets",
+        )
+
+    class ClusterConfig(proto.Message):
+        r"""Configuration for a cluster.
+
+        Attributes:
+            cluster_autoscaling_config (google.cloud.bigtable_admin_v2.types.Cluster.ClusterAutoscalingConfig):
+                Autoscaling configuration for this cluster.
+        """
+
+        cluster_autoscaling_config = proto.Field(
+            proto.MESSAGE, number=1, message="Cluster.ClusterAutoscalingConfig",
+        )
 
     class EncryptionConfig(proto.Message):
         r"""Cloud Key Management Service (Cloud KMS) settings for a CMEK-
@@ -149,6 +226,9 @@ class Cluster(proto.Message):
     location = proto.Field(proto.STRING, number=2,)
     state = proto.Field(proto.ENUM, number=3, enum=State,)
     serve_nodes = proto.Field(proto.INT32, number=4,)
+    cluster_config = proto.Field(
+        proto.MESSAGE, number=7, oneof="config", message=ClusterConfig,
+    )
     default_storage_type = proto.Field(proto.ENUM, number=5, enum=common.StorageType,)
     encryption_config = proto.Field(proto.MESSAGE, number=6, message=EncryptionConfig,)
 

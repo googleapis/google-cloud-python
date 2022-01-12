@@ -259,6 +259,12 @@ class BigtableInstanceAdminGrpcTransport(BigtableInstanceAdminTransport):
 
         Create an instance within a project.
 
+        Note that exactly one of Cluster.serve_nodes and
+        Cluster.cluster_config.cluster_autoscaling_config can be set. If
+        serve_nodes is set to non-zero, then the cluster is manually
+        scaled. If cluster_config.cluster_autoscaling_config is
+        non-empty, then autoscaling is enabled.
+
         Returns:
             Callable[[~.CreateInstanceRequest],
                     ~.Operation]:
@@ -425,6 +431,12 @@ class BigtableInstanceAdminGrpcTransport(BigtableInstanceAdminTransport):
 
         Creates a cluster within an instance.
 
+        Note that exactly one of Cluster.serve_nodes and
+        Cluster.cluster_config.cluster_autoscaling_config can be set. If
+        serve_nodes is set to non-zero, then the cluster is manually
+        scaled. If cluster_config.cluster_autoscaling_config is
+        non-empty, then autoscaling is enabled.
+
         Returns:
             Callable[[~.CreateClusterRequest],
                     ~.Operation]:
@@ -504,6 +516,10 @@ class BigtableInstanceAdminGrpcTransport(BigtableInstanceAdminTransport):
 
         Updates a cluster within an instance.
 
+        Note that UpdateCluster does not support updating
+        cluster_config.cluster_autoscaling_config. In order to update
+        it, you must use PartialUpdateCluster.
+
         Returns:
             Callable[[~.Cluster],
                     ~.Operation]:
@@ -521,6 +537,47 @@ class BigtableInstanceAdminGrpcTransport(BigtableInstanceAdminTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["update_cluster"]
+
+    @property
+    def partial_update_cluster(
+        self,
+    ) -> Callable[
+        [bigtable_instance_admin.PartialUpdateClusterRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the partial update cluster method over gRPC.
+
+        Partially updates a cluster within a project. This method is the
+        preferred way to update a Cluster.
+
+        To enable and update autoscaling, set
+        cluster_config.cluster_autoscaling_config. When autoscaling is
+        enabled, serve_nodes is treated as an OUTPUT_ONLY field, meaning
+        that updates to it are ignored. Note that an update cannot
+        simultaneously set serve_nodes to non-zero and
+        cluster_config.cluster_autoscaling_config to non-empty, and also
+        specify both in the update_mask.
+
+        To disable autoscaling, clear
+        cluster_config.cluster_autoscaling_config, and explicitly set a
+        serve_node count via the update_mask.
+
+        Returns:
+            Callable[[~.PartialUpdateClusterRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "partial_update_cluster" not in self._stubs:
+            self._stubs["partial_update_cluster"] = self.grpc_channel.unary_unary(
+                "/google.bigtable.admin.v2.BigtableInstanceAdmin/PartialUpdateCluster",
+                request_serializer=bigtable_instance_admin.PartialUpdateClusterRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["partial_update_cluster"]
 
     @property
     def delete_cluster(

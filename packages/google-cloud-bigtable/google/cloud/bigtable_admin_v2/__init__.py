@@ -36,6 +36,8 @@ from .types.bigtable_instance_admin import ListClustersRequest
 from .types.bigtable_instance_admin import ListClustersResponse
 from .types.bigtable_instance_admin import ListInstancesRequest
 from .types.bigtable_instance_admin import ListInstancesResponse
+from .types.bigtable_instance_admin import PartialUpdateClusterMetadata
+from .types.bigtable_instance_admin import PartialUpdateClusterRequest
 from .types.bigtable_instance_admin import PartialUpdateInstanceRequest
 from .types.bigtable_instance_admin import UpdateAppProfileMetadata
 from .types.bigtable_instance_admin import UpdateAppProfileRequest
@@ -73,6 +75,8 @@ from .types.bigtable_table_admin import UpdateBackupRequest
 from .types.common import OperationProgress
 from .types.common import StorageType
 from .types.instance import AppProfile
+from .types.instance import AutoscalingLimits
+from .types.instance import AutoscalingTargets
 from .types.instance import Cluster
 from .types.instance import Instance
 from .types.table import Backup
@@ -89,6 +93,8 @@ __all__ = (
     "BigtableInstanceAdminAsyncClient",
     "BigtableTableAdminAsyncClient",
     "AppProfile",
+    "AutoscalingLimits",
+    "AutoscalingTargets",
     "Backup",
     "BackupInfo",
     "BigtableInstanceAdminClient",
@@ -140,6 +146,8 @@ __all__ = (
     "ModifyColumnFamiliesRequest",
     "OperationProgress",
     "OptimizeRestoredTableMetadata",
+    "PartialUpdateClusterMetadata",
+    "PartialUpdateClusterRequest",
     "PartialUpdateInstanceRequest",
     "RestoreInfo",
     "RestoreSourceType",

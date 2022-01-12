@@ -437,6 +437,12 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
     ) -> operation.Operation:
         r"""Create an instance within a project.
 
+        Note that exactly one of Cluster.serve_nodes and
+        Cluster.cluster_config.cluster_autoscaling_config can be set. If
+        serve_nodes is set to non-zero, then the cluster is manually
+        scaled. If cluster_config.cluster_autoscaling_config is
+        non-empty, then autoscaling is enabled.
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.CreateInstanceRequest, dict]):
                 The request object. Request message for
@@ -931,6 +937,12 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
     ) -> operation.Operation:
         r"""Creates a cluster within an instance.
 
+        Note that exactly one of Cluster.serve_nodes and
+        Cluster.cluster_config.cluster_autoscaling_config can be set. If
+        serve_nodes is set to non-zero, then the cluster is manually
+        scaled. If cluster_config.cluster_autoscaling_config is
+        non-empty, then autoscaling is enabled.
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.CreateClusterRequest, dict]):
                 The request object. Request message for
@@ -1182,6 +1194,10 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
     ) -> operation.Operation:
         r"""Updates a cluster within an instance.
 
+        Note that UpdateCluster does not support updating
+        cluster_config.cluster_autoscaling_config. In order to update
+        it, you must use PartialUpdateCluster.
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.Cluster, dict]):
                 The request object. A resizable group of nodes in a
@@ -1231,6 +1247,116 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
             self._transport.operations_client,
             instance.Cluster,
             metadata_type=bigtable_instance_admin.UpdateClusterMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def partial_update_cluster(
+        self,
+        request: Union[
+            bigtable_instance_admin.PartialUpdateClusterRequest, dict
+        ] = None,
+        *,
+        cluster: instance.Cluster = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Partially updates a cluster within a project. This method is the
+        preferred way to update a Cluster.
+
+        To enable and update autoscaling, set
+        cluster_config.cluster_autoscaling_config. When autoscaling is
+        enabled, serve_nodes is treated as an OUTPUT_ONLY field, meaning
+        that updates to it are ignored. Note that an update cannot
+        simultaneously set serve_nodes to non-zero and
+        cluster_config.cluster_autoscaling_config to non-empty, and also
+        specify both in the update_mask.
+
+        To disable autoscaling, clear
+        cluster_config.cluster_autoscaling_config, and explicitly set a
+        serve_node count via the update_mask.
+
+        Args:
+            request (Union[google.cloud.bigtable_admin_v2.types.PartialUpdateClusterRequest, dict]):
+                The request object. Request message for
+                BigtableInstanceAdmin.PartialUpdateCluster.
+            cluster (google.cloud.bigtable_admin_v2.types.Cluster):
+                Required. The Cluster which contains the partial updates
+                to be applied, subject to the update_mask.
+
+                This corresponds to the ``cluster`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. The subset of Cluster
+                fields which should be replaced.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.bigtable_admin_v2.types.Cluster` A resizable group of nodes in a particular cloud location, capable
+                   of serving all
+                   [Tables][google.bigtable.admin.v2.Table] in the
+                   parent [Instance][google.bigtable.admin.v2.Instance].
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([cluster, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a bigtable_instance_admin.PartialUpdateClusterRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, bigtable_instance_admin.PartialUpdateClusterRequest):
+            request = bigtable_instance_admin.PartialUpdateClusterRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if cluster is not None:
+                request.cluster = cluster
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.partial_update_cluster]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("cluster.name", request.cluster.name),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            instance.Cluster,
+            metadata_type=bigtable_instance_admin.PartialUpdateClusterMetadata,
         )
 
         # Done; return the response.

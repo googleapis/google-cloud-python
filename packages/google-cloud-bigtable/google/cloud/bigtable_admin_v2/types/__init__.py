@@ -31,6 +31,8 @@ from .bigtable_instance_admin import (
     ListClustersResponse,
     ListInstancesRequest,
     ListInstancesResponse,
+    PartialUpdateClusterMetadata,
+    PartialUpdateClusterRequest,
     PartialUpdateInstanceRequest,
     UpdateAppProfileMetadata,
     UpdateAppProfileRequest,
@@ -74,6 +76,8 @@ from .common import (
 )
 from .instance import (
     AppProfile,
+    AutoscalingLimits,
+    AutoscalingTargets,
     Cluster,
     Instance,
 )
@@ -107,6 +111,8 @@ __all__ = (
     "ListClustersResponse",
     "ListInstancesRequest",
     "ListInstancesResponse",
+    "PartialUpdateClusterMetadata",
+    "PartialUpdateClusterRequest",
     "PartialUpdateInstanceRequest",
     "UpdateAppProfileMetadata",
     "UpdateAppProfileRequest",
@@ -144,6 +150,8 @@ __all__ = (
     "OperationProgress",
     "StorageType",
     "AppProfile",
+    "AutoscalingLimits",
+    "AutoscalingTargets",
     "Cluster",
     "Instance",
     "Backup",

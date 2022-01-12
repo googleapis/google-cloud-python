@@ -68,6 +68,7 @@ class bigtable_adminCallTransformer(cst.CSTTransformer):
         'list_snapshots': ('parent', 'page_size', 'page_token', ),
         'list_tables': ('parent', 'view', 'page_size', 'page_token', ),
         'modify_column_families': ('name', 'modifications', ),
+        'partial_update_cluster': ('cluster', 'update_mask', ),
         'partial_update_instance': ('instance', 'update_mask', ),
         'restore_table': ('parent', 'table_id', 'backup', ),
         'set_iam_policy': ('resource', 'policy', ),
@@ -75,7 +76,7 @@ class bigtable_adminCallTransformer(cst.CSTTransformer):
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_app_profile': ('app_profile', 'update_mask', 'ignore_warnings', ),
         'update_backup': ('backup', 'update_mask', ),
-        'update_cluster': ('serve_nodes', 'name', 'location', 'state', 'default_storage_type', 'encryption_config', ),
+        'update_cluster': ('name', 'location', 'state', 'serve_nodes', 'cluster_config', 'default_storage_type', 'encryption_config', ),
         'update_instance': ('display_name', 'name', 'state', 'type_', 'labels', 'create_time', ),
     }
 

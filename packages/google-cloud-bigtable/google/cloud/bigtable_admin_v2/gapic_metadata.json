@@ -75,6 +75,11 @@
                 "list_instances"
               ]
             },
+            "PartialUpdateCluster": {
+              "methods": [
+                "partial_update_cluster"
+              ]
+            },
             "PartialUpdateInstance": {
               "methods": [
                 "partial_update_instance"
@@ -173,6 +178,11 @@
             "ListInstances": {
               "methods": [
                 "list_instances"
+              ]
+            },
+            "PartialUpdateCluster": {
+              "methods": [
+                "partial_update_cluster"
               ]
             },
             "PartialUpdateInstance": {

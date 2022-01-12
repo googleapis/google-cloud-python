@@ -38,6 +38,8 @@ __protobuf__ = proto.module(
         "UpdateInstanceMetadata",
         "CreateClusterMetadata",
         "UpdateClusterMetadata",
+        "PartialUpdateClusterMetadata",
+        "PartialUpdateClusterRequest",
         "CreateAppProfileRequest",
         "GetAppProfileRequest",
         "ListAppProfilesRequest",
@@ -359,6 +361,50 @@ class UpdateClusterMetadata(proto.Message):
         proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,
     )
     finish_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+
+
+class PartialUpdateClusterMetadata(proto.Message):
+    r"""The metadata for the Operation returned by
+    PartialUpdateCluster.
+
+    Attributes:
+        request_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time at which the original request was
+            received.
+        finish_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time at which the operation failed or was
+            completed successfully.
+        original_request (google.cloud.bigtable_admin_v2.types.PartialUpdateClusterRequest):
+            The original request for
+            PartialUpdateCluster.
+    """
+
+    request_time = proto.Field(
+        proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
+    )
+    finish_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    original_request = proto.Field(
+        proto.MESSAGE, number=3, message="PartialUpdateClusterRequest",
+    )
+
+
+class PartialUpdateClusterRequest(proto.Message):
+    r"""Request message for
+    BigtableInstanceAdmin.PartialUpdateCluster.
+
+    Attributes:
+        cluster (google.cloud.bigtable_admin_v2.types.Cluster):
+            Required. The Cluster which contains the partial updates to
+            be applied, subject to the update_mask.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The subset of Cluster fields which
+            should be replaced.
+    """
+
+    cluster = proto.Field(proto.MESSAGE, number=1, message=gba_instance.Cluster,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
 
 
 class CreateAppProfileRequest(proto.Message):
