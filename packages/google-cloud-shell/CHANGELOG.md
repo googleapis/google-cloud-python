@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.2.2](https://www.github.com/googleapis/python-shell/compare/v1.2.1...v1.2.2) (2022-01-07)
+
+
+### Bug Fixes
+
+* provide appropriate mock values for message body fields ([24cf144](https://www.github.com/googleapis/python-shell/commit/24cf144d17b64dc71a5182d1ccbc44444bd68450))
+
 ### [1.2.1](https://www.github.com/googleapis/python-shell/compare/v1.2.0...v1.2.1) (2021-11-01)
 
 
