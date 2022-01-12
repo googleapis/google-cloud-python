@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [2.0.0](https://github.com/googleapis/python-storage/compare/v1.44.0...v2.0.0) (2022-01-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* Remove Python 2 support (#657)
+
+### Features
+
+* Remove Python 2 support ([#657](https://github.com/googleapis/python-storage/issues/657)) ([b611670](https://github.com/googleapis/python-storage/commit/b6116700a4a32d28404c39018138e545f3f7910e))
+
 ## [1.44.0](https://www.github.com/googleapis/python-storage/compare/v1.43.0...v1.44.0) (2022-01-05)
 
 
