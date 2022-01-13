@@ -13,5 +13,5 @@
     "default_version": "v1",
     "codeowner_team": "@googleapis/api-pubsub",
     "api_shortname": "pubsub",
-    "library_type": ""
+    "library_type": "GAPIC_COMBO"
 }
