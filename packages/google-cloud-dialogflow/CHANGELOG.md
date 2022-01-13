@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.11.0](https://github.com/googleapis/python-dialogflow/compare/v2.10.0...v2.11.0) (2022-01-13)
+
+
+### Features
+
+* support document metadata filter in article suggestion ([#442](https://github.com/googleapis/python-dialogflow/issues/442)) ([6f615f9](https://github.com/googleapis/python-dialogflow/commit/6f615f997dfa4e8e4d3e734a94ee0c81012a5a6d))
+* **v2:** added export documentation method ([#449](https://github.com/googleapis/python-dialogflow/issues/449)) ([a43d1e9](https://github.com/googleapis/python-dialogflow/commit/a43d1e92c86c87645c73a91a5c1593412bd3018d))
+* **v2:** added filter in list documentations request ([a43d1e9](https://github.com/googleapis/python-dialogflow/commit/a43d1e92c86c87645c73a91a5c1593412bd3018d))
+* **v2:** added filter in list knowledge bases request ([a43d1e9](https://github.com/googleapis/python-dialogflow/commit/a43d1e92c86c87645c73a91a5c1593412bd3018d))
+* **v2:** added option to apply partial update to the smart messaging allowlist in reload document request ([a43d1e9](https://github.com/googleapis/python-dialogflow/commit/a43d1e92c86c87645c73a91a5c1593412bd3018d))
+* **v2:** added option to import custom metadata from Google Cloud Storage in reload document request ([a43d1e9](https://github.com/googleapis/python-dialogflow/commit/a43d1e92c86c87645c73a91a5c1593412bd3018d))
+* **v2beta1:** add support for knowledge_base in knowledge operation metadata ([0f60629](https://github.com/googleapis/python-dialogflow/commit/0f606297c75cdf601fc8ea1c1906fe6ac4939c43))
+* **v2beta1:** added option to configure the number of sentences in the suggestion context ([#453](https://github.com/googleapis/python-dialogflow/issues/453)) ([e48ea00](https://github.com/googleapis/python-dialogflow/commit/e48ea001b7c8a4a5c1fe4b162bad49ea397458e9))
+* **v2beta1:** removed OPTIONAL for speech model variant ([#448](https://github.com/googleapis/python-dialogflow/issues/448)) ([0f60629](https://github.com/googleapis/python-dialogflow/commit/0f606297c75cdf601fc8ea1c1906fe6ac4939c43))
+* **v2:** removed OPTIONAL for speech model variant ([#447](https://github.com/googleapis/python-dialogflow/issues/447)) ([56efd10](https://github.com/googleapis/python-dialogflow/commit/56efd1047f146bab52d59db29b04211326118cf3))
+
 ## [2.10.0](https://www.github.com/googleapis/python-dialogflow/compare/v2.9.1...v2.10.0) (2021-11-12)
 
 
