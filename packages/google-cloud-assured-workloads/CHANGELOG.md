@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/googleapis/python-assured-workloads/compare/v1.0.0...v1.1.0) (2022-01-13)
+
+
+### Features
+
+* EU Regions and Support With Sovereign Controls ([#110](https://github.com/googleapis/python-assured-workloads/issues/110)) ([a0676ef](https://github.com/googleapis/python-assured-workloads/commit/a0676ef0f3d35d27886b7e624973de7942b34214))
+
 ## [1.0.0](https://www.github.com/googleapis/python-assured-workloads/compare/v0.8.0...v1.0.0) (2021-11-01)
 
 
