@@ -11,6 +11,6 @@
     "distribution_name": "google-cloud-shell",
     "api_id": "cloudshell.googleapis.com",
     "default_version": "v1",
-    "codeowner_team": "",
+    "codeowner_team": "@googleapis/aap-dpes",
     "api_shortname": "cloudshell"
 }
