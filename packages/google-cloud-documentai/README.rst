@@ -17,7 +17,7 @@ language, computer vision, translation, and AutoML.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-documentai.svg
    :target: https://pypi.org/project/google-cloud-documentai/
 .. _Cloud Document AI API: https://cloud.google.com/document-understanding/docs/
-.. _Client Library Documentation: https://googleapis.dev/python/documentai/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/documentai/latest
 .. _Product Documentation: https://cloud.google.com/document-understanding/docs/
 
 Quick Start
