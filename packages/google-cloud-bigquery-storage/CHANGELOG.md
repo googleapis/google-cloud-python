@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.11.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.10.1...v2.11.0) (2022-01-12)
+
+
+### Features
+
+* add `write_mode` property to BigQuery Storage Write API v1 ([#360](https://github.com/googleapis/python-bigquery-storage/issues/360)) ([aa9740d](https://github.com/googleapis/python-bigquery-storage/commit/aa9740d352b2359171a3a99811f88e24ae927189))
+* retryable resource exhausted handling ([#366](https://github.com/googleapis/python-bigquery-storage/issues/366)) ([33757d8](https://github.com/googleapis/python-bigquery-storage/commit/33757d88c968fef65332f5ebe0b876758f978ab0))
+
 ### [2.10.1](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.10.0...v2.10.1) (2021-11-11)
 
 
