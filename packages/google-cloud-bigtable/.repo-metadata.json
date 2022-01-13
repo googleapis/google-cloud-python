@@ -2,9 +2,9 @@
     "name": "bigtable",
     "name_pretty": "Cloud Bigtable",
     "product_documentation": "https://cloud.google.com/bigtable",
-    "client_documentation": "https://googleapis.dev/python/bigtable/latest",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/bigtable/latest",
     "issue_tracker": "https://issuetracker.google.com/savedsearches/559777",
-    "release_level": "ga",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_COMBO",
     "repo": "googleapis/python-bigtable",
@@ -75,5 +75,6 @@
         }
     ],
     "default_version": "v2",
-    "codeowner_team": "@googleapis/api-bigtable"
+    "codeowner_team": "@googleapis/api-bigtable",
+    "api_shortname": "bigtable"
 }
