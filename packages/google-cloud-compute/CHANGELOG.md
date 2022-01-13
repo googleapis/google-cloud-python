@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://github.com/googleapis/python-compute/compare/v0.9.0...v1.0.0) (2022-01-13)
+
+
+### Features
+
+* bump release level to production/stable ([#189](https://github.com/googleapis/python-compute/issues/189)) ([d5a5438](https://github.com/googleapis/python-compute/commit/d5a543867ab390d136eef153d0704a654aacb0db))
+
 ## [0.9.0](https://www.github.com/googleapis/python-compute/compare/v0.8.0...v0.9.0) (2021-12-13)
 
 
