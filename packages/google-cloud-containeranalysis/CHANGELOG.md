@@ -1,5 +1,13 @@
 # Changelog
 
+### [2.6.3](https://github.com/googleapis/python-containeranalysis/compare/v2.6.2...v2.6.3) (2022-01-13)
+
+
+### Bug Fixes
+
+* **deps:** require grafeas 1.4.1 ([16d27f7](https://github.com/googleapis/python-containeranalysis/commit/16d27f73742d969a62394cf1de4cce85849ea92a))
+* include the compliance protos ([#222](https://github.com/googleapis/python-containeranalysis/issues/222)) ([16d27f7](https://github.com/googleapis/python-containeranalysis/commit/16d27f73742d969a62394cf1de4cce85849ea92a))
+
 ### [2.6.2](https://www.github.com/googleapis/python-containeranalysis/compare/v2.6.1...v2.6.2) (2021-11-01)
 
 
