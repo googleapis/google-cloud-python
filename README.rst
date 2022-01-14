@@ -88,6 +88,9 @@ Libraries
    * - `App Engine Admin API <https://github.com/googleapis/python-appengine-admin>`_
      - |stable|
      - |PyPI-google-cloud-appengine-admin|
+   * - `App Engine Logging Protos <https://github.com/googleapis/python-appengine-logging>`_
+     - |stable|
+     - |PyPI-google-cloud-appengine-logging|
    * - `Artifact Registry <https://github.com/googleapis/python-artifact-registry>`_
      - |stable|
      - |PyPI-google-cloud-artifact-registry|
@@ -133,6 +136,9 @@ Libraries
    * - `Channel Services <https://github.com/googleapis/python-channel>`_
      - |stable|
      - |PyPI-google-cloud-channel|
+   * - `Common <https://github.com/googleapis/python-cloud-common>`_
+     - |stable|
+     - |PyPI-google-cloud-common|
    * - `Composer <https://github.com/googleapis/python-orchestration-airflow>`_
      - |stable|
      - |PyPI-google-cloud-orchestration-airflow|
@@ -154,6 +160,9 @@ Libraries
    * - `Database Migration Service <https://github.com/googleapis/python-dms>`_
      - |stable|
      - |PyPI-google-cloud-dms|
+   * - `Dataproc <https://github.com/googleapis/python-dataproc>`_
+     - |stable|
+     - |PyPI-google-cloud-dataproc|
    * - `Dataproc Metastore <https://github.com/googleapis/python-dataproc-metastore>`_
      - |stable|
      - |PyPI-google-cloud-dataproc-metastore|
@@ -202,6 +211,9 @@ Libraries
    * - `Grafeas <https://github.com/googleapis/python-grafeas>`_
      - |stable|
      - |PyPI-grafeas|
+   * - `IAM Logging Protos <https://github.com/googleapis/python-iam-logging>`_
+     - |stable|
+     - |PyPI-google-cloud-iam-logging|
    * - `IAM Policy Troubleshooter API <https://github.com/googleapis/python-policy-troubleshooter>`_
      - |stable|
      - |PyPI-google-cloud-policy-troubleshooter|
@@ -430,21 +442,9 @@ Libraries
    * - `VM Migration <https://github.com/googleapis/python-vm-migration>`_
      - |preview|
      - |PyPI-google-cloud-vm-migration|
-   * - `App Engine Logging Protos <https://github.com/googleapis/python-appengine-logging>`_
-     - |ga|
-     - |PyPI-google-cloud-appengine-logging|
    * - `Bigtable <https://github.com/googleapis/python-bigtable>`_
      - |ga|
      - |PyPI-google-cloud-bigtable|
-   * - `Common <https://github.com/googleapis/python-cloud-common>`_
-     - |ga|
-     - |PyPI-google-cloud-common|
-   * - `Dataproc <https://github.com/googleapis/python-dataproc>`_
-     - |ga|
-     - |PyPI-google-cloud-dataproc|
-   * - `IAM Logging Protos <https://github.com/googleapis/python-iam-logging>`_
-     - |ga|
-     - |PyPI-google-cloud-iam-logging|
    * - `Internet of Things (IoT) Core <https://github.com/googleapis/python-iot>`_
      - |ga|
      - |PyPI-google-cloud-iot|
@@ -464,6 +464,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-apigee-connect
 .. |PyPI-google-cloud-appengine-admin| image:: https://img.shields.io/pypi/v/google-cloud-appengine-admin.svg
      :target: https://pypi.org/project/google-cloud-appengine-admin
+.. |PyPI-google-cloud-appengine-logging| image:: https://img.shields.io/pypi/v/google-cloud-appengine-logging.svg
+     :target: https://pypi.org/project/google-cloud-appengine-logging
 .. |PyPI-google-cloud-artifact-registry| image:: https://img.shields.io/pypi/v/google-cloud-artifact-registry.svg
      :target: https://pypi.org/project/google-cloud-artifact-registry
 .. |PyPI-google-cloud-asset| image:: https://img.shields.io/pypi/v/google-cloud-asset.svg
@@ -494,6 +496,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-build
 .. |PyPI-google-cloud-channel| image:: https://img.shields.io/pypi/v/google-cloud-channel.svg
      :target: https://pypi.org/project/google-cloud-channel
+.. |PyPI-google-cloud-common| image:: https://img.shields.io/pypi/v/google-cloud-common.svg
+     :target: https://pypi.org/project/google-cloud-common
 .. |PyPI-google-cloud-orchestration-airflow| image:: https://img.shields.io/pypi/v/google-cloud-orchestration-airflow.svg
      :target: https://pypi.org/project/google-cloud-orchestration-airflow
 .. |PyPI-google-cloud-contact-center-insights| image:: https://img.shields.io/pypi/v/google-cloud-contact-center-insights.svg
@@ -508,6 +512,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-dlp
 .. |PyPI-google-cloud-dms| image:: https://img.shields.io/pypi/v/google-cloud-dms.svg
      :target: https://pypi.org/project/google-cloud-dms
+.. |PyPI-google-cloud-dataproc| image:: https://img.shields.io/pypi/v/google-cloud-dataproc.svg
+     :target: https://pypi.org/project/google-cloud-dataproc
 .. |PyPI-google-cloud-dataproc-metastore| image:: https://img.shields.io/pypi/v/google-cloud-dataproc-metastore.svg
      :target: https://pypi.org/project/google-cloud-dataproc-metastore
 .. |PyPI-google-cloud-datastore| image:: https://img.shields.io/pypi/v/google-cloud-datastore.svg
@@ -540,6 +546,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-game-servers
 .. |PyPI-grafeas| image:: https://img.shields.io/pypi/v/grafeas.svg
      :target: https://pypi.org/project/grafeas
+.. |PyPI-google-cloud-iam-logging| image:: https://img.shields.io/pypi/v/google-cloud-iam-logging.svg
+     :target: https://pypi.org/project/google-cloud-iam-logging
 .. |PyPI-google-cloud-policy-troubleshooter| image:: https://img.shields.io/pypi/v/google-cloud-policy-troubleshooter.svg
      :target: https://pypi.org/project/google-cloud-policy-troubleshooter
 .. |PyPI-google-cloud-iam| image:: https://img.shields.io/pypi/v/google-cloud-iam.svg
@@ -692,16 +700,8 @@ Libraries
      :target: https://pypi.org/project/sqlalchemy-bigquery
 .. |PyPI-google-cloud-vm-migration| image:: https://img.shields.io/pypi/v/google-cloud-vm-migration.svg
      :target: https://pypi.org/project/google-cloud-vm-migration
-.. |PyPI-google-cloud-appengine-logging| image:: https://img.shields.io/pypi/v/google-cloud-appengine-logging.svg
-     :target: https://pypi.org/project/google-cloud-appengine-logging
 .. |PyPI-google-cloud-bigtable| image:: https://img.shields.io/pypi/v/google-cloud-bigtable.svg
      :target: https://pypi.org/project/google-cloud-bigtable
-.. |PyPI-google-cloud-common| image:: https://img.shields.io/pypi/v/google-cloud-common.svg
-     :target: https://pypi.org/project/google-cloud-common
-.. |PyPI-google-cloud-dataproc| image:: https://img.shields.io/pypi/v/google-cloud-dataproc.svg
-     :target: https://pypi.org/project/google-cloud-dataproc
-.. |PyPI-google-cloud-iam-logging| image:: https://img.shields.io/pypi/v/google-cloud-iam-logging.svg
-     :target: https://pypi.org/project/google-cloud-iam-logging
 .. |PyPI-google-cloud-iot| image:: https://img.shields.io/pypi/v/google-cloud-iot.svg
      :target: https://pypi.org/project/google-cloud-iot
 .. |PyPI-google-cloud-monitoring-metrics-scopes| image:: https://img.shields.io/pypi/v/google-cloud-monitoring-metrics-scopes.svg
