@@ -54,6 +54,8 @@ class DataFusionAsyncClient:
     DEFAULT_ENDPOINT = DataFusionClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = DataFusionClient.DEFAULT_MTLS_ENDPOINT
 
+    crypto_key_path = staticmethod(DataFusionClient.crypto_key_path)
+    parse_crypto_key_path = staticmethod(DataFusionClient.parse_crypto_key_path)
     instance_path = staticmethod(DataFusionClient.instance_path)
     parse_instance_path = staticmethod(DataFusionClient.parse_instance_path)
     common_billing_account_path = staticmethod(
@@ -376,8 +378,8 @@ class DataFusionAsyncClient:
                 The request object. Request message for creating a Data
                 Fusion instance.
             parent (:class:`str`):
-                The instance's project and location
-                in the format
+                Required. The instance's project and
+                location in the format
                 projects/{project}/locations/{location}.
 
                 This corresponds to the ``parent`` field
@@ -389,7 +391,9 @@ class DataFusionAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             instance_id (:class:`str`):
-                The name of the instance to create.
+                Required. The name of the instance to
+                create.
+
                 This corresponds to the ``instance_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -473,8 +477,8 @@ class DataFusionAsyncClient:
                 The request object. Request message for deleting a Data
                 Fusion instance.
             name (:class:`str`):
-                The instance resource name in the
-                format
+                Required. The instance resource name
+                in the format
                 projects/{project}/locations/{location}/instances/{instance}
 
                 This corresponds to the ``name`` field
@@ -564,14 +568,17 @@ class DataFusionAsyncClient:
 
         Args:
             request (Union[google.cloud.data_fusion_v1.types.UpdateInstanceRequest, dict]):
-                The request object.
+                The request object. Request message for updating a Data
+                Fusion instance. Data Fusion allows updating the labels,
+                options, and stack driver settings. This is also used
+                for CDF version upgrade.
             instance (:class:`google.cloud.data_fusion_v1.types.Instance`):
-                The instance resource that replaces
-                the resource on the server. Currently,
-                Data Fusion only allows replacing
-                labels, options, and stack driver
-                settings. All other fields will be
-                ignored.
+                Required. The instance resource that
+                replaces the resource on the server.
+                Currently, Data Fusion only allows
+                replacing labels, options, and stack
+                driver settings. All other fields will
+                be ignored.
 
                 This corresponds to the ``instance`` field
                 on the ``request`` instance; if ``request`` is provided, this

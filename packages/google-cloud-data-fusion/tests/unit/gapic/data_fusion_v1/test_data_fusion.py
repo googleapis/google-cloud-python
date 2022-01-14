@@ -1153,6 +1153,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
             tenant_project_id="tenant_project_id_value",
             dataproc_service_account="dataproc_service_account_value",
             enable_rbac=True,
+            disabled_reason=[datafusion.Instance.DisabledReason.KMS_KEY_ISSUE],
         )
         response = client.get_instance(request)
 
@@ -1182,6 +1183,9 @@ def test_get_instance(request_type, transport: str = "grpc"):
     assert response.tenant_project_id == "tenant_project_id_value"
     assert response.dataproc_service_account == "dataproc_service_account_value"
     assert response.enable_rbac is True
+    assert response.disabled_reason == [
+        datafusion.Instance.DisabledReason.KMS_KEY_ISSUE
+    ]
 
 
 def test_get_instance_empty_call():
@@ -1235,6 +1239,7 @@ async def test_get_instance_async(
                 tenant_project_id="tenant_project_id_value",
                 dataproc_service_account="dataproc_service_account_value",
                 enable_rbac=True,
+                disabled_reason=[datafusion.Instance.DisabledReason.KMS_KEY_ISSUE],
             )
         )
         response = await client.get_instance(request)
@@ -1265,6 +1270,9 @@ async def test_get_instance_async(
     assert response.tenant_project_id == "tenant_project_id_value"
     assert response.dataproc_service_account == "dataproc_service_account_value"
     assert response.enable_rbac is True
+    assert response.disabled_reason == [
+        datafusion.Instance.DisabledReason.KMS_KEY_ISSUE
+    ]
 
 
 @pytest.mark.asyncio
@@ -2485,10 +2493,36 @@ def test_data_fusion_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_instance_path():
+def test_crypto_key_path():
     project = "squid"
     location = "clam"
-    instance = "whelk"
+    key_ring = "whelk"
+    crypto_key = "octopus"
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+        project=project, location=location, key_ring=key_ring, crypto_key=crypto_key,
+    )
+    actual = DataFusionClient.crypto_key_path(project, location, key_ring, crypto_key)
+    assert expected == actual
+
+
+def test_parse_crypto_key_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "key_ring": "cuttlefish",
+        "crypto_key": "mussel",
+    }
+    path = DataFusionClient.crypto_key_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataFusionClient.parse_crypto_key_path(path)
+    assert expected == actual
+
+
+def test_instance_path():
+    project = "winkle"
+    location = "nautilus"
+    instance = "scallop"
     expected = "projects/{project}/locations/{location}/instances/{instance}".format(
         project=project, location=location, instance=instance,
     )
@@ -2498,9 +2532,9 @@ def test_instance_path():
 
 def test_parse_instance_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "instance": "nudibranch",
+        "project": "abalone",
+        "location": "squid",
+        "instance": "clam",
     }
     path = DataFusionClient.instance_path(**expected)
 
@@ -2510,7 +2544,7 @@ def test_parse_instance_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "cuttlefish"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -2520,7 +2554,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "mussel",
+        "billing_account": "octopus",
     }
     path = DataFusionClient.common_billing_account_path(**expected)
 
@@ -2530,7 +2564,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "winkle"
+    folder = "oyster"
     expected = "folders/{folder}".format(folder=folder,)
     actual = DataFusionClient.common_folder_path(folder)
     assert expected == actual
@@ -2538,7 +2572,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nautilus",
+        "folder": "nudibranch",
     }
     path = DataFusionClient.common_folder_path(**expected)
 
@@ -2548,7 +2582,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "scallop"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(organization=organization,)
     actual = DataFusionClient.common_organization_path(organization)
     assert expected == actual
@@ -2556,7 +2590,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "abalone",
+        "organization": "mussel",
     }
     path = DataFusionClient.common_organization_path(**expected)
 
@@ -2566,7 +2600,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "squid"
+    project = "winkle"
     expected = "projects/{project}".format(project=project,)
     actual = DataFusionClient.common_project_path(project)
     assert expected == actual
@@ -2574,7 +2608,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "clam",
+        "project": "nautilus",
     }
     path = DataFusionClient.common_project_path(**expected)
 
@@ -2584,8 +2618,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "whelk"
-    location = "octopus"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -2595,8 +2629,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
+        "project": "squid",
+        "location": "clam",
     }
     path = DataFusionClient.common_location_path(**expected)
 

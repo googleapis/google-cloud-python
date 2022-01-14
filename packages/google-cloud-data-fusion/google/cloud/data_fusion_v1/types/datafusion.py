@@ -86,11 +86,23 @@ class Version(proto.Message):
         available_features (Sequence[str]):
             Represents a list of available feature names
             for a given version.
+        type_ (google.cloud.data_fusion_v1.types.Version.Type):
+            Type represents the release availability of
+            the version
     """
+
+    class Type(proto.Enum):
+        r"""Each type represents the release availability of a CDF
+        version
+        """
+        TYPE_UNSPECIFIED = 0
+        TYPE_PREVIEW = 1
+        TYPE_GENERAL_AVAILABILITY = 2
 
     version_number = proto.Field(proto.STRING, number=1,)
     default_version = proto.Field(proto.BOOL, number=2,)
     available_features = proto.RepeatedField(proto.STRING, number=3,)
+    type_ = proto.Field(proto.ENUM, number=4, enum=Type,)
 
 
 class Accelerator(proto.Message):
@@ -230,6 +242,9 @@ class Instance(proto.Message):
             The crypto key configuration. This field is
             used by the Customer-Managed Encryption Keys
             (CMEK) feature.
+        disabled_reason (Sequence[google.cloud.data_fusion_v1.types.Instance.DisabledReason]):
+            Output only. If the instance state is
+            DISABLED, the reason for disabling the instance.
     """
 
     class Type(proto.Enum):
@@ -253,6 +268,14 @@ class Instance(proto.Message):
         UPDATING = 7
         AUTO_UPDATING = 8
         AUTO_UPGRADING = 9
+        DISABLED = 10
+
+    class DisabledReason(proto.Enum):
+        r"""The reason for disabling the instance if the state is
+        DISABLED.
+        """
+        DISABLED_REASON_UNSPECIFIED = 0
+        KMS_KEY_ISSUE = 1
 
     name = proto.Field(proto.STRING, number=1,)
     description = proto.Field(proto.STRING, number=2,)
@@ -289,6 +312,7 @@ class Instance(proto.Message):
     crypto_key_config = proto.Field(
         proto.MESSAGE, number=28, message="CryptoKeyConfig",
     )
+    disabled_reason = proto.RepeatedField(proto.ENUM, number=29, enum=DisabledReason,)
 
 
 class ListInstancesRequest(proto.Message):
@@ -296,8 +320,8 @@ class ListInstancesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            The project and location for which to
-            retrieve instance information in the format
+            Required. The project and location for which
+            to retrieve instance information in the format
             projects/{project}/locations/{location}. If the
             location is specified as '-' (wildcard), then
             all regions available to the project are
@@ -397,7 +421,8 @@ class GetInstanceRequest(proto.Message):
 
     Attributes:
         name (str):
-            The instance resource name in the format
+            Required. The instance resource name in the
+            format
             projects/{project}/locations/{location}/instances/{instance}.
     """
 
@@ -409,10 +434,11 @@ class CreateInstanceRequest(proto.Message):
 
     Attributes:
         parent (str):
-            The instance's project and location in the
-            format projects/{project}/locations/{location}.
+            Required. The instance's project and location
+            in the format
+            projects/{project}/locations/{location}.
         instance_id (str):
-            The name of the instance to create.
+            Required. The name of the instance to create.
         instance (google.cloud.data_fusion_v1.types.Instance):
             An instance resource.
     """
@@ -427,7 +453,8 @@ class DeleteInstanceRequest(proto.Message):
 
     Attributes:
         name (str):
-            The instance resource name in the format
+            Required. The instance resource name in the
+            format
             projects/{project}/locations/{location}/instances/{instance}
     """
 
@@ -435,15 +462,17 @@ class DeleteInstanceRequest(proto.Message):
 
 
 class UpdateInstanceRequest(proto.Message):
-    r"""
+    r"""Request message for updating a Data Fusion instance.
+    Data Fusion allows updating the labels, options, and stack
+    driver settings. This is also used for CDF version upgrade.
 
     Attributes:
         instance (google.cloud.data_fusion_v1.types.Instance):
-            The instance resource that replaces the
-            resource on the server. Currently, Data Fusion
-            only allows replacing labels, options, and stack
-            driver settings. All other fields will be
-            ignored.
+            Required. The instance resource that replaces
+            the resource on the server. Currently, Data
+            Fusion only allows replacing labels, options,
+            and stack driver settings. All other fields will
+            be ignored.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Field mask is used to specify the fields that the update
             will overwrite in an instance resource. The fields specified
@@ -465,8 +494,8 @@ class RestartInstanceRequest(proto.Message):
 
     Attributes:
         name (str):
-            Name of the Data Fusion instance which need
-            to be restarted in the form of
+            Required. Name of the Data Fusion instance
+            which need to be restarted in the form of
             projects/{project}/locations/{location}/instances/{instance}
     """
 

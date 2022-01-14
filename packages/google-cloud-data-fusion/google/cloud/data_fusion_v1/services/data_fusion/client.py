@@ -166,6 +166,27 @@ class DataFusionClient(metaclass=DataFusionClientMeta):
         return self._transport
 
     @staticmethod
+    def crypto_key_path(
+        project: str, location: str, key_ring: str, crypto_key: str,
+    ) -> str:
+        """Returns a fully-qualified crypto_key string."""
+        return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+            project=project,
+            location=location,
+            key_ring=key_ring,
+            crypto_key=crypto_key,
+        )
+
+    @staticmethod
+    def parse_crypto_key_path(path: str) -> Dict[str, str]:
+        """Parses a crypto_key path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def instance_path(project: str, location: str, instance: str,) -> str:
         """Returns a fully-qualified instance string."""
         return "projects/{project}/locations/{location}/instances/{instance}".format(
@@ -574,8 +595,8 @@ class DataFusionClient(metaclass=DataFusionClientMeta):
                 The request object. Request message for creating a Data
                 Fusion instance.
             parent (str):
-                The instance's project and location
-                in the format
+                Required. The instance's project and
+                location in the format
                 projects/{project}/locations/{location}.
 
                 This corresponds to the ``parent`` field
@@ -587,7 +608,9 @@ class DataFusionClient(metaclass=DataFusionClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             instance_id (str):
-                The name of the instance to create.
+                Required. The name of the instance to
+                create.
+
                 This corresponds to the ``instance_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -671,8 +694,8 @@ class DataFusionClient(metaclass=DataFusionClientMeta):
                 The request object. Request message for deleting a Data
                 Fusion instance.
             name (str):
-                The instance resource name in the
-                format
+                Required. The instance resource name
+                in the format
                 projects/{project}/locations/{location}/instances/{instance}
 
                 This corresponds to the ``name`` field
@@ -762,14 +785,17 @@ class DataFusionClient(metaclass=DataFusionClientMeta):
 
         Args:
             request (Union[google.cloud.data_fusion_v1.types.UpdateInstanceRequest, dict]):
-                The request object.
+                The request object. Request message for updating a Data
+                Fusion instance. Data Fusion allows updating the labels,
+                options, and stack driver settings. This is also used
+                for CDF version upgrade.
             instance (google.cloud.data_fusion_v1.types.Instance):
-                The instance resource that replaces
-                the resource on the server. Currently,
-                Data Fusion only allows replacing
-                labels, options, and stack driver
-                settings. All other fields will be
-                ignored.
+                Required. The instance resource that
+                replaces the resource on the server.
+                Currently, Data Fusion only allows
+                replacing labels, options, and stack
+                driver settings. All other fields will
+                be ignored.
 
                 This corresponds to the ``instance`` field
                 on the ``request`` instance; if ``request`` is provided, this
