@@ -2,7 +2,7 @@ alembic==1.7.5
 certifi==2021.10.8
 charset-normalizer==2.0.10
 future==0.18.2
-geoalchemy2==0.10.0
+geoalchemy2==0.10.1
 google-api-core[grpc]==2.3.2
 google-auth==2.3.3
 google-cloud-bigquery==2.31.0
@@ -29,6 +29,6 @@ requests==2.27.1
 rsa==4.8
 shapely==1.8.0
 six==1.16.0
-sqlalchemy==1.4.25
+sqlalchemy==1.4.26
 typing-extensions==4.0.1
 urllib3==1.26.7

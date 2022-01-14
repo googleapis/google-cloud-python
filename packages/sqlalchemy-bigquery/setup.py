@@ -90,7 +90,7 @@ setup(
         # https://github.com/googleapis/python-bigquery-sqlalchemy/issues/386
         # and
         # https://github.com/googleapis/python-bigquery-sqlalchemy/issues/385
-        "sqlalchemy>=1.2.0,<=1.4.25",
+        "sqlalchemy>=1.2.0,<=1.4.26",
         "future",
     ],
     extras_require=extras,
