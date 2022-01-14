@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+### [3.6.2](https://www.github.com/googleapis/python-datacatalog/compare/v3.6.1...v3.6.2) (2022-01-10)
+
+
+### Documentation
+
+* convert UPGRADING guide to RST to fix table formatting ([#268](https://www.github.com/googleapis/python-datacatalog/issues/268)) ([571171e](https://www.github.com/googleapis/python-datacatalog/commit/571171e65fad5939ce3f20ec63ac35c8c80f2e2a))
+* fixing upgrading guide v2 ([#277](https://www.github.com/googleapis/python-datacatalog/issues/277)) ([76f152a](https://www.github.com/googleapis/python-datacatalog/commit/76f152ac59e81d1ac02adcba2cbc8b1bec3ff888))
+* **samples:** Add sample for PolicyTagManagerClient.create_taxonomy ([#37](https://www.github.com/googleapis/python-datacatalog/issues/37)) ([15feb5d](https://www.github.com/googleapis/python-datacatalog/commit/15feb5dba028faa153c72374eca20a72fa72705e))
+
 ### [3.6.1](https://www.github.com/googleapis/python-datacatalog/compare/v3.6.0...v3.6.1) (2021-11-12)
 
 
