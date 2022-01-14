@@ -25,4 +25,4 @@ Unsupported Python Versions
 Python == 2.7, Python == 3.5.
 
 The last version of this library compatible with Python 2.7 and 3.5 is
-`google-api_core==1.31.1`.
+`google-api-core==1.31.1`.
