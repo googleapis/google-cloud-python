@@ -31,7 +31,7 @@ dependencies = [
 extras = {
     "libcst": "libcst >= 0.2.5",
     "pandas": ["pandas>=0.23.0"],
-    "storage": ["google-cloud-storage >= 1.18.0, < 2.0.0dev"],
+    "storage": ["google-cloud-storage >=1.18.0, <3.0.0dev"],
 }
 
 package_root = os.path.abspath(os.path.dirname(__file__))
