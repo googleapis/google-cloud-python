@@ -166,14 +166,14 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         return self._transport
 
     '''@staticmethod
-    def metric_descriptor_path(project: str,) -> str:
+    def metric_descriptor_path(project: str,metric_descriptor: str,) -> str:
         """Returns a fully-qualified metric_descriptor string."""
-        return "projects/{project}/metricDescriptors/{metric_descriptor=**}".format(project=project, )
+        return "projects/{project}/metricDescriptors/{metric_descriptor=**}".format(project=project, metric_descriptor=metric_descriptor, )
 
     @staticmethod
     def parse_metric_descriptor_path(path: str) -> Dict[str,str]:
         """Parses a metric_descriptor path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)/metricDescriptors/{metric_descriptor=**}$", path)
+        m = re.match(r"^projects/(?P<project>.+?)/metricDescriptors/(?P<metric_descriptor>.+?)$", path)
         return m.groupdict() if m else {}'''
 
     @staticmethod

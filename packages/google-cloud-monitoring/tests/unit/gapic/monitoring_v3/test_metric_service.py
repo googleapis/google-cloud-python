@@ -257,20 +257,20 @@ def test_metric_service_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -329,7 +329,7 @@ def test_metric_service_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -424,7 +424,7 @@ def test_metric_service_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -455,7 +455,7 @@ def test_metric_service_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -488,10 +488,10 @@ def test_metric_service_client_client_options_from_dict():
         )
 
 
-def test_list_monitored_resource_descriptors(
-    transport: str = "grpc",
-    request_type=metric_service.ListMonitoredResourceDescriptorsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [metric_service.ListMonitoredResourceDescriptorsRequest, dict,]
+)
+def test_list_monitored_resource_descriptors(request_type, transport: str = "grpc"):
     client = MetricServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -518,10 +518,6 @@ def test_list_monitored_resource_descriptors(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMonitoredResourceDescriptorsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_monitored_resource_descriptors_from_dict():
-    test_list_monitored_resource_descriptors(request_type=dict)
 
 
 def test_list_monitored_resource_descriptors_empty_call():
@@ -714,8 +710,10 @@ async def test_list_monitored_resource_descriptors_flattened_error_async():
         )
 
 
-def test_list_monitored_resource_descriptors_pager():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_monitored_resource_descriptors_pager(transport_name: str = "grpc"):
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -765,8 +763,10 @@ def test_list_monitored_resource_descriptors_pager():
         )
 
 
-def test_list_monitored_resource_descriptors_pages():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_monitored_resource_descriptors_pages(transport_name: str = "grpc"):
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -900,10 +900,10 @@ async def test_list_monitored_resource_descriptors_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_monitored_resource_descriptor(
-    transport: str = "grpc",
-    request_type=metric_service.GetMonitoredResourceDescriptorRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [metric_service.GetMonitoredResourceDescriptorRequest, dict,]
+)
+def test_get_monitored_resource_descriptor(request_type, transport: str = "grpc"):
     client = MetricServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -936,10 +936,6 @@ def test_get_monitored_resource_descriptor(
     assert response.type == "type_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-def test_get_monitored_resource_descriptor_from_dict():
-    test_get_monitored_resource_descriptor(request_type=dict)
 
 
 def test_get_monitored_resource_descriptor_empty_call():
@@ -1138,9 +1134,10 @@ async def test_get_monitored_resource_descriptor_flattened_error_async():
         )
 
 
-def test_list_metric_descriptors(
-    transport: str = "grpc", request_type=metric_service.ListMetricDescriptorsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [metric_service.ListMetricDescriptorsRequest, dict,]
+)
+def test_list_metric_descriptors(request_type, transport: str = "grpc"):
     client = MetricServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1167,10 +1164,6 @@ def test_list_metric_descriptors(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMetricDescriptorsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_metric_descriptors_from_dict():
-    test_list_metric_descriptors(request_type=dict)
 
 
 def test_list_metric_descriptors_empty_call():
@@ -1363,8 +1356,10 @@ async def test_list_metric_descriptors_flattened_error_async():
         )
 
 
-def test_list_metric_descriptors_pager():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_metric_descriptors_pager(transport_name: str = "grpc"):
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1409,8 +1404,10 @@ def test_list_metric_descriptors_pager():
         assert all(isinstance(i, metric_pb2.MetricDescriptor) for i in results)
 
 
-def test_list_metric_descriptors_pages():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_metric_descriptors_pages(transport_name: str = "grpc"):
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1533,9 +1530,10 @@ async def test_list_metric_descriptors_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_metric_descriptor(
-    transport: str = "grpc", request_type=metric_service.GetMetricDescriptorRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [metric_service.GetMetricDescriptorRequest, dict,]
+)
+def test_get_metric_descriptor(request_type, transport: str = "grpc"):
     client = MetricServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1574,10 +1572,6 @@ def test_get_metric_descriptor(
     assert response.unit == "unit_value"
     assert response.description == "description_value"
     assert response.display_name == "display_name_value"
-
-
-def test_get_metric_descriptor_from_dict():
-    test_get_metric_descriptor(request_type=dict)
 
 
 def test_get_metric_descriptor_empty_call():
@@ -1782,9 +1776,10 @@ async def test_get_metric_descriptor_flattened_error_async():
         )
 
 
-def test_create_metric_descriptor(
-    transport: str = "grpc", request_type=metric_service.CreateMetricDescriptorRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [metric_service.CreateMetricDescriptorRequest, dict,]
+)
+def test_create_metric_descriptor(request_type, transport: str = "grpc"):
     client = MetricServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1823,10 +1818,6 @@ def test_create_metric_descriptor(
     assert response.unit == "unit_value"
     assert response.description == "description_value"
     assert response.display_name == "display_name_value"
-
-
-def test_create_metric_descriptor_from_dict():
-    test_create_metric_descriptor(request_type=dict)
 
 
 def test_create_metric_descriptor_empty_call():
@@ -2047,9 +2038,10 @@ async def test_create_metric_descriptor_flattened_error_async():
         )
 
 
-def test_delete_metric_descriptor(
-    transport: str = "grpc", request_type=metric_service.DeleteMetricDescriptorRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [metric_service.DeleteMetricDescriptorRequest, dict,]
+)
+def test_delete_metric_descriptor(request_type, transport: str = "grpc"):
     client = MetricServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2073,10 +2065,6 @@ def test_delete_metric_descriptor(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_metric_descriptor_from_dict():
-    test_delete_metric_descriptor(request_type=dict)
 
 
 def test_delete_metric_descriptor_empty_call():
@@ -2260,9 +2248,8 @@ async def test_delete_metric_descriptor_flattened_error_async():
         )
 
 
-def test_list_time_series(
-    transport: str = "grpc", request_type=metric_service.ListTimeSeriesRequest
-):
+@pytest.mark.parametrize("request_type", [metric_service.ListTimeSeriesRequest, dict,])
+def test_list_time_series(request_type, transport: str = "grpc"):
     client = MetricServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2288,10 +2275,6 @@ def test_list_time_series(
     assert isinstance(response, pagers.ListTimeSeriesPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unit == "unit_value"
-
-
-def test_list_time_series_from_dict():
-    test_list_time_series(request_type=dict)
 
 
 def test_list_time_series_empty_call():
@@ -2508,8 +2491,10 @@ async def test_list_time_series_flattened_error_async():
         )
 
 
-def test_list_time_series_pager():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_time_series_pager(transport_name: str = "grpc"):
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_time_series), "__call__") as call:
@@ -2548,8 +2533,10 @@ def test_list_time_series_pager():
         assert all(isinstance(i, gm_metric.TimeSeries) for i in results)
 
 
-def test_list_time_series_pages():
-    client = MetricServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_time_series_pages(transport_name: str = "grpc"):
+    client = MetricServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_time_series), "__call__") as call:
@@ -2654,9 +2641,10 @@ async def test_list_time_series_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_create_time_series(
-    transport: str = "grpc", request_type=metric_service.CreateTimeSeriesRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [metric_service.CreateTimeSeriesRequest, dict,]
+)
+def test_create_time_series(request_type, transport: str = "grpc"):
     client = MetricServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2680,10 +2668,6 @@ def test_create_time_series(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_create_time_series_from_dict():
-    test_create_time_series(request_type=dict)
 
 
 def test_create_time_series_empty_call():
@@ -2890,9 +2874,10 @@ async def test_create_time_series_flattened_error_async():
         )
 
 
-def test_create_service_time_series(
-    transport: str = "grpc", request_type=metric_service.CreateTimeSeriesRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [metric_service.CreateTimeSeriesRequest, dict,]
+)
+def test_create_service_time_series(request_type, transport: str = "grpc"):
     client = MetricServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2916,10 +2901,6 @@ def test_create_service_time_series(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_create_service_time_series_from_dict():
-    test_create_service_time_series(request_type=dict)
 
 
 def test_create_service_time_series_empty_call():
@@ -3548,14 +3529,16 @@ def test_metric_service_transport_channel_mtls_with_adc(transport_class):
 
 """def test_metric_descriptor_path():
     project = "squid"
-    expected = "projects/{project}/metricDescriptors/{metric_descriptor=**}".format(project=project, )
-    actual = MetricServiceClient.metric_descriptor_path(project)
+    metric_descriptor = "clam"
+    expected = "projects/{project}/metricDescriptors/{metric_descriptor=**}".format(project=project, metric_descriptor=metric_descriptor, )
+    actual = MetricServiceClient.metric_descriptor_path(project, metric_descriptor)
     assert expected == actual
 
 
 def test_parse_metric_descriptor_path():
     expected = {
-        "project": "clam",
+        "project": "whelk",
+        "metric_descriptor": "octopus",
     }
     path = MetricServiceClient.metric_descriptor_path(**expected)
 
@@ -3567,8 +3550,8 @@ def test_parse_metric_descriptor_path():
 
 
 def test_monitored_resource_descriptor_path():
-    project = "whelk"
-    monitored_resource_descriptor = "octopus"
+    project = "oyster"
+    monitored_resource_descriptor = "nudibranch"
     expected = "projects/{project}/monitoredResourceDescriptors/{monitored_resource_descriptor}".format(
         project=project, monitored_resource_descriptor=monitored_resource_descriptor,
     )
@@ -3580,8 +3563,8 @@ def test_monitored_resource_descriptor_path():
 
 def test_parse_monitored_resource_descriptor_path():
     expected = {
-        "project": "oyster",
-        "monitored_resource_descriptor": "nudibranch",
+        "project": "cuttlefish",
+        "monitored_resource_descriptor": "mussel",
     }
     path = MetricServiceClient.monitored_resource_descriptor_path(**expected)
 
@@ -3591,8 +3574,8 @@ def test_parse_monitored_resource_descriptor_path():
 
 
 def test_time_series_path():
-    project = "cuttlefish"
-    time_series = "mussel"
+    project = "winkle"
+    time_series = "nautilus"
     expected = "projects/{project}/timeSeries/{time_series}".format(
         project=project, time_series=time_series,
     )
@@ -3602,8 +3585,8 @@ def test_time_series_path():
 
 def test_parse_time_series_path():
     expected = {
-        "project": "winkle",
-        "time_series": "nautilus",
+        "project": "scallop",
+        "time_series": "abalone",
     }
     path = MetricServiceClient.time_series_path(**expected)
 
@@ -3613,7 +3596,7 @@ def test_parse_time_series_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "scallop"
+    billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -3623,7 +3606,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "abalone",
+        "billing_account": "clam",
     }
     path = MetricServiceClient.common_billing_account_path(**expected)
 
@@ -3633,7 +3616,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "squid"
+    folder = "whelk"
     expected = "folders/{folder}".format(folder=folder,)
     actual = MetricServiceClient.common_folder_path(folder)
     assert expected == actual
@@ -3641,7 +3624,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "clam",
+        "folder": "octopus",
     }
     path = MetricServiceClient.common_folder_path(**expected)
 
@@ -3651,7 +3634,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "whelk"
+    organization = "oyster"
     expected = "organizations/{organization}".format(organization=organization,)
     actual = MetricServiceClient.common_organization_path(organization)
     assert expected == actual
@@ -3659,7 +3642,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "octopus",
+        "organization": "nudibranch",
     }
     path = MetricServiceClient.common_organization_path(**expected)
 
@@ -3669,7 +3652,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "oyster"
+    project = "cuttlefish"
     expected = "projects/{project}".format(project=project,)
     actual = MetricServiceClient.common_project_path(project)
     assert expected == actual
@@ -3677,7 +3660,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nudibranch",
+        "project": "mussel",
     }
     path = MetricServiceClient.common_project_path(**expected)
 
@@ -3687,8 +3670,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "cuttlefish"
-    location = "mussel"
+    project = "winkle"
+    location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -3698,8 +3681,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = MetricServiceClient.common_location_path(**expected)
 
@@ -3708,7 +3691,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(

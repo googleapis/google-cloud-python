@@ -260,20 +260,20 @@ def test_alert_policy_service_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -342,7 +342,7 @@ def test_alert_policy_service_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -437,7 +437,7 @@ def test_alert_policy_service_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -468,7 +468,7 @@ def test_alert_policy_service_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -501,9 +501,10 @@ def test_alert_policy_service_client_client_options_from_dict():
         )
 
 
-def test_list_alert_policies(
-    transport: str = "grpc", request_type=alert_service.ListAlertPoliciesRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [alert_service.ListAlertPoliciesRequest, dict,]
+)
+def test_list_alert_policies(request_type, transport: str = "grpc"):
     client = AlertPolicyServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -531,10 +532,6 @@ def test_list_alert_policies(
     assert isinstance(response, pagers.ListAlertPoliciesPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-def test_list_alert_policies_from_dict():
-    test_list_alert_policies(request_type=dict)
 
 
 def test_list_alert_policies_empty_call():
@@ -733,8 +730,10 @@ async def test_list_alert_policies_flattened_error_async():
         )
 
 
-def test_list_alert_policies_pager():
-    client = AlertPolicyServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_alert_policies_pager(transport_name: str = "grpc"):
+    client = AlertPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -775,8 +774,10 @@ def test_list_alert_policies_pager():
         assert all(isinstance(i, alert.AlertPolicy) for i in results)
 
 
-def test_list_alert_policies_pages():
-    client = AlertPolicyServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_alert_policies_pages(transport_name: str = "grpc"):
+    client = AlertPolicyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -891,9 +892,8 @@ async def test_list_alert_policies_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_alert_policy(
-    transport: str = "grpc", request_type=alert_service.GetAlertPolicyRequest
-):
+@pytest.mark.parametrize("request_type", [alert_service.GetAlertPolicyRequest, dict,])
+def test_get_alert_policy(request_type, transport: str = "grpc"):
     client = AlertPolicyServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -924,10 +924,6 @@ def test_get_alert_policy(
     assert response.display_name == "display_name_value"
     assert response.combiner == alert.AlertPolicy.ConditionCombinerType.AND
     assert response.notification_channels == ["notification_channels_value"]
-
-
-def test_get_alert_policy_from_dict():
-    test_get_alert_policy(request_type=dict)
 
 
 def test_get_alert_policy_empty_call():
@@ -1115,9 +1111,10 @@ async def test_get_alert_policy_flattened_error_async():
         )
 
 
-def test_create_alert_policy(
-    transport: str = "grpc", request_type=alert_service.CreateAlertPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [alert_service.CreateAlertPolicyRequest, dict,]
+)
+def test_create_alert_policy(request_type, transport: str = "grpc"):
     client = AlertPolicyServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1150,10 +1147,6 @@ def test_create_alert_policy(
     assert response.display_name == "display_name_value"
     assert response.combiner == alert.AlertPolicy.ConditionCombinerType.AND
     assert response.notification_channels == ["notification_channels_value"]
-
-
-def test_create_alert_policy_from_dict():
-    test_create_alert_policy(request_type=dict)
 
 
 def test_create_alert_policy_empty_call():
@@ -1367,9 +1360,10 @@ async def test_create_alert_policy_flattened_error_async():
         )
 
 
-def test_delete_alert_policy(
-    transport: str = "grpc", request_type=alert_service.DeleteAlertPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [alert_service.DeleteAlertPolicyRequest, dict,]
+)
+def test_delete_alert_policy(request_type, transport: str = "grpc"):
     client = AlertPolicyServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1393,10 +1387,6 @@ def test_delete_alert_policy(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_alert_policy_from_dict():
-    test_delete_alert_policy(request_type=dict)
 
 
 def test_delete_alert_policy_empty_call():
@@ -1585,9 +1575,10 @@ async def test_delete_alert_policy_flattened_error_async():
         )
 
 
-def test_update_alert_policy(
-    transport: str = "grpc", request_type=alert_service.UpdateAlertPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [alert_service.UpdateAlertPolicyRequest, dict,]
+)
+def test_update_alert_policy(request_type, transport: str = "grpc"):
     client = AlertPolicyServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1620,10 +1611,6 @@ def test_update_alert_policy(
     assert response.display_name == "display_name_value"
     assert response.combiner == alert.AlertPolicy.ConditionCombinerType.AND
     assert response.notification_channels == ["notification_channels_value"]
-
-
-def test_update_alert_policy_from_dict():
-    test_update_alert_policy(request_type=dict)
 
 
 def test_update_alert_policy_empty_call():
@@ -2407,7 +2394,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
