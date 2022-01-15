@@ -266,20 +266,20 @@ def test_bigtable_table_admin_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -348,7 +348,7 @@ def test_bigtable_table_admin_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -443,7 +443,7 @@ def test_bigtable_table_admin_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -474,7 +474,7 @@ def test_bigtable_table_admin_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -507,9 +507,10 @@ def test_bigtable_table_admin_client_client_options_from_dict():
         )
 
 
-def test_create_table(
-    transport: str = "grpc", request_type=bigtable_table_admin.CreateTableRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [bigtable_table_admin.CreateTableRequest, dict,]
+)
+def test_create_table(request_type, transport: str = "grpc"):
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -535,10 +536,6 @@ def test_create_table(
     assert isinstance(response, gba_table.Table)
     assert response.name == "name_value"
     assert response.granularity == gba_table.Table.TimestampGranularity.MILLIS
-
-
-def test_create_table_from_dict():
-    test_create_table(request_type=dict)
 
 
 def test_create_table_empty_call():
@@ -749,10 +746,10 @@ async def test_create_table_flattened_error_async():
         )
 
 
-def test_create_table_from_snapshot(
-    transport: str = "grpc",
-    request_type=bigtable_table_admin.CreateTableFromSnapshotRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [bigtable_table_admin.CreateTableFromSnapshotRequest, dict,]
+)
+def test_create_table_from_snapshot(request_type, transport: str = "grpc"):
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -776,10 +773,6 @@ def test_create_table_from_snapshot(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_table_from_snapshot_from_dict():
-    test_create_table_from_snapshot(request_type=dict)
 
 
 def test_create_table_from_snapshot_empty_call():
@@ -1001,9 +994,10 @@ async def test_create_table_from_snapshot_flattened_error_async():
         )
 
 
-def test_list_tables(
-    transport: str = "grpc", request_type=bigtable_table_admin.ListTablesRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [bigtable_table_admin.ListTablesRequest, dict,]
+)
+def test_list_tables(request_type, transport: str = "grpc"):
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1028,10 +1022,6 @@ def test_list_tables(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTablesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_tables_from_dict():
-    test_list_tables(request_type=dict)
 
 
 def test_list_tables_empty_call():
@@ -1217,8 +1207,10 @@ async def test_list_tables_flattened_error_async():
         )
 
 
-def test_list_tables_pager():
-    client = BigtableTableAdminClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_tables_pager(transport_name: str = "grpc"):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tables), "__call__") as call:
@@ -1251,8 +1243,10 @@ def test_list_tables_pager():
         assert all(isinstance(i, table.Table) for i in results)
 
 
-def test_list_tables_pages():
-    client = BigtableTableAdminClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_tables_pages(transport_name: str = "grpc"):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tables), "__call__") as call:
@@ -1343,9 +1337,8 @@ async def test_list_tables_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_table(
-    transport: str = "grpc", request_type=bigtable_table_admin.GetTableRequest
-):
+@pytest.mark.parametrize("request_type", [bigtable_table_admin.GetTableRequest, dict,])
+def test_get_table(request_type, transport: str = "grpc"):
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1371,10 +1364,6 @@ def test_get_table(
     assert isinstance(response, table.Table)
     assert response.name == "name_value"
     assert response.granularity == table.Table.TimestampGranularity.MILLIS
-
-
-def test_get_table_from_dict():
-    test_get_table(request_type=dict)
 
 
 def test_get_table_empty_call():
@@ -1557,9 +1546,10 @@ async def test_get_table_flattened_error_async():
         )
 
 
-def test_delete_table(
-    transport: str = "grpc", request_type=bigtable_table_admin.DeleteTableRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [bigtable_table_admin.DeleteTableRequest, dict,]
+)
+def test_delete_table(request_type, transport: str = "grpc"):
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1581,10 +1571,6 @@ def test_delete_table(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_table_from_dict():
-    test_delete_table(request_type=dict)
 
 
 def test_delete_table_empty_call():
@@ -1762,10 +1748,10 @@ async def test_delete_table_flattened_error_async():
         )
 
 
-def test_modify_column_families(
-    transport: str = "grpc",
-    request_type=bigtable_table_admin.ModifyColumnFamiliesRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [bigtable_table_admin.ModifyColumnFamiliesRequest, dict,]
+)
+def test_modify_column_families(request_type, transport: str = "grpc"):
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -1793,10 +1779,6 @@ def test_modify_column_families(
     assert isinstance(response, table.Table)
     assert response.name == "name_value"
     assert response.granularity == table.Table.TimestampGranularity.MILLIS
-
-
-def test_modify_column_families_from_dict():
-    test_modify_column_families(request_type=dict)
 
 
 def test_modify_column_families_empty_call():
@@ -2028,9 +2010,10 @@ async def test_modify_column_families_flattened_error_async():
         )
 
 
-def test_drop_row_range(
-    transport: str = "grpc", request_type=bigtable_table_admin.DropRowRangeRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [bigtable_table_admin.DropRowRangeRequest, dict,]
+)
+def test_drop_row_range(request_type, transport: str = "grpc"):
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2052,10 +2035,6 @@ def test_drop_row_range(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_drop_row_range_from_dict():
-    test_drop_row_range(request_type=dict)
 
 
 def test_drop_row_range_empty_call():
@@ -2159,10 +2138,10 @@ async def test_drop_row_range_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_generate_consistency_token(
-    transport: str = "grpc",
-    request_type=bigtable_table_admin.GenerateConsistencyTokenRequest,
-):
+@pytest.mark.parametrize(
+    "request_type", [bigtable_table_admin.GenerateConsistencyTokenRequest, dict,]
+)
+def test_generate_consistency_token(request_type, transport: str = "grpc"):
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2189,10 +2168,6 @@ def test_generate_consistency_token(
     # Establish that the response is the type that we expect.
     assert isinstance(response, bigtable_table_admin.GenerateConsistencyTokenResponse)
     assert response.consistency_token == "consistency_token_value"
-
-
-def test_generate_consistency_token_from_dict():
-    test_generate_consistency_token(request_type=dict)
 
 
 def test_generate_consistency_token_empty_call():
@@ -2391,9 +2366,10 @@ async def test_generate_consistency_token_flattened_error_async():
         )
 
 
-def test_check_consistency(
-    transport: str = "grpc", request_type=bigtable_table_admin.CheckConsistencyRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [bigtable_table_admin.CheckConsistencyRequest, dict,]
+)
+def test_check_consistency(request_type, transport: str = "grpc"):
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2420,10 +2396,6 @@ def test_check_consistency(
     # Establish that the response is the type that we expect.
     assert isinstance(response, bigtable_table_admin.CheckConsistencyResponse)
     assert response.consistent is True
-
-
-def test_check_consistency_from_dict():
-    test_check_consistency(request_type=dict)
 
 
 def test_check_consistency_empty_call():
@@ -2634,9 +2606,10 @@ async def test_check_consistency_flattened_error_async():
         )
 
 
-def test_snapshot_table(
-    transport: str = "grpc", request_type=bigtable_table_admin.SnapshotTableRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [bigtable_table_admin.SnapshotTableRequest, dict,]
+)
+def test_snapshot_table(request_type, transport: str = "grpc"):
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2658,10 +2631,6 @@ def test_snapshot_table(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_snapshot_table_from_dict():
-    test_snapshot_table(request_type=dict)
 
 
 def test_snapshot_table_empty_call():
@@ -2881,9 +2850,10 @@ async def test_snapshot_table_flattened_error_async():
         )
 
 
-def test_get_snapshot(
-    transport: str = "grpc", request_type=bigtable_table_admin.GetSnapshotRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [bigtable_table_admin.GetSnapshotRequest, dict,]
+)
+def test_get_snapshot(request_type, transport: str = "grpc"):
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -2914,10 +2884,6 @@ def test_get_snapshot(
     assert response.data_size_bytes == 1594
     assert response.state == table.Snapshot.State.READY
     assert response.description == "description_value"
-
-
-def test_get_snapshot_from_dict():
-    test_get_snapshot(request_type=dict)
 
 
 def test_get_snapshot_empty_call():
@@ -3106,9 +3072,10 @@ async def test_get_snapshot_flattened_error_async():
         )
 
 
-def test_list_snapshots(
-    transport: str = "grpc", request_type=bigtable_table_admin.ListSnapshotsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [bigtable_table_admin.ListSnapshotsRequest, dict,]
+)
+def test_list_snapshots(request_type, transport: str = "grpc"):
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3133,10 +3100,6 @@ def test_list_snapshots(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSnapshotsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_snapshots_from_dict():
-    test_list_snapshots(request_type=dict)
 
 
 def test_list_snapshots_empty_call():
@@ -3323,8 +3286,10 @@ async def test_list_snapshots_flattened_error_async():
         )
 
 
-def test_list_snapshots_pager():
-    client = BigtableTableAdminClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_snapshots_pager(transport_name: str = "grpc"):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
@@ -3359,8 +3324,10 @@ def test_list_snapshots_pager():
         assert all(isinstance(i, table.Snapshot) for i in results)
 
 
-def test_list_snapshots_pages():
-    client = BigtableTableAdminClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_snapshots_pages(transport_name: str = "grpc"):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
@@ -3457,9 +3424,10 @@ async def test_list_snapshots_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_delete_snapshot(
-    transport: str = "grpc", request_type=bigtable_table_admin.DeleteSnapshotRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [bigtable_table_admin.DeleteSnapshotRequest, dict,]
+)
+def test_delete_snapshot(request_type, transport: str = "grpc"):
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3481,10 +3449,6 @@ def test_delete_snapshot(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_snapshot_from_dict():
-    test_delete_snapshot(request_type=dict)
 
 
 def test_delete_snapshot_empty_call():
@@ -3662,9 +3626,10 @@ async def test_delete_snapshot_flattened_error_async():
         )
 
 
-def test_create_backup(
-    transport: str = "grpc", request_type=bigtable_table_admin.CreateBackupRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [bigtable_table_admin.CreateBackupRequest, dict,]
+)
+def test_create_backup(request_type, transport: str = "grpc"):
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3686,10 +3651,6 @@ def test_create_backup(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_backup_from_dict():
-    test_create_backup(request_type=dict)
 
 
 def test_create_backup_empty_call():
@@ -3899,9 +3860,8 @@ async def test_create_backup_flattened_error_async():
         )
 
 
-def test_get_backup(
-    transport: str = "grpc", request_type=bigtable_table_admin.GetBackupRequest
-):
+@pytest.mark.parametrize("request_type", [bigtable_table_admin.GetBackupRequest, dict,])
+def test_get_backup(request_type, transport: str = "grpc"):
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3932,10 +3892,6 @@ def test_get_backup(
     assert response.source_table == "source_table_value"
     assert response.size_bytes == 1089
     assert response.state == table.Backup.State.CREATING
-
-
-def test_get_backup_from_dict():
-    test_get_backup(request_type=dict)
 
 
 def test_get_backup_empty_call():
@@ -4123,9 +4079,10 @@ async def test_get_backup_flattened_error_async():
         )
 
 
-def test_update_backup(
-    transport: str = "grpc", request_type=bigtable_table_admin.UpdateBackupRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [bigtable_table_admin.UpdateBackupRequest, dict,]
+)
+def test_update_backup(request_type, transport: str = "grpc"):
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4156,10 +4113,6 @@ def test_update_backup(
     assert response.source_table == "source_table_value"
     assert response.size_bytes == 1089
     assert response.state == table.Backup.State.CREATING
-
-
-def test_update_backup_from_dict():
-    test_update_backup(request_type=dict)
 
 
 def test_update_backup_empty_call():
@@ -4364,9 +4317,10 @@ async def test_update_backup_flattened_error_async():
         )
 
 
-def test_delete_backup(
-    transport: str = "grpc", request_type=bigtable_table_admin.DeleteBackupRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [bigtable_table_admin.DeleteBackupRequest, dict,]
+)
+def test_delete_backup(request_type, transport: str = "grpc"):
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4388,10 +4342,6 @@ def test_delete_backup(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_backup_from_dict():
-    test_delete_backup(request_type=dict)
 
 
 def test_delete_backup_empty_call():
@@ -4569,9 +4519,10 @@ async def test_delete_backup_flattened_error_async():
         )
 
 
-def test_list_backups(
-    transport: str = "grpc", request_type=bigtable_table_admin.ListBackupsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [bigtable_table_admin.ListBackupsRequest, dict,]
+)
+def test_list_backups(request_type, transport: str = "grpc"):
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4596,10 +4547,6 @@ def test_list_backups(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBackupsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_backups_from_dict():
-    test_list_backups(request_type=dict)
 
 
 def test_list_backups_empty_call():
@@ -4786,8 +4733,10 @@ async def test_list_backups_flattened_error_async():
         )
 
 
-def test_list_backups_pager():
-    client = BigtableTableAdminClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_backups_pager(transport_name: str = "grpc"):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
@@ -4822,8 +4771,10 @@ def test_list_backups_pager():
         assert all(isinstance(i, table.Backup) for i in results)
 
 
-def test_list_backups_pages():
-    client = BigtableTableAdminClient(credentials=ga_credentials.AnonymousCredentials,)
+def test_list_backups_pages(transport_name: str = "grpc"):
+    client = BigtableTableAdminClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
@@ -4920,9 +4871,10 @@ async def test_list_backups_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_restore_table(
-    transport: str = "grpc", request_type=bigtable_table_admin.RestoreTableRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [bigtable_table_admin.RestoreTableRequest, dict,]
+)
+def test_restore_table(request_type, transport: str = "grpc"):
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -4944,10 +4896,6 @@ def test_restore_table(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_restore_table_from_dict():
-    test_restore_table(request_type=dict)
 
 
 def test_restore_table_empty_call():
@@ -5055,9 +5003,8 @@ async def test_restore_table_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_get_iam_policy(
-    transport: str = "grpc", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
+@pytest.mark.parametrize("request_type", [iam_policy_pb2.GetIamPolicyRequest, dict,])
+def test_get_iam_policy(request_type, transport: str = "grpc"):
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5081,10 +5028,6 @@ def test_get_iam_policy(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-def test_get_iam_policy_from_dict():
-    test_get_iam_policy(request_type=dict)
 
 
 def test_get_iam_policy_empty_call():
@@ -5282,9 +5225,8 @@ async def test_get_iam_policy_flattened_error_async():
         )
 
 
-def test_set_iam_policy(
-    transport: str = "grpc", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
+@pytest.mark.parametrize("request_type", [iam_policy_pb2.SetIamPolicyRequest, dict,])
+def test_set_iam_policy(request_type, transport: str = "grpc"):
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5308,10 +5250,6 @@ def test_set_iam_policy(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-def test_set_iam_policy_from_dict():
-    test_set_iam_policy(request_type=dict)
 
 
 def test_set_iam_policy_empty_call():
@@ -5509,9 +5447,10 @@ async def test_set_iam_policy_flattened_error_async():
         )
 
 
-def test_test_iam_permissions(
-    transport: str = "grpc", request_type=iam_policy_pb2.TestIamPermissionsRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [iam_policy_pb2.TestIamPermissionsRequest, dict,]
+)
+def test_test_iam_permissions(request_type, transport: str = "grpc"):
     client = BigtableTableAdminClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -5538,10 +5477,6 @@ def test_test_iam_permissions(
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
     assert response.permissions == ["permissions_value"]
-
-
-def test_test_iam_permissions_from_dict():
-    test_test_iam_permissions(request_type=dict)
 
 
 def test_test_iam_permissions_empty_call():
@@ -6505,7 +6440,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
