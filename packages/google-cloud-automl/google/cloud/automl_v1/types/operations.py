@@ -237,7 +237,6 @@ class BatchPredictOperationMetadata(proto.Message):
 
     class BatchPredictOutputInfo(proto.Message):
         r"""Further describes this batch predict's output. Supplements
-
         [BatchPredictOutputConfig][google.cloud.automl.v1.BatchPredictOutputConfig].
 
 

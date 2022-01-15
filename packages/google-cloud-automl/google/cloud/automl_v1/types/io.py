@@ -613,7 +613,6 @@ class InputConfig(proto.Message):
     [gcs_source][google.cloud.automl.v1.InputConfig.gcs_source] or
     [bigquery_source][google.cloud.automl.v1.InputConfig.bigquery_source].
     All input is concatenated into a single
-
     [primary_table_spec_id][google.cloud.automl.v1.TablesDatasetMetadata.primary_table_spec_id]
 
     **For gcs_source:**
@@ -632,9 +631,7 @@ class InputConfig(proto.Message):
 
         <pre>
         "Id","First Name","Last Name","Dob","Addresses"
-
         "1","John","Doe","1968-01-22","[{"status":"current","address":"123_First_Avenue","city":"Seattle","state":"WA","zip":"11111","numberOfYears":"1"},{"status":"previous","address":"456_Main_Street","city":"Portland","state":"OR","zip":"22222","numberOfYears":"5"}]"
-
         "2","Jane","Doe","1980-10-16","[{"status":"current","address":"789_Any_Avenue","city":"Albany","state":"NY","zip":"33333","numberOfYears":"2"},{"status":"previous","address":"321_Main_Street","city":"Hoboken","state":"NJ","zip":"44444","numberOfYears":"3"}]}
         </pre>
 
@@ -1012,7 +1009,6 @@ class BatchPredictInputConfig(proto.Message):
     contain values for the corresponding columns.
 
     The column names must contain the model's
-
     [input_feature_column_specs'][google.cloud.automl.v1.TablesModelMetadata.input_feature_column_specs]
     [display_name-s][google.cloud.automl.v1.ColumnSpec.display_name]
     (order doesn't matter). The columns corresponding to the model's
@@ -1026,9 +1022,7 @@ class BatchPredictInputConfig(proto.Message):
 
         <pre>
         "First Name","Last Name","Dob","Addresses"
-
         "John","Doe","1968-01-22","[{"status":"current","address":"123_First_Avenue","city":"Seattle","state":"WA","zip":"11111","numberOfYears":"1"},{"status":"previous","address":"456_Main_Street","city":"Portland","state":"OR","zip":"22222","numberOfYears":"5"}]"
-
         "Jane","Doe","1980-10-16","[{"status":"current","address":"789_Any_Avenue","city":"Albany","state":"NY","zip":"33333","numberOfYears":"2"},{"status":"previous","address":"321_Main_Street","city":"Hoboken","state":"NJ","zip":"44444","numberOfYears":"3"}]}
         </pre>
 
@@ -1038,7 +1032,6 @@ class BatchPredictInputConfig(proto.Message):
     table must be 100GB or smaller.
 
     The column names must contain the model's
-
     [input_feature_column_specs'][google.cloud.automl.v1.TablesModelMetadata.input_feature_column_specs]
     [display_name-s][google.cloud.automl.v1.ColumnSpec.display_name]
     (order doesn't matter). The columns corresponding to the model's
@@ -1119,23 +1112,21 @@ class OutputConfig(proto.Message):
        -  For Tables: Output depends on whether the dataset was imported
           from Google Cloud Storage or BigQuery. Google Cloud Storage
           case:
-
-    [gcs_destination][google.cloud.automl.v1p1beta.OutputConfig.gcs_destination]
-    must be set. Exported are CSV file(s) ``tables_1.csv``,
-    ``tables_2.csv``,...,\ ``tables_N.csv`` with each having as header
-    line the table's column names, and all other lines contain values
-    for the header columns. BigQuery case:
-
-    [bigquery_destination][google.cloud.automl.v1p1beta.OutputConfig.bigquery_destination]
-    pointing to a BigQuery project must be set. In the given project a
-    new dataset will be created with name
-
-    ``export_data_<automl-dataset-display-name>_<timestamp-of-export-call>``
-    where will be made BigQuery-dataset-name compatible (e.g. most
-    special characters will become underscores), and timestamp will be
-    in YYYY_MM_DDThh_mm_ss_sssZ "based on ISO-8601" format. In that
-    dataset a new table called ``primary_table`` will be created, and
-    filled with precisely the same data as this obtained on import.
+          [gcs_destination][google.cloud.automl.v1p1beta.OutputConfig.gcs_destination]
+          must be set. Exported are CSV file(s) ``tables_1.csv``,
+          ``tables_2.csv``,...,\ ``tables_N.csv`` with each having as
+          header line the table's column names, and all other lines
+          contain values for the header columns. BigQuery case:
+          [bigquery_destination][google.cloud.automl.v1p1beta.OutputConfig.bigquery_destination]
+          pointing to a BigQuery project must be set. In the given
+          project a new dataset will be created with name
+          ``export_data_<automl-dataset-display-name>_<timestamp-of-export-call>``
+          where will be made BigQuery-dataset-name compatible (e.g. most
+          special characters will become underscores), and timestamp
+          will be in YYYY_MM_DDThh_mm_ss_sssZ "based on ISO-8601"
+          format. In that dataset a new table called ``primary_table``
+          will be created, and filled with precisely the same data as
+          this obtained on import.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -1162,7 +1153,6 @@ class BatchPredictOutputConfig(proto.Message):
     r"""Output configuration for BatchPredict Action.
 
     As destination the
-
     [gcs_destination][google.cloud.automl.v1.BatchPredictOutputConfig.gcs_destination]
     must be set unless specified otherwise for a domain. If
     gcs_destination is set then in the given directory a new directory
@@ -1187,10 +1177,8 @@ class BatchPredictOutputConfig(proto.Message):
        predictions). These files will have a JSON representation of a
        proto that wraps the same "ID" : "<id_value>" but here followed
        by exactly one
-
-    [``google.rpc.Status``](https:
-    //github.com/googleapis/googleapis/blob/master/google/rpc/status.proto)
-    containing only ``code`` and ``message``\ fields.
+       ```google.rpc.Status`` <https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>`__
+       containing only ``code`` and ``message``\ fields.
 
     -  For Image Object Detection: In the created directory files
        ``image_object_detection_1.jsonl``,
@@ -1209,10 +1197,8 @@ class BatchPredictOutputConfig(proto.Message):
        predictions). These files will have a JSON representation of a
        proto that wraps the same "ID" : "<id_value>" but here followed
        by exactly one
-
-    [``google.rpc.Status``](https:
-    //github.com/googleapis/googleapis/blob/master/google/rpc/status.proto)
-    containing only ``code`` and ``message``\ fields.
+       ```google.rpc.Status`` <https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>`__
+       containing only ``code`` and ``message``\ fields.
 
     -  For Video Classification: In the created directory a
        video_classification.csv file, and a .JSON file per each video
@@ -1222,27 +1208,25 @@ class BatchPredictOutputConfig(proto.Message):
        ::
 
           The format of video_classification.csv is:
+          GCS_FILE_PATH,TIME_SEGMENT_START,TIME_SEGMENT_END,JSON_FILE_NAME,STATUS
+          where:
+          GCS_FILE_PATH,TIME_SEGMENT_START,TIME_SEGMENT_END = matches 1 to 1
+              the prediction input lines (i.e. video_classification.csv has
+              precisely the same number of lines as the prediction input had.)
+          JSON_FILE_NAME = Name of .JSON file in the output directory, which
+              contains prediction responses for the video time segment.
+          STATUS = "OK" if prediction completed successfully, or an error code
+              with message otherwise. If STATUS is not "OK" then the .JSON file
+              for that line may not exist or be empty.
 
-    GCS_FILE_PATH,TIME_SEGMENT_START,TIME_SEGMENT_END,JSON_FILE_NAME,STATUS
-    where: GCS_FILE_PATH,TIME_SEGMENT_START,TIME_SEGMENT_END = matches 1
-    to 1 the prediction input lines (i.e. video_classification.csv has
-    precisely the same number of lines as the prediction input had.)
-    JSON_FILE_NAME = Name of .JSON file in the output directory, which
-    contains prediction responses for the video time segment. STATUS =
-    "OK" if prediction completed successfully, or an error code with
-    message otherwise. If STATUS is not "OK" then the .JSON file for
-    that line may not exist or be empty.
-
-    ::
-
-            Each .JSON file, assuming STATUS is "OK", will contain a list of
-            AnnotationPayload protos in JSON format, which are the predictions
-            for the video time segment the file is assigned to in the
-            video_classification.csv. All AnnotationPayload protos will have
-            video_classification field set, and will be sorted by
-            video_classification.type field (note that the returned types are
-            governed by `classifaction_types` parameter in
-            [PredictService.BatchPredictRequest.params][]).
+          Each .JSON file, assuming STATUS is "OK", will contain a list of
+          AnnotationPayload protos in JSON format, which are the predictions
+          for the video time segment the file is assigned to in the
+          video_classification.csv. All AnnotationPayload protos will have
+          video_classification field set, and will be sorted by
+          video_classification.type field (note that the returned types are
+          governed by `classifaction_types` parameter in
+          [PredictService.BatchPredictRequest.params][]).
 
     -  For Video Object Tracking: In the created directory a
        video_object_tracking.csv file will be created, and multiple
@@ -1254,24 +1238,22 @@ class BatchPredictOutputConfig(proto.Message):
        ::
 
           The format of video_object_tracking.csv is:
+          GCS_FILE_PATH,TIME_SEGMENT_START,TIME_SEGMENT_END,JSON_FILE_NAME,STATUS
+          where:
+          GCS_FILE_PATH,TIME_SEGMENT_START,TIME_SEGMENT_END = matches 1 to 1
+              the prediction input lines (i.e. video_object_tracking.csv has
+              precisely the same number of lines as the prediction input had.)
+          JSON_FILE_NAME = Name of .JSON file in the output directory, which
+              contains prediction responses for the video time segment.
+          STATUS = "OK" if prediction completed successfully, or an error
+              code with message otherwise. If STATUS is not "OK" then the .JSON
+              file for that line may not exist or be empty.
 
-    GCS_FILE_PATH,TIME_SEGMENT_START,TIME_SEGMENT_END,JSON_FILE_NAME,STATUS
-    where: GCS_FILE_PATH,TIME_SEGMENT_START,TIME_SEGMENT_END = matches 1
-    to 1 the prediction input lines (i.e. video_object_tracking.csv has
-    precisely the same number of lines as the prediction input had.)
-    JSON_FILE_NAME = Name of .JSON file in the output directory, which
-    contains prediction responses for the video time segment. STATUS =
-    "OK" if prediction completed successfully, or an error code with
-    message otherwise. If STATUS is not "OK" then the .JSON file for
-    that line may not exist or be empty.
-
-    ::
-
-            Each .JSON file, assuming STATUS is "OK", will contain a list of
-            AnnotationPayload protos in JSON format, which are the predictions
-            for each frame of the video time segment the file is assigned to in
-            video_object_tracking.csv. All AnnotationPayload protos will have
-            video_object_tracking field set.
+          Each .JSON file, assuming STATUS is "OK", will contain a list of
+          AnnotationPayload protos in JSON format, which are the predictions
+          for each frame of the video time segment the file is assigned to in
+          video_object_tracking.csv. All AnnotationPayload protos will have
+          video_object_tracking field set.
 
     -  For Text Classification: In the created directory files
        ``text_classification_1.jsonl``,
@@ -1294,10 +1276,8 @@ class BatchPredictOutputConfig(proto.Message):
           `errors_N.jsonl` files will be created (N depends on total number of
           failed predictions). These files will have a JSON representation of a
           proto that wraps input file followed by exactly one
-
-    [``google.rpc.Status``](https:
-    //github.com/googleapis/googleapis/blob/master/google/rpc/status.proto)
-    containing only ``code`` and ``message``.
+          [`google.rpc.Status`](https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto)
+          containing only `code` and `message`.
 
     -  For Text Sentiment: In the created directory files
        ``text_sentiment_1.jsonl``,
@@ -1320,10 +1300,8 @@ class BatchPredictOutputConfig(proto.Message):
           `errors_N.jsonl` files will be created (N depends on total number of
           failed predictions). These files will have a JSON representation of a
           proto that wraps input file followed by exactly one
-
-    [``google.rpc.Status``](https:
-    //github.com/googleapis/googleapis/blob/master/google/rpc/status.proto)
-    containing only ``code`` and ``message``.
+          [`google.rpc.Status`](https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto)
+          containing only `code` and `message`.
 
     -  For Text Extraction: In the created directory files
        ``text_extraction_1.jsonl``,
@@ -1354,98 +1332,78 @@ class BatchPredictOutputConfig(proto.Message):
        will have a JSON representation of a proto that wraps either the
        "id" : "<id_value>" (in case of inline) or the document proto (in
        case of document) but here followed by exactly one
-
-    [``google.rpc.Status``](https:
-    //github.com/googleapis/googleapis/blob/master/google/rpc/status.proto)
-    containing only ``code`` and ``message``.
+       ```google.rpc.Status`` <https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>`__
+       containing only ``code`` and ``message``.
 
     -  For Tables: Output depends on whether
-
-    [gcs_destination][google.cloud.automl.v1p1beta.BatchPredictOutputConfig.gcs_destination]
-    or
-
-    [bigquery_destination][google.cloud.automl.v1p1beta.BatchPredictOutputConfig.bigquery_destination]
-    is set (either is allowed). Google Cloud Storage case: In the
-    created directory files ``tables_1.csv``, ``tables_2.csv``,...,
-    ``tables_N.csv`` will be created, where N may be 1, and depends on
-    the total number of the successfully predicted rows. For all
-    CLASSIFICATION
-
-    [prediction_type-s][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type]:
-    Each .csv file will contain a header, listing all columns'
-
-    [display_name-s][google.cloud.automl.v1p1beta.ColumnSpec.display_name]
-    given on input followed by M target column names in the format of
-
-    "<[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec]
-
-    [display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name]>\_\_score"
-    where M is the number of distinct target values, i.e. number of
-    distinct values in the target column of the table used to train the
-    model. Subsequent lines will contain the respective values of
-    successfully predicted rows, with the last, i.e. the target, columns
-    having the corresponding prediction
-    [scores][google.cloud.automl.v1p1beta.TablesAnnotation.score]. For
-    REGRESSION and FORECASTING
-
-    [prediction_type-s][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type]:
-    Each .csv file will contain a header, listing all columns'
-    [display_name-s][google.cloud.automl.v1p1beta.display_name] given on
-    input followed by the predicted target column with name in the
-    format of
-
-    "predicted_<[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec]
-
-    [display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name]>"
-    Subsequent lines will contain the respective values of successfully
-    predicted rows, with the last, i.e. the target, column having the
-    predicted target value. If prediction for any rows failed, then an
-    additional ``errors_1.csv``, ``errors_2.csv``,..., ``errors_N.csv``
-    will be created (N depends on total number of failed rows). These
-    files will have analogous format as ``tables_*.csv``, but always
-    with a single target column having
-
-    [``google.rpc.Status``](https:
-    //github.com/googleapis/googleapis/blob/master/google/rpc/status.proto)
-    represented as a JSON string, and containing only ``code`` and
-    ``message``. BigQuery case:
-
-    [bigquery_destination][google.cloud.automl.v1p1beta.OutputConfig.bigquery_destination]
-    pointing to a BigQuery project must be set. In the given project a
-    new dataset will be created with name
-    ``prediction_<model-display-name>_<timestamp-of-prediction-call>``
-    where will be made BigQuery-dataset-name compatible (e.g. most
-    special characters will become underscores), and timestamp will be
-    in YYYY_MM_DDThh_mm_ss_sssZ "based on ISO-8601" format. In the
-    dataset two tables will be created, ``predictions``, and ``errors``.
-    The ``predictions`` table's column names will be the input columns'
-
-    [display_name-s][google.cloud.automl.v1p1beta.ColumnSpec.display_name]
-    followed by the target column with name in the format of
-
-    "predicted_<[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec]
-
-    [display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name]>"
-    The input feature columns will contain the respective values of
-    successfully predicted rows, with the target column having an ARRAY
-    of
-
-    [AnnotationPayloads][google.cloud.automl.v1p1beta.AnnotationPayload],
-    represented as STRUCT-s, containing
-    [TablesAnnotation][google.cloud.automl.v1p1beta.TablesAnnotation].
-    The ``errors`` table contains rows for which the prediction has
-    failed, it has analogous input columns while the target column name
-    is in the format of
-
-    "errors_<[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec]
-
-    [display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name]>",
-    and as a value has
-
-    [``google.rpc.Status``](https:
-    //github.com/googleapis/googleapis/blob/master/google/rpc/status.proto)
-    represented as a STRUCT, and containing only ``code`` and
-    ``message``.
+       [gcs_destination][google.cloud.automl.v1p1beta.BatchPredictOutputConfig.gcs_destination]
+       or
+       [bigquery_destination][google.cloud.automl.v1p1beta.BatchPredictOutputConfig.bigquery_destination]
+       is set (either is allowed). Google Cloud Storage case: In the
+       created directory files ``tables_1.csv``, ``tables_2.csv``,...,
+       ``tables_N.csv`` will be created, where N may be 1, and depends
+       on the total number of the successfully predicted rows. For all
+       CLASSIFICATION
+       [prediction_type-s][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type]:
+       Each .csv file will contain a header, listing all columns'
+       [display_name-s][google.cloud.automl.v1p1beta.ColumnSpec.display_name]
+       given on input followed by M target column names in the format of
+       "<[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec]
+       [display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name]>*\ score"
+       where M is the number of distinct target values, i.e. number of
+       distinct values in the target column of the table used to train
+       the model. Subsequent lines will contain the respective values of
+       successfully predicted rows, with the last, i.e. the target,
+       columns having the corresponding prediction
+       [scores][google.cloud.automl.v1p1beta.TablesAnnotation.score].
+       For REGRESSION and FORECASTING
+       [prediction_type-s][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type]:
+       Each .csv file will contain a header, listing all columns'
+       [display_name-s][google.cloud.automl.v1p1beta.display_name] given
+       on input followed by the predicted target column with name in the
+       format of
+       "predicted\ <[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec]
+       [display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name]>"
+       Subsequent lines will contain the respective values of
+       successfully predicted rows, with the last, i.e. the target,
+       column having the predicted target value. If prediction for any
+       rows failed, then an additional ``errors_1.csv``,
+       ``errors_2.csv``,..., ``errors_N.csv`` will be created (N depends
+       on total number of failed rows). These files will have analogous
+       format as ``tables_*.csv``, but always with a single target
+       column
+       having*\ ```google.rpc.Status`` <https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>`__\ *represented
+       as a JSON string, and containing only ``code`` and ``message``.
+       BigQuery case:
+       [bigquery_destination][google.cloud.automl.v1p1beta.OutputConfig.bigquery_destination]
+       pointing to a BigQuery project must be set. In the given project
+       a new dataset will be created with name
+       ``prediction_<model-display-name>_<timestamp-of-prediction-call>``
+       where will be made BigQuery-dataset-name compatible (e.g. most
+       special characters will become underscores), and timestamp will
+       be in YYYY_MM_DDThh_mm_ss_sssZ "based on ISO-8601" format. In the
+       dataset two tables will be created, ``predictions``, and
+       ``errors``. The ``predictions`` table's column names will be the
+       input columns'
+       [display_name-s][google.cloud.automl.v1p1beta.ColumnSpec.display_name]
+       followed by the target column with name in the format of
+       "predicted*\ <[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec]
+       [display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name]>"
+       The input feature columns will contain the respective values of
+       successfully predicted rows, with the target column having an
+       ARRAY of
+       [AnnotationPayloads][google.cloud.automl.v1p1beta.AnnotationPayload],
+       represented as STRUCT-s, containing
+       [TablesAnnotation][google.cloud.automl.v1p1beta.TablesAnnotation].
+       The ``errors`` table contains rows for which the prediction has
+       failed, it has analogous input columns while the target column
+       name is in the format of
+       "errors_<[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec]
+       [display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name]>",
+       and as a value has
+       ```google.rpc.Status`` <https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>`__
+       represented as a STRUCT, and containing only ``code`` and
+       ``message``.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -1518,10 +1476,8 @@ class ModelExportOutputConfig(proto.Message):
             -  docker - Used for Docker containers. Use the params field
                to customize the container. The container is verified to
                work correctly on ubuntu 16.04 operating system. See more
-               at [containers
-
-            quickstart](https:
-            //cloud.google.com/vision/automl/docs/containers-gcs-quickstart)
+               at `containers
+               quickstart <https://cloud.google.com/vision/automl/docs/containers-gcs-quickstart>`__
 
             -  core_ml - Used for iOS mobile devices.
         params (Sequence[google.cloud.automl_v1.types.ModelExportOutputConfig.ParamsEntry]):

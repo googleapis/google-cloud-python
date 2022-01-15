@@ -37,7 +37,7 @@ class PredictionServiceGrpcAsyncIOTransport(PredictionServiceTransport):
     AutoML Prediction API.
 
     On any input that is documented to expect a string parameter in
-    snake_case or kebab-case, either of those cases is accepted.
+    snake_case or dash-case, either of those cases is accepted.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

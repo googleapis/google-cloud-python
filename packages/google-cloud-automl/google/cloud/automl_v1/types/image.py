@@ -61,13 +61,13 @@ class ImageClassificationModelMetadata(proto.Message):
             ``location`` as the new model to create, and have the same
             ``model_type``.
         train_budget_milli_node_hours (int):
-            The train budget of creating this model, expressed in milli
-            node hours i.e. 1,000 value in this field means 1 node hour.
-            The actual ``train_cost`` will be equal or less than this
-            value. If further model training ceases to provide any
-            improvements, it will stop without using full budget and the
-            stop_reason will be ``MODEL_CONVERGED``. Note, node_hour =
-            actual_hour \* number_of_nodes_invovled. For model type
+            Optional. The train budget of creating this model, expressed
+            in milli node hours i.e. 1,000 value in this field means 1
+            node hour. The actual ``train_cost`` will be equal or less
+            than this value. If further model training ceases to provide
+            any improvements, it will stop without using full budget and
+            the stop_reason will be ``MODEL_CONVERGED``. Note, node_hour
+            = actual_hour \* number_of_nodes_invovled. For model type
             ``cloud``\ (default), the train budget must be between 8,000
             and 800,000 milli node hours, inclusive. The default value
             is 192, 000 which represents one day in wall time. For model
@@ -199,13 +199,13 @@ class ImageObjectDetectionModelMetadata(proto.Message):
             Output only. The reason that this create model operation
             stopped, e.g. ``BUDGET_REACHED``, ``MODEL_CONVERGED``.
         train_budget_milli_node_hours (int):
-            The train budget of creating this model, expressed in milli
-            node hours i.e. 1,000 value in this field means 1 node hour.
-            The actual ``train_cost`` will be equal or less than this
-            value. If further model training ceases to provide any
-            improvements, it will stop without using full budget and the
-            stop_reason will be ``MODEL_CONVERGED``. Note, node_hour =
-            actual_hour \* number_of_nodes_invovled. For model type
+            Optional. The train budget of creating this model, expressed
+            in milli node hours i.e. 1,000 value in this field means 1
+            node hour. The actual ``train_cost`` will be equal or less
+            than this value. If further model training ceases to provide
+            any improvements, it will stop without using full budget and
+            the stop_reason will be ``MODEL_CONVERGED``. Note, node_hour
+            = actual_hour \* number_of_nodes_invovled. For model type
             ``cloud-high-accuracy-1``\ (default) and
             ``cloud-low-latency-1``, the train budget must be between
             20,000 and 900,000 milli node hours, inclusive. The default
@@ -242,7 +242,6 @@ class ImageClassificationModelDeploymentMetadata(proto.Message):
             Input only. The number of nodes to deploy the model on. A
             node is an abstraction of a machine resource, which can
             handle online prediction QPS as given in the model's
-
             [node_qps][google.cloud.automl.v1.ImageClassificationModelMetadata.node_qps].
             Must be between 1 and 100, inclusive on both ends.
     """
@@ -258,7 +257,6 @@ class ImageObjectDetectionModelDeploymentMetadata(proto.Message):
             Input only. The number of nodes to deploy the model on. A
             node is an abstraction of a machine resource, which can
             handle online prediction QPS as given in the model's
-
             [qps_per_node][google.cloud.automl.v1.ImageObjectDetectionModelMetadata.qps_per_node].
             Must be between 1 and 100, inclusive on both ends.
     """

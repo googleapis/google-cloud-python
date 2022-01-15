@@ -169,7 +169,6 @@ class ClassificationEvaluationMetrics(proto.Message):
             annotation_spec_id (Sequence[str]):
                 Output only. IDs of the annotation specs used in the
                 confusion matrix. For Tables CLASSIFICATION
-
                 [prediction_type][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type]
                 only list of [annotation_spec_display_name-s][] is
                 populated.
@@ -177,7 +176,6 @@ class ClassificationEvaluationMetrics(proto.Message):
                 Output only. Display name of the annotation specs used in
                 the confusion matrix, as they were at the moment of the
                 evaluation. For Tables CLASSIFICATION
-
                 [prediction_type-s][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type],
                 distinct values of the target column at the moment of the
                 model evaluation are populated here.

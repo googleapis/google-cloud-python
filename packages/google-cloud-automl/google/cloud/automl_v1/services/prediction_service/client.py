@@ -85,7 +85,7 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
     """AutoML Prediction API.
 
     On any input that is documented to expect a string parameter in
-    snake_case or kebab-case, either of those cases is accepted.
+    snake_case or dash-case, either of those cases is accepted.
     """
 
     @staticmethod
@@ -464,7 +464,6 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
                 AutoML Tables
 
                 ``feature_importance`` : (boolean) Whether
-
                 [feature_importance][google.cloud.automl.v1.TablesModelColumnInfo.feature_importance]
                 is populated in the returned list of
                 [TablesAnnotation][google.cloud.automl.v1.TablesAnnotation]
