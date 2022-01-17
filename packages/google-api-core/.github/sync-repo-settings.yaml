@@ -23,6 +23,7 @@ branchProtectionRules:
     - 'unit_wo_grpc-3.6'
     - 'unit_wo_grpc-3.10'
     - 'cover'
+    - 'docs'
 permissionRules:
   - team: actools-python
     permission: admin
