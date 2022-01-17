@@ -52,19 +52,27 @@ class StreamingPullFuture(futures.Future):
         else:
             self.set_exception(result)
 
-    def cancel(self):
+    def cancel(self) -> bool:
         """Stops pulling messages and shutdowns the background thread consuming
         messages.
+
+        The method always returns ``True``, as the shutdown is always initiated.
+        However, if the background stream is already being shut down or the shutdown
+        has completed, this method is a no-op.
 
         .. versionchanged:: 2.4.1
            The method does not block anymore, it just triggers the shutdown and returns
            immediately. To block until the background stream is terminated, call
            :meth:`result()` after cancelling the future.
+
+        .. versionchanged:: 2.10.0
+           The method always returns ``True`` instead of ``None``.
         """
         # NOTE: We circumvent the base future's self._state to track the cancellation
         # state, as this state has different meaning with streaming pull futures.
         self.__cancelled = True
-        return self.__manager.close()
+        self.__manager.close()
+        return True
 
     def cancelled(self) -> bool:
         """

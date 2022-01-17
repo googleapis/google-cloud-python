@@ -78,14 +78,14 @@ def subscription_path(
         pass
 
 
-def test_get_topic_policy(topic_path: str, capsys: CaptureFixture) -> None:
+def test_get_topic_policy(topic_path: str, capsys: CaptureFixture[str]) -> None:
     iam.get_topic_policy(PROJECT_ID, TOPIC_ID)
     out, _ = capsys.readouterr()
     assert topic_path in out
 
 
 def test_get_subscription_policy(
-    subscription_path: str, capsys: CaptureFixture
+    subscription_path: str, capsys: CaptureFixture[str]
 ) -> None:
     iam.get_subscription_policy(PROJECT_ID, SUBSCRIPTION_ID)
     out, _ = capsys.readouterr()
@@ -93,8 +93,8 @@ def test_get_subscription_policy(
 
 
 def test_set_topic_policy(
-    publisher_client: pubsub_v1.PublisherClient, topic_path: str,
-) -> CaptureFixture:
+    publisher_client: pubsub_v1.PublisherClient, topic_path: str
+) -> None:
     iam.set_topic_policy(PROJECT_ID, TOPIC_ID)
     policy = publisher_client.get_iam_policy(request={"resource": topic_path})
     assert "roles/pubsub.publisher" in str(policy)
@@ -110,7 +110,7 @@ def test_set_subscription_policy(
     assert "domain:google.com" in str(policy)
 
 
-def test_check_topic_permissions(topic_path: str, capsys: CaptureFixture) -> None:
+def test_check_topic_permissions(topic_path: str, capsys: CaptureFixture[str]) -> None:
     iam.check_topic_permissions(PROJECT_ID, TOPIC_ID)
     out, _ = capsys.readouterr()
     assert topic_path in out
@@ -118,7 +118,7 @@ def test_check_topic_permissions(topic_path: str, capsys: CaptureFixture) -> Non
 
 
 def test_check_subscription_permissions(
-    subscription_path: str, capsys: CaptureFixture,
+    subscription_path: str, capsys: CaptureFixture[str],
 ) -> None:
     iam.check_subscription_permissions(PROJECT_ID, SUBSCRIPTION_ID)
     out, _ = capsys.readouterr()

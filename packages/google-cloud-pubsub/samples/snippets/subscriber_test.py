@@ -16,7 +16,7 @@ import os
 import re
 import sys
 import time
-from typing import Generator
+from typing import Any, Callable, cast, Generator, TypeVar
 import uuid
 
 from _pytest.capture import CaptureFixture
@@ -43,6 +43,10 @@ ENDPOINT = f"https://{PROJECT_ID}.appspot.com/push"
 NEW_ENDPOINT = f"https://{PROJECT_ID}.appspot.com/push2"
 DEFAULT_MAX_DELIVERY_ATTEMPTS = 5
 UPDATED_MAX_DELIVERY_ATTEMPTS = 20
+
+C = TypeVar("C", bound=Callable[..., Any])
+
+typed_flaky = cast(Callable[[C], C], flaky(max_runs=3, min_passes=1))
 
 
 @pytest.fixture(scope="module")
@@ -126,7 +130,11 @@ def subscription_sync(
 
     yield subscription.name
 
-    @backoff.on_exception(backoff.expo, Unknown, max_time=300)
+    typed_backoff = cast(
+        Callable[[C], C], backoff.on_exception(backoff.expo, Unknown, max_time=300),
+    )
+
+    @typed_backoff
     def delete_subscription() -> None:
         try:
             subscriber_client.delete_subscription(
@@ -197,7 +205,7 @@ def _publish_messages(
     publisher_client: pubsub_v1.PublisherClient,
     topic: str,
     message_num: int = 5,
-    **attrs: dict,
+    **attrs: Any,
 ) -> None:
     for n in range(message_num):
         data = f"message {n}".encode("utf-8")
@@ -205,8 +213,13 @@ def _publish_messages(
         publish_future.result()
 
 
-def test_list_in_topic(subscription_admin: str, capsys: CaptureFixture) -> None:
-    @backoff.on_exception(backoff.expo, AssertionError, max_time=60)
+def test_list_in_topic(subscription_admin: str, capsys: CaptureFixture[str]) -> None:
+    typed_backoff = cast(
+        Callable[[C], C],
+        backoff.on_exception(backoff.expo, AssertionError, max_time=60),
+    )
+
+    @typed_backoff
     def eventually_consistent_test() -> None:
         subscriber.list_subscriptions_in_topic(PROJECT_ID, TOPIC)
         out, _ = capsys.readouterr()
@@ -215,8 +228,13 @@ def test_list_in_topic(subscription_admin: str, capsys: CaptureFixture) -> None:
     eventually_consistent_test()
 
 
-def test_list_in_project(subscription_admin: str, capsys: CaptureFixture) -> None:
-    @backoff.on_exception(backoff.expo, AssertionError, max_time=60)
+def test_list_in_project(subscription_admin: str, capsys: CaptureFixture[str]) -> None:
+    typed_backoff = cast(
+        Callable[[C], C],
+        backoff.on_exception(backoff.expo, AssertionError, max_time=60),
+    )
+
+    @typed_backoff
     def eventually_consistent_test() -> None:
         subscriber.list_subscriptions_in_project(PROJECT_ID)
         out, _ = capsys.readouterr()
@@ -228,7 +246,7 @@ def test_list_in_project(subscription_admin: str, capsys: CaptureFixture) -> Non
 def test_create_subscription(
     subscriber_client: pubsub_v1.SubscriberClient,
     subscription_admin: str,
-    capsys: CaptureFixture,
+    capsys: CaptureFixture[str],
 ) -> None:
     subscription_path = subscriber_client.subscription_path(
         PROJECT_ID, SUBSCRIPTION_ADMIN
@@ -251,7 +269,7 @@ def test_create_subscription_with_dead_letter_policy(
     subscriber_client: pubsub_v1.SubscriberClient,
     subscription_dlq: str,
     dead_letter_topic: str,
-    capsys: CaptureFixture,
+    capsys: CaptureFixture[str],
 ) -> None:
     try:
         subscriber_client.delete_subscription(
@@ -270,18 +288,23 @@ def test_create_subscription_with_dead_letter_policy(
     assert f"After {DEFAULT_MAX_DELIVERY_ATTEMPTS} delivery attempts." in out
 
 
-@flaky(max_runs=3, min_passes=1)
+@typed_flaky
 def test_receive_with_delivery_attempts(
     publisher_client: pubsub_v1.PublisherClient,
     topic: str,
     dead_letter_topic: str,
     subscription_dlq: str,
-    capsys: CaptureFixture,
+    capsys: CaptureFixture[str],
 ) -> None:
+
+    typed_backoff = cast(
+        Callable[[C], C],
+        backoff.on_exception(backoff.expo, (Unknown, NotFound), max_time=120),
+    )
 
     # The dlq subscription raises 404 before it's ready.
     # We keep retrying up to 10 minutes for mitigating the flakiness.
-    @backoff.on_exception(backoff.expo, (Unknown, NotFound), max_time=120)
+    @typed_backoff
     def run_sample() -> None:
         _publish_messages(publisher_client, topic)
 
@@ -296,14 +319,19 @@ def test_receive_with_delivery_attempts(
     assert "With delivery attempts: " in out
 
 
-@flaky(max_runs=3, min_passes=1)
+@typed_flaky
 def test_update_dead_letter_policy(
-    subscription_dlq: str, dead_letter_topic: str, capsys: CaptureFixture
+    subscription_dlq: str, dead_letter_topic: str, capsys: CaptureFixture[str]
 ) -> None:
+
+    typed_backoff = cast(
+        Callable[[C], C],
+        backoff.on_exception(backoff.expo, (Unknown, InternalServerError), max_time=60),
+    )
 
     # We saw internal server error that suggests to retry.
 
-    @backoff.on_exception(backoff.expo, (Unknown, InternalServerError), max_time=60)
+    @typed_backoff
     def run_sample() -> None:
         subscriber.update_subscription_with_dead_letter_policy(
             PROJECT_ID,
@@ -321,9 +349,9 @@ def test_update_dead_letter_policy(
     assert f"max_delivery_attempts: {UPDATED_MAX_DELIVERY_ATTEMPTS}" in out
 
 
-@flaky(max_runs=3, min_passes=1)
+@typed_flaky
 def test_remove_dead_letter_policy(
-    subscription_dlq: str, capsys: CaptureFixture
+    subscription_dlq: str, capsys: CaptureFixture[str]
 ) -> None:
     subscription_after_update = subscriber.remove_dead_letter_policy(
         PROJECT_ID, TOPIC, SUBSCRIPTION_DLQ
@@ -337,7 +365,7 @@ def test_remove_dead_letter_policy(
 def test_create_subscription_with_ordering(
     subscriber_client: pubsub_v1.SubscriberClient,
     subscription_admin: str,
-    capsys: CaptureFixture,
+    capsys: CaptureFixture[str],
 ) -> None:
     subscription_path = subscriber_client.subscription_path(
         PROJECT_ID, SUBSCRIPTION_ADMIN
@@ -360,10 +388,14 @@ def test_create_subscription_with_ordering(
 def test_create_push_subscription(
     subscriber_client: pubsub_v1.SubscriberClient,
     subscription_admin: str,
-    capsys: CaptureFixture,
+    capsys: CaptureFixture[str],
 ) -> None:
+    typed_backoff = cast(
+        Callable[[C], C], backoff.on_exception(backoff.expo, Unknown, max_time=60),
+    )
+
     # The scope of `subscription_path` is limited to this function.
-    @backoff.on_exception(backoff.expo, AssertionError, max_time=60)
+    @typed_backoff
     def eventually_consistent_test() -> None:
         subscription_path = subscriber_client.subscription_path(
             PROJECT_ID, SUBSCRIPTION_ADMIN
@@ -375,7 +407,9 @@ def test_create_push_subscription(
         except NotFound:
             pass
 
-        subscriber.create_push_subscription(PROJECT_ID, TOPIC, SUBSCRIPTION_ADMIN, ENDPOINT)
+        subscriber.create_push_subscription(
+            PROJECT_ID, TOPIC, SUBSCRIPTION_ADMIN, ENDPOINT
+        )
 
         out, _ = capsys.readouterr()
         assert f"{subscription_admin}" in out
@@ -384,10 +418,14 @@ def test_create_push_subscription(
 
 
 def test_update_push_suscription(
-    subscription_admin: str,
-    capsys: CaptureFixture,
+    subscription_admin: str, capsys: CaptureFixture[str],
 ) -> None:
-    @backoff.on_exception(backoff.expo, AssertionError, max_time=60)
+
+    typed_backoff = cast(
+        Callable[[C], C], backoff.on_exception(backoff.expo, Unknown, max_time=60),
+    )
+
+    @typed_backoff
     def eventually_consistent_test() -> None:
         subscriber.update_push_subscription(
             PROJECT_ID, TOPIC, SUBSCRIPTION_ADMIN, NEW_ENDPOINT
@@ -405,7 +443,11 @@ def test_delete_subscription(
 ) -> None:
     subscriber.delete_subscription(PROJECT_ID, SUBSCRIPTION_ADMIN)
 
-    @backoff.on_exception(backoff.expo, AssertionError, max_time=60)
+    typed_backoff = cast(
+        Callable[[C], C], backoff.on_exception(backoff.expo, Unknown, max_time=60),
+    )
+
+    @typed_backoff
     def eventually_consistent_test() -> None:
         with pytest.raises(Exception):
             subscriber_client.get_subscription(
@@ -419,10 +461,14 @@ def test_receive(
     publisher_client: pubsub_v1.PublisherClient,
     topic: str,
     subscription_async: str,
-    capsys: CaptureFixture,
+    capsys: CaptureFixture[str],
 ) -> None:
 
-    @backoff.on_exception(backoff.expo, Unknown, max_time=60)
+    typed_backoff = cast(
+        Callable[[C], C], backoff.on_exception(backoff.expo, Unknown, max_time=60),
+    )
+
+    @typed_backoff
     def eventually_consistent_test() -> None:
         _publish_messages(publisher_client, topic)
 
@@ -440,10 +486,14 @@ def test_receive_with_custom_attributes(
     publisher_client: pubsub_v1.PublisherClient,
     topic: str,
     subscription_async: str,
-    capsys: CaptureFixture,
+    capsys: CaptureFixture[str],
 ) -> None:
 
-    @backoff.on_exception(backoff.expo, Unknown, max_time=60)
+    typed_backoff = cast(
+        Callable[[C], C], backoff.on_exception(backoff.expo, Unknown, max_time=60),
+    )
+
+    @typed_backoff
     def eventually_consistent_test() -> None:
         _publish_messages(publisher_client, topic, origin="python-sample")
 
@@ -464,10 +514,14 @@ def test_receive_with_flow_control(
     publisher_client: pubsub_v1.PublisherClient,
     topic: str,
     subscription_async: str,
-    capsys: CaptureFixture,
+    capsys: CaptureFixture[str],
 ) -> None:
 
-    @backoff.on_exception(backoff.expo, Unknown, max_time=300)
+    typed_backoff = cast(
+        Callable[[C], C], backoff.on_exception(backoff.expo, Unknown, max_time=300),
+    )
+
+    @typed_backoff
     def eventually_consistent_test() -> None:
         _publish_messages(publisher_client, topic)
 
@@ -485,7 +539,7 @@ def test_receive_with_blocking_shutdown(
     publisher_client: pubsub_v1.PublisherClient,
     topic: str,
     subscription_async: str,
-    capsys: CaptureFixture,
+    capsys: CaptureFixture[str],
 ) -> None:
 
     _received = re.compile(r".*received.*message.*", flags=re.IGNORECASE)
@@ -493,7 +547,11 @@ def test_receive_with_blocking_shutdown(
     _canceled = re.compile(r".*streaming pull future canceled.*", flags=re.IGNORECASE)
     _shut_down = re.compile(r".*done waiting.*stream shutdown.*", flags=re.IGNORECASE)
 
-    @backoff.on_exception(backoff.expo, Unknown, max_time=300)
+    typed_backoff = cast(
+        Callable[[C], C], backoff.on_exception(backoff.expo, Unknown, max_time=300),
+    )
+
+    @typed_backoff
     def eventually_consistent_test() -> None:
         _publish_messages(publisher_client, topic, message_num=3)
 
@@ -505,24 +563,14 @@ def test_receive_with_blocking_shutdown(
         out_lines = out.splitlines()
 
         msg_received_lines = [
-            i
-            for i, line in enumerate(out_lines)
-            if _received.search(line)
+            i for i, line in enumerate(out_lines) if _received.search(line)
         ]
-        msg_done_lines = [
-            i
-            for i, line in enumerate(out_lines)
-            if _done.search(line)
-        ]
+        msg_done_lines = [i for i, line in enumerate(out_lines) if _done.search(line)]
         stream_canceled_lines = [
-            i
-            for i, line in enumerate(out_lines)
-            if _canceled.search(line)
+            i for i, line in enumerate(out_lines) if _canceled.search(line)
         ]
         shutdown_done_waiting_lines = [
-            i
-            for i, line in enumerate(out_lines)
-            if _shut_down.search(line)
+            i for i, line in enumerate(out_lines) if _shut_down.search(line)
         ]
 
         try:
@@ -554,10 +602,14 @@ def test_listen_for_errors(
     publisher_client: pubsub_v1.PublisherClient,
     topic: str,
     subscription_async: str,
-    capsys: CaptureFixture,
+    capsys: CaptureFixture[str],
 ) -> None:
 
-    @backoff.on_exception(backoff.expo, Unknown, max_time=60)
+    typed_backoff = cast(
+        Callable[[C], C], backoff.on_exception(backoff.expo, Unknown, max_time=60),
+    )
+
+    @typed_backoff
     def eventually_consistent_test() -> None:
         _publish_messages(publisher_client, topic)
 
@@ -574,7 +626,7 @@ def test_receive_synchronously(
     publisher_client: pubsub_v1.PublisherClient,
     topic: str,
     subscription_sync: str,
-    capsys: CaptureFixture,
+    capsys: CaptureFixture[str],
 ) -> None:
     _publish_messages(publisher_client, topic)
 
@@ -586,14 +638,19 @@ def test_receive_synchronously(
     assert f"{subscription_sync}" in out
 
 
-@flaky(max_runs=3, min_passes=1)
+@typed_flaky
 def test_receive_synchronously_with_lease(
     publisher_client: pubsub_v1.PublisherClient,
     topic: str,
     subscription_sync: str,
-    capsys: CaptureFixture,
+    capsys: CaptureFixture[str],
 ) -> None:
-    @backoff.on_exception(backoff.expo, Unknown, max_time=300)
+
+    typed_backoff = cast(
+        Callable[[C], C], backoff.on_exception(backoff.expo, Unknown, max_time=300),
+    )
+
+    @typed_backoff
     def run_sample() -> None:
         _publish_messages(publisher_client, topic, message_num=10)
         # Pausing 10s to allow the subscriber to establish the connection

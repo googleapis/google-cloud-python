@@ -15,7 +15,7 @@
 # limitations under the License.
 
 import os
-from typing import Generator
+from typing import Any, Callable, cast, Iterator, TypeVar
 import uuid
 
 from _pytest.capture import CaptureFixture
@@ -32,19 +32,19 @@ SUBSCRIPTION_ID = "quickstart-sub-test-topic-sub-" + UUID
 
 
 @pytest.fixture(scope="module")
-def publisher_client() -> Generator[pubsub_v1.PublisherClient, None, None]:
+def publisher_client() -> Iterator[pubsub_v1.PublisherClient]:
     yield pubsub_v1.PublisherClient()
 
 
 @pytest.fixture(scope="module")
-def subscriber_client() -> Generator[pubsub_v1.SubscriberClient, None, None]:
+def subscriber_client() -> Iterator[pubsub_v1.SubscriberClient]:
     subscriber_client = pubsub_v1.SubscriberClient()
     yield subscriber_client
     subscriber_client.close()
 
 
 @pytest.fixture(scope="module")
-def topic_path(publisher_client: pubsub_v1.PublisherClient) -> Generator[str, None, None]:
+def topic_path(publisher_client: pubsub_v1.PublisherClient) -> Iterator[str]:
     topic_path = publisher_client.topic_path(PROJECT_ID, TOPIC_ID)
 
     try:
@@ -57,7 +57,9 @@ def topic_path(publisher_client: pubsub_v1.PublisherClient) -> Generator[str, No
 
 
 @pytest.fixture(scope="module")
-def subscription_path(subscriber_client: pubsub_v1.SubscriberClient, topic_path: str) -> Generator[str, None, None]:
+def subscription_path(
+    subscriber_client: pubsub_v1.SubscriberClient, topic_path: str
+) -> Iterator[str]:
     subscription_path = subscriber_client.subscription_path(PROJECT_ID, SUBSCRIPTION_ID)
 
     try:
@@ -72,7 +74,7 @@ def subscription_path(subscriber_client: pubsub_v1.SubscriberClient, topic_path:
     subscriber_client.close()
 
 
-def test_pub(topic_path: str, capsys: CaptureFixture) -> None:
+def test_pub(topic_path: str, capsys: CaptureFixture[str]) -> None:
     import pub
 
     pub.pub(PROJECT_ID, TOPIC_ID)
@@ -82,8 +84,17 @@ def test_pub(topic_path: str, capsys: CaptureFixture) -> None:
     assert "Hello, World!" in out
 
 
-@flaky(max_runs=3, min_passes=1)
-def test_sub(publisher_client: pubsub_v1.PublisherClient, topic_path: str, subscription_path: str, capsys: CaptureFixture) -> None:
+C = TypeVar("C", bound=Callable[..., Any])
+_typed_flaky = cast(Callable[[C], C], flaky(max_runs=3, min_passes=1))
+
+
+@_typed_flaky
+def test_sub(
+    publisher_client: pubsub_v1.PublisherClient,
+    topic_path: str,
+    subscription_path: str,
+    capsys: CaptureFixture[str],
+) -> None:
     publisher_client.publish(topic_path, b"Hello World!")
 
     import sub

@@ -95,9 +95,9 @@ def publish_messages(project_id: str, topic_id: str) -> None:
     topic_path = publisher.topic_path(project_id, topic_id)
 
     for n in range(1, 10):
-        data = f"Message number {n}"
+        data_str = f"Message number {n}"
         # Data must be a bytestring
-        data = data.encode("utf-8")
+        data = data_str.encode("utf-8")
         # When you publish a message, the client returns a future.
         future = publisher.publish(topic_path, data)
         print(future.result())
@@ -121,9 +121,9 @@ def publish_messages_with_custom_attributes(project_id: str, topic_id: str) -> N
     topic_path = publisher.topic_path(project_id, topic_id)
 
     for n in range(1, 10):
-        data = f"Message number {n}"
+        data_str = f"Message number {n}"
         # Data must be a bytestring
-        data = data.encode("utf-8")
+        data = data_str.encode("utf-8")
         # Add two attributes, origin and username, to the message
         future = publisher.publish(
             topic_path, data, origin="python-sample", username="gcp"
@@ -202,9 +202,9 @@ def publish_messages_with_batch_settings(project_id: str, topic_id: str) -> None
         print(message_id)
 
     for n in range(1, 10):
-        data = f"Message number {n}"
+        data_str = f"Message number {n}"
         # Data must be a bytestring
-        data = data.encode("utf-8")
+        data = data_str.encode("utf-8")
         publish_future = publisher.publish(topic_path, data)
         # Non-blocking. Allow the publisher client to batch multiple messages.
         publish_future.add_done_callback(callback)
@@ -252,9 +252,9 @@ def publish_messages_with_flow_control_settings(project_id: str, topic_id: str) 
     # Publish 1000 messages in quick succession may be constrained by
     # publisher flow control.
     for n in range(1, 1000):
-        data = f"Message number {n}"
+        data_str = f"Message number {n}"
         # Data must be a bytestring
-        data = data.encode("utf-8")
+        data = data_str.encode("utf-8")
         publish_future = publisher.publish(topic_path, data)
         # Non-blocking. Allow the publisher client to batch messages.
         publish_future.add_done_callback(callback)
@@ -298,9 +298,9 @@ def publish_messages_with_retry_settings(project_id: str, topic_id: str) -> None
     topic_path = publisher.topic_path(project_id, topic_id)
 
     for n in range(1, 10):
-        data = f"Message number {n}"
+        data_str = f"Message number {n}"
         # Data must be a bytestring
-        data = data.encode("utf-8")
+        data = data_str.encode("utf-8")
         future = publisher.publish(topic=topic_path, data=data, retry=custom_retry)
         print(future.result())
 

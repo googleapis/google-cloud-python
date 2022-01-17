@@ -15,7 +15,7 @@
 # limitations under the License.
 
 import os
-from typing import Generator
+from typing import Any, Callable, cast, Generator, TypeVar
 import uuid
 
 from _pytest.capture import CaptureFixture
@@ -193,7 +193,7 @@ def proto_subscription(
 def test_create_avro_schema(
     schema_client: pubsub_v1.SchemaServiceClient,
     avro_schema: str,
-    capsys: CaptureFixture,
+    capsys: CaptureFixture[str],
 ) -> None:
     try:
         schema_client.delete_schema(request={"name": avro_schema})
@@ -210,7 +210,7 @@ def test_create_avro_schema(
 def test_create_proto_schema(
     schema_client: pubsub_v1.SchemaServiceClient,
     proto_schema: str,
-    capsys: CaptureFixture,
+    capsys: CaptureFixture[str],
 ) -> None:
     try:
         schema_client.delete_schema(request={"name": proto_schema})
@@ -224,20 +224,22 @@ def test_create_proto_schema(
     assert f"{proto_schema}" in out
 
 
-def test_get_schema(avro_schema: str, capsys: CaptureFixture) -> None:
+def test_get_schema(avro_schema: str, capsys: CaptureFixture[str]) -> None:
     schema.get_schema(PROJECT_ID, AVRO_SCHEMA_ID)
     out, _ = capsys.readouterr()
     assert "Got a schema" in out
     assert f"{avro_schema}" in out
 
 
-def test_list_schemas(capsys: CaptureFixture) -> None:
+def test_list_schemas(capsys: CaptureFixture[str]) -> None:
     schema.list_schemas(PROJECT_ID)
     out, _ = capsys.readouterr()
     assert "Listed schemas." in out
 
 
-def test_create_topic_with_schema(avro_schema: str, capsys: CaptureFixture) -> None:
+def test_create_topic_with_schema(
+    avro_schema: str, capsys: CaptureFixture[str]
+) -> None:
     schema.create_topic_with_schema(PROJECT_ID, AVRO_TOPIC_ID, AVRO_SCHEMA_ID, "BINARY")
     out, _ = capsys.readouterr()
     assert "Created a topic" in out
@@ -247,7 +249,7 @@ def test_create_topic_with_schema(avro_schema: str, capsys: CaptureFixture) -> N
 
 
 def test_publish_avro_records(
-    avro_schema: str, avro_topic: str, capsys: CaptureFixture
+    avro_schema: str, avro_topic: str, capsys: CaptureFixture[str]
 ) -> None:
     schema.publish_avro_records(PROJECT_ID, AVRO_TOPIC_ID, AVSC_FILE)
     out, _ = capsys.readouterr()
@@ -256,7 +258,10 @@ def test_publish_avro_records(
 
 
 def test_subscribe_with_avro_schema(
-    avro_schema: str, avro_topic: str, avro_subscription: str, capsys: CaptureFixture
+    avro_schema: str,
+    avro_topic: str,
+    avro_subscription: str,
+    capsys: CaptureFixture[str],
 ) -> None:
     schema.publish_avro_records(PROJECT_ID, AVRO_TOPIC_ID, AVSC_FILE)
 
@@ -265,7 +270,7 @@ def test_subscribe_with_avro_schema(
     assert "Received a binary-encoded message:" in out
 
 
-def test_publish_proto_records(proto_topic: str, capsys: CaptureFixture) -> None:
+def test_publish_proto_records(proto_topic: str, capsys: CaptureFixture[str]) -> None:
     schema.publish_proto_messages(PROJECT_ID, PROTO_TOPIC_ID)
     out, _ = capsys.readouterr()
     assert "Preparing a binary-encoded message" in out
@@ -273,7 +278,10 @@ def test_publish_proto_records(proto_topic: str, capsys: CaptureFixture) -> None
 
 
 def test_subscribe_with_proto_schema(
-    proto_schema: str, proto_topic: str, proto_subscription: str, capsys: CaptureFixture
+    proto_schema: str,
+    proto_topic: str,
+    proto_subscription: str,
+    capsys: CaptureFixture[str],
 ) -> None:
     schema.publish_proto_messages(PROJECT_ID, PROTO_TOPIC_ID)
 
@@ -282,8 +290,12 @@ def test_subscribe_with_proto_schema(
     assert "Received a binary-encoded message" in out
 
 
-@flaky(max_runs=3, min_passes=1)
-def test_delete_schema(proto_schema: str, capsys: CaptureFixture) -> None:
+C = TypeVar("C", bound=Callable[..., Any])
+typed_flaky = cast(Callable[[C], C], flaky(max_runs=3, min_passes=1))
+
+
+@typed_flaky
+def test_delete_schema(proto_schema: str, capsys: CaptureFixture[str]) -> None:
     schema.delete_schema(PROJECT_ID, PROTO_SCHEMA_ID)
     out, _ = capsys.readouterr()
     assert "Deleted a schema" in out

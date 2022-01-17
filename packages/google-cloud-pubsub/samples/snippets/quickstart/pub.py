@@ -33,7 +33,7 @@ def pub(project_id: str, topic_id: str) -> None:
     api_future = client.publish(topic_path, data)
     message_id = api_future.result()
 
-    print(f"Published {data} to {topic_path}: {message_id}")
+    print(f"Published {data.decode()} to {topic_path}: {message_id}")
 
 
 if __name__ == "__main__":

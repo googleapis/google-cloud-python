@@ -22,6 +22,7 @@ at https://cloud.google.com/pubsub/docs/schemas.
 """
 
 import argparse
+from typing import Optional
 
 from google.cloud import pubsub_v1
 
@@ -234,10 +235,11 @@ def publish_avro_records(project_id: str, topic_id: str, avsc_file: str) -> None
             encoder = BinaryEncoder(bout)
             writer.write(record, encoder)
             data = bout.getvalue()
-            print(f"Preparing a binary-encoded message:\n{data}")
+            print(f"Preparing a binary-encoded message:\n{data.decode()}")
         elif encoding == Encoding.JSON:
-            data = json.dumps(record).encode("utf-8")
-            print(f"Preparing a JSON-encoded message:\n{data}")
+            data_str = json.dumps(record)
+            print(f"Preparing a JSON-encoded message:\n{data_str}")
+            data = data_str.encode("utf-8")
         else:
             print(f"No encoding specified in {topic_path}. Abort.")
             exit(0)
@@ -258,7 +260,7 @@ def publish_proto_messages(project_id: str, topic_id: str) -> None:
     from google.protobuf.json_format import MessageToJson
     from google.pubsub_v1.types import Encoding
 
-    from utilities import us_states_pb2
+    from utilities import us_states_pb2  # type: ignore
 
     # TODO(developer): Replace these variables before running the sample.
     # project_id = "your-project-id"
@@ -298,7 +300,10 @@ def publish_proto_messages(project_id: str, topic_id: str) -> None:
 
 
 def subscribe_with_avro_schema(
-    project_id: str, subscription_id: str, avsc_file: str, timeout: float = None
+    project_id: str,
+    subscription_id: str,
+    avsc_file: str,
+    timeout: Optional[float] = None,
 ) -> None:
     """Receive and decode messages sent to a topic with an Avro schema."""
     # [START pubsub_subscribe_avro_records]

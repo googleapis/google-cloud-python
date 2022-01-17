@@ -15,11 +15,12 @@
 # limitations under the License.
 
 import argparse
+from typing import Optional
 
 from google.cloud import pubsub_v1
 
 
-def sub(project_id: str, subscription_id: str, timeout: float = None) -> None:
+def sub(project_id: str, subscription_id: str, timeout: Optional[float] = None) -> None:
     """Receives messages from a Pub/Sub subscription."""
     # Initialize a Subscriber client
     subscriber_client = pubsub_v1.SubscriberClient()

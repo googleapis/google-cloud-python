@@ -14,9 +14,13 @@
 
 from __future__ import absolute_import
 
-from typing import Union
+import typing
+from typing import Any, Callable, Union
 
 from google.cloud.pubsub_v1 import futures
+
+if typing.TYPE_CHECKING:  # pragma: NO COVER
+    from google.cloud import pubsub_v1
 
 
 class Future(futures.Future):
@@ -60,3 +64,20 @@ class Future(futures.Future):
                 call execution.
         """
         return super().result(timeout=timeout)
+
+    # This exists to make the type checkers happy.
+    def add_done_callback(
+        self, callback: Callable[["pubsub_v1.publisher.futures.Future"], Any]
+    ) -> None:
+        """Attach a callable that will be called when the future finishes.
+
+        Args:
+            callback:
+                A callable that will be called with this future as its only
+                argument when the future completes or is cancelled. The callable
+                will always be called by a thread in the same process in which
+                it was added. If the future has already completed or been
+                cancelled then the callable will be called immediately. These
+                callables are called in the order that they were added.
+        """
+        return super().add_done_callback(callback)  # type: ignore

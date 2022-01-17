@@ -14,7 +14,8 @@
 
 import os
 import time
-from typing import Generator
+import typing
+from typing import Any, Callable, cast, Iterator, TypeVar, Union
 import uuid
 
 from _pytest.capture import CaptureFixture
@@ -26,6 +27,7 @@ import pytest
 
 import publisher
 
+
 UUID = uuid.uuid4().hex
 PROJECT_ID = os.environ["GOOGLE_CLOUD_PROJECT"]
 TOPIC_ID = "publisher-test-topic-" + UUID
@@ -33,14 +35,19 @@ SUBSCRIPTION_ID = "publisher-test-subscription-" + UUID
 # Allow 60s for tests to finish.
 MAX_TIME = 60
 
+if typing.TYPE_CHECKING:
+    from unittest.mock import AsyncMock, MagicMock
+
+    MockType = Union[MagicMock, AsyncMock]
+
 
 @pytest.fixture(scope="module")
-def publisher_client() -> Generator[pubsub_v1.PublisherClient, None, None]:
+def publisher_client() -> Iterator[pubsub_v1.PublisherClient]:
     yield pubsub_v1.PublisherClient()
 
 
 @pytest.fixture(scope="module")
-def subscriber_client() -> Generator[pubsub_v1.SubscriberClient, None, None]:
+def subscriber_client() -> Iterator[pubsub_v1.SubscriberClient]:
     subscriber_client = pubsub_v1.SubscriberClient()
     yield subscriber_client
     # Close the subscriber client properly during teardown.
@@ -48,9 +55,7 @@ def subscriber_client() -> Generator[pubsub_v1.SubscriberClient, None, None]:
 
 
 @pytest.fixture(scope="module")
-def topic_path(
-    publisher_client: pubsub_v1.PublisherClient,
-) -> Generator[str, None, None]:
+def topic_path(publisher_client: pubsub_v1.PublisherClient) -> Iterator[str]:
     topic_path = publisher_client.topic_path(PROJECT_ID, TOPIC_ID)
 
     try:
@@ -69,7 +74,7 @@ def topic_path(
 @pytest.fixture(scope="module")
 def subscription_path(
     subscriber_client: pubsub_v1.SubscriberClient, topic_path: str
-) -> Generator[str, None, None]:
+) -> Iterator[str]:
     subscription_path = subscriber_client.subscription_path(PROJECT_ID, SUBSCRIPTION_ID)
     subscription = subscriber_client.create_subscription(
         request={"name": subscription_path, "topic": topic_path}
@@ -84,7 +89,7 @@ def subscription_path(
         pass
 
 
-def _make_sleep_patch() -> None:
+def _make_sleep_patch() -> 'mock.mock._patch["MockType"]':
     real_sleep = time.sleep
 
     def new_sleep(period: float) -> None:
@@ -98,7 +103,7 @@ def _make_sleep_patch() -> None:
 
 
 def test_create(
-    publisher_client: pubsub_v1.PublisherClient, capsys: CaptureFixture
+    publisher_client: pubsub_v1.PublisherClient, capsys: CaptureFixture[str]
 ) -> None:
     # The scope of `topic_path` is limited to this function.
     topic_path = publisher_client.topic_path(PROJECT_ID, TOPIC_ID)
@@ -114,14 +119,14 @@ def test_create(
     assert f"Created topic: {topic_path}" in out
 
 
-def test_list(topic_path: str, capsys: CaptureFixture) -> None:
+def test_list(topic_path: str, capsys: CaptureFixture[str]) -> None:
     publisher.list_topics(PROJECT_ID)
     out, _ = capsys.readouterr()
 
     assert topic_path in out
 
 
-def test_publish(topic_path: str, capsys: CaptureFixture) -> None:
+def test_publish(topic_path: str, capsys: CaptureFixture[str]) -> None:
     publisher.publish_messages(PROJECT_ID, TOPIC_ID)
 
     out, _ = capsys.readouterr()
@@ -129,7 +134,7 @@ def test_publish(topic_path: str, capsys: CaptureFixture) -> None:
 
 
 def test_publish_with_custom_attributes(
-    topic_path: str, capsys: CaptureFixture
+    topic_path: str, capsys: CaptureFixture[str]
 ) -> None:
     publisher.publish_messages_with_custom_attributes(PROJECT_ID, TOPIC_ID)
 
@@ -137,7 +142,9 @@ def test_publish_with_custom_attributes(
     assert f"Published messages with custom attributes to {topic_path}." in out
 
 
-def test_publish_with_batch_settings(topic_path: str, capsys: CaptureFixture) -> None:
+def test_publish_with_batch_settings(
+    topic_path: str, capsys: CaptureFixture[str]
+) -> None:
     publisher.publish_messages_with_batch_settings(PROJECT_ID, TOPIC_ID)
 
     out, _ = capsys.readouterr()
@@ -145,7 +152,7 @@ def test_publish_with_batch_settings(topic_path: str, capsys: CaptureFixture) ->
 
 
 def test_publish_with_flow_control_settings(
-    topic_path: str, capsys: CaptureFixture
+    topic_path: str, capsys: CaptureFixture[str]
 ) -> None:
     publisher.publish_messages_with_flow_control_settings(PROJECT_ID, TOPIC_ID)
 
@@ -153,21 +160,27 @@ def test_publish_with_flow_control_settings(
     assert f"Published messages with flow control settings to {topic_path}." in out
 
 
-def test_publish_with_retry_settings(topic_path: str, capsys: CaptureFixture) -> None:
+def test_publish_with_retry_settings(
+    topic_path: str, capsys: CaptureFixture[str]
+) -> None:
     publisher.publish_messages_with_retry_settings(PROJECT_ID, TOPIC_ID)
 
     out, _ = capsys.readouterr()
     assert f"Published messages with retry settings to {topic_path}." in out
 
 
-def test_publish_with_error_handler(topic_path: str, capsys: CaptureFixture) -> None:
+def test_publish_with_error_handler(
+    topic_path: str, capsys: CaptureFixture[str]
+) -> None:
     publisher.publish_messages_with_error_handler(PROJECT_ID, TOPIC_ID)
 
     out, _ = capsys.readouterr()
     assert f"Published messages with error handler to {topic_path}." in out
 
 
-def test_publish_with_ordering_keys(topic_path: str, capsys: CaptureFixture) -> None:
+def test_publish_with_ordering_keys(
+    topic_path: str, capsys: CaptureFixture[str]
+) -> None:
     publisher.publish_with_ordering_keys(PROJECT_ID, TOPIC_ID)
 
     out, _ = capsys.readouterr()
@@ -175,7 +188,7 @@ def test_publish_with_ordering_keys(topic_path: str, capsys: CaptureFixture) -> 
 
 
 def test_resume_publish_with_error_handler(
-    topic_path: str, capsys: CaptureFixture
+    topic_path: str, capsys: CaptureFixture[str]
 ) -> None:
     publisher.resume_publish_with_ordering_keys(PROJECT_ID, TOPIC_ID)
 
@@ -183,7 +196,9 @@ def test_resume_publish_with_error_handler(
     assert f"Resumed publishing messages with ordering keys to {topic_path}." in out
 
 
-def test_detach_subscription(subscription_path: str, capsys: CaptureFixture) -> None:
+def test_detach_subscription(
+    subscription_path: str, capsys: CaptureFixture[str]
+) -> None:
     publisher.detach_subscription(PROJECT_ID, SUBSCRIPTION_ID)
 
     out, _ = capsys.readouterr()
@@ -193,7 +208,14 @@ def test_detach_subscription(subscription_path: str, capsys: CaptureFixture) -> 
 def test_delete(publisher_client: pubsub_v1.PublisherClient) -> None:
     publisher.delete_topic(PROJECT_ID, TOPIC_ID)
 
-    @backoff.on_exception(backoff.expo, AssertionError, max_time=MAX_TIME)
+    C = TypeVar("C", bound=Callable[..., Any])
+
+    typed_backoff = cast(
+        Callable[[C], C],
+        backoff.on_exception(backoff.expo, AssertionError, max_time=MAX_TIME),
+    )
+
+    @typed_backoff
     def eventually_consistent_test() -> None:
         with pytest.raises(Exception):
             publisher_client.get_topic(

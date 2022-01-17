@@ -47,6 +47,7 @@ nox.options.sessions = [
     "blacken",
     "mypy",
     "pytype",
+    # "mypy_samples",  # TODO: uncomment when the checks pass
     "docs",
 ]
 
@@ -64,6 +65,12 @@ def mypy(session):
     # require an additional pass.
     session.install("types-protobuf", "types-setuptools")
 
+    # Version 2.1.1 of google-api-core version is the first type-checked release.
+    # Version 2.2.0 of google-cloud-core version is the first type-checked release.
+    session.install(
+        "google-api-core[grpc]>=2.1.1", "google-cloud-core>=2.2.0",
+    )
+
     # TODO: Only check the hand-written layer, the generated code does not pass
     # mypy checks yet.
     # https://github.com/googleapis/gapic-generator-python/issues/1092
@@ -76,6 +83,28 @@ def pytype(session):
     session.install("-e", ".[all]")
     session.install(PYTYPE_VERSION)
     session.run("pytype")
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def mypy_samples(session):
+    """Run type checks with mypy."""
+
+    session.install("-e", ".[all]")
+
+    session.install("pytest")
+    session.install(MYPY_VERSION)
+
+    # Just install the type info directly, since "mypy --install-types" might
+    # require an additional pass.
+    session.install("types-mock", "types-protobuf", "types-setuptools")
+
+    session.run(
+        "mypy",
+        "--config-file",
+        str(CURRENT_DIRECTORY / "samples" / "snippets" / "mypy.ini"),
+        "--no-incremental",  # Required by warn-unused-configs from mypy.ini to work
+        "samples/",
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
