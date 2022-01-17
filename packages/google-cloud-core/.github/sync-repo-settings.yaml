@@ -16,3 +16,4 @@ branchProtectionRules:
     - 'unit-3.9'
     - 'unit-3.10'
     - 'cover'
+    - 'docs'
