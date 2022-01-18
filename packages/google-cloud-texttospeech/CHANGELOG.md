@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+### [2.9.1](https://www.github.com/googleapis/python-texttospeech/compare/v2.9.0...v2.9.1) (2022-01-08)
+
+
+### Documentation
+
+* Added virtualenv comment for clarity ([#225](https://www.github.com/googleapis/python-texttospeech/issues/225)) ([61a7fce](https://www.github.com/googleapis/python-texttospeech/commit/61a7fcec0611712cdb1692b830db4aaca4d411b0))
+* update comments for ListVoicesRequest ([#229](https://www.github.com/googleapis/python-texttospeech/issues/229)) ([9ea340c](https://www.github.com/googleapis/python-texttospeech/commit/9ea340cee20298630a6a15bed0ed2df9f69b3d13))
+
 ## [2.9.0](https://www.github.com/googleapis/python-texttospeech/compare/v2.8.0...v2.9.0) (2021-11-16)
 
 
