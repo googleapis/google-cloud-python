@@ -43,7 +43,7 @@ Installation
 `venv`_ is a tool to create isolated Python environments. The basic problem it
 addresses is one of dependencies and versions, and indirectly permissions.
 
-Make sure you're using Python 3.3 or later, which includes `venv`_ by default.
+Make sure you're using Python 3.7 or later, which includes `venv`_ by default.
 With `venv`, it's possible to install this library without needing system
 install permissions, and without clashing with the installed system
 dependencies.
@@ -54,14 +54,17 @@ dependencies.
 
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.6
+Python >= 3.7
 
 Deprecated Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python == 2.7: Python 2.7 support will be removed sometime after January 1, 2020.
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Python == 3.6: the last released version which supported Python 3.6 was
+``google-cloud-storage 2.0.0``, released 2022-01-12.
+
 Python == 3.5: the last released version which supported Python 3.5 was
 ``google-cloud-storage 1.32.0``, released 2020-10-16.
 
