@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.7.0...v1.8.0) (2022-01-14)
+
+
+### Features
+
+* **v3:** added `TelephonyTransferCall` in response message ([#216](https://github.com/googleapis/python-dialogflow-cx/issues/216)) ([76dae8b](https://github.com/googleapis/python-dialogflow-cx/commit/76dae8b03c0e3bf33123b8001e3f8d40701b5c19))
+* **v3:** added the display name of the current page in webhook requests ([#221](https://github.com/googleapis/python-dialogflow-cx/issues/221)) ([aa91b72](https://github.com/googleapis/python-dialogflow-cx/commit/aa91b729ffa07230b011a61d3eb1521f59345fc1))
+* **v3:** allow setting custom CA for generic webhooks ([#214](https://github.com/googleapis/python-dialogflow-cx/issues/214)) ([8f3dc03](https://github.com/googleapis/python-dialogflow-cx/commit/8f3dc03835b5bb5baa36224a274f24dda7aa3709))
+* **v3beta1:** added `TelephonyTransferCall` in response message ([#217](https://github.com/googleapis/python-dialogflow-cx/issues/217)) ([e24bdfd](https://github.com/googleapis/python-dialogflow-cx/commit/e24bdfd499952199dfbdaa5634061653da8ae1db))
+* **v3beta1:** added the display name of the current page in webhook requests ([#222](https://github.com/googleapis/python-dialogflow-cx/issues/222)) ([5956179](https://github.com/googleapis/python-dialogflow-cx/commit/595617990ccdc0575f97ae547984e89f638cb664))
+* **v3:** release CompareVersions API ([8f3dc03](https://github.com/googleapis/python-dialogflow-cx/commit/8f3dc03835b5bb5baa36224a274f24dda7aa3709))
+
 ## [1.7.0](https://www.github.com/googleapis/python-dialogflow-cx/compare/v1.6.0...v1.7.0) (2021-11-12)
 
 
