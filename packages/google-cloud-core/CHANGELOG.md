@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+### [2.2.2](https://github.com/googleapis/python-cloud-core/compare/v2.2.1...v2.2.2) (2022-01-17)
+
+
+### Bug Fixes
+
+* correct param type of _ClientFactoryMixin.from_service_account_info method ([#161](https://github.com/googleapis/python-cloud-core/issues/161)) ([24b7de4](https://github.com/googleapis/python-cloud-core/commit/24b7de49943a49e8235f9dbee6b32693deed8c1f))
+
 ### [2.2.1](https://www.github.com/googleapis/python-cloud-core/compare/v2.2.0...v2.2.1) (2021-11-10)
 
 
