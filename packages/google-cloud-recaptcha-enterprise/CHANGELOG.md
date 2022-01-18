@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-recaptcha-enterprise/compare/v1.4.1...v1.5.0) (2022-01-14)
+
+
+### Features
+
+* add new reCAPTCHA Enterprise fraud annotations ([#163](https://github.com/googleapis/python-recaptcha-enterprise/issues/163)) ([3c638f9](https://github.com/googleapis/python-recaptcha-enterprise/commit/3c638f97a966efdc6809016b9a50d63ffe4b380c))
+
 ### [1.4.1](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v1.4.0...v1.4.1) (2021-11-16)
 
 
