@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-retail/compare/v1.2.1...v1.3.0) (2022-01-14)
+
+
+### Features
+
+* update grpc service config settings to reflect correct API deadlines ([#120](https://github.com/googleapis/python-retail/issues/120)) ([e7649c7](https://github.com/googleapis/python-retail/commit/e7649c731ed741e7365dc4b9573dcdd770528929))
+
 ### [1.2.1](https://www.github.com/googleapis/python-retail/compare/v1.2.0...v1.2.1) (2021-11-01)
 
 
