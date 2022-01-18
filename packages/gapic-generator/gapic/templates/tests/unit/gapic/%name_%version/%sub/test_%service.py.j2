@@ -1287,65 +1287,8 @@ def test_{{ method_name }}_raw_page_lro():
 {% endfor %} {# method in methods for grpc #}
 
 {% for method in service.methods.values() if 'rest' in opts.transport %}{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.name|snake_case %}{% if method.http_options %}
-{# TODO(kbandes): remove this if condition when streaming are supported. #}
-{% if not (method.server_streaming or method.client_streaming) %}
-@pytest.mark.parametrize("request_type", [
-  {{ method.input.ident }},
-  dict,
-])
-def test_{{ method_name }}_rest(request_type, transport: str = 'rest'):
-    client = {{ service.client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    # Send a request that will satisfy transcoding
-    request = {{ method.input.ident }}({{ method.http_options[0].sample_request(method) }})
-    {% if method.client_streaming %}
-    requests = [request]
-    {% endif %}
-
-
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-                {% if method.void %}
-        return_value = None
-        {% elif method.lro %}
-        return_value = operations_pb2.Operation(name='operations/spam')
-        {% elif method.server_streaming %}
-        return_value = iter([{{ method.output.ident }}()])
-        {% else %}
-        return_value = {{ method.output.ident }}(
-            {% for field in method.output.fields.values() | rejectattr('message')%}
-            {% if not field.oneof or field.proto3_optional %}
-              {{ field.name }}={{ field.mock_value }},
-              {% endif %}{% endfor %}
-              {# This is a hack to only pick one field  #}
-              {% for oneof_fields in method.output.oneof_fields().values() %}
-              {% with field = oneof_fields[0] %}
-              {{ field.name }}={{ field.mock_value }},
-              {% endwith %}
-              {% endfor %}
-        )
-        {% endif %}
-        req.return_value = Response()
-        req.return_value.status_code = 500
-        req.return_value.request = PreparedRequest()
-        {% if method.void %}
-        json_return_value = ''
-        {% else %}
-        json_return_value = {{ method.output.ident }}.to_json(return_value)
-        {% endif %}
-        req.return_value._content = json_return_value.encode("UTF-8")
-        with pytest.raises(core_exceptions.GoogleAPIError):
-            # We only care that the correct exception is raised when putting
-            # the request over the wire, so an empty request is fine.
-            {% if method.client_streaming %}
-            client.{{ method_name }}(iter([requests]))
-            {% else %}
-            client.{{ method_name }}(request)
-            {% endif %}
-
-
 {# TODO(kbandes): remove this if condition when lro and streaming are supported. #}
+{% if not (method.server_streaming or method.client_streaming) %}
 @pytest.mark.parametrize("request_type", [
     {{ method.input.ident }},
     dict,
@@ -1458,7 +1401,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
         ))
 
     # verify fields with default values are dropped
-    {% for req_field in method.input.required_fields if req_field.is_primitive %}
+    {% for req_field in method.input.required_fields if req_field.is_primitive and req_field.name in method.query_params %}
     {% set field_name = req_field.name | camel_case %}
     assert "{{ field_name }}" not in jsonified_request
     {% endfor %}
@@ -1467,7 +1410,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
-    {% for req_field in method.input.required_fields if req_field.is_primitive %}
+    {% for req_field in method.input.required_fields if req_field.is_primitive and req_field.name in method.query_params %}
     {% set field_name = req_field.name | camel_case %}
     assert "{{ field_name }}" in jsonified_request
     assert jsonified_request["{{ field_name }}"] == request_init["{{ req_field.name }}"]
@@ -1480,6 +1423,10 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     {% endfor %}
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.name | snake_case }}._get_unset_required_fields(jsonified_request)
+    {% if method.query_params %}
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(({% for param in method.query_params %}"{{param}}", {% endfor %}))
+    {% endif %}
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -1544,7 +1491,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
             {% endif %}
 
             expected_params = [
-                {% for req_field in method.input.required_fields if req_field.is_primitive %}
+            {% for req_field in method.input.required_fields if req_field.is_primitive and req_field.name in method.query_params %}
                 (
                     "{{ req_field.name | camel_case }}",
                     {% if req_field.field_pb.type == 9 %}
@@ -1558,6 +1505,12 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
             actual_params = req.call_args.kwargs['params']
             assert expected_params == actual_params
 
+
+def test_{{ method_name }}_rest_unset_required_fields():
+    transport = transports.{{ service.rest_transport_name }}(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.{{ method.name|snake_case }}._get_unset_required_fields({})
+    assert set(unset_fields) == (set(({% for param in method.query_params %}"{{ param|camel_case }}", {% endfor %})) & set(({% for param in method.input.required_fields %}"{{ param.name|camel_case }}", {% endfor %})))
 
     {% endif %}{# required_fields #}
 

@@ -30,14 +30,13 @@ service MultipleRequiredFields {
   }
 }
 
-message Description {
-  string description = 1;
-}
-
 message MethodRequest {
   string kingdom = 1 [(google.api.field_behavior) = REQUIRED];
   string phylum = 2 [(google.api.field_behavior) = REQUIRED];
-  Description description = 3 [(google.api.field_behavior) = REQUIRED];
+  string name = 3 [(google.api.field_behavior) = REQUIRED];
+  int32 armor_class = 4 [(google.api.field_behavior) = REQUIRED];
 }
 
-message MethodResponse{}
+message MethodResponse{
+  string text = 1;
+}

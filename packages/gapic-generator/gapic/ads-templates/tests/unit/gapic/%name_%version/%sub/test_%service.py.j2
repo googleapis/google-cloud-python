@@ -994,7 +994,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
         ))
 
     # verify fields with default values are dropped
-    {% for req_field in method.input.required_fields if req_field.is_primitive %}
+    {% for req_field in method.input.required_fields if req_field.is_primitive and req_field.name in method.query_params %}
     {% set field_name = req_field.name | camel_case %}
     assert "{{ field_name }}" not in jsonified_request
     {% endfor %}
@@ -1003,23 +1003,32 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
-    {% for req_field in method.input.required_fields if req_field.is_primitive %}
+    {% for req_field in method.input.required_fields if req_field.is_primitive and req_field.name in method.query_params %}
     {% set field_name = req_field.name | camel_case %}
     assert "{{ field_name }}" in jsonified_request
     assert jsonified_request["{{ field_name }}"] == request_init["{{ req_field.name }}"]
     {% endfor %}
 
-    {% for req_field in method.input.required_fields if req_field.is_primitive %}
+    {% for req_field in method.input.required_fields if req_field.is_primitive and req_field.name in method.query_params %}
     {% set field_name = req_field.name | camel_case %}
     {% set mock_value = req_field.primitive_mock_as_str() %}
+    {% if method.query_params %}
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(({% for param in method.query_params %}"{{param|camel_case }}", {% endfor %}))
+    {% endif %}
     jsonified_request["{{ field_name }}"] = {{ mock_value }}
     {% endfor %}
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.name | snake_case }}._get_unset_required_fields(jsonified_request)
+    {% if method.query_params %}
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(({% for param in method.query_params %}"{{param}}",
+{% endfor %}))
+    {% endif %}
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
-    {% for req_field in method.input.required_fields if req_field.is_primitive %}
+    {% for req_field in method.input.required_fields if req_field.is_primitive and req_field.name in method.query_params %}
     {% set field_name = req_field.name | camel_case %}
     {% set mock_value = req_field.primitive_mock_as_str() %}
     assert "{{ field_name }}" in jsonified_request
@@ -1080,7 +1089,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
             {% endif %}
 
             expected_params = [
-                {% for req_field in method.input.required_fields if req_field.is_primitive %}
+            {% for req_field in method.input.required_fields if req_field.is_primitive and req_field.name in method.query_params %}
                 (
                     "{{ req_field.name | camel_case }}",
                     {% if req_field.field_pb.type == 9 %}
@@ -1093,6 +1102,13 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
             ]
             actual_params = req.call_args.kwargs['params']
             assert expected_params == actual_params
+
+
+def test_{{ method_name }}_rest_unset_required_fields():
+    transport = transports.{{ service.rest_transport_name }}(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.{{ method.name|snake_case }}._get_unset_required_fields({})
+    assert set(unset_fields) == (set(({% for param in method.query_params %}"{{ param|camel_case }}", {% endfor %})) & set(({% for param in method.input.required_fields %}"{{param.name|camel_case}}", {% endfor %})))
 
 
     {% endif %}{# required_fields #}

@@ -1026,7 +1026,7 @@ class Method:
         if self.http_opt is None:
             return []
 
-        pattern = r'\{(\w+)\}'
+        pattern = r'\{(\w+)(?:=.+?)?\}'
         return re.findall(pattern, self.http_opt['url'])
 
     @property

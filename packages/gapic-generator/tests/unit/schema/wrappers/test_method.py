@@ -325,6 +325,10 @@ def test_method_path_params():
     method = make_method('DoSomething', http_rule=http_rule)
     assert method.path_params == ['project']
 
+    http_rule2 = http_pb2.HttpRule(post='/v1beta1/{name=rooms/*/blurbs/*}')
+    method2 = make_method("DoSomething", http_rule=http_rule2)
+    assert method2.path_params == ["name"]
+
 
 def test_method_path_params_no_http_rule():
     method = make_method('DoSomething')

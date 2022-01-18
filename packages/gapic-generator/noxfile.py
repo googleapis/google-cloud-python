@@ -103,9 +103,6 @@ class FragTester:
                 f"--python_gapic_opt=transport=grpc+rest,python-gapic-templates={templates}{maybe_old_naming}",
             ]
 
-            if self.use_ads_templates:
-                session_args.extend([])
-
             outputs.append(
                 self.session.run(*session_args, str(frag), external=True, silent=True,)
             )
@@ -114,7 +111,6 @@ class FragTester:
             # Note: install into the tempdir to prevent issues
             # with running pip concurrently.
             self.session.install(tmp_dir, "-e", ".", "-t", tmp_dir, "-qqq")
-
             # Run the fragment's generated unit tests.
             # Don't bother parallelizing them: we already parallelize
             # the fragments, and there usually aren't too many tests per fragment.

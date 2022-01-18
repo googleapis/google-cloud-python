@@ -182,8 +182,8 @@ class {{service.name}}RestTransport({{service.name}}Transport):
         {% if not (method.server_streaming or method.client_streaming) %}
         {% if method.input.required_fields %}
         __REQUIRED_FIELDS_DEFAULT_VALUES =  {
-        {% for req_field in method.input.required_fields if req_field.is_primitive %}
-            "{{ req_field.name | camel_case }}" : {% if req_field.field_pb.type == 9 %}"{{req_field.field_pb.default_value }}"{% else %}{{ req_field.field_pb.default_value or 0 }}{% endif %},{# default is str #}
+        {% for req_field in method.input.required_fields if req_field.is_primitive and req_field.name in method.query_params %}
+            "{{ req_field.name | camel_case }}" : {% if req_field.field_pb.type == 9 %}"{{req_field.field_pb.default_value }}"{% else %}{{ req_field.type.python_type(req_field.field_pb.default_value or 0) }}{% endif %},{# default is str #}
         {% endfor %}
         }
 
