@@ -46,6 +46,34 @@ class Test__get_storage_host(unittest.TestCase):
         self.assertEqual(host, HOST)
 
 
+class Test__get_environ_project(unittest.TestCase):
+    @staticmethod
+    def _call_fut():
+        from google.cloud.storage._helpers import _get_environ_project
+
+        return _get_environ_project()
+
+    def test_wo_env_var(self):
+        with mock.patch("os.environ", {}):
+            project = self._call_fut()
+
+        self.assertEqual(project, None)
+
+    def test_w_env_var(self):
+        from google.auth import environment_vars
+
+        PROJECT = "environ-project"
+
+        with mock.patch("os.environ", {environment_vars.PROJECT: PROJECT}):
+            project = self._call_fut()
+        self.assertEqual(project, PROJECT)
+
+        with mock.patch("os.environ", {environment_vars.LEGACY_PROJECT: PROJECT}):
+            project = self._call_fut()
+
+        self.assertEqual(project, PROJECT)
+
+
 class Test_PropertyMixin(unittest.TestCase):
     @staticmethod
     def _get_default_timeout():

@@ -23,6 +23,7 @@ import os
 from urllib.parse import urlsplit
 
 from google import resumable_media
+from google.auth import environment_vars
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.retry import DEFAULT_RETRY
 from google.cloud.storage.retry import DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED
@@ -60,6 +61,12 @@ _NUM_RETRIES_MESSAGE = (
 
 def _get_storage_host():
     return os.environ.get(STORAGE_EMULATOR_ENV_VAR, _DEFAULT_STORAGE_HOST)
+
+
+def _get_environ_project():
+    return os.getenv(
+        environment_vars.PROJECT, os.getenv(environment_vars.LEGACY_PROJECT),
+    )
 
 
 def _validate_name(name):

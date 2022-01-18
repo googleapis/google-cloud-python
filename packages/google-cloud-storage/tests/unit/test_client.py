@@ -236,6 +236,65 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client._connection.ALLOW_AUTO_SWITCH_TO_MTLS_URL, False)
         self.assertEqual(client._connection.API_BASE_URL, "http://foo")
 
+    def test_ctor_w_emulator_wo_project(self):
+        from google.auth.credentials import AnonymousCredentials
+        from google.cloud.storage._helpers import STORAGE_EMULATOR_ENV_VAR
+
+        # avoids authentication if STORAGE_EMULATOR_ENV_VAR is set
+        host = "http://localhost:8080"
+        environ = {STORAGE_EMULATOR_ENV_VAR: host}
+        with mock.patch("os.environ", environ):
+            client = self._make_one()
+
+        self.assertIsNone(client.project)
+        self.assertEqual(client._connection.API_BASE_URL, host)
+        self.assertIsInstance(client._connection.credentials, AnonymousCredentials)
+
+        # avoids authentication if storage emulator is set through api_endpoint
+        client = self._make_one(
+            client_options={"api_endpoint": "http://localhost:8080"}
+        )
+        self.assertIsNone(client.project)
+        self.assertEqual(client._connection.API_BASE_URL, host)
+        self.assertIsInstance(client._connection.credentials, AnonymousCredentials)
+
+    def test_ctor_w_emulator_w_environ_project(self):
+        from google.auth.credentials import AnonymousCredentials
+        from google.cloud.storage._helpers import STORAGE_EMULATOR_ENV_VAR
+
+        # avoids authentication and infers the project from the environment
+        host = "http://localhost:8080"
+        environ_project = "environ-project"
+        environ = {
+            STORAGE_EMULATOR_ENV_VAR: host,
+            "GOOGLE_CLOUD_PROJECT": environ_project,
+        }
+        with mock.patch("os.environ", environ):
+            client = self._make_one()
+
+        self.assertEqual(client.project, environ_project)
+        self.assertEqual(client._connection.API_BASE_URL, host)
+        self.assertIsInstance(client._connection.credentials, AnonymousCredentials)
+
+    def test_ctor_w_emulator_w_project_arg(self):
+        from google.auth.credentials import AnonymousCredentials
+        from google.cloud.storage._helpers import STORAGE_EMULATOR_ENV_VAR
+
+        # project argument overrides project set in the enviroment
+        host = "http://localhost:8080"
+        environ_project = "environ-project"
+        project = "my-test-project"
+        environ = {
+            STORAGE_EMULATOR_ENV_VAR: host,
+            "GOOGLE_CLOUD_PROJECT": environ_project,
+        }
+        with mock.patch("os.environ", environ):
+            client = self._make_one(project=project)
+
+        self.assertEqual(client.project, project)
+        self.assertEqual(client._connection.API_BASE_URL, host)
+        self.assertIsInstance(client._connection.credentials, AnonymousCredentials)
+
     def test_create_anonymous_client(self):
         from google.auth.credentials import AnonymousCredentials
         from google.cloud.storage._http import Connection
