@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0](https://github.com/googleapis/python-contact-center-insights/compare/v1.1.0...v1.2.0) (2022-01-14)
+
+
+### Features
+
+* Add WriteDisposition to BigQuery Export API ([#107](https://github.com/googleapis/python-contact-center-insights/issues/107)) ([bb36139](https://github.com/googleapis/python-contact-center-insights/commit/bb361392935268ba9c45bf89e71876dc0132fc5a))
+* new API for the View resource ([#114](https://github.com/googleapis/python-contact-center-insights/issues/114)) ([e55463c](https://github.com/googleapis/python-contact-center-insights/commit/e55463cb32d988273bf328fbc16394e64dd946d5))
+
 ## [1.1.0](https://www.github.com/googleapis/python-contact-center-insights/compare/v1.0.0...v1.1.0) (2021-11-05)
 
 
