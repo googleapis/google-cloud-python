@@ -117,3 +117,15 @@ PUBLIC_ACCESS_PREVENTION_INHERITED = "inherited"
 
 See: https://cloud.google.com/storage/docs/public-access-prevention
 """
+
+RPO_ASYNC_TURBO = "ASYNC_TURBO"
+"""Turbo Replication RPO
+
+See: https://cloud.google.com/storage/docs/managing-turbo-replication
+"""
+
+RPO_DEFAULT = "DEFAULT"
+"""Default RPO
+
+See: https://cloud.google.com/storage/docs/managing-turbo-replication
+"""

@@ -632,6 +632,29 @@ class Bucket(_PropertyMixin):
         return super(Bucket, self)._set_properties(value)
 
     @property
+    def rpo(self):
+        """Get the RPO (Recovery Point Objective) of this bucket
+
+        See: https://cloud.google.com/storage/docs/managing-turbo-replication
+
+        "ASYNC_TURBO" or "DEFAULT"
+        :rtype: str
+        """
+        return self._properties.get("rpo")
+
+    @rpo.setter
+    def rpo(self, value):
+        """
+        Set the RPO (Recovery Point Objective) of this bucket.
+
+        See: https://cloud.google.com/storage/docs/managing-turbo-replication
+
+        :type value: str
+        :param value: "ASYNC_TURBO" or "DEFAULT"
+        """
+        self._patch_property("rpo", value)
+
+    @property
     def user_project(self):
         """Project ID to be billed for API requests made via this bucket.
 

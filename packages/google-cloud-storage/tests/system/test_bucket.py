@@ -885,3 +885,22 @@ def test_new_bucket_created_w_enforced_pap(
         constants.PUBLIC_ACCESS_PREVENTION_INHERITED,
     ]
     assert not bucket.iam_configuration.uniform_bucket_level_access_enabled
+
+
+def test_new_bucket_with_rpo(
+    storage_client, buckets_to_delete, blobs_to_delete,
+):
+    from google.cloud.storage import constants
+
+    bucket_name = _helpers.unique_name("new-w-turbo-replication")
+    bucket = storage_client.create_bucket(bucket_name, location="NAM4")
+    buckets_to_delete.append(bucket)
+
+    assert bucket.rpo == constants.RPO_DEFAULT
+
+    bucket.rpo = constants.RPO_ASYNC_TURBO
+    bucket.patch()
+
+    bucket_from_server = storage_client.get_bucket(bucket_name)
+
+    assert bucket_from_server.rpo == constants.RPO_ASYNC_TURBO

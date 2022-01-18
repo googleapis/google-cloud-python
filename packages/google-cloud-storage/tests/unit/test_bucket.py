@@ -25,6 +25,8 @@ from google.cloud.storage.retry import DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED
 from google.cloud.storage.constants import PUBLIC_ACCESS_PREVENTION_ENFORCED
 from google.cloud.storage.constants import PUBLIC_ACCESS_PREVENTION_INHERITED
 from google.cloud.storage.constants import PUBLIC_ACCESS_PREVENTION_UNSPECIFIED
+from google.cloud.storage.constants import RPO_DEFAULT
+from google.cloud.storage.constants import RPO_ASYNC_TURBO
 
 
 def _create_signing_credentials():
@@ -2475,6 +2477,14 @@ class Test_Bucket(unittest.TestCase):
         properties = {"locationType": REGION_LOCATION_TYPE}
         bucket = self._make_one(properties=properties)
         self.assertEqual(bucket.location_type, REGION_LOCATION_TYPE)
+
+    def test_rpo_getter_and_setter(self):
+        bucket = self._make_one()
+        bucket.rpo = RPO_ASYNC_TURBO
+        self.assertEqual(bucket.rpo, RPO_ASYNC_TURBO)
+        bucket.rpo = RPO_DEFAULT
+        self.assertIn("rpo", bucket._changes)
+        self.assertEqual(bucket.rpo, RPO_DEFAULT)
 
     def test_get_logging_w_prefix(self):
         NAME = "name"
