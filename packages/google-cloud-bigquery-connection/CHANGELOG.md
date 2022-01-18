@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.2](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.3.1...v1.3.2) (2022-01-08)
+
+
+### Documentation
+
+* add python quickstart sample ([#141](https://www.github.com/googleapis/python-bigquery-connection/issues/141)) ([8b85fb6](https://www.github.com/googleapis/python-bigquery-connection/commit/8b85fb6784ba9bf51123e9185f276391326dd54a))
+
 ### [1.3.1](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.3.0...v1.3.1) (2021-11-02)
 
 
