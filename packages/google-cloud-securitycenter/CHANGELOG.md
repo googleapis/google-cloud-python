@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.8.0](https://github.com/googleapis/python-securitycenter/compare/v1.7.0...v1.8.0) (2022-01-14)
+
+
+### Features
+
+* add display_name to the resource which is surfaced in NotificationMessage ([f28a8fe](https://github.com/googleapis/python-securitycenter/commit/f28a8fe8a3732e327543255475cef997ffbfaba9))
+* add support for python 3.10 ([#238](https://github.com/googleapis/python-securitycenter/issues/238)) ([7186526](https://github.com/googleapis/python-securitycenter/commit/718652639dafd4121391c642d55d9347c66bf5cb))
+* Added a new API method UpdateExternalSystem ([#256](https://github.com/googleapis/python-securitycenter/issues/256)) ([8c988a6](https://github.com/googleapis/python-securitycenter/commit/8c988a6bb1f2d0814386916c51c64fb8c4c15345))
+* Added mute related APIs, proto messages and fields ([#255](https://github.com/googleapis/python-securitycenter/issues/255)) ([6f3e1b2](https://github.com/googleapis/python-securitycenter/commit/6f3e1b2503906dd5f9583ac37ebdd1d9e4f11dd2))
+* Added resource type and display_name field to the FindingResult ([#248](https://github.com/googleapis/python-securitycenter/issues/248)) ([f28a8fe](https://github.com/googleapis/python-securitycenter/commit/f28a8fe8a3732e327543255475cef997ffbfaba9))
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([f28a8fe](https://github.com/googleapis/python-securitycenter/commit/f28a8fe8a3732e327543255475cef997ffbfaba9))
+* **deps:** require google-api-core >= 1.28.0 ([f28a8fe](https://github.com/googleapis/python-securitycenter/commit/f28a8fe8a3732e327543255475cef997ffbfaba9))
+* fix extras_require typo in setup.py ([#242](https://github.com/googleapis/python-securitycenter/issues/242)) ([d477b96](https://github.com/googleapis/python-securitycenter/commit/d477b96c4de26adc282b41c16240fe0e38689320))
+
 ## [1.7.0](https://www.github.com/googleapis/python-securitycenter/compare/v1.6.0...v1.7.0) (2021-10-08)
 
 
