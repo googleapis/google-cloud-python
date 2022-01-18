@@ -121,6 +121,9 @@ Libraries
    * - `BigQuery Storage <https://github.com/googleapis/python-bigquery-storage>`_
      - |stable|
      - |PyPI-google-cloud-bigquery-storage|
+   * - `Bigtable <https://github.com/googleapis/python-bigtable>`_
+     - |stable|
+     - |PyPI-google-cloud-bigtable|
    * - `Billing <https://github.com/googleapis/python-billing>`_
      - |stable|
      - |PyPI-google-cloud-billing|
@@ -142,6 +145,9 @@ Libraries
    * - `Composer <https://github.com/googleapis/python-orchestration-airflow>`_
      - |stable|
      - |PyPI-google-cloud-orchestration-airflow|
+   * - `Compute Engine <https://github.com/googleapis/python-compute>`_
+     - |stable|
+     - |PyPI-google-cloud-compute|
    * - `Contact Center AI Insights API <https://github.com/googleapis/python-contact-center-insights>`_
      - |stable|
      - |PyPI-google-cloud-contact-center-insights|
@@ -238,6 +244,9 @@ Libraries
    * - `Memorystore for Memcached <https://github.com/googleapis/python-memcache>`_
      - |stable|
      - |PyPI-google-cloud-memcache|
+   * - `Metrics Scopes API <https://github.com/googleapis/python-monitoring-metrics-scopes>`_
+     - |stable|
+     - |PyPI-google-cloud-monitoring-metrics-scopes|
    * - `Monitoring Dashboards <https://github.com/googleapis/python-monitoring-dashboards>`_
      - |stable|
      - |PyPI-google-cloud-monitoring-dashboards|
@@ -385,9 +394,6 @@ Libraries
    * - `BigQuery connector for pandas <https://github.com/googleapis/python-bigquery-pandas>`_
      - |preview|
      - |PyPI-pandas-gbq|
-   * - `Compute Engine <https://github.com/googleapis/python-compute>`_
-     - |preview|
-     - |PyPI-google-cloud-compute|
    * - `DNS <https://github.com/googleapis/python-dns>`_
      - |preview|
      - |PyPI-google-cloud-dns|
@@ -442,15 +448,9 @@ Libraries
    * - `VM Migration <https://github.com/googleapis/python-vm-migration>`_
      - |preview|
      - |PyPI-google-cloud-vm-migration|
-   * - `Bigtable <https://github.com/googleapis/python-bigtable>`_
-     - |ga|
-     - |PyPI-google-cloud-bigtable|
    * - `Internet of Things (IoT) Core <https://github.com/googleapis/python-iot>`_
      - |ga|
      - |PyPI-google-cloud-iot|
-   * - `Metrics Scopes API <https://github.com/googleapis/python-monitoring-metrics-scopes>`_
-     - |ga|
-     - |PyPI-google-cloud-monitoring-metrics-scopes|
 
 .. |PyPI-google-cloud-aiplatform| image:: https://img.shields.io/pypi/v/google-cloud-aiplatform.svg
      :target: https://pypi.org/project/google-cloud-aiplatform
@@ -486,6 +486,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-bigquery-reservation
 .. |PyPI-google-cloud-bigquery-storage| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-storage.svg
      :target: https://pypi.org/project/google-cloud-bigquery-storage
+.. |PyPI-google-cloud-bigtable| image:: https://img.shields.io/pypi/v/google-cloud-bigtable.svg
+     :target: https://pypi.org/project/google-cloud-bigtable
 .. |PyPI-google-cloud-billing| image:: https://img.shields.io/pypi/v/google-cloud-billing.svg
      :target: https://pypi.org/project/google-cloud-billing
 .. |PyPI-google-cloud-billing-budgets| image:: https://img.shields.io/pypi/v/google-cloud-billing-budgets.svg
@@ -500,6 +502,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-common
 .. |PyPI-google-cloud-orchestration-airflow| image:: https://img.shields.io/pypi/v/google-cloud-orchestration-airflow.svg
      :target: https://pypi.org/project/google-cloud-orchestration-airflow
+.. |PyPI-google-cloud-compute| image:: https://img.shields.io/pypi/v/google-cloud-compute.svg
+     :target: https://pypi.org/project/google-cloud-compute
 .. |PyPI-google-cloud-contact-center-insights| image:: https://img.shields.io/pypi/v/google-cloud-contact-center-insights.svg
      :target: https://pypi.org/project/google-cloud-contact-center-insights
 .. |PyPI-google-cloud-containeranalysis| image:: https://img.shields.io/pypi/v/google-cloud-containeranalysis.svg
@@ -564,6 +568,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-managed-identities
 .. |PyPI-google-cloud-memcache| image:: https://img.shields.io/pypi/v/google-cloud-memcache.svg
      :target: https://pypi.org/project/google-cloud-memcache
+.. |PyPI-google-cloud-monitoring-metrics-scopes| image:: https://img.shields.io/pypi/v/google-cloud-monitoring-metrics-scopes.svg
+     :target: https://pypi.org/project/google-cloud-monitoring-metrics-scopes
 .. |PyPI-google-cloud-monitoring-dashboards| image:: https://img.shields.io/pypi/v/google-cloud-monitoring-dashboards.svg
      :target: https://pypi.org/project/google-cloud-monitoring-dashboards
 .. |PyPI-google-cloud-ndb| image:: https://img.shields.io/pypi/v/google-cloud-ndb.svg
@@ -662,8 +668,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-bigquery-migration
 .. |PyPI-pandas-gbq| image:: https://img.shields.io/pypi/v/pandas-gbq.svg
      :target: https://pypi.org/project/pandas-gbq
-.. |PyPI-google-cloud-compute| image:: https://img.shields.io/pypi/v/google-cloud-compute.svg
-     :target: https://pypi.org/project/google-cloud-compute
 .. |PyPI-google-cloud-dns| image:: https://img.shields.io/pypi/v/google-cloud-dns.svg
      :target: https://pypi.org/project/google-cloud-dns
 .. |PyPI-google-cloud-datalabeling| image:: https://img.shields.io/pypi/v/google-cloud-datalabeling.svg
@@ -700,12 +704,8 @@ Libraries
      :target: https://pypi.org/project/sqlalchemy-bigquery
 .. |PyPI-google-cloud-vm-migration| image:: https://img.shields.io/pypi/v/google-cloud-vm-migration.svg
      :target: https://pypi.org/project/google-cloud-vm-migration
-.. |PyPI-google-cloud-bigtable| image:: https://img.shields.io/pypi/v/google-cloud-bigtable.svg
-     :target: https://pypi.org/project/google-cloud-bigtable
 .. |PyPI-google-cloud-iot| image:: https://img.shields.io/pypi/v/google-cloud-iot.svg
      :target: https://pypi.org/project/google-cloud-iot
-.. |PyPI-google-cloud-monitoring-metrics-scopes| image:: https://img.shields.io/pypi/v/google-cloud-monitoring-metrics-scopes.svg
-     :target: https://pypi.org/project/google-cloud-monitoring-metrics-scopes
 
 .. API_TABLE_END
 
