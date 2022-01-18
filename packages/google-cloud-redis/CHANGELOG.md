@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-redis/#history
 
+### [2.5.1](https://github.com/googleapis/python-redis/compare/v2.5.0...v2.5.1) (2022-01-14)
+
+
+### Bug Fixes
+
+* Add missing fields for TLS and Maintenance Window features ([#147](https://github.com/googleapis/python-redis/issues/147)) ([f04a02e](https://github.com/googleapis/python-redis/commit/f04a02e81a8a449bdcf07f5725778425242fe16e))
+
 ## [2.5.0](https://www.github.com/googleapis/python-redis/compare/v2.4.1...v2.5.0) (2021-11-09)
 
 
