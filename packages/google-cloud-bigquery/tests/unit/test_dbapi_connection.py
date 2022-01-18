@@ -219,8 +219,14 @@ class TestConnection(unittest.TestCase):
         # Connections should not hold strong references to the Cursor instances
         # they created, unnecessarily keeping them alive.
         gc.collect()
-        cursors = [obj for obj in gc.get_objects() if isinstance(obj, Cursor)]
-        self.assertEqual(len(cursors), 2)
+        cursor_count = 0
+        for obj in gc.get_objects():
+            try:
+                if isinstance(obj, Cursor):
+                    cursor_count += 1
+            except ReferenceError:  # pragma: NO COVER
+                pass
+        self.assertEqual(cursor_count, 2)
 
     def test_commit(self):
         connection = self._make_one(client=self._mock_client())
