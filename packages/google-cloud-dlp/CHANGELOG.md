@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.5.0](https://github.com/googleapis/python-dlp/compare/v3.4.0...v3.5.0) (2022-01-16)
+
+
+### Features
+
+* add support for Python 3.9 / 3.10 ([#300](https://github.com/googleapis/python-dlp/issues/300)) ([ac58bde](https://github.com/googleapis/python-dlp/commit/ac58bde1f9d361f56ecf942319d1c427159a02e9))
+
 ## [3.4.0](https://www.github.com/googleapis/python-dlp/compare/v3.3.1...v3.4.0) (2021-12-03)
 
 
