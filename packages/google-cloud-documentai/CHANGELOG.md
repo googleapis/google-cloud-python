@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.2.1](https://github.com/googleapis/python-documentai/compare/v1.2.0...v1.2.1) (2022-01-17)
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([038a736](https://github.com/googleapis/python-documentai/commit/038a7364fe0d2341a3bda1e40bfe23d864427ab7))
+* **deps:** require google-api-core >= 1.28.0 ([038a736](https://github.com/googleapis/python-documentai/commit/038a7364fe0d2341a3bda1e40bfe23d864427ab7))
+
 ## [1.2.0](https://www.github.com/googleapis/python-documentai/compare/v1.1.0...v1.2.0) (2021-10-14)
 
 
