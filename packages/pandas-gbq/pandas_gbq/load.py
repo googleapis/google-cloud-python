@@ -114,6 +114,7 @@ def load_parquet(
     destination_table_ref: bigquery.TableReference,
     location: Optional[str],
     schema: Optional[Dict[str, Any]],
+    billing_project: Optional[str] = None,
 ):
     job_config = bigquery.LoadJobConfig()
     job_config.write_disposition = "WRITE_APPEND"
@@ -126,7 +127,11 @@ def load_parquet(
 
     try:
         client.load_table_from_dataframe(
-            dataframe, destination_table_ref, job_config=job_config, location=location,
+            dataframe,
+            destination_table_ref,
+            job_config=job_config,
+            location=location,
+            project=billing_project,
         ).result()
     except pyarrow.lib.ArrowInvalid as exc:
         raise exceptions.ConversionError(
@@ -162,6 +167,7 @@ def load_csv_from_dataframe(
     location: Optional[str],
     chunksize: Optional[int],
     schema: Optional[Dict[str, Any]],
+    billing_project: Optional[str] = None,
 ):
     bq_schema = None
 
@@ -171,7 +177,11 @@ def load_csv_from_dataframe(
 
     def load_chunk(chunk, job_config):
         client.load_table_from_dataframe(
-            chunk, destination_table_ref, job_config=job_config, location=location,
+            chunk,
+            destination_table_ref,
+            job_config=job_config,
+            location=location,
+            project=billing_project,
         ).result()
 
     return load_csv(dataframe, chunksize, bq_schema, load_chunk)
@@ -184,6 +194,7 @@ def load_csv_from_file(
     location: Optional[str],
     chunksize: Optional[int],
     schema: Optional[Dict[str, Any]],
+    billing_project: Optional[str] = None,
 ):
     """Manually encode a DataFrame to CSV and use the buffer in a load job.
 
@@ -204,6 +215,7 @@ def load_csv_from_file(
                 destination_table_ref,
                 job_config=job_config,
                 location=location,
+                project=billing_project,
             ).result()
         finally:
             chunk_buffer.close()
@@ -219,19 +231,39 @@ def load_chunks(
     schema=None,
     location=None,
     api_method="load_parquet",
+    billing_project: Optional[str] = None,
 ):
     if api_method == "load_parquet":
-        load_parquet(client, dataframe, destination_table_ref, location, schema)
+        load_parquet(
+            client,
+            dataframe,
+            destination_table_ref,
+            location,
+            schema,
+            billing_project=billing_project,
+        )
         # TODO: yield progress depending on result() with timeout
         return [0]
     elif api_method == "load_csv":
         if FEATURES.bigquery_has_from_dataframe_with_csv:
             return load_csv_from_dataframe(
-                client, dataframe, destination_table_ref, location, chunksize, schema
+                client,
+                dataframe,
+                destination_table_ref,
+                location,
+                chunksize,
+                schema,
+                billing_project=billing_project,
             )
         else:
             return load_csv_from_file(
-                client, dataframe, destination_table_ref, location, chunksize, schema
+                client,
+                dataframe,
+                destination_table_ref,
+                location,
+                chunksize,
+                schema,
+                billing_project=billing_project,
             )
     else:
         raise ValueError(

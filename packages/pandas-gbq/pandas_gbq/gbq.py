@@ -549,6 +549,7 @@ class GbqConnector(object):
         schema=None,
         progress_bar=True,
         api_method: str = "load_parquet",
+        billing_project: Optional[str] = None,
     ):
         from pandas_gbq import load
 
@@ -563,6 +564,7 @@ class GbqConnector(object):
                 schema=schema,
                 location=self.location,
                 api_method=api_method,
+                billing_project=billing_project,
             )
             if progress_bar and tqdm:
                 chunks = tqdm.tqdm(chunks)
@@ -575,8 +577,8 @@ class GbqConnector(object):
         except self.http_error as ex:
             self.process_http_error(ex)
 
-    def delete_and_recreate_table(self, dataset_id, table_id, table_schema):
-        table = _Table(self.project_id, dataset_id, credentials=self.credentials)
+    def delete_and_recreate_table(self, project_id, dataset_id, table_id, table_schema):
+        table = _Table(project_id, dataset_id, credentials=self.credentials)
         table.delete(table_id)
         table.create(table_id, table_schema)
 
@@ -1113,7 +1115,9 @@ def to_gbq(
                 "'append' or 'replace' data."
             )
         elif if_exists == "replace":
-            connector.delete_and_recreate_table(dataset_id, table_id, table_schema)
+            connector.delete_and_recreate_table(
+                project_id_table, dataset_id, table_id, table_schema
+            )
         else:
             if not pandas_gbq.schema.schema_is_subset(original_schema, table_schema):
                 raise InvalidSchema(
@@ -1142,6 +1146,7 @@ def to_gbq(
         schema=table_schema,
         progress_bar=progress_bar,
         api_method=api_method,
+        billing_project=project_id,
     )
 
 
