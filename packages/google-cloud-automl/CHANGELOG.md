@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## [2.6.0](https://github.com/googleapis/python-automl/compare/v2.5.2...v2.6.0) (2022-01-15)
+
+
+### Features
+
+* publish updated protos for cloud/automl/v1 service  ([#318](https://github.com/googleapis/python-automl/issues/318)) ([3bf0271](https://github.com/googleapis/python-automl/commit/3bf0271dce60fe9843711068e85978b627f77db6))
+
+
+### Bug Fixes
+
+* **deps:** allow google-cloud-storage < 3.0.0dev ([#316](https://github.com/googleapis/python-automl/issues/316)) ([ba271a8](https://github.com/googleapis/python-automl/commit/ba271a8cfea916f7fb3df536258cda2dca32a423))
+
 ### [2.5.2](https://www.github.com/googleapis/python-automl/compare/v2.5.1...v2.5.2) (2021-11-01)
 
 
