@@ -19,7 +19,7 @@ import pytest
 
 from gapic.samplegen_utils import snippet_metadata_pb2
 from gapic.samplegen_utils import snippet_index, types
-from common_types import DummyApiSchema, DummyService, DummyMethod
+from ..common_types import DummyApiSchema, DummyService, DummyMethod
 
 
 @pytest.fixture
@@ -82,7 +82,6 @@ def test_snippet_init(sample_str):
     # and # [END ...] lines
     expected_full_snipppet = """from molluscs.v1 import molluscclient
 
-
 def sample_classify(video, location):
     # Create a client
     client = molluscclient.MolluscServiceClient()
@@ -130,7 +129,7 @@ def test_add_snippet_no_matching_rpc(sample_str):
     snippet_metadata = snippet_metadata_pb2.Snippet(
     )
     snippet_metadata.client_method.method.service.short_name = "Squid"
-    snippet_metadata.client_method.full_name = "classify"
+    snippet_metadata.client_method.short_name = "classify"
     snippet = snippet_index.Snippet(sample_str, snippet_metadata)
 
     # No 'classify' method in 'Squid' service
@@ -166,7 +165,7 @@ def test_get_snippet_no_matching_rpc():
 def test_add_and_get_snippet_sync(sample_str):
     snippet_metadata = snippet_metadata_pb2.Snippet()
     snippet_metadata.client_method.method.service.short_name = "Squid"
-    snippet_metadata.client_method.method.full_name = "classify"
+    snippet_metadata.client_method.method.short_name = "classify"
     snippet = snippet_index.Snippet(sample_str, snippet_metadata)
 
     index = snippet_index.SnippetIndex(api_schema=DummyApiSchema(
@@ -182,7 +181,7 @@ def test_add_and_get_snippet_sync(sample_str):
 def test_add_and_get_snippet_async(sample_str):
     snippet_metadata = snippet_metadata_pb2.Snippet()
     snippet_metadata.client_method.method.service.short_name = "Squid"
-    snippet_metadata.client_method.method.full_name = "classify"
+    snippet_metadata.client_method.method.short_name = "classify"
     setattr(snippet_metadata.client_method, "async", True)
     snippet = snippet_index.Snippet(sample_str, snippet_metadata)
 
@@ -199,7 +198,7 @@ def test_add_and_get_snippet_async(sample_str):
 def test_get_metadata_json(sample_str):
     snippet_metadata = snippet_metadata_pb2.Snippet()
     snippet_metadata.client_method.method.service.short_name = "Squid"
-    snippet_metadata.client_method.method.full_name = "classify"
+    snippet_metadata.client_method.method.short_name = "classify"
     snippet = snippet_index.Snippet(sample_str, snippet_metadata)
 
     index = snippet_index.SnippetIndex(api_schema=DummyApiSchema(
@@ -210,7 +209,7 @@ def test_get_metadata_json(sample_str):
     index.add_snippet(snippet)
 
     assert json.loads(index.get_metadata_json()) == {
-        'snippets': [{'clientMethod': {'method': {'fullName': 'classify',
+        'snippets': [{'clientMethod': {'method': {'shortName': 'classify',
                                 'service': {'shortName': 'Squid'}}},
         'segments': [{'end': 28, 'start': 2, 'type': 'FULL'},
                      {'end': 28, 'start': 2, 'type': 'SHORT'},

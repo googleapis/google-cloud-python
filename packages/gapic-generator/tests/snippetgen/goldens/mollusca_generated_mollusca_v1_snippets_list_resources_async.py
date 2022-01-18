@@ -28,8 +28,6 @@ from animalia import mollusca_v1
 
 
 async def sample_list_resources():
-    """Snippet for list_resources"""
-
     # Create a client
     client = mollusca_v1.SnippetsAsyncClient()
 

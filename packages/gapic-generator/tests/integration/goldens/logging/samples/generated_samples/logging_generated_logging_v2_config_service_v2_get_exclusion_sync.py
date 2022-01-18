@@ -28,8 +28,6 @@ from google.cloud import logging_v2
 
 
 def sample_get_exclusion():
-    """Snippet for get_exclusion"""
-
     # Create a client
     client = logging_v2.ConfigServiceV2Client()
 

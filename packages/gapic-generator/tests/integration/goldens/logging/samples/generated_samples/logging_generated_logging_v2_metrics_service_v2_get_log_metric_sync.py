@@ -28,8 +28,6 @@ from google.cloud import logging_v2
 
 
 def sample_get_log_metric():
-    """Snippet for get_log_metric"""
-
     # Create a client
     client = logging_v2.MetricsServiceV2Client()
 

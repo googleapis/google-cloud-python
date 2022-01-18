@@ -28,8 +28,6 @@ from google.cloud import logging_v2
 
 
 async def sample_update_exclusion():
-    """Snippet for update_exclusion"""
-
     # Create a client
     client = logging_v2.ConfigServiceV2AsyncClient()
 

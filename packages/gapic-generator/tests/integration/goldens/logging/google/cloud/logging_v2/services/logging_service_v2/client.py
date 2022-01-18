@@ -377,6 +377,28 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         deleted. Entries received after the delete operation
         with a timestamp before the operation will be deleted.
 
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_delete_log():
+                # Create a client
+                client = logging_v2.LoggingServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                log = "log_value"
+                log_name = f"projects/{project}/logs/{log}"
+
+                request = logging_v2.DeleteLogRequest(
+                    log_name=log_name,
+                )
+
+                # Make the request
+                response = client.delete_log(request=request)
+
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteLogRequest, dict]):
                 The request object. The parameters to DeleteLog.
@@ -462,6 +484,30 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         Logging. A single request may contain log entries for a
         maximum of 1000 different resources (projects,
         organizations, billing accounts or folders)
+
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_write_log_entries():
+                # Create a client
+                client = logging_v2.LoggingServiceV2Client()
+
+                # Initialize request argument(s)
+                entries = logging_v2.LogEntry()
+                entries.log_name = "log_name_value"
+
+                request = logging_v2.WriteLogEntriesRequest(
+                    entries=entries,
+                )
+
+                # Make the request
+                response = client.write_log_entries(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.logging_v2.types.WriteLogEntriesRequest, dict]):
@@ -619,6 +665,30 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         For ways to export log entries, see `Exporting
         Logs <https://cloud.google.com/logging/docs/export>`__.
 
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_list_log_entries():
+                # Create a client
+                client = logging_v2.LoggingServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                log = "log_value"
+                resource_names = f"projects/{project}/logs/{log}"
+
+                request = logging_v2.ListLogEntriesRequest(
+                    resource_names=resource_names,
+                )
+
+                # Make the request
+                page_result = client.list_log_entries(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.ListLogEntriesRequest, dict]):
                 The request object. The parameters to `ListLogEntries`.
@@ -743,6 +813,25 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         r"""Lists the descriptors for monitored resource types
         used by Logging.
 
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_list_monitored_resource_descriptors():
+                # Create a client
+                client = logging_v2.LoggingServiceV2Client()
+
+                # Initialize request argument(s)
+                request = logging_v2.ListMonitoredResourceDescriptorsRequest(
+                )
+
+                # Make the request
+                page_result = client.list_monitored_resource_descriptors(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.ListMonitoredResourceDescriptorsRequest, dict]):
                 The request object. The parameters to
@@ -805,6 +894,30 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         r"""Lists the logs in projects, organizations, folders,
         or billing accounts. Only logs that have entries are
         listed.
+
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_list_logs():
+                # Create a client
+                client = logging_v2.LoggingServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                log = "log_value"
+                parent = f"projects/{project}/logs/{log}"
+
+                request = logging_v2.ListLogsRequest(
+                    parent=parent,
+                )
+
+                # Make the request
+                page_result = client.list_logs(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.logging_v2.types.ListLogsRequest, dict]):
@@ -897,6 +1010,35 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         r"""Streaming read of log entries as they are ingested.
         Until the stream is terminated, it will continue reading
         logs.
+
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_tail_log_entries():
+                # Create a client
+                client = logging_v2.LoggingServiceV2Client()
+
+                # Initialize request argument(s)
+                request = logging_v2.TailLogEntriesRequest(
+                    resource_names=['resource_names_value_1', 'resource_names_value_2'],
+                )
+
+                # This method expects an iterator which contains
+                # 'logging_v2.TailLogEntriesRequest' objects
+                # Here we create a generator that yields a single `request` for
+                # demonstrative purposes.
+                requests = [request]
+                def request_generator():
+                    for request in requests:
+                        yield request
+
+                # Make the request
+                stream = client.tail_log_entries(requests=request_generator())
+                for response in stream:
+                    print(response)
 
         Args:
             requests (Iterator[google.cloud.logging_v2.types.TailLogEntriesRequest]):

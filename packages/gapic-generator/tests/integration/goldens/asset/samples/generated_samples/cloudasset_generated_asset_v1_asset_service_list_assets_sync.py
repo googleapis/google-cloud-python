@@ -28,8 +28,6 @@ from google.cloud import asset_v1
 
 
 def sample_list_assets():
-    """Snippet for list_assets"""
-
     # Create a client
     client = asset_v1.AssetServiceClient()
 

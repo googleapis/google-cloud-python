@@ -28,8 +28,6 @@ from google.cloud import logging_v2
 
 
 def sample_undelete_bucket():
-    """Snippet for undelete_bucket"""
-
     # Create a client
     client = logging_v2.ConfigServiceV2Client()
 

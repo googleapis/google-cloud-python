@@ -28,8 +28,6 @@ from animalia import mollusca_v1
 
 
 async def sample_one_of_method_required_field():
-    """Snippet for one_of_method_required_field"""
-
     # Create a client
     client = mollusca_v1.SnippetsAsyncClient()
 

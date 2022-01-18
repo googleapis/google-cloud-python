@@ -28,8 +28,6 @@ from google.cloud import asset_v1
 
 
 async def sample_export_assets():
-    """Snippet for export_assets"""
-
     # Create a client
     client = asset_v1.AssetServiceAsyncClient()
 

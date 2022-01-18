@@ -28,8 +28,6 @@ from google.cloud import logging_v2
 
 
 def sample_update_view():
-    """Snippet for update_view"""
-
     # Create a client
     client = logging_v2.ConfigServiceV2Client()
 

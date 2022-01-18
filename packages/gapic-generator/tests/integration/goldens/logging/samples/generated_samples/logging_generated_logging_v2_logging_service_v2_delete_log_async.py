@@ -28,8 +28,6 @@ from google.cloud import logging_v2
 
 
 async def sample_delete_log():
-    """Snippet for delete_log"""
-
     # Create a client
     client = logging_v2.LoggingServiceV2AsyncClient()
 

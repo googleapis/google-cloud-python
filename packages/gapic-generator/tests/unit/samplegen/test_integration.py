@@ -17,13 +17,16 @@ import os.path as path
 import pytest
 from pathlib import Path
 
+from google.protobuf import json_format
+
 import gapic.utils as utils
 
 from gapic.samplegen import samplegen
 from gapic.samplegen_utils import (types, utils as gapic_utils)
+from gapic.samplegen_utils import snippet_metadata_pb2
 from gapic.schema import (naming, wrappers)
 
-from common_types import (DummyField, DummyMessage,
+from ..common_types import (DummyField, DummyMessage,
 
                           DummyMessageTypePB, DummyMethod, DummyService, DummyIdent,
                           DummyApiSchema, DummyNaming, enum_factory, message_factory)
@@ -105,6 +108,7 @@ def test_generate_sample_basic():
     )
 
     sample = {"service": "animalia.mollusca.v1.Mollusc",
+              "region_tag": "molluscs_generated_molluscs_v1_Mollusc_Classify_sync",
               "rpc": "Classify",
               "id": "mollusc_classify_sync",
               "description": "Determine the full taxonomy of input mollusc",
@@ -119,13 +123,21 @@ def test_generate_sample_basic():
               ],
               "response": [{"print": ['Mollusc is a "%s"', "$resp.taxonomy"]}]}
 
-    sample_str = samplegen.generate_sample(
+    sample_str, metadata = samplegen.generate_sample(
         sample,
         schema,
         env.get_template('examples/sample.py.j2')
     )
 
     assert sample_str == golden_snippet("sample_basic.py")
+    assert json_format.MessageToDict(metadata) == {
+        'regionTag': 'molluscs_generated_molluscs_v1_Mollusc_Classify_sync',
+        'clientMethod':
+            {'method': {
+                'shortName': 'Classify',
+                'service': {'shortName': 'Mollusc'}
+            }}
+        }
 
 
 def test_generate_sample_basic_async():
@@ -180,6 +192,7 @@ def test_generate_sample_basic_async():
     )
 
     sample = {"service": "animalia.mollusca.v1.Mollusc",
+              "region_tag": "molluscs_generated_molluscs_v1_Mollusc_Classify_async",
               "rpc": "Classify",
               "transport": "grpc-async",
               "id": "mollusc_classify_sync",
@@ -195,13 +208,23 @@ def test_generate_sample_basic_async():
               ],
               "response": [{"print": ['Mollusc is a "%s"', "$resp.taxonomy"]}]}
 
-    sample_str = samplegen.generate_sample(
+    sample_str, metadata = samplegen.generate_sample(
         sample,
         schema,
         env.get_template('examples/sample.py.j2')
     )
 
     assert sample_str == golden_snippet("sample_basic_async.py")
+    assert json_format.MessageToDict(metadata) == {
+        'regionTag': 'molluscs_generated_molluscs_v1_Mollusc_Classify_async',
+        'clientMethod':
+        {
+            'async': True,
+            'method': {
+                'shortName': 'Classify',
+                'service': {'shortName': 'Mollusc'}
+                }}
+    }
 
 
 def test_generate_sample_basic_unflattenable():
@@ -251,6 +274,7 @@ def test_generate_sample_basic_unflattenable():
     )
 
     sample = {"service": "animalia.mollusca.v1.Mollusc",
+              "region_tag": "molluscs_generated_molluscs_v1_Mollusc_Classify_sync",
               "rpc": "Classify",
               "id": "mollusc_classify_sync",
               "description": "Determine the full taxonomy of input mollusc",
@@ -265,13 +289,22 @@ def test_generate_sample_basic_unflattenable():
               ],
               "response": [{"print": ['Mollusc is a "%s"', "$resp.taxonomy"]}]}
 
-    sample_str = samplegen.generate_sample(
+    sample_str, metadata = samplegen.generate_sample(
         sample,
         schema,
         env.get_template('examples/sample.py.j2')
     )
 
     assert sample_str == golden_snippet("sample_basic_unflattenable.py")
+    assert json_format.MessageToDict(metadata) == {
+        'regionTag': 'molluscs_generated_molluscs_v1_Mollusc_Classify_sync',
+        'clientMethod':
+        {
+            'method': {
+                'shortName': 'Classify',
+                'service': {'shortName': 'Mollusc'}
+                }}
+    }
 
 
 def test_generate_sample_void_method():
@@ -320,6 +353,7 @@ def test_generate_sample_void_method():
     )
 
     sample = {"service": "animalia.mollusca.v1.Mollusc",
+              "region_tag": "molluscs_generated_molluscs_v1_Mollusc_Classify_sync",
               "rpc": "Classify",
               "id": "mollusc_classify_sync",
               "description": "Determine the full taxonomy of input mollusc",
@@ -333,13 +367,22 @@ def test_generate_sample_void_method():
                    "input_parameter": "location"}
               ]}
 
-    sample_str = samplegen.generate_sample(
+    sample_str, metadata = samplegen.generate_sample(
         sample,
         schema,
         env.get_template('examples/sample.py.j2')
     )
 
     assert sample_str == golden_snippet("sample_basic_void_method.py")
+    assert json_format.MessageToDict(metadata) == {
+        'regionTag': 'molluscs_generated_molluscs_v1_Mollusc_Classify_sync',
+        'clientMethod':
+        {
+            'method': {
+                'shortName': 'Classify',
+                'service': {'shortName': 'Mollusc'}
+                }}
+    }
 
 
 def test_generate_sample_service_not_found():

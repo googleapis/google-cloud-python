@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Optional, Dict
 import re
+from typing import Optional, Dict
 
 from google.protobuf import json_format
 
@@ -88,6 +88,7 @@ class Snippet:
         """The portion between the START and END region tags."""
         start_idx = self._full_snippet.start - 1
         end_idx = self._full_snippet.end
+        self.sample_lines[start_idx] = self.sample_lines[start_idx].strip()
         return "".join(self.sample_lines[start_idx:end_idx])
 
 
@@ -124,7 +125,7 @@ class SnippetIndex:
             RpcMethodNotFound: If the method indicated by the snippet metadata is not found.
         """
         service_name = snippet.metadata.client_method.method.service.short_name
-        rpc_name = snippet.metadata.client_method.method.full_name
+        rpc_name = snippet.metadata.client_method.method.short_name
 
         service = self._index.get(service_name)
         if service is None:
@@ -172,4 +173,8 @@ class SnippetIndex:
 
     def get_metadata_json(self) -> str:
         """JSON representation of Snippet Index."""
+
+        # Downstream tools assume the generator will produce the exact
+        # same output when run over the same API multiple times
+        self.metadata_index.snippets.sort(key=lambda s: s.region_tag)
         return json_format.MessageToJson(self.metadata_index, sort_keys=True)

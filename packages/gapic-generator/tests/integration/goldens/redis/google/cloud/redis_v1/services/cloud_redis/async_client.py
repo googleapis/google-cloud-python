@@ -228,6 +228,29 @@ class CloudRedisAsyncClient:
         regions available to the project are queried, and the results
         are aggregated.
 
+
+        .. code-block::
+
+            from google.cloud import redis_v1
+
+            def sample_list_instances():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                parent = f"projects/{project}/locations/{location}"
+
+                request = redis_v1.ListInstancesRequest(
+                    parent=parent,
+                )
+
+                # Make the request
+                page_result = client.list_instances(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.redis_v1.types.ListInstancesRequest, dict]):
                 The request object. Request for
@@ -317,6 +340,30 @@ class CloudRedisAsyncClient:
             ) -> cloud_redis.Instance:
         r"""Gets the details of a specific Redis instance.
 
+        .. code-block::
+
+            from google.cloud import redis_v1
+
+            def sample_get_instance():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                instance = "instance_value"
+                name = f"projects/{project}/locations/{location}/instances/{instance}"
+
+                request = redis_v1.GetInstanceRequest(
+                    name=name,
+                )
+
+                # Make the request
+                response = client.get_instance(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.redis_v1.types.GetInstanceRequest, dict]):
                 The request object. Request for
@@ -405,6 +452,39 @@ class CloudRedisAsyncClient:
 
         The returned operation is automatically deleted after a few
         hours, so there is no need to call DeleteOperation.
+
+
+        .. code-block::
+
+            from google.cloud import redis_v1
+
+            def sample_create_instance():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                parent = f"projects/{project}/locations/{location}"
+
+                instance = redis_v1.Instance()
+                instance.name = "name_value"
+                instance.tier = "STANDARD_HA"
+                instance.memory_size_gb = 1499
+
+                request = redis_v1.CreateInstanceRequest(
+                    parent=parent,
+                    instance_id="instance_id_value",
+                    instance=instance,
+                )
+
+                # Make the request
+                operation = client.create_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.redis_v1.types.CreateInstanceRequest, dict]):
@@ -523,6 +603,33 @@ class CloudRedisAsyncClient:
         operation is automatically deleted after a few hours, so
         there is no need to call DeleteOperation.
 
+
+        .. code-block::
+
+            from google.cloud import redis_v1
+
+            def sample_update_instance():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                instance = redis_v1.Instance()
+                instance.name = "name_value"
+                instance.tier = "STANDARD_HA"
+                instance.memory_size_gb = 1499
+
+                request = redis_v1.UpdateInstanceRequest(
+                    instance=instance,
+                )
+
+                # Make the request
+                operation = client.update_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.redis_v1.types.UpdateInstanceRequest, dict]):
                 The request object. Request for
@@ -626,6 +733,34 @@ class CloudRedisAsyncClient:
             ) -> operation_async.AsyncOperation:
         r"""Upgrades Redis instance to the newer Redis version
         specified in the request.
+
+
+        .. code-block::
+
+            from google.cloud import redis_v1
+
+            def sample_upgrade_instance():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                instance = "instance_value"
+                name = f"projects/{project}/locations/{location}/instances/{instance}"
+
+                request = redis_v1.UpgradeInstanceRequest(
+                    name=name,
+                    redis_version="redis_version_value",
+                )
+
+                # Make the request
+                operation = client.upgrade_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.redis_v1.types.UpgradeInstanceRequest, dict]):
@@ -732,6 +867,32 @@ class CloudRedisAsyncClient:
         The returned operation is automatically deleted after a
         few hours, so there is no need to call DeleteOperation.
 
+
+        .. code-block::
+
+            from google.cloud import redis_v1
+
+            def sample_import_instance():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                input_config = redis_v1.InputConfig()
+                input_config.gcs_source.uri = "uri_value"
+
+                request = redis_v1.ImportInstanceRequest(
+                    name="name_value",
+                    input_config=input_config,
+                )
+
+                # Make the request
+                operation = client.import_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.redis_v1.types.ImportInstanceRequest, dict]):
                 The request object. Request for
@@ -833,6 +994,32 @@ class CloudRedisAsyncClient:
         The returned operation is automatically deleted after a
         few hours, so there is no need to call DeleteOperation.
 
+
+        .. code-block::
+
+            from google.cloud import redis_v1
+
+            def sample_export_instance():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                output_config = redis_v1.OutputConfig()
+                output_config.gcs_destination.uri = "uri_value"
+
+                request = redis_v1.ExportInstanceRequest(
+                    name="name_value",
+                    output_config=output_config,
+                )
+
+                # Make the request
+                operation = client.export_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.redis_v1.types.ExportInstanceRequest, dict]):
                 The request object. Request for
@@ -932,6 +1119,33 @@ class CloudRedisAsyncClient:
         replica node for a specific STANDARD tier Cloud
         Memorystore for Redis instance.
 
+
+        .. code-block::
+
+            from google.cloud import redis_v1
+
+            def sample_failover_instance():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                instance = "instance_value"
+                name = f"projects/{project}/locations/{location}/instances/{instance}"
+
+                request = redis_v1.FailoverInstanceRequest(
+                    name=name,
+                )
+
+                # Make the request
+                operation = client.failover_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.redis_v1.types.FailoverInstanceRequest, dict]):
                 The request object. Request for
@@ -1029,6 +1243,33 @@ class CloudRedisAsyncClient:
             ) -> operation_async.AsyncOperation:
         r"""Deletes a specific Redis instance.  Instance stops
         serving and data is deleted.
+
+
+        .. code-block::
+
+            from google.cloud import redis_v1
+
+            def sample_delete_instance():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                instance = "instance_value"
+                name = f"projects/{project}/locations/{location}/instances/{instance}"
+
+                request = redis_v1.DeleteInstanceRequest(
+                    name=name,
+                )
+
+                # Make the request
+                operation = client.delete_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.redis_v1.types.DeleteInstanceRequest, dict]):

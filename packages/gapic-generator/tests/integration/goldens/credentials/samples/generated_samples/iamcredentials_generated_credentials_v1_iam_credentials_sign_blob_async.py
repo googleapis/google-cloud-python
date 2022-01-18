@@ -28,8 +28,6 @@ from google.iam import credentials_v1
 
 
 async def sample_sign_blob():
-    """Snippet for sign_blob"""
-
     # Create a client
     client = credentials_v1.IAMCredentialsAsyncClient()
 

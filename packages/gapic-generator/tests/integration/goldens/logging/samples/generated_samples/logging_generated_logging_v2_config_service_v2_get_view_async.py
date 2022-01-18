@@ -28,8 +28,6 @@ from google.cloud import logging_v2
 
 
 async def sample_get_view():
-    """Snippet for get_view"""
-
     # Create a client
     client = logging_v2.ConfigServiceV2AsyncClient()
 

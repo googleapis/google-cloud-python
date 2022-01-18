@@ -28,8 +28,6 @@ from google.cloud import asset_v1
 
 
 async def sample_analyze_iam_policy():
-    """Snippet for analyze_iam_policy"""
-
     # Create a client
     client = asset_v1.AssetServiceAsyncClient()
 

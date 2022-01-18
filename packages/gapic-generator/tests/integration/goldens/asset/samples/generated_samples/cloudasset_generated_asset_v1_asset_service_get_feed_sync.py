@@ -28,8 +28,6 @@ from google.cloud import asset_v1
 
 
 def sample_get_feed():
-    """Snippet for get_feed"""
-
     # Create a client
     client = asset_v1.AssetServiceClient()
 

@@ -196,6 +196,27 @@ class MetricsServiceV2AsyncClient:
             ) -> pagers.ListLogMetricsAsyncPager:
         r"""Lists logs-based metrics.
 
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_list_log_metrics():
+                # Create a client
+                client = logging_v2.MetricsServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                parent = f"projects/{project}"
+
+                request = logging_v2.ListLogMetricsRequest(
+                    parent=parent,
+                )
+
+                # Make the request
+                page_result = client.list_log_metrics(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.ListLogMetricsRequest, dict]):
                 The request object. The parameters to ListLogMetrics.
@@ -293,6 +314,29 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             ) -> logging_metrics.LogMetric:
         r"""Gets a logs-based metric.
 
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_get_log_metric():
+                # Create a client
+                client = logging_v2.MetricsServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                metric = "metric_value"
+                metric_name = f"projects/{project}/metrics/{metric}"
+
+                request = logging_v2.GetLogMetricRequest(
+                    metric_name=metric_name,
+                )
+
+                # Make the request
+                response = client.get_log_metric(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.GetLogMetricRequest, dict]):
                 The request object. The parameters to GetLogMetric.
@@ -387,6 +431,34 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_metrics.LogMetric:
         r"""Creates a logs-based metric.
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_create_log_metric():
+                # Create a client
+                client = logging_v2.MetricsServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                metric = "metric_value"
+                parent = f"projects/{project}/metrics/{metric}"
+
+                metric = logging_v2.LogMetric()
+                metric.name = "name_value"
+                metric.filter = "filter_value"
+
+                request = logging_v2.CreateLogMetricRequest(
+                    parent=parent,
+                    metric=metric,
+                )
+
+                # Make the request
+                response = client.create_log_metric(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.logging_v2.types.CreateLogMetricRequest, dict]):
@@ -487,6 +559,34 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_metrics.LogMetric:
         r"""Creates or updates a logs-based metric.
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_update_log_metric():
+                # Create a client
+                client = logging_v2.MetricsServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                metric = "metric_value"
+                metric_name = f"projects/{project}/metrics/{metric}"
+
+                metric = logging_v2.LogMetric()
+                metric.name = "name_value"
+                metric.filter = "filter_value"
+
+                request = logging_v2.UpdateLogMetricRequest(
+                    metric_name=metric_name,
+                    metric=metric,
+                )
+
+                # Make the request
+                response = client.update_log_metric(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.logging_v2.types.UpdateLogMetricRequest, dict]):
@@ -593,6 +693,26 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> None:
         r"""Deletes a logs-based metric.
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_delete_log_metric():
+                # Create a client
+                client = logging_v2.MetricsServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                metric = "metric_value"
+                metric_name = f"projects/{project}/metrics/{metric}"
+
+                request = logging_v2.DeleteLogMetricRequest(
+                    metric_name=metric_name,
+                )
+
+                # Make the request
+                response = client.delete_log_metric(request=request)
 
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteLogMetricRequest, dict]):

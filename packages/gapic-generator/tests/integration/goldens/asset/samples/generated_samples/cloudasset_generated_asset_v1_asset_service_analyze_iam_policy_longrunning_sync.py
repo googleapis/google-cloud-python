@@ -28,8 +28,6 @@ from google.cloud import asset_v1
 
 
 def sample_analyze_iam_policy_longrunning():
-    """Snippet for analyze_iam_policy_longrunning"""
-
     # Create a client
     client = asset_v1.AssetServiceClient()
 

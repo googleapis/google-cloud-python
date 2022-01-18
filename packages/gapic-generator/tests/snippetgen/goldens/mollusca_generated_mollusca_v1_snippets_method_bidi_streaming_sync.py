@@ -28,8 +28,6 @@ from animalia import mollusca_v1
 
 
 def sample_method_bidi_streaming():
-    """Snippet for method_bidi_streaming"""
-
     # Create a client
     client = mollusca_v1.SnippetsClient()
 

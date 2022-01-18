@@ -28,8 +28,6 @@ from google.iam import credentials_v1
 
 
 def sample_generate_id_token():
-    """Snippet for generate_id_token"""
-
     # Create a client
     client = credentials_v1.IAMCredentialsClient()
 

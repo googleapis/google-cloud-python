@@ -28,8 +28,6 @@ from animalia import mollusca_v1
 
 
 async def sample_method_server_streaming():
-    """Snippet for method_server_streaming"""
-
     # Create a client
     client = mollusca_v1.SnippetsAsyncClient()
 

@@ -19,7 +19,7 @@ from textwrap import dedent
 import gapic.samplegen_utils.yaml as gapic_yaml
 import gapic.samplegen_utils.types as types
 import gapic.samplegen.manifest as manifest
-from common_types import DummyApiSchema, DummyNaming
+from ..common_types import DummyApiSchema, DummyNaming
 
 
 def test_generate_manifest():

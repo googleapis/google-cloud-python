@@ -28,8 +28,6 @@ from animalia import mollusca_v1
 
 
 def sample_one_of_method():
-    """Snippet for one_of_method"""
-
     # Create a client
     client = mollusca_v1.SnippetsClient()
 

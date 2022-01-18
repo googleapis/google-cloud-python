@@ -28,8 +28,6 @@ from google.iam import credentials_v1
 
 
 def sample_sign_jwt():
-    """Snippet for sign_jwt"""
-
     # Create a client
     client = credentials_v1.IAMCredentialsClient()
 

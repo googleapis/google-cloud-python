@@ -21,7 +21,7 @@ import gapic.utils as utils
 
 from gapic.samplegen_utils.types import CallingForm
 from textwrap import dedent
-import common_types
+from .. import common_types
 
 
 def check_template(template_fragment, expected_output, **kwargs):

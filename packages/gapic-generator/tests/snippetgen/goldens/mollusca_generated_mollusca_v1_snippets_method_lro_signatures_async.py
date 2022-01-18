@@ -28,8 +28,6 @@ from animalia import mollusca_v1
 
 
 async def sample_method_lro_signatures():
-    """Snippet for method_lro_signatures"""
-
     # Create a client
     client = mollusca_v1.SnippetsAsyncClient()
 

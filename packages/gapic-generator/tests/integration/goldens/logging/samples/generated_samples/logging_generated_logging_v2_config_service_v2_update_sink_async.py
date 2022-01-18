@@ -28,8 +28,6 @@ from google.cloud import logging_v2
 
 
 async def sample_update_sink():
-    """Snippet for update_sink"""
-
     # Create a client
     client = logging_v2.ConfigServiceV2AsyncClient()
 

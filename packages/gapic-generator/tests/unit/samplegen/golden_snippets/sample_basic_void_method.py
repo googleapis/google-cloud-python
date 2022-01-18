@@ -28,8 +28,6 @@ from molluscs.v1 import molluscclient
 
 
 def sample_classify(video, location):
-    """Determine the full taxonomy of input mollusc"""
-
     # Create a client
     client = molluscclient.MolluscServiceClient()
 

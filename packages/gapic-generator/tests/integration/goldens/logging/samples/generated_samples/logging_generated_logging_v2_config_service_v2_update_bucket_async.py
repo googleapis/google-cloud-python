@@ -28,8 +28,6 @@ from google.cloud import logging_v2
 
 
 async def sample_update_bucket():
-    """Snippet for update_bucket"""
-
     # Create a client
     client = logging_v2.ConfigServiceV2AsyncClient()
 

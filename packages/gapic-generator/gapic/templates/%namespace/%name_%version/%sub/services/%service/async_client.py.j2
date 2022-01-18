@@ -207,6 +207,14 @@ class {{ service.async_client_name }}:
             {% endif %}
         r"""{{ method.meta.doc|rst(width=72, indent=8) }}
 
+        {% with snippet = snippet_index.get_snippet(service.name, method.name, sync=True) %}
+        {% if snippet is not none %}
+        .. code-block::
+
+{{ snippet.full_snippet|indent(width=12, first=True) }}
+        {% endif %}
+        {% endwith %}
+
         Args:
             {% if not method.client_streaming %}
             request (Union[{{ method.input.ident.sphinx }}, dict]):

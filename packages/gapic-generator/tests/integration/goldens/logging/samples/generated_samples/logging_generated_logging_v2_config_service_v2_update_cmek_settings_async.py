@@ -28,8 +28,6 @@ from google.cloud import logging_v2
 
 
 async def sample_update_cmek_settings():
-    """Snippet for update_cmek_settings"""
-
     # Create a client
     client = logging_v2.ConfigServiceV2AsyncClient()
 

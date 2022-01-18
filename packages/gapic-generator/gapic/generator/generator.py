@@ -17,12 +17,14 @@ import yaml
 import itertools
 import re
 import os
+import pathlib
 import typing
-from typing import Any, DefaultDict, Dict, Mapping
+from typing import Any, DefaultDict, Dict, Mapping, Tuple
 from hashlib import sha256
 from collections import OrderedDict, defaultdict
 from gapic.samplegen_utils.utils import coerce_response_name, is_valid_sample_cfg, render_format_string
 from gapic.samplegen_utils.types import DuplicateSample
+from gapic.samplegen_utils import snippet_index, snippet_metadata_pb2
 from gapic.samplegen import manifest, samplegen
 from gapic.generator import formatter
 from gapic.schema import api
@@ -93,6 +95,17 @@ class Generator:
             self._env.loader.list_templates(),  # type: ignore
         )
 
+        # We generate code snippets *before* the library code so snippets
+        # can be inserted into method docstrings.
+        snippet_idx = snippet_index.SnippetIndex(api_schema)
+        if sample_templates:
+            sample_output, snippet_idx = self._generate_samples_and_manifest(
+                api_schema, snippet_idx, self._env.get_template(
+                    sample_templates[0]),
+                opts=opts,
+            )
+            output_files.update(sample_output)
+
         # Iterate over each template and add the appropriate output files
         # based on that template.
         # Sample templates work differently: there's (usually) only one,
@@ -107,15 +120,8 @@ class Generator:
             # Append to the output files dictionary.
             output_files.update(
                 self._render_template(
-                    template_name, api_schema=api_schema, opts=opts)
+                    template_name, api_schema=api_schema, opts=opts, snippet_index=snippet_idx)
             )
-
-        if sample_templates:
-            sample_output = self._generate_samples_and_manifest(
-                api_schema, self._env.get_template(sample_templates[0]),
-                opts=opts,
-            )
-            output_files.update(sample_output)
 
         # Return the CodeGeneratorResponse output.
         res = CodeGeneratorResponse(
@@ -124,7 +130,7 @@ class Generator:
         return res
 
     def _generate_samples_and_manifest(
-            self, api_schema: api.API, sample_template: jinja2.Template, *, opts: Options) -> Dict:
+            self, api_schema: api.API, index: snippet_index.SnippetIndex, sample_template: jinja2.Template, *, opts: Options) -> Tuple[Dict, snippet_index.SnippetIndex]:
         """Generate samples and samplegen manifest for the API.
 
         Arguments:
@@ -133,7 +139,7 @@ class Generator:
             opts (Options): Additional generator options.
 
         Returns:
-            Dict[str, CodeGeneratorResponse.File]: A dict mapping filepath to rendered file.
+            Tuple[Dict[str, CodeGeneratorResponse.File], snippet_index.SnippetIndex] : A dict mapping filepath to rendered file.
         """
         # The two-layer data structure lets us do two things:
         # * detect duplicate samples, which is an error
@@ -181,7 +187,7 @@ class Generator:
                 if not id_is_unique:
                     spec["id"] += f"_{spec_hash}"
 
-                sample = samplegen.generate_sample(
+                sample, snippet_metadata = samplegen.generate_sample(
                     spec, api_schema, sample_template,)
 
                 fpath = utils.to_snake_case(spec["id"]) + ".py"
@@ -190,6 +196,11 @@ class Generator:
                     sample,
                 )
 
+                snippet_metadata.file = fpath
+
+                index.add_snippet(
+                    snippet_index.Snippet(sample, snippet_metadata))
+
         output_files = {
             fname: CodeGeneratorResponse.File(
                 content=formatter.fix_whitespace(sample), name=fname
@@ -197,29 +208,18 @@ class Generator:
             for fname, (_, sample) in fpath_to_spec_and_rendered.items()
         }
 
-        # TODO(busunkim): Re-enable manifest generation once metadata
-        # format has been formalized.
-        # https://docs.google.com/document/d/1ghBam8vMj3xdoe4xfXhzVcOAIwrkbTpkMLgKc9RPD9k/edit#heading=h.sakzausv6hue
-        #
-        # if output_files:
+        if index.metadata_index.snippets:
+            # NOTE(busunkim): Not all fields are yet populated in the snippet metadata.
+            # Expected filename: snippet_metadata_{apishortname}_{apiversion}.json
+            snippet_metadata_path = str(pathlib.Path(
+                out_dir) / f"snippet_metadata_{api_schema.naming.name}_{api_schema.naming.version}.json").lower()
+            output_files[snippet_metadata_path] = CodeGeneratorResponse.File(
+                content=formatter.fix_whitespace(index.get_metadata_json()), name=snippet_metadata_path)
 
-        # manifest_fname, manifest_doc = manifest.generate(
-        #     (
-        #         (fname, spec)
-        #         for fname, (spec, _) in fpath_to_spec_and_rendered.items()
-        #     ),
-        #     api_schema,
-        # )
-
-        # manifest_fname = os.path.join(out_dir, manifest_fname)
-        # output_files[manifest_fname] = CodeGeneratorResponse.File(
-        #     content=manifest_doc.render(), name=manifest_fname
-        # )
-
-        return output_files
+        return output_files, index
 
     def _render_template(
-            self, template_name: str, *, api_schema: api.API, opts: Options,
+            self, template_name: str, *, api_schema: api.API, opts: Options, snippet_index: snippet_index.SnippetIndex,
     ) -> Dict[str, CodeGeneratorResponse.File]:
         """Render the requested templates.
 
@@ -258,7 +258,7 @@ class Generator:
             for subpackage in api_schema.subpackages.values():
                 answer.update(
                     self._render_template(
-                        template_name, api_schema=subpackage, opts=opts
+                        template_name, api_schema=subpackage, opts=opts, snippet_index=snippet_index
                     )
                 )
                 skip_subpackages = True
@@ -275,7 +275,7 @@ class Generator:
 
                 answer.update(
                     self._get_file(
-                        template_name, api_schema=api_schema, proto=proto, opts=opts
+                        template_name, api_schema=api_schema, proto=proto, opts=opts, snippet_index=snippet_index
                     )
                 )
 
@@ -304,6 +304,7 @@ class Generator:
                         api_schema=api_schema,
                         service=service,
                         opts=opts,
+                        snippet_index=snippet_index,
                     )
                 )
             return answer
@@ -311,7 +312,7 @@ class Generator:
         # This file is not iterating over anything else; return back
         # the one applicable file.
         answer.update(self._get_file(
-            template_name, api_schema=api_schema, opts=opts))
+            template_name, api_schema=api_schema, opts=opts, snippet_index=snippet_index))
         return answer
 
     def _is_desired_transport(self, template_name: str, opts: Options) -> bool:
@@ -324,8 +325,8 @@ class Generator:
         template_name: str,
         *,
         opts: Options,
-        api_schema=api.API,
-        **context: Mapping,
+        api_schema: api.API,
+        **context,
     ):
         """Render a template to a protobuf plugin File object."""
         # Determine the target filename.

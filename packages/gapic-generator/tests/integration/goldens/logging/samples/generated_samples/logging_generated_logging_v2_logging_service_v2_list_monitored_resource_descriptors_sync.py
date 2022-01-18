@@ -28,8 +28,6 @@ from google.cloud import logging_v2
 
 
 def sample_list_monitored_resource_descriptors():
-    """Snippet for list_monitored_resource_descriptors"""
-
     # Create a client
     client = logging_v2.LoggingServiceV2Client()
 

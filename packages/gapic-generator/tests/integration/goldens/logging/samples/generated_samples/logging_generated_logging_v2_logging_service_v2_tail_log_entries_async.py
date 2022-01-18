@@ -28,8 +28,6 @@ from google.cloud import logging_v2
 
 
 async def sample_tail_log_entries():
-    """Snippet for tail_log_entries"""
-
     # Create a client
     client = logging_v2.LoggingServiceV2AsyncClient()
 

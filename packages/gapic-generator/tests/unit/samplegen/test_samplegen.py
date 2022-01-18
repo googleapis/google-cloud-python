@@ -29,7 +29,7 @@ from gapic.schema import (api, metadata, naming)
 import gapic.schema.wrappers as wrappers
 from gapic.utils import Options
 
-from common_types import (DummyApiSchema, DummyField, DummyIdent, DummyNaming, DummyMessage, DummyMessageTypePB,
+from ..common_types import (DummyApiSchema, DummyField, DummyIdent, DummyNaming, DummyMessage, DummyMessageTypePB,
                           DummyService, DummyMethod, message_factory, enum_factory)
 from gapic.samplegen_utils import utils
 
@@ -2087,7 +2087,6 @@ def test_generate_sample_spec_basic():
     assert len(specs) == 2
 
     assert specs[0] == {
-        "sample_type": "standalone",
         "rpc": "Ramshorn",
         "transport": "grpc",
         "service": "animalia.mollusca.v1.Squid",
@@ -2096,7 +2095,6 @@ def test_generate_sample_spec_basic():
     }
 
     assert specs[1] == {
-        "sample_type": "standalone",
         "rpc": "Ramshorn",
         "transport": "grpc-async",
         "service": "animalia.mollusca.v1.Squid",

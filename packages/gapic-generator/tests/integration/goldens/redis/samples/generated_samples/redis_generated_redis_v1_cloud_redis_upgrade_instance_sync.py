@@ -28,8 +28,6 @@ from google.cloud import redis_v1
 
 
 def sample_upgrade_instance():
-    """Snippet for upgrade_instance"""
-
     # Create a client
     client = redis_v1.CloudRedisClient()
 

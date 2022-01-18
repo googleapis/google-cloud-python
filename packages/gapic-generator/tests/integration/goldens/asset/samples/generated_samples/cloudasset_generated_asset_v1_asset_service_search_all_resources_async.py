@@ -28,8 +28,6 @@ from google.cloud import asset_v1
 
 
 async def sample_search_all_resources():
-    """Snippet for search_all_resources"""
-
     # Create a client
     client = asset_v1.AssetServiceAsyncClient()
 

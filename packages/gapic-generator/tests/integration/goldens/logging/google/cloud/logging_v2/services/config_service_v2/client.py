@@ -417,6 +417,30 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> pagers.ListBucketsPager:
         r"""Lists buckets.
 
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_list_buckets():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                bucket = "bucket_value"
+                parent = f"projects/{project}/locations/{location}/buckets/{bucket}"
+
+                request = logging_v2.ListBucketsRequest(
+                    parent=parent,
+                )
+
+                # Make the request
+                page_result = client.list_buckets(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.ListBucketsRequest, dict]):
                 The request object. The parameters to `ListBuckets`.
@@ -512,6 +536,31 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> logging_config.LogBucket:
         r"""Gets a bucket.
 
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_get_bucket():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                bucket = "bucket_value"
+                name = f"projects/{project}/locations/{location}/buckets/{bucket}"
+
+                request = logging_v2.GetBucketRequest(
+                    name=name,
+                )
+
+                # Make the request
+                response = client.get_bucket(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.GetBucketRequest, dict]):
                 The request object. The parameters to `GetBucket`.
@@ -566,6 +615,33 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         r"""Creates a bucket that can be used to store log
         entries. Once a bucket has been created, the region
         cannot be changed.
+
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_create_bucket():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                bucket = "bucket_value"
+                parent = f"projects/{project}/locations/{location}/buckets/{bucket}"
+
+                request = logging_v2.CreateBucketRequest(
+                    parent=parent,
+                    bucket_id="bucket_id_value",
+                )
+
+                # Make the request
+                response = client.create_bucket(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.logging_v2.types.CreateBucketRequest, dict]):
@@ -630,6 +706,32 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         A buckets region may not be modified after it is created.
 
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_update_bucket():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                bucket = "bucket_value"
+                name = f"projects/{project}/locations/{location}/buckets/{bucket}"
+
+                request = logging_v2.UpdateBucketRequest(
+                    name=name,
+                )
+
+                # Make the request
+                response = client.update_bucket(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.UpdateBucketRequest, dict]):
                 The request object. The parameters to `UpdateBucket`.
@@ -685,6 +787,29 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         state. After 7 days, the bucket will be purged and all logs in
         the bucket will be permanently deleted.
 
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_delete_bucket():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                bucket = "bucket_value"
+                name = f"projects/{project}/locations/{location}/buckets/{bucket}"
+
+                request = logging_v2.DeleteBucketRequest(
+                    name=name,
+                )
+
+                # Make the request
+                response = client.delete_bucket(request=request)
+
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteBucketRequest, dict]):
                 The request object. The parameters to `DeleteBucket`.
@@ -732,6 +857,29 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         r"""Undeletes a bucket. A bucket that has been deleted
         may be undeleted within the grace period of 7 days.
 
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_undelete_bucket():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                bucket = "bucket_value"
+                name = f"projects/{project}/locations/{location}/buckets/{bucket}"
+
+                request = logging_v2.UndeleteBucketRequest(
+                    name=name,
+                )
+
+                # Make the request
+                response = client.undelete_bucket(request=request)
+
         Args:
             request (Union[google.cloud.logging_v2.types.UndeleteBucketRequest, dict]):
                 The request object. The parameters to `UndeleteBucket`.
@@ -778,6 +926,25 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListViewsPager:
         r"""Lists views on a bucket.
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_list_views():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                request = logging_v2.ListViewsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_views(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.logging_v2.types.ListViewsRequest, dict]):
@@ -866,6 +1033,32 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> logging_config.LogView:
         r"""Gets a view.
 
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_get_view():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                bucket = "bucket_value"
+                view = "view_value"
+                name = f"projects/{project}/locations/{location}/buckets/{bucket}/views/{view}"
+
+                request = logging_v2.GetViewRequest(
+                    name=name,
+                )
+
+                # Make the request
+                response = client.get_view(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.GetViewRequest, dict]):
                 The request object. The parameters to `GetView`.
@@ -921,6 +1114,28 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> logging_config.LogView:
         r"""Creates a view over logs in a bucket. A bucket may
         contain a maximum of 50 views.
+
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_create_view():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                request = logging_v2.CreateViewRequest(
+                    parent="parent_value",
+                    view_id="view_id_value",
+                )
+
+                # Make the request
+                response = client.create_view(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.logging_v2.types.CreateViewRequest, dict]):
@@ -978,6 +1193,27 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         r"""Updates a view. This method replaces the following fields in the
         existing view with values from the new view: ``filter``.
 
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_update_view():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                request = logging_v2.UpdateViewRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.update_view(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.logging_v2.types.UpdateViewRequest, dict]):
                 The request object. The parameters to `UpdateView`.
@@ -1033,6 +1269,29 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> None:
         r"""Deletes a view from a bucket.
 
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_delete_view():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                bucket = "bucket_value"
+                view = "view_value"
+                name = f"projects/{project}/locations/{location}/buckets/{bucket}/views/{view}"
+
+                request = logging_v2.DeleteViewRequest(
+                    name=name,
+                )
+
+                # Make the request
+                response = client.delete_view(request=request)
+
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteViewRequest, dict]):
                 The request object. The parameters to `DeleteView`.
@@ -1079,6 +1338,29 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListSinksPager:
         r"""Lists sinks.
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_list_sinks():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                sink = "sink_value"
+                parent = f"projects/{project}/sinks/{sink}"
+
+                request = logging_v2.ListSinksRequest(
+                    parent=parent,
+                )
+
+                # Make the request
+                page_result = client.list_sinks(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.logging_v2.types.ListSinksRequest, dict]):
@@ -1171,6 +1453,30 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_config.LogSink:
         r"""Gets a sink.
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_get_sink():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                sink = "sink_value"
+                sink_name = f"projects/{project}/sinks/{sink}"
+
+                request = logging_v2.GetSinkRequest(
+                    sink_name=sink_name,
+                )
+
+                # Make the request
+                response = client.get_sink(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.logging_v2.types.GetSinkRequest, dict]):
@@ -1265,6 +1571,36 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         immediately, unless the sink's ``writer_identity`` is not
         permitted to write to the destination. A sink can export log
         entries only from the resource owning the sink.
+
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_create_sink():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                sink = "sink_value"
+                parent = f"projects/{project}/sinks/{sink}"
+
+                sink = logging_v2.LogSink()
+                sink.name = "name_value"
+                sink.destination = "destination_value"
+
+                request = logging_v2.CreateSinkRequest(
+                    parent=parent,
+                    sink=sink,
+                )
+
+                # Make the request
+                response = client.create_sink(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.logging_v2.types.CreateSinkRequest, dict]):
@@ -1371,6 +1707,36 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         The updated sink might also have a new ``writer_identity``; see
         the ``unique_writer_identity`` field.
+
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_update_sink():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                sink = "sink_value"
+                sink_name = f"projects/{project}/sinks/{sink}"
+
+                sink = logging_v2.LogSink()
+                sink.name = "name_value"
+                sink.destination = "destination_value"
+
+                request = logging_v2.UpdateSinkRequest(
+                    sink_name=sink_name,
+                    sink=sink,
+                )
+
+                # Make the request
+                response = client.update_sink(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.logging_v2.types.UpdateSinkRequest, dict]):
@@ -1494,6 +1860,28 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         r"""Deletes a sink. If the sink has a unique ``writer_identity``,
         then that service account is also deleted.
 
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_delete_sink():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                sink = "sink_value"
+                sink_name = f"projects/{project}/sinks/{sink}"
+
+                request = logging_v2.DeleteSinkRequest(
+                    sink_name=sink_name,
+                )
+
+                # Make the request
+                response = client.delete_sink(request=request)
+
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteSinkRequest, dict]):
                 The request object. The parameters to `DeleteSink`.
@@ -1567,6 +1955,29 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> pagers.ListExclusionsPager:
         r"""Lists all the exclusions in a parent resource.
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_list_exclusions():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                exclusion = "exclusion_value"
+                parent = f"projects/{project}/exclusions/{exclusion}"
+
+                request = logging_v2.ListExclusionsRequest(
+                    parent=parent,
+                )
+
+                # Make the request
+                page_result = client.list_exclusions(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.logging_v2.types.ListExclusionsRequest, dict]):
@@ -1659,6 +2070,30 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> logging_config.LogExclusion:
         r"""Gets the description of an exclusion.
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_get_exclusion():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                exclusion = "exclusion_value"
+                name = f"projects/{project}/exclusions/{exclusion}"
+
+                request = logging_v2.GetExclusionRequest(
+                    name=name,
+                )
+
+                # Make the request
+                response = client.get_exclusion(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.logging_v2.types.GetExclusionRequest, dict]):
@@ -1755,6 +2190,36 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         resource. Only log entries belonging to that resource
         can be excluded. You can have up to 10 exclusions in a
         resource.
+
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_create_exclusion():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                exclusion = "exclusion_value"
+                parent = f"projects/{project}/exclusions/{exclusion}"
+
+                exclusion = logging_v2.LogExclusion()
+                exclusion.name = "name_value"
+                exclusion.filter = "filter_value"
+
+                request = logging_v2.CreateExclusionRequest(
+                    parent=parent,
+                    exclusion=exclusion,
+                )
+
+                # Make the request
+                response = client.create_exclusion(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.logging_v2.types.CreateExclusionRequest, dict]):
@@ -1861,6 +2326,36 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> logging_config.LogExclusion:
         r"""Changes one or more properties of an existing
         exclusion.
+
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_update_exclusion():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                exclusion = "exclusion_value"
+                name = f"projects/{project}/exclusions/{exclusion}"
+
+                exclusion = logging_v2.LogExclusion()
+                exclusion.name = "name_value"
+                exclusion.filter = "filter_value"
+
+                request = logging_v2.UpdateExclusionRequest(
+                    name=name,
+                    exclusion=exclusion,
+                )
+
+                # Make the request
+                response = client.update_exclusion(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.logging_v2.types.UpdateExclusionRequest, dict]):
@@ -1980,6 +2475,27 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
             ) -> None:
         r"""Deletes an exclusion.
 
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_delete_exclusion():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                exclusion = "exclusion_value"
+                name = f"projects/{project}/exclusions/{exclusion}"
+
+                request = logging_v2.DeleteExclusionRequest(
+                    name=name,
+                )
+
+                # Make the request
+                response = client.delete_exclusion(request=request)
+
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteExclusionRequest, dict]):
                 The request object. The parameters to `DeleteExclusion`.
@@ -2061,6 +2577,30 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         See `Enabling CMEK for Logs
         Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
         for more information.
+
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_get_cmek_settings():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                name = f"projects/{project}/cmekSettings"
+
+                request = logging_v2.GetCmekSettingsRequest(
+                    name=name,
+                )
+
+                # Make the request
+                response = client.get_cmek_settings(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.logging_v2.types.GetCmekSettingsRequest, dict]):
@@ -2144,6 +2684,27 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         See `Enabling CMEK for Logs
         Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
         for more information.
+
+
+
+        .. code-block::
+
+            from google.cloud import logging_v2
+
+            def sample_update_cmek_settings():
+                # Create a client
+                client = logging_v2.ConfigServiceV2Client()
+
+                # Initialize request argument(s)
+                request = logging_v2.UpdateCmekSettingsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.update_cmek_settings(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.logging_v2.types.UpdateCmekSettingsRequest, dict]):

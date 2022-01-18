@@ -28,8 +28,6 @@ from google.cloud import asset_v1
 
 
 async def sample_update_feed():
-    """Snippet for update_feed"""
-
     # Create a client
     client = asset_v1.AssetServiceAsyncClient()
 

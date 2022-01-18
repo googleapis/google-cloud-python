@@ -28,8 +28,6 @@ from google.cloud import logging_v2
 
 
 def sample_get_cmek_settings():
-    """Snippet for get_cmek_settings"""
-
     # Create a client
     client = logging_v2.ConfigServiceV2Client()
 

@@ -28,8 +28,6 @@ from google.cloud import redis_v1
 
 
 async def sample_get_instance():
-    """Snippet for get_instance"""
-
     # Create a client
     client = redis_v1.CloudRedisAsyncClient()
 

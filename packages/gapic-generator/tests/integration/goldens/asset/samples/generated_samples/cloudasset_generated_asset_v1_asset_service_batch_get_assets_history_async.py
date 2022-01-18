@@ -28,8 +28,6 @@ from google.cloud import asset_v1
 
 
 async def sample_batch_get_assets_history():
-    """Snippet for batch_get_assets_history"""
-
     # Create a client
     client = asset_v1.AssetServiceAsyncClient()
 

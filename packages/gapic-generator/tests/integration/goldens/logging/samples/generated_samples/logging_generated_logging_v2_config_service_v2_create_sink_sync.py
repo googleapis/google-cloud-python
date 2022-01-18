@@ -28,8 +28,6 @@ from google.cloud import logging_v2
 
 
 def sample_create_sink():
-    """Snippet for create_sink"""
-
     # Create a client
     client = logging_v2.ConfigServiceV2Client()
 

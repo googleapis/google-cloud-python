@@ -28,8 +28,6 @@ from google.cloud import asset_v1
 
 
 def sample_delete_feed():
-    """Snippet for delete_feed"""
-
     # Create a client
     client = asset_v1.AssetServiceClient()
 

@@ -28,8 +28,6 @@ from google.cloud import logging_v2
 
 
 def sample_list_log_entries():
-    """Snippet for list_log_entries"""
-
     # Create a client
     client = logging_v2.LoggingServiceV2Client()
 

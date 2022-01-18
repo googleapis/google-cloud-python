@@ -28,8 +28,6 @@ from google.cloud import logging_v2
 
 
 def sample_list_buckets():
-    """Snippet for list_buckets"""
-
     # Create a client
     client = logging_v2.ConfigServiceV2Client()
 

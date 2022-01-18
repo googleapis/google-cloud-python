@@ -28,8 +28,6 @@ from google.cloud import logging_v2
 
 
 def sample_delete_sink():
-    """Snippet for delete_sink"""
-
     # Create a client
     client = logging_v2.ConfigServiceV2Client()
 
