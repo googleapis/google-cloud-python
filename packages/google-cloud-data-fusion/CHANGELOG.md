@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-data-fusion/compare/v1.2.1...v1.3.0) (2022-01-14)
+
+
+### Features
+
+* update definitions for cloud/datafusion/v1 and cloud/datafusion/v1beta1  ([#58](https://github.com/googleapis/python-data-fusion/issues/58)) ([6b38819](https://github.com/googleapis/python-data-fusion/commit/6b38819f26fb72dc67ac2a4dda1c543d91b7f835))
+
 ### [1.2.1](https://www.github.com/googleapis/python-data-fusion/compare/v1.2.0...v1.2.1) (2021-11-01)
 
 
