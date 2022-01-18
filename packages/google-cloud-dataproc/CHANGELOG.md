@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [3.2.0](https://github.com/googleapis/python-dataproc/compare/v3.1.1...v3.2.0) (2022-01-17)
+
+
+### Features
+
+* add Spark runtime versioning for Spark batches ([#318](https://github.com/googleapis/python-dataproc/issues/318)) ([f2e35d9](https://github.com/googleapis/python-dataproc/commit/f2e35d9735cbd0dd5a0e32d78631d70820380846))
+* auto-diagnostic of failed Spark batches ([f2e35d9](https://github.com/googleapis/python-dataproc/commit/f2e35d9735cbd0dd5a0e32d78631d70820380846))
+* custom image containers for Spark batches ([f2e35d9](https://github.com/googleapis/python-dataproc/commit/f2e35d9735cbd0dd5a0e32d78631d70820380846))
+* local SSD NVME interface support for GCE clusters ([f2e35d9](https://github.com/googleapis/python-dataproc/commit/f2e35d9735cbd0dd5a0e32d78631d70820380846))
+
 ### [3.1.1](https://www.github.com/googleapis/python-dataproc/compare/v3.1.0...v3.1.1) (2021-11-01)
 
 
