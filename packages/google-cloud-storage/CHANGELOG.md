@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [2.1.0](https://github.com/googleapis/python-storage/compare/v2.0.0...v2.1.0) (2022-01-19)
+
+
+### Features
+
+* add turbo replication support and samples ([#622](https://github.com/googleapis/python-storage/issues/622)) ([4dafc81](https://github.com/googleapis/python-storage/commit/4dafc815470480ce9de7f0357e331d3fbd0ae9b7))
+* avoid authentication with storage emulator ([#679](https://github.com/googleapis/python-storage/issues/679)) ([8789afa](https://github.com/googleapis/python-storage/commit/8789afaaa1b2bd6f03fae72e3d87ce004ec10129))
+* remove python 3.6 support ([#689](https://github.com/googleapis/python-storage/issues/689)) ([8aa4130](https://github.com/googleapis/python-storage/commit/8aa4130ee068a1922161c8ca54a53a4a51d65ce0))
+
 ## [2.0.0](https://github.com/googleapis/python-storage/compare/v1.44.0...v2.0.0) (2022-01-12)
 
 
