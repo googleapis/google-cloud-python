@@ -19,6 +19,7 @@ import mock
 import pytest  # type: ignore
 
 from google.auth import _default
+from google.auth import api_key
 from google.auth import app_engine
 from google.auth import aws
 from google.auth import compute_engine
@@ -994,3 +995,46 @@ def test_default_no_warning_with_quota_project_id_for_user_creds(get_adc_path):
     get_adc_path.return_value = AUTHORIZED_USER_CLOUD_SDK_FILE
 
     credentials, project_id = _default.default(quota_project_id="project-foo")
+
+
+def test__get_api_key_credentials_no_env_var():
+    cred, project_id = _default._get_api_key_credentials(quota_project_id="project-foo")
+    assert cred is None
+    assert project_id is None
+
+
+def test__get_api_key_credentials_from_env_var():
+    with mock.patch.dict(os.environ, {environment_vars.API_KEY: "api-key"}):
+        cred, project_id = _default._get_api_key_credentials(
+            quota_project_id="project-foo"
+        )
+        assert isinstance(cred, api_key.Credentials)
+        assert cred.token == "api-key"
+        assert project_id == "project-foo"
+
+
+def test_exception_with_api_key_and_adc_env_var():
+    with mock.patch.dict(os.environ, {environment_vars.API_KEY: "api-key"}):
+        with mock.patch.dict(
+            os.environ, {environment_vars.CREDENTIALS: "/path/to/json"}
+        ):
+            with pytest.raises(exceptions.DefaultCredentialsError) as excinfo:
+                _default.default()
+
+            assert excinfo.match(
+                r"GOOGLE_API_KEY and GOOGLE_APPLICATION_CREDENTIALS are mutually exclusive"
+            )
+
+
+def test_default_api_key_from_env_var():
+    with mock.patch.dict(os.environ, {environment_vars.API_KEY: "api-key"}):
+        cred, project_id = _default.default()
+        assert isinstance(cred, api_key.Credentials)
+        assert cred.token == "api-key"
+        assert project_id is None
+
+
+def test_get_api_key_credentials():
+    cred = _default.get_api_key_credentials("api-key")
+    assert isinstance(cred, api_key.Credentials)
+    assert cred.token == "api-key"
