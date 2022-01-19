@@ -72,6 +72,36 @@ def test_constructor_with_both_cert_sources():
         )
 
 
+def test_constructor_with_api_key():
+
+    options = client_options.ClientOptions(
+        api_endpoint="foo.googleapis.com",
+        client_cert_source=get_client_cert,
+        quota_project_id="quote-proj",
+        api_key="api-key",
+        scopes=[
+            "https://www.googleapis.com/auth/cloud-platform",
+            "https://www.googleapis.com/auth/cloud-platform.read-only",
+        ],
+    )
+
+    assert options.api_endpoint == "foo.googleapis.com"
+    assert options.client_cert_source() == (b"cert", b"key")
+    assert options.quota_project_id == "quote-proj"
+    assert options.api_key == "api-key"
+    assert options.scopes == [
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/cloud-platform.read-only",
+    ]
+
+
+def test_constructor_with_both_api_key_and_credentials_file():
+    with pytest.raises(ValueError):
+        client_options.ClientOptions(
+            api_key="api-key", credentials_file="path/to/credentials.json",
+        )
+
+
 def test_from_dict():
     options = client_options.from_dict(
         {
@@ -94,6 +124,7 @@ def test_from_dict():
         "https://www.googleapis.com/auth/cloud-platform",
         "https://www.googleapis.com/auth/cloud-platform.read-only",
     ]
+    assert options.api_key is None
 
 
 def test_from_dict_bad_argument():
@@ -112,6 +143,6 @@ def test_repr():
 
     assert (
         repr(options)
-        == "ClientOptions: {'api_endpoint': 'foo.googleapis.com', 'client_cert_source': None, 'client_encrypted_cert_source': None}"
-        or "ClientOptions: {'client_encrypted_cert_source': None, 'client_cert_source': None, 'api_endpoint': 'foo.googleapis.com'}"
+        == "ClientOptions: {'api_endpoint': 'foo.googleapis.com', 'client_cert_source': None, 'client_encrypted_cert_source': None, 'api_key': None}"
+        or "ClientOptions: {'client_encrypted_cert_source': None, 'client_cert_source': None, 'api_endpoint': 'foo.googleapis.com', 'api_key': None}"
     )

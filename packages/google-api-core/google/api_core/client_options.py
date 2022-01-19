@@ -66,11 +66,14 @@ class ClientOptions(object):
         quota_project_id (Optional[str]): A project name that a client's
             quota belongs to.
         credentials_file (Optional[str]): A path to a file storing credentials.
+            ``credentials_file` and ``api_key`` are mutually exclusive.
         scopes (Optional[Sequence[str]]): OAuth access token override scopes.
+        api_key (Optional[str]): Google API key. ``credentials_file`` and
+            ``api_key`` are mutually exclusive.
 
     Raises:
         ValueError: If both ``client_cert_source`` and ``client_encrypted_cert_source``
-            are provided.
+            are provided, or both ``credentials_file`` and ``api_key`` are provided.
     """
 
     def __init__(
@@ -81,17 +84,21 @@ class ClientOptions(object):
         quota_project_id=None,
         credentials_file=None,
         scopes=None,
+        api_key=None,
     ):
         if client_cert_source and client_encrypted_cert_source:
             raise ValueError(
                 "client_cert_source and client_encrypted_cert_source are mutually exclusive"
             )
+        if api_key and credentials_file:
+            raise ValueError("api_key and credentials_file are mutually exclusive")
         self.api_endpoint = api_endpoint
         self.client_cert_source = client_cert_source
         self.client_encrypted_cert_source = client_encrypted_cert_source
         self.quota_project_id = quota_project_id
         self.credentials_file = credentials_file
         self.scopes = scopes
+        self.api_key = api_key
 
     def __repr__(self):
         return "ClientOptions: " + repr(self.__dict__)
