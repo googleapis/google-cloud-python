@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.17.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.16.0...v0.17.0) (2022-01-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* use nullable Int64 and boolean dtypes if available (#445)
+
+### Features
+
+* accepts a table ID, which downloads the table without a query ([#443](https://github.com/googleapis/python-bigquery-pandas/issues/443)) ([bf0e863](https://github.com/googleapis/python-bigquery-pandas/commit/bf0e863ff6506eca267b14e59e47417bd60e947f))
+* use nullable Int64 and boolean dtypes if available ([#445](https://github.com/googleapis/python-bigquery-pandas/issues/445)) ([89078f8](https://github.com/googleapis/python-bigquery-pandas/commit/89078f89478469aa60a0a8b8e1e0c4a59aa059e0))
+
+
+### Bug Fixes
+
+* `read_gbq` supports extreme DATETIME values such as `0001-01-01 00:00:00` ([#444](https://github.com/googleapis/python-bigquery-pandas/issues/444)) ([d120f8f](https://github.com/googleapis/python-bigquery-pandas/commit/d120f8fbdf4541a39ce8d87067523d48f21554bf))
+* `to_gbq` allows strings for DATE and floats for NUMERIC with `api_method="load_parquet"` ([#423](https://github.com/googleapis/python-bigquery-pandas/issues/423)) ([2180836](https://github.com/googleapis/python-bigquery-pandas/commit/21808367d02b5b7fcf35b3c7520224c819879aec))
+* allow extreme DATE values such as `datetime.date(1, 1, 1)` in `load_gbq` ([#442](https://github.com/googleapis/python-bigquery-pandas/issues/442)) ([e13abaf](https://github.com/googleapis/python-bigquery-pandas/commit/e13abaf015cd1ea9da3ad5063680bf89e18f0fac))
+* avoid iteritems deprecation in pandas prerelease ([#469](https://github.com/googleapis/python-bigquery-pandas/issues/469)) ([7379cdc](https://github.com/googleapis/python-bigquery-pandas/commit/7379cdcd7eedcbc751a4002bdf90c12e810e6bcd))
+* use data project for destination in `to_gbq` ([#455](https://github.com/googleapis/python-bigquery-pandas/issues/455)) ([891a00c](https://github.com/googleapis/python-bigquery-pandas/commit/891a00c8f202aa476ffb22b2fb92c01ffa84889a))
+
+
+### Miscellaneous Chores
+
+* release 0.17.0 ([#470](https://github.com/googleapis/python-bigquery-pandas/issues/470)) ([29ac8c3](https://github.com/googleapis/python-bigquery-pandas/commit/29ac8c33127457e86d9864a6979d532cd1d3ae5c))
+
 ## [0.16.0](https://www.github.com/googleapis/python-bigquery-pandas/compare/v0.16.0...v0.16.0) (2021-11-08)
 
 
