@@ -45,7 +45,7 @@ s.move(
         "noxfile.py",
         "renovate.json",  # do not bundle reports
         "CONTRIBUTING.rst",
-        ".github/CODEOWNERS",
+        ".kokoro/samples/python3.6", # remove python 3.6 support
     ],
 )
 
