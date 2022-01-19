@@ -271,7 +271,7 @@ class Batch(base.Batch):
         batch_transport_succeeded = True
         try:
             # Performs retries for errors defined by the retry configuration.
-            response = self._client.api.publish(
+            response = self._client._gapic_publish(
                 topic=self._topic,
                 messages=self._messages,
                 retry=self._commit_retry,

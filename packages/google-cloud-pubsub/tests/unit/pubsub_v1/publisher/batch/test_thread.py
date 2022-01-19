@@ -128,7 +128,7 @@ def test_blocking__commit():
     # Set up the underlying API publish method to return a PublishResponse.
     publish_response = gapic_types.PublishResponse(message_ids=["a", "b"])
     patch = mock.patch.object(
-        type(batch.client.api), "publish", return_value=publish_response
+        type(batch.client), "_gapic_publish", return_value=publish_response
     )
     with patch as publish:
         batch._commit()
@@ -160,7 +160,7 @@ def test_blocking__commit_custom_retry():
     # Set up the underlying API publish method to return a PublishResponse.
     publish_response = gapic_types.PublishResponse(message_ids=["a"])
     patch = mock.patch.object(
-        type(batch.client.api), "publish", return_value=publish_response
+        type(batch.client), "_gapic_publish", return_value=publish_response
     )
     with patch as publish:
         batch._commit()
@@ -182,7 +182,7 @@ def test_blocking__commit_custom_timeout():
     # Set up the underlying API publish method to return a PublishResponse.
     publish_response = gapic_types.PublishResponse(message_ids=["a"])
     patch = mock.patch.object(
-        type(batch.client.api), "publish", return_value=publish_response
+        type(batch.client), "_gapic_publish", return_value=publish_response
     )
     with patch as publish:
         batch._commit()
@@ -208,7 +208,7 @@ def test_client_api_publish_not_blocking_additional_publish_calls():
         return gapic_types.PublishResponse(message_ids=message_ids)
 
     api_publish_patch = mock.patch.object(
-        type(batch.client.api), "publish", side_effect=api_publish_delay
+        type(batch.client), "_gapic_publish", side_effect=api_publish_delay
     )
 
     with api_publish_patch:
@@ -252,7 +252,7 @@ def test_blocking__commit_already_started(_LOGGER):
 
 def test_blocking__commit_no_messages():
     batch = create_batch()
-    with mock.patch.object(type(batch.client.api), "publish") as publish:
+    with mock.patch.object(type(batch.client), "_gapic_publish") as publish:
         batch._commit()
 
     assert publish.call_count == 0
@@ -268,7 +268,7 @@ def test_blocking__commit_wrong_messageid_length():
     # Set up a PublishResponse that only returns one message ID.
     publish_response = gapic_types.PublishResponse(message_ids=["a"])
     patch = mock.patch.object(
-        type(batch.client.api), "publish", return_value=publish_response
+        type(batch.client), "_gapic_publish", return_value=publish_response
     )
 
     with patch:
@@ -288,7 +288,7 @@ def test_block__commmit_api_error():
 
     # Make the API throw an error when publishing.
     error = google.api_core.exceptions.InternalServerError("uh oh")
-    patch = mock.patch.object(type(batch.client.api), "publish", side_effect=error)
+    patch = mock.patch.object(type(batch.client), "_gapic_publish", side_effect=error)
 
     with patch:
         batch._commit()
@@ -307,7 +307,7 @@ def test_block__commmit_retry_error():
 
     # Make the API throw an error when publishing.
     error = google.api_core.exceptions.RetryError("uh oh", None)
-    patch = mock.patch.object(type(batch.client.api), "publish", side_effect=error)
+    patch = mock.patch.object(type(batch.client), "_gapic_publish", side_effect=error)
 
     with patch:
         batch._commit()
@@ -536,7 +536,7 @@ def test_batch_done_callback_called_on_success():
     publish_response = gapic_types.PublishResponse(message_ids=["a"])
 
     with mock.patch.object(
-        type(batch.client.api), "publish", return_value=publish_response
+        type(batch.client), "_gapic_publish", return_value=publish_response
     ):
         batch._commit()
 
@@ -559,8 +559,8 @@ def test_batch_done_callback_called_on_publish_failure():
     error = google.api_core.exceptions.InternalServerError("uh oh")
 
     with mock.patch.object(
-        type(batch.client.api),
-        "publish",
+        type(batch.client),
+        "_gapic_publish",
         return_value=publish_response,
         side_effect=error,
     ):
@@ -582,7 +582,7 @@ def test_batch_done_callback_called_on_publish_response_invalid():
     publish_response = gapic_types.PublishResponse(message_ids=[])
 
     with mock.patch.object(
-        type(batch.client.api), "publish", return_value=publish_response
+        type(batch.client), "_gapic_publish", return_value=publish_response
     ):
         batch._commit()
 

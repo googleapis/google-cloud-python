@@ -76,7 +76,7 @@ class Leaser(object):
         return len(self._leased_messages)
 
     @property
-    def ack_ids(self) -> KeysView[str]:  # pytype: disable=invalid-annotation
+    def ack_ids(self) -> KeysView[str]:
         """The ack IDs of all leased messages."""
         return self._leased_messages.keys()
 

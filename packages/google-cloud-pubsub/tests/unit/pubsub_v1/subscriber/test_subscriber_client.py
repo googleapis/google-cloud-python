@@ -26,18 +26,13 @@ from google.pubsub_v1.services.subscriber import client as subscriber_client
 from google.pubsub_v1.services.subscriber.transports.grpc import SubscriberGrpcTransport
 
 
-def test_init(creds):
-    client = subscriber.Client(credentials=creds)
-    assert isinstance(client.api, subscriber_client.SubscriberClient)
-
-
 def test_init_default_client_info(creds):
     client = subscriber.Client(credentials=creds)
 
     installed_version = subscriber.client.__version__
     expected_client_info = f"gccl/{installed_version}"
 
-    for wrapped_method in client.api.transport._wrapped_methods.values():
+    for wrapped_method in client.transport._wrapped_methods.values():
         user_agent = next(
             (
                 header_value
@@ -58,16 +53,14 @@ def test_init_default_closed_state(creds):
 def test_init_w_custom_transport(creds):
     transport = SubscriberGrpcTransport(credentials=creds)
     client = subscriber.Client(transport=transport)
-    assert isinstance(client.api, subscriber_client.SubscriberClient)
-    assert client.api._transport is transport
+    assert client._transport is transport
 
 
 def test_init_w_api_endpoint(creds):
     client_options = {"api_endpoint": "testendpoint.google.com"}
     client = subscriber.Client(client_options=client_options, credentials=creds)
 
-    assert isinstance(client.api, subscriber_client.SubscriberClient)
-    assert (client.api._transport.grpc_channel._channel.target()).decode(
+    assert (client._transport.grpc_channel._channel.target()).decode(
         "utf-8"
     ) == "testendpoint.google.com:443"
 
@@ -75,8 +68,7 @@ def test_init_w_api_endpoint(creds):
 def test_init_w_empty_client_options(creds):
     client = subscriber.Client(client_options={}, credentials=creds)
 
-    assert isinstance(client.api, subscriber_client.SubscriberClient)
-    assert (client.api._transport.grpc_channel._channel.target()).decode(
+    assert (client._transport.grpc_channel._channel.target()).decode(
         "utf-8"
     ) == subscriber_client.SubscriberClient.SERVICE_ADDRESS
 
@@ -98,12 +90,12 @@ def test_init_client_options_pass_through():
                 "credentials_file": "file.json",
             }
         )
-        client_options = client._api.kwargs["client_options"]
+        client_options = client.kwargs["client_options"]
         assert client_options.get("quota_project_id") == "42"
         assert client_options.get("scopes") == []
         assert client_options.get("credentials_file") == "file.json"
         assert client.target == "testendpoint.google.com"
-        assert client.api.transport._ssl_channel_credentials == mock_ssl_creds
+        assert client.transport._ssl_channel_credentials == mock_ssl_creds
 
 
 def test_init_emulator(monkeypatch):
@@ -116,7 +108,7 @@ def test_init_emulator(monkeypatch):
     #
     # Sadly, there seems to be no good way to do this without poking at
     # the private API of gRPC.
-    channel = client.api._transport.pull._channel
+    channel = client._transport.pull._channel
     assert channel.target().decode("utf8") == "/baz/bacon:123"
 
 
@@ -184,7 +176,7 @@ def test_subscribe_options(manager_open, creds):
 
 def test_close(creds):
     client = subscriber.Client(credentials=creds)
-    patcher = mock.patch.object(client.api._transport.grpc_channel, "close")
+    patcher = mock.patch.object(client._transport.grpc_channel, "close")
 
     with patcher as patched_close:
         client.close()
@@ -195,7 +187,7 @@ def test_close(creds):
 
 def test_closes_channel_as_context_manager(creds):
     client = subscriber.Client(credentials=creds)
-    patcher = mock.patch.object(client.api._transport.grpc_channel, "close")
+    patcher = mock.patch.object(client._transport.grpc_channel, "close")
 
     with patcher as patched_close:
         with client:
@@ -207,7 +199,7 @@ def test_closes_channel_as_context_manager(creds):
 def test_context_manager_raises_if_closed(creds):
     client = subscriber.Client(credentials=creds)
 
-    with mock.patch.object(client.api._transport.grpc_channel, "close"):
+    with mock.patch.object(client._transport.grpc_channel, "close"):
         client.close()
 
     expetect_msg = r"(?i).*closed.*cannot.*context manager.*"
@@ -216,13 +208,45 @@ def test_context_manager_raises_if_closed(creds):
             pass
 
 
+def test_api_property_deprecated(creds):
+    client = subscriber.Client(credentials=creds)
+
+    with warnings.catch_warnings(record=True) as warned:
+        client.api
+
+    assert len(warned) == 1
+    assert issubclass(warned[0].category, DeprecationWarning)
+    warning_msg = str(warned[0].message)
+    assert "client.api" in warning_msg
+
+
+def test_api_property_proxy_to_generated_client(creds):
+    client = subscriber.Client(credentials=creds)
+
+    with warnings.catch_warnings(record=True):
+        api_object = client.api
+
+    # Not a perfect check, but we are satisficed if the returned API object indeed
+    # contains all methods of the generated class.
+    superclass_attrs = (attr for attr in dir(type(client).__mro__[1]))
+    assert all(
+        hasattr(api_object, attr)
+        for attr in superclass_attrs
+        if callable(getattr(client, attr))
+    )
+
+    # The close() method only exists on the hand-written wrapper class.
+    assert hasattr(client, "close")
+    assert not hasattr(api_object, "close")
+
+
 def test_streaming_pull_gapic_monkeypatch(creds):
     client = subscriber.Client(credentials=creds)
 
     with mock.patch("google.api_core.gapic_v1.method.wrap_method"):
         client.streaming_pull(requests=iter([]))
 
-    transport = client.api._transport
+    transport = client._transport
     assert hasattr(transport.streaming_pull, "_prefetch_first_result_")
     assert not transport.streaming_pull._prefetch_first_result_
 
@@ -232,7 +256,7 @@ def test_sync_pull_warning_if_return_immediately(creds):
     subscription_path = "projects/foo/subscriptions/bar"
 
     with mock.patch.object(
-        client.api._transport, "_wrapped_methods"
+        client._transport, "_wrapped_methods"
     ), warnings.catch_warnings(record=True) as warned:
         client.pull(subscription=subscription_path, return_immediately=True)
 

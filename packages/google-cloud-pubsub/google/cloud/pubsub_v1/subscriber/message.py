@@ -81,7 +81,7 @@ class Message(object):
             The time that this message was originally published.
     """
 
-    def __init__(  # pytype: disable=module-attr
+    def __init__(
         self,
         message: "types.PubsubMessage._meta._pb",  # type: ignore
         ack_id: str,

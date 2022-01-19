@@ -553,7 +553,7 @@ def test_open(heartbeater, dispatcher, leaser, background_consumer, resumable_bi
     assert manager._consumer == background_consumer.return_value
 
     resumable_bidi_rpc.assert_called_once_with(
-        start_rpc=manager._client.api.streaming_pull,
+        start_rpc=manager._client.streaming_pull,
         initial_request=mock.ANY,
         should_recover=manager._should_recover,
         should_terminate=manager._should_terminate,
@@ -562,7 +562,7 @@ def test_open(heartbeater, dispatcher, leaser, background_consumer, resumable_bi
     initial_request_arg = resumable_bidi_rpc.call_args.kwargs["initial_request"]
     assert initial_request_arg.func == manager._get_initial_request
     assert initial_request_arg.args[0] == 18
-    assert not manager._client.api.get_subscription.called
+    assert not manager._client.get_subscription.called
 
     resumable_bidi_rpc.return_value.add_done_callback.assert_called_once_with(
         manager._on_rpc_done

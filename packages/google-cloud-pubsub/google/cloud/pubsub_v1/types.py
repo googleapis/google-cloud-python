@@ -127,13 +127,11 @@ class PublisherOptions(NamedTuple):
         "an instance of :class:`google.api_core.retry.Retry`."
     )
 
-    # pytype: disable=invalid-annotation
     timeout: "OptionalTimeout" = gapic_v1.method.DEFAULT  # use api_core default
     (
         "Timeout settings for message publishing by the client. It should be "
         "compatible with :class:`~.pubsub_v1.types.TimeoutType`."
     )
-    # pytype: enable=invalid-annotation
 
 
 # Define the type class and default values for flow control settings.

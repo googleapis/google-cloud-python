@@ -25,7 +25,7 @@ from google.cloud.pubsub_v1.publisher import exceptions
 _LOGGER = logging.getLogger(__name__)
 
 
-MessageType = Type[types.PubsubMessage]  # type: ignore  # pytype: disable=module-attr
+MessageType = Type[types.PubsubMessage]  # type: ignore
 
 
 class _QuantityReservation:

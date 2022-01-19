@@ -22,6 +22,7 @@ import grpc
 import mock
 import pytest
 import time
+import warnings
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -50,12 +51,42 @@ def _assert_retries_equal(retry, retry2):
     assert inspect.getclosurevars(pred) == inspect.getclosurevars(pred2)
 
 
+def test_api_property_deprecated(creds):
+    client = publisher.Client(credentials=creds)
+
+    with warnings.catch_warnings(record=True) as warned:
+        client.api
+
+    assert len(warned) == 1
+    assert issubclass(warned[0].category, DeprecationWarning)
+    warning_msg = str(warned[0].message)
+    assert "client.api" in warning_msg
+
+
+def test_api_property_proxy_to_generated_client(creds):
+    client = publisher.Client(credentials=creds)
+
+    with warnings.catch_warnings(record=True):
+        api_object = client.api
+
+    # Not a perfect check, but we are satisficed if the returned API object indeed
+    # contains all methods of the generated class.
+    superclass_attrs = (attr for attr in dir(type(client).__mro__[1]))
+    assert all(
+        hasattr(api_object, attr)
+        for attr in superclass_attrs
+        if callable(getattr(client, attr))
+    )
+
+    # The resume_publish() method only exists on the hand-written wrapper class.
+    assert hasattr(client, "resume_publish")
+    assert not hasattr(api_object, "resume_publish")
+
+
 def test_init(creds):
     client = publisher.Client(credentials=creds)
 
-    # A plain client should have an `api` (the underlying GAPIC) and a
-    # batch settings object, which should have the defaults.
-    assert isinstance(client.api, publisher_client.PublisherClient)
+    # A plain client should have a batch settings object containing the defaults.
     assert client.batch_settings.max_bytes == 1 * 1000 * 1000
     assert client.batch_settings.max_latency == 0.01
     assert client.batch_settings.max_messages == 100
@@ -67,7 +98,7 @@ def test_init_default_client_info(creds):
     installed_version = publisher.client.__version__
     expected_client_info = f"gccl/{installed_version}"
 
-    for wrapped_method in client.api.transport._wrapped_methods.values():
+    for wrapped_method in client.transport._wrapped_methods.values():
         user_agent = next(
             (
                 header_value
@@ -84,10 +115,10 @@ def test_init_w_custom_transport(creds):
     transport = PublisherGrpcTransport(credentials=creds)
     client = publisher.Client(transport=transport)
 
-    # A plain client should have an `api` (the underlying GAPIC) and a
-    # batch settings object, which should have the defaults.
-    assert isinstance(client.api, publisher_client.PublisherClient)
-    assert client.api._transport is transport
+    # A plain client should have a transport and a batch settings object, which should
+    # contain the defaults.
+    assert isinstance(client, publisher_client.PublisherClient)
+    assert client._transport is transport
     assert client.batch_settings.max_bytes == 1 * 1000 * 1000
     assert client.batch_settings.max_latency == 0.01
     assert client.batch_settings.max_messages == 100
@@ -97,8 +128,7 @@ def test_init_w_api_endpoint(creds):
     client_options = {"api_endpoint": "testendpoint.google.com"}
     client = publisher.Client(client_options=client_options, credentials=creds)
 
-    assert isinstance(client.api, publisher_client.PublisherClient)
-    assert (client.api._transport.grpc_channel._channel.target()).decode(
+    assert (client._transport.grpc_channel._channel.target()).decode(
         "utf-8"
     ) == "testendpoint.google.com:443"
 
@@ -106,8 +136,7 @@ def test_init_w_api_endpoint(creds):
 def test_init_w_empty_client_options(creds):
     client = publisher.Client(client_options={}, credentials=creds)
 
-    assert isinstance(client.api, publisher_client.PublisherClient)
-    assert (client.api._transport.grpc_channel._channel.target()).decode(
+    assert (client._transport.grpc_channel._channel.target()).decode(
         "utf-8"
     ) == publisher_client.PublisherClient.SERVICE_ADDRESS
 
@@ -129,12 +158,12 @@ def test_init_client_options_pass_through():
                 "credentials_file": "file.json",
             }
         )
-        client_options = client.api.kwargs["client_options"]
+        client_options = client.kwargs["client_options"]
         assert client_options.get("quota_project_id") == "42"
         assert client_options.get("scopes") == []
         assert client_options.get("credentials_file") == "file.json"
         assert client.target == "testendpoint.google.com"
-        assert client.api.transport._ssl_channel_credentials == mock_ssl_creds
+        assert client.transport._ssl_channel_credentials == mock_ssl_creds
 
 
 def test_init_emulator(monkeypatch):
@@ -147,7 +176,7 @@ def test_init_emulator(monkeypatch):
     #
     # Sadly, there seems to be no good way to do this without poking at
     # the private API of gRPC.
-    channel = client.api._transport.publish._channel
+    channel = client._transport.publish._channel
     assert channel.target().decode("utf8") == "/foo/bar:123"
 
 
@@ -418,7 +447,7 @@ def test_gapic_instance_method(creds):
     transport_mock._wrapped_methods = {
         transport_mock.create_topic: fake_create_topic_rpc
     }
-    patcher = mock.patch.object(client.api, "_transport", new=transport_mock)
+    patcher = mock.patch.object(client, "_transport", new=transport_mock)
 
     topic = gapic_types.Topic(name="projects/foo/topics/bar")
 

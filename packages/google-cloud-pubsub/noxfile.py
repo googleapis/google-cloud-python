@@ -28,8 +28,6 @@ BLACK_VERSION = "black==19.10b0"
 BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
 MYPY_VERSION = "mypy==0.910"
-PYTYPE_VERSION = "pytype==2021.4.9"
-
 
 DEFAULT_PYTHON_VERSION = "3.8"
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.10"]
@@ -46,8 +44,8 @@ nox.options.sessions = [
     "lint_setup_py",
     "blacken",
     "mypy",
-    "pytype",
-    # "mypy_samples",  # TODO: uncomment when the checks pass
+    # https://github.com/googleapis/python-pubsub/pull/552#issuecomment-1016256936
+    # "mypy_samples",  # TODO: uncomment when the check passes
     "docs",
 ]
 
@@ -75,14 +73,6 @@ def mypy(session):
     # mypy checks yet.
     # https://github.com/googleapis/gapic-generator-python/issues/1092
     session.run("mypy", "google/cloud")
-
-
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def pytype(session):
-    """Run type checks."""
-    session.install("-e", ".[all]")
-    session.install(PYTYPE_VERSION)
-    session.run("pytype")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)

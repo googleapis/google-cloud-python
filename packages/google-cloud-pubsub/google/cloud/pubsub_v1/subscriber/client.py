@@ -18,11 +18,11 @@ import os
 import pkg_resources
 import typing
 from typing import cast, Any, Callable, Optional, Sequence, Union
+import warnings
 
 from google.auth.credentials import AnonymousCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.cloud.pubsub_v1 import _gapic
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import futures
 from google.cloud.pubsub_v1.subscriber._protocol import streaming_pull_manager
@@ -42,15 +42,8 @@ except pkg_resources.DistributionNotFound:
     # a PIP package.
     __version__ = "0.0"
 
-_DENYLISTED_METHODS = (
-    "publish",
-    "from_service_account_file",
-    "from_service_account_json",
-)
 
-
-@_gapic.add_methods(subscriber_client.SubscriberClient, denylist=_DENYLISTED_METHODS)
-class Client(object):
+class Client(subscriber_client.SubscriberClient):
     """A subscriber client for Google Cloud Pub/Sub.
 
     This creates an object that is capable of subscribing to messages.
@@ -91,12 +84,14 @@ class Client(object):
             kwargs["credentials"] = AnonymousCredentials()
 
         # Instantiate the underlying GAPIC client.
-        self._api = subscriber_client.SubscriberClient(**kwargs)
-        self._target = self._api._transport._host
+        super().__init__(**kwargs)
+        self._target = self._transport._host
         self._closed = False
 
     @classmethod
-    def from_service_account_file(cls, filename: str, **kwargs: Any) -> "Client":
+    def from_service_account_file(  # type: ignore[override]
+        cls, filename: str, **kwargs: Any
+    ) -> "Client":
         """Creates an instance of this client using the provided credentials
         file.
 
@@ -112,7 +107,7 @@ class Client(object):
         kwargs["credentials"] = credentials
         return cls(**kwargs)
 
-    from_service_account_json = from_service_account_file
+    from_service_account_json = from_service_account_file  # type: ignore[assignment]
 
     @property
     def target(self) -> str:
@@ -124,17 +119,32 @@ class Client(object):
         return self._target
 
     @property
-    def api(self) -> subscriber_client.SubscriberClient:
-        """The underlying gapic API client."""
-        return self._api
-
-    @property
     def closed(self) -> bool:
         """Return whether the client has been closed and cannot be used anymore.
 
         .. versionadded:: 2.8.0
         """
         return self._closed
+
+    @property
+    def api(self):
+        """The underlying gapic API client.
+
+        .. versionchanged:: 2.10.0
+            Instead of a GAPIC ``SubscriberClient`` client instance, this property is a
+            proxy object to it with the same interface.
+
+        .. deprecated:: 2.10.0
+            Use the GAPIC methods and properties on the client instance directly
+            instead of through the :attr:`api` attribute.
+        """
+        msg = (
+            'The "api" property only exists for backward compatibility, access its '
+            'attributes directly thorugh the client instance (e.g. "client.foo" '
+            'instead of "client.api.foo").'
+        )
+        warnings.warn(msg, category=DeprecationWarning)
+        return super()
 
     def subscribe(
         self,
@@ -266,7 +276,7 @@ class Client(object):
 
         This method is idempotent.
         """
-        transport = cast("SubscriberGrpcTransport", self.api._transport)
+        transport = cast("SubscriberGrpcTransport", self._transport)
         transport.grpc_channel.close()
         self._closed = True
 
