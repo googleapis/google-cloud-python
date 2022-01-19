@@ -82,10 +82,10 @@ __protobuf__ = proto.module(
 
 
 class ConversationView(proto.Enum):
-    r"""Represents the options for views of a conversation."""
+    r"""Represents the options for viewing a conversation."""
     CONVERSATION_VIEW_UNSPECIFIED = 0
-    BASIC = 1
     FULL = 2
+    BASIC = 1
 
 
 class CalculateStatsRequest(proto.Message):
