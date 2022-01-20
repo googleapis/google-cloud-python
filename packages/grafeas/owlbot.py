@@ -202,11 +202,17 @@ templated_files = common.py_library(
     samples=False, microgenerator=True,  # set to True only if there are samples
     cov_level=90  #  some coverage is missing due to manual alterations
 )
-python.py_samples(skip_readmes=True)
-s.move(
-    templated_files, excludes=[".coveragerc", ".github/snippet-bot.yml"]
-)  # microgenerator has a good .coveragerc file
 
+s.move(
+    templated_files,
+    excludes=[
+        ".coveragerc", # microgenerator has a good .coveragerc file
+        ".github/snippet-bot.yml",
+        ".github/workflows", # exclude templated gh actions as tests require credentials
+    ]
+)
+
+python.py_samples(skip_readmes=True)
 
 # Library code is in "grafeas" instead of "google"
 s.replace("noxfile.py", """['"]google['"]""", '''"grafeas"''')
@@ -214,13 +220,6 @@ s.replace(
     "noxfile.py",
     "--cov=google",
     "--cov=grafeas",
-)
-
-# Block pushing non-cloud libraries to Cloud RAD
-s.replace(
-    ".kokoro/docs/common.cfg",
-    r'value: "docs-staging-v2"',
-    r'value: "docs-staging-v2-staging"'
 )
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
