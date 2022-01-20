@@ -42,11 +42,16 @@ s.remove_staging_dirs()
 # ----------------------------------------------------------------------------
 
 # coverage is 97 to exclude orgpolicy/v1 code
-templated_files = common.py_library(microgenerator=True, cov_level=95)
-python.py_samples(skip_readmes=True)
+templated_files = common.py_library(microgenerator=True, cov_level=97)
+
 s.move(
     templated_files, excludes=[".coveragerc",]
 )
+
+# Work around bug in templates https://github.com/googleapis/synthtool/pull/1335
+s.replace(".github/workflows/unittest.yml", "--fail-under=100", "--fail-under=97")
+
+python.py_samples(skip_readmes=True)
 
 # NOTE: This library also has legacy pb2.py files for "v1"
 # in google/cloud/orgpolicy/v1
@@ -91,4 +96,3 @@ def generate_protos(session):
 \g<1>''',
 )
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
-
