@@ -61,7 +61,12 @@ templated_files = common.py_library(
     unit_test_external_dependencies=["flask", "webob", "django"],
     samples=True,
 )
-s.move(templated_files, excludes=[".coveragerc", "docs/multiprocessing.rst"])
+s.move(templated_files, 
+    excludes=[
+        ".coveragerc", 
+        "docs/multiprocessing.rst",
+        ".github/workflows", # exclude gh actions as credentials are needed for tests
+        ])
 
 # adjust .trampolinerc for environment tests
 s.replace(
