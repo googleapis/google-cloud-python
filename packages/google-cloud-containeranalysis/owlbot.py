@@ -109,7 +109,12 @@ templated_files = common.py_library(
     microgenerator=True,
     cov_level=98,
 )
-s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good coveragerc
+s.move(templated_files,
+    excludes=[
+        ".coveragerc", # microgenerator has a good coveragerc
+        ".github/workflows", # exclude templated gh actions as tests require credentials
+        ]
+    )
 
 python.py_samples(skip_readmes=True)
 
