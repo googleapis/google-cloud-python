@@ -1,11 +1,13 @@
 {
   "name": "gcp-sphinx-docfx-yaml",
   "name_pretty": "Sphinx DocFX YAML Generator",
-  "client_documentation": "",
+  "product_documentation": "https://github.com/googleapis/sphinx-docfx-yaml",
+  "client_documentation": "https://github.com/googleapis/sphinx-docfx-yaml",
   "issue_tracker": "https://github.com/googleapis/sphinx-docfx-yaml/issues",
-  "release_level": "ga",
+  "release_level": "preview",
   "language": "python",
   "repo": "googleapis/sphinx-docfx-yaml",
   "distribution_name": "gcp-sphinx-docfx-yaml",
-  "codeowner_team": "@googleapis/cx-eng"
+  "codeowner_team": "@googleapis/cx-eng",
+  "library_type": "OTHER"
 }
