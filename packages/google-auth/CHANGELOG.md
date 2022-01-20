@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.4.0](https://github.com/googleapis/google-auth-library-python/compare/v2.3.3...v2.4.0) (2022-01-20)
+
+
+### Features
+
+* add 'py.typed' declaration ([#919](https://github.com/googleapis/google-auth-library-python/issues/919)) ([c993504](https://github.com/googleapis/google-auth-library-python/commit/c99350455d0f7fd3aab950ac47b43000c73dd312))
+* add api key support ([#826](https://github.com/googleapis/google-auth-library-python/issues/826)) ([3b15092](https://github.com/googleapis/google-auth-library-python/commit/3b15092b3461278400e4683060f64a96d50587c4))
+
+
+### Bug Fixes
+
+* **deps:** allow cachetools 5.0 for python 3.7+ ([#937](https://github.com/googleapis/google-auth-library-python/issues/937)) ([1eae37d](https://github.com/googleapis/google-auth-library-python/commit/1eae37db7f6fceb32d6ef0041962ce1755d2116c))
+* fix the message format for metadata server exception ([#916](https://github.com/googleapis/google-auth-library-python/issues/916)) ([e756f08](https://github.com/googleapis/google-auth-library-python/commit/e756f08dc78616040ab8fbd7db20903137ccf0c7))
+
+
+### Documentation
+
+* fix intersphinx link for 'requests-oauthlib' ([#921](https://github.com/googleapis/google-auth-library-python/issues/921)) ([967be4f](https://github.com/googleapis/google-auth-library-python/commit/967be4f4e2a43ba7e240d7acb01b6b992d40e6ec))
+* note ValueError in `verify_oauth2_token` ([#928](https://github.com/googleapis/google-auth-library-python/issues/928)) ([82bc5f0](https://github.com/googleapis/google-auth-library-python/commit/82bc5f08111de78a2b475b0310d3f35470680dbe))
+
 ### [2.3.3](https://www.github.com/googleapis/google-auth-library-python/compare/v2.3.2...v2.3.3) (2021-11-01)
 
 
