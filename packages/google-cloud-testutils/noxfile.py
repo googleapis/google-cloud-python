@@ -96,13 +96,20 @@ def unit(session):
     # Install two fake packages for the lower-bound-checker tests
     session.install("-e", "tests/unit/resources/good_package", "tests/unit/resources/bad_package")
 
-    session.install("pytest")
+    session.install("pytest", "pytest-cov")
     session.install("-e", ".", "-c", constraints_path)
 
     # Run py.test against the unit tests.
     session.run(
         "py.test",
         "--quiet",
+        f"--junitxml=unit_{session.python}_sponge_log.xml",
+        "--cov=test_utils",
+        "--cov=tests/unit",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        "--cov-fail-under=0",
         os.path.join("tests", "unit"),
         *session.posargs,
     )

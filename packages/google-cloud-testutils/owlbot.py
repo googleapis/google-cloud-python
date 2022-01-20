@@ -23,7 +23,7 @@ common = gcp.CommonTemplates()
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=100)
+templated_files = common.py_library(cov_level=78)
 s.move(
     templated_files,
     excludes=[
@@ -35,7 +35,11 @@ s.move(
         ".kokoro/publish-docs.sh",
         "CONTRIBUTING.rst",
         "renovate.json", # no bundle, ignore test resources
+        ".github/workflows/docs.yml", # no docs to publish
     ],
 )
+
+# Work around bug in templates https://github.com/googleapis/synthtool/pull/1335
+s.replace(".github/workflows/unittest.yml", "--fail-under=100", "--fail-under=78")
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
