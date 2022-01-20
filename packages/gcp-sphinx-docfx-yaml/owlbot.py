@@ -45,6 +45,7 @@ s.move(
         ".github/CONTRIBUTING.md",
         ".github/PULL_REQUEST_TEMPLATE.md",
         ".gitignore",
-        "renovate.json"
+        "renovate.json",
+        ".github/workflows", # exclude templated gh actions
     ],
 )
