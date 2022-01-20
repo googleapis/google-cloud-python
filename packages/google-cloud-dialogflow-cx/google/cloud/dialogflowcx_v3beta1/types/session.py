@@ -799,9 +799,12 @@ class Match(proto.Message):
             [``INTENT``][google.cloud.dialogflow.cx.v3beta1.Match.MatchType]
             match type.
         event (str):
-            The event that matched the query. Only filled for
-            [``EVENT``][google.cloud.dialogflow.cx.v3beta1.Match.MatchType]
-            match type.
+            The event that matched the query. Filled for
+            [``EVENT``][google.cloud.dialogflow.cx.v3beta1.Match.MatchType],
+            [``NO_MATCH``][google.cloud.dialogflow.cx.v3beta1.Match.MatchType]
+            and
+            [``NO_INPUT``][google.cloud.dialogflow.cx.v3beta1.Match.MatchType]
+            match types.
         parameters (google.protobuf.struct_pb2.Struct):
             The collection of parameters extracted from
             the query.
