@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-language"
 description = "Google Cloud Natural Language API client library"
-version = "2.3.1"
+version = "2.3.2"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'

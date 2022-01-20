@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+### [2.3.2](https://github.com/googleapis/python-language/compare/v2.3.1...v2.3.2) (2022-01-20)
+
+
+### Documentation
+
+* **samples:** Document -> types.Document ([#227](https://github.com/googleapis/python-language/issues/227)) ([01367d7](https://github.com/googleapis/python-language/commit/01367d7b1e0ddba6e6b920f125730aa97d51ada0))
+
 ### [2.3.1](https://www.github.com/googleapis/python-language/compare/v2.3.0...v2.3.1) (2021-11-01)
 
 
