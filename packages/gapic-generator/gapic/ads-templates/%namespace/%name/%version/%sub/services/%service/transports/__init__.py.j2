@@ -11,6 +11,7 @@ from .grpc import {{ service.name }}GrpcTransport
 {% endif %}
 {% if 'rest' in opts.transport %}
 from .rest import {{ service.name }}RestTransport
+from .rest import {{ service.name }}RestInterceptor
 {% endif %}
 
 # Compile a registry of transports.
@@ -29,6 +30,7 @@ __all__ = (
     {% endif %}
     {% if 'rest' in opts.transport %}
     '{{ service.name }}RestTransport',
+    '{{ service.name }}RestInterceptor',
     {% endif %}
 )
 {% endblock %}

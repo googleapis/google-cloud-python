@@ -310,12 +310,17 @@ def run_showcase_unit_tests(session, fail_under=100):
     # Run the tests.
     session.run(
         "py.test",
-        "-n=auto",
-        "--quiet",
-        "--cov=google",
-        "--cov-append",
-        f"--cov-fail-under={str(fail_under)}",
-        *(session.posargs or [path.join("tests", "unit")]),
+        *(
+            session.posargs
+            or [
+                "-n=auto",
+                "--quiet",
+                "--cov=google",
+                "--cov-append",
+                f"--cov-fail-under={str(fail_under)}",
+                path.join("tests", "unit"),
+            ]
+        ),
     )
 
 
