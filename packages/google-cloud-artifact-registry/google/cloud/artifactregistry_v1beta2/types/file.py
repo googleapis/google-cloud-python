@@ -44,6 +44,7 @@ class Hash(proto.Message):
         r"""The algorithm used to compute the hash."""
         HASH_TYPE_UNSPECIFIED = 0
         SHA256 = 1
+        MD5 = 2
 
     type_ = proto.Field(proto.ENUM, number=1, enum=HashType,)
     value = proto.Field(proto.BYTES, number=2,)
@@ -57,7 +58,9 @@ class File(proto.Message):
         name (str):
             The name of the file, for example:
             "projects/p1/locations/us-
-            central1/repositories/repo1/files/a/b/c.txt".
+            central1/repositories/repo1/files/a%2Fb%2Fc.txt".
+            If the file ID part contains slashes, they are
+            escaped.
         size_bytes (int):
             The size of the File in bytes.
         hashes (Sequence[google.cloud.artifactregistry_v1beta2.types.Hash]):

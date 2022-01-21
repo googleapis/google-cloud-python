@@ -34,18 +34,22 @@ except AttributeError:  # pragma: NO COVER
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.artifactregistry_v1beta2.services.artifact_registry import pagers
+from google.cloud.artifactregistry_v1beta2.types import apt_artifact
 from google.cloud.artifactregistry_v1beta2.types import file
 from google.cloud.artifactregistry_v1beta2.types import package
 from google.cloud.artifactregistry_v1beta2.types import repository
 from google.cloud.artifactregistry_v1beta2.types import repository as gda_repository
 from google.cloud.artifactregistry_v1beta2.types import service
+from google.cloud.artifactregistry_v1beta2.types import settings
 from google.cloud.artifactregistry_v1beta2.types import tag
 from google.cloud.artifactregistry_v1beta2.types import tag as gda_tag
 from google.cloud.artifactregistry_v1beta2.types import version
+from google.cloud.artifactregistry_v1beta2.types import yum_artifact
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import ArtifactRegistryTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import ArtifactRegistryGrpcAsyncIOTransport
@@ -73,10 +77,26 @@ class ArtifactRegistryAsyncClient:
     DEFAULT_ENDPOINT = ArtifactRegistryClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = ArtifactRegistryClient.DEFAULT_MTLS_ENDPOINT
 
+    apt_artifact_path = staticmethod(ArtifactRegistryClient.apt_artifact_path)
+    parse_apt_artifact_path = staticmethod(
+        ArtifactRegistryClient.parse_apt_artifact_path
+    )
     file_path = staticmethod(ArtifactRegistryClient.file_path)
     parse_file_path = staticmethod(ArtifactRegistryClient.parse_file_path)
+    project_settings_path = staticmethod(ArtifactRegistryClient.project_settings_path)
+    parse_project_settings_path = staticmethod(
+        ArtifactRegistryClient.parse_project_settings_path
+    )
     repository_path = staticmethod(ArtifactRegistryClient.repository_path)
     parse_repository_path = staticmethod(ArtifactRegistryClient.parse_repository_path)
+    tag_path = staticmethod(ArtifactRegistryClient.tag_path)
+    parse_tag_path = staticmethod(ArtifactRegistryClient.parse_tag_path)
+    version_path = staticmethod(ArtifactRegistryClient.version_path)
+    parse_version_path = staticmethod(ArtifactRegistryClient.parse_version_path)
+    yum_artifact_path = staticmethod(ArtifactRegistryClient.yum_artifact_path)
+    parse_yum_artifact_path = staticmethod(
+        ArtifactRegistryClient.parse_yum_artifact_path
+    )
     common_billing_account_path = staticmethod(
         ArtifactRegistryClient.common_billing_account_path
     )
@@ -195,6 +215,134 @@ class ArtifactRegistryAsyncClient:
             client_info=client_info,
         )
 
+    async def import_apt_artifacts(
+        self,
+        request: Union[apt_artifact.ImportAptArtifactsRequest, dict] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Imports Apt artifacts. The returned Operation will
+        complete once the resources are imported. Package,
+        Version, and File resources are created based on the
+        imported artifacts. Imported artifacts that conflict
+        with existing resources are ignored.
+
+        Args:
+            request (Union[google.cloud.artifactregistry_v1beta2.types.ImportAptArtifactsRequest, dict]):
+                The request object. The request to import new apt
+                artifacts.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.artifactregistry_v1beta2.types.ImportAptArtifactsResponse`
+                The response message from importing APT artifacts.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = apt_artifact.ImportAptArtifactsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.import_apt_artifacts,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            apt_artifact.ImportAptArtifactsResponse,
+            metadata_type=apt_artifact.ImportAptArtifactsMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def import_yum_artifacts(
+        self,
+        request: Union[yum_artifact.ImportYumArtifactsRequest, dict] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Imports Yum (RPM) artifacts. The returned Operation
+        will complete once the resources are imported. Package,
+        Version, and File resources are created based on the
+        imported artifacts. Imported artifacts that conflict
+        with existing resources are ignored.
+
+        Args:
+            request (Union[google.cloud.artifactregistry_v1beta2.types.ImportYumArtifactsRequest, dict]):
+                The request object. The request to import new yum
+                artifacts.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.artifactregistry_v1beta2.types.ImportYumArtifactsResponse`
+                The response message from importing YUM artifacts.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = yum_artifact.ImportYumArtifactsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.import_yum_artifacts,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            yum_artifact.ImportYumArtifactsResponse,
+            metadata_type=yum_artifact.ImportYumArtifactsMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def list_repositories(
         self,
         request: Union[repository.ListRepositoriesRequest, dict] = None,
@@ -210,8 +358,9 @@ class ArtifactRegistryAsyncClient:
             request (Union[google.cloud.artifactregistry_v1beta2.types.ListRepositoriesRequest, dict]):
                 The request object. The request to list repositories.
             parent (:class:`str`):
-                The name of the parent resource whose
-                repositories will be listed.
+                Required. The name of the parent
+                resource whose repositories will be
+                listed.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -299,8 +448,8 @@ class ArtifactRegistryAsyncClient:
                 The request object. The request to retrieve a
                 repository.
             name (:class:`str`):
-                The name of the repository to
-                retrieve.
+                Required. The name of the repository
+                to retrieve.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -383,8 +532,9 @@ class ArtifactRegistryAsyncClient:
                 The request object. The request to create a new
                 repository.
             parent (:class:`str`):
-                The name of the parent resource where
-                the repository will be created.
+                Required. The name of the parent
+                resource where the repository will be
+                created.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -567,7 +717,9 @@ class ArtifactRegistryAsyncClient:
             request (Union[google.cloud.artifactregistry_v1beta2.types.DeleteRepositoryRequest, dict]):
                 The request object. The request to delete a repository.
             name (:class:`str`):
-                The name of the repository to delete.
+                Required. The name of the repository
+                to delete.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2015,6 +2167,157 @@ class ArtifactRegistryAsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def get_project_settings(
+        self,
+        request: Union[settings.GetProjectSettingsRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> settings.ProjectSettings:
+        r"""Retrieves the Settings for the Project.
+
+        Args:
+            request (Union[google.cloud.artifactregistry_v1beta2.types.GetProjectSettingsRequest, dict]):
+                The request object. Gets the redirection status for a
+                project.
+            name (:class:`str`):
+                Required. The name of the
+                projectSettings resource.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.artifactregistry_v1beta2.types.ProjectSettings:
+                The Artifact Registry settings that
+                apply to a Project.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = settings.GetProjectSettingsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_project_settings,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def update_project_settings(
+        self,
+        request: Union[settings.UpdateProjectSettingsRequest, dict] = None,
+        *,
+        project_settings: settings.ProjectSettings = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> settings.ProjectSettings:
+        r"""Updates the Settings for the Project.
+
+        Args:
+            request (Union[google.cloud.artifactregistry_v1beta2.types.UpdateProjectSettingsRequest, dict]):
+                The request object. Sets the settings of the project.
+            project_settings (:class:`google.cloud.artifactregistry_v1beta2.types.ProjectSettings`):
+                The project settings.
+                This corresponds to the ``project_settings`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Field mask to support partial
+                updates.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.artifactregistry_v1beta2.types.ProjectSettings:
+                The Artifact Registry settings that
+                apply to a Project.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([project_settings, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = settings.UpdateProjectSettingsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if project_settings is not None:
+            request.project_settings = project_settings
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_project_settings,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("project_settings.name", request.project_settings.name),)
+            ),
         )
 
         # Send the request.

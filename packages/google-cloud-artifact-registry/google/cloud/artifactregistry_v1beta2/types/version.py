@@ -16,6 +16,7 @@
 import proto  # type: ignore
 
 from google.cloud.artifactregistry_v1beta2.types import tag
+from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 
@@ -51,6 +52,8 @@ class Version(proto.Message):
             The name of the version, for example:
             "projects/p1/locations/us-
             central1/repositories/repo1/packages/pkg1/versions/art1".
+            If the package or version ID parts contain
+            slashes, the slashes are escaped.
         description (str):
             Optional. Description of the version, as
             specified in its metadata.
@@ -62,6 +65,12 @@ class Version(proto.Message):
             Output only. A list of related tags. Will
             contain up to 100 tags that reference this
             version.
+        metadata (google.protobuf.struct_pb2.Struct):
+            Output only. Repository-specific Metadata stored against
+            this version. The fields returned are defined by the
+            underlying repository-specific resource. Currently, the only
+            resource in use is
+            [DockerImage][google.devtools.artifactregistry.v1.DockerImage]
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -69,6 +78,7 @@ class Version(proto.Message):
     create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
     update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
     related_tags = proto.RepeatedField(proto.MESSAGE, number=7, message=tag.Tag,)
+    metadata = proto.Field(proto.MESSAGE, number=8, message=struct_pb2.Struct,)
 
 
 class ListVersionsRequest(proto.Message):
@@ -80,19 +90,22 @@ class ListVersionsRequest(proto.Message):
             versions will be listed.
         page_size (int):
             The maximum number of versions to return.
-            Maximum page size is 10,000.
+            Maximum page size is 1,000.
         page_token (str):
             The next_page_token value returned from a previous list
             request, if any.
         view (google.cloud.artifactregistry_v1beta2.types.VersionView):
             The view that should be returned in the
             response.
+        order_by (str):
+            Optional. The field to order the results by.
     """
 
     parent = proto.Field(proto.STRING, number=1,)
     page_size = proto.Field(proto.INT32, number=2,)
     page_token = proto.Field(proto.STRING, number=3,)
     view = proto.Field(proto.ENUM, number=4, enum="VersionView",)
+    order_by = proto.Field(proto.STRING, number=5,)
 
 
 class ListVersionsResponse(proto.Message):

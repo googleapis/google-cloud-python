@@ -42,20 +42,24 @@ from google.cloud.artifactregistry_v1beta2.services.artifact_registry import (
 )
 from google.cloud.artifactregistry_v1beta2.services.artifact_registry import pagers
 from google.cloud.artifactregistry_v1beta2.services.artifact_registry import transports
+from google.cloud.artifactregistry_v1beta2.types import apt_artifact
 from google.cloud.artifactregistry_v1beta2.types import file
 from google.cloud.artifactregistry_v1beta2.types import package
 from google.cloud.artifactregistry_v1beta2.types import repository
 from google.cloud.artifactregistry_v1beta2.types import repository as gda_repository
 from google.cloud.artifactregistry_v1beta2.types import service
+from google.cloud.artifactregistry_v1beta2.types import settings
 from google.cloud.artifactregistry_v1beta2.types import tag
 from google.cloud.artifactregistry_v1beta2.types import tag as gda_tag
 from google.cloud.artifactregistry_v1beta2.types import version
+from google.cloud.artifactregistry_v1beta2.types import yum_artifact
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
 import google.auth
@@ -509,6 +513,284 @@ def test_artifact_registry_client_client_options_from_dict():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type", [apt_artifact.ImportAptArtifactsRequest, dict,]
+)
+def test_import_apt_artifacts(request_type, transport: str = "grpc"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_apt_artifacts), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.import_apt_artifacts(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apt_artifact.ImportAptArtifactsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_import_apt_artifacts_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_apt_artifacts), "__call__"
+    ) as call:
+        client.import_apt_artifacts()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apt_artifact.ImportAptArtifactsRequest()
+
+
+@pytest.mark.asyncio
+async def test_import_apt_artifacts_async(
+    transport: str = "grpc_asyncio", request_type=apt_artifact.ImportAptArtifactsRequest
+):
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_apt_artifacts), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.import_apt_artifacts(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == apt_artifact.ImportAptArtifactsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_import_apt_artifacts_async_from_dict():
+    await test_import_apt_artifacts_async(request_type=dict)
+
+
+def test_import_apt_artifacts_field_headers():
+    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = apt_artifact.ImportAptArtifactsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_apt_artifacts), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.import_apt_artifacts(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_import_apt_artifacts_field_headers_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = apt_artifact.ImportAptArtifactsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_apt_artifacts), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.import_apt_artifacts(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type", [yum_artifact.ImportYumArtifactsRequest, dict,]
+)
+def test_import_yum_artifacts(request_type, transport: str = "grpc"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_yum_artifacts), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.import_yum_artifacts(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == yum_artifact.ImportYumArtifactsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_import_yum_artifacts_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_yum_artifacts), "__call__"
+    ) as call:
+        client.import_yum_artifacts()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == yum_artifact.ImportYumArtifactsRequest()
+
+
+@pytest.mark.asyncio
+async def test_import_yum_artifacts_async(
+    transport: str = "grpc_asyncio", request_type=yum_artifact.ImportYumArtifactsRequest
+):
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_yum_artifacts), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.import_yum_artifacts(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == yum_artifact.ImportYumArtifactsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_import_yum_artifacts_async_from_dict():
+    await test_import_yum_artifacts_async(request_type=dict)
+
+
+def test_import_yum_artifacts_field_headers():
+    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = yum_artifact.ImportYumArtifactsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_yum_artifacts), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.import_yum_artifacts(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_import_yum_artifacts_field_headers_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = yum_artifact.ImportYumArtifactsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_yum_artifacts), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.import_yum_artifacts(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
 @pytest.mark.parametrize("request_type", [repository.ListRepositoriesRequest, dict,])
 def test_list_repositories(request_type, transport: str = "grpc"):
     client = ArtifactRegistryClient(
@@ -908,6 +1190,9 @@ def test_get_repository(request_type, transport: str = "grpc"):
             format_=repository.Repository.Format.DOCKER,
             description="description_value",
             kms_key_name="kms_key_name_value",
+            maven_config=repository.Repository.MavenRepositoryConfig(
+                allow_snapshot_overwrites=True
+            ),
         )
         response = client.get_repository(request)
 
@@ -1259,7 +1544,11 @@ def test_create_repository_flattened():
         # using the keyword arguments to the method.
         client.create_repository(
             parent="parent_value",
-            repository=gda_repository.Repository(name="name_value"),
+            repository=gda_repository.Repository(
+                maven_config=gda_repository.Repository.MavenRepositoryConfig(
+                    allow_snapshot_overwrites=True
+                )
+            ),
             repository_id="repository_id_value",
         )
 
@@ -1271,7 +1560,11 @@ def test_create_repository_flattened():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].repository
-        mock_val = gda_repository.Repository(name="name_value")
+        mock_val = gda_repository.Repository(
+            maven_config=gda_repository.Repository.MavenRepositoryConfig(
+                allow_snapshot_overwrites=True
+            )
+        )
         assert arg == mock_val
         arg = args[0].repository_id
         mock_val = "repository_id_value"
@@ -1287,7 +1580,11 @@ def test_create_repository_flattened_error():
         client.create_repository(
             gda_repository.CreateRepositoryRequest(),
             parent="parent_value",
-            repository=gda_repository.Repository(name="name_value"),
+            repository=gda_repository.Repository(
+                maven_config=gda_repository.Repository.MavenRepositoryConfig(
+                    allow_snapshot_overwrites=True
+                )
+            ),
             repository_id="repository_id_value",
         )
 
@@ -1312,7 +1609,11 @@ async def test_create_repository_flattened_async():
         # using the keyword arguments to the method.
         response = await client.create_repository(
             parent="parent_value",
-            repository=gda_repository.Repository(name="name_value"),
+            repository=gda_repository.Repository(
+                maven_config=gda_repository.Repository.MavenRepositoryConfig(
+                    allow_snapshot_overwrites=True
+                )
+            ),
             repository_id="repository_id_value",
         )
 
@@ -1324,7 +1625,11 @@ async def test_create_repository_flattened_async():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].repository
-        mock_val = gda_repository.Repository(name="name_value")
+        mock_val = gda_repository.Repository(
+            maven_config=gda_repository.Repository.MavenRepositoryConfig(
+                allow_snapshot_overwrites=True
+            )
+        )
         assert arg == mock_val
         arg = args[0].repository_id
         mock_val = "repository_id_value"
@@ -1343,7 +1648,11 @@ async def test_create_repository_flattened_error_async():
         await client.create_repository(
             gda_repository.CreateRepositoryRequest(),
             parent="parent_value",
-            repository=gda_repository.Repository(name="name_value"),
+            repository=gda_repository.Repository(
+                maven_config=gda_repository.Repository.MavenRepositoryConfig(
+                    allow_snapshot_overwrites=True
+                )
+            ),
             repository_id="repository_id_value",
         )
 
@@ -1370,6 +1679,9 @@ def test_update_repository(request_type, transport: str = "grpc"):
             format_=gda_repository.Repository.Format.DOCKER,
             description="description_value",
             kms_key_name="kms_key_name_value",
+            maven_config=gda_repository.Repository.MavenRepositoryConfig(
+                allow_snapshot_overwrites=True
+            ),
         )
         response = client.update_repository(request)
 
@@ -1521,7 +1833,11 @@ def test_update_repository_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_repository(
-            repository=gda_repository.Repository(name="name_value"),
+            repository=gda_repository.Repository(
+                maven_config=gda_repository.Repository.MavenRepositoryConfig(
+                    allow_snapshot_overwrites=True
+                )
+            ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -1530,7 +1846,11 @@ def test_update_repository_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].repository
-        mock_val = gda_repository.Repository(name="name_value")
+        mock_val = gda_repository.Repository(
+            maven_config=gda_repository.Repository.MavenRepositoryConfig(
+                allow_snapshot_overwrites=True
+            )
+        )
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -1545,7 +1865,11 @@ def test_update_repository_flattened_error():
     with pytest.raises(ValueError):
         client.update_repository(
             gda_repository.UpdateRepositoryRequest(),
-            repository=gda_repository.Repository(name="name_value"),
+            repository=gda_repository.Repository(
+                maven_config=gda_repository.Repository.MavenRepositoryConfig(
+                    allow_snapshot_overwrites=True
+                )
+            ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -1569,7 +1893,11 @@ async def test_update_repository_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_repository(
-            repository=gda_repository.Repository(name="name_value"),
+            repository=gda_repository.Repository(
+                maven_config=gda_repository.Repository.MavenRepositoryConfig(
+                    allow_snapshot_overwrites=True
+                )
+            ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -1578,7 +1906,11 @@ async def test_update_repository_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].repository
-        mock_val = gda_repository.Repository(name="name_value")
+        mock_val = gda_repository.Repository(
+            maven_config=gda_repository.Repository.MavenRepositoryConfig(
+                allow_snapshot_overwrites=True
+            )
+        )
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -1596,7 +1928,11 @@ async def test_update_repository_flattened_error_async():
     with pytest.raises(ValueError):
         await client.update_repository(
             gda_repository.UpdateRepositoryRequest(),
-            repository=gda_repository.Repository(name="name_value"),
+            repository=gda_repository.Repository(
+                maven_config=gda_repository.Repository.MavenRepositoryConfig(
+                    allow_snapshot_overwrites=True
+                )
+            ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -5392,6 +5728,486 @@ def test_test_iam_permissions_from_dict_foreign():
         call.assert_called()
 
 
+@pytest.mark.parametrize("request_type", [settings.GetProjectSettingsRequest, dict,])
+def test_get_project_settings(request_type, transport: str = "grpc"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_project_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = settings.ProjectSettings(
+            name="name_value",
+            legacy_redirection_state=settings.ProjectSettings.RedirectionState.REDIRECTION_FROM_GCR_IO_DISABLED,
+        )
+        response = client.get_project_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == settings.GetProjectSettingsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, settings.ProjectSettings)
+    assert response.name == "name_value"
+    assert (
+        response.legacy_redirection_state
+        == settings.ProjectSettings.RedirectionState.REDIRECTION_FROM_GCR_IO_DISABLED
+    )
+
+
+def test_get_project_settings_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_project_settings), "__call__"
+    ) as call:
+        client.get_project_settings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == settings.GetProjectSettingsRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_project_settings_async(
+    transport: str = "grpc_asyncio", request_type=settings.GetProjectSettingsRequest
+):
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_project_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            settings.ProjectSettings(
+                name="name_value",
+                legacy_redirection_state=settings.ProjectSettings.RedirectionState.REDIRECTION_FROM_GCR_IO_DISABLED,
+            )
+        )
+        response = await client.get_project_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == settings.GetProjectSettingsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, settings.ProjectSettings)
+    assert response.name == "name_value"
+    assert (
+        response.legacy_redirection_state
+        == settings.ProjectSettings.RedirectionState.REDIRECTION_FROM_GCR_IO_DISABLED
+    )
+
+
+@pytest.mark.asyncio
+async def test_get_project_settings_async_from_dict():
+    await test_get_project_settings_async(request_type=dict)
+
+
+def test_get_project_settings_field_headers():
+    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = settings.GetProjectSettingsRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_project_settings), "__call__"
+    ) as call:
+        call.return_value = settings.ProjectSettings()
+        client.get_project_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_project_settings_field_headers_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = settings.GetProjectSettingsRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_project_settings), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            settings.ProjectSettings()
+        )
+        await client.get_project_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_get_project_settings_flattened():
+    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_project_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = settings.ProjectSettings()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_project_settings(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_project_settings_flattened_error():
+    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_project_settings(
+            settings.GetProjectSettingsRequest(), name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_project_settings_flattened_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_project_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = settings.ProjectSettings()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            settings.ProjectSettings()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_project_settings(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_project_settings_flattened_error_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_project_settings(
+            settings.GetProjectSettingsRequest(), name="name_value",
+        )
+
+
+@pytest.mark.parametrize("request_type", [settings.UpdateProjectSettingsRequest, dict,])
+def test_update_project_settings(request_type, transport: str = "grpc"):
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_project_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = settings.ProjectSettings(
+            name="name_value",
+            legacy_redirection_state=settings.ProjectSettings.RedirectionState.REDIRECTION_FROM_GCR_IO_DISABLED,
+        )
+        response = client.update_project_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == settings.UpdateProjectSettingsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, settings.ProjectSettings)
+    assert response.name == "name_value"
+    assert (
+        response.legacy_redirection_state
+        == settings.ProjectSettings.RedirectionState.REDIRECTION_FROM_GCR_IO_DISABLED
+    )
+
+
+def test_update_project_settings_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_project_settings), "__call__"
+    ) as call:
+        client.update_project_settings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == settings.UpdateProjectSettingsRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_project_settings_async(
+    transport: str = "grpc_asyncio", request_type=settings.UpdateProjectSettingsRequest
+):
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_project_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            settings.ProjectSettings(
+                name="name_value",
+                legacy_redirection_state=settings.ProjectSettings.RedirectionState.REDIRECTION_FROM_GCR_IO_DISABLED,
+            )
+        )
+        response = await client.update_project_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == settings.UpdateProjectSettingsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, settings.ProjectSettings)
+    assert response.name == "name_value"
+    assert (
+        response.legacy_redirection_state
+        == settings.ProjectSettings.RedirectionState.REDIRECTION_FROM_GCR_IO_DISABLED
+    )
+
+
+@pytest.mark.asyncio
+async def test_update_project_settings_async_from_dict():
+    await test_update_project_settings_async(request_type=dict)
+
+
+def test_update_project_settings_field_headers():
+    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = settings.UpdateProjectSettingsRequest()
+
+    request.project_settings.name = "project_settings.name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_project_settings), "__call__"
+    ) as call:
+        call.return_value = settings.ProjectSettings()
+        client.update_project_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_settings.name=project_settings.name/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_project_settings_field_headers_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = settings.UpdateProjectSettingsRequest()
+
+    request.project_settings.name = "project_settings.name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_project_settings), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            settings.ProjectSettings()
+        )
+        await client.update_project_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_settings.name=project_settings.name/value",
+    ) in kw["metadata"]
+
+
+def test_update_project_settings_flattened():
+    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_project_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = settings.ProjectSettings()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_project_settings(
+            project_settings=settings.ProjectSettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].project_settings
+        mock_val = settings.ProjectSettings(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_project_settings_flattened_error():
+    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_project_settings(
+            settings.UpdateProjectSettingsRequest(),
+            project_settings=settings.ProjectSettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_project_settings_flattened_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_project_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = settings.ProjectSettings()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            settings.ProjectSettings()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_project_settings(
+            project_settings=settings.ProjectSettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].project_settings
+        mock_val = settings.ProjectSettings(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_project_settings_flattened_error_async():
+    client = ArtifactRegistryAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_project_settings(
+            settings.UpdateProjectSettingsRequest(),
+            project_settings=settings.ProjectSettings(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ArtifactRegistryGrpcTransport(
@@ -5489,6 +6305,8 @@ def test_artifact_registry_base_transport():
     # Every method on the transport should just blindly
     # raise NotImplementedError.
     methods = (
+        "import_apt_artifacts",
+        "import_yum_artifacts",
         "list_repositories",
         "get_repository",
         "create_repository",
@@ -5510,6 +6328,8 @@ def test_artifact_registry_base_transport():
         "set_iam_policy",
         "get_iam_policy",
         "test_iam_permissions",
+        "get_project_settings",
+        "update_project_settings",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -5849,11 +6669,42 @@ def test_artifact_registry_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_file_path():
+def test_apt_artifact_path():
     project = "squid"
     location = "clam"
     repository = "whelk"
-    file = "octopus"
+    apt_artifact = "octopus"
+    expected = "projects/{project}/locations/{location}/repositories/{repository}/aptArtifacts/{apt_artifact}".format(
+        project=project,
+        location=location,
+        repository=repository,
+        apt_artifact=apt_artifact,
+    )
+    actual = ArtifactRegistryClient.apt_artifact_path(
+        project, location, repository, apt_artifact
+    )
+    assert expected == actual
+
+
+def test_parse_apt_artifact_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "repository": "cuttlefish",
+        "apt_artifact": "mussel",
+    }
+    path = ArtifactRegistryClient.apt_artifact_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ArtifactRegistryClient.parse_apt_artifact_path(path)
+    assert expected == actual
+
+
+def test_file_path():
+    project = "winkle"
+    location = "nautilus"
+    repository = "scallop"
+    file = "abalone"
     expected = "projects/{project}/locations/{location}/repositories/{repository}/files/{file}".format(
         project=project, location=location, repository=repository, file=file,
     )
@@ -5863,10 +6714,10 @@ def test_file_path():
 
 def test_parse_file_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "repository": "cuttlefish",
-        "file": "mussel",
+        "project": "squid",
+        "location": "clam",
+        "repository": "whelk",
+        "file": "octopus",
     }
     path = ArtifactRegistryClient.file_path(**expected)
 
@@ -5875,10 +6726,28 @@ def test_parse_file_path():
     assert expected == actual
 
 
+def test_project_settings_path():
+    project = "oyster"
+    expected = "projects/{project}/projectSettings".format(project=project,)
+    actual = ArtifactRegistryClient.project_settings_path(project)
+    assert expected == actual
+
+
+def test_parse_project_settings_path():
+    expected = {
+        "project": "nudibranch",
+    }
+    path = ArtifactRegistryClient.project_settings_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ArtifactRegistryClient.parse_project_settings_path(path)
+    assert expected == actual
+
+
 def test_repository_path():
-    project = "winkle"
-    location = "nautilus"
-    repository = "scallop"
+    project = "cuttlefish"
+    location = "mussel"
+    repository = "winkle"
     expected = "projects/{project}/locations/{location}/repositories/{repository}".format(
         project=project, location=location, repository=repository,
     )
@@ -5888,9 +6757,9 @@ def test_repository_path():
 
 def test_parse_repository_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "repository": "clam",
+        "project": "nautilus",
+        "location": "scallop",
+        "repository": "abalone",
     }
     path = ArtifactRegistryClient.repository_path(**expected)
 
@@ -5899,8 +6768,107 @@ def test_parse_repository_path():
     assert expected == actual
 
 
+def test_tag_path():
+    project = "squid"
+    location = "clam"
+    repository = "whelk"
+    package = "octopus"
+    tag = "oyster"
+    expected = "projects/{project}/locations/{location}/repositories/{repository}/packages/{package}/tags/{tag}".format(
+        project=project,
+        location=location,
+        repository=repository,
+        package=package,
+        tag=tag,
+    )
+    actual = ArtifactRegistryClient.tag_path(
+        project, location, repository, package, tag
+    )
+    assert expected == actual
+
+
+def test_parse_tag_path():
+    expected = {
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "repository": "mussel",
+        "package": "winkle",
+        "tag": "nautilus",
+    }
+    path = ArtifactRegistryClient.tag_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ArtifactRegistryClient.parse_tag_path(path)
+    assert expected == actual
+
+
+def test_version_path():
+    project = "scallop"
+    location = "abalone"
+    repository = "squid"
+    package = "clam"
+    version = "whelk"
+    expected = "projects/{project}/locations/{location}/repositories/{repository}/packages/{package}/versions/{version}".format(
+        project=project,
+        location=location,
+        repository=repository,
+        package=package,
+        version=version,
+    )
+    actual = ArtifactRegistryClient.version_path(
+        project, location, repository, package, version
+    )
+    assert expected == actual
+
+
+def test_parse_version_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "repository": "nudibranch",
+        "package": "cuttlefish",
+        "version": "mussel",
+    }
+    path = ArtifactRegistryClient.version_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ArtifactRegistryClient.parse_version_path(path)
+    assert expected == actual
+
+
+def test_yum_artifact_path():
+    project = "winkle"
+    location = "nautilus"
+    repository = "scallop"
+    yum_artifact = "abalone"
+    expected = "projects/{project}/locations/{location}/repositories/{repository}/yumArtifacts/{yum_artifact}".format(
+        project=project,
+        location=location,
+        repository=repository,
+        yum_artifact=yum_artifact,
+    )
+    actual = ArtifactRegistryClient.yum_artifact_path(
+        project, location, repository, yum_artifact
+    )
+    assert expected == actual
+
+
+def test_parse_yum_artifact_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+        "repository": "whelk",
+        "yum_artifact": "octopus",
+    }
+    path = ArtifactRegistryClient.yum_artifact_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ArtifactRegistryClient.parse_yum_artifact_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -5910,7 +6878,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "nudibranch",
     }
     path = ArtifactRegistryClient.common_billing_account_path(**expected)
 
@@ -5920,7 +6888,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(folder=folder,)
     actual = ArtifactRegistryClient.common_folder_path(folder)
     assert expected == actual
@@ -5928,7 +6896,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "mussel",
     }
     path = ArtifactRegistryClient.common_folder_path(**expected)
 
@@ -5938,7 +6906,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "winkle"
     expected = "organizations/{organization}".format(organization=organization,)
     actual = ArtifactRegistryClient.common_organization_path(organization)
     assert expected == actual
@@ -5946,7 +6914,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "nautilus",
     }
     path = ArtifactRegistryClient.common_organization_path(**expected)
 
@@ -5956,7 +6924,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "scallop"
     expected = "projects/{project}".format(project=project,)
     actual = ArtifactRegistryClient.common_project_path(project)
     assert expected == actual
@@ -5964,7 +6932,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "abalone",
     }
     path = ArtifactRegistryClient.common_project_path(**expected)
 
@@ -5974,8 +6942,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -5985,8 +6953,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = ArtifactRegistryClient.common_location_path(**expected)
 

@@ -26,13 +26,16 @@ from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.artifactregistry_v1beta2.types import apt_artifact
 from google.cloud.artifactregistry_v1beta2.types import file
 from google.cloud.artifactregistry_v1beta2.types import package
 from google.cloud.artifactregistry_v1beta2.types import repository
 from google.cloud.artifactregistry_v1beta2.types import repository as gda_repository
+from google.cloud.artifactregistry_v1beta2.types import settings
 from google.cloud.artifactregistry_v1beta2.types import tag
 from google.cloud.artifactregistry_v1beta2.types import tag as gda_tag
 from google.cloud.artifactregistry_v1beta2.types import version
+from google.cloud.artifactregistry_v1beta2.types import yum_artifact
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
@@ -134,6 +137,16 @@ class ArtifactRegistryTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
+            self.import_apt_artifacts: gapic_v1.method.wrap_method(
+                self.import_apt_artifacts,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.import_yum_artifacts: gapic_v1.method.wrap_method(
+                self.import_yum_artifacts,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_repositories: gapic_v1.method.wrap_method(
                 self.list_repositories,
                 default_retry=retries.Retry(
@@ -364,6 +377,16 @@ class ArtifactRegistryTransport(abc.ABC):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
+            self.get_project_settings: gapic_v1.method.wrap_method(
+                self.get_project_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_project_settings: gapic_v1.method.wrap_method(
+                self.update_project_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -378,6 +401,24 @@ class ArtifactRegistryTransport(abc.ABC):
     @property
     def operations_client(self):
         """Return the client designed to process long-running operations."""
+        raise NotImplementedError()
+
+    @property
+    def import_apt_artifacts(
+        self,
+    ) -> Callable[
+        [apt_artifact.ImportAptArtifactsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def import_yum_artifacts(
+        self,
+    ) -> Callable[
+        [yum_artifact.ImportYumArtifactsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
@@ -561,6 +602,24 @@ class ArtifactRegistryTransport(abc.ABC):
             iam_policy_pb2.TestIamPermissionsResponse,
             Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_project_settings(
+        self,
+    ) -> Callable[
+        [settings.GetProjectSettingsRequest],
+        Union[settings.ProjectSettings, Awaitable[settings.ProjectSettings]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_project_settings(
+        self,
+    ) -> Callable[
+        [settings.UpdateProjectSettingsRequest],
+        Union[settings.ProjectSettings, Awaitable[settings.ProjectSettings]],
     ]:
         raise NotImplementedError()
 

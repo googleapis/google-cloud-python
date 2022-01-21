@@ -36,7 +36,15 @@ __protobuf__ = proto.module(
 class Repository(proto.Message):
     r"""A Repository for storing artifacts with a specific format.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
+        maven_config (google.cloud.artifactregistry_v1beta2.types.Repository.MavenRepositoryConfig):
+            Maven repository config contains repository
+            level configuration for the repositories of
+            maven type.
+
+            This field is a member of `oneof`_ ``format_config``.
         name (str):
             The name of the repository, for example:
             "projects/p1/locations/us-
@@ -73,7 +81,40 @@ class Repository(proto.Message):
         r"""A package format."""
         FORMAT_UNSPECIFIED = 0
         DOCKER = 1
+        MAVEN = 2
+        NPM = 3
+        APT = 5
+        YUM = 6
+        PYTHON = 8
 
+    class MavenRepositoryConfig(proto.Message):
+        r"""MavenRepositoryConfig is maven related repository details.
+        Provides additional configuration details for repositories of
+        the maven format type.
+
+        Attributes:
+            allow_snapshot_overwrites (bool):
+                The repository with this flag will allow
+                publishing the same snapshot versions.
+            version_policy (google.cloud.artifactregistry_v1beta2.types.Repository.MavenRepositoryConfig.VersionPolicy):
+                Version policy defines the versions that the
+                registry will accept.
+        """
+
+        class VersionPolicy(proto.Enum):
+            r"""VersionPolicy is the version policy for the repository."""
+            VERSION_POLICY_UNSPECIFIED = 0
+            RELEASE = 1
+            SNAPSHOT = 2
+
+        allow_snapshot_overwrites = proto.Field(proto.BOOL, number=1,)
+        version_policy = proto.Field(
+            proto.ENUM, number=2, enum="Repository.MavenRepositoryConfig.VersionPolicy",
+        )
+
+    maven_config = proto.Field(
+        proto.MESSAGE, number=9, oneof="format_config", message=MavenRepositoryConfig,
+    )
     name = proto.Field(proto.STRING, number=1,)
     format_ = proto.Field(proto.ENUM, number=2, enum=Format,)
     description = proto.Field(proto.STRING, number=3,)
@@ -88,11 +129,11 @@ class ListRepositoriesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            The name of the parent resource whose
-            repositories will be listed.
+            Required. The name of the parent resource
+            whose repositories will be listed.
         page_size (int):
             The maximum number of repositories to return.
-            Maximum page size is 10,000.
+            Maximum page size is 1,000.
         page_token (str):
             The next_page_token value returned from a previous list
             request, if any.
@@ -128,7 +169,8 @@ class GetRepositoryRequest(proto.Message):
 
     Attributes:
         name (str):
-            The name of the repository to retrieve.
+            Required. The name of the repository to
+            retrieve.
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -139,8 +181,8 @@ class CreateRepositoryRequest(proto.Message):
 
     Attributes:
         parent (str):
-            The name of the parent resource where the
-            repository will be created.
+            Required. The name of the parent resource
+            where the repository will be created.
         repository_id (str):
             The repository id to use for this repository.
         repository (google.cloud.artifactregistry_v1beta2.types.Repository):
@@ -176,7 +218,8 @@ class DeleteRepositoryRequest(proto.Message):
 
     Attributes:
         name (str):
-            The name of the repository to delete.
+            Required. The name of the repository to
+            delete.
     """
 
     name = proto.Field(proto.STRING, number=1,)

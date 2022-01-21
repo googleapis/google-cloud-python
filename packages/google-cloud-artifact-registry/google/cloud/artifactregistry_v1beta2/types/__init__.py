@@ -13,6 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .apt_artifact import (
+    AptArtifact,
+    ImportAptArtifactsErrorInfo,
+    ImportAptArtifactsGcsSource,
+    ImportAptArtifactsMetadata,
+    ImportAptArtifactsRequest,
+    ImportAptArtifactsResponse,
+)
 from .file import (
     File,
     GetFileRequest,
@@ -37,6 +45,11 @@ from .repository import (
     UpdateRepositoryRequest,
 )
 from .service import OperationMetadata
+from .settings import (
+    GetProjectSettingsRequest,
+    ProjectSettings,
+    UpdateProjectSettingsRequest,
+)
 from .tag import (
     CreateTagRequest,
     DeleteTagRequest,
@@ -54,8 +67,22 @@ from .version import (
     Version,
     VersionView,
 )
+from .yum_artifact import (
+    ImportYumArtifactsErrorInfo,
+    ImportYumArtifactsGcsSource,
+    ImportYumArtifactsMetadata,
+    ImportYumArtifactsRequest,
+    ImportYumArtifactsResponse,
+    YumArtifact,
+)
 
 __all__ = (
+    "AptArtifact",
+    "ImportAptArtifactsErrorInfo",
+    "ImportAptArtifactsGcsSource",
+    "ImportAptArtifactsMetadata",
+    "ImportAptArtifactsRequest",
+    "ImportAptArtifactsResponse",
     "File",
     "GetFileRequest",
     "Hash",
@@ -74,6 +101,9 @@ __all__ = (
     "Repository",
     "UpdateRepositoryRequest",
     "OperationMetadata",
+    "GetProjectSettingsRequest",
+    "ProjectSettings",
+    "UpdateProjectSettingsRequest",
     "CreateTagRequest",
     "DeleteTagRequest",
     "GetTagRequest",
@@ -87,4 +117,10 @@ __all__ = (
     "ListVersionsResponse",
     "Version",
     "VersionView",
+    "ImportYumArtifactsErrorInfo",
+    "ImportYumArtifactsGcsSource",
+    "ImportYumArtifactsMetadata",
+    "ImportYumArtifactsRequest",
+    "ImportYumArtifactsResponse",
+    "YumArtifact",
 )

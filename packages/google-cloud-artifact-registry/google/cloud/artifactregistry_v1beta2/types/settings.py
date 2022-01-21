@@ -13,11 +13,74 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import proto  # type: ignore
+
+from google.protobuf import field_mask_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.devtools.artifactregistry.v1beta2", manifest={},
+    package="google.devtools.artifactregistry.v1beta2",
+    manifest={
+        "ProjectSettings",
+        "GetProjectSettingsRequest",
+        "UpdateProjectSettingsRequest",
+    },
 )
+
+
+class ProjectSettings(proto.Message):
+    r"""The Artifact Registry settings that apply to a Project.
+
+    Attributes:
+        name (str):
+            The name of the project's settings.
+            Always of the form:
+            projects/{project-id}/projectSettings
+
+            In update request: never set
+            In response: always set
+        legacy_redirection_state (google.cloud.artifactregistry_v1beta2.types.ProjectSettings.RedirectionState):
+            The redirection state of the legacy
+            repositories in this project.
+    """
+
+    class RedirectionState(proto.Enum):
+        r"""The possible redirection states for legacy repositories."""
+        REDIRECTION_STATE_UNSPECIFIED = 0
+        REDIRECTION_FROM_GCR_IO_DISABLED = 1
+        REDIRECTION_FROM_GCR_IO_ENABLED = 2
+        REDIRECTION_FROM_GCR_IO_FINALIZED = 3
+
+    name = proto.Field(proto.STRING, number=1,)
+    legacy_redirection_state = proto.Field(proto.ENUM, number=2, enum=RedirectionState,)
+
+
+class GetProjectSettingsRequest(proto.Message):
+    r"""Gets the redirection status for a project.
+
+    Attributes:
+        name (str):
+            Required. The name of the projectSettings
+            resource.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class UpdateProjectSettingsRequest(proto.Message):
+    r"""Sets the settings of the project.
+
+    Attributes:
+        project_settings (google.cloud.artifactregistry_v1beta2.types.ProjectSettings):
+            The project settings.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Field mask to support partial updates.
+    """
+
+    project_settings = proto.Field(proto.MESSAGE, number=2, message="ProjectSettings",)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=3, message=field_mask_pb2.FieldMask,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

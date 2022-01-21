@@ -17,6 +17,12 @@
 from .services.artifact_registry import ArtifactRegistryClient
 from .services.artifact_registry import ArtifactRegistryAsyncClient
 
+from .types.apt_artifact import AptArtifact
+from .types.apt_artifact import ImportAptArtifactsErrorInfo
+from .types.apt_artifact import ImportAptArtifactsGcsSource
+from .types.apt_artifact import ImportAptArtifactsMetadata
+from .types.apt_artifact import ImportAptArtifactsRequest
+from .types.apt_artifact import ImportAptArtifactsResponse
 from .types.file import File
 from .types.file import GetFileRequest
 from .types.file import Hash
@@ -35,6 +41,9 @@ from .types.repository import ListRepositoriesResponse
 from .types.repository import Repository
 from .types.repository import UpdateRepositoryRequest
 from .types.service import OperationMetadata
+from .types.settings import GetProjectSettingsRequest
+from .types.settings import ProjectSettings
+from .types.settings import UpdateProjectSettingsRequest
 from .types.tag import CreateTagRequest
 from .types.tag import DeleteTagRequest
 from .types.tag import GetTagRequest
@@ -48,9 +57,16 @@ from .types.version import ListVersionsRequest
 from .types.version import ListVersionsResponse
 from .types.version import Version
 from .types.version import VersionView
+from .types.yum_artifact import ImportYumArtifactsErrorInfo
+from .types.yum_artifact import ImportYumArtifactsGcsSource
+from .types.yum_artifact import ImportYumArtifactsMetadata
+from .types.yum_artifact import ImportYumArtifactsRequest
+from .types.yum_artifact import ImportYumArtifactsResponse
+from .types.yum_artifact import YumArtifact
 
 __all__ = (
     "ArtifactRegistryAsyncClient",
+    "AptArtifact",
     "ArtifactRegistryClient",
     "CreateRepositoryRequest",
     "CreateTagRequest",
@@ -61,10 +77,21 @@ __all__ = (
     "File",
     "GetFileRequest",
     "GetPackageRequest",
+    "GetProjectSettingsRequest",
     "GetRepositoryRequest",
     "GetTagRequest",
     "GetVersionRequest",
     "Hash",
+    "ImportAptArtifactsErrorInfo",
+    "ImportAptArtifactsGcsSource",
+    "ImportAptArtifactsMetadata",
+    "ImportAptArtifactsRequest",
+    "ImportAptArtifactsResponse",
+    "ImportYumArtifactsErrorInfo",
+    "ImportYumArtifactsGcsSource",
+    "ImportYumArtifactsMetadata",
+    "ImportYumArtifactsRequest",
+    "ImportYumArtifactsResponse",
     "ListFilesRequest",
     "ListFilesResponse",
     "ListPackagesRequest",
@@ -77,10 +104,13 @@ __all__ = (
     "ListVersionsResponse",
     "OperationMetadata",
     "Package",
+    "ProjectSettings",
     "Repository",
     "Tag",
+    "UpdateProjectSettingsRequest",
     "UpdateRepositoryRequest",
     "UpdateTagRequest",
     "Version",
     "VersionView",
+    "YumArtifact",
 )

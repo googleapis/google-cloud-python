@@ -55,6 +55,11 @@
                 "get_package"
               ]
             },
+            "GetProjectSettings": {
+              "methods": [
+                "get_project_settings"
+              ]
+            },
             "GetRepository": {
               "methods": [
                 "get_repository"
@@ -68,6 +73,16 @@
             "GetVersion": {
               "methods": [
                 "get_version"
+              ]
+            },
+            "ImportAptArtifacts": {
+              "methods": [
+                "import_apt_artifacts"
+              ]
+            },
+            "ImportYumArtifacts": {
+              "methods": [
+                "import_yum_artifacts"
               ]
             },
             "ListFiles": {
@@ -103,6 +118,11 @@
             "TestIamPermissions": {
               "methods": [
                 "test_iam_permissions"
+              ]
+            },
+            "UpdateProjectSettings": {
+              "methods": [
+                "update_project_settings"
               ]
             },
             "UpdateRepository": {
@@ -165,6 +185,11 @@
                 "get_package"
               ]
             },
+            "GetProjectSettings": {
+              "methods": [
+                "get_project_settings"
+              ]
+            },
             "GetRepository": {
               "methods": [
                 "get_repository"
@@ -178,6 +203,16 @@
             "GetVersion": {
               "methods": [
                 "get_version"
+              ]
+            },
+            "ImportAptArtifacts": {
+              "methods": [
+                "import_apt_artifacts"
+              ]
+            },
+            "ImportYumArtifacts": {
+              "methods": [
+                "import_yum_artifacts"
               ]
             },
             "ListFiles": {
@@ -213,6 +248,11 @@
             "TestIamPermissions": {
               "methods": [
                 "test_iam_permissions"
+              ]
+            },
+            "UpdateProjectSettings": {
+              "methods": [
+                "update_project_settings"
               ]
             },
             "UpdateRepository": {

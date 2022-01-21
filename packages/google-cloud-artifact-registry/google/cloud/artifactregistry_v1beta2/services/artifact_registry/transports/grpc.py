@@ -25,13 +25,16 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
+from google.cloud.artifactregistry_v1beta2.types import apt_artifact
 from google.cloud.artifactregistry_v1beta2.types import file
 from google.cloud.artifactregistry_v1beta2.types import package
 from google.cloud.artifactregistry_v1beta2.types import repository
 from google.cloud.artifactregistry_v1beta2.types import repository as gda_repository
+from google.cloud.artifactregistry_v1beta2.types import settings
 from google.cloud.artifactregistry_v1beta2.types import tag
 from google.cloud.artifactregistry_v1beta2.types import tag as gda_tag
 from google.cloud.artifactregistry_v1beta2.types import version
+from google.cloud.artifactregistry_v1beta2.types import yum_artifact
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
@@ -262,6 +265,66 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
 
         # Return the client from cache.
         return self._operations_client
+
+    @property
+    def import_apt_artifacts(
+        self,
+    ) -> Callable[[apt_artifact.ImportAptArtifactsRequest], operations_pb2.Operation]:
+        r"""Return a callable for the import apt artifacts method over gRPC.
+
+        Imports Apt artifacts. The returned Operation will
+        complete once the resources are imported. Package,
+        Version, and File resources are created based on the
+        imported artifacts. Imported artifacts that conflict
+        with existing resources are ignored.
+
+        Returns:
+            Callable[[~.ImportAptArtifactsRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "import_apt_artifacts" not in self._stubs:
+            self._stubs["import_apt_artifacts"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/ImportAptArtifacts",
+                request_serializer=apt_artifact.ImportAptArtifactsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["import_apt_artifacts"]
+
+    @property
+    def import_yum_artifacts(
+        self,
+    ) -> Callable[[yum_artifact.ImportYumArtifactsRequest], operations_pb2.Operation]:
+        r"""Return a callable for the import yum artifacts method over gRPC.
+
+        Imports Yum (RPM) artifacts. The returned Operation
+        will complete once the resources are imported. Package,
+        Version, and File resources are created based on the
+        imported artifacts. Imported artifacts that conflict
+        with existing resources are ignored.
+
+        Returns:
+            Callable[[~.ImportYumArtifactsRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "import_yum_artifacts" not in self._stubs:
+            self._stubs["import_yum_artifacts"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/ImportYumArtifacts",
+                request_serializer=yum_artifact.ImportYumArtifactsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["import_yum_artifacts"]
 
     @property
     def list_repositories(
@@ -805,6 +868,58 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
                 response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
             )
         return self._stubs["test_iam_permissions"]
+
+    @property
+    def get_project_settings(
+        self,
+    ) -> Callable[[settings.GetProjectSettingsRequest], settings.ProjectSettings]:
+        r"""Return a callable for the get project settings method over gRPC.
+
+        Retrieves the Settings for the Project.
+
+        Returns:
+            Callable[[~.GetProjectSettingsRequest],
+                    ~.ProjectSettings]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_project_settings" not in self._stubs:
+            self._stubs["get_project_settings"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/GetProjectSettings",
+                request_serializer=settings.GetProjectSettingsRequest.serialize,
+                response_deserializer=settings.ProjectSettings.deserialize,
+            )
+        return self._stubs["get_project_settings"]
+
+    @property
+    def update_project_settings(
+        self,
+    ) -> Callable[[settings.UpdateProjectSettingsRequest], settings.ProjectSettings]:
+        r"""Return a callable for the update project settings method over gRPC.
+
+        Updates the Settings for the Project.
+
+        Returns:
+            Callable[[~.UpdateProjectSettingsRequest],
+                    ~.ProjectSettings]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_project_settings" not in self._stubs:
+            self._stubs["update_project_settings"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/UpdateProjectSettings",
+                request_serializer=settings.UpdateProjectSettingsRequest.serialize,
+                response_deserializer=settings.ProjectSettings.deserialize,
+            )
+        return self._stubs["update_project_settings"]
 
     def close(self):
         self.grpc_channel.close()
