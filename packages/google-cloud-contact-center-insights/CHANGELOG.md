@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.2.1](https://github.com/googleapis/python-contact-center-insights/compare/v1.2.0...v1.2.1) (2022-01-20)
+
+
+### Documentation
+
+* Clarify comments of ConversationView enum ([#123](https://github.com/googleapis/python-contact-center-insights/issues/123)) ([96196d9](https://github.com/googleapis/python-contact-center-insights/commit/96196d9ad14bddbb4ddb70e19ae5add9a20d9cbd))
+
 ## [1.2.0](https://github.com/googleapis/python-contact-center-insights/compare/v1.1.0...v1.2.0) (2022-01-14)
 
 
