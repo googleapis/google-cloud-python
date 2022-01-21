@@ -319,7 +319,7 @@ class RowFilter(proto.Message):
        RowFilter.Chain and RowFilter.Interleave documentation.
 
     The total serialized size of a RowFilter message must not exceed
-    4096 bytes, and RowFilters may not be nested within each other (in
+    20480 bytes, and RowFilters may not be nested within each other (in
     Chains or Interleaves) to a depth of more than 20.
 
     This message has `oneof`_ fields (mutually exclusive fields).

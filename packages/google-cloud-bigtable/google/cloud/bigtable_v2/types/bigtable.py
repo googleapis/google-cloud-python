@@ -52,14 +52,15 @@ class ReadRowsRequest(proto.Message):
             If not specified, the "default" application
             profile will be used.
         rows (google.cloud.bigtable_v2.types.RowSet):
-            The row keys and/or ranges to read. If not
-            specified, reads from all rows.
+            The row keys and/or ranges to read
+            sequentially. If not specified, reads from all
+            rows.
         filter (google.cloud.bigtable_v2.types.RowFilter):
             The filter to apply to the contents of the
             specified row(s). If unset, reads the entirety
             of each row.
         rows_limit (int):
-            The read will terminate after committing to N
+            The read will stop after committing to N
             rows' worth of results. The default (zero) is to
             return all results.
     """
