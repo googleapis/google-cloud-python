@@ -255,7 +255,7 @@ class SecuritySettings(proto.Message):
 
     class InsightsExportSettings(proto.Message):
         r"""Settings for exporting conversations to
-        `Insights <https://cloud.google.com/dialogflow/priv/docs/insights>`__.
+        `Insights <https://cloud.google.com/contact-center/insights/docs>`__.
 
         Attributes:
             enable_insights_export (bool):

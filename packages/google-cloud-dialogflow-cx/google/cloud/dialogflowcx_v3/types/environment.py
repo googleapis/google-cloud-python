@@ -104,7 +104,7 @@ class Environment(proto.Message):
             enable_continuous_run (bool):
                 Whether to run test cases in
                 [TestCasesConfig.test_cases][google.cloud.dialogflow.cx.v3.Environment.TestCasesConfig.test_cases]
-                periodically. Default false. If set to ture, run once a day.
+                periodically. Default false. If set to true, run once a day.
             enable_predeployment_run (bool):
                 Whether to run test cases in
                 [TestCasesConfig.test_cases][google.cloud.dialogflow.cx.v3.Environment.TestCasesConfig.test_cases]
