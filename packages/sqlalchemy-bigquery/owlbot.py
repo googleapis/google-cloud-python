@@ -43,7 +43,10 @@ templated_files = common.py_library(
 )
 s.move(templated_files, excludes=[
     # sqlalchemy-bigquery was originally licensed MIT
-    "LICENSE", "docs/multiprocessing.rst"
+    "LICENSE", 
+    "docs/multiprocessing.rst",
+    # exclude gh actions as credentials are needed for tests
+    ".github/workflows",
 ])
 
 # ----------------------------------------------------------------------------
