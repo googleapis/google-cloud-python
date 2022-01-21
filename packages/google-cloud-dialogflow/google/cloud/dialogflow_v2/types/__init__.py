@@ -92,6 +92,9 @@ from .document import (
     Document,
     ExportDocumentRequest,
     GetDocumentRequest,
+    ImportDocumentsRequest,
+    ImportDocumentsResponse,
+    ImportDocumentTemplate,
     KnowledgeOperationMetadata,
     ListDocumentsRequest,
     ListDocumentsResponse,
@@ -131,7 +134,10 @@ from .fulfillment import (
     GetFulfillmentRequest,
     UpdateFulfillmentRequest,
 )
-from .gcs import GcsDestination
+from .gcs import (
+    GcsDestination,
+    GcsSources,
+)
 from .human_agent_assistant_event import HumanAgentAssistantEvent
 from .intent import (
     BatchDeleteIntentsRequest,
@@ -173,11 +179,14 @@ from .participant import (
     MessageAnnotation,
     OutputAudio,
     Participant,
+    SmartReplyAnswer,
     SuggestArticlesRequest,
     SuggestArticlesResponse,
     SuggestFaqAnswersRequest,
     SuggestFaqAnswersResponse,
     SuggestionResult,
+    SuggestSmartRepliesRequest,
+    SuggestSmartRepliesResponse,
     UpdateParticipantRequest,
 )
 from .session import (
@@ -290,6 +299,9 @@ __all__ = (
     "Document",
     "ExportDocumentRequest",
     "GetDocumentRequest",
+    "ImportDocumentsRequest",
+    "ImportDocumentsResponse",
+    "ImportDocumentTemplate",
     "KnowledgeOperationMetadata",
     "ListDocumentsRequest",
     "ListDocumentsResponse",
@@ -323,6 +335,7 @@ __all__ = (
     "GetFulfillmentRequest",
     "UpdateFulfillmentRequest",
     "GcsDestination",
+    "GcsSources",
     "HumanAgentAssistantEvent",
     "BatchDeleteIntentsRequest",
     "BatchUpdateIntentsRequest",
@@ -359,11 +372,14 @@ __all__ = (
     "MessageAnnotation",
     "OutputAudio",
     "Participant",
+    "SmartReplyAnswer",
     "SuggestArticlesRequest",
     "SuggestArticlesResponse",
     "SuggestFaqAnswersRequest",
     "SuggestFaqAnswersResponse",
     "SuggestionResult",
+    "SuggestSmartRepliesRequest",
+    "SuggestSmartRepliesResponse",
     "UpdateParticipantRequest",
     "DetectIntentRequest",
     "DetectIntentResponse",

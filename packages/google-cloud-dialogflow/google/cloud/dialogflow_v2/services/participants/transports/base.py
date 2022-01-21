@@ -156,6 +156,11 @@ class ParticipantsTransport(abc.ABC):
             self.suggest_faq_answers: gapic_v1.method.wrap_method(
                 self.suggest_faq_answers, default_timeout=None, client_info=client_info,
             ),
+            self.suggest_smart_replies: gapic_v1.method.wrap_method(
+                self.suggest_smart_replies,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -238,6 +243,18 @@ class ParticipantsTransport(abc.ABC):
         Union[
             participant.SuggestFaqAnswersResponse,
             Awaitable[participant.SuggestFaqAnswersResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def suggest_smart_replies(
+        self,
+    ) -> Callable[
+        [participant.SuggestSmartRepliesRequest],
+        Union[
+            participant.SuggestSmartRepliesResponse,
+            Awaitable[participant.SuggestSmartRepliesResponse],
         ],
     ]:
         raise NotImplementedError()

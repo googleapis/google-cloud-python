@@ -370,6 +370,11 @@
                 "get_document"
               ]
             },
+            "ImportDocuments": {
+              "methods": [
+                "import_documents"
+              ]
+            },
             "ListDocuments": {
               "methods": [
                 "list_documents"
@@ -408,6 +413,11 @@
             "GetDocument": {
               "methods": [
                 "get_document"
+              ]
+            },
+            "ImportDocuments": {
+              "methods": [
+                "import_documents"
               ]
             },
             "ListDocuments": {
@@ -834,6 +844,11 @@
                 "suggest_faq_answers"
               ]
             },
+            "SuggestSmartReplies": {
+              "methods": [
+                "suggest_smart_replies"
+              ]
+            },
             "UpdateParticipant": {
               "methods": [
                 "update_participant"
@@ -872,6 +887,11 @@
             "SuggestFaqAnswers": {
               "methods": [
                 "suggest_faq_answers"
+              ]
+            },
+            "SuggestSmartReplies": {
+              "methods": [
+                "suggest_smart_replies"
               ]
             },
             "UpdateParticipant": {

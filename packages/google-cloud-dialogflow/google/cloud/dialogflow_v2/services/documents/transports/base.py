@@ -135,6 +135,9 @@ class DocumentsTransport(abc.ABC):
             self.create_document: gapic_v1.method.wrap_method(
                 self.create_document, default_timeout=None, client_info=client_info,
             ),
+            self.import_documents: gapic_v1.method.wrap_method(
+                self.import_documents, default_timeout=None, client_info=client_info,
+            ),
             self.delete_document: gapic_v1.method.wrap_method(
                 self.delete_document, default_timeout=None, client_info=client_info,
             ),
@@ -188,6 +191,15 @@ class DocumentsTransport(abc.ABC):
         self,
     ) -> Callable[
         [gcd_document.CreateDocumentRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def import_documents(
+        self,
+    ) -> Callable[
+        [document.ImportDocumentsRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

@@ -328,6 +328,8 @@ class HumanAgentAssistantConfig(proto.Message):
                 Configs of query.
             conversation_model_config (google.cloud.dialogflow_v2.types.HumanAgentAssistantConfig.ConversationModelConfig):
                 Configs of custom conversation model.
+            conversation_process_config (google.cloud.dialogflow_v2.types.HumanAgentAssistantConfig.ConversationProcessConfig):
+                Configs for processing conversation.
         """
 
         suggestion_feature = proto.Field(
@@ -348,6 +350,11 @@ class HumanAgentAssistantConfig(proto.Message):
             proto.MESSAGE,
             number=7,
             message="HumanAgentAssistantConfig.ConversationModelConfig",
+        )
+        conversation_process_config = proto.Field(
+            proto.MESSAGE,
+            number=8,
+            message="HumanAgentAssistantConfig.ConversationProcessConfig",
         )
 
     class SuggestionConfig(proto.Message):
@@ -540,6 +547,17 @@ class HumanAgentAssistantConfig(proto.Message):
         """
 
         model = proto.Field(proto.STRING, number=1,)
+
+    class ConversationProcessConfig(proto.Message):
+        r"""Config to process conversation.
+
+        Attributes:
+            recent_sentences_count (int):
+                Number of recent non-small-talk sentences to
+                use as context for article and FAQ suggestion
+        """
+
+        recent_sentences_count = proto.Field(proto.INT32, number=2,)
 
     class MessageAnalysisConfig(proto.Message):
         r"""Configuration for analyses to run on each conversation

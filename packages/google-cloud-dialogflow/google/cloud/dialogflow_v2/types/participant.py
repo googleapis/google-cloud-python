@@ -40,10 +40,13 @@ __protobuf__ = proto.module(
         "SuggestArticlesResponse",
         "SuggestFaqAnswersRequest",
         "SuggestFaqAnswersResponse",
+        "SuggestSmartRepliesRequest",
+        "SuggestSmartRepliesResponse",
         "OutputAudio",
         "AutomatedAgentReply",
         "ArticleAnswer",
         "FaqAnswer",
+        "SmartReplyAnswer",
         "SuggestionResult",
         "AnnotatedMessagePart",
         "MessageAnnotation",
@@ -113,7 +116,7 @@ class Message(proto.Message):
 
     Attributes:
         name (str):
-            The unique identifier of the message. Format:
+            Optional. The unique identifier of the message. Format:
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/messages/<Message ID>``.
         content (str):
             Required. The message content.
@@ -128,9 +131,14 @@ class Message(proto.Message):
             Output only. The role of the participant.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the message was
-            created.
+            created in Contact Center AI.
+        send_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. The time when the message was sent.
         message_annotation (google.cloud.dialogflow_v2.types.MessageAnnotation):
             Output only. The annotation for the message.
+        sentiment_analysis (google.cloud.dialogflow_v2.types.SentimentAnalysisResult):
+            Output only. The sentiment analysis result
+            for the message.
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -139,8 +147,12 @@ class Message(proto.Message):
     participant = proto.Field(proto.STRING, number=4,)
     participant_role = proto.Field(proto.ENUM, number=5, enum="Participant.Role",)
     create_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
+    send_time = proto.Field(proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,)
     message_annotation = proto.Field(
         proto.MESSAGE, number=7, message="MessageAnnotation",
+    )
+    sentiment_analysis = proto.Field(
+        proto.MESSAGE, number=8, message=session.SentimentAnalysisResult,
     )
 
 
@@ -382,14 +394,14 @@ class SuggestArticlesRequest(proto.Message):
             for. Format:
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/participants/<Participant ID>``.
         latest_message (str):
-            The name of the latest conversation message to compile
-            suggestion for. If empty, it will be the latest message of
-            the conversation.
+            Optional. The name of the latest conversation message to
+            compile suggestion for. If empty, it will be the latest
+            message of the conversation.
 
             Format:
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/messages/<Message ID>``.
         context_size (int):
-            Max number of messages prior to and including
+            Optional. Max number of messages prior to and including
             [latest_message][google.cloud.dialogflow.v2.SuggestArticlesRequest.latest_message]
             to use as context when compiling the suggestion. By default
             20 and at most 50.
@@ -445,14 +457,14 @@ class SuggestFaqAnswersRequest(proto.Message):
             for. Format:
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/participants/<Participant ID>``.
         latest_message (str):
-            The name of the latest conversation message to compile
-            suggestion for. If empty, it will be the latest message of
-            the conversation.
+            Optional. The name of the latest conversation message to
+            compile suggestion for. If empty, it will be the latest
+            message of the conversation.
 
             Format:
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/messages/<Message ID>``.
         context_size (int):
-            Max number of messages prior to and including
+            Optional. Max number of messages prior to and including
             [latest_message] to use as context when compiling the
             suggestion. By default 20 and at most 50.
         assist_query_params (google.cloud.dialogflow_v2.types.AssistQueryParameters):
@@ -490,6 +502,75 @@ class SuggestFaqAnswersResponse(proto.Message):
     """
 
     faq_answers = proto.RepeatedField(proto.MESSAGE, number=1, message="FaqAnswer",)
+    latest_message = proto.Field(proto.STRING, number=2,)
+    context_size = proto.Field(proto.INT32, number=3,)
+
+
+class SuggestSmartRepliesRequest(proto.Message):
+    r"""The request message for
+    [Participants.SuggestSmartReplies][google.cloud.dialogflow.v2.Participants.SuggestSmartReplies].
+
+    Attributes:
+        parent (str):
+            Required. The name of the participant to fetch suggestion
+            for. Format:
+            ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/participants/<Participant ID>``.
+        current_text_input (google.cloud.dialogflow_v2.types.TextInput):
+            The current natural language text segment to
+            compile suggestion for. This provides a way for
+            user to get follow up smart reply suggestion
+            after a smart reply selection, without sending a
+            text message.
+        latest_message (str):
+            The name of the latest conversation message to compile
+            suggestion for. If empty, it will be the latest message of
+            the conversation.
+
+            Format:
+            ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/messages/<Message ID>``.
+        context_size (int):
+            Max number of messages prior to and including
+            [latest_message] to use as context when compiling the
+            suggestion. By default 20 and at most 50.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    current_text_input = proto.Field(
+        proto.MESSAGE, number=4, message=session.TextInput,
+    )
+    latest_message = proto.Field(proto.STRING, number=2,)
+    context_size = proto.Field(proto.INT32, number=3,)
+
+
+class SuggestSmartRepliesResponse(proto.Message):
+    r"""The response message for
+    [Participants.SuggestSmartReplies][google.cloud.dialogflow.v2.Participants.SuggestSmartReplies].
+
+    Attributes:
+        smart_reply_answers (Sequence[google.cloud.dialogflow_v2.types.SmartReplyAnswer]):
+            Output only. Multiple reply options provided
+            by smart reply service. The order is based on
+            the rank of the model prediction. The maximum
+            number of the returned replies is set in
+            SmartReplyConfig.
+        latest_message (str):
+            The name of the latest conversation message used to compile
+            suggestion for.
+
+            Format:
+            ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/messages/<Message ID>``.
+        context_size (int):
+            Number of messages prior to and including
+            [latest_message][google.cloud.dialogflow.v2.SuggestSmartRepliesResponse.latest_message]
+            to compile the suggestion. It may be smaller than the
+            [SuggestSmartRepliesRequest.context_size][google.cloud.dialogflow.v2.SuggestSmartRepliesRequest.context_size]
+            field in the request if there aren't that many messages in
+            the conversation.
+    """
+
+    smart_reply_answers = proto.RepeatedField(
+        proto.MESSAGE, number=1, message="SmartReplyAnswer",
+    )
     latest_message = proto.Field(proto.STRING, number=2,)
     context_size = proto.Field(proto.INT32, number=3,)
 
@@ -613,6 +694,29 @@ class FaqAnswer(proto.Message):
     answer_record = proto.Field(proto.STRING, number=6,)
 
 
+class SmartReplyAnswer(proto.Message):
+    r"""Represents a smart reply answer.
+
+    Attributes:
+        reply (str):
+            The content of the reply.
+        confidence (float):
+            Smart reply confidence.
+            The system's confidence score that this reply is
+            a good match for this conversation, as a value
+            from 0.0 (completely uncertain) to 1.0
+            (completely certain).
+        answer_record (str):
+            The name of answer record, in the format of
+            "projects/<Project ID>/locations/<Location
+            ID>/answerRecords/<Answer Record ID>".
+    """
+
+    reply = proto.Field(proto.STRING, number=1,)
+    confidence = proto.Field(proto.FLOAT, number=2,)
+    answer_record = proto.Field(proto.STRING, number=3,)
+
+
 class SuggestionResult(proto.Message):
     r"""One response of different type of suggestion response which is used
     in the response of
@@ -643,6 +747,10 @@ class SuggestionResult(proto.Message):
             SuggestFaqAnswersResponse if request is for FAQ_ANSWER.
 
             This field is a member of `oneof`_ ``suggestion_response``.
+        suggest_smart_replies_response (google.cloud.dialogflow_v2.types.SuggestSmartRepliesResponse):
+            SuggestSmartRepliesResponse if request is for SMART_REPLY.
+
+            This field is a member of `oneof`_ ``suggestion_response``.
     """
 
     error = proto.Field(
@@ -659,6 +767,12 @@ class SuggestionResult(proto.Message):
         number=3,
         oneof="suggestion_response",
         message="SuggestFaqAnswersResponse",
+    )
+    suggest_smart_replies_response = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="suggestion_response",
+        message="SuggestSmartRepliesResponse",
     )
 
 

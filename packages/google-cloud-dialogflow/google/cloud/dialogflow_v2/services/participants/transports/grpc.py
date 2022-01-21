@@ -429,6 +429,36 @@ class ParticipantsGrpcTransport(ParticipantsTransport):
             )
         return self._stubs["suggest_faq_answers"]
 
+    @property
+    def suggest_smart_replies(
+        self,
+    ) -> Callable[
+        [participant.SuggestSmartRepliesRequest],
+        participant.SuggestSmartRepliesResponse,
+    ]:
+        r"""Return a callable for the suggest smart replies method over gRPC.
+
+        Gets smart replies for a participant based on
+        specific historical messages.
+
+        Returns:
+            Callable[[~.SuggestSmartRepliesRequest],
+                    ~.SuggestSmartRepliesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "suggest_smart_replies" not in self._stubs:
+            self._stubs["suggest_smart_replies"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.v2.Participants/SuggestSmartReplies",
+                request_serializer=participant.SuggestSmartRepliesRequest.serialize,
+                response_deserializer=participant.SuggestSmartRepliesResponse.deserialize,
+            )
+        return self._stubs["suggest_smart_replies"]
+
     def close(self):
         self.grpc_channel.close()
 

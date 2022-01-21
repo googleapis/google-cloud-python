@@ -29,6 +29,9 @@ __protobuf__ = proto.module(
         "ListDocumentsRequest",
         "ListDocumentsResponse",
         "CreateDocumentRequest",
+        "ImportDocumentsRequest",
+        "ImportDocumentTemplate",
+        "ImportDocumentsResponse",
         "DeleteDocumentRequest",
         "UpdateDocumentRequest",
         "ReloadDocumentRequest",
@@ -252,6 +255,83 @@ class CreateDocumentRequest(proto.Message):
     document = proto.Field(proto.MESSAGE, number=2, message="Document",)
 
 
+class ImportDocumentsRequest(proto.Message):
+    r"""Request message for
+    [Documents.ImportDocuments][google.cloud.dialogflow.v2.Documents.ImportDocuments].
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        parent (str):
+            Required. The knowledge base to import documents into.
+            Format:
+            ``projects/<Project ID>/locations/<Location ID>/knowledgeBases/<Knowledge Base ID>``.
+        gcs_source (google.cloud.dialogflow_v2.types.GcsSources):
+            The Google Cloud Storage location for the documents. The
+            path can include a wildcard.
+
+            These URIs may have the forms
+            ``gs://<bucket-name>/<object-name>``.
+            ``gs://<bucket-name>/<object-path>/*.<extension>``.
+
+            This field is a member of `oneof`_ ``source``.
+        document_template (google.cloud.dialogflow_v2.types.ImportDocumentTemplate):
+            Required. Document template used for
+            importing all the documents.
+        import_gcs_custom_metadata (bool):
+            Whether to import custom metadata from Google
+            Cloud Storage. Only valid when the document
+            source is Google Cloud Storage URI.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    gcs_source = proto.Field(
+        proto.MESSAGE, number=2, oneof="source", message=gcs.GcsSources,
+    )
+    document_template = proto.Field(
+        proto.MESSAGE, number=3, message="ImportDocumentTemplate",
+    )
+    import_gcs_custom_metadata = proto.Field(proto.BOOL, number=4,)
+
+
+class ImportDocumentTemplate(proto.Message):
+    r"""The template used for importing documents.
+
+    Attributes:
+        mime_type (str):
+            Required. The MIME type of the document.
+        knowledge_types (Sequence[google.cloud.dialogflow_v2.types.Document.KnowledgeType]):
+            Required. The knowledge type of document
+            content.
+        metadata (Sequence[google.cloud.dialogflow_v2.types.ImportDocumentTemplate.MetadataEntry]):
+            Metadata for the document. The metadata supports arbitrary
+            key-value pairs. Suggested use cases include storing a
+            document's title, an external URL distinct from the
+            document's content_uri, etc. The max size of a ``key`` or a
+            ``value`` of the metadata is 1024 bytes.
+    """
+
+    mime_type = proto.Field(proto.STRING, number=1,)
+    knowledge_types = proto.RepeatedField(
+        proto.ENUM, number=2, enum="Document.KnowledgeType",
+    )
+    metadata = proto.MapField(proto.STRING, proto.STRING, number=3,)
+
+
+class ImportDocumentsResponse(proto.Message):
+    r"""Response message for
+    [Documents.ImportDocuments][google.cloud.dialogflow.v2.Documents.ImportDocuments].
+
+    Attributes:
+        warnings (Sequence[google.rpc.status_pb2.Status]):
+            Includes details about skipped documents or
+            any other warnings.
+    """
+
+    warnings = proto.RepeatedField(proto.MESSAGE, number=1, message=status_pb2.Status,)
+
+
 class DeleteDocumentRequest(proto.Message):
     r"""Request message for
     [Documents.DeleteDocument][google.cloud.dialogflow.v2.Documents.DeleteDocument].
@@ -359,6 +439,9 @@ class KnowledgeOperationMetadata(proto.Message):
         state (google.cloud.dialogflow_v2.types.KnowledgeOperationMetadata.State):
             Output only. The current state of this
             operation.
+        knowledge_base (str):
+            The name of the knowledge base interacted
+            with during the operation.
     """
 
     class State(proto.Enum):
@@ -369,6 +452,7 @@ class KnowledgeOperationMetadata(proto.Message):
         DONE = 3
 
     state = proto.Field(proto.ENUM, number=1, enum=State,)
+    knowledge_base = proto.Field(proto.STRING, number=3,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

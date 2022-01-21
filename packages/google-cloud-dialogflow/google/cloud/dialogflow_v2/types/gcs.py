@@ -17,8 +17,22 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.dialogflow.v2", manifest={"GcsDestination",},
+    package="google.cloud.dialogflow.v2", manifest={"GcsSources", "GcsDestination",},
 )
+
+
+class GcsSources(proto.Message):
+    r"""Google Cloud Storage location for the inputs.
+
+    Attributes:
+        uris (Sequence[str]):
+            Required. Google Cloud Storage URIs for the
+            inputs. A URI is of the form:
+            gs://bucket/object-prefix-or-name Whether a
+            prefix or name is used depends on the use case.
+    """
+
+    uris = proto.RepeatedField(proto.STRING, number=2,)
 
 
 class GcsDestination(proto.Message):

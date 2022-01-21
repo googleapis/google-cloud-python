@@ -1228,6 +1228,131 @@ async def test_create_document_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize("request_type", [document.ImportDocumentsRequest, dict,])
+def test_import_documents(request_type, transport: str = "grpc"):
+    client = DocumentsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.import_documents), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.import_documents(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document.ImportDocumentsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_import_documents_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.import_documents), "__call__") as call:
+        client.import_documents()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document.ImportDocumentsRequest()
+
+
+@pytest.mark.asyncio
+async def test_import_documents_async(
+    transport: str = "grpc_asyncio", request_type=document.ImportDocumentsRequest
+):
+    client = DocumentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.import_documents), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.import_documents(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document.ImportDocumentsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_import_documents_async_from_dict():
+    await test_import_documents_async(request_type=dict)
+
+
+def test_import_documents_field_headers():
+    client = DocumentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = document.ImportDocumentsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.import_documents), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.import_documents(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_import_documents_field_headers_async():
+    client = DocumentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = document.ImportDocumentsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.import_documents), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.import_documents(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
 @pytest.mark.parametrize("request_type", [document.DeleteDocumentRequest, dict,])
 def test_delete_document(request_type, transport: str = "grpc"):
     client = DocumentsClient(
@@ -2059,6 +2184,7 @@ def test_documents_base_transport():
         "list_documents",
         "get_document",
         "create_document",
+        "import_documents",
         "delete_document",
         "update_document",
         "reload_document",

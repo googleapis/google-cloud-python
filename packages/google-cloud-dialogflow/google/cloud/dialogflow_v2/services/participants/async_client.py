@@ -51,6 +51,8 @@ class ParticipantsAsyncClient:
     DEFAULT_ENDPOINT = ParticipantsClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = ParticipantsClient.DEFAULT_MTLS_ENDPOINT
 
+    answer_record_path = staticmethod(ParticipantsClient.answer_record_path)
+    parse_answer_record_path = staticmethod(ParticipantsClient.parse_answer_record_path)
     context_path = staticmethod(ParticipantsClient.context_path)
     parse_context_path = staticmethod(ParticipantsClient.parse_context_path)
     intent_path = staticmethod(ParticipantsClient.intent_path)
@@ -727,6 +729,79 @@ class ParticipantsAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.suggest_faq_answers,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def suggest_smart_replies(
+        self,
+        request: Union[participant.SuggestSmartRepliesRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> participant.SuggestSmartRepliesResponse:
+        r"""Gets smart replies for a participant based on
+        specific historical messages.
+
+        Args:
+            request (Union[google.cloud.dialogflow_v2.types.SuggestSmartRepliesRequest, dict]):
+                The request object. The request message for
+                [Participants.SuggestSmartReplies][google.cloud.dialogflow.v2.Participants.SuggestSmartReplies].
+            parent (:class:`str`):
+                Required. The name of the participant to fetch
+                suggestion for. Format:
+                ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/participants/<Participant ID>``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dialogflow_v2.types.SuggestSmartRepliesResponse:
+                The response message for
+                [Participants.SuggestSmartReplies][google.cloud.dialogflow.v2.Participants.SuggestSmartReplies].
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = participant.SuggestSmartRepliesRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.suggest_smart_replies,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )

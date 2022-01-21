@@ -2164,6 +2164,223 @@ async def test_suggest_faq_answers_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type", [participant.SuggestSmartRepliesRequest, dict,]
+)
+def test_suggest_smart_replies(request_type, transport: str = "grpc"):
+    client = ParticipantsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.suggest_smart_replies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = participant.SuggestSmartRepliesResponse(
+            latest_message="latest_message_value", context_size=1311,
+        )
+        response = client.suggest_smart_replies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == participant.SuggestSmartRepliesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, participant.SuggestSmartRepliesResponse)
+    assert response.latest_message == "latest_message_value"
+    assert response.context_size == 1311
+
+
+def test_suggest_smart_replies_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ParticipantsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.suggest_smart_replies), "__call__"
+    ) as call:
+        client.suggest_smart_replies()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == participant.SuggestSmartRepliesRequest()
+
+
+@pytest.mark.asyncio
+async def test_suggest_smart_replies_async(
+    transport: str = "grpc_asyncio", request_type=participant.SuggestSmartRepliesRequest
+):
+    client = ParticipantsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.suggest_smart_replies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            participant.SuggestSmartRepliesResponse(
+                latest_message="latest_message_value", context_size=1311,
+            )
+        )
+        response = await client.suggest_smart_replies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == participant.SuggestSmartRepliesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, participant.SuggestSmartRepliesResponse)
+    assert response.latest_message == "latest_message_value"
+    assert response.context_size == 1311
+
+
+@pytest.mark.asyncio
+async def test_suggest_smart_replies_async_from_dict():
+    await test_suggest_smart_replies_async(request_type=dict)
+
+
+def test_suggest_smart_replies_field_headers():
+    client = ParticipantsClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = participant.SuggestSmartRepliesRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.suggest_smart_replies), "__call__"
+    ) as call:
+        call.return_value = participant.SuggestSmartRepliesResponse()
+        client.suggest_smart_replies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_suggest_smart_replies_field_headers_async():
+    client = ParticipantsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = participant.SuggestSmartRepliesRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.suggest_smart_replies), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            participant.SuggestSmartRepliesResponse()
+        )
+        await client.suggest_smart_replies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+def test_suggest_smart_replies_flattened():
+    client = ParticipantsClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.suggest_smart_replies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = participant.SuggestSmartRepliesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.suggest_smart_replies(parent="parent_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_suggest_smart_replies_flattened_error():
+    client = ParticipantsClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.suggest_smart_replies(
+            participant.SuggestSmartRepliesRequest(), parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_suggest_smart_replies_flattened_async():
+    client = ParticipantsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.suggest_smart_replies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = participant.SuggestSmartRepliesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            participant.SuggestSmartRepliesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.suggest_smart_replies(parent="parent_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_suggest_smart_replies_flattened_error_async():
+    client = ParticipantsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.suggest_smart_replies(
+            participant.SuggestSmartRepliesRequest(), parent="parent_value",
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ParticipantsGrpcTransport(
@@ -2268,6 +2485,7 @@ def test_participants_base_transport():
         "analyze_content",
         "suggest_articles",
         "suggest_faq_answers",
+        "suggest_smart_replies",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -2565,10 +2783,32 @@ def test_participants_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_context_path():
+def test_answer_record_path():
     project = "squid"
-    session = "clam"
-    context = "whelk"
+    answer_record = "clam"
+    expected = "projects/{project}/answerRecords/{answer_record}".format(
+        project=project, answer_record=answer_record,
+    )
+    actual = ParticipantsClient.answer_record_path(project, answer_record)
+    assert expected == actual
+
+
+def test_parse_answer_record_path():
+    expected = {
+        "project": "whelk",
+        "answer_record": "octopus",
+    }
+    path = ParticipantsClient.answer_record_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ParticipantsClient.parse_answer_record_path(path)
+    assert expected == actual
+
+
+def test_context_path():
+    project = "oyster"
+    session = "nudibranch"
+    context = "cuttlefish"
     expected = "projects/{project}/agent/sessions/{session}/contexts/{context}".format(
         project=project, session=session, context=context,
     )
@@ -2578,9 +2818,9 @@ def test_context_path():
 
 def test_parse_context_path():
     expected = {
-        "project": "octopus",
-        "session": "oyster",
-        "context": "nudibranch",
+        "project": "mussel",
+        "session": "winkle",
+        "context": "nautilus",
     }
     path = ParticipantsClient.context_path(**expected)
 
@@ -2590,8 +2830,8 @@ def test_parse_context_path():
 
 
 def test_intent_path():
-    project = "cuttlefish"
-    intent = "mussel"
+    project = "scallop"
+    intent = "abalone"
     expected = "projects/{project}/agent/intents/{intent}".format(
         project=project, intent=intent,
     )
@@ -2601,8 +2841,8 @@ def test_intent_path():
 
 def test_parse_intent_path():
     expected = {
-        "project": "winkle",
-        "intent": "nautilus",
+        "project": "squid",
+        "intent": "clam",
     }
     path = ParticipantsClient.intent_path(**expected)
 
@@ -2612,9 +2852,9 @@ def test_parse_intent_path():
 
 
 def test_message_path():
-    project = "scallop"
-    conversation = "abalone"
-    message = "squid"
+    project = "whelk"
+    conversation = "octopus"
+    message = "oyster"
     expected = "projects/{project}/conversations/{conversation}/messages/{message}".format(
         project=project, conversation=conversation, message=message,
     )
@@ -2624,9 +2864,9 @@ def test_message_path():
 
 def test_parse_message_path():
     expected = {
-        "project": "clam",
-        "conversation": "whelk",
-        "message": "octopus",
+        "project": "nudibranch",
+        "conversation": "cuttlefish",
+        "message": "mussel",
     }
     path = ParticipantsClient.message_path(**expected)
 
@@ -2636,9 +2876,9 @@ def test_parse_message_path():
 
 
 def test_participant_path():
-    project = "oyster"
-    conversation = "nudibranch"
-    participant = "cuttlefish"
+    project = "winkle"
+    conversation = "nautilus"
+    participant = "scallop"
     expected = "projects/{project}/conversations/{conversation}/participants/{participant}".format(
         project=project, conversation=conversation, participant=participant,
     )
@@ -2648,9 +2888,9 @@ def test_participant_path():
 
 def test_parse_participant_path():
     expected = {
-        "project": "mussel",
-        "conversation": "winkle",
-        "participant": "nautilus",
+        "project": "abalone",
+        "conversation": "squid",
+        "participant": "clam",
     }
     path = ParticipantsClient.participant_path(**expected)
 
@@ -2660,9 +2900,9 @@ def test_parse_participant_path():
 
 
 def test_session_entity_type_path():
-    project = "scallop"
-    session = "abalone"
-    entity_type = "squid"
+    project = "whelk"
+    session = "octopus"
+    entity_type = "oyster"
     expected = "projects/{project}/agent/sessions/{session}/entityTypes/{entity_type}".format(
         project=project, session=session, entity_type=entity_type,
     )
@@ -2672,9 +2912,9 @@ def test_session_entity_type_path():
 
 def test_parse_session_entity_type_path():
     expected = {
-        "project": "clam",
-        "session": "whelk",
-        "entity_type": "octopus",
+        "project": "nudibranch",
+        "session": "cuttlefish",
+        "entity_type": "mussel",
     }
     path = ParticipantsClient.session_entity_type_path(**expected)
 
@@ -2684,7 +2924,7 @@ def test_parse_session_entity_type_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -2694,7 +2934,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "nautilus",
     }
     path = ParticipantsClient.common_billing_account_path(**expected)
 
@@ -2704,7 +2944,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "scallop"
     expected = "folders/{folder}".format(folder=folder,)
     actual = ParticipantsClient.common_folder_path(folder)
     assert expected == actual
@@ -2712,7 +2952,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "abalone",
     }
     path = ParticipantsClient.common_folder_path(**expected)
 
@@ -2722,7 +2962,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "squid"
     expected = "organizations/{organization}".format(organization=organization,)
     actual = ParticipantsClient.common_organization_path(organization)
     assert expected == actual
@@ -2730,7 +2970,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "clam",
     }
     path = ParticipantsClient.common_organization_path(**expected)
 
@@ -2740,7 +2980,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "whelk"
     expected = "projects/{project}".format(project=project,)
     actual = ParticipantsClient.common_project_path(project)
     assert expected == actual
@@ -2748,7 +2988,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "octopus",
     }
     path = ParticipantsClient.common_project_path(**expected)
 
@@ -2758,8 +2998,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -2769,8 +3009,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = ParticipantsClient.common_location_path(**expected)
 

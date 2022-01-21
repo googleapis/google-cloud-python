@@ -111,6 +111,9 @@ from .types.document import DeleteDocumentRequest
 from .types.document import Document
 from .types.document import ExportDocumentRequest
 from .types.document import GetDocumentRequest
+from .types.document import ImportDocumentsRequest
+from .types.document import ImportDocumentsResponse
+from .types.document import ImportDocumentTemplate
 from .types.document import KnowledgeOperationMetadata
 from .types.document import ListDocumentsRequest
 from .types.document import ListDocumentsResponse
@@ -144,6 +147,7 @@ from .types.fulfillment import Fulfillment
 from .types.fulfillment import GetFulfillmentRequest
 from .types.fulfillment import UpdateFulfillmentRequest
 from .types.gcs import GcsDestination
+from .types.gcs import GcsSources
 from .types.human_agent_assistant_event import HumanAgentAssistantEvent
 from .types.intent import BatchDeleteIntentsRequest
 from .types.intent import BatchUpdateIntentsRequest
@@ -180,11 +184,14 @@ from .types.participant import Message
 from .types.participant import MessageAnnotation
 from .types.participant import OutputAudio
 from .types.participant import Participant
+from .types.participant import SmartReplyAnswer
 from .types.participant import SuggestArticlesRequest
 from .types.participant import SuggestArticlesResponse
 from .types.participant import SuggestFaqAnswersRequest
 from .types.participant import SuggestFaqAnswersResponse
 from .types.participant import SuggestionResult
+from .types.participant import SuggestSmartRepliesRequest
+from .types.participant import SuggestSmartRepliesResponse
 from .types.participant import UpdateParticipantRequest
 from .types.session import DetectIntentRequest
 from .types.session import DetectIntentResponse
@@ -309,6 +316,7 @@ __all__ = (
     "Fulfillment",
     "FulfillmentsClient",
     "GcsDestination",
+    "GcsSources",
     "GetAgentRequest",
     "GetContextRequest",
     "GetConversationProfileRequest",
@@ -328,6 +336,9 @@ __all__ = (
     "HumanAgentAssistantEvent",
     "HumanAgentHandoffConfig",
     "ImportAgentRequest",
+    "ImportDocumentTemplate",
+    "ImportDocumentsRequest",
+    "ImportDocumentsResponse",
     "InputAudioConfig",
     "Intent",
     "IntentBatch",
@@ -386,6 +397,7 @@ __all__ = (
     "SessionEntityTypesClient",
     "SessionsClient",
     "SetAgentRequest",
+    "SmartReplyAnswer",
     "SpeechContext",
     "SpeechModelVariant",
     "SpeechToTextConfig",
@@ -398,6 +410,8 @@ __all__ = (
     "SuggestArticlesResponse",
     "SuggestFaqAnswersRequest",
     "SuggestFaqAnswersResponse",
+    "SuggestSmartRepliesRequest",
+    "SuggestSmartRepliesResponse",
     "SuggestionFeature",
     "SuggestionResult",
     "SynthesizeSpeechConfig",

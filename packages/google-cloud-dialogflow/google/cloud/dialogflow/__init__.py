@@ -161,6 +161,9 @@ from google.cloud.dialogflow_v2.types.document import DeleteDocumentRequest
 from google.cloud.dialogflow_v2.types.document import Document
 from google.cloud.dialogflow_v2.types.document import ExportDocumentRequest
 from google.cloud.dialogflow_v2.types.document import GetDocumentRequest
+from google.cloud.dialogflow_v2.types.document import ImportDocumentsRequest
+from google.cloud.dialogflow_v2.types.document import ImportDocumentsResponse
+from google.cloud.dialogflow_v2.types.document import ImportDocumentTemplate
 from google.cloud.dialogflow_v2.types.document import KnowledgeOperationMetadata
 from google.cloud.dialogflow_v2.types.document import ListDocumentsRequest
 from google.cloud.dialogflow_v2.types.document import ListDocumentsResponse
@@ -194,6 +197,7 @@ from google.cloud.dialogflow_v2.types.fulfillment import Fulfillment
 from google.cloud.dialogflow_v2.types.fulfillment import GetFulfillmentRequest
 from google.cloud.dialogflow_v2.types.fulfillment import UpdateFulfillmentRequest
 from google.cloud.dialogflow_v2.types.gcs import GcsDestination
+from google.cloud.dialogflow_v2.types.gcs import GcsSources
 from google.cloud.dialogflow_v2.types.human_agent_assistant_event import (
     HumanAgentAssistantEvent,
 )
@@ -232,11 +236,14 @@ from google.cloud.dialogflow_v2.types.participant import Message
 from google.cloud.dialogflow_v2.types.participant import MessageAnnotation
 from google.cloud.dialogflow_v2.types.participant import OutputAudio
 from google.cloud.dialogflow_v2.types.participant import Participant
+from google.cloud.dialogflow_v2.types.participant import SmartReplyAnswer
 from google.cloud.dialogflow_v2.types.participant import SuggestArticlesRequest
 from google.cloud.dialogflow_v2.types.participant import SuggestArticlesResponse
 from google.cloud.dialogflow_v2.types.participant import SuggestFaqAnswersRequest
 from google.cloud.dialogflow_v2.types.participant import SuggestFaqAnswersResponse
 from google.cloud.dialogflow_v2.types.participant import SuggestionResult
+from google.cloud.dialogflow_v2.types.participant import SuggestSmartRepliesRequest
+from google.cloud.dialogflow_v2.types.participant import SuggestSmartRepliesResponse
 from google.cloud.dialogflow_v2.types.participant import UpdateParticipantRequest
 from google.cloud.dialogflow_v2.types.session import DetectIntentRequest
 from google.cloud.dialogflow_v2.types.session import DetectIntentResponse
@@ -380,6 +387,9 @@ __all__ = (
     "Document",
     "ExportDocumentRequest",
     "GetDocumentRequest",
+    "ImportDocumentsRequest",
+    "ImportDocumentsResponse",
+    "ImportDocumentTemplate",
     "KnowledgeOperationMetadata",
     "ListDocumentsRequest",
     "ListDocumentsResponse",
@@ -413,6 +423,7 @@ __all__ = (
     "GetFulfillmentRequest",
     "UpdateFulfillmentRequest",
     "GcsDestination",
+    "GcsSources",
     "HumanAgentAssistantEvent",
     "BatchDeleteIntentsRequest",
     "BatchUpdateIntentsRequest",
@@ -449,11 +460,14 @@ __all__ = (
     "MessageAnnotation",
     "OutputAudio",
     "Participant",
+    "SmartReplyAnswer",
     "SuggestArticlesRequest",
     "SuggestArticlesResponse",
     "SuggestFaqAnswersRequest",
     "SuggestFaqAnswersResponse",
     "SuggestionResult",
+    "SuggestSmartRepliesRequest",
+    "SuggestSmartRepliesResponse",
     "UpdateParticipantRequest",
     "DetectIntentRequest",
     "DetectIntentResponse",

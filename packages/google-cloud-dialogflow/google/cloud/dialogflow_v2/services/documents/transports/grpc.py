@@ -333,6 +333,44 @@ class DocumentsGrpcTransport(DocumentsTransport):
         return self._stubs["create_document"]
 
     @property
+    def import_documents(
+        self,
+    ) -> Callable[[document.ImportDocumentsRequest], operations_pb2.Operation]:
+        r"""Return a callable for the import documents method over gRPC.
+
+        Creates documents by importing data from external sources.
+        Dialogflow supports up to 350 documents in each request. If you
+        try to import more, Dialogflow will return an error.
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``:
+           [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
+        -  ``response``:
+           [ImportDocumentsResponse][google.cloud.dialogflow.v2.ImportDocumentsResponse]
+
+        Returns:
+            Callable[[~.ImportDocumentsRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "import_documents" not in self._stubs:
+            self._stubs["import_documents"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.v2.Documents/ImportDocuments",
+                request_serializer=document.ImportDocumentsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["import_documents"]
+
+    @property
     def delete_document(
         self,
     ) -> Callable[[document.DeleteDocumentRequest], operations_pb2.Operation]:
