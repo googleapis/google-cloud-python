@@ -139,7 +139,12 @@ s.remove_staging_dirs()
 templated_files = common.py_library(
     microgenerator=True, samples=True, cov_level=99, split_system_tests=True,
 )
-s.move(templated_files, excludes=[".coveragerc"])
+s.move(templated_files, 
+    excludes=[
+        ".coveragerc", 
+        ".github/workflows", # exclude gh actions as credentials are needed for tests
+        ]
+    )
 
 # Ensure CI runs on a new instance each time
 s.replace(
