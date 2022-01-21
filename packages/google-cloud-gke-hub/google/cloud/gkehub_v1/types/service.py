@@ -360,8 +360,9 @@ class ListFeaturesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            The parent (project and location) where the Features will be
-            listed. Specified in the format ``projects/*/locations/*``.
+            Required. The parent (project and location) where the
+            Features will be listed. Specified in the format
+            ``projects/*/locations/*``.
         page_size (int):
             When requesting a 'page' of resources, ``page_size``
             specifies number of resources to return. If unspecified or
@@ -428,7 +429,7 @@ class GetFeatureRequest(proto.Message):
 
     Attributes:
         name (str):
-            The Feature resource name in the format
+            Required. The Feature resource name in the format
             ``projects/*/locations/*/features/*``
     """
 
@@ -440,8 +441,9 @@ class CreateFeatureRequest(proto.Message):
 
     Attributes:
         parent (str):
-            The parent (project and location) where the Feature will be
-            created. Specified in the format ``projects/*/locations/*``.
+            Required. The parent (project and location) where the
+            Feature will be created. Specified in the format
+            ``projects/*/locations/*``.
         feature_id (str):
             The ID of the feature to create.
         resource (google.cloud.gkehub_v1.types.Feature):
@@ -477,7 +479,7 @@ class DeleteFeatureRequest(proto.Message):
 
     Attributes:
         name (str):
-            The Feature resource name in the format
+            Required. The Feature resource name in the format
             ``projects/*/locations/*/features/*``.
         force (bool):
             If set to true, the delete will ignore any outstanding
@@ -514,7 +516,7 @@ class UpdateFeatureRequest(proto.Message):
 
     Attributes:
         name (str):
-            The Feature resource name in the format
+            Required. The Feature resource name in the format
             ``projects/*/locations/*/features/*``.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Mask of fields to update.

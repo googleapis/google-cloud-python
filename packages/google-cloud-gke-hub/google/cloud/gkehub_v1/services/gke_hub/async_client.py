@@ -275,8 +275,8 @@ class GkeHubAsyncClient:
                 The request object. Request message for
                 `GkeHub.ListFeatures` method.
             parent (:class:`str`):
-                The parent (project and location) where the Features
-                will be listed. Specified in the format
+                Required. The parent (project and location) where the
+                Features will be listed. Specified in the format
                 ``projects/*/locations/*``.
 
                 This corresponds to the ``parent`` field
@@ -426,7 +426,7 @@ class GkeHubAsyncClient:
                 The request object. Request message for
                 `GkeHub.GetFeature` method.
             name (:class:`str`):
-                The Feature resource name in the format
+                Required. The Feature resource name in the format
                 ``projects/*/locations/*/features/*``
 
                 This corresponds to the ``name`` field
@@ -614,8 +614,8 @@ class GkeHubAsyncClient:
                 The request object. Request message for the
                 `GkeHub.CreateFeature` method.
             parent (:class:`str`):
-                The parent (project and location) where the Feature will
-                be created. Specified in the format
+                Required. The parent (project and location) where the
+                Feature will be created. Specified in the format
                 ``projects/*/locations/*``.
 
                 This corresponds to the ``parent`` field
@@ -808,7 +808,7 @@ class GkeHubAsyncClient:
                 The request object. Request message for
                 `GkeHub.DeleteFeature` method.
             name (:class:`str`):
-                The Feature resource name in the format
+                Required. The Feature resource name in the format
                 ``projects/*/locations/*/features/*``.
 
                 This corresponds to the ``name`` field
@@ -1009,7 +1009,7 @@ class GkeHubAsyncClient:
                 The request object. Request message for
                 `GkeHub.UpdateFeature` method.
             name (:class:`str`):
-                The Feature resource name in the format
+                Required. The Feature resource name in the format
                 ``projects/*/locations/*/features/*``.
 
                 This corresponds to the ``name`` field

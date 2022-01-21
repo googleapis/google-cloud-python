@@ -27,9 +27,12 @@ from google.cloud.gkehub_v1.types.feature import MembershipFeatureState
 from google.cloud.gkehub_v1.types.membership import Authority
 from google.cloud.gkehub_v1.types.membership import GkeCluster
 from google.cloud.gkehub_v1.types.membership import KubernetesMetadata
+from google.cloud.gkehub_v1.types.membership import KubernetesResource
 from google.cloud.gkehub_v1.types.membership import Membership
 from google.cloud.gkehub_v1.types.membership import MembershipEndpoint
 from google.cloud.gkehub_v1.types.membership import MembershipState
+from google.cloud.gkehub_v1.types.membership import ResourceManifest
+from google.cloud.gkehub_v1.types.membership import ResourceOptions
 from google.cloud.gkehub_v1.types.service import ConnectAgentResource
 from google.cloud.gkehub_v1.types.service import CreateFeatureRequest
 from google.cloud.gkehub_v1.types.service import CreateMembershipRequest
@@ -61,9 +64,12 @@ __all__ = (
     "Authority",
     "GkeCluster",
     "KubernetesMetadata",
+    "KubernetesResource",
     "Membership",
     "MembershipEndpoint",
     "MembershipState",
+    "ResourceManifest",
+    "ResourceOptions",
     "ConnectAgentResource",
     "CreateFeatureRequest",
     "CreateMembershipRequest",

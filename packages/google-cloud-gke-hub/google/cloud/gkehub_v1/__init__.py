@@ -27,9 +27,12 @@ from .types.feature import MembershipFeatureState
 from .types.membership import Authority
 from .types.membership import GkeCluster
 from .types.membership import KubernetesMetadata
+from .types.membership import KubernetesResource
 from .types.membership import Membership
 from .types.membership import MembershipEndpoint
 from .types.membership import MembershipState
+from .types.membership import ResourceManifest
+from .types.membership import ResourceOptions
 from .types.service import ConnectAgentResource
 from .types.service import CreateFeatureRequest
 from .types.service import CreateMembershipRequest
@@ -68,6 +71,7 @@ __all__ = (
     "GkeCluster",
     "GkeHubClient",
     "KubernetesMetadata",
+    "KubernetesResource",
     "ListFeaturesRequest",
     "ListFeaturesResponse",
     "ListMembershipsRequest",
@@ -78,6 +82,8 @@ __all__ = (
     "MembershipFeatureState",
     "MembershipState",
     "OperationMetadata",
+    "ResourceManifest",
+    "ResourceOptions",
     "TypeMeta",
     "UpdateFeatureRequest",
     "UpdateMembershipRequest",

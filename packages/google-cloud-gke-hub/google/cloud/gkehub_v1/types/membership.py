@@ -23,6 +23,9 @@ __protobuf__ = proto.module(
     manifest={
         "Membership",
         "MembershipEndpoint",
+        "KubernetesResource",
+        "ResourceOptions",
+        "ResourceManifest",
         "GkeCluster",
         "KubernetesMetadata",
         "MembershipState",
@@ -138,12 +141,128 @@ class MembershipEndpoint(proto.Message):
         kubernetes_metadata (google.cloud.gkehub_v1.types.KubernetesMetadata):
             Output only. Useful Kubernetes-specific
             metadata.
+        kubernetes_resource (google.cloud.gkehub_v1.types.KubernetesResource):
+            Optional. The in-cluster Kubernetes Resources that should be
+            applied for a correctly registered cluster, in the steady
+            state. These resources:
+
+            -  Ensure that the cluster is exclusively registered to one
+               and only one Hub Membership.
+            -  Propagate Workload Pool Information available in the
+               Membership Authority field.
+            -  Ensure proper initial configuration of default Hub
+               Features.
     """
 
     gke_cluster = proto.Field(proto.MESSAGE, number=1, message="GkeCluster",)
     kubernetes_metadata = proto.Field(
         proto.MESSAGE, number=2, message="KubernetesMetadata",
     )
+    kubernetes_resource = proto.Field(
+        proto.MESSAGE, number=3, message="KubernetesResource",
+    )
+
+
+class KubernetesResource(proto.Message):
+    r"""KubernetesResource contains the YAML manifests and
+    configuration for Membership Kubernetes resources in the
+    cluster. After CreateMembership or UpdateMembership, these
+    resources should be re-applied in the cluster.
+
+    Attributes:
+        membership_cr_manifest (str):
+            Input only. The YAML representation of the
+            Membership CR. This field is ignored for GKE
+            clusters where Hub can read the CR directly.
+            Callers should provide the CR that is currently
+            present in the cluster during CreateMembership
+            or UpdateMembership, or leave this field empty
+            if none exists. The CR manifest is used to
+            validate the cluster has not been registered
+            with another Membership.
+        membership_resources (Sequence[google.cloud.gkehub_v1.types.ResourceManifest]):
+            Output only. Additional Kubernetes resources
+            that need to be applied to the cluster after
+            Membership creation, and after every update.
+            This field is only populated in the Membership
+            returned from a successful long-running
+            operation from CreateMembership or
+            UpdateMembership. It is not populated during
+            normal GetMembership or ListMemberships
+            requests. To get the resource manifest after the
+            initial registration, the caller should make a
+            UpdateMembership call with an empty field mask.
+        connect_resources (Sequence[google.cloud.gkehub_v1.types.ResourceManifest]):
+            Output only. The Kubernetes resources for
+            installing the GKE Connect agent
+            This field is only populated in the Membership
+            returned from a successful long-running
+            operation from CreateMembership or
+            UpdateMembership. It is not populated during
+            normal GetMembership or ListMemberships
+            requests. To get the resource manifest after the
+            initial registration, the caller should make a
+            UpdateMembership call with an empty field mask.
+        resource_options (google.cloud.gkehub_v1.types.ResourceOptions):
+            Optional. Options for Kubernetes resource
+            generation.
+    """
+
+    membership_cr_manifest = proto.Field(proto.STRING, number=1,)
+    membership_resources = proto.RepeatedField(
+        proto.MESSAGE, number=2, message="ResourceManifest",
+    )
+    connect_resources = proto.RepeatedField(
+        proto.MESSAGE, number=3, message="ResourceManifest",
+    )
+    resource_options = proto.Field(proto.MESSAGE, number=4, message="ResourceOptions",)
+
+
+class ResourceOptions(proto.Message):
+    r"""ResourceOptions represent options for Kubernetes resource
+    generation.
+
+    Attributes:
+        connect_version (str):
+            Optional. The Connect agent version to use for
+            connect_resources. Defaults to the latest GKE Connect
+            version. The version must be a currently supported version,
+            obsolete versions will be rejected.
+        v1beta1_crd (bool):
+            Optional. Use ``apiextensions/v1beta1`` instead of
+            ``apiextensions/v1`` for CustomResourceDefinition resources.
+            This option should be set for clusters with Kubernetes
+            apiserver versions <1.16.
+        k8s_version (str):
+            Optional. Major version of the Kubernetes cluster. This is
+            only used to determine which version to use for the
+            CustomResourceDefinition resources,
+            ``apiextensions/v1beta1`` or\ ``apiextensions/v1``.
+    """
+
+    connect_version = proto.Field(proto.STRING, number=1,)
+    v1beta1_crd = proto.Field(proto.BOOL, number=2,)
+    k8s_version = proto.Field(proto.STRING, number=3,)
+
+
+class ResourceManifest(proto.Message):
+    r"""ResourceManifest represents a single Kubernetes resource to
+    be applied to the cluster.
+
+    Attributes:
+        manifest (str):
+            YAML manifest of the resource.
+        cluster_scoped (bool):
+            Whether the resource provided in the manifest is
+            ``cluster_scoped``. If unset, the manifest is assumed to be
+            namespace scoped.
+
+            This field is used for REST mapping when applying the
+            resource in a cluster.
+    """
+
+    manifest = proto.Field(proto.STRING, number=1,)
+    cluster_scoped = proto.Field(proto.BOOL, number=2,)
 
 
 class GkeCluster(proto.Message):
