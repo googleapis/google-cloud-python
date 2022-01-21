@@ -143,5 +143,7 @@ s.replace(
 # ----------------------------------------------------------------------------
 python.py_samples(skip_readmes=True)
 
+# Work around bug in templates https://github.com/googleapis/synthtool/pull/1335
+s.replace(".github/workflows/unittest.yml", "--fail-under=100", "--fail-under=99")
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
