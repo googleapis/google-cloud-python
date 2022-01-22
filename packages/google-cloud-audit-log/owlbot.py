@@ -34,7 +34,7 @@ s.move(templated_files / ".kokoro", excludes=["docs/**/*", "publish-docs.sh"])
 s.move(templated_files / "setup.cfg")
 s.move(templated_files / "LICENSE")
 s.move(templated_files / "CODE_OF_CONDUCT.md")
-s.move(templated_files / ".github")
+s.move(templated_files / ".github", excludes=["workflows"])
 s.move(templated_files / ".gitignore")
 
 # Add license headers
