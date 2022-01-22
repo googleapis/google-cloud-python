@@ -61,11 +61,7 @@ s.replace(
     """``^[a-zA-Z0-9_]$``""",
 )
 
-# Block pushing non-cloud libraries to Cloud RAD
-s.replace(
-    ".kokoro/docs/common.cfg",
-    r'value: "docs-staging-v2"',
-    r'value: "docs-staging-v2-staging"'
-)
+# Work around bug in templates https://github.com/googleapis/synthtool/pull/1335
+s.replace(".github/workflows/unittest.yml", "--fail-under=100", "--fail-under=99")
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
