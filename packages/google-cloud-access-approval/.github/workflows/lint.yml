@@ -1,13 +1,10 @@
-name: "Lint"
-
 on:
   pull_request:
     branches:
       - main
-
+name: lint
 jobs:
-  run-lint:
-    name: lint
+  lint:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -15,7 +12,7 @@ jobs:
     - name: Setup Python
       uses: actions/setup-python@v2
       with:
-        python-version: "3.8"
+        python-version: "3.10"
     - name: Install nox
       run: |
         python -m pip install --upgrade setuptools pip wheel

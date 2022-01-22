@@ -1,22 +1,14 @@
-name: "Unit tests"
-
 on:
   pull_request:
     branches:
       - main
-
+name: unittest
 jobs:
-  run-unittests:
-    name: unit-${{ matrix.python }}
+  unit:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python:
-          - "3.6"
-          - "3.7"
-          - "3.8"
-          - "3.9"
-          - "3.10"
+        python: ['3.6', '3.7', '3.8', '3.9', '3.10']
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -30,20 +22,19 @@ jobs:
         python -m pip install nox
     - name: Run unit tests
       env:
-        COVERAGE_FILE: .coverage${{ matrix.option }}-${{matrix.python }}
+        COVERAGE_FILE: .coverage-${{ matrix.python }}
       run: |
-        nox -s unit${{ matrix.option }}-${{ matrix.python }}
+        nox -s unit-${{ matrix.python }}
     - name: Upload coverage results
       uses: actions/upload-artifact@v2
       with:
         name: coverage-artifacts
-        path: .coverage${{ matrix.option }}-${{ matrix.python }}
+        path: .coverage-${{ matrix.python }}
 
-  report-coverage:
-    name: cover
+  cover:
     runs-on: ubuntu-latest
     needs:
-        - run-unittests
+        - unit
     steps:
     - name: Checkout
       uses: actions/checkout@v2
