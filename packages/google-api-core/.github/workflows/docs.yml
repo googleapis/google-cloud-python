@@ -1,12 +1,10 @@
-name: "Docs"
-
 on:
   pull_request:
     branches:
       - main
+name: docs
 jobs:
-  run-docs:
-    name: docs
+  docs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -14,12 +12,27 @@ jobs:
     - name: Setup Python
       uses: actions/setup-python@v2
       with:
-        python-version: "3.7"
+        python-version: "3.10"
     - name: Install nox
       run: |
         python -m pip install --upgrade setuptools pip wheel
         python -m pip install nox
     - name: Run docs
       run: |
-        nox -s docs docfx
-
+        nox -s docs
+  docfx:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.10"
+    - name: Install nox
+      run: |
+        python -m pip install --upgrade setuptools pip wheel
+        python -m pip install nox
+    - name: Run docfx
+      run: |
+        nox -s docfx

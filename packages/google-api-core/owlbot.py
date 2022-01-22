@@ -28,6 +28,7 @@ excludes = [
     ".flake8",  # flake8-import-order, layout
     ".coveragerc",  # layout
     "CONTRIBUTING.rst",  # no systests
+    ".github/workflows/unittest.yml", # exclude unittest gh action
 ]
 templated_files = common.py_library(microgenerator=True, cov_level=100)
 s.move(templated_files, excludes=excludes)
@@ -43,5 +44,8 @@ s.replace(
 .pytype
 """,
 )
+
+s.replace(".github/workflows/lint.yml", "python-version: \"3.10\"", "python-version: \"3.7\"")
+
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

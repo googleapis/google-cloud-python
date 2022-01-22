@@ -9,7 +9,8 @@ branchProtectionRules:
   requiredStatusCheckContexts:
     - 'cla/google'
     # No Kokoro:  the following are Github actions
-    - 'lint-mypy'
+    - 'lint'
+    - 'mypy'
     - 'unit-3.6'
     - 'unit-3.7'
     - 'unit-3.8'
@@ -24,6 +25,7 @@ branchProtectionRules:
     - 'unit_wo_grpc-3.10'
     - 'cover'
     - 'docs'
+    - 'docfx'
 permissionRules:
   - team: actools-python
     permission: admin
