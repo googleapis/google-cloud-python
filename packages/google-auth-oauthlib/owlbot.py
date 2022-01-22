@@ -10,7 +10,6 @@ templated_files = common.py_library(
     microgenerator=True,
     cov_level=99,
     unit_test_external_dependencies=["click"],
-    unit_test_python_versions=["3.6", "3.7", "3.8", "3.9"],
 )
 s.move(templated_files, excludes=[
     "docs/multiprocessing.rst"
@@ -36,11 +35,7 @@ s.replace(
     '"--cov=google_auth_oauthlib",',
 )
 
-# Block pushing non-cloud libraries to Cloud RAD
-s.replace(
-    ".kokoro/docs/common.cfg",
-    r'value: "docs-staging-v2"',
-    r'value: "docs-staging-v2-staging"'
-)
+# Work around bug in templates https://github.com/googleapis/synthtool/pull/1335
+s.replace(".github/workflows/unittest.yml", "--fail-under=100", "--fail-under=99")
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
