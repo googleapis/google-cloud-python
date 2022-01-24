@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [2.4.1](https://github.com/googleapis/google-auth-library-python/compare/v2.4.0...v2.4.1) (2022-01-21)
+
+
+### Bug Fixes
+
+* urllib3 import ([#953](https://github.com/googleapis/google-auth-library-python/issues/953)) ([c8b5cae](https://github.com/googleapis/google-auth-library-python/commit/c8b5cae3da5eb9d40067d38dac51a4a8c1e0763e))
+
 ## [2.4.0](https://github.com/googleapis/google-auth-library-python/compare/v2.3.3...v2.4.0) (2022-01-20)
 
 
