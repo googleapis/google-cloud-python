@@ -14,7 +14,6 @@ branchProtectionRules:
     - 'Kokoro snippets-3.8'
     - 'cla/google'
     - 'Samples - Lint'
-    - 'Samples - Python 3.6'
     - 'Samples - Python 3.7'
     - 'Samples - Python 3.8'
 - pattern: v3
@@ -26,6 +25,5 @@ branchProtectionRules:
     - 'Kokoro snippets-3.8'
     - 'cla/google'
     - 'Samples - Lint'
-    - 'Samples - Python 3.6'
     - 'Samples - Python 3.7'
     - 'Samples - Python 3.8'
