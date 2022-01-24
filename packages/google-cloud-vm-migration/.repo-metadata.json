@@ -4,7 +4,7 @@
     "product_documentation": "https://cloud.google.com/migrate/compute-engine/docs",
     "client_documentation": "https://cloud.google.com/python/docs/reference/vmmigration/latest",
     "issue_tracker": "",
-    "release_level": "preview",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-vm-migration",

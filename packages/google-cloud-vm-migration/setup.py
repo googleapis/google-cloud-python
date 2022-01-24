@@ -24,7 +24,7 @@ name = "google-cloud-vm-migration"
 description = "Cloud VM Migration API client library"
 version = "0.1.0"
 url = "https://github.com/googleapis/python-vm-migration"
-release_status = "Development Status :: 4 - Beta"
+release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x
     # Until this issue is closed

@@ -1,14 +1,14 @@
 Python Client for Cloud VM Migration
 ====================================
 
-|beta| |pypi| |versions|
+|stable| |pypi| |versions|
 
 `Cloud VM Migration`_: for Compute Engine migrates VMs from your on-premises data center into Compute Engine.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-vm-migration.svg
    :target: https://pypi.org/project/google-cloud-vm-migration/
