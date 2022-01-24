@@ -72,7 +72,7 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  See the [Samples](./samples/snippets/README.md).
+-  See the `Samples`_.
 -  Read the `Client Library Documentation`_ for Cloud Transcoder API
    API to see other available methods on the client.
 -  Read the `Transcoder API Product documentation`_ to learn
@@ -80,5 +80,6 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
+.. _Samples: https://github.com/googleapis/python-video-transcoder/blob/main/samples/snippets/README.md
 .. _Transcoder API Product documentation:  https://cloud.google.com/transcoder/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
