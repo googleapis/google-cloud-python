@@ -108,7 +108,7 @@ def default(session):
         "asyncmock",
         "pytest",
         "pytest-cov",
-        "pytest-asyncio",
+        "pytest-asyncio<0.17.0",
         "-c",
         constraints_path,
     )
@@ -214,7 +214,7 @@ def system(session):
         "mock",
         "pytest",
         "google-cloud-testutils",
-        "pytest-asyncio",
+        "pytest-asyncio<0.17.0",
         "-c",
         constraints_path,
     )
