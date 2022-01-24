@@ -62,12 +62,16 @@ s.remove_staging_dirs()
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
-    unit_cov_level=82, cov_level=83, samples=True, microgenerator=True,
+    cov_level=99,
+    samples=True,
     unit_test_extras=["pandas", "storage"],
     system_test_extras=["pandas", "storage"]
 )
 
 s.move(templated_files)
+
+# Work around bug in templates https://github.com/googleapis/synthtool/pull/1335
+s.replace(".github/workflows/unittest.yml", "--fail-under=100", "--fail-under=99")
 
 python.py_samples(skip_readmes=True)
 
