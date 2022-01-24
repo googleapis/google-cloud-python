@@ -68,9 +68,11 @@ Windows
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install google-cloud-video-transcoder
 
+
 Next Steps
 ~~~~~~~~~~
 
+-  See the [Samples](./samples/snippets/README.md).
 -  Read the `Client Library Documentation`_ for Cloud Transcoder API
    API to see other available methods on the client.
 -  Read the `Transcoder API Product documentation`_ to learn
