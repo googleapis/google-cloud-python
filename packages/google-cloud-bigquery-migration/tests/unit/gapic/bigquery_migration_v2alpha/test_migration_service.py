@@ -41,10 +41,12 @@ from google.cloud.bigquery_migration_v2alpha.services.migration_service import p
 from google.cloud.bigquery_migration_v2alpha.services.migration_service import (
     transports,
 )
+from google.cloud.bigquery_migration_v2alpha.types import assessment_task
 from google.cloud.bigquery_migration_v2alpha.types import migration_entities
 from google.cloud.bigquery_migration_v2alpha.types import migration_error_details
 from google.cloud.bigquery_migration_v2alpha.types import migration_metrics
 from google.cloud.bigquery_migration_v2alpha.types import migration_service
+from google.cloud.bigquery_migration_v2alpha.types import translation_task
 from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore

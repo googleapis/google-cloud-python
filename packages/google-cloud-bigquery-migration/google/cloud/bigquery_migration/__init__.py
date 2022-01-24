@@ -21,11 +21,20 @@ from google.cloud.bigquery_migration_v2alpha.services.migration_service.async_cl
     MigrationServiceAsyncClient,
 )
 
+from google.cloud.bigquery_migration_v2alpha.types.assessment_task import (
+    AssessmentOrchestrationResultDetails,
+)
+from google.cloud.bigquery_migration_v2alpha.types.assessment_task import (
+    AssessmentTaskDetails,
+)
 from google.cloud.bigquery_migration_v2alpha.types.migration_entities import (
     MigrationSubtask,
 )
 from google.cloud.bigquery_migration_v2alpha.types.migration_entities import (
     MigrationTask,
+)
+from google.cloud.bigquery_migration_v2alpha.types.migration_entities import (
+    MigrationTaskOrchestrationResult,
 )
 from google.cloud.bigquery_migration_v2alpha.types.migration_entities import (
     MigrationWorkflow,
@@ -70,12 +79,32 @@ from google.cloud.bigquery_migration_v2alpha.types.migration_service import (
 from google.cloud.bigquery_migration_v2alpha.types.migration_service import (
     StartMigrationWorkflowRequest,
 )
+from google.cloud.bigquery_migration_v2alpha.types.translation_task import BteqOptions
+from google.cloud.bigquery_migration_v2alpha.types.translation_task import (
+    DatasetReference,
+)
+from google.cloud.bigquery_migration_v2alpha.types.translation_task import Filter
+from google.cloud.bigquery_migration_v2alpha.types.translation_task import (
+    IdentifierSettings,
+)
+from google.cloud.bigquery_migration_v2alpha.types.translation_task import (
+    TeradataOptions,
+)
+from google.cloud.bigquery_migration_v2alpha.types.translation_task import (
+    TranslationFileMapping,
+)
+from google.cloud.bigquery_migration_v2alpha.types.translation_task import (
+    TranslationTaskDetails,
+)
 
 __all__ = (
     "MigrationServiceClient",
     "MigrationServiceAsyncClient",
+    "AssessmentOrchestrationResultDetails",
+    "AssessmentTaskDetails",
     "MigrationSubtask",
     "MigrationTask",
+    "MigrationTaskOrchestrationResult",
     "MigrationWorkflow",
     "ErrorDetail",
     "ErrorLocation",
@@ -93,4 +122,11 @@ __all__ = (
     "ListMigrationWorkflowsRequest",
     "ListMigrationWorkflowsResponse",
     "StartMigrationWorkflowRequest",
+    "BteqOptions",
+    "DatasetReference",
+    "Filter",
+    "IdentifierSettings",
+    "TeradataOptions",
+    "TranslationFileMapping",
+    "TranslationTaskDetails",
 )

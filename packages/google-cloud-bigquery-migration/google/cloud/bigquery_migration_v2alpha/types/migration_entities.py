@@ -15,8 +15,10 @@
 #
 import proto  # type: ignore
 
+from google.cloud.bigquery_migration_v2alpha.types import assessment_task
 from google.cloud.bigquery_migration_v2alpha.types import migration_error_details
 from google.cloud.bigquery_migration_v2alpha.types import migration_metrics
+from google.cloud.bigquery_migration_v2alpha.types import translation_task
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import error_details_pb2  # type: ignore
@@ -24,7 +26,12 @@ from google.rpc import error_details_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.bigquery.migration.v2alpha",
-    manifest={"MigrationWorkflow", "MigrationTask", "MigrationSubtask",},
+    manifest={
+        "MigrationWorkflow",
+        "MigrationTask",
+        "MigrationSubtask",
+        "MigrationTaskOrchestrationResult",
+    },
 )
 
 
@@ -79,7 +86,23 @@ class MigrationTask(proto.Message):
     r"""A single task for a migration which has details about the
     configuration of the task.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
+        assessment_task_details (google.cloud.bigquery_migration_v2alpha.types.AssessmentTaskDetails):
+            Task configuration for Assessment.
+
+            This field is a member of `oneof`_ ``task_details``.
+        translation_task_details (google.cloud.bigquery_migration_v2alpha.types.TranslationTaskDetails):
+            Task configuration for Batch/Offline SQL
+            Translation.
+
+            This field is a member of `oneof`_ ``task_details``.
         id (str):
             Output only. Immutable. The unique identifier
             for the migration task. The ID is server-
@@ -88,9 +111,9 @@ class MigrationTask(proto.Message):
             The type of the task. This must be a
             supported task type.
         details (google.protobuf.any_pb2.Any):
-            The details of the task. The type URL must be
-            one of the supported task details messages and
-            correspond to the Task's type.
+            DEPRECATED! Use one of the task_details below. The details
+            of the task. The type URL must be one of the supported task
+            details messages and correspond to the Task's type.
         state (google.cloud.bigquery_migration_v2alpha.types.MigrationTask.State):
             Output only. The current state of the task.
         processing_error (google.rpc.error_details_pb2.ErrorInfo):
@@ -100,6 +123,9 @@ class MigrationTask(proto.Message):
             Time when the task was created.
         last_update_time (google.protobuf.timestamp_pb2.Timestamp):
             Time when the task was last updated.
+        orchestration_result (google.cloud.bigquery_migration_v2alpha.types.MigrationTaskOrchestrationResult):
+            Output only. Additional information about the
+            orchestration.
     """
 
     class State(proto.Enum):
@@ -112,6 +138,18 @@ class MigrationTask(proto.Message):
         SUCCEEDED = 5
         FAILED = 6
 
+    assessment_task_details = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        oneof="task_details",
+        message=assessment_task.AssessmentTaskDetails,
+    )
+    translation_task_details = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        oneof="task_details",
+        message=translation_task.TranslationTaskDetails,
+    )
     id = proto.Field(proto.STRING, number=1,)
     type_ = proto.Field(proto.STRING, number=2,)
     details = proto.Field(proto.MESSAGE, number=3, message=any_pb2.Any,)
@@ -122,6 +160,9 @@ class MigrationTask(proto.Message):
     create_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
     last_update_time = proto.Field(
         proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,
+    )
+    orchestration_result = proto.Field(
+        proto.MESSAGE, number=10, message="MigrationTaskOrchestrationResult",
     )
 
 
@@ -199,6 +240,28 @@ class MigrationSubtask(proto.Message):
     )
     metrics = proto.RepeatedField(
         proto.MESSAGE, number=11, message=migration_metrics.TimeSeries,
+    )
+
+
+class MigrationTaskOrchestrationResult(proto.Message):
+    r"""Additional information from the orchestrator when it is done
+    with the task orchestration.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        assessment_details (google.cloud.bigquery_migration_v2alpha.types.AssessmentOrchestrationResultDetails):
+            Details specific to assessment task types.
+
+            This field is a member of `oneof`_ ``details``.
+    """
+
+    assessment_details = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="details",
+        message=assessment_task.AssessmentOrchestrationResultDetails,
     )
 
 

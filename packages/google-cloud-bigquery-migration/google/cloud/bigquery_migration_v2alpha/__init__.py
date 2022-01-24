@@ -17,8 +17,11 @@
 from .services.migration_service import MigrationServiceClient
 from .services.migration_service import MigrationServiceAsyncClient
 
+from .types.assessment_task import AssessmentOrchestrationResultDetails
+from .types.assessment_task import AssessmentTaskDetails
 from .types.migration_entities import MigrationSubtask
 from .types.migration_entities import MigrationTask
+from .types.migration_entities import MigrationTaskOrchestrationResult
 from .types.migration_entities import MigrationWorkflow
 from .types.migration_error_details import ErrorDetail
 from .types.migration_error_details import ErrorLocation
@@ -36,15 +39,28 @@ from .types.migration_service import ListMigrationSubtasksResponse
 from .types.migration_service import ListMigrationWorkflowsRequest
 from .types.migration_service import ListMigrationWorkflowsResponse
 from .types.migration_service import StartMigrationWorkflowRequest
+from .types.translation_task import BteqOptions
+from .types.translation_task import DatasetReference
+from .types.translation_task import Filter
+from .types.translation_task import IdentifierSettings
+from .types.translation_task import TeradataOptions
+from .types.translation_task import TranslationFileMapping
+from .types.translation_task import TranslationTaskDetails
 
 __all__ = (
     "MigrationServiceAsyncClient",
+    "AssessmentOrchestrationResultDetails",
+    "AssessmentTaskDetails",
+    "BteqOptions",
     "CreateMigrationWorkflowRequest",
+    "DatasetReference",
     "DeleteMigrationWorkflowRequest",
     "ErrorDetail",
     "ErrorLocation",
+    "Filter",
     "GetMigrationSubtaskRequest",
     "GetMigrationWorkflowRequest",
+    "IdentifierSettings",
     "ListMigrationSubtasksRequest",
     "ListMigrationSubtasksResponse",
     "ListMigrationWorkflowsRequest",
@@ -52,11 +68,15 @@ __all__ = (
     "MigrationServiceClient",
     "MigrationSubtask",
     "MigrationTask",
+    "MigrationTaskOrchestrationResult",
     "MigrationWorkflow",
     "Point",
     "ResourceErrorDetail",
     "StartMigrationWorkflowRequest",
+    "TeradataOptions",
     "TimeInterval",
     "TimeSeries",
+    "TranslationFileMapping",
+    "TranslationTaskDetails",
     "TypedValue",
 )

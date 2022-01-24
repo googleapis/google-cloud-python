@@ -13,9 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .assessment_task import (
+    AssessmentOrchestrationResultDetails,
+    AssessmentTaskDetails,
+)
 from .migration_entities import (
     MigrationSubtask,
     MigrationTask,
+    MigrationTaskOrchestrationResult,
     MigrationWorkflow,
 )
 from .migration_error_details import (
@@ -40,10 +45,22 @@ from .migration_service import (
     ListMigrationWorkflowsResponse,
     StartMigrationWorkflowRequest,
 )
+from .translation_task import (
+    BteqOptions,
+    DatasetReference,
+    Filter,
+    IdentifierSettings,
+    TeradataOptions,
+    TranslationFileMapping,
+    TranslationTaskDetails,
+)
 
 __all__ = (
+    "AssessmentOrchestrationResultDetails",
+    "AssessmentTaskDetails",
     "MigrationSubtask",
     "MigrationTask",
+    "MigrationTaskOrchestrationResult",
     "MigrationWorkflow",
     "ErrorDetail",
     "ErrorLocation",
@@ -61,4 +78,11 @@ __all__ = (
     "ListMigrationWorkflowsRequest",
     "ListMigrationWorkflowsResponse",
     "StartMigrationWorkflowRequest",
+    "BteqOptions",
+    "DatasetReference",
+    "Filter",
+    "IdentifierSettings",
+    "TeradataOptions",
+    "TranslationFileMapping",
+    "TranslationTaskDetails",
 )
