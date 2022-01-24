@@ -1,7 +1,7 @@
 Python Client for Cloud IDS
 ===========================
 
-|beta| |pypi| |versions|
+|stable| |pypi| |versions|
 
 `Cloud IDS`_: is an intrusion detection service that provides threat detection for intrusions, 
 malware, spyware, and command-and-control attacks on your network. Cloud IDS works by creating
@@ -12,7 +12,7 @@ threat detection.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-gold.svg
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-ids.svg
    :target: https://pypi.org/project/google-cloud-ids/
