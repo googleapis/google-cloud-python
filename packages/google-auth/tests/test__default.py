@@ -28,6 +28,7 @@ from google.auth import environment_vars
 from google.auth import exceptions
 from google.auth import external_account
 from google.auth import identity_pool
+from google.auth import impersonated_credentials
 from google.oauth2 import service_account
 import google.oauth2.credentials
 
@@ -127,6 +128,19 @@ IMPERSONATED_IDENTITY_POOL_WORKFORCE_DATA = {
     "service_account_impersonation_url": SERVICE_ACCOUNT_IMPERSONATION_URL,
     "workforce_pool_user_project": WORKFORCE_POOL_USER_PROJECT,
 }
+
+IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_FILE = os.path.join(
+    DATA_DIR, "impersonated_service_account_authorized_user_source.json"
+)
+
+IMPERSONATED_SERVICE_ACCOUNT_WITH_QUOTA_PROJECT_FILE = os.path.join(
+    DATA_DIR, "impersonated_service_account_with_quota_project.json"
+)
+
+IMPERSONATED_SERVICE_ACCOUNT_SERVICE_ACCOUNT_SOURCE_FILE = os.path.join(
+    DATA_DIR, "impersonated_service_account_service_account_source.json"
+)
+
 
 MOCK_CREDENTIALS = mock.Mock(spec=credentials.CredentialsWithQuotaProject)
 MOCK_CREDENTIALS.with_quota_project.return_value = MOCK_CREDENTIALS
@@ -276,6 +290,84 @@ def test_load_credentials_from_file_service_account_bad_format(tmpdir):
 
     assert excinfo.match(r"Failed to load service account")
     assert excinfo.match(r"missing fields")
+
+
+def test_load_credentials_from_file_impersonated_with_authorized_user_source():
+    credentials, project_id = _default.load_credentials_from_file(
+        IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_FILE
+    )
+    assert isinstance(credentials, impersonated_credentials.Credentials)
+    assert isinstance(
+        credentials._source_credentials, google.oauth2.credentials.Credentials
+    )
+    assert credentials.service_account_email == "service-account-target@example.com"
+    assert credentials._delegates == ["service-account-delegate@example.com"]
+    assert not credentials._quota_project_id
+    assert not credentials._target_scopes
+    assert project_id is None
+
+
+def test_load_credentials_from_file_impersonated_with_quota_project():
+    credentials, _ = _default.load_credentials_from_file(
+        IMPERSONATED_SERVICE_ACCOUNT_WITH_QUOTA_PROJECT_FILE
+    )
+    assert isinstance(credentials, impersonated_credentials.Credentials)
+    assert credentials._quota_project_id == "quota_project"
+
+
+def test_load_credentials_from_file_impersonated_with_service_account_source():
+    credentials, _ = _default.load_credentials_from_file(
+        IMPERSONATED_SERVICE_ACCOUNT_SERVICE_ACCOUNT_SOURCE_FILE
+    )
+    assert isinstance(credentials, impersonated_credentials.Credentials)
+    assert isinstance(credentials._source_credentials, service_account.Credentials)
+    assert not credentials._quota_project_id
+
+
+def test_load_credentials_from_file_impersonated_passing_quota_project():
+    credentials, _ = _default.load_credentials_from_file(
+        IMPERSONATED_SERVICE_ACCOUNT_SERVICE_ACCOUNT_SOURCE_FILE,
+        quota_project_id="new_quota_project",
+    )
+    assert credentials._quota_project_id == "new_quota_project"
+
+
+def test_load_credentials_from_file_impersonated_passing_scopes():
+    credentials, _ = _default.load_credentials_from_file(
+        IMPERSONATED_SERVICE_ACCOUNT_SERVICE_ACCOUNT_SOURCE_FILE,
+        scopes=["scope1", "scope2"],
+    )
+    assert credentials._target_scopes == ["scope1", "scope2"]
+
+
+def test_load_credentials_from_file_impersonated_wrong_target_principal(tmpdir):
+
+    with open(IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_FILE) as fh:
+        impersonated_credentials_info = json.load(fh)
+    impersonated_credentials_info[
+        "service_account_impersonation_url"
+    ] = "something_wrong"
+
+    jsonfile = tmpdir.join("invalid.json")
+    jsonfile.write(json.dumps(impersonated_credentials_info))
+    with pytest.raises(exceptions.DefaultCredentialsError) as excinfo:
+        _default.load_credentials_from_file(str(jsonfile))
+
+    assert excinfo.match(r"Cannot extract target principal")
+
+
+def test_load_credentials_from_file_impersonated_wrong_source_type(tmpdir):
+
+    with open(IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_FILE) as fh:
+        impersonated_credentials_info = json.load(fh)
+    impersonated_credentials_info["source_credentials"]["type"] = "external_account"
+
+    jsonfile = tmpdir.join("invalid.json")
+    jsonfile.write(json.dumps(impersonated_credentials_info))
+    with pytest.raises(exceptions.DefaultCredentialsError) as excinfo:
+        _default.load_credentials_from_file(str(jsonfile))
+
+    assert excinfo.match(r"source credential of type external_account is not supported")
 
 
 @EXTERNAL_ACCOUNT_GET_PROJECT_ID_PATCH
