@@ -17,6 +17,7 @@ import datetime
 import itertools
 import math
 import pytest
+import pytest_asyncio
 import operator
 from typing import Callable, Dict, List, Optional
 
@@ -40,7 +41,6 @@ from tests.system.test__helpers import (
     FIRESTORE_EMULATOR,
 )
 
-_test_event_loop = asyncio.new_event_loop()
 pytestmark = pytest.mark.asyncio
 
 
@@ -62,7 +62,7 @@ def client():
     yield firestore.AsyncClient(project=project, credentials=credentials)
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def cleanup():
     operations = []
     yield operations.append
@@ -71,10 +71,13 @@ async def cleanup():
         await operation()
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def event_loop():
-    asyncio.set_event_loop(_test_event_loop)
-    return asyncio.get_event_loop()
+    """Change event_loop fixture to module level."""
+    policy = asyncio.get_event_loop_policy()
+    loop = policy.new_event_loop()
+    yield loop
+    loop.close()
 
 
 async def test_collections(client):
@@ -546,7 +549,7 @@ async def test_collection_add(client, cleanup):
     assert set([i async for i in collection3.list_documents()]) == {document_ref5}
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def query_docs(client):
     collection_id = "qs" + UNIQUE_RESOURCE_ID
     sub_collection = "child" + UNIQUE_RESOURCE_ID
