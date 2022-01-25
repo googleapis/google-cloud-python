@@ -28,8 +28,6 @@ from google.cloud import privatecatalog_v1beta1
 
 
 def sample_search_versions():
-    """Snippet for search_versions"""
-
     # Create a client
     client = privatecatalog_v1beta1.PrivateCatalogClient()
 
