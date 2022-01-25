@@ -38,6 +38,9 @@ from google.cloud.container_v1.services.cluster_manager import transports
 from google.cloud.container_v1.types import cluster_service
 from google.oauth2 import service_account
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import wrappers_pb2  # type: ignore
+from google.rpc import code_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 import google.auth
 
 
@@ -397,6 +400,87 @@ def test_cluster_manager_client_mtls_env_auto(
 
 
 @pytest.mark.parametrize(
+    "client_class", [ClusterManagerClient, ClusterManagerAsyncClient]
+)
+@mock.patch.object(
+    ClusterManagerClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(ClusterManagerClient),
+)
+@mock.patch.object(
+    ClusterManagerAsyncClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(ClusterManagerAsyncClient),
+)
+def test_cluster_manager_client_get_mtls_endpoint_and_cert_source(client_class):
+    mock_client_cert_source = mock.Mock()
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        mock_api_endpoint = "foo"
+        options = client_options.ClientOptions(
+            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
+        )
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
+            options
+        )
+        assert api_endpoint == mock_api_endpoint
+        assert cert_source == mock_client_cert_source
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "false".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+        mock_client_cert_source = mock.Mock()
+        mock_api_endpoint = "foo"
+        options = client_options.ClientOptions(
+            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
+        )
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
+            options
+        )
+        assert api_endpoint == mock_api_endpoint
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+        assert api_endpoint == client_class.DEFAULT_ENDPOINT
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "always".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+        assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert doesn't exist.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch(
+            "google.auth.transport.mtls.has_default_client_cert_source",
+            return_value=False,
+        ):
+            api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+            assert api_endpoint == client_class.DEFAULT_ENDPOINT
+            assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch(
+            "google.auth.transport.mtls.has_default_client_cert_source",
+            return_value=True,
+        ):
+            with mock.patch(
+                "google.auth.transport.mtls.default_client_cert_source",
+                return_value=mock_client_cert_source,
+            ):
+                (
+                    api_endpoint,
+                    cert_source,
+                ) = client_class.get_mtls_endpoint_and_cert_source()
+                assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+                assert cert_source == mock_client_cert_source
+
+
+@pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
         (ClusterManagerClient, transports.ClusterManagerGrpcTransport, "grpc"),
@@ -745,6 +829,7 @@ def test_get_cluster(request_type, transport: str = "grpc"):
             location="location_value",
             enable_tpu=True,
             tpu_ipv4_cidr_block="tpu_ipv4_cidr_block_value",
+            id="id_value",
         )
         response = client.get_cluster(request)
 
@@ -783,6 +868,7 @@ def test_get_cluster(request_type, transport: str = "grpc"):
     assert response.location == "location_value"
     assert response.enable_tpu is True
     assert response.tpu_ipv4_cidr_block == "tpu_ipv4_cidr_block_value"
+    assert response.id == "id_value"
 
 
 def test_get_cluster_empty_call():
@@ -845,6 +931,7 @@ async def test_get_cluster_async(
                 location="location_value",
                 enable_tpu=True,
                 tpu_ipv4_cidr_block="tpu_ipv4_cidr_block_value",
+                id="id_value",
             )
         )
         response = await client.get_cluster(request)
@@ -884,6 +971,7 @@ async def test_get_cluster_async(
     assert response.location == "location_value"
     assert response.enable_tpu is True
     assert response.tpu_ipv4_cidr_block == "tpu_ipv4_cidr_block_value"
+    assert response.id == "id_value"
 
 
 @pytest.mark.asyncio
@@ -8935,6 +9023,23 @@ def test_credentials_transport_error():
             transport=transport,
         )
 
+    # It is an error to provide an api_key and a transport instance.
+    transport = transports.ClusterManagerGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    options = client_options.ClientOptions()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = ClusterManagerClient(client_options=options, transport=transport,)
+
+    # It is an error to provide an api_key and a credential.
+    options = mock.Mock()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = ClusterManagerClient(
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
+        )
+
     # It is an error to provide scopes and a transport instance.
     transport = transports.ClusterManagerGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9340,8 +9445,28 @@ def test_cluster_manager_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
+def test_topic_path():
+    project = "squid"
+    topic = "clam"
+    expected = "projects/{project}/topics/{topic}".format(project=project, topic=topic,)
+    actual = ClusterManagerClient.topic_path(project, topic)
+    assert expected == actual
+
+
+def test_parse_topic_path():
+    expected = {
+        "project": "whelk",
+        "topic": "octopus",
+    }
+    path = ClusterManagerClient.topic_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ClusterManagerClient.parse_topic_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -9351,7 +9476,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "nudibranch",
     }
     path = ClusterManagerClient.common_billing_account_path(**expected)
 
@@ -9361,7 +9486,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(folder=folder,)
     actual = ClusterManagerClient.common_folder_path(folder)
     assert expected == actual
@@ -9369,7 +9494,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "mussel",
     }
     path = ClusterManagerClient.common_folder_path(**expected)
 
@@ -9379,7 +9504,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "winkle"
     expected = "organizations/{organization}".format(organization=organization,)
     actual = ClusterManagerClient.common_organization_path(organization)
     assert expected == actual
@@ -9387,7 +9512,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "nautilus",
     }
     path = ClusterManagerClient.common_organization_path(**expected)
 
@@ -9397,7 +9522,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "scallop"
     expected = "projects/{project}".format(project=project,)
     actual = ClusterManagerClient.common_project_path(project)
     assert expected == actual
@@ -9405,7 +9530,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "abalone",
     }
     path = ClusterManagerClient.common_project_path(**expected)
 
@@ -9415,8 +9540,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -9426,8 +9551,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = ClusterManagerClient.common_location_path(**expected)
 
@@ -9501,3 +9626,33 @@ def test_client_ctx():
             with client:
                 pass
             close.assert_called()
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_class",
+    [
+        (ClusterManagerClient, transports.ClusterManagerGrpcTransport),
+        (ClusterManagerAsyncClient, transports.ClusterManagerGrpcAsyncIOTransport),
+    ],
+)
+def test_api_key_credentials(client_class, transport_class):
+    with mock.patch.object(
+        google.auth._default, "get_api_key_credentials", create=True
+    ) as get_api_key_credentials:
+        mock_cred = mock.Mock()
+        get_api_key_credentials.return_value = mock_cred
+        options = client_options.ClientOptions()
+        options.api_key = "api_key"
+        with mock.patch.object(transport_class, "__init__") as patched:
+            patched.return_value = None
+            client = client_class(client_options=options)
+            patched.assert_called_once_with(
+                credentials=mock_cred,
+                credentials_file=None,
+                host=client.DEFAULT_ENDPOINT,
+                scopes=None,
+                client_cert_source_for_mtls=None,
+                quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
+                always_use_jwt_access=True,
+            )

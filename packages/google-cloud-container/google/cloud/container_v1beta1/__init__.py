@@ -19,6 +19,7 @@ from .services.cluster_manager import ClusterManagerAsyncClient
 
 from .types.cluster_service import AcceleratorConfig
 from .types.cluster_service import AddonsConfig
+from .types.cluster_service import AdvancedMachineFeatures
 from .types.cluster_service import AuthenticatorGroupsConfig
 from .types.cluster_service import Autopilot
 from .types.cluster_service import AutoprovisioningNodePoolDefaults
@@ -45,14 +46,15 @@ from .types.cluster_service import DnsCacheConfig
 from .types.cluster_service import DNSConfig
 from .types.cluster_service import EphemeralStorageConfig
 from .types.cluster_service import GcePersistentDiskCsiDriverConfig
+from .types.cluster_service import GcfsConfig
+from .types.cluster_service import GcpFilestoreCsiDriverConfig
 from .types.cluster_service import GetClusterRequest
 from .types.cluster_service import GetJSONWebKeysRequest
 from .types.cluster_service import GetJSONWebKeysResponse
 from .types.cluster_service import GetNodePoolRequest
-from .types.cluster_service import GetOpenIDConfigRequest
-from .types.cluster_service import GetOpenIDConfigResponse
 from .types.cluster_service import GetOperationRequest
 from .types.cluster_service import GetServerConfigRequest
+from .types.cluster_service import GkeBackupAgentConfig
 from .types.cluster_service import HorizontalPodAutoscaling
 from .types.cluster_service import HttpLoadBalancing
 from .types.cluster_service import IdentityServiceConfig
@@ -78,12 +80,15 @@ from .types.cluster_service import ListUsableSubnetworksResponse
 from .types.cluster_service import Location
 from .types.cluster_service import LoggingComponentConfig
 from .types.cluster_service import LoggingConfig
+from .types.cluster_service import MaintenanceExclusionOptions
 from .types.cluster_service import MaintenancePolicy
 from .types.cluster_service import MaintenanceWindow
+from .types.cluster_service import ManagedPrometheusConfig
 from .types.cluster_service import Master
 from .types.cluster_service import MasterAuth
 from .types.cluster_service import MasterAuthorizedNetworksConfig
 from .types.cluster_service import MaxPodsConstraint
+from .types.cluster_service import MeshCertificates
 from .types.cluster_service import MonitoringComponentConfig
 from .types.cluster_service import MonitoringConfig
 from .types.cluster_service import NetworkConfig
@@ -114,6 +119,7 @@ from .types.cluster_service import ResourceLimit
 from .types.cluster_service import ResourceUsageExportConfig
 from .types.cluster_service import RollbackNodePoolUpgradeRequest
 from .types.cluster_service import SandboxConfig
+from .types.cluster_service import SecurityBulletinEvent
 from .types.cluster_service import ServerConfig
 from .types.cluster_service import ServiceExternalIPsConfig
 from .types.cluster_service import SetAddonsConfigRequest
@@ -155,6 +161,7 @@ __all__ = (
     "ClusterManagerAsyncClient",
     "AcceleratorConfig",
     "AddonsConfig",
+    "AdvancedMachineFeatures",
     "AuthenticatorGroupsConfig",
     "AutoUpgradeOptions",
     "Autopilot",
@@ -183,14 +190,15 @@ __all__ = (
     "DnsCacheConfig",
     "EphemeralStorageConfig",
     "GcePersistentDiskCsiDriverConfig",
+    "GcfsConfig",
+    "GcpFilestoreCsiDriverConfig",
     "GetClusterRequest",
     "GetJSONWebKeysRequest",
     "GetJSONWebKeysResponse",
     "GetNodePoolRequest",
-    "GetOpenIDConfigRequest",
-    "GetOpenIDConfigResponse",
     "GetOperationRequest",
     "GetServerConfigRequest",
+    "GkeBackupAgentConfig",
     "HorizontalPodAutoscaling",
     "HttpLoadBalancing",
     "ILBSubsettingConfig",
@@ -216,12 +224,15 @@ __all__ = (
     "Location",
     "LoggingComponentConfig",
     "LoggingConfig",
+    "MaintenanceExclusionOptions",
     "MaintenancePolicy",
     "MaintenanceWindow",
+    "ManagedPrometheusConfig",
     "Master",
     "MasterAuth",
     "MasterAuthorizedNetworksConfig",
     "MaxPodsConstraint",
+    "MeshCertificates",
     "MonitoringComponentConfig",
     "MonitoringConfig",
     "NetworkConfig",
@@ -253,6 +264,7 @@ __all__ = (
     "ResourceUsageExportConfig",
     "RollbackNodePoolUpgradeRequest",
     "SandboxConfig",
+    "SecurityBulletinEvent",
     "ServerConfig",
     "ServiceExternalIPsConfig",
     "SetAddonsConfigRequest",

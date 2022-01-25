@@ -37,6 +37,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.cloud.container_v1.services.cluster_manager import pagers
 from google.cloud.container_v1.types import cluster_service
+from google.rpc import status_pb2  # type: ignore
 from .transports.base import ClusterManagerTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import ClusterManagerGrpcTransport
 from .transports.grpc_asyncio import ClusterManagerGrpcAsyncIOTransport
@@ -161,6 +162,17 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         return self._transport
 
     @staticmethod
+    def topic_path(project: str, topic: str,) -> str:
+        """Returns a fully-qualified topic string."""
+        return "projects/{project}/topics/{topic}".format(project=project, topic=topic,)
+
+    @staticmethod
+    def parse_topic_path(path: str) -> Dict[str, str]:
+        """Parses a topic path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/topics/(?P<topic>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
@@ -219,6 +231,73 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
         return m.groupdict() if m else {}
 
+    @classmethod
+    def get_mtls_endpoint_and_cert_source(
+        cls, client_options: Optional[client_options_lib.ClientOptions] = None
+    ):
+        """Return the API endpoint and client cert source for mutual TLS.
+
+        The client cert source is determined in the following order:
+        (1) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not "true", the
+        client cert source is None.
+        (2) if `client_options.client_cert_source` is provided, use the provided one; if the
+        default client cert source exists, use the default one; otherwise the client cert
+        source is None.
+
+        The API endpoint is determined in the following order:
+        (1) if `client_options.api_endpoint` if provided, use the provided one.
+        (2) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is "always", use the
+        default mTLS endpoint; if the environment variabel is "never", use the default API
+        endpoint; otherwise if client cert source exists, use the default mTLS endpoint, otherwise
+        use the default API endpoint.
+
+        More details can be found at https://google.aip.dev/auth/4114.
+
+        Args:
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+                client. Only the `api_endpoint` and `client_cert_source` properties may be used
+                in this method.
+
+        Returns:
+            Tuple[str, Callable[[], Tuple[bytes, bytes]]]: returns the API endpoint and the
+                client cert source to use.
+
+        Raises:
+            google.auth.exceptions.MutualTLSChannelError: If any errors happen.
+        """
+        if client_options is None:
+            client_options = client_options_lib.ClientOptions()
+        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
+        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
+        if use_client_cert not in ("true", "false"):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        if use_mtls_endpoint not in ("auto", "never", "always"):
+            raise MutualTLSChannelError(
+                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+            )
+
+        # Figure out the client cert source to use.
+        client_cert_source = None
+        if use_client_cert == "true":
+            if client_options.client_cert_source:
+                client_cert_source = client_options.client_cert_source
+            elif mtls.has_default_client_cert_source():
+                client_cert_source = mtls.default_client_cert_source()
+
+        # Figure out which api endpoint to use.
+        if client_options.api_endpoint is not None:
+            api_endpoint = client_options.api_endpoint
+        elif use_mtls_endpoint == "always" or (
+            use_mtls_endpoint == "auto" and client_cert_source
+        ):
+            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
+        else:
+            api_endpoint = cls.DEFAULT_ENDPOINT
+
+        return api_endpoint, client_cert_source
+
     def __init__(
         self,
         *,
@@ -269,57 +348,22 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
 
-        # Create SSL credentials for mutual TLS if needed.
-        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
-            "true",
-            "false",
-        ):
-            raise ValueError(
-                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
-        use_client_cert = (
-            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
+        api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
+            client_options
         )
 
-        client_cert_source_func = None
-        is_mtls = False
-        if use_client_cert:
-            if client_options.client_cert_source:
-                is_mtls = True
-                client_cert_source_func = client_options.client_cert_source
-            else:
-                is_mtls = mtls.has_default_client_cert_source()
-                if is_mtls:
-                    client_cert_source_func = mtls.default_client_cert_source()
-                else:
-                    client_cert_source_func = None
-
-        # Figure out which api endpoint to use.
-        if client_options.api_endpoint is not None:
-            api_endpoint = client_options.api_endpoint
-        else:
-            use_mtls_env = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
-            if use_mtls_env == "never":
-                api_endpoint = self.DEFAULT_ENDPOINT
-            elif use_mtls_env == "always":
-                api_endpoint = self.DEFAULT_MTLS_ENDPOINT
-            elif use_mtls_env == "auto":
-                if is_mtls:
-                    api_endpoint = self.DEFAULT_MTLS_ENDPOINT
-                else:
-                    api_endpoint = self.DEFAULT_ENDPOINT
-            else:
-                raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted "
-                    "values: never, auto, always"
-                )
+        api_key_value = getattr(client_options, "api_key", None)
+        if api_key_value and credentials:
+            raise ValueError(
+                "client_options.api_key and credentials are mutually exclusive"
+            )
 
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
         if isinstance(transport, ClusterManagerTransport):
             # transport is a ClusterManagerTransport instance.
-            if credentials or client_options.credentials_file:
+            if credentials or client_options.credentials_file or api_key_value:
                 raise ValueError(
                     "When providing a transport instance, "
                     "provide its credentials directly."
@@ -331,6 +375,15 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 )
             self._transport = transport
         else:
+            import google.auth._default  # type: ignore
+
+            if api_key_value and hasattr(
+                google.auth._default, "get_api_key_credentials"
+            ):
+                credentials = google.auth._default.get_api_key_credentials(
+                    api_key_value
+                )
+
             Transport = type(self).get_transport_class(transport)
             self._transport = Transport(
                 credentials=credentials,
@@ -3250,12 +3303,15 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
-        r"""Sets the size for a specific node pool.
+        r"""Sets the size for a specific node pool. The new size will be
+        used for all replicas, including future replicas created by
+        modifying
+        [NodePool.locations][google.container.v1.NodePool.locations].
 
         Args:
             request (Union[google.cloud.container_v1.types.SetNodePoolSizeRequest, dict]):
                 The request object. SetNodePoolSizeRequest sets the size
-                a node pool.
+                of a node pool.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
