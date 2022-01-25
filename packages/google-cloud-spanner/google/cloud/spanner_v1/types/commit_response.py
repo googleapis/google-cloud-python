@@ -44,10 +44,10 @@ class CommitResponse(proto.Message):
                 number of mutations in a transaction and minimize the number
                 of API round trips. You can also monitor this value to
                 prevent transactions from exceeding the system
-                `limit <http://cloud.google.com/spanner/quotas#limits_for_creating_reading_updating_and_deleting_data>`__.
+                `limit <https://cloud.google.com/spanner/quotas#limits_for_creating_reading_updating_and_deleting_data>`__.
                 If the number of mutations exceeds the limit, the server
                 returns
-                `INVALID_ARGUMENT <http://cloud.google.com/spanner/docs/reference/rest/v1/Code#ENUM_VALUES.INVALID_ARGUMENT>`__.
+                `INVALID_ARGUMENT <https://cloud.google.com/spanner/docs/reference/rest/v1/Code#ENUM_VALUES.INVALID_ARGUMENT>`__.
         """
 
         mutation_count = proto.Field(proto.INT64, number=1,)

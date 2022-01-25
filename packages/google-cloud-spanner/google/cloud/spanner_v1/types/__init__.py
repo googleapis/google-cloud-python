@@ -60,6 +60,7 @@ from .transaction import (
 from .type import (
     StructType,
     Type,
+    TypeAnnotationCode,
     TypeCode,
 )
 
@@ -100,5 +101,6 @@ __all__ = (
     "TransactionSelector",
     "StructType",
     "Type",
+    "TypeAnnotationCode",
     "TypeCode",
 )

@@ -104,6 +104,9 @@ class Backup(proto.Message):
         encryption_info (google.cloud.spanner_admin_database_v1.types.EncryptionInfo):
             Output only. The encryption information for
             the backup.
+        database_dialect (google.cloud.spanner_admin_database_v1.types.DatabaseDialect):
+            Output only. The database dialect information
+            for the backup.
     """
 
     class State(proto.Enum):
@@ -125,6 +128,7 @@ class Backup(proto.Message):
     encryption_info = proto.Field(
         proto.MESSAGE, number=8, message=common.EncryptionInfo,
     )
+    database_dialect = proto.Field(proto.ENUM, number=10, enum=common.DatabaseDialect,)
 
 
 class CreateBackupRequest(proto.Message):

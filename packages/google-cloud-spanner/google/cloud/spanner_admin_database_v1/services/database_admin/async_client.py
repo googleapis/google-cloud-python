@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -51,11 +51,13 @@ from .client import DatabaseAdminClient
 
 class DatabaseAdminAsyncClient:
     """Cloud Spanner Database Admin API
-    The Cloud Spanner Database Admin API can be used to create,
-    drop, and list databases. It also enables updating the schema of
-    pre-existing databases. It can be also used to create, delete
-    and list backups for a database and to restore from an existing
-    backup.
+
+    The Cloud Spanner Database Admin API can be used to:
+
+    -  create, drop, and list databases
+    -  update the schema of pre-existing databases
+    -  create, delete and list backups for a database
+    -  restore a database from an existing backup
     """
 
     _client: DatabaseAdminClient
@@ -132,6 +134,42 @@ class DatabaseAdminAsyncClient:
         return DatabaseAdminClient.from_service_account_file.__func__(DatabaseAdminAsyncClient, filename, *args, **kwargs)  # type: ignore
 
     from_service_account_json = from_service_account_file
+
+    @classmethod
+    def get_mtls_endpoint_and_cert_source(
+        cls, client_options: Optional[ClientOptions] = None
+    ):
+        """Return the API endpoint and client cert source for mutual TLS.
+
+        The client cert source is determined in the following order:
+        (1) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not "true", the
+        client cert source is None.
+        (2) if `client_options.client_cert_source` is provided, use the provided one; if the
+        default client cert source exists, use the default one; otherwise the client cert
+        source is None.
+
+        The API endpoint is determined in the following order:
+        (1) if `client_options.api_endpoint` if provided, use the provided one.
+        (2) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is "always", use the
+        default mTLS endpoint; if the environment variabel is "never", use the default API
+        endpoint; otherwise if client cert source exists, use the default mTLS endpoint, otherwise
+        use the default API endpoint.
+
+        More details can be found at https://google.aip.dev/auth/4114.
+
+        Args:
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+                client. Only the `api_endpoint` and `client_cert_source` properties may be used
+                in this method.
+
+        Returns:
+            Tuple[str, Callable[[], Tuple[bytes, bytes]]]: returns the API endpoint and the
+                client cert source to use.
+
+        Raises:
+            google.auth.exceptions.MutualTLSChannelError: If any errors happen.
+        """
+        return DatabaseAdminClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
     @property
     def transport(self) -> DatabaseAdminTransport:
@@ -617,7 +655,8 @@ class DatabaseAdminAsyncClient:
     ) -> None:
         r"""Drops (aka deletes) a Cloud Spanner database. Completed backups
         for the database will be retained according to their
-        ``expire_time``.
+        ``expire_time``. Note: Cloud Spanner might continue to accept
+        requests for a few seconds after the database has been deleted.
 
         Args:
             request (Union[google.cloud.spanner_admin_database_v1.types.DropDatabaseRequest, dict]):

@@ -17,7 +17,8 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.spanner.v1", manifest={"TypeCode", "Type", "StructType",},
+    package="google.spanner.v1",
+    manifest={"TypeCode", "TypeAnnotationCode", "Type", "StructType",},
 )
 
 
@@ -44,6 +45,18 @@ class TypeCode(proto.Enum):
     JSON = 11
 
 
+class TypeAnnotationCode(proto.Enum):
+    r"""``TypeAnnotationCode`` is used as a part of
+    [Type][google.spanner.v1.Type] to disambiguate SQL types that should
+    be used for a given Cloud Spanner value. Disambiguation is needed
+    because the same Cloud Spanner type can be mapped to different SQL
+    types depending on SQL dialect. TypeAnnotationCode doesn't affect
+    the way value is serialized.
+    """
+    TYPE_ANNOTATION_CODE_UNSPECIFIED = 0
+    PG_NUMERIC = 2
+
+
 class Type(proto.Message):
     r"""``Type`` indicates the type of a Cloud Spanner value, as might be
     stored in a table cell or returned from an SQL query.
@@ -61,11 +74,24 @@ class Type(proto.Message):
             [STRUCT][google.spanner.v1.TypeCode.STRUCT], then
             ``struct_type`` provides type information for the struct's
             fields.
+        type_annotation (google.cloud.spanner_v1.types.TypeAnnotationCode):
+            The
+            [TypeAnnotationCode][google.spanner.v1.TypeAnnotationCode]
+            that disambiguates SQL type that Spanner will use to
+            represent values of this type during query processing. This
+            is necessary for some type codes because a single
+            [TypeCode][google.spanner.v1.TypeCode] can be mapped to
+            different SQL types depending on the SQL dialect.
+            [type_annotation][google.spanner.v1.Type.type_annotation]
+            typically is not needed to process the content of a value
+            (it doesn't affect serialization) and clients can ignore it
+            on the read path.
     """
 
     code = proto.Field(proto.ENUM, number=1, enum="TypeCode",)
     array_element_type = proto.Field(proto.MESSAGE, number=2, message="Type",)
     struct_type = proto.Field(proto.MESSAGE, number=3, message="StructType",)
+    type_annotation = proto.Field(proto.ENUM, number=4, enum="TypeAnnotationCode",)
 
 
 class StructType(proto.Message):

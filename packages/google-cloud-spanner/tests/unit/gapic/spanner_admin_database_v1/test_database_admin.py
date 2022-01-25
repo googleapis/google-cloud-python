@@ -416,6 +416,87 @@ def test_database_admin_client_mtls_env_auto(
 
 
 @pytest.mark.parametrize(
+    "client_class", [DatabaseAdminClient, DatabaseAdminAsyncClient]
+)
+@mock.patch.object(
+    DatabaseAdminClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(DatabaseAdminClient),
+)
+@mock.patch.object(
+    DatabaseAdminAsyncClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(DatabaseAdminAsyncClient),
+)
+def test_database_admin_client_get_mtls_endpoint_and_cert_source(client_class):
+    mock_client_cert_source = mock.Mock()
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        mock_api_endpoint = "foo"
+        options = client_options.ClientOptions(
+            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
+        )
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
+            options
+        )
+        assert api_endpoint == mock_api_endpoint
+        assert cert_source == mock_client_cert_source
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "false".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+        mock_client_cert_source = mock.Mock()
+        mock_api_endpoint = "foo"
+        options = client_options.ClientOptions(
+            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
+        )
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
+            options
+        )
+        assert api_endpoint == mock_api_endpoint
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+        assert api_endpoint == client_class.DEFAULT_ENDPOINT
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "always".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+        assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert doesn't exist.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch(
+            "google.auth.transport.mtls.has_default_client_cert_source",
+            return_value=False,
+        ):
+            api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+            assert api_endpoint == client_class.DEFAULT_ENDPOINT
+            assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch(
+            "google.auth.transport.mtls.has_default_client_cert_source",
+            return_value=True,
+        ):
+            with mock.patch(
+                "google.auth.transport.mtls.default_client_cert_source",
+                return_value=mock_client_cert_source,
+            ):
+                (
+                    api_endpoint,
+                    cert_source,
+                ) = client_class.get_mtls_endpoint_and_cert_source()
+                assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+                assert cert_source == mock_client_cert_source
+
+
+@pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
         (DatabaseAdminClient, transports.DatabaseAdminGrpcTransport, "grpc"),
@@ -1103,6 +1184,7 @@ def test_get_database(request_type, transport: str = "grpc"):
             state=spanner_database_admin.Database.State.CREATING,
             version_retention_period="version_retention_period_value",
             default_leader="default_leader_value",
+            database_dialect=common.DatabaseDialect.GOOGLE_STANDARD_SQL,
         )
         response = client.get_database(request)
 
@@ -1117,6 +1199,7 @@ def test_get_database(request_type, transport: str = "grpc"):
     assert response.state == spanner_database_admin.Database.State.CREATING
     assert response.version_retention_period == "version_retention_period_value"
     assert response.default_leader == "default_leader_value"
+    assert response.database_dialect == common.DatabaseDialect.GOOGLE_STANDARD_SQL
 
 
 def test_get_database_empty_call():
@@ -1156,6 +1239,7 @@ async def test_get_database_async(
                 state=spanner_database_admin.Database.State.CREATING,
                 version_retention_period="version_retention_period_value",
                 default_leader="default_leader_value",
+                database_dialect=common.DatabaseDialect.GOOGLE_STANDARD_SQL,
             )
         )
         response = await client.get_database(request)
@@ -1171,6 +1255,7 @@ async def test_get_database_async(
     assert response.state == spanner_database_admin.Database.State.CREATING
     assert response.version_retention_period == "version_retention_period_value"
     assert response.default_leader == "default_leader_value"
+    assert response.database_dialect == common.DatabaseDialect.GOOGLE_STANDARD_SQL
 
 
 @pytest.mark.asyncio
@@ -2862,6 +2947,7 @@ def test_get_backup(request_type, transport: str = "grpc"):
             size_bytes=1089,
             state=backup.Backup.State.CREATING,
             referencing_databases=["referencing_databases_value"],
+            database_dialect=common.DatabaseDialect.GOOGLE_STANDARD_SQL,
         )
         response = client.get_backup(request)
 
@@ -2877,6 +2963,7 @@ def test_get_backup(request_type, transport: str = "grpc"):
     assert response.size_bytes == 1089
     assert response.state == backup.Backup.State.CREATING
     assert response.referencing_databases == ["referencing_databases_value"]
+    assert response.database_dialect == common.DatabaseDialect.GOOGLE_STANDARD_SQL
 
 
 def test_get_backup_empty_call():
@@ -2916,6 +3003,7 @@ async def test_get_backup_async(
                 size_bytes=1089,
                 state=backup.Backup.State.CREATING,
                 referencing_databases=["referencing_databases_value"],
+                database_dialect=common.DatabaseDialect.GOOGLE_STANDARD_SQL,
             )
         )
         response = await client.get_backup(request)
@@ -2932,6 +3020,7 @@ async def test_get_backup_async(
     assert response.size_bytes == 1089
     assert response.state == backup.Backup.State.CREATING
     assert response.referencing_databases == ["referencing_databases_value"]
+    assert response.database_dialect == common.DatabaseDialect.GOOGLE_STANDARD_SQL
 
 
 @pytest.mark.asyncio
@@ -3079,6 +3168,7 @@ def test_update_backup(request_type, transport: str = "grpc"):
             size_bytes=1089,
             state=gsad_backup.Backup.State.CREATING,
             referencing_databases=["referencing_databases_value"],
+            database_dialect=common.DatabaseDialect.GOOGLE_STANDARD_SQL,
         )
         response = client.update_backup(request)
 
@@ -3094,6 +3184,7 @@ def test_update_backup(request_type, transport: str = "grpc"):
     assert response.size_bytes == 1089
     assert response.state == gsad_backup.Backup.State.CREATING
     assert response.referencing_databases == ["referencing_databases_value"]
+    assert response.database_dialect == common.DatabaseDialect.GOOGLE_STANDARD_SQL
 
 
 def test_update_backup_empty_call():
@@ -3133,6 +3224,7 @@ async def test_update_backup_async(
                 size_bytes=1089,
                 state=gsad_backup.Backup.State.CREATING,
                 referencing_databases=["referencing_databases_value"],
+                database_dialect=common.DatabaseDialect.GOOGLE_STANDARD_SQL,
             )
         )
         response = await client.update_backup(request)
@@ -3149,6 +3241,7 @@ async def test_update_backup_async(
     assert response.size_bytes == 1089
     assert response.state == gsad_backup.Backup.State.CREATING
     assert response.referencing_databases == ["referencing_databases_value"]
+    assert response.database_dialect == common.DatabaseDialect.GOOGLE_STANDARD_SQL
 
 
 @pytest.mark.asyncio
@@ -4802,6 +4895,23 @@ def test_credentials_transport_error():
             transport=transport,
         )
 
+    # It is an error to provide an api_key and a transport instance.
+    transport = transports.DatabaseAdminGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    options = client_options.ClientOptions()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = DatabaseAdminClient(client_options=options, transport=transport,)
+
+    # It is an error to provide an api_key and a credential.
+    options = mock.Mock()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = DatabaseAdminClient(
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
+        )
+
     # It is an error to provide scopes and a transport instance.
     transport = transports.DatabaseAdminGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5526,3 +5636,33 @@ def test_client_ctx():
             with client:
                 pass
             close.assert_called()
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_class",
+    [
+        (DatabaseAdminClient, transports.DatabaseAdminGrpcTransport),
+        (DatabaseAdminAsyncClient, transports.DatabaseAdminGrpcAsyncIOTransport),
+    ],
+)
+def test_api_key_credentials(client_class, transport_class):
+    with mock.patch.object(
+        google.auth._default, "get_api_key_credentials", create=True
+    ) as get_api_key_credentials:
+        mock_cred = mock.Mock()
+        get_api_key_credentials.return_value = mock_cred
+        options = client_options.ClientOptions()
+        options.api_key = "api_key"
+        with mock.patch.object(transport_class, "__init__") as patched:
+            patched.return_value = None
+            client = client_class(client_options=options)
+            patched.assert_called_once_with(
+                credentials=mock_cred,
+                credentials_file=None,
+                host=client.DEFAULT_ENDPOINT,
+                scopes=None,
+                client_cert_source_for_mtls=None,
+                quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
+                always_use_jwt_access=True,
+            )
