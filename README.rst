@@ -223,12 +223,18 @@ Libraries
    * - `IAM Policy Troubleshooter API <https://github.com/googleapis/python-policy-troubleshooter>`_
      - |stable|
      - |PyPI-google-cloud-policy-troubleshooter|
+   * - `IDS <https://github.com/googleapis/python-ids>`_
+     - |stable|
+     - |PyPI-google-cloud-ids|
    * - `Identity and Access Management <https://github.com/googleapis/python-iam>`_
      - |stable|
      - |PyPI-google-cloud-iam|
    * - `Identity-Aware Proxy <https://github.com/googleapis/python-iap>`_
      - |stable|
      - |PyPI-google-cloud-iap|
+   * - `Internet of Things (IoT) Core <https://github.com/googleapis/python-iot>`_
+     - |stable|
+     - |PyPI-google-cloud-iot|
    * - `Key Management Service <https://github.com/googleapis/python-kms>`_
      - |stable|
      - |PyPI-google-cloud-kms|
@@ -358,6 +364,9 @@ Libraries
    * - `Translation <https://github.com/googleapis/python-translate>`_
      - |stable|
      - |PyPI-google-cloud-translate|
+   * - `VM Migration <https://github.com/googleapis/python-vm-migration>`_
+     - |stable|
+     - |PyPI-google-cloud-vm-migration|
    * - `Video Intelligence <https://github.com/googleapis/python-videointelligence>`_
      - |stable|
      - |PyPI-google-cloud-videointelligence|
@@ -412,12 +421,12 @@ Libraries
    * - `Error Reporting <https://github.com/googleapis/python-error-reporting>`_
      - |preview|
      - |PyPI-google-cloud-error-reporting|
+   * - `Eventarc Publishing <https://github.com/googleapis/python-eventarc-publishing>`_
+     - |preview|
+     - |PyPI-google-cloud-eventarc-publishing|
    * - `GKE Connect Gateway API <https://github.com/googleapis/python-gke-connect-gateway>`_
      - |preview|
      - |PyPI-google-cloud-gke-connect-gateway|
-   * - `IDS <https://github.com/googleapis/python-ids>`_
-     - |preview|
-     - |PyPI-google-cloud-ids|
    * - `Life Sciences <https://github.com/googleapis/python-life-sciences>`_
      - |preview|
      - |PyPI-google-cloud-life-sciences|
@@ -445,12 +454,6 @@ Libraries
    * - `SQLAlchemy dialect for BigQuery <https://github.com/googleapis/python-bigquery-sqlalchemy>`_
      - |preview|
      - |PyPI-sqlalchemy-bigquery|
-   * - `VM Migration <https://github.com/googleapis/python-vm-migration>`_
-     - |preview|
-     - |PyPI-google-cloud-vm-migration|
-   * - `Internet of Things (IoT) Core <https://github.com/googleapis/python-iot>`_
-     - |ga|
-     - |PyPI-google-cloud-iot|
 
 .. |PyPI-google-cloud-aiplatform| image:: https://img.shields.io/pypi/v/google-cloud-aiplatform.svg
      :target: https://pypi.org/project/google-cloud-aiplatform
@@ -554,10 +557,14 @@ Libraries
      :target: https://pypi.org/project/google-cloud-iam-logging
 .. |PyPI-google-cloud-policy-troubleshooter| image:: https://img.shields.io/pypi/v/google-cloud-policy-troubleshooter.svg
      :target: https://pypi.org/project/google-cloud-policy-troubleshooter
+.. |PyPI-google-cloud-ids| image:: https://img.shields.io/pypi/v/google-cloud-ids.svg
+     :target: https://pypi.org/project/google-cloud-ids
 .. |PyPI-google-cloud-iam| image:: https://img.shields.io/pypi/v/google-cloud-iam.svg
      :target: https://pypi.org/project/google-cloud-iam
 .. |PyPI-google-cloud-iap| image:: https://img.shields.io/pypi/v/google-cloud-iap.svg
      :target: https://pypi.org/project/google-cloud-iap
+.. |PyPI-google-cloud-iot| image:: https://img.shields.io/pypi/v/google-cloud-iot.svg
+     :target: https://pypi.org/project/google-cloud-iot
 .. |PyPI-google-cloud-kms| image:: https://img.shields.io/pypi/v/google-cloud-kms.svg
      :target: https://pypi.org/project/google-cloud-kms
 .. |PyPI-google-cloud-container| image:: https://img.shields.io/pypi/v/google-cloud-container.svg
@@ -644,6 +651,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-video-transcoder
 .. |PyPI-google-cloud-translate| image:: https://img.shields.io/pypi/v/google-cloud-translate.svg
      :target: https://pypi.org/project/google-cloud-translate
+.. |PyPI-google-cloud-vm-migration| image:: https://img.shields.io/pypi/v/google-cloud-vm-migration.svg
+     :target: https://pypi.org/project/google-cloud-vm-migration
 .. |PyPI-google-cloud-videointelligence| image:: https://img.shields.io/pypi/v/google-cloud-videointelligence.svg
      :target: https://pypi.org/project/google-cloud-videointelligence
 .. |PyPI-google-cloud-vpc-access| image:: https://img.shields.io/pypi/v/google-cloud-vpc-access.svg
@@ -680,10 +689,10 @@ Libraries
      :target: https://pypi.org/project/google-cloud-datastream
 .. |PyPI-google-cloud-error-reporting| image:: https://img.shields.io/pypi/v/google-cloud-error-reporting.svg
      :target: https://pypi.org/project/google-cloud-error-reporting
+.. |PyPI-google-cloud-eventarc-publishing| image:: https://img.shields.io/pypi/v/google-cloud-eventarc-publishing.svg
+     :target: https://pypi.org/project/google-cloud-eventarc-publishing
 .. |PyPI-google-cloud-gke-connect-gateway| image:: https://img.shields.io/pypi/v/google-cloud-gke-connect-gateway.svg
      :target: https://pypi.org/project/google-cloud-gke-connect-gateway
-.. |PyPI-google-cloud-ids| image:: https://img.shields.io/pypi/v/google-cloud-ids.svg
-     :target: https://pypi.org/project/google-cloud-ids
 .. |PyPI-google-cloud-life-sciences| image:: https://img.shields.io/pypi/v/google-cloud-life-sciences.svg
      :target: https://pypi.org/project/google-cloud-life-sciences
 .. |PyPI-google-cloud-media-translation| image:: https://img.shields.io/pypi/v/google-cloud-media-translation.svg
@@ -702,10 +711,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-runtimeconfig
 .. |PyPI-sqlalchemy-bigquery| image:: https://img.shields.io/pypi/v/sqlalchemy-bigquery.svg
      :target: https://pypi.org/project/sqlalchemy-bigquery
-.. |PyPI-google-cloud-vm-migration| image:: https://img.shields.io/pypi/v/google-cloud-vm-migration.svg
-     :target: https://pypi.org/project/google-cloud-vm-migration
-.. |PyPI-google-cloud-iot| image:: https://img.shields.io/pypi/v/google-cloud-iot.svg
-     :target: https://pypi.org/project/google-cloud-iot
 
 .. API_TABLE_END
 
