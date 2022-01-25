@@ -2616,8 +2616,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 The request object. The parameters to
                 [GetCmekSettings][google.logging.v2.ConfigServiceV2.GetCmekSettings].
                 See [Enabling CMEK for Logs
-                Router](https://cloud.google.com/logging/docs/routing/managed-
-                encryption) for more information.
+                Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
+                for more information.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2720,8 +2720,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 The request object. The parameters to
                 [UpdateCmekSettings][google.logging.v2.ConfigServiceV2.UpdateCmekSettings].
                 See [Enabling CMEK for Logs
-                Router](https://cloud.google.com/logging/docs/routing/managed-
-                encryption) for more information.
+                Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
+                for more information.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

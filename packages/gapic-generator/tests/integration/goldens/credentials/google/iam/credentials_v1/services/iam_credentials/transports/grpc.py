@@ -39,8 +39,8 @@ class IAMCredentialsGrpcTransport(IAMCredentialsTransport):
 
     Service account credentials are used to temporarily assume the
     identity of the service account. Supported credential types
-    include OAuth 2.0 access tokens, OpenID Connect ID tokens, self-
-    signed JSON Web Tokens (JWTs), and more.
+    include OAuth 2.0 access tokens, OpenID Connect ID tokens,
+    self-signed JSON Web Tokens (JWTs), and more.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

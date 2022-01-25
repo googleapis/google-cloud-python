@@ -78,9 +78,12 @@ def wrap(text: str, width: int, *, offset: int = None, indent: int = 0) -> str:
     # Break off the first line of the string to address non-zero offsets.
     first = text.split('\n')[0] + '\n'
     if len(first) > width - offset:
+        # Ensure `break_on_hyphens` is set to `False` when using
+        # `textwrap.wrap` to avoid breaking hyperlinks with hyphens.
         initial = textwrap.wrap(first,
                                 break_long_words=False,
                                 width=width - offset,
+                                break_on_hyphens=False,
                                 )
         # Strip the first \n from the text so it is not misidentified as an
         # intentionally short line below.
@@ -107,11 +110,14 @@ def wrap(text: str, width: int, *, offset: int = None, indent: int = 0) -> str:
     # Wrap the remainder of the string at the desired width.
     return '{first}{text}'.format(
         first=first,
+        # Ensure `break_on_hyphens` is set to `False` when using
+        # `textwrap.fill` to avoid breaking hyperlinks with hyphens.
         text='\n'.join([textwrap.fill(
             break_long_words=False,
             initial_indent=' ' * indent,
             subsequent_indent=' ' * indent,
             text=token,
             width=width,
+            break_on_hyphens=False,
         ) for token in tokens]),
     ).rstrip('\n')

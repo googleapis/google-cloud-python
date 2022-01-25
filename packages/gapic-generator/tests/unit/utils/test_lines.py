@@ -87,3 +87,7 @@ def test_wrap_indent_short():
 
 def test_wrap_short_line_preserved():
     assert lines.wrap('foo\nbar\nbaz', width=80) == 'foo\nbar\nbaz'
+
+
+def test_wrap_does_not_break_hyphenated_word():
+    assert lines.wrap('do-not-break', width=5) == 'do-not-break'

@@ -2418,8 +2418,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 The request object. The parameters to
                 [GetCmekSettings][google.logging.v2.ConfigServiceV2.GetCmekSettings].
                 See [Enabling CMEK for Logs
-                Router](https://cloud.google.com/logging/docs/routing/managed-
-                encryption) for more information.
+                Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
+                for more information.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2520,8 +2520,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 The request object. The parameters to
                 [UpdateCmekSettings][google.logging.v2.ConfigServiceV2.UpdateCmekSettings].
                 See [Enabling CMEK for Logs
-                Router](https://cloud.google.com/logging/docs/routing/managed-
-                encryption) for more information.
+                Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
+                for more information.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

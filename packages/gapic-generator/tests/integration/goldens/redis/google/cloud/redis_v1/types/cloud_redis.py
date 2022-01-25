@@ -95,8 +95,8 @@ class Instance(proto.Message):
             addresses that are reserved for this instance.
             If not provided, the service will choose an
             unused /29 block, for example, 10.0.0.0/29 or
-            192.168.0.0/29. Ranges must be unique and non-
-            overlapping with existing subnets in an
+            192.168.0.0/29. Ranges must be unique and
+            non-overlapping with existing subnets in an
             authorized network.
         host (str):
             Output only. Hostname or IP address of the
