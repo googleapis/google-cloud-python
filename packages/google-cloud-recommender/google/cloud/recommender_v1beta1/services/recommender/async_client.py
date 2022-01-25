@@ -33,9 +33,18 @@ except AttributeError:  # pragma: NO COVER
 
 from google.cloud.recommender_v1beta1.services.recommender import pagers
 from google.cloud.recommender_v1beta1.types import insight
+from google.cloud.recommender_v1beta1.types import insight_type_config
+from google.cloud.recommender_v1beta1.types import (
+    insight_type_config as gcr_insight_type_config,
+)
 from google.cloud.recommender_v1beta1.types import recommendation
+from google.cloud.recommender_v1beta1.types import recommender_config
+from google.cloud.recommender_v1beta1.types import (
+    recommender_config as gcr_recommender_config,
+)
 from google.cloud.recommender_v1beta1.types import recommender_service
 from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import RecommenderTransport, DEFAULT_CLIENT_INFO
@@ -60,12 +69,20 @@ class RecommenderAsyncClient:
     parse_insight_path = staticmethod(RecommenderClient.parse_insight_path)
     insight_type_path = staticmethod(RecommenderClient.insight_type_path)
     parse_insight_type_path = staticmethod(RecommenderClient.parse_insight_type_path)
+    insight_type_config_path = staticmethod(RecommenderClient.insight_type_config_path)
+    parse_insight_type_config_path = staticmethod(
+        RecommenderClient.parse_insight_type_config_path
+    )
     recommendation_path = staticmethod(RecommenderClient.recommendation_path)
     parse_recommendation_path = staticmethod(
         RecommenderClient.parse_recommendation_path
     )
     recommender_path = staticmethod(RecommenderClient.recommender_path)
     parse_recommender_path = staticmethod(RecommenderClient.parse_recommender_path)
+    recommender_config_path = staticmethod(RecommenderClient.recommender_config_path)
+    parse_recommender_config_path = staticmethod(
+        RecommenderClient.parse_recommender_config_path
+    )
     common_billing_account_path = staticmethod(
         RecommenderClient.common_billing_account_path
     )
@@ -225,7 +242,7 @@ class RecommenderAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInsightsAsyncPager:
-        r"""Lists insights for a Cloud project. Requires the
+        r"""Lists insights for the specified Cloud Resource. Requires the
         recommender.*.list IAM permission for the specified insight
         type.
 
@@ -237,9 +254,15 @@ class RecommenderAsyncClient:
                 Required. The container resource on which to execute the
                 request. Acceptable formats:
 
-                1.
+                -  ``projects/[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
 
-                "projects/[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]",
+                -  ``projects/[PROJECT_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
+
+                -  ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
+
+                -  ``folders/[FOLDER_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
+
+                -  ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
 
                 LOCATION here refers to GCP Locations:
                 https://cloud.google.com/about/locations/
@@ -508,8 +531,9 @@ class RecommenderAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRecommendationsAsyncPager:
-        r"""Lists recommendations for a Cloud project. Requires the
-        recommender.*.list IAM permission for the specified recommender.
+        r"""Lists recommendations for the specified Cloud Resource. Requires
+        the recommender.*.list IAM permission for the specified
+        recommender.
 
         Args:
             request (Union[google.cloud.recommender_v1beta1.types.ListRecommendationsRequest, dict]):
@@ -519,9 +543,15 @@ class RecommenderAsyncClient:
                 Required. The container resource on which to execute the
                 request. Acceptable formats:
 
-                1.
+                -  ``projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
 
-                "projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]",
+                -  ``projects/[PROJECT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
+
+                -  ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
+
+                -  ``folders/[FOLDER_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
+
+                -  ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
 
                 LOCATION here refers to GCP Locations:
                 https://cloud.google.com/about/locations/ RECOMMENDER_ID
@@ -533,9 +563,26 @@ class RecommenderAsyncClient:
                 should not be set.
             filter (:class:`str`):
                 Filter expression to restrict the recommendations
-                returned. Supported filter fields: state_info.state Eg:
-                \`state_info.state:"DISMISSED" or
-                state_info.state:"FAILED"
+                returned. Supported filter fields:
+
+                -  ``state_info.state``
+
+                -  ``recommenderSubtype``
+
+                -  ``priority``
+
+                Examples:
+
+                -  ``stateInfo.state = ACTIVE OR stateInfo.state = DISMISSED``
+
+                -  ``recommenderSubtype = REMOVE_ROLE OR recommenderSubtype = REPLACE_ROLE``
+
+                -  ``priority = P1 OR priority = P2``
+
+                -  ``stateInfo.state = ACTIVE AND (priority = P1 OR priority = P2)``
+
+                (These expressions are based on the filter language
+                described at https://google.aip.dev/160)
 
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1010,6 +1057,320 @@ class RecommenderAsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def get_recommender_config(
+        self,
+        request: Union[recommender_service.GetRecommenderConfigRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> recommender_config.RecommenderConfig:
+        r"""Gets the requested Recommender Config. There is only
+        one instance of the config for each Recommender.
+
+        Args:
+            request (Union[google.cloud.recommender_v1beta1.types.GetRecommenderConfigRequest, dict]):
+                The request object. Request for the
+                GetRecommenderConfig` method.
+            name (:class:`str`):
+                Required. Name of the Recommendation Config to get.
+
+                Acceptable formats:
+
+                -  ``projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
+
+                -  ``projects/[PROJECT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
+
+                -  ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.recommender_v1beta1.types.RecommenderConfig:
+                Configuration for a Recommender.
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = recommender_service.GetRecommenderConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_recommender_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def update_recommender_config(
+        self,
+        request: Union[recommender_service.UpdateRecommenderConfigRequest, dict] = None,
+        *,
+        recommender_config: gcr_recommender_config.RecommenderConfig = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gcr_recommender_config.RecommenderConfig:
+        r"""Updates a Recommender Config. This will create a new
+        revision of the config.
+
+        Args:
+            request (Union[google.cloud.recommender_v1beta1.types.UpdateRecommenderConfigRequest, dict]):
+                The request object. Request for the
+                `UpdateRecommenderConfig` method.
+            recommender_config (:class:`google.cloud.recommender_v1beta1.types.RecommenderConfig`):
+                Required. The RecommenderConfig to
+                update.
+
+                This corresponds to the ``recommender_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                The list of fields to be updated.
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.recommender_v1beta1.types.RecommenderConfig:
+                Configuration for a Recommender.
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([recommender_config, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = recommender_service.UpdateRecommenderConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if recommender_config is not None:
+            request.recommender_config = recommender_config
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_recommender_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("recommender_config.name", request.recommender_config.name),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def get_insight_type_config(
+        self,
+        request: Union[recommender_service.GetInsightTypeConfigRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> insight_type_config.InsightTypeConfig:
+        r"""Gets the requested InsightTypeConfig. There is only
+        one instance of the config for each InsightType.
+
+        Args:
+            request (Union[google.cloud.recommender_v1beta1.types.GetInsightTypeConfigRequest, dict]):
+                The request object. Request for the
+                GetInsightTypeConfig` method.
+            name (:class:`str`):
+                Required. Name of the InsightTypeConfig to get.
+
+                Acceptable formats:
+
+                -  ``projects/[PROJECT_NUMBER]/locations/global/recommenders/[INSIGHT_TYPE_ID]/config``
+
+                -  ``projects/[PROJECT_ID]/locations/global/recommenders/[INSIGHT_TYPE_ID]/config``
+
+                -  ``organizations/[ORGANIZATION_ID]/locations/global/recommenders/[INSIGHT_TYPE_ID]/config``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.recommender_v1beta1.types.InsightTypeConfig:
+                Configuration for an InsightType.
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = recommender_service.GetInsightTypeConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_insight_type_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def update_insight_type_config(
+        self,
+        request: Union[recommender_service.UpdateInsightTypeConfigRequest, dict] = None,
+        *,
+        insight_type_config: gcr_insight_type_config.InsightTypeConfig = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gcr_insight_type_config.InsightTypeConfig:
+        r"""Updates an InsightTypeConfig change. This will create
+        a new revision of the config.
+
+        Args:
+            request (Union[google.cloud.recommender_v1beta1.types.UpdateInsightTypeConfigRequest, dict]):
+                The request object. Request for the
+                `UpdateInsightTypeConfig` method.
+            insight_type_config (:class:`google.cloud.recommender_v1beta1.types.InsightTypeConfig`):
+                Required. The InsightTypeConfig to
+                update.
+
+                This corresponds to the ``insight_type_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                The list of fields to be updated.
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.recommender_v1beta1.types.InsightTypeConfig:
+                Configuration for an InsightType.
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([insight_type_config, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = recommender_service.UpdateInsightTypeConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if insight_type_config is not None:
+            request.insight_type_config = insight_type_config
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_insight_type_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("insight_type_config.name", request.insight_type_config.name),)
+            ),
         )
 
         # Send the request.

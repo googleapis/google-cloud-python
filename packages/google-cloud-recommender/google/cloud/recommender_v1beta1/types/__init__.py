@@ -17,6 +17,10 @@ from .insight import (
     Insight,
     InsightStateInfo,
 )
+from .insight_type_config import (
+    InsightTypeConfig,
+    InsightTypeGenerationConfig,
+)
 from .recommendation import (
     CostProjection,
     Impact,
@@ -25,11 +29,18 @@ from .recommendation import (
     Recommendation,
     RecommendationContent,
     RecommendationStateInfo,
+    SecurityProjection,
     ValueMatcher,
+)
+from .recommender_config import (
+    RecommenderConfig,
+    RecommenderGenerationConfig,
 )
 from .recommender_service import (
     GetInsightRequest,
+    GetInsightTypeConfigRequest,
     GetRecommendationRequest,
+    GetRecommenderConfigRequest,
     ListInsightsRequest,
     ListInsightsResponse,
     ListRecommendationsRequest,
@@ -38,11 +49,15 @@ from .recommender_service import (
     MarkRecommendationClaimedRequest,
     MarkRecommendationFailedRequest,
     MarkRecommendationSucceededRequest,
+    UpdateInsightTypeConfigRequest,
+    UpdateRecommenderConfigRequest,
 )
 
 __all__ = (
     "Insight",
     "InsightStateInfo",
+    "InsightTypeConfig",
+    "InsightTypeGenerationConfig",
     "CostProjection",
     "Impact",
     "Operation",
@@ -50,9 +65,14 @@ __all__ = (
     "Recommendation",
     "RecommendationContent",
     "RecommendationStateInfo",
+    "SecurityProjection",
     "ValueMatcher",
+    "RecommenderConfig",
+    "RecommenderGenerationConfig",
     "GetInsightRequest",
+    "GetInsightTypeConfigRequest",
     "GetRecommendationRequest",
+    "GetRecommenderConfigRequest",
     "ListInsightsRequest",
     "ListInsightsResponse",
     "ListRecommendationsRequest",
@@ -61,4 +81,6 @@ __all__ = (
     "MarkRecommendationClaimedRequest",
     "MarkRecommendationFailedRequest",
     "MarkRecommendationSucceededRequest",
+    "UpdateInsightTypeConfigRequest",
+    "UpdateRecommenderConfigRequest",
 )

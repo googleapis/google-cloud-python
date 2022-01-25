@@ -16,7 +16,14 @@
 import proto  # type: ignore
 
 from google.cloud.recommender_v1beta1.types import insight
+from google.cloud.recommender_v1beta1.types import (
+    insight_type_config as gcr_insight_type_config,
+)
 from google.cloud.recommender_v1beta1.types import recommendation
+from google.cloud.recommender_v1beta1.types import (
+    recommender_config as gcr_recommender_config,
+)
+from google.protobuf import field_mask_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -32,6 +39,10 @@ __protobuf__ = proto.module(
         "MarkRecommendationClaimedRequest",
         "MarkRecommendationSucceededRequest",
         "MarkRecommendationFailedRequest",
+        "GetRecommenderConfigRequest",
+        "UpdateRecommenderConfigRequest",
+        "GetInsightTypeConfigRequest",
+        "UpdateInsightTypeConfigRequest",
     },
 )
 
@@ -44,9 +55,15 @@ class ListInsightsRequest(proto.Message):
             Required. The container resource on which to execute the
             request. Acceptable formats:
 
-            1.
+            -  ``projects/[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
 
-            "projects/[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]",
+            -  ``projects/[PROJECT_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
+
+            -  ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
+
+            -  ``folders/[FOLDER_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
+
+            -  ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
 
             LOCATION here refers to GCP Locations:
             https://cloud.google.com/about/locations/ INSIGHT_TYPE_ID
@@ -65,8 +82,26 @@ class ListInsightsRequest(proto.Message):
             identical to those in the previous call.
         filter (str):
             Optional. Filter expression to restrict the insights
-            returned. Supported filter fields: state Eg:
-            \`state:"DISMISSED" or state:"ACTIVE".
+            returned. Supported filter fields:
+
+            -  ``stateInfo.state``
+
+            -  ``insightSubtype``
+
+            -  ``severity``
+
+            Examples:
+
+            -  ``stateInfo.state = ACTIVE OR stateInfo.state = DISMISSED``
+
+            -  ``insightSubtype = PERMISSIONS_USAGE``
+
+            -  ``severity = CRITICAL OR severity = HIGH``
+
+            -  ``stateInfo.state = ACTIVE AND (severity = CRITICAL OR severity = HIGH)``
+
+            (These expressions are based on the filter language
+            described at https://google.aip.dev/160)
     """
 
     parent = proto.Field(proto.STRING, number=1,)
@@ -133,9 +168,15 @@ class ListRecommendationsRequest(proto.Message):
             Required. The container resource on which to execute the
             request. Acceptable formats:
 
-            1.
+            -  ``projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
 
-            "projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]",
+            -  ``projects/[PROJECT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
+
+            -  ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
+
+            -  ``folders/[FOLDER_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
+
+            -  ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
 
             LOCATION here refers to GCP Locations:
             https://cloud.google.com/about/locations/ RECOMMENDER_ID
@@ -154,8 +195,26 @@ class ListRecommendationsRequest(proto.Message):
             identical to those in the previous call.
         filter (str):
             Filter expression to restrict the recommendations returned.
-            Supported filter fields: state_info.state Eg:
-            \`state_info.state:"DISMISSED" or state_info.state:"FAILED".
+            Supported filter fields:
+
+            -  ``state_info.state``
+
+            -  ``recommenderSubtype``
+
+            -  ``priority``
+
+            Examples:
+
+            -  ``stateInfo.state = ACTIVE OR stateInfo.state = DISMISSED``
+
+            -  ``recommenderSubtype = REMOVE_ROLE OR recommenderSubtype = REPLACE_ROLE``
+
+            -  ``priority = P1 OR priority = P2``
+
+            -  ``stateInfo.state = ACTIVE AND (priority = P1 OR priority = P2)``
+
+            (These expressions are based on the filter language
+            described at https://google.aip.dev/160)
     """
 
     parent = proto.Field(proto.STRING, number=1,)
@@ -258,6 +317,88 @@ class MarkRecommendationFailedRequest(proto.Message):
     name = proto.Field(proto.STRING, number=1,)
     state_metadata = proto.MapField(proto.STRING, proto.STRING, number=2,)
     etag = proto.Field(proto.STRING, number=3,)
+
+
+class GetRecommenderConfigRequest(proto.Message):
+    r"""Request for the GetRecommenderConfig\` method.
+
+    Attributes:
+        name (str):
+            Required. Name of the Recommendation Config to get.
+
+            Acceptable formats:
+
+            -  ``projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
+
+            -  ``projects/[PROJECT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
+
+            -  ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class UpdateRecommenderConfigRequest(proto.Message):
+    r"""Request for the ``UpdateRecommenderConfig`` method.
+
+    Attributes:
+        recommender_config (google.cloud.recommender_v1beta1.types.RecommenderConfig):
+            Required. The RecommenderConfig to update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            The list of fields to be updated.
+        validate_only (bool):
+            If true, validate the request and preview the
+            change, but do not actually update it.
+    """
+
+    recommender_config = proto.Field(
+        proto.MESSAGE, number=1, message=gcr_recommender_config.RecommenderConfig,
+    )
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
+    validate_only = proto.Field(proto.BOOL, number=3,)
+
+
+class GetInsightTypeConfigRequest(proto.Message):
+    r"""Request for the GetInsightTypeConfig\` method.
+
+    Attributes:
+        name (str):
+            Required. Name of the InsightTypeConfig to get.
+
+            Acceptable formats:
+
+            -  ``projects/[PROJECT_NUMBER]/locations/global/recommenders/[INSIGHT_TYPE_ID]/config``
+
+            -  ``projects/[PROJECT_ID]/locations/global/recommenders/[INSIGHT_TYPE_ID]/config``
+
+            -  ``organizations/[ORGANIZATION_ID]/locations/global/recommenders/[INSIGHT_TYPE_ID]/config``
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class UpdateInsightTypeConfigRequest(proto.Message):
+    r"""Request for the ``UpdateInsightTypeConfig`` method.
+
+    Attributes:
+        insight_type_config (google.cloud.recommender_v1beta1.types.InsightTypeConfig):
+            Required. The InsightTypeConfig to update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            The list of fields to be updated.
+        validate_only (bool):
+            If true, validate the request and preview the
+            change, but do not actually update it.
+    """
+
+    insight_type_config = proto.Field(
+        proto.MESSAGE, number=1, message=gcr_insight_type_config.InsightTypeConfig,
+    )
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
+    validate_only = proto.Field(proto.BOOL, number=3,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

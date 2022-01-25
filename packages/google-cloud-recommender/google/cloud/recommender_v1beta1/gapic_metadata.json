@@ -15,9 +15,19 @@
                 "get_insight"
               ]
             },
+            "GetInsightTypeConfig": {
+              "methods": [
+                "get_insight_type_config"
+              ]
+            },
             "GetRecommendation": {
               "methods": [
                 "get_recommendation"
+              ]
+            },
+            "GetRecommenderConfig": {
+              "methods": [
+                "get_recommender_config"
               ]
             },
             "ListInsights": {
@@ -48,6 +58,16 @@
             "MarkRecommendationSucceeded": {
               "methods": [
                 "mark_recommendation_succeeded"
+              ]
+            },
+            "UpdateInsightTypeConfig": {
+              "methods": [
+                "update_insight_type_config"
+              ]
+            },
+            "UpdateRecommenderConfig": {
+              "methods": [
+                "update_recommender_config"
               ]
             }
           }
@@ -60,9 +80,19 @@
                 "get_insight"
               ]
             },
+            "GetInsightTypeConfig": {
+              "methods": [
+                "get_insight_type_config"
+              ]
+            },
             "GetRecommendation": {
               "methods": [
                 "get_recommendation"
+              ]
+            },
+            "GetRecommenderConfig": {
+              "methods": [
+                "get_recommender_config"
               ]
             },
             "ListInsights": {
@@ -93,6 +123,16 @@
             "MarkRecommendationSucceeded": {
               "methods": [
                 "mark_recommendation_succeeded"
+              ]
+            },
+            "UpdateInsightTypeConfig": {
+              "methods": [
+                "update_insight_type_config"
+              ]
+            },
+            "UpdateRecommenderConfig": {
+              "methods": [
+                "update_recommender_config"
               ]
             }
           }

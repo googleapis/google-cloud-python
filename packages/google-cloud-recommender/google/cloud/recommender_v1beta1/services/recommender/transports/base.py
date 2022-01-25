@@ -26,7 +26,15 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.recommender_v1beta1.types import insight
+from google.cloud.recommender_v1beta1.types import insight_type_config
+from google.cloud.recommender_v1beta1.types import (
+    insight_type_config as gcr_insight_type_config,
+)
 from google.cloud.recommender_v1beta1.types import recommendation
+from google.cloud.recommender_v1beta1.types import recommender_config
+from google.cloud.recommender_v1beta1.types import (
+    recommender_config as gcr_recommender_config,
+)
 from google.cloud.recommender_v1beta1.types import recommender_service
 
 try:
@@ -202,6 +210,26 @@ class RecommenderTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.get_recommender_config: gapic_v1.method.wrap_method(
+                self.get_recommender_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_recommender_config: gapic_v1.method.wrap_method(
+                self.update_recommender_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_insight_type_config: gapic_v1.method.wrap_method(
+                self.get_insight_type_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_insight_type_config: gapic_v1.method.wrap_method(
+                self.update_insight_type_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -288,6 +316,54 @@ class RecommenderTransport(abc.ABC):
     ) -> Callable[
         [recommender_service.MarkRecommendationFailedRequest],
         Union[recommendation.Recommendation, Awaitable[recommendation.Recommendation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_recommender_config(
+        self,
+    ) -> Callable[
+        [recommender_service.GetRecommenderConfigRequest],
+        Union[
+            recommender_config.RecommenderConfig,
+            Awaitable[recommender_config.RecommenderConfig],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_recommender_config(
+        self,
+    ) -> Callable[
+        [recommender_service.UpdateRecommenderConfigRequest],
+        Union[
+            gcr_recommender_config.RecommenderConfig,
+            Awaitable[gcr_recommender_config.RecommenderConfig],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_insight_type_config(
+        self,
+    ) -> Callable[
+        [recommender_service.GetInsightTypeConfigRequest],
+        Union[
+            insight_type_config.InsightTypeConfig,
+            Awaitable[insight_type_config.InsightTypeConfig],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_insight_type_config(
+        self,
+    ) -> Callable[
+        [recommender_service.UpdateInsightTypeConfigRequest],
+        Union[
+            gcr_insight_type_config.InsightTypeConfig,
+            Awaitable[gcr_insight_type_config.InsightTypeConfig],
+        ],
     ]:
         raise NotImplementedError()
 
