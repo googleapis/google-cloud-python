@@ -1,22 +1,3 @@
-from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import json  # type: ignore
-import grpc  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-from google.api_core import rest_helpers
-from google.api_core import path_template
-from google.api_core import gapic_v1
-from requests import __version__ as requests_version
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
-import warnings
-
-try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
-except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object]  # type: ignore
-
 # -*- coding: utf-8 -*-
 # Copyright 2020 Google LLC
 #
@@ -33,6 +14,27 @@ except AttributeError:  # pragma: NO COVER
 # limitations under the License.
 #
 
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+import json  # type: ignore
+import grpc  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.api_core import rest_helpers
+from google.api_core import path_template
+from google.api_core import gapic_v1
+from requests import __version__ as requests_version
+import dataclasses
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import warnings
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
+
+
 from google.cloud.compute_v1.types import compute
 
 from .base import (
@@ -48,6 +50,12 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
+@dataclasses.dataclass
+class RegionHealthChecksRestStub:
+    _session: AuthorizedSession
+    _host: str
+
+
 class RegionHealthChecksRestTransport(RegionHealthChecksTransport):
     """REST backend transport for RegionHealthChecks.
 
@@ -59,6 +67,8 @@ class RegionHealthChecksRestTransport(RegionHealthChecksTransport):
 
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
+
+    _STUBS: Dict[str, RegionHealthChecksRestStub] = {}
 
     def __init__(
         self,
@@ -97,7 +107,7 @@ class RegionHealthChecksRestTransport(RegionHealthChecksTransport):
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
                 The client info used to send a user-agent string along with
                 API requests. If ``None``, then default info will be used.
-                Generally, you only need to set this if you're developing
+                Generally, you only need to set this if you are developing
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
@@ -122,31 +132,45 @@ class RegionHealthChecksRestTransport(RegionHealthChecksTransport):
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._prep_wrapped_messages(client_info)
 
-    def _delete(
-        self,
-        request: compute.DeleteRegionHealthCheckRequest,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.Operation:
-        r"""Call the delete method over HTTP.
+    class _Delete(RegionHealthChecksRestStub):
+        def __hash__(self):
+            return hash("Delete")
 
-        Args:
-            request (~.compute.DeleteRegionHealthCheckRequest):
-                The request object. A request message for
+        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.DeleteRegionHealthCheckRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.Operation:
+            r"""Call the delete method over HTTP.
+
+            Args:
+                request (~.compute.DeleteRegionHealthCheckRequest):
+                    The request object. A request message for
                 RegionHealthChecks.Delete. See the
                 method description for details.
 
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
 
-        Returns:
-            ~.compute.Operation:
-                Represents an Operation resource. Google Compute Engine
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
                 has three Operation resources: \*
                 `Global </compute/docs/reference/rest/v1/globalOperations>`__
                 \*
@@ -162,92 +186,93 @@ class RegionHealthChecksRestTransport(RegionHealthChecksTransport):
                 use the ``zonalOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
-        """
+            """
 
-        http_options = [
-            {
-                "method": "delete",
-                "uri": "/compute/v1/projects/{project}/regions/{region}/healthChecks/{health_check}",
-            },
-        ]
+            http_options = [
+                {
+                    "method": "delete",
+                    "uri": "/compute/v1/projects/{project}/regions/{region}/healthChecks/{health_check}",
+                },
+            ]
 
-        required_fields = [
-            # (snake_case_name, camel_case_name)
-            ("health_check", "healthCheck"),
-            ("project", "project"),
-            ("region", "region"),
-        ]
+            request_kwargs = compute.DeleteRegionHealthCheckRequest.to_dict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
-        request_kwargs = compute.DeleteRegionHealthCheckRequest.to_dict(request)
-        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
-        uri = transcoded_request["uri"]
-        method = transcoded_request["method"]
-
-        # Jsonify the query params
-        query_params = json.loads(
-            compute.DeleteRegionHealthCheckRequest.to_json(
-                compute.DeleteRegionHealthCheckRequest(
-                    transcoded_request["query_params"]
-                ),
-                including_default_value_fields=False,
-                use_integers_for_enums=False,
+            # Jsonify the query params
+            query_params = json.loads(
+                compute.DeleteRegionHealthCheckRequest.to_json(
+                    compute.DeleteRegionHealthCheckRequest(
+                        transcoded_request["query_params"]
+                    ),
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
             )
-        )
 
-        # Ensure required fields have values in query_params.
-        # If a required field has a default value, it can get lost
-        # by the to_json call above.
-        orig_query_params = transcoded_request["query_params"]
-        for snake_case_name, camel_case_name in required_fields:
-            if snake_case_name in orig_query_params:
-                if camel_case_name not in query_params:
-                    query_params[camel_case_name] = orig_query_params[snake_case_name]
+            query_params.update(self._get_unset_required_fields(query_params))
 
-        # Send the request
-        headers = dict(metadata)
-        headers["Content-Type"] = "application/json"
-        response = getattr(self._session, method)(
-            # Replace with proper schema configuration (http/https) logic
-            "https://{host}{uri}".format(host=self._host, uri=uri),
-            timeout=timeout,
-            headers=headers,
-            params=rest_helpers.flatten_query_params(query_params),
-        )
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                # Replace with proper schema configuration (http/https) logic
+                "https://{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+            )
 
-        # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-        # subclass.
-        if response.status_code >= 400:
-            raise core_exceptions.from_http_response(response)
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+            # Return the response
+            return compute.Operation.from_json(
+                response.content, ignore_unknown_fields=True
+            )
 
-        # Return the response
-        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
+    class _Get(RegionHealthChecksRestStub):
+        def __hash__(self):
+            return hash("Get")
 
-    def _get(
-        self,
-        request: compute.GetRegionHealthCheckRequest,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.HealthCheck:
-        r"""Call the get method over HTTP.
+        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
 
-        Args:
-            request (~.compute.GetRegionHealthCheckRequest):
-                The request object. A request message for
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.GetRegionHealthCheckRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.HealthCheck:
+            r"""Call the get method over HTTP.
+
+            Args:
+                request (~.compute.GetRegionHealthCheckRequest):
+                    The request object. A request message for
                 RegionHealthChecks.Get. See the method
                 description for details.
 
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
 
-        Returns:
-            ~.compute.HealthCheck:
-                Represents a Health Check resource. Google Compute
+            Returns:
+                ~.compute.HealthCheck:
+                    Represents a Health Check resource. Google Compute
                 Engine has two Health Check resources: \*
                 `Global </compute/docs/reference/rest/v1/healthChecks>`__
                 \*
@@ -268,92 +293,93 @@ class RegionHealthChecksRestTransport(RegionHealthChecksTransport):
                 HTTP health checks (``compute.v1.httpHealthChecks``).
                 For more information, see Health checks overview.
 
-        """
+            """
 
-        http_options = [
-            {
-                "method": "get",
-                "uri": "/compute/v1/projects/{project}/regions/{region}/healthChecks/{health_check}",
-            },
-        ]
+            http_options = [
+                {
+                    "method": "get",
+                    "uri": "/compute/v1/projects/{project}/regions/{region}/healthChecks/{health_check}",
+                },
+            ]
 
-        required_fields = [
-            # (snake_case_name, camel_case_name)
-            ("health_check", "healthCheck"),
-            ("project", "project"),
-            ("region", "region"),
-        ]
+            request_kwargs = compute.GetRegionHealthCheckRequest.to_dict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
-        request_kwargs = compute.GetRegionHealthCheckRequest.to_dict(request)
-        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
-        uri = transcoded_request["uri"]
-        method = transcoded_request["method"]
-
-        # Jsonify the query params
-        query_params = json.loads(
-            compute.GetRegionHealthCheckRequest.to_json(
-                compute.GetRegionHealthCheckRequest(transcoded_request["query_params"]),
-                including_default_value_fields=False,
-                use_integers_for_enums=False,
+            # Jsonify the query params
+            query_params = json.loads(
+                compute.GetRegionHealthCheckRequest.to_json(
+                    compute.GetRegionHealthCheckRequest(
+                        transcoded_request["query_params"]
+                    ),
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
             )
-        )
 
-        # Ensure required fields have values in query_params.
-        # If a required field has a default value, it can get lost
-        # by the to_json call above.
-        orig_query_params = transcoded_request["query_params"]
-        for snake_case_name, camel_case_name in required_fields:
-            if snake_case_name in orig_query_params:
-                if camel_case_name not in query_params:
-                    query_params[camel_case_name] = orig_query_params[snake_case_name]
+            query_params.update(self._get_unset_required_fields(query_params))
 
-        # Send the request
-        headers = dict(metadata)
-        headers["Content-Type"] = "application/json"
-        response = getattr(self._session, method)(
-            # Replace with proper schema configuration (http/https) logic
-            "https://{host}{uri}".format(host=self._host, uri=uri),
-            timeout=timeout,
-            headers=headers,
-            params=rest_helpers.flatten_query_params(query_params),
-        )
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                # Replace with proper schema configuration (http/https) logic
+                "https://{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+            )
 
-        # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-        # subclass.
-        if response.status_code >= 400:
-            raise core_exceptions.from_http_response(response)
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+            # Return the response
+            return compute.HealthCheck.from_json(
+                response.content, ignore_unknown_fields=True
+            )
 
-        # Return the response
-        return compute.HealthCheck.from_json(
-            response.content, ignore_unknown_fields=True
-        )
+    class _Insert(RegionHealthChecksRestStub):
+        def __hash__(self):
+            return hash("Insert")
 
-    def _insert(
-        self,
-        request: compute.InsertRegionHealthCheckRequest,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.Operation:
-        r"""Call the insert method over HTTP.
+        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
 
-        Args:
-            request (~.compute.InsertRegionHealthCheckRequest):
-                The request object. A request message for
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.InsertRegionHealthCheckRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.Operation:
+            r"""Call the insert method over HTTP.
+
+            Args:
+                request (~.compute.InsertRegionHealthCheckRequest):
+                    The request object. A request message for
                 RegionHealthChecks.Insert. See the
                 method description for details.
 
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
 
-        Returns:
-            ~.compute.Operation:
-                Represents an Operation resource. Google Compute Engine
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
                 has three Operation resources: \*
                 `Global </compute/docs/reference/rest/v1/globalOperations>`__
                 \*
@@ -369,188 +395,190 @@ class RegionHealthChecksRestTransport(RegionHealthChecksTransport):
                 use the ``zonalOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
-        """
+            """
 
-        http_options = [
-            {
-                "method": "post",
-                "uri": "/compute/v1/projects/{project}/regions/{region}/healthChecks",
-                "body": "health_check_resource",
-            },
-        ]
+            http_options = [
+                {
+                    "method": "post",
+                    "uri": "/compute/v1/projects/{project}/regions/{region}/healthChecks",
+                    "body": "health_check_resource",
+                },
+            ]
 
-        required_fields = [
-            # (snake_case_name, camel_case_name)
-            ("project", "project"),
-            ("region", "region"),
-        ]
+            request_kwargs = compute.InsertRegionHealthCheckRequest.to_dict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
-        request_kwargs = compute.InsertRegionHealthCheckRequest.to_dict(request)
-        transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-        # Jsonify the request body
-        body = compute.HealthCheck.to_json(
-            compute.HealthCheck(transcoded_request["body"]),
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
-        uri = transcoded_request["uri"]
-        method = transcoded_request["method"]
-
-        # Jsonify the query params
-        query_params = json.loads(
-            compute.InsertRegionHealthCheckRequest.to_json(
-                compute.InsertRegionHealthCheckRequest(
-                    transcoded_request["query_params"]
-                ),
+            # Jsonify the request body
+            body = compute.HealthCheck.to_json(
+                compute.HealthCheck(transcoded_request["body"]),
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
-        )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
-        # Ensure required fields have values in query_params.
-        # If a required field has a default value, it can get lost
-        # by the to_json call above.
-        orig_query_params = transcoded_request["query_params"]
-        for snake_case_name, camel_case_name in required_fields:
-            if snake_case_name in orig_query_params:
-                if camel_case_name not in query_params:
-                    query_params[camel_case_name] = orig_query_params[snake_case_name]
+            # Jsonify the query params
+            query_params = json.loads(
+                compute.InsertRegionHealthCheckRequest.to_json(
+                    compute.InsertRegionHealthCheckRequest(
+                        transcoded_request["query_params"]
+                    ),
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
 
-        # Send the request
-        headers = dict(metadata)
-        headers["Content-Type"] = "application/json"
-        response = getattr(self._session, method)(
-            # Replace with proper schema configuration (http/https) logic
-            "https://{host}{uri}".format(host=self._host, uri=uri),
-            timeout=timeout,
-            headers=headers,
-            params=rest_helpers.flatten_query_params(query_params),
-            data=body,
-        )
+            query_params.update(self._get_unset_required_fields(query_params))
 
-        # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-        # subclass.
-        if response.status_code >= 400:
-            raise core_exceptions.from_http_response(response)
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                # Replace with proper schema configuration (http/https) logic
+                "https://{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+                data=body,
+            )
 
-        # Return the response
-        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+            # Return the response
+            return compute.Operation.from_json(
+                response.content, ignore_unknown_fields=True
+            )
 
-    def _list(
-        self,
-        request: compute.ListRegionHealthChecksRequest,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.HealthCheckList:
-        r"""Call the list method over HTTP.
+    class _List(RegionHealthChecksRestStub):
+        def __hash__(self):
+            return hash("List")
 
-        Args:
-            request (~.compute.ListRegionHealthChecksRequest):
-                The request object. A request message for
+        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.ListRegionHealthChecksRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.HealthCheckList:
+            r"""Call the list method over HTTP.
+
+            Args:
+                request (~.compute.ListRegionHealthChecksRequest):
+                    The request object. A request message for
                 RegionHealthChecks.List. See the method
                 description for details.
 
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
 
-        Returns:
-            ~.compute.HealthCheckList:
-                Contains a list of HealthCheck
+            Returns:
+                ~.compute.HealthCheckList:
+                    Contains a list of HealthCheck
                 resources.
 
-        """
+            """
 
-        http_options = [
-            {
-                "method": "get",
-                "uri": "/compute/v1/projects/{project}/regions/{region}/healthChecks",
-            },
-        ]
+            http_options = [
+                {
+                    "method": "get",
+                    "uri": "/compute/v1/projects/{project}/regions/{region}/healthChecks",
+                },
+            ]
 
-        required_fields = [
-            # (snake_case_name, camel_case_name)
-            ("project", "project"),
-            ("region", "region"),
-        ]
+            request_kwargs = compute.ListRegionHealthChecksRequest.to_dict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
-        request_kwargs = compute.ListRegionHealthChecksRequest.to_dict(request)
-        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
-        uri = transcoded_request["uri"]
-        method = transcoded_request["method"]
-
-        # Jsonify the query params
-        query_params = json.loads(
-            compute.ListRegionHealthChecksRequest.to_json(
-                compute.ListRegionHealthChecksRequest(
-                    transcoded_request["query_params"]
-                ),
-                including_default_value_fields=False,
-                use_integers_for_enums=False,
+            # Jsonify the query params
+            query_params = json.loads(
+                compute.ListRegionHealthChecksRequest.to_json(
+                    compute.ListRegionHealthChecksRequest(
+                        transcoded_request["query_params"]
+                    ),
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
             )
-        )
 
-        # Ensure required fields have values in query_params.
-        # If a required field has a default value, it can get lost
-        # by the to_json call above.
-        orig_query_params = transcoded_request["query_params"]
-        for snake_case_name, camel_case_name in required_fields:
-            if snake_case_name in orig_query_params:
-                if camel_case_name not in query_params:
-                    query_params[camel_case_name] = orig_query_params[snake_case_name]
+            query_params.update(self._get_unset_required_fields(query_params))
 
-        # Send the request
-        headers = dict(metadata)
-        headers["Content-Type"] = "application/json"
-        response = getattr(self._session, method)(
-            # Replace with proper schema configuration (http/https) logic
-            "https://{host}{uri}".format(host=self._host, uri=uri),
-            timeout=timeout,
-            headers=headers,
-            params=rest_helpers.flatten_query_params(query_params),
-        )
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                # Replace with proper schema configuration (http/https) logic
+                "https://{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+            )
 
-        # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-        # subclass.
-        if response.status_code >= 400:
-            raise core_exceptions.from_http_response(response)
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+            # Return the response
+            return compute.HealthCheckList.from_json(
+                response.content, ignore_unknown_fields=True
+            )
 
-        # Return the response
-        return compute.HealthCheckList.from_json(
-            response.content, ignore_unknown_fields=True
-        )
+    class _Patch(RegionHealthChecksRestStub):
+        def __hash__(self):
+            return hash("Patch")
 
-    def _patch(
-        self,
-        request: compute.PatchRegionHealthCheckRequest,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.Operation:
-        r"""Call the patch method over HTTP.
+        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
 
-        Args:
-            request (~.compute.PatchRegionHealthCheckRequest):
-                The request object. A request message for
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.PatchRegionHealthCheckRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.Operation:
+            r"""Call the patch method over HTTP.
+
+            Args:
+                request (~.compute.PatchRegionHealthCheckRequest):
+                    The request object. A request message for
                 RegionHealthChecks.Patch. See the method
                 description for details.
 
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
 
-        Returns:
-            ~.compute.Operation:
-                Represents an Operation resource. Google Compute Engine
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
                 has three Operation resources: \*
                 `Global </compute/docs/reference/rest/v1/globalOperations>`__
                 \*
@@ -566,100 +594,101 @@ class RegionHealthChecksRestTransport(RegionHealthChecksTransport):
                 use the ``zonalOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
-        """
+            """
 
-        http_options = [
-            {
-                "method": "patch",
-                "uri": "/compute/v1/projects/{project}/regions/{region}/healthChecks/{health_check}",
-                "body": "health_check_resource",
-            },
-        ]
+            http_options = [
+                {
+                    "method": "patch",
+                    "uri": "/compute/v1/projects/{project}/regions/{region}/healthChecks/{health_check}",
+                    "body": "health_check_resource",
+                },
+            ]
 
-        required_fields = [
-            # (snake_case_name, camel_case_name)
-            ("health_check", "healthCheck"),
-            ("project", "project"),
-            ("region", "region"),
-        ]
+            request_kwargs = compute.PatchRegionHealthCheckRequest.to_dict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
-        request_kwargs = compute.PatchRegionHealthCheckRequest.to_dict(request)
-        transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-        # Jsonify the request body
-        body = compute.HealthCheck.to_json(
-            compute.HealthCheck(transcoded_request["body"]),
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
-        uri = transcoded_request["uri"]
-        method = transcoded_request["method"]
-
-        # Jsonify the query params
-        query_params = json.loads(
-            compute.PatchRegionHealthCheckRequest.to_json(
-                compute.PatchRegionHealthCheckRequest(
-                    transcoded_request["query_params"]
-                ),
+            # Jsonify the request body
+            body = compute.HealthCheck.to_json(
+                compute.HealthCheck(transcoded_request["body"]),
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
-        )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
-        # Ensure required fields have values in query_params.
-        # If a required field has a default value, it can get lost
-        # by the to_json call above.
-        orig_query_params = transcoded_request["query_params"]
-        for snake_case_name, camel_case_name in required_fields:
-            if snake_case_name in orig_query_params:
-                if camel_case_name not in query_params:
-                    query_params[camel_case_name] = orig_query_params[snake_case_name]
+            # Jsonify the query params
+            query_params = json.loads(
+                compute.PatchRegionHealthCheckRequest.to_json(
+                    compute.PatchRegionHealthCheckRequest(
+                        transcoded_request["query_params"]
+                    ),
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
 
-        # Send the request
-        headers = dict(metadata)
-        headers["Content-Type"] = "application/json"
-        response = getattr(self._session, method)(
-            # Replace with proper schema configuration (http/https) logic
-            "https://{host}{uri}".format(host=self._host, uri=uri),
-            timeout=timeout,
-            headers=headers,
-            params=rest_helpers.flatten_query_params(query_params),
-            data=body,
-        )
+            query_params.update(self._get_unset_required_fields(query_params))
 
-        # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-        # subclass.
-        if response.status_code >= 400:
-            raise core_exceptions.from_http_response(response)
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                # Replace with proper schema configuration (http/https) logic
+                "https://{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+                data=body,
+            )
 
-        # Return the response
-        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+            # Return the response
+            return compute.Operation.from_json(
+                response.content, ignore_unknown_fields=True
+            )
 
-    def _update(
-        self,
-        request: compute.UpdateRegionHealthCheckRequest,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.Operation:
-        r"""Call the update method over HTTP.
+    class _Update(RegionHealthChecksRestStub):
+        def __hash__(self):
+            return hash("Update")
 
-        Args:
-            request (~.compute.UpdateRegionHealthCheckRequest):
-                The request object. A request message for
+        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.UpdateRegionHealthCheckRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.Operation:
+            r"""Call the update method over HTTP.
+
+            Args:
+                request (~.compute.UpdateRegionHealthCheckRequest):
+                    The request object. A request message for
                 RegionHealthChecks.Update. See the
                 method description for details.
 
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
 
-        Returns:
-            ~.compute.Operation:
-                Represents an Operation resource. Google Compute Engine
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
                 has three Operation resources: \*
                 `Global </compute/docs/reference/rest/v1/globalOperations>`__
                 \*
@@ -675,110 +704,121 @@ class RegionHealthChecksRestTransport(RegionHealthChecksTransport):
                 use the ``zonalOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
-        """
+            """
 
-        http_options = [
-            {
-                "method": "put",
-                "uri": "/compute/v1/projects/{project}/regions/{region}/healthChecks/{health_check}",
-                "body": "health_check_resource",
-            },
-        ]
+            http_options = [
+                {
+                    "method": "put",
+                    "uri": "/compute/v1/projects/{project}/regions/{region}/healthChecks/{health_check}",
+                    "body": "health_check_resource",
+                },
+            ]
 
-        required_fields = [
-            # (snake_case_name, camel_case_name)
-            ("health_check", "healthCheck"),
-            ("project", "project"),
-            ("region", "region"),
-        ]
+            request_kwargs = compute.UpdateRegionHealthCheckRequest.to_dict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
-        request_kwargs = compute.UpdateRegionHealthCheckRequest.to_dict(request)
-        transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-        # Jsonify the request body
-        body = compute.HealthCheck.to_json(
-            compute.HealthCheck(transcoded_request["body"]),
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
-        uri = transcoded_request["uri"]
-        method = transcoded_request["method"]
-
-        # Jsonify the query params
-        query_params = json.loads(
-            compute.UpdateRegionHealthCheckRequest.to_json(
-                compute.UpdateRegionHealthCheckRequest(
-                    transcoded_request["query_params"]
-                ),
+            # Jsonify the request body
+            body = compute.HealthCheck.to_json(
+                compute.HealthCheck(transcoded_request["body"]),
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
-        )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
-        # Ensure required fields have values in query_params.
-        # If a required field has a default value, it can get lost
-        # by the to_json call above.
-        orig_query_params = transcoded_request["query_params"]
-        for snake_case_name, camel_case_name in required_fields:
-            if snake_case_name in orig_query_params:
-                if camel_case_name not in query_params:
-                    query_params[camel_case_name] = orig_query_params[snake_case_name]
+            # Jsonify the query params
+            query_params = json.loads(
+                compute.UpdateRegionHealthCheckRequest.to_json(
+                    compute.UpdateRegionHealthCheckRequest(
+                        transcoded_request["query_params"]
+                    ),
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
 
-        # Send the request
-        headers = dict(metadata)
-        headers["Content-Type"] = "application/json"
-        response = getattr(self._session, method)(
-            # Replace with proper schema configuration (http/https) logic
-            "https://{host}{uri}".format(host=self._host, uri=uri),
-            timeout=timeout,
-            headers=headers,
-            params=rest_helpers.flatten_query_params(query_params),
-            data=body,
-        )
+            query_params.update(self._get_unset_required_fields(query_params))
 
-        # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-        # subclass.
-        if response.status_code >= 400:
-            raise core_exceptions.from_http_response(response)
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                # Replace with proper schema configuration (http/https) logic
+                "https://{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+                data=body,
+            )
 
-        # Return the response
-        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+            # Return the response
+            return compute.Operation.from_json(
+                response.content, ignore_unknown_fields=True
+            )
 
     @property
     def delete(
         self,
     ) -> Callable[[compute.DeleteRegionHealthCheckRequest], compute.Operation]:
-        return self._delete
+        stub = self._STUBS.get("delete")
+        if not stub:
+            stub = self._STUBS["delete"] = self._Delete(self._session, self._host)
+
+        return stub
 
     @property
     def get(
         self,
     ) -> Callable[[compute.GetRegionHealthCheckRequest], compute.HealthCheck]:
-        return self._get
+        stub = self._STUBS.get("get")
+        if not stub:
+            stub = self._STUBS["get"] = self._Get(self._session, self._host)
+
+        return stub
 
     @property
     def insert(
         self,
     ) -> Callable[[compute.InsertRegionHealthCheckRequest], compute.Operation]:
-        return self._insert
+        stub = self._STUBS.get("insert")
+        if not stub:
+            stub = self._STUBS["insert"] = self._Insert(self._session, self._host)
+
+        return stub
 
     @property
     def list(
         self,
     ) -> Callable[[compute.ListRegionHealthChecksRequest], compute.HealthCheckList]:
-        return self._list
+        stub = self._STUBS.get("list")
+        if not stub:
+            stub = self._STUBS["list"] = self._List(self._session, self._host)
+
+        return stub
 
     @property
     def patch(
         self,
     ) -> Callable[[compute.PatchRegionHealthCheckRequest], compute.Operation]:
-        return self._patch
+        stub = self._STUBS.get("patch")
+        if not stub:
+            stub = self._STUBS["patch"] = self._Patch(self._session, self._host)
+
+        return stub
 
     @property
     def update(
         self,
     ) -> Callable[[compute.UpdateRegionHealthCheckRequest], compute.Operation]:
-        return self._update
+        stub = self._STUBS.get("update")
+        if not stub:
+            stub = self._STUBS["update"] = self._Update(self._session, self._host)
+
+        return stub
 
     def close(self):
         self._session.close()

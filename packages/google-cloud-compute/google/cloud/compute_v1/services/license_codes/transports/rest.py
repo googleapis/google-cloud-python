@@ -1,22 +1,3 @@
-from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import json  # type: ignore
-import grpc  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-from google.api_core import rest_helpers
-from google.api_core import path_template
-from google.api_core import gapic_v1
-from requests import __version__ as requests_version
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
-import warnings
-
-try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
-except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object]  # type: ignore
-
 # -*- coding: utf-8 -*-
 # Copyright 2020 Google LLC
 #
@@ -33,6 +14,27 @@ except AttributeError:  # pragma: NO COVER
 # limitations under the License.
 #
 
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+import json  # type: ignore
+import grpc  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.api_core import rest_helpers
+from google.api_core import path_template
+from google.api_core import gapic_v1
+from requests import __version__ as requests_version
+import dataclasses
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import warnings
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
+
+
 from google.cloud.compute_v1.types import compute
 
 from .base import LicenseCodesTransport, DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -43,6 +45,12 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     grpc_version=None,
     rest_version=requests_version,
 )
+
+
+@dataclasses.dataclass
+class LicenseCodesRestStub:
+    _session: AuthorizedSession
+    _host: str
 
 
 class LicenseCodesRestTransport(LicenseCodesTransport):
@@ -56,6 +64,8 @@ class LicenseCodesRestTransport(LicenseCodesTransport):
 
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
+
+    _STUBS: Dict[str, LicenseCodesRestStub] = {}
 
     def __init__(
         self,
@@ -94,7 +104,7 @@ class LicenseCodesRestTransport(LicenseCodesTransport):
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
                 The client info used to send a user-agent string along with
                 API requests. If ``None``, then default info will be used.
-                Generally, you only need to set this if you're developing
+                Generally, you only need to set this if you are developing
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
@@ -119,194 +129,200 @@ class LicenseCodesRestTransport(LicenseCodesTransport):
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._prep_wrapped_messages(client_info)
 
-    def _get(
-        self,
-        request: compute.GetLicenseCodeRequest,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.LicenseCode:
-        r"""Call the get method over HTTP.
+    class _Get(LicenseCodesRestStub):
+        def __hash__(self):
+            return hash("Get")
 
-        Args:
-            request (~.compute.GetLicenseCodeRequest):
-                The request object. A request message for
+        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.GetLicenseCodeRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.LicenseCode:
+            r"""Call the get method over HTTP.
+
+            Args:
+                request (~.compute.GetLicenseCodeRequest):
+                    The request object. A request message for
                 LicenseCodes.Get. See the method
                 description for details.
 
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
 
-        Returns:
-            ~.compute.LicenseCode:
-                Represents a License Code resource. A License Code is a
+            Returns:
+                ~.compute.LicenseCode:
+                    Represents a License Code resource. A License Code is a
                 unique identifier used to represent a license resource.
                 *Caution* This resource is intended for use only by
                 third-party partners who are creating Cloud Marketplace
                 images.
 
-        """
+            """
 
-        http_options = [
-            {
-                "method": "get",
-                "uri": "/compute/v1/projects/{project}/global/licenseCodes/{license_code}",
-            },
-        ]
+            http_options = [
+                {
+                    "method": "get",
+                    "uri": "/compute/v1/projects/{project}/global/licenseCodes/{license_code}",
+                },
+            ]
 
-        required_fields = [
-            # (snake_case_name, camel_case_name)
-            ("license_code", "licenseCode"),
-            ("project", "project"),
-        ]
+            request_kwargs = compute.GetLicenseCodeRequest.to_dict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
-        request_kwargs = compute.GetLicenseCodeRequest.to_dict(request)
-        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
-        uri = transcoded_request["uri"]
-        method = transcoded_request["method"]
-
-        # Jsonify the query params
-        query_params = json.loads(
-            compute.GetLicenseCodeRequest.to_json(
-                compute.GetLicenseCodeRequest(transcoded_request["query_params"]),
-                including_default_value_fields=False,
-                use_integers_for_enums=False,
+            # Jsonify the query params
+            query_params = json.loads(
+                compute.GetLicenseCodeRequest.to_json(
+                    compute.GetLicenseCodeRequest(transcoded_request["query_params"]),
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
             )
-        )
 
-        # Ensure required fields have values in query_params.
-        # If a required field has a default value, it can get lost
-        # by the to_json call above.
-        orig_query_params = transcoded_request["query_params"]
-        for snake_case_name, camel_case_name in required_fields:
-            if snake_case_name in orig_query_params:
-                if camel_case_name not in query_params:
-                    query_params[camel_case_name] = orig_query_params[snake_case_name]
+            query_params.update(self._get_unset_required_fields(query_params))
 
-        # Send the request
-        headers = dict(metadata)
-        headers["Content-Type"] = "application/json"
-        response = getattr(self._session, method)(
-            # Replace with proper schema configuration (http/https) logic
-            "https://{host}{uri}".format(host=self._host, uri=uri),
-            timeout=timeout,
-            headers=headers,
-            params=rest_helpers.flatten_query_params(query_params),
-        )
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                # Replace with proper schema configuration (http/https) logic
+                "https://{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+            )
 
-        # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-        # subclass.
-        if response.status_code >= 400:
-            raise core_exceptions.from_http_response(response)
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+            # Return the response
+            return compute.LicenseCode.from_json(
+                response.content, ignore_unknown_fields=True
+            )
 
-        # Return the response
-        return compute.LicenseCode.from_json(
-            response.content, ignore_unknown_fields=True
-        )
+    class _TestIamPermissions(LicenseCodesRestStub):
+        def __hash__(self):
+            return hash("TestIamPermissions")
 
-    def _test_iam_permissions(
-        self,
-        request: compute.TestIamPermissionsLicenseCodeRequest,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.TestPermissionsResponse:
-        r"""Call the test iam permissions method over HTTP.
+        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
 
-        Args:
-            request (~.compute.TestIamPermissionsLicenseCodeRequest):
-                The request object. A request message for
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.TestIamPermissionsLicenseCodeRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.TestPermissionsResponse:
+            r"""Call the test iam permissions method over HTTP.
+
+            Args:
+                request (~.compute.TestIamPermissionsLicenseCodeRequest):
+                    The request object. A request message for
                 LicenseCodes.TestIamPermissions. See the
                 method description for details.
 
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
 
-        Returns:
-            ~.compute.TestPermissionsResponse:
+            Returns:
+                ~.compute.TestPermissionsResponse:
 
-        """
+            """
 
-        http_options = [
-            {
-                "method": "post",
-                "uri": "/compute/v1/projects/{project}/global/licenseCodes/{resource}/testIamPermissions",
-                "body": "test_permissions_request_resource",
-            },
-        ]
+            http_options = [
+                {
+                    "method": "post",
+                    "uri": "/compute/v1/projects/{project}/global/licenseCodes/{resource}/testIamPermissions",
+                    "body": "test_permissions_request_resource",
+                },
+            ]
 
-        required_fields = [
-            # (snake_case_name, camel_case_name)
-            ("project", "project"),
-            ("resource", "resource"),
-        ]
+            request_kwargs = compute.TestIamPermissionsLicenseCodeRequest.to_dict(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
-        request_kwargs = compute.TestIamPermissionsLicenseCodeRequest.to_dict(request)
-        transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-        # Jsonify the request body
-        body = compute.TestPermissionsRequest.to_json(
-            compute.TestPermissionsRequest(transcoded_request["body"]),
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
-        uri = transcoded_request["uri"]
-        method = transcoded_request["method"]
-
-        # Jsonify the query params
-        query_params = json.loads(
-            compute.TestIamPermissionsLicenseCodeRequest.to_json(
-                compute.TestIamPermissionsLicenseCodeRequest(
-                    transcoded_request["query_params"]
-                ),
+            # Jsonify the request body
+            body = compute.TestPermissionsRequest.to_json(
+                compute.TestPermissionsRequest(transcoded_request["body"]),
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
-        )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
-        # Ensure required fields have values in query_params.
-        # If a required field has a default value, it can get lost
-        # by the to_json call above.
-        orig_query_params = transcoded_request["query_params"]
-        for snake_case_name, camel_case_name in required_fields:
-            if snake_case_name in orig_query_params:
-                if camel_case_name not in query_params:
-                    query_params[camel_case_name] = orig_query_params[snake_case_name]
+            # Jsonify the query params
+            query_params = json.loads(
+                compute.TestIamPermissionsLicenseCodeRequest.to_json(
+                    compute.TestIamPermissionsLicenseCodeRequest(
+                        transcoded_request["query_params"]
+                    ),
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
 
-        # Send the request
-        headers = dict(metadata)
-        headers["Content-Type"] = "application/json"
-        response = getattr(self._session, method)(
-            # Replace with proper schema configuration (http/https) logic
-            "https://{host}{uri}".format(host=self._host, uri=uri),
-            timeout=timeout,
-            headers=headers,
-            params=rest_helpers.flatten_query_params(query_params),
-            data=body,
-        )
+            query_params.update(self._get_unset_required_fields(query_params))
 
-        # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-        # subclass.
-        if response.status_code >= 400:
-            raise core_exceptions.from_http_response(response)
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                # Replace with proper schema configuration (http/https) logic
+                "https://{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+                data=body,
+            )
 
-        # Return the response
-        return compute.TestPermissionsResponse.from_json(
-            response.content, ignore_unknown_fields=True
-        )
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+            # Return the response
+            return compute.TestPermissionsResponse.from_json(
+                response.content, ignore_unknown_fields=True
+            )
 
     @property
     def get(self) -> Callable[[compute.GetLicenseCodeRequest], compute.LicenseCode]:
-        return self._get
+        stub = self._STUBS.get("get")
+        if not stub:
+            stub = self._STUBS["get"] = self._Get(self._session, self._host)
+
+        return stub
 
     @property
     def test_iam_permissions(
@@ -314,7 +330,13 @@ class LicenseCodesRestTransport(LicenseCodesTransport):
     ) -> Callable[
         [compute.TestIamPermissionsLicenseCodeRequest], compute.TestPermissionsResponse
     ]:
-        return self._test_iam_permissions
+        stub = self._STUBS.get("test_iam_permissions")
+        if not stub:
+            stub = self._STUBS["test_iam_permissions"] = self._TestIamPermissions(
+                self._session, self._host
+            )
+
+        return stub
 
     def close(self):
         self._session.close()

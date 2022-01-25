@@ -1,22 +1,3 @@
-from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import json  # type: ignore
-import grpc  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-from google.api_core import rest_helpers
-from google.api_core import path_template
-from google.api_core import gapic_v1
-from requests import __version__ as requests_version
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
-import warnings
-
-try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
-except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object]  # type: ignore
-
 # -*- coding: utf-8 -*-
 # Copyright 2020 Google LLC
 #
@@ -33,6 +14,27 @@ except AttributeError:  # pragma: NO COVER
 # limitations under the License.
 #
 
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+import json  # type: ignore
+import grpc  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.api_core import rest_helpers
+from google.api_core import path_template
+from google.api_core import gapic_v1
+from requests import __version__ as requests_version
+import dataclasses
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import warnings
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object]  # type: ignore
+
+
 from google.cloud.compute_v1.types import compute
 
 from .base import (
@@ -48,6 +50,12 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
+@dataclasses.dataclass
+class NetworkEndpointGroupsRestStub:
+    _session: AuthorizedSession
+    _host: str
+
+
 class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
     """REST backend transport for NetworkEndpointGroups.
 
@@ -59,6 +67,8 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
 
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
+
+    _STUBS: Dict[str, NetworkEndpointGroupsRestStub] = {}
 
     def __init__(
         self,
@@ -97,7 +107,7 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
                 The client info used to send a user-agent string along with
                 API requests. If ``None``, then default info will be used.
-                Generally, you only need to set this if you're developing
+                Generally, you only need to set this if you are developing
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
@@ -122,119 +132,134 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._prep_wrapped_messages(client_info)
 
-    def _aggregated_list(
-        self,
-        request: compute.AggregatedListNetworkEndpointGroupsRequest,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.NetworkEndpointGroupAggregatedList:
-        r"""Call the aggregated list method over HTTP.
+    class _AggregatedList(NetworkEndpointGroupsRestStub):
+        def __hash__(self):
+            return hash("AggregatedList")
 
-        Args:
-            request (~.compute.AggregatedListNetworkEndpointGroupsRequest):
-                The request object. A request message for
+        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.AggregatedListNetworkEndpointGroupsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.NetworkEndpointGroupAggregatedList:
+            r"""Call the aggregated list method over HTTP.
+
+            Args:
+                request (~.compute.AggregatedListNetworkEndpointGroupsRequest):
+                    The request object. A request message for
                 NetworkEndpointGroups.AggregatedList.
                 See the method description for details.
 
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
 
-        Returns:
-            ~.compute.NetworkEndpointGroupAggregatedList:
+            Returns:
+                ~.compute.NetworkEndpointGroupAggregatedList:
 
-        """
+            """
 
-        http_options = [
-            {
-                "method": "get",
-                "uri": "/compute/v1/projects/{project}/aggregated/networkEndpointGroups",
-            },
-        ]
+            http_options = [
+                {
+                    "method": "get",
+                    "uri": "/compute/v1/projects/{project}/aggregated/networkEndpointGroups",
+                },
+            ]
 
-        required_fields = [
-            # (snake_case_name, camel_case_name)
-            ("project", "project"),
-        ]
-
-        request_kwargs = compute.AggregatedListNetworkEndpointGroupsRequest.to_dict(
-            request
-        )
-        transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-        uri = transcoded_request["uri"]
-        method = transcoded_request["method"]
-
-        # Jsonify the query params
-        query_params = json.loads(
-            compute.AggregatedListNetworkEndpointGroupsRequest.to_json(
-                compute.AggregatedListNetworkEndpointGroupsRequest(
-                    transcoded_request["query_params"]
-                ),
-                including_default_value_fields=False,
-                use_integers_for_enums=False,
+            request_kwargs = compute.AggregatedListNetworkEndpointGroupsRequest.to_dict(
+                request
             )
-        )
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
-        # Ensure required fields have values in query_params.
-        # If a required field has a default value, it can get lost
-        # by the to_json call above.
-        orig_query_params = transcoded_request["query_params"]
-        for snake_case_name, camel_case_name in required_fields:
-            if snake_case_name in orig_query_params:
-                if camel_case_name not in query_params:
-                    query_params[camel_case_name] = orig_query_params[snake_case_name]
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
-        # Send the request
-        headers = dict(metadata)
-        headers["Content-Type"] = "application/json"
-        response = getattr(self._session, method)(
-            # Replace with proper schema configuration (http/https) logic
-            "https://{host}{uri}".format(host=self._host, uri=uri),
-            timeout=timeout,
-            headers=headers,
-            params=rest_helpers.flatten_query_params(query_params),
-        )
+            # Jsonify the query params
+            query_params = json.loads(
+                compute.AggregatedListNetworkEndpointGroupsRequest.to_json(
+                    compute.AggregatedListNetworkEndpointGroupsRequest(
+                        transcoded_request["query_params"]
+                    ),
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
 
-        # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-        # subclass.
-        if response.status_code >= 400:
-            raise core_exceptions.from_http_response(response)
+            query_params.update(self._get_unset_required_fields(query_params))
 
-        # Return the response
-        return compute.NetworkEndpointGroupAggregatedList.from_json(
-            response.content, ignore_unknown_fields=True
-        )
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                # Replace with proper schema configuration (http/https) logic
+                "https://{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+            )
 
-    def _attach_network_endpoints(
-        self,
-        request: compute.AttachNetworkEndpointsNetworkEndpointGroupRequest,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.Operation:
-        r"""Call the attach network endpoints method over HTTP.
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+            # Return the response
+            return compute.NetworkEndpointGroupAggregatedList.from_json(
+                response.content, ignore_unknown_fields=True
+            )
 
-        Args:
-            request (~.compute.AttachNetworkEndpointsNetworkEndpointGroupRequest):
-                The request object. A request message for
+    class _AttachNetworkEndpoints(NetworkEndpointGroupsRestStub):
+        def __hash__(self):
+            return hash("AttachNetworkEndpoints")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.AttachNetworkEndpointsNetworkEndpointGroupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.Operation:
+            r"""Call the attach network endpoints method over HTTP.
+
+            Args:
+                request (~.compute.AttachNetworkEndpointsNetworkEndpointGroupRequest):
+                    The request object. A request message for
                 NetworkEndpointGroups.AttachNetworkEndpoints.
                 See the method description for details.
 
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
 
-        Returns:
-            ~.compute.Operation:
-                Represents an Operation resource. Google Compute Engine
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
                 has three Operation resources: \*
                 `Global </compute/docs/reference/rest/v1/globalOperations>`__
                 \*
@@ -250,104 +275,105 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
                 use the ``zonalOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
-        """
+            """
 
-        http_options = [
-            {
-                "method": "post",
-                "uri": "/compute/v1/projects/{project}/zones/{zone}/networkEndpointGroups/{network_endpoint_group}/attachNetworkEndpoints",
-                "body": "network_endpoint_groups_attach_endpoints_request_resource",
-            },
-        ]
+            http_options = [
+                {
+                    "method": "post",
+                    "uri": "/compute/v1/projects/{project}/zones/{zone}/networkEndpointGroups/{network_endpoint_group}/attachNetworkEndpoints",
+                    "body": "network_endpoint_groups_attach_endpoints_request_resource",
+                },
+            ]
 
-        required_fields = [
-            # (snake_case_name, camel_case_name)
-            ("network_endpoint_group", "networkEndpointGroup"),
-            ("project", "project"),
-            ("zone", "zone"),
-        ]
+            request_kwargs = compute.AttachNetworkEndpointsNetworkEndpointGroupRequest.to_dict(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
-        request_kwargs = compute.AttachNetworkEndpointsNetworkEndpointGroupRequest.to_dict(
-            request
-        )
-        transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-        # Jsonify the request body
-        body = compute.NetworkEndpointGroupsAttachEndpointsRequest.to_json(
-            compute.NetworkEndpointGroupsAttachEndpointsRequest(
-                transcoded_request["body"]
-            ),
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
-        uri = transcoded_request["uri"]
-        method = transcoded_request["method"]
-
-        # Jsonify the query params
-        query_params = json.loads(
-            compute.AttachNetworkEndpointsNetworkEndpointGroupRequest.to_json(
-                compute.AttachNetworkEndpointsNetworkEndpointGroupRequest(
-                    transcoded_request["query_params"]
+            # Jsonify the request body
+            body = compute.NetworkEndpointGroupsAttachEndpointsRequest.to_json(
+                compute.NetworkEndpointGroupsAttachEndpointsRequest(
+                    transcoded_request["body"]
                 ),
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
-        )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
-        # Ensure required fields have values in query_params.
-        # If a required field has a default value, it can get lost
-        # by the to_json call above.
-        orig_query_params = transcoded_request["query_params"]
-        for snake_case_name, camel_case_name in required_fields:
-            if snake_case_name in orig_query_params:
-                if camel_case_name not in query_params:
-                    query_params[camel_case_name] = orig_query_params[snake_case_name]
+            # Jsonify the query params
+            query_params = json.loads(
+                compute.AttachNetworkEndpointsNetworkEndpointGroupRequest.to_json(
+                    compute.AttachNetworkEndpointsNetworkEndpointGroupRequest(
+                        transcoded_request["query_params"]
+                    ),
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
 
-        # Send the request
-        headers = dict(metadata)
-        headers["Content-Type"] = "application/json"
-        response = getattr(self._session, method)(
-            # Replace with proper schema configuration (http/https) logic
-            "https://{host}{uri}".format(host=self._host, uri=uri),
-            timeout=timeout,
-            headers=headers,
-            params=rest_helpers.flatten_query_params(query_params),
-            data=body,
-        )
+            query_params.update(self._get_unset_required_fields(query_params))
 
-        # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-        # subclass.
-        if response.status_code >= 400:
-            raise core_exceptions.from_http_response(response)
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                # Replace with proper schema configuration (http/https) logic
+                "https://{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+                data=body,
+            )
 
-        # Return the response
-        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+            # Return the response
+            return compute.Operation.from_json(
+                response.content, ignore_unknown_fields=True
+            )
 
-    def _delete(
-        self,
-        request: compute.DeleteNetworkEndpointGroupRequest,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.Operation:
-        r"""Call the delete method over HTTP.
+    class _Delete(NetworkEndpointGroupsRestStub):
+        def __hash__(self):
+            return hash("Delete")
 
-        Args:
-            request (~.compute.DeleteNetworkEndpointGroupRequest):
-                The request object. A request message for
+        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.DeleteNetworkEndpointGroupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.Operation:
+            r"""Call the delete method over HTTP.
+
+            Args:
+                request (~.compute.DeleteNetworkEndpointGroupRequest):
+                    The request object. A request message for
                 NetworkEndpointGroups.Delete. See the
                 method description for details.
 
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
 
-        Returns:
-            ~.compute.Operation:
-                Represents an Operation resource. Google Compute Engine
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
                 has three Operation resources: \*
                 `Global </compute/docs/reference/rest/v1/globalOperations>`__
                 \*
@@ -363,92 +389,93 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
                 use the ``zonalOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
-        """
+            """
 
-        http_options = [
-            {
-                "method": "delete",
-                "uri": "/compute/v1/projects/{project}/zones/{zone}/networkEndpointGroups/{network_endpoint_group}",
-            },
-        ]
+            http_options = [
+                {
+                    "method": "delete",
+                    "uri": "/compute/v1/projects/{project}/zones/{zone}/networkEndpointGroups/{network_endpoint_group}",
+                },
+            ]
 
-        required_fields = [
-            # (snake_case_name, camel_case_name)
-            ("network_endpoint_group", "networkEndpointGroup"),
-            ("project", "project"),
-            ("zone", "zone"),
-        ]
+            request_kwargs = compute.DeleteNetworkEndpointGroupRequest.to_dict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
-        request_kwargs = compute.DeleteNetworkEndpointGroupRequest.to_dict(request)
-        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
-        uri = transcoded_request["uri"]
-        method = transcoded_request["method"]
-
-        # Jsonify the query params
-        query_params = json.loads(
-            compute.DeleteNetworkEndpointGroupRequest.to_json(
-                compute.DeleteNetworkEndpointGroupRequest(
-                    transcoded_request["query_params"]
-                ),
-                including_default_value_fields=False,
-                use_integers_for_enums=False,
+            # Jsonify the query params
+            query_params = json.loads(
+                compute.DeleteNetworkEndpointGroupRequest.to_json(
+                    compute.DeleteNetworkEndpointGroupRequest(
+                        transcoded_request["query_params"]
+                    ),
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
             )
-        )
 
-        # Ensure required fields have values in query_params.
-        # If a required field has a default value, it can get lost
-        # by the to_json call above.
-        orig_query_params = transcoded_request["query_params"]
-        for snake_case_name, camel_case_name in required_fields:
-            if snake_case_name in orig_query_params:
-                if camel_case_name not in query_params:
-                    query_params[camel_case_name] = orig_query_params[snake_case_name]
+            query_params.update(self._get_unset_required_fields(query_params))
 
-        # Send the request
-        headers = dict(metadata)
-        headers["Content-Type"] = "application/json"
-        response = getattr(self._session, method)(
-            # Replace with proper schema configuration (http/https) logic
-            "https://{host}{uri}".format(host=self._host, uri=uri),
-            timeout=timeout,
-            headers=headers,
-            params=rest_helpers.flatten_query_params(query_params),
-        )
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                # Replace with proper schema configuration (http/https) logic
+                "https://{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+            )
 
-        # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-        # subclass.
-        if response.status_code >= 400:
-            raise core_exceptions.from_http_response(response)
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+            # Return the response
+            return compute.Operation.from_json(
+                response.content, ignore_unknown_fields=True
+            )
 
-        # Return the response
-        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
+    class _DetachNetworkEndpoints(NetworkEndpointGroupsRestStub):
+        def __hash__(self):
+            return hash("DetachNetworkEndpoints")
 
-    def _detach_network_endpoints(
-        self,
-        request: compute.DetachNetworkEndpointsNetworkEndpointGroupRequest,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.Operation:
-        r"""Call the detach network endpoints method over HTTP.
+        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
 
-        Args:
-            request (~.compute.DetachNetworkEndpointsNetworkEndpointGroupRequest):
-                The request object. A request message for
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.DetachNetworkEndpointsNetworkEndpointGroupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.Operation:
+            r"""Call the detach network endpoints method over HTTP.
+
+            Args:
+                request (~.compute.DetachNetworkEndpointsNetworkEndpointGroupRequest):
+                    The request object. A request message for
                 NetworkEndpointGroups.DetachNetworkEndpoints.
                 See the method description for details.
 
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
 
-        Returns:
-            ~.compute.Operation:
-                Represents an Operation resource. Google Compute Engine
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
                 has three Operation resources: \*
                 `Global </compute/docs/reference/rest/v1/globalOperations>`__
                 \*
@@ -464,104 +491,105 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
                 use the ``zonalOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
-        """
+            """
 
-        http_options = [
-            {
-                "method": "post",
-                "uri": "/compute/v1/projects/{project}/zones/{zone}/networkEndpointGroups/{network_endpoint_group}/detachNetworkEndpoints",
-                "body": "network_endpoint_groups_detach_endpoints_request_resource",
-            },
-        ]
+            http_options = [
+                {
+                    "method": "post",
+                    "uri": "/compute/v1/projects/{project}/zones/{zone}/networkEndpointGroups/{network_endpoint_group}/detachNetworkEndpoints",
+                    "body": "network_endpoint_groups_detach_endpoints_request_resource",
+                },
+            ]
 
-        required_fields = [
-            # (snake_case_name, camel_case_name)
-            ("network_endpoint_group", "networkEndpointGroup"),
-            ("project", "project"),
-            ("zone", "zone"),
-        ]
+            request_kwargs = compute.DetachNetworkEndpointsNetworkEndpointGroupRequest.to_dict(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
-        request_kwargs = compute.DetachNetworkEndpointsNetworkEndpointGroupRequest.to_dict(
-            request
-        )
-        transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-        # Jsonify the request body
-        body = compute.NetworkEndpointGroupsDetachEndpointsRequest.to_json(
-            compute.NetworkEndpointGroupsDetachEndpointsRequest(
-                transcoded_request["body"]
-            ),
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
-        uri = transcoded_request["uri"]
-        method = transcoded_request["method"]
-
-        # Jsonify the query params
-        query_params = json.loads(
-            compute.DetachNetworkEndpointsNetworkEndpointGroupRequest.to_json(
-                compute.DetachNetworkEndpointsNetworkEndpointGroupRequest(
-                    transcoded_request["query_params"]
+            # Jsonify the request body
+            body = compute.NetworkEndpointGroupsDetachEndpointsRequest.to_json(
+                compute.NetworkEndpointGroupsDetachEndpointsRequest(
+                    transcoded_request["body"]
                 ),
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
-        )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
-        # Ensure required fields have values in query_params.
-        # If a required field has a default value, it can get lost
-        # by the to_json call above.
-        orig_query_params = transcoded_request["query_params"]
-        for snake_case_name, camel_case_name in required_fields:
-            if snake_case_name in orig_query_params:
-                if camel_case_name not in query_params:
-                    query_params[camel_case_name] = orig_query_params[snake_case_name]
+            # Jsonify the query params
+            query_params = json.loads(
+                compute.DetachNetworkEndpointsNetworkEndpointGroupRequest.to_json(
+                    compute.DetachNetworkEndpointsNetworkEndpointGroupRequest(
+                        transcoded_request["query_params"]
+                    ),
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
 
-        # Send the request
-        headers = dict(metadata)
-        headers["Content-Type"] = "application/json"
-        response = getattr(self._session, method)(
-            # Replace with proper schema configuration (http/https) logic
-            "https://{host}{uri}".format(host=self._host, uri=uri),
-            timeout=timeout,
-            headers=headers,
-            params=rest_helpers.flatten_query_params(query_params),
-            data=body,
-        )
+            query_params.update(self._get_unset_required_fields(query_params))
 
-        # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-        # subclass.
-        if response.status_code >= 400:
-            raise core_exceptions.from_http_response(response)
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                # Replace with proper schema configuration (http/https) logic
+                "https://{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+                data=body,
+            )
 
-        # Return the response
-        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+            # Return the response
+            return compute.Operation.from_json(
+                response.content, ignore_unknown_fields=True
+            )
 
-    def _get(
-        self,
-        request: compute.GetNetworkEndpointGroupRequest,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.NetworkEndpointGroup:
-        r"""Call the get method over HTTP.
+    class _Get(NetworkEndpointGroupsRestStub):
+        def __hash__(self):
+            return hash("Get")
 
-        Args:
-            request (~.compute.GetNetworkEndpointGroupRequest):
-                The request object. A request message for
+        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.GetNetworkEndpointGroupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.NetworkEndpointGroup:
+            r"""Call the get method over HTTP.
+
+            Args:
+                request (~.compute.GetNetworkEndpointGroupRequest):
+                    The request object. A request message for
                 NetworkEndpointGroups.Get. See the
                 method description for details.
 
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
 
-        Returns:
-            ~.compute.NetworkEndpointGroup:
-                Represents a collection of network
+            Returns:
+                ~.compute.NetworkEndpointGroup:
+                    Represents a collection of network
                 endpoints. A network endpoint group
                 (NEG) defines how a set of endpoints
                 should be reached, whether they are
@@ -573,94 +601,93 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
                 HTTP(S) Load Balancing with serverless
                 NEGs.
 
-        """
+            """
 
-        http_options = [
-            {
-                "method": "get",
-                "uri": "/compute/v1/projects/{project}/zones/{zone}/networkEndpointGroups/{network_endpoint_group}",
-            },
-        ]
+            http_options = [
+                {
+                    "method": "get",
+                    "uri": "/compute/v1/projects/{project}/zones/{zone}/networkEndpointGroups/{network_endpoint_group}",
+                },
+            ]
 
-        required_fields = [
-            # (snake_case_name, camel_case_name)
-            ("network_endpoint_group", "networkEndpointGroup"),
-            ("project", "project"),
-            ("zone", "zone"),
-        ]
+            request_kwargs = compute.GetNetworkEndpointGroupRequest.to_dict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
-        request_kwargs = compute.GetNetworkEndpointGroupRequest.to_dict(request)
-        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
-        uri = transcoded_request["uri"]
-        method = transcoded_request["method"]
-
-        # Jsonify the query params
-        query_params = json.loads(
-            compute.GetNetworkEndpointGroupRequest.to_json(
-                compute.GetNetworkEndpointGroupRequest(
-                    transcoded_request["query_params"]
-                ),
-                including_default_value_fields=False,
-                use_integers_for_enums=False,
+            # Jsonify the query params
+            query_params = json.loads(
+                compute.GetNetworkEndpointGroupRequest.to_json(
+                    compute.GetNetworkEndpointGroupRequest(
+                        transcoded_request["query_params"]
+                    ),
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
             )
-        )
 
-        # Ensure required fields have values in query_params.
-        # If a required field has a default value, it can get lost
-        # by the to_json call above.
-        orig_query_params = transcoded_request["query_params"]
-        for snake_case_name, camel_case_name in required_fields:
-            if snake_case_name in orig_query_params:
-                if camel_case_name not in query_params:
-                    query_params[camel_case_name] = orig_query_params[snake_case_name]
+            query_params.update(self._get_unset_required_fields(query_params))
 
-        # Send the request
-        headers = dict(metadata)
-        headers["Content-Type"] = "application/json"
-        response = getattr(self._session, method)(
-            # Replace with proper schema configuration (http/https) logic
-            "https://{host}{uri}".format(host=self._host, uri=uri),
-            timeout=timeout,
-            headers=headers,
-            params=rest_helpers.flatten_query_params(query_params),
-        )
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                # Replace with proper schema configuration (http/https) logic
+                "https://{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+            )
 
-        # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-        # subclass.
-        if response.status_code >= 400:
-            raise core_exceptions.from_http_response(response)
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+            # Return the response
+            return compute.NetworkEndpointGroup.from_json(
+                response.content, ignore_unknown_fields=True
+            )
 
-        # Return the response
-        return compute.NetworkEndpointGroup.from_json(
-            response.content, ignore_unknown_fields=True
-        )
+    class _Insert(NetworkEndpointGroupsRestStub):
+        def __hash__(self):
+            return hash("Insert")
 
-    def _insert(
-        self,
-        request: compute.InsertNetworkEndpointGroupRequest,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.Operation:
-        r"""Call the insert method over HTTP.
+        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
 
-        Args:
-            request (~.compute.InsertNetworkEndpointGroupRequest):
-                The request object. A request message for
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.InsertNetworkEndpointGroupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.Operation:
+            r"""Call the insert method over HTTP.
+
+            Args:
+                request (~.compute.InsertNetworkEndpointGroupRequest):
+                    The request object. A request message for
                 NetworkEndpointGroups.Insert. See the
                 method description for details.
 
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
 
-        Returns:
-            ~.compute.Operation:
-                Represents an Operation resource. Google Compute Engine
+            Returns:
+                ~.compute.Operation:
+                    Represents an Operation resource. Google Compute Engine
                 has three Operation resources: \*
                 `Global </compute/docs/reference/rest/v1/globalOperations>`__
                 \*
@@ -676,358 +703,344 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
                 use the ``zonalOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
 
-        """
+            """
 
-        http_options = [
-            {
-                "method": "post",
-                "uri": "/compute/v1/projects/{project}/zones/{zone}/networkEndpointGroups",
-                "body": "network_endpoint_group_resource",
-            },
-        ]
+            http_options = [
+                {
+                    "method": "post",
+                    "uri": "/compute/v1/projects/{project}/zones/{zone}/networkEndpointGroups",
+                    "body": "network_endpoint_group_resource",
+                },
+            ]
 
-        required_fields = [
-            # (snake_case_name, camel_case_name)
-            ("project", "project"),
-            ("zone", "zone"),
-        ]
+            request_kwargs = compute.InsertNetworkEndpointGroupRequest.to_dict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
-        request_kwargs = compute.InsertNetworkEndpointGroupRequest.to_dict(request)
-        transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-        # Jsonify the request body
-        body = compute.NetworkEndpointGroup.to_json(
-            compute.NetworkEndpointGroup(transcoded_request["body"]),
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
-        uri = transcoded_request["uri"]
-        method = transcoded_request["method"]
-
-        # Jsonify the query params
-        query_params = json.loads(
-            compute.InsertNetworkEndpointGroupRequest.to_json(
-                compute.InsertNetworkEndpointGroupRequest(
-                    transcoded_request["query_params"]
-                ),
+            # Jsonify the request body
+            body = compute.NetworkEndpointGroup.to_json(
+                compute.NetworkEndpointGroup(transcoded_request["body"]),
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
-        )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
-        # Ensure required fields have values in query_params.
-        # If a required field has a default value, it can get lost
-        # by the to_json call above.
-        orig_query_params = transcoded_request["query_params"]
-        for snake_case_name, camel_case_name in required_fields:
-            if snake_case_name in orig_query_params:
-                if camel_case_name not in query_params:
-                    query_params[camel_case_name] = orig_query_params[snake_case_name]
+            # Jsonify the query params
+            query_params = json.loads(
+                compute.InsertNetworkEndpointGroupRequest.to_json(
+                    compute.InsertNetworkEndpointGroupRequest(
+                        transcoded_request["query_params"]
+                    ),
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
 
-        # Send the request
-        headers = dict(metadata)
-        headers["Content-Type"] = "application/json"
-        response = getattr(self._session, method)(
-            # Replace with proper schema configuration (http/https) logic
-            "https://{host}{uri}".format(host=self._host, uri=uri),
-            timeout=timeout,
-            headers=headers,
-            params=rest_helpers.flatten_query_params(query_params),
-            data=body,
-        )
+            query_params.update(self._get_unset_required_fields(query_params))
 
-        # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-        # subclass.
-        if response.status_code >= 400:
-            raise core_exceptions.from_http_response(response)
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                # Replace with proper schema configuration (http/https) logic
+                "https://{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+                data=body,
+            )
 
-        # Return the response
-        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+            # Return the response
+            return compute.Operation.from_json(
+                response.content, ignore_unknown_fields=True
+            )
 
-    def _list(
-        self,
-        request: compute.ListNetworkEndpointGroupsRequest,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.NetworkEndpointGroupList:
-        r"""Call the list method over HTTP.
+    class _List(NetworkEndpointGroupsRestStub):
+        def __hash__(self):
+            return hash("List")
 
-        Args:
-            request (~.compute.ListNetworkEndpointGroupsRequest):
-                The request object. A request message for
+        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.ListNetworkEndpointGroupsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.NetworkEndpointGroupList:
+            r"""Call the list method over HTTP.
+
+            Args:
+                request (~.compute.ListNetworkEndpointGroupsRequest):
+                    The request object. A request message for
                 NetworkEndpointGroups.List. See the
                 method description for details.
 
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
 
-        Returns:
-            ~.compute.NetworkEndpointGroupList:
+            Returns:
+                ~.compute.NetworkEndpointGroupList:
 
-        """
+            """
 
-        http_options = [
-            {
-                "method": "get",
-                "uri": "/compute/v1/projects/{project}/zones/{zone}/networkEndpointGroups",
-            },
-        ]
+            http_options = [
+                {
+                    "method": "get",
+                    "uri": "/compute/v1/projects/{project}/zones/{zone}/networkEndpointGroups",
+                },
+            ]
 
-        required_fields = [
-            # (snake_case_name, camel_case_name)
-            ("project", "project"),
-            ("zone", "zone"),
-        ]
+            request_kwargs = compute.ListNetworkEndpointGroupsRequest.to_dict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
-        request_kwargs = compute.ListNetworkEndpointGroupsRequest.to_dict(request)
-        transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
-        uri = transcoded_request["uri"]
-        method = transcoded_request["method"]
-
-        # Jsonify the query params
-        query_params = json.loads(
-            compute.ListNetworkEndpointGroupsRequest.to_json(
-                compute.ListNetworkEndpointGroupsRequest(
-                    transcoded_request["query_params"]
-                ),
-                including_default_value_fields=False,
-                use_integers_for_enums=False,
+            # Jsonify the query params
+            query_params = json.loads(
+                compute.ListNetworkEndpointGroupsRequest.to_json(
+                    compute.ListNetworkEndpointGroupsRequest(
+                        transcoded_request["query_params"]
+                    ),
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
             )
-        )
 
-        # Ensure required fields have values in query_params.
-        # If a required field has a default value, it can get lost
-        # by the to_json call above.
-        orig_query_params = transcoded_request["query_params"]
-        for snake_case_name, camel_case_name in required_fields:
-            if snake_case_name in orig_query_params:
-                if camel_case_name not in query_params:
-                    query_params[camel_case_name] = orig_query_params[snake_case_name]
+            query_params.update(self._get_unset_required_fields(query_params))
 
-        # Send the request
-        headers = dict(metadata)
-        headers["Content-Type"] = "application/json"
-        response = getattr(self._session, method)(
-            # Replace with proper schema configuration (http/https) logic
-            "https://{host}{uri}".format(host=self._host, uri=uri),
-            timeout=timeout,
-            headers=headers,
-            params=rest_helpers.flatten_query_params(query_params),
-        )
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                # Replace with proper schema configuration (http/https) logic
+                "https://{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+            )
 
-        # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-        # subclass.
-        if response.status_code >= 400:
-            raise core_exceptions.from_http_response(response)
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+            # Return the response
+            return compute.NetworkEndpointGroupList.from_json(
+                response.content, ignore_unknown_fields=True
+            )
 
-        # Return the response
-        return compute.NetworkEndpointGroupList.from_json(
-            response.content, ignore_unknown_fields=True
-        )
+    class _ListNetworkEndpoints(NetworkEndpointGroupsRestStub):
+        def __hash__(self):
+            return hash("ListNetworkEndpoints")
 
-    def _list_network_endpoints(
-        self,
-        request: compute.ListNetworkEndpointsNetworkEndpointGroupsRequest,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.NetworkEndpointGroupsListNetworkEndpoints:
-        r"""Call the list network endpoints method over HTTP.
+        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
 
-        Args:
-            request (~.compute.ListNetworkEndpointsNetworkEndpointGroupsRequest):
-                The request object. A request message for
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.ListNetworkEndpointsNetworkEndpointGroupsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.NetworkEndpointGroupsListNetworkEndpoints:
+            r"""Call the list network endpoints method over HTTP.
+
+            Args:
+                request (~.compute.ListNetworkEndpointsNetworkEndpointGroupsRequest):
+                    The request object. A request message for
                 NetworkEndpointGroups.ListNetworkEndpoints.
                 See the method description for details.
 
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
 
-        Returns:
-            ~.compute.NetworkEndpointGroupsListNetworkEndpoints:
+            Returns:
+                ~.compute.NetworkEndpointGroupsListNetworkEndpoints:
 
-        """
+            """
 
-        http_options = [
-            {
-                "method": "post",
-                "uri": "/compute/v1/projects/{project}/zones/{zone}/networkEndpointGroups/{network_endpoint_group}/listNetworkEndpoints",
-                "body": "network_endpoint_groups_list_endpoints_request_resource",
-            },
-        ]
+            http_options = [
+                {
+                    "method": "post",
+                    "uri": "/compute/v1/projects/{project}/zones/{zone}/networkEndpointGroups/{network_endpoint_group}/listNetworkEndpoints",
+                    "body": "network_endpoint_groups_list_endpoints_request_resource",
+                },
+            ]
 
-        required_fields = [
-            # (snake_case_name, camel_case_name)
-            ("network_endpoint_group", "networkEndpointGroup"),
-            ("project", "project"),
-            ("zone", "zone"),
-        ]
+            request_kwargs = compute.ListNetworkEndpointsNetworkEndpointGroupsRequest.to_dict(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
-        request_kwargs = compute.ListNetworkEndpointsNetworkEndpointGroupsRequest.to_dict(
-            request
-        )
-        transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-        # Jsonify the request body
-        body = compute.NetworkEndpointGroupsListEndpointsRequest.to_json(
-            compute.NetworkEndpointGroupsListEndpointsRequest(
-                transcoded_request["body"]
-            ),
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
-        uri = transcoded_request["uri"]
-        method = transcoded_request["method"]
-
-        # Jsonify the query params
-        query_params = json.loads(
-            compute.ListNetworkEndpointsNetworkEndpointGroupsRequest.to_json(
-                compute.ListNetworkEndpointsNetworkEndpointGroupsRequest(
-                    transcoded_request["query_params"]
+            # Jsonify the request body
+            body = compute.NetworkEndpointGroupsListEndpointsRequest.to_json(
+                compute.NetworkEndpointGroupsListEndpointsRequest(
+                    transcoded_request["body"]
                 ),
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
-        )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
-        # Ensure required fields have values in query_params.
-        # If a required field has a default value, it can get lost
-        # by the to_json call above.
-        orig_query_params = transcoded_request["query_params"]
-        for snake_case_name, camel_case_name in required_fields:
-            if snake_case_name in orig_query_params:
-                if camel_case_name not in query_params:
-                    query_params[camel_case_name] = orig_query_params[snake_case_name]
+            # Jsonify the query params
+            query_params = json.loads(
+                compute.ListNetworkEndpointsNetworkEndpointGroupsRequest.to_json(
+                    compute.ListNetworkEndpointsNetworkEndpointGroupsRequest(
+                        transcoded_request["query_params"]
+                    ),
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
 
-        # Send the request
-        headers = dict(metadata)
-        headers["Content-Type"] = "application/json"
-        response = getattr(self._session, method)(
-            # Replace with proper schema configuration (http/https) logic
-            "https://{host}{uri}".format(host=self._host, uri=uri),
-            timeout=timeout,
-            headers=headers,
-            params=rest_helpers.flatten_query_params(query_params),
-            data=body,
-        )
+            query_params.update(self._get_unset_required_fields(query_params))
 
-        # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-        # subclass.
-        if response.status_code >= 400:
-            raise core_exceptions.from_http_response(response)
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                # Replace with proper schema configuration (http/https) logic
+                "https://{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+                data=body,
+            )
 
-        # Return the response
-        return compute.NetworkEndpointGroupsListNetworkEndpoints.from_json(
-            response.content, ignore_unknown_fields=True
-        )
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+            # Return the response
+            return compute.NetworkEndpointGroupsListNetworkEndpoints.from_json(
+                response.content, ignore_unknown_fields=True
+            )
 
-    def _test_iam_permissions(
-        self,
-        request: compute.TestIamPermissionsNetworkEndpointGroupRequest,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.TestPermissionsResponse:
-        r"""Call the test iam permissions method over HTTP.
+    class _TestIamPermissions(NetworkEndpointGroupsRestStub):
+        def __hash__(self):
+            return hash("TestIamPermissions")
 
-        Args:
-            request (~.compute.TestIamPermissionsNetworkEndpointGroupRequest):
-                The request object. A request message for
+        __REQUIRED_FIELDS_DEFAULT_VALUES = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: compute.TestIamPermissionsNetworkEndpointGroupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> compute.TestPermissionsResponse:
+            r"""Call the test iam permissions method over HTTP.
+
+            Args:
+                request (~.compute.TestIamPermissionsNetworkEndpointGroupRequest):
+                    The request object. A request message for
                 NetworkEndpointGroups.TestIamPermissions.
                 See the method description for details.
 
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
 
-        Returns:
-            ~.compute.TestPermissionsResponse:
+            Returns:
+                ~.compute.TestPermissionsResponse:
 
-        """
+            """
 
-        http_options = [
-            {
-                "method": "post",
-                "uri": "/compute/v1/projects/{project}/zones/{zone}/networkEndpointGroups/{resource}/testIamPermissions",
-                "body": "test_permissions_request_resource",
-            },
-        ]
+            http_options = [
+                {
+                    "method": "post",
+                    "uri": "/compute/v1/projects/{project}/zones/{zone}/networkEndpointGroups/{resource}/testIamPermissions",
+                    "body": "test_permissions_request_resource",
+                },
+            ]
 
-        required_fields = [
-            # (snake_case_name, camel_case_name)
-            ("project", "project"),
-            ("resource", "resource"),
-            ("zone", "zone"),
-        ]
+            request_kwargs = compute.TestIamPermissionsNetworkEndpointGroupRequest.to_dict(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
-        request_kwargs = compute.TestIamPermissionsNetworkEndpointGroupRequest.to_dict(
-            request
-        )
-        transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-        # Jsonify the request body
-        body = compute.TestPermissionsRequest.to_json(
-            compute.TestPermissionsRequest(transcoded_request["body"]),
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
-        uri = transcoded_request["uri"]
-        method = transcoded_request["method"]
-
-        # Jsonify the query params
-        query_params = json.loads(
-            compute.TestIamPermissionsNetworkEndpointGroupRequest.to_json(
-                compute.TestIamPermissionsNetworkEndpointGroupRequest(
-                    transcoded_request["query_params"]
-                ),
+            # Jsonify the request body
+            body = compute.TestPermissionsRequest.to_json(
+                compute.TestPermissionsRequest(transcoded_request["body"]),
                 including_default_value_fields=False,
                 use_integers_for_enums=False,
             )
-        )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
-        # Ensure required fields have values in query_params.
-        # If a required field has a default value, it can get lost
-        # by the to_json call above.
-        orig_query_params = transcoded_request["query_params"]
-        for snake_case_name, camel_case_name in required_fields:
-            if snake_case_name in orig_query_params:
-                if camel_case_name not in query_params:
-                    query_params[camel_case_name] = orig_query_params[snake_case_name]
+            # Jsonify the query params
+            query_params = json.loads(
+                compute.TestIamPermissionsNetworkEndpointGroupRequest.to_json(
+                    compute.TestIamPermissionsNetworkEndpointGroupRequest(
+                        transcoded_request["query_params"]
+                    ),
+                    including_default_value_fields=False,
+                    use_integers_for_enums=False,
+                )
+            )
 
-        # Send the request
-        headers = dict(metadata)
-        headers["Content-Type"] = "application/json"
-        response = getattr(self._session, method)(
-            # Replace with proper schema configuration (http/https) logic
-            "https://{host}{uri}".format(host=self._host, uri=uri),
-            timeout=timeout,
-            headers=headers,
-            params=rest_helpers.flatten_query_params(query_params),
-            data=body,
-        )
+            query_params.update(self._get_unset_required_fields(query_params))
 
-        # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-        # subclass.
-        if response.status_code >= 400:
-            raise core_exceptions.from_http_response(response)
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                # Replace with proper schema configuration (http/https) logic
+                "https://{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+                data=body,
+            )
 
-        # Return the response
-        return compute.TestPermissionsResponse.from_json(
-            response.content, ignore_unknown_fields=True
-        )
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+            # Return the response
+            return compute.TestPermissionsResponse.from_json(
+                response.content, ignore_unknown_fields=True
+            )
 
     @property
     def aggregated_list(
@@ -1036,7 +1049,13 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
         [compute.AggregatedListNetworkEndpointGroupsRequest],
         compute.NetworkEndpointGroupAggregatedList,
     ]:
-        return self._aggregated_list
+        stub = self._STUBS.get("aggregated_list")
+        if not stub:
+            stub = self._STUBS["aggregated_list"] = self._AggregatedList(
+                self._session, self._host
+            )
+
+        return stub
 
     @property
     def attach_network_endpoints(
@@ -1044,13 +1063,23 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
     ) -> Callable[
         [compute.AttachNetworkEndpointsNetworkEndpointGroupRequest], compute.Operation
     ]:
-        return self._attach_network_endpoints
+        stub = self._STUBS.get("attach_network_endpoints")
+        if not stub:
+            stub = self._STUBS[
+                "attach_network_endpoints"
+            ] = self._AttachNetworkEndpoints(self._session, self._host)
+
+        return stub
 
     @property
     def delete(
         self,
     ) -> Callable[[compute.DeleteNetworkEndpointGroupRequest], compute.Operation]:
-        return self._delete
+        stub = self._STUBS.get("delete")
+        if not stub:
+            stub = self._STUBS["delete"] = self._Delete(self._session, self._host)
+
+        return stub
 
     @property
     def detach_network_endpoints(
@@ -1058,7 +1087,13 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
     ) -> Callable[
         [compute.DetachNetworkEndpointsNetworkEndpointGroupRequest], compute.Operation
     ]:
-        return self._detach_network_endpoints
+        stub = self._STUBS.get("detach_network_endpoints")
+        if not stub:
+            stub = self._STUBS[
+                "detach_network_endpoints"
+            ] = self._DetachNetworkEndpoints(self._session, self._host)
+
+        return stub
 
     @property
     def get(
@@ -1066,13 +1101,21 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
     ) -> Callable[
         [compute.GetNetworkEndpointGroupRequest], compute.NetworkEndpointGroup
     ]:
-        return self._get
+        stub = self._STUBS.get("get")
+        if not stub:
+            stub = self._STUBS["get"] = self._Get(self._session, self._host)
+
+        return stub
 
     @property
     def insert(
         self,
     ) -> Callable[[compute.InsertNetworkEndpointGroupRequest], compute.Operation]:
-        return self._insert
+        stub = self._STUBS.get("insert")
+        if not stub:
+            stub = self._STUBS["insert"] = self._Insert(self._session, self._host)
+
+        return stub
 
     @property
     def list(
@@ -1080,7 +1123,11 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
     ) -> Callable[
         [compute.ListNetworkEndpointGroupsRequest], compute.NetworkEndpointGroupList
     ]:
-        return self._list
+        stub = self._STUBS.get("list")
+        if not stub:
+            stub = self._STUBS["list"] = self._List(self._session, self._host)
+
+        return stub
 
     @property
     def list_network_endpoints(
@@ -1089,7 +1136,13 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
         [compute.ListNetworkEndpointsNetworkEndpointGroupsRequest],
         compute.NetworkEndpointGroupsListNetworkEndpoints,
     ]:
-        return self._list_network_endpoints
+        stub = self._STUBS.get("list_network_endpoints")
+        if not stub:
+            stub = self._STUBS["list_network_endpoints"] = self._ListNetworkEndpoints(
+                self._session, self._host
+            )
+
+        return stub
 
     @property
     def test_iam_permissions(
@@ -1098,7 +1151,13 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
         [compute.TestIamPermissionsNetworkEndpointGroupRequest],
         compute.TestPermissionsResponse,
     ]:
-        return self._test_iam_permissions
+        stub = self._STUBS.get("test_iam_permissions")
+        if not stub:
+            stub = self._STUBS["test_iam_permissions"] = self._TestIamPermissions(
+                self._session, self._host
+            )
+
+        return stub
 
     def close(self):
         self._session.close()

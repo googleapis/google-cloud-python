@@ -18,12 +18,13 @@ import mock
 
 import grpc
 from grpc.experimental import aio
+import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 
 from requests import Response
-from requests import Request
+from requests import Request, PreparedRequest
 from requests.sessions import Session
 
 from google.api_core import client_options
@@ -219,20 +220,20 @@ def test_instances_client_client_options(client_class, transport_class, transpor
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -272,7 +273,7 @@ def test_instances_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -349,6 +350,78 @@ def test_instances_client_mtls_env_auto(
                 )
 
 
+@pytest.mark.parametrize("client_class", [InstancesClient])
+@mock.patch.object(
+    InstancesClient, "DEFAULT_ENDPOINT", modify_default_endpoint(InstancesClient)
+)
+def test_instances_client_get_mtls_endpoint_and_cert_source(client_class):
+    mock_client_cert_source = mock.Mock()
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        mock_api_endpoint = "foo"
+        options = client_options.ClientOptions(
+            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
+        )
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
+            options
+        )
+        assert api_endpoint == mock_api_endpoint
+        assert cert_source == mock_client_cert_source
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "false".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+        mock_client_cert_source = mock.Mock()
+        mock_api_endpoint = "foo"
+        options = client_options.ClientOptions(
+            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
+        )
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
+            options
+        )
+        assert api_endpoint == mock_api_endpoint
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+        assert api_endpoint == client_class.DEFAULT_ENDPOINT
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "always".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+        assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert doesn't exist.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch(
+            "google.auth.transport.mtls.has_default_client_cert_source",
+            return_value=False,
+        ):
+            api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+            assert api_endpoint == client_class.DEFAULT_ENDPOINT
+            assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch(
+            "google.auth.transport.mtls.has_default_client_cert_source",
+            return_value=True,
+        ):
+            with mock.patch(
+                "google.auth.transport.mtls.default_client_cert_source",
+                return_value=mock_client_cert_source,
+            ):
+                (
+                    api_endpoint,
+                    cert_source,
+                ) = client_class.get_mtls_endpoint_and_cert_source()
+                assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+                assert cert_source == mock_client_cert_source
+
+
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [(InstancesClient, transports.InstancesRestTransport, "rest"),],
@@ -360,7 +433,7 @@ def test_instances_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -384,7 +457,7 @@ def test_instances_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -397,22 +470,31 @@ def test_instances_client_client_options_credentials_file(
         )
 
 
-def test_add_access_config_unary_rest(
-    transport: str = "rest", request_type=compute.AddAccessConfigInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [compute.AddAccessConfigInstanceRequest, dict,]
+)
+def test_add_access_config_unary_rest(request_type):
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init["access_config_resource"] = compute.AccessConfig(
-        external_ipv6="external_ipv6_value"
-    )
+    request_init["access_config_resource"] = {
+        "external_ipv6": "external_ipv6_value",
+        "external_ipv6_prefix_length": 2837,
+        "kind": "kind_value",
+        "name": "name_value",
+        "nat_i_p": "nat_i_p_value",
+        "network_tier": "network_tier_value",
+        "public_ptr_domain_name": "public_ptr_domain_name_value",
+        "set_public_ptr": True,
+        "type_": "type__value",
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -473,6 +555,109 @@ def test_add_access_config_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_add_access_config_unary_rest_required_fields(
+    request_type=compute.AddAccessConfigInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["network_interface"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "networkInterface" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).add_access_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "networkInterface" in jsonified_request
+    assert jsonified_request["networkInterface"] == request_init["network_interface"]
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["networkInterface"] = "network_interface_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).add_access_config._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id", "network_interface",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "networkInterface" in jsonified_request
+    assert jsonified_request["networkInterface"] == "network_interface_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.add_access_config_unary(request)
+
+            expected_params = [
+                ("networkInterface", "",),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_add_access_config_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.add_access_config._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId", "networkInterface",))
+        & set(
+            ("accessConfigResource", "instance", "networkInterface", "project", "zone",)
+        )
+    )
+
+
 def test_add_access_config_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.AddAccessConfigInstanceRequest
 ):
@@ -482,9 +667,17 @@ def test_add_access_config_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init["access_config_resource"] = compute.AccessConfig(
-        external_ipv6="external_ipv6_value"
-    )
+    request_init["access_config_resource"] = {
+        "external_ipv6": "external_ipv6_value",
+        "external_ipv6_prefix_length": 2837,
+        "kind": "kind_value",
+        "name": "name_value",
+        "nat_i_p": "nat_i_p_value",
+        "network_tier": "network_tier_value",
+        "public_ptr_domain_name": "public_ptr_domain_name_value",
+        "set_public_ptr": True,
+        "type_": "type__value",
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -499,17 +692,13 @@ def test_add_access_config_unary_rest_bad_request(
         client.add_access_config_unary(request)
 
 
-def test_add_access_config_unary_rest_from_dict():
-    test_add_access_config_unary_rest(request_type=dict)
-
-
-def test_add_access_config_unary_rest_flattened(transport: str = "rest"):
+def test_add_access_config_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -572,24 +761,29 @@ def test_add_access_config_unary_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_add_resource_policies_unary_rest(
-    transport: str = "rest", request_type=compute.AddResourcePoliciesInstanceRequest
-):
+def test_add_access_config_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type", [compute.AddResourcePoliciesInstanceRequest, dict,]
+)
+def test_add_resource_policies_unary_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init[
-        "instances_add_resource_policies_request_resource"
-    ] = compute.InstancesAddResourcePoliciesRequest(
-        resource_policies=["resource_policies_value"]
-    )
+    request_init["instances_add_resource_policies_request_resource"] = {
+        "resource_policies": ["resource_policies_value_1", "resource_policies_value_2"]
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -650,6 +844,105 @@ def test_add_resource_policies_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_add_resource_policies_unary_rest_required_fields(
+    request_type=compute.AddResourcePoliciesInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).add_resource_policies._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).add_resource_policies._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.add_resource_policies_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_add_resource_policies_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.add_resource_policies._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "instance",
+                "instancesAddResourcePoliciesRequestResource",
+                "project",
+                "zone",
+            )
+        )
+    )
+
+
 def test_add_resource_policies_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.AddResourcePoliciesInstanceRequest
 ):
@@ -659,11 +952,9 @@ def test_add_resource_policies_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init[
-        "instances_add_resource_policies_request_resource"
-    ] = compute.InstancesAddResourcePoliciesRequest(
-        resource_policies=["resource_policies_value"]
-    )
+    request_init["instances_add_resource_policies_request_resource"] = {
+        "resource_policies": ["resource_policies_value_1", "resource_policies_value_2"]
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -678,17 +969,13 @@ def test_add_resource_policies_unary_rest_bad_request(
         client.add_resource_policies_unary(request)
 
 
-def test_add_resource_policies_unary_rest_from_dict():
-    test_add_resource_policies_unary_rest(request_type=dict)
-
-
-def test_add_resource_policies_unary_rest_flattened(transport: str = "rest"):
+def test_add_resource_policies_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -749,11 +1036,18 @@ def test_add_resource_policies_unary_rest_flattened_error(transport: str = "rest
         )
 
 
-def test_aggregated_list_rest(
-    transport: str = "rest", request_type=compute.AggregatedListInstancesRequest
-):
+def test_add_resource_policies_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type", [compute.AggregatedListInstancesRequest, dict,]
+)
+def test_aggregated_list_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -761,7 +1055,7 @@ def test_aggregated_list_rest(
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.InstanceAggregatedList(
             id="id_value",
@@ -788,6 +1082,107 @@ def test_aggregated_list_rest(
     assert response.unreachables == ["unreachables_value"]
 
 
+def test_aggregated_list_rest_required_fields(
+    request_type=compute.AggregatedListInstancesRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).aggregated_list._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).aggregated_list._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "max_results",
+            "include_all_scopes",
+            "filter",
+            "order_by",
+            "page_token",
+            "return_partial_success",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.InstanceAggregatedList()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": request_init,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.InstanceAggregatedList.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.aggregated_list(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_aggregated_list_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.aggregated_list._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "maxResults",
+                "includeAllScopes",
+                "filter",
+                "orderBy",
+                "pageToken",
+                "returnPartialSuccess",
+            )
+        )
+        & set(("project",))
+    )
+
+
 def test_aggregated_list_rest_bad_request(
     transport: str = "rest", request_type=compute.AggregatedListInstancesRequest
 ):
@@ -811,17 +1206,13 @@ def test_aggregated_list_rest_bad_request(
         client.aggregated_list(request)
 
 
-def test_aggregated_list_rest_from_dict():
-    test_aggregated_list_rest(request_type=dict)
-
-
-def test_aggregated_list_rest_flattened(transport: str = "rest"):
+def test_aggregated_list_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.InstanceAggregatedList()
 
@@ -865,8 +1256,10 @@ def test_aggregated_list_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_aggregated_list_rest_pager():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_aggregated_list_rest_pager(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -926,20 +1319,74 @@ def test_aggregated_list_rest_pager():
             assert page_.raw_page.next_page_token == token
 
 
-def test_attach_disk_unary_rest(
-    transport: str = "rest", request_type=compute.AttachDiskInstanceRequest
-):
+@pytest.mark.parametrize("request_type", [compute.AttachDiskInstanceRequest, dict,])
+def test_attach_disk_unary_rest(request_type):
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init["attached_disk_resource"] = compute.AttachedDisk(auto_delete=True)
+    request_init["attached_disk_resource"] = {
+        "auto_delete": True,
+        "boot": True,
+        "device_name": "device_name_value",
+        "disk_encryption_key": {
+            "kms_key_name": "kms_key_name_value",
+            "kms_key_service_account": "kms_key_service_account_value",
+            "raw_key": "raw_key_value",
+            "rsa_encrypted_key": "rsa_encrypted_key_value",
+            "sha256": "sha256_value",
+        },
+        "disk_size_gb": 1261,
+        "guest_os_features": [{"type_": "type__value"}],
+        "index": 536,
+        "initialize_params": {
+            "description": "description_value",
+            "disk_name": "disk_name_value",
+            "disk_size_gb": 1261,
+            "disk_type": "disk_type_value",
+            "labels": {},
+            "on_update_action": "on_update_action_value",
+            "provisioned_iops": 1740,
+            "resource_policies": [
+                "resource_policies_value_1",
+                "resource_policies_value_2",
+            ],
+            "source_image": "source_image_value",
+            "source_image_encryption_key": {
+                "kms_key_name": "kms_key_name_value",
+                "kms_key_service_account": "kms_key_service_account_value",
+                "raw_key": "raw_key_value",
+                "rsa_encrypted_key": "rsa_encrypted_key_value",
+                "sha256": "sha256_value",
+            },
+            "source_snapshot": "source_snapshot_value",
+            "source_snapshot_encryption_key": {
+                "kms_key_name": "kms_key_name_value",
+                "kms_key_service_account": "kms_key_service_account_value",
+                "raw_key": "raw_key_value",
+                "rsa_encrypted_key": "rsa_encrypted_key_value",
+                "sha256": "sha256_value",
+            },
+        },
+        "interface": "interface_value",
+        "kind": "kind_value",
+        "licenses": ["licenses_value_1", "licenses_value_2"],
+        "mode": "mode_value",
+        "shielded_instance_initial_state": {
+            "dbs": [{"content": "content_value", "file_type": "file_type_value"}],
+            "dbxs": [{"content": "content_value", "file_type": "file_type_value"}],
+            "keks": [{"content": "content_value", "file_type": "file_type_value"}],
+            "pk": {"content": "content_value", "file_type": "file_type_value"},
+        },
+        "source": "source_value",
+        "type_": "type__value",
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -1000,6 +1447,98 @@ def test_attach_disk_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_attach_disk_unary_rest_required_fields(
+    request_type=compute.AttachDiskInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).attach_disk._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).attach_disk._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id", "force_attach",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.attach_disk_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_attach_disk_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.attach_disk._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId", "forceAttach",))
+        & set(("attachedDiskResource", "instance", "project", "zone",))
+    )
+
+
 def test_attach_disk_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.AttachDiskInstanceRequest
 ):
@@ -1009,7 +1548,62 @@ def test_attach_disk_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init["attached_disk_resource"] = compute.AttachedDisk(auto_delete=True)
+    request_init["attached_disk_resource"] = {
+        "auto_delete": True,
+        "boot": True,
+        "device_name": "device_name_value",
+        "disk_encryption_key": {
+            "kms_key_name": "kms_key_name_value",
+            "kms_key_service_account": "kms_key_service_account_value",
+            "raw_key": "raw_key_value",
+            "rsa_encrypted_key": "rsa_encrypted_key_value",
+            "sha256": "sha256_value",
+        },
+        "disk_size_gb": 1261,
+        "guest_os_features": [{"type_": "type__value"}],
+        "index": 536,
+        "initialize_params": {
+            "description": "description_value",
+            "disk_name": "disk_name_value",
+            "disk_size_gb": 1261,
+            "disk_type": "disk_type_value",
+            "labels": {},
+            "on_update_action": "on_update_action_value",
+            "provisioned_iops": 1740,
+            "resource_policies": [
+                "resource_policies_value_1",
+                "resource_policies_value_2",
+            ],
+            "source_image": "source_image_value",
+            "source_image_encryption_key": {
+                "kms_key_name": "kms_key_name_value",
+                "kms_key_service_account": "kms_key_service_account_value",
+                "raw_key": "raw_key_value",
+                "rsa_encrypted_key": "rsa_encrypted_key_value",
+                "sha256": "sha256_value",
+            },
+            "source_snapshot": "source_snapshot_value",
+            "source_snapshot_encryption_key": {
+                "kms_key_name": "kms_key_name_value",
+                "kms_key_service_account": "kms_key_service_account_value",
+                "raw_key": "raw_key_value",
+                "rsa_encrypted_key": "rsa_encrypted_key_value",
+                "sha256": "sha256_value",
+            },
+        },
+        "interface": "interface_value",
+        "kind": "kind_value",
+        "licenses": ["licenses_value_1", "licenses_value_2"],
+        "mode": "mode_value",
+        "shielded_instance_initial_state": {
+            "dbs": [{"content": "content_value", "file_type": "file_type_value"}],
+            "dbxs": [{"content": "content_value", "file_type": "file_type_value"}],
+            "keks": [{"content": "content_value", "file_type": "file_type_value"}],
+            "pk": {"content": "content_value", "file_type": "file_type_value"},
+        },
+        "source": "source_value",
+        "type_": "type__value",
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -1024,17 +1618,13 @@ def test_attach_disk_unary_rest_bad_request(
         client.attach_disk_unary(request)
 
 
-def test_attach_disk_unary_rest_from_dict():
-    test_attach_disk_unary_rest(request_type=dict)
-
-
-def test_attach_disk_unary_rest_flattened(transport: str = "rest"):
+def test_attach_disk_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -1091,22 +1681,205 @@ def test_attach_disk_unary_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_bulk_insert_unary_rest(
-    transport: str = "rest", request_type=compute.BulkInsertInstanceRequest
-):
+def test_attach_disk_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize("request_type", [compute.BulkInsertInstanceRequest, dict,])
+def test_bulk_insert_unary_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2"}
-    request_init[
-        "bulk_insert_instance_resource_resource"
-    ] = compute.BulkInsertInstanceResource(count=553)
+    request_init["bulk_insert_instance_resource_resource"] = {
+        "count": 553,
+        "instance_properties": {
+            "advanced_machine_features": {
+                "enable_nested_virtualization": True,
+                "threads_per_core": 1689,
+            },
+            "can_ip_forward": True,
+            "confidential_instance_config": {"enable_confidential_compute": True},
+            "description": "description_value",
+            "disks": [
+                {
+                    "auto_delete": True,
+                    "boot": True,
+                    "device_name": "device_name_value",
+                    "disk_encryption_key": {
+                        "kms_key_name": "kms_key_name_value",
+                        "kms_key_service_account": "kms_key_service_account_value",
+                        "raw_key": "raw_key_value",
+                        "rsa_encrypted_key": "rsa_encrypted_key_value",
+                        "sha256": "sha256_value",
+                    },
+                    "disk_size_gb": 1261,
+                    "guest_os_features": [{"type_": "type__value"}],
+                    "index": 536,
+                    "initialize_params": {
+                        "description": "description_value",
+                        "disk_name": "disk_name_value",
+                        "disk_size_gb": 1261,
+                        "disk_type": "disk_type_value",
+                        "labels": {},
+                        "on_update_action": "on_update_action_value",
+                        "provisioned_iops": 1740,
+                        "resource_policies": [
+                            "resource_policies_value_1",
+                            "resource_policies_value_2",
+                        ],
+                        "source_image": "source_image_value",
+                        "source_image_encryption_key": {
+                            "kms_key_name": "kms_key_name_value",
+                            "kms_key_service_account": "kms_key_service_account_value",
+                            "raw_key": "raw_key_value",
+                            "rsa_encrypted_key": "rsa_encrypted_key_value",
+                            "sha256": "sha256_value",
+                        },
+                        "source_snapshot": "source_snapshot_value",
+                        "source_snapshot_encryption_key": {
+                            "kms_key_name": "kms_key_name_value",
+                            "kms_key_service_account": "kms_key_service_account_value",
+                            "raw_key": "raw_key_value",
+                            "rsa_encrypted_key": "rsa_encrypted_key_value",
+                            "sha256": "sha256_value",
+                        },
+                    },
+                    "interface": "interface_value",
+                    "kind": "kind_value",
+                    "licenses": ["licenses_value_1", "licenses_value_2"],
+                    "mode": "mode_value",
+                    "shielded_instance_initial_state": {
+                        "dbs": [
+                            {"content": "content_value", "file_type": "file_type_value"}
+                        ],
+                        "dbxs": [
+                            {"content": "content_value", "file_type": "file_type_value"}
+                        ],
+                        "keks": [
+                            {"content": "content_value", "file_type": "file_type_value"}
+                        ],
+                        "pk": {
+                            "content": "content_value",
+                            "file_type": "file_type_value",
+                        },
+                    },
+                    "source": "source_value",
+                    "type_": "type__value",
+                }
+            ],
+            "guest_accelerators": [
+                {
+                    "accelerator_count": 1805,
+                    "accelerator_type": "accelerator_type_value",
+                }
+            ],
+            "labels": {},
+            "machine_type": "machine_type_value",
+            "metadata": {
+                "fingerprint": "fingerprint_value",
+                "items": [{"key": "key_value", "value": "value_value"}],
+                "kind": "kind_value",
+            },
+            "min_cpu_platform": "min_cpu_platform_value",
+            "network_interfaces": [
+                {
+                    "access_configs": [
+                        {
+                            "external_ipv6": "external_ipv6_value",
+                            "external_ipv6_prefix_length": 2837,
+                            "kind": "kind_value",
+                            "name": "name_value",
+                            "nat_i_p": "nat_i_p_value",
+                            "network_tier": "network_tier_value",
+                            "public_ptr_domain_name": "public_ptr_domain_name_value",
+                            "set_public_ptr": True,
+                            "type_": "type__value",
+                        }
+                    ],
+                    "alias_ip_ranges": [
+                        {
+                            "ip_cidr_range": "ip_cidr_range_value",
+                            "subnetwork_range_name": "subnetwork_range_name_value",
+                        }
+                    ],
+                    "fingerprint": "fingerprint_value",
+                    "ipv6_access_configs": [
+                        {
+                            "external_ipv6": "external_ipv6_value",
+                            "external_ipv6_prefix_length": 2837,
+                            "kind": "kind_value",
+                            "name": "name_value",
+                            "nat_i_p": "nat_i_p_value",
+                            "network_tier": "network_tier_value",
+                            "public_ptr_domain_name": "public_ptr_domain_name_value",
+                            "set_public_ptr": True,
+                            "type_": "type__value",
+                        }
+                    ],
+                    "ipv6_access_type": "ipv6_access_type_value",
+                    "ipv6_address": "ipv6_address_value",
+                    "kind": "kind_value",
+                    "name": "name_value",
+                    "network": "network_value",
+                    "network_i_p": "network_i_p_value",
+                    "nic_type": "nic_type_value",
+                    "queue_count": 1197,
+                    "stack_type": "stack_type_value",
+                    "subnetwork": "subnetwork_value",
+                }
+            ],
+            "private_ipv6_google_access": "private_ipv6_google_access_value",
+            "reservation_affinity": {
+                "consume_reservation_type": "consume_reservation_type_value",
+                "key": "key_value",
+                "values": ["values_value_1", "values_value_2"],
+            },
+            "resource_policies": [
+                "resource_policies_value_1",
+                "resource_policies_value_2",
+            ],
+            "scheduling": {
+                "automatic_restart": True,
+                "location_hint": "location_hint_value",
+                "min_node_cpus": 1379,
+                "node_affinities": [
+                    {
+                        "key": "key_value",
+                        "operator": "operator_value",
+                        "values": ["values_value_1", "values_value_2"],
+                    }
+                ],
+                "on_host_maintenance": "on_host_maintenance_value",
+                "preemptible": True,
+            },
+            "service_accounts": [
+                {"email": "email_value", "scopes": ["scopes_value_1", "scopes_value_2"]}
+            ],
+            "shielded_instance_config": {
+                "enable_integrity_monitoring": True,
+                "enable_secure_boot": True,
+                "enable_vtpm": True,
+            },
+            "tags": {
+                "fingerprint": "fingerprint_value",
+                "items": ["items_value_1", "items_value_2"],
+            },
+        },
+        "location_policy": {"locations": {}},
+        "min_count": 972,
+        "name_pattern": "name_pattern_value",
+        "per_instance_properties": {},
+        "source_instance_template": "source_instance_template_value",
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -1167,6 +1940,94 @@ def test_bulk_insert_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_bulk_insert_unary_rest_required_fields(
+    request_type=compute.BulkInsertInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).bulk_insert._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).bulk_insert._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.bulk_insert_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_bulk_insert_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.bulk_insert._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(("bulkInsertInstanceResourceResource", "project", "zone",))
+    )
+
+
 def test_bulk_insert_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.BulkInsertInstanceRequest
 ):
@@ -1176,9 +2037,187 @@ def test_bulk_insert_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2"}
-    request_init[
-        "bulk_insert_instance_resource_resource"
-    ] = compute.BulkInsertInstanceResource(count=553)
+    request_init["bulk_insert_instance_resource_resource"] = {
+        "count": 553,
+        "instance_properties": {
+            "advanced_machine_features": {
+                "enable_nested_virtualization": True,
+                "threads_per_core": 1689,
+            },
+            "can_ip_forward": True,
+            "confidential_instance_config": {"enable_confidential_compute": True},
+            "description": "description_value",
+            "disks": [
+                {
+                    "auto_delete": True,
+                    "boot": True,
+                    "device_name": "device_name_value",
+                    "disk_encryption_key": {
+                        "kms_key_name": "kms_key_name_value",
+                        "kms_key_service_account": "kms_key_service_account_value",
+                        "raw_key": "raw_key_value",
+                        "rsa_encrypted_key": "rsa_encrypted_key_value",
+                        "sha256": "sha256_value",
+                    },
+                    "disk_size_gb": 1261,
+                    "guest_os_features": [{"type_": "type__value"}],
+                    "index": 536,
+                    "initialize_params": {
+                        "description": "description_value",
+                        "disk_name": "disk_name_value",
+                        "disk_size_gb": 1261,
+                        "disk_type": "disk_type_value",
+                        "labels": {},
+                        "on_update_action": "on_update_action_value",
+                        "provisioned_iops": 1740,
+                        "resource_policies": [
+                            "resource_policies_value_1",
+                            "resource_policies_value_2",
+                        ],
+                        "source_image": "source_image_value",
+                        "source_image_encryption_key": {
+                            "kms_key_name": "kms_key_name_value",
+                            "kms_key_service_account": "kms_key_service_account_value",
+                            "raw_key": "raw_key_value",
+                            "rsa_encrypted_key": "rsa_encrypted_key_value",
+                            "sha256": "sha256_value",
+                        },
+                        "source_snapshot": "source_snapshot_value",
+                        "source_snapshot_encryption_key": {
+                            "kms_key_name": "kms_key_name_value",
+                            "kms_key_service_account": "kms_key_service_account_value",
+                            "raw_key": "raw_key_value",
+                            "rsa_encrypted_key": "rsa_encrypted_key_value",
+                            "sha256": "sha256_value",
+                        },
+                    },
+                    "interface": "interface_value",
+                    "kind": "kind_value",
+                    "licenses": ["licenses_value_1", "licenses_value_2"],
+                    "mode": "mode_value",
+                    "shielded_instance_initial_state": {
+                        "dbs": [
+                            {"content": "content_value", "file_type": "file_type_value"}
+                        ],
+                        "dbxs": [
+                            {"content": "content_value", "file_type": "file_type_value"}
+                        ],
+                        "keks": [
+                            {"content": "content_value", "file_type": "file_type_value"}
+                        ],
+                        "pk": {
+                            "content": "content_value",
+                            "file_type": "file_type_value",
+                        },
+                    },
+                    "source": "source_value",
+                    "type_": "type__value",
+                }
+            ],
+            "guest_accelerators": [
+                {
+                    "accelerator_count": 1805,
+                    "accelerator_type": "accelerator_type_value",
+                }
+            ],
+            "labels": {},
+            "machine_type": "machine_type_value",
+            "metadata": {
+                "fingerprint": "fingerprint_value",
+                "items": [{"key": "key_value", "value": "value_value"}],
+                "kind": "kind_value",
+            },
+            "min_cpu_platform": "min_cpu_platform_value",
+            "network_interfaces": [
+                {
+                    "access_configs": [
+                        {
+                            "external_ipv6": "external_ipv6_value",
+                            "external_ipv6_prefix_length": 2837,
+                            "kind": "kind_value",
+                            "name": "name_value",
+                            "nat_i_p": "nat_i_p_value",
+                            "network_tier": "network_tier_value",
+                            "public_ptr_domain_name": "public_ptr_domain_name_value",
+                            "set_public_ptr": True,
+                            "type_": "type__value",
+                        }
+                    ],
+                    "alias_ip_ranges": [
+                        {
+                            "ip_cidr_range": "ip_cidr_range_value",
+                            "subnetwork_range_name": "subnetwork_range_name_value",
+                        }
+                    ],
+                    "fingerprint": "fingerprint_value",
+                    "ipv6_access_configs": [
+                        {
+                            "external_ipv6": "external_ipv6_value",
+                            "external_ipv6_prefix_length": 2837,
+                            "kind": "kind_value",
+                            "name": "name_value",
+                            "nat_i_p": "nat_i_p_value",
+                            "network_tier": "network_tier_value",
+                            "public_ptr_domain_name": "public_ptr_domain_name_value",
+                            "set_public_ptr": True,
+                            "type_": "type__value",
+                        }
+                    ],
+                    "ipv6_access_type": "ipv6_access_type_value",
+                    "ipv6_address": "ipv6_address_value",
+                    "kind": "kind_value",
+                    "name": "name_value",
+                    "network": "network_value",
+                    "network_i_p": "network_i_p_value",
+                    "nic_type": "nic_type_value",
+                    "queue_count": 1197,
+                    "stack_type": "stack_type_value",
+                    "subnetwork": "subnetwork_value",
+                }
+            ],
+            "private_ipv6_google_access": "private_ipv6_google_access_value",
+            "reservation_affinity": {
+                "consume_reservation_type": "consume_reservation_type_value",
+                "key": "key_value",
+                "values": ["values_value_1", "values_value_2"],
+            },
+            "resource_policies": [
+                "resource_policies_value_1",
+                "resource_policies_value_2",
+            ],
+            "scheduling": {
+                "automatic_restart": True,
+                "location_hint": "location_hint_value",
+                "min_node_cpus": 1379,
+                "node_affinities": [
+                    {
+                        "key": "key_value",
+                        "operator": "operator_value",
+                        "values": ["values_value_1", "values_value_2"],
+                    }
+                ],
+                "on_host_maintenance": "on_host_maintenance_value",
+                "preemptible": True,
+            },
+            "service_accounts": [
+                {"email": "email_value", "scopes": ["scopes_value_1", "scopes_value_2"]}
+            ],
+            "shielded_instance_config": {
+                "enable_integrity_monitoring": True,
+                "enable_secure_boot": True,
+                "enable_vtpm": True,
+            },
+            "tags": {
+                "fingerprint": "fingerprint_value",
+                "items": ["items_value_1", "items_value_2"],
+            },
+        },
+        "location_policy": {"locations": {}},
+        "min_count": 972,
+        "name_pattern": "name_pattern_value",
+        "per_instance_properties": {},
+        "source_instance_template": "source_instance_template_value",
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -1193,17 +2232,13 @@ def test_bulk_insert_unary_rest_bad_request(
         client.bulk_insert_unary(request)
 
 
-def test_bulk_insert_unary_rest_from_dict():
-    test_bulk_insert_unary_rest(request_type=dict)
-
-
-def test_bulk_insert_unary_rest_flattened(transport: str = "rest"):
+def test_bulk_insert_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -1258,11 +2293,16 @@ def test_bulk_insert_unary_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_delete_unary_rest(
-    transport: str = "rest", request_type=compute.DeleteInstanceRequest
-):
+def test_bulk_insert_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize("request_type", [compute.DeleteInstanceRequest, dict,])
+def test_delete_unary_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1270,7 +2310,7 @@ def test_delete_unary_rest(
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -1331,6 +2371,94 @@ def test_delete_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_delete_unary_rest_required_fields(request_type=compute.DeleteInstanceRequest):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": request_init,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",)) & set(("instance", "project", "zone",))
+    )
+
+
 def test_delete_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DeleteInstanceRequest
 ):
@@ -1354,17 +2482,13 @@ def test_delete_unary_rest_bad_request(
         client.delete_unary(request)
 
 
-def test_delete_unary_rest_from_dict():
-    test_delete_unary_rest(request_type=dict)
-
-
-def test_delete_unary_rest_flattened(transport: str = "rest"):
+def test_delete_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -1417,11 +2541,18 @@ def test_delete_unary_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_delete_access_config_unary_rest(
-    transport: str = "rest", request_type=compute.DeleteAccessConfigInstanceRequest
-):
+def test_delete_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type", [compute.DeleteAccessConfigInstanceRequest, dict,]
+)
+def test_delete_access_config_unary_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1429,7 +2560,7 @@ def test_delete_access_config_unary_rest(
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -1490,6 +2621,116 @@ def test_delete_access_config_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_delete_access_config_unary_rest_required_fields(
+    request_type=compute.DeleteAccessConfigInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["access_config"] = ""
+    request_init["instance"] = ""
+    request_init["network_interface"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "accessConfig" not in jsonified_request
+    assert "networkInterface" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_access_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "accessConfig" in jsonified_request
+    assert jsonified_request["accessConfig"] == request_init["access_config"]
+    assert "networkInterface" in jsonified_request
+    assert jsonified_request["networkInterface"] == request_init["network_interface"]
+
+    jsonified_request["accessConfig"] = "access_config_value"
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["networkInterface"] = "network_interface_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_access_config._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        ("access_config", "request_id", "network_interface",)
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "accessConfig" in jsonified_request
+    assert jsonified_request["accessConfig"] == "access_config_value"
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "networkInterface" in jsonified_request
+    assert jsonified_request["networkInterface"] == "network_interface_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_access_config_unary(request)
+
+            expected_params = [
+                ("accessConfig", "",),
+                ("networkInterface", "",),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_access_config_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_access_config._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("accessConfig", "requestId", "networkInterface",))
+        & set(("accessConfig", "instance", "networkInterface", "project", "zone",))
+    )
+
+
 def test_delete_access_config_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DeleteAccessConfigInstanceRequest
 ):
@@ -1513,17 +2754,13 @@ def test_delete_access_config_unary_rest_bad_request(
         client.delete_access_config_unary(request)
 
 
-def test_delete_access_config_unary_rest_from_dict():
-    test_delete_access_config_unary_rest(request_type=dict)
-
-
-def test_delete_access_config_unary_rest_flattened(transport: str = "rest"):
+def test_delete_access_config_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -1582,11 +2819,16 @@ def test_delete_access_config_unary_rest_flattened_error(transport: str = "rest"
         )
 
 
-def test_detach_disk_unary_rest(
-    transport: str = "rest", request_type=compute.DetachDiskInstanceRequest
-):
+def test_delete_access_config_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize("request_type", [compute.DetachDiskInstanceRequest, dict,])
+def test_detach_disk_unary_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1594,7 +2836,7 @@ def test_detach_disk_unary_rest(
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -1655,6 +2897,106 @@ def test_detach_disk_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_detach_disk_unary_rest_required_fields(
+    request_type=compute.DetachDiskInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["device_name"] = ""
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "deviceName" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).detach_disk._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "deviceName" in jsonified_request
+    assert jsonified_request["deviceName"] == request_init["device_name"]
+
+    jsonified_request["deviceName"] = "device_name_value"
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).detach_disk._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("device_name", "request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "deviceName" in jsonified_request
+    assert jsonified_request["deviceName"] == "device_name_value"
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.detach_disk_unary(request)
+
+            expected_params = [
+                ("deviceName", "",),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_detach_disk_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.detach_disk._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("deviceName", "requestId",))
+        & set(("deviceName", "instance", "project", "zone",))
+    )
+
+
 def test_detach_disk_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DetachDiskInstanceRequest
 ):
@@ -1678,17 +3020,13 @@ def test_detach_disk_unary_rest_bad_request(
         client.detach_disk_unary(request)
 
 
-def test_detach_disk_unary_rest_from_dict():
-    test_detach_disk_unary_rest(request_type=dict)
-
-
-def test_detach_disk_unary_rest_flattened(transport: str = "rest"):
+def test_detach_disk_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -1745,9 +3083,16 @@ def test_detach_disk_unary_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_get_rest(transport: str = "rest", request_type=compute.GetInstanceRequest):
+def test_detach_disk_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize("request_type", [compute.GetInstanceRequest, dict,])
+def test_get_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1755,7 +3100,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetInstanceReque
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Instance(
             can_ip_forward=True,
@@ -1820,6 +3165,90 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetInstanceReque
     assert response.zone == "zone_value"
 
 
+def test_get_rest_required_fields(request_type=compute.GetInstanceRequest):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Instance()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": request_init,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Instance.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("instance", "project", "zone",)))
+
+
 def test_get_rest_bad_request(
     transport: str = "rest", request_type=compute.GetInstanceRequest
 ):
@@ -1843,17 +3272,13 @@ def test_get_rest_bad_request(
         client.get(request)
 
 
-def test_get_rest_from_dict():
-    test_get_rest(request_type=dict)
-
-
-def test_get_rest_flattened(transport: str = "rest"):
+def test_get_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Instance()
 
@@ -1906,11 +3331,18 @@ def test_get_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_get_effective_firewalls_rest(
-    transport: str = "rest", request_type=compute.GetEffectiveFirewallsInstanceRequest
-):
+def test_get_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type", [compute.GetEffectiveFirewallsInstanceRequest, dict,]
+)
+def test_get_effective_firewalls_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1918,7 +3350,7 @@ def test_get_effective_firewalls_rest(
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.InstancesGetEffectiveFirewallsResponse()
 
@@ -1934,6 +3366,108 @@ def test_get_effective_firewalls_rest(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.InstancesGetEffectiveFirewallsResponse)
+
+
+def test_get_effective_firewalls_rest_required_fields(
+    request_type=compute.GetEffectiveFirewallsInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["network_interface"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "networkInterface" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_effective_firewalls._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "networkInterface" in jsonified_request
+    assert jsonified_request["networkInterface"] == request_init["network_interface"]
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["networkInterface"] = "network_interface_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_effective_firewalls._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("network_interface",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "networkInterface" in jsonified_request
+    assert jsonified_request["networkInterface"] == "network_interface_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.InstancesGetEffectiveFirewallsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": request_init,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.InstancesGetEffectiveFirewallsResponse.to_json(
+                return_value
+            )
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_effective_firewalls(request)
+
+            expected_params = [
+                ("networkInterface", "",),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_effective_firewalls_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_effective_firewalls._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("networkInterface",))
+        & set(("instance", "networkInterface", "project", "zone",))
+    )
 
 
 def test_get_effective_firewalls_rest_bad_request(
@@ -1959,17 +3493,13 @@ def test_get_effective_firewalls_rest_bad_request(
         client.get_effective_firewalls(request)
 
 
-def test_get_effective_firewalls_rest_from_dict():
-    test_get_effective_firewalls_rest(request_type=dict)
-
-
-def test_get_effective_firewalls_rest_flattened(transport: str = "rest"):
+def test_get_effective_firewalls_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.InstancesGetEffectiveFirewallsResponse()
 
@@ -2028,11 +3558,18 @@ def test_get_effective_firewalls_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_get_guest_attributes_rest(
-    transport: str = "rest", request_type=compute.GetGuestAttributesInstanceRequest
-):
+def test_get_effective_firewalls_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type", [compute.GetGuestAttributesInstanceRequest, dict,]
+)
+def test_get_guest_attributes_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2040,7 +3577,7 @@ def test_get_guest_attributes_rest(
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.GuestAttributes(
             kind="kind_value",
@@ -2067,6 +3604,96 @@ def test_get_guest_attributes_rest(
     assert response.variable_value == "variable_value_value"
 
 
+def test_get_guest_attributes_rest_required_fields(
+    request_type=compute.GetGuestAttributesInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_guest_attributes._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_guest_attributes._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("variable_key", "query_path",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.GuestAttributes()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": request_init,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.GuestAttributes.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_guest_attributes(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_guest_attributes_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_guest_attributes._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("variableKey", "queryPath",)) & set(("instance", "project", "zone",))
+    )
+
+
 def test_get_guest_attributes_rest_bad_request(
     transport: str = "rest", request_type=compute.GetGuestAttributesInstanceRequest
 ):
@@ -2090,17 +3717,13 @@ def test_get_guest_attributes_rest_bad_request(
         client.get_guest_attributes(request)
 
 
-def test_get_guest_attributes_rest_from_dict():
-    test_get_guest_attributes_rest(request_type=dict)
-
-
-def test_get_guest_attributes_rest_flattened(transport: str = "rest"):
+def test_get_guest_attributes_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.GuestAttributes()
 
@@ -2153,11 +3776,16 @@ def test_get_guest_attributes_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_get_iam_policy_rest(
-    transport: str = "rest", request_type=compute.GetIamPolicyInstanceRequest
-):
+def test_get_guest_attributes_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize("request_type", [compute.GetIamPolicyInstanceRequest, dict,])
+def test_get_iam_policy_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2165,7 +3793,7 @@ def test_get_iam_policy_rest(
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Policy(etag="etag_value", iam_owned=True, version=774,)
 
@@ -2182,6 +3810,96 @@ def test_get_iam_policy_rest(
     assert response.etag == "etag_value"
     assert response.iam_owned is True
     assert response.version == 774
+
+
+def test_get_iam_policy_rest_required_fields(
+    request_type=compute.GetIamPolicyInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["resource"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_iam_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["resource"] = "resource_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_iam_policy._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("options_requested_policy_version",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Policy()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": request_init,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Policy.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_iam_policy(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_iam_policy_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_iam_policy._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("optionsRequestedPolicyVersion",)) & set(("project", "resource", "zone",))
+    )
 
 
 def test_get_iam_policy_rest_bad_request(
@@ -2207,17 +3925,13 @@ def test_get_iam_policy_rest_bad_request(
         client.get_iam_policy(request)
 
 
-def test_get_iam_policy_rest_from_dict():
-    test_get_iam_policy_rest(request_type=dict)
-
-
-def test_get_iam_policy_rest_flattened(transport: str = "rest"):
+def test_get_iam_policy_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Policy()
 
@@ -2270,11 +3984,16 @@ def test_get_iam_policy_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_get_screenshot_rest(
-    transport: str = "rest", request_type=compute.GetScreenshotInstanceRequest
-):
+def test_get_iam_policy_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize("request_type", [compute.GetScreenshotInstanceRequest, dict,])
+def test_get_screenshot_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2282,7 +4001,7 @@ def test_get_screenshot_rest(
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Screenshot(contents="contents_value", kind="kind_value",)
 
@@ -2298,6 +4017,92 @@ def test_get_screenshot_rest(
     assert isinstance(response, compute.Screenshot)
     assert response.contents == "contents_value"
     assert response.kind == "kind_value"
+
+
+def test_get_screenshot_rest_required_fields(
+    request_type=compute.GetScreenshotInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_screenshot._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_screenshot._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Screenshot()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": request_init,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Screenshot.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_screenshot(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_screenshot_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_screenshot._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("instance", "project", "zone",)))
 
 
 def test_get_screenshot_rest_bad_request(
@@ -2323,17 +4128,13 @@ def test_get_screenshot_rest_bad_request(
         client.get_screenshot(request)
 
 
-def test_get_screenshot_rest_from_dict():
-    test_get_screenshot_rest(request_type=dict)
-
-
-def test_get_screenshot_rest_flattened(transport: str = "rest"):
+def test_get_screenshot_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Screenshot()
 
@@ -2386,11 +4187,18 @@ def test_get_screenshot_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_get_serial_port_output_rest(
-    transport: str = "rest", request_type=compute.GetSerialPortOutputInstanceRequest
-):
+def test_get_screenshot_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type", [compute.GetSerialPortOutputInstanceRequest, dict,]
+)
+def test_get_serial_port_output_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2398,7 +4206,7 @@ def test_get_serial_port_output_rest(
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.SerialPortOutput(
             contents="contents_value",
@@ -2425,6 +4233,96 @@ def test_get_serial_port_output_rest(
     assert response.start == 558
 
 
+def test_get_serial_port_output_rest_required_fields(
+    request_type=compute.GetSerialPortOutputInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_serial_port_output._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_serial_port_output._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("port", "start",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.SerialPortOutput()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": request_init,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.SerialPortOutput.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_serial_port_output(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_serial_port_output_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_serial_port_output._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("port", "start",)) & set(("instance", "project", "zone",))
+    )
+
+
 def test_get_serial_port_output_rest_bad_request(
     transport: str = "rest", request_type=compute.GetSerialPortOutputInstanceRequest
 ):
@@ -2448,17 +4346,13 @@ def test_get_serial_port_output_rest_bad_request(
         client.get_serial_port_output(request)
 
 
-def test_get_serial_port_output_rest_from_dict():
-    test_get_serial_port_output_rest(request_type=dict)
-
-
-def test_get_serial_port_output_rest_flattened(transport: str = "rest"):
+def test_get_serial_port_output_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.SerialPortOutput()
 
@@ -2511,12 +4405,18 @@ def test_get_serial_port_output_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_get_shielded_instance_identity_rest(
-    transport: str = "rest",
-    request_type=compute.GetShieldedInstanceIdentityInstanceRequest,
-):
+def test_get_serial_port_output_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type", [compute.GetShieldedInstanceIdentityInstanceRequest, dict,]
+)
+def test_get_shielded_instance_identity_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2524,7 +4424,7 @@ def test_get_shielded_instance_identity_rest(
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.ShieldedInstanceIdentity(kind="kind_value",)
 
@@ -2539,6 +4439,94 @@ def test_get_shielded_instance_identity_rest(
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.ShieldedInstanceIdentity)
     assert response.kind == "kind_value"
+
+
+def test_get_shielded_instance_identity_rest_required_fields(
+    request_type=compute.GetShieldedInstanceIdentityInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_shielded_instance_identity._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_shielded_instance_identity._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.ShieldedInstanceIdentity()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": request_init,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.ShieldedInstanceIdentity.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_shielded_instance_identity(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_shielded_instance_identity_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_shielded_instance_identity._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("instance", "project", "zone",)))
 
 
 def test_get_shielded_instance_identity_rest_bad_request(
@@ -2565,17 +4553,13 @@ def test_get_shielded_instance_identity_rest_bad_request(
         client.get_shielded_instance_identity(request)
 
 
-def test_get_shielded_instance_identity_rest_from_dict():
-    test_get_shielded_instance_identity_rest(request_type=dict)
-
-
-def test_get_shielded_instance_identity_rest_flattened(transport: str = "rest"):
+def test_get_shielded_instance_identity_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.ShieldedInstanceIdentity()
 
@@ -2628,24 +4612,208 @@ def test_get_shielded_instance_identity_rest_flattened_error(transport: str = "r
         )
 
 
-def test_insert_unary_rest(
-    transport: str = "rest", request_type=compute.InsertInstanceRequest
-):
+def test_get_shielded_instance_identity_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize("request_type", [compute.InsertInstanceRequest, dict,])
+def test_insert_unary_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2"}
-    request_init["instance_resource"] = compute.Instance(
-        advanced_machine_features=compute.AdvancedMachineFeatures(
-            enable_nested_virtualization=True
-        )
-    )
+    request_init["instance_resource"] = {
+        "advanced_machine_features": {
+            "enable_nested_virtualization": True,
+            "threads_per_core": 1689,
+        },
+        "can_ip_forward": True,
+        "confidential_instance_config": {"enable_confidential_compute": True},
+        "cpu_platform": "cpu_platform_value",
+        "creation_timestamp": "creation_timestamp_value",
+        "deletion_protection": True,
+        "description": "description_value",
+        "disks": [
+            {
+                "auto_delete": True,
+                "boot": True,
+                "device_name": "device_name_value",
+                "disk_encryption_key": {
+                    "kms_key_name": "kms_key_name_value",
+                    "kms_key_service_account": "kms_key_service_account_value",
+                    "raw_key": "raw_key_value",
+                    "rsa_encrypted_key": "rsa_encrypted_key_value",
+                    "sha256": "sha256_value",
+                },
+                "disk_size_gb": 1261,
+                "guest_os_features": [{"type_": "type__value"}],
+                "index": 536,
+                "initialize_params": {
+                    "description": "description_value",
+                    "disk_name": "disk_name_value",
+                    "disk_size_gb": 1261,
+                    "disk_type": "disk_type_value",
+                    "labels": {},
+                    "on_update_action": "on_update_action_value",
+                    "provisioned_iops": 1740,
+                    "resource_policies": [
+                        "resource_policies_value_1",
+                        "resource_policies_value_2",
+                    ],
+                    "source_image": "source_image_value",
+                    "source_image_encryption_key": {
+                        "kms_key_name": "kms_key_name_value",
+                        "kms_key_service_account": "kms_key_service_account_value",
+                        "raw_key": "raw_key_value",
+                        "rsa_encrypted_key": "rsa_encrypted_key_value",
+                        "sha256": "sha256_value",
+                    },
+                    "source_snapshot": "source_snapshot_value",
+                    "source_snapshot_encryption_key": {
+                        "kms_key_name": "kms_key_name_value",
+                        "kms_key_service_account": "kms_key_service_account_value",
+                        "raw_key": "raw_key_value",
+                        "rsa_encrypted_key": "rsa_encrypted_key_value",
+                        "sha256": "sha256_value",
+                    },
+                },
+                "interface": "interface_value",
+                "kind": "kind_value",
+                "licenses": ["licenses_value_1", "licenses_value_2"],
+                "mode": "mode_value",
+                "shielded_instance_initial_state": {
+                    "dbs": [
+                        {"content": "content_value", "file_type": "file_type_value"}
+                    ],
+                    "dbxs": [
+                        {"content": "content_value", "file_type": "file_type_value"}
+                    ],
+                    "keks": [
+                        {"content": "content_value", "file_type": "file_type_value"}
+                    ],
+                    "pk": {"content": "content_value", "file_type": "file_type_value"},
+                },
+                "source": "source_value",
+                "type_": "type__value",
+            }
+        ],
+        "display_device": {"enable_display": True},
+        "fingerprint": "fingerprint_value",
+        "guest_accelerators": [
+            {"accelerator_count": 1805, "accelerator_type": "accelerator_type_value"}
+        ],
+        "hostname": "hostname_value",
+        "id": 205,
+        "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
+        "last_start_timestamp": "last_start_timestamp_value",
+        "last_stop_timestamp": "last_stop_timestamp_value",
+        "last_suspended_timestamp": "last_suspended_timestamp_value",
+        "machine_type": "machine_type_value",
+        "metadata": {
+            "fingerprint": "fingerprint_value",
+            "items": [{"key": "key_value", "value": "value_value"}],
+            "kind": "kind_value",
+        },
+        "min_cpu_platform": "min_cpu_platform_value",
+        "name": "name_value",
+        "network_interfaces": [
+            {
+                "access_configs": [
+                    {
+                        "external_ipv6": "external_ipv6_value",
+                        "external_ipv6_prefix_length": 2837,
+                        "kind": "kind_value",
+                        "name": "name_value",
+                        "nat_i_p": "nat_i_p_value",
+                        "network_tier": "network_tier_value",
+                        "public_ptr_domain_name": "public_ptr_domain_name_value",
+                        "set_public_ptr": True,
+                        "type_": "type__value",
+                    }
+                ],
+                "alias_ip_ranges": [
+                    {
+                        "ip_cidr_range": "ip_cidr_range_value",
+                        "subnetwork_range_name": "subnetwork_range_name_value",
+                    }
+                ],
+                "fingerprint": "fingerprint_value",
+                "ipv6_access_configs": [
+                    {
+                        "external_ipv6": "external_ipv6_value",
+                        "external_ipv6_prefix_length": 2837,
+                        "kind": "kind_value",
+                        "name": "name_value",
+                        "nat_i_p": "nat_i_p_value",
+                        "network_tier": "network_tier_value",
+                        "public_ptr_domain_name": "public_ptr_domain_name_value",
+                        "set_public_ptr": True,
+                        "type_": "type__value",
+                    }
+                ],
+                "ipv6_access_type": "ipv6_access_type_value",
+                "ipv6_address": "ipv6_address_value",
+                "kind": "kind_value",
+                "name": "name_value",
+                "network": "network_value",
+                "network_i_p": "network_i_p_value",
+                "nic_type": "nic_type_value",
+                "queue_count": 1197,
+                "stack_type": "stack_type_value",
+                "subnetwork": "subnetwork_value",
+            }
+        ],
+        "private_ipv6_google_access": "private_ipv6_google_access_value",
+        "reservation_affinity": {
+            "consume_reservation_type": "consume_reservation_type_value",
+            "key": "key_value",
+            "values": ["values_value_1", "values_value_2"],
+        },
+        "resource_policies": ["resource_policies_value_1", "resource_policies_value_2"],
+        "satisfies_pzs": True,
+        "scheduling": {
+            "automatic_restart": True,
+            "location_hint": "location_hint_value",
+            "min_node_cpus": 1379,
+            "node_affinities": [
+                {
+                    "key": "key_value",
+                    "operator": "operator_value",
+                    "values": ["values_value_1", "values_value_2"],
+                }
+            ],
+            "on_host_maintenance": "on_host_maintenance_value",
+            "preemptible": True,
+        },
+        "self_link": "self_link_value",
+        "service_accounts": [
+            {"email": "email_value", "scopes": ["scopes_value_1", "scopes_value_2"]}
+        ],
+        "shielded_instance_config": {
+            "enable_integrity_monitoring": True,
+            "enable_secure_boot": True,
+            "enable_vtpm": True,
+        },
+        "shielded_instance_integrity_policy": {"update_auto_learn_policy": True},
+        "start_restricted": True,
+        "status": "status_value",
+        "status_message": "status_message_value",
+        "tags": {
+            "fingerprint": "fingerprint_value",
+            "items": ["items_value_1", "items_value_2"],
+        },
+        "zone": "zone_value",
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -2706,6 +4874,92 @@ def test_insert_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_insert_unary_rest_required_fields(request_type=compute.InsertInstanceRequest):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).insert._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).insert._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id", "source_instance_template",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.insert_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_insert_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.insert._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId", "sourceInstanceTemplate",))
+        & set(("instanceResource", "project", "zone",))
+    )
+
+
 def test_insert_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.InsertInstanceRequest
 ):
@@ -2715,11 +4969,190 @@ def test_insert_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2"}
-    request_init["instance_resource"] = compute.Instance(
-        advanced_machine_features=compute.AdvancedMachineFeatures(
-            enable_nested_virtualization=True
-        )
-    )
+    request_init["instance_resource"] = {
+        "advanced_machine_features": {
+            "enable_nested_virtualization": True,
+            "threads_per_core": 1689,
+        },
+        "can_ip_forward": True,
+        "confidential_instance_config": {"enable_confidential_compute": True},
+        "cpu_platform": "cpu_platform_value",
+        "creation_timestamp": "creation_timestamp_value",
+        "deletion_protection": True,
+        "description": "description_value",
+        "disks": [
+            {
+                "auto_delete": True,
+                "boot": True,
+                "device_name": "device_name_value",
+                "disk_encryption_key": {
+                    "kms_key_name": "kms_key_name_value",
+                    "kms_key_service_account": "kms_key_service_account_value",
+                    "raw_key": "raw_key_value",
+                    "rsa_encrypted_key": "rsa_encrypted_key_value",
+                    "sha256": "sha256_value",
+                },
+                "disk_size_gb": 1261,
+                "guest_os_features": [{"type_": "type__value"}],
+                "index": 536,
+                "initialize_params": {
+                    "description": "description_value",
+                    "disk_name": "disk_name_value",
+                    "disk_size_gb": 1261,
+                    "disk_type": "disk_type_value",
+                    "labels": {},
+                    "on_update_action": "on_update_action_value",
+                    "provisioned_iops": 1740,
+                    "resource_policies": [
+                        "resource_policies_value_1",
+                        "resource_policies_value_2",
+                    ],
+                    "source_image": "source_image_value",
+                    "source_image_encryption_key": {
+                        "kms_key_name": "kms_key_name_value",
+                        "kms_key_service_account": "kms_key_service_account_value",
+                        "raw_key": "raw_key_value",
+                        "rsa_encrypted_key": "rsa_encrypted_key_value",
+                        "sha256": "sha256_value",
+                    },
+                    "source_snapshot": "source_snapshot_value",
+                    "source_snapshot_encryption_key": {
+                        "kms_key_name": "kms_key_name_value",
+                        "kms_key_service_account": "kms_key_service_account_value",
+                        "raw_key": "raw_key_value",
+                        "rsa_encrypted_key": "rsa_encrypted_key_value",
+                        "sha256": "sha256_value",
+                    },
+                },
+                "interface": "interface_value",
+                "kind": "kind_value",
+                "licenses": ["licenses_value_1", "licenses_value_2"],
+                "mode": "mode_value",
+                "shielded_instance_initial_state": {
+                    "dbs": [
+                        {"content": "content_value", "file_type": "file_type_value"}
+                    ],
+                    "dbxs": [
+                        {"content": "content_value", "file_type": "file_type_value"}
+                    ],
+                    "keks": [
+                        {"content": "content_value", "file_type": "file_type_value"}
+                    ],
+                    "pk": {"content": "content_value", "file_type": "file_type_value"},
+                },
+                "source": "source_value",
+                "type_": "type__value",
+            }
+        ],
+        "display_device": {"enable_display": True},
+        "fingerprint": "fingerprint_value",
+        "guest_accelerators": [
+            {"accelerator_count": 1805, "accelerator_type": "accelerator_type_value"}
+        ],
+        "hostname": "hostname_value",
+        "id": 205,
+        "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
+        "last_start_timestamp": "last_start_timestamp_value",
+        "last_stop_timestamp": "last_stop_timestamp_value",
+        "last_suspended_timestamp": "last_suspended_timestamp_value",
+        "machine_type": "machine_type_value",
+        "metadata": {
+            "fingerprint": "fingerprint_value",
+            "items": [{"key": "key_value", "value": "value_value"}],
+            "kind": "kind_value",
+        },
+        "min_cpu_platform": "min_cpu_platform_value",
+        "name": "name_value",
+        "network_interfaces": [
+            {
+                "access_configs": [
+                    {
+                        "external_ipv6": "external_ipv6_value",
+                        "external_ipv6_prefix_length": 2837,
+                        "kind": "kind_value",
+                        "name": "name_value",
+                        "nat_i_p": "nat_i_p_value",
+                        "network_tier": "network_tier_value",
+                        "public_ptr_domain_name": "public_ptr_domain_name_value",
+                        "set_public_ptr": True,
+                        "type_": "type__value",
+                    }
+                ],
+                "alias_ip_ranges": [
+                    {
+                        "ip_cidr_range": "ip_cidr_range_value",
+                        "subnetwork_range_name": "subnetwork_range_name_value",
+                    }
+                ],
+                "fingerprint": "fingerprint_value",
+                "ipv6_access_configs": [
+                    {
+                        "external_ipv6": "external_ipv6_value",
+                        "external_ipv6_prefix_length": 2837,
+                        "kind": "kind_value",
+                        "name": "name_value",
+                        "nat_i_p": "nat_i_p_value",
+                        "network_tier": "network_tier_value",
+                        "public_ptr_domain_name": "public_ptr_domain_name_value",
+                        "set_public_ptr": True,
+                        "type_": "type__value",
+                    }
+                ],
+                "ipv6_access_type": "ipv6_access_type_value",
+                "ipv6_address": "ipv6_address_value",
+                "kind": "kind_value",
+                "name": "name_value",
+                "network": "network_value",
+                "network_i_p": "network_i_p_value",
+                "nic_type": "nic_type_value",
+                "queue_count": 1197,
+                "stack_type": "stack_type_value",
+                "subnetwork": "subnetwork_value",
+            }
+        ],
+        "private_ipv6_google_access": "private_ipv6_google_access_value",
+        "reservation_affinity": {
+            "consume_reservation_type": "consume_reservation_type_value",
+            "key": "key_value",
+            "values": ["values_value_1", "values_value_2"],
+        },
+        "resource_policies": ["resource_policies_value_1", "resource_policies_value_2"],
+        "satisfies_pzs": True,
+        "scheduling": {
+            "automatic_restart": True,
+            "location_hint": "location_hint_value",
+            "min_node_cpus": 1379,
+            "node_affinities": [
+                {
+                    "key": "key_value",
+                    "operator": "operator_value",
+                    "values": ["values_value_1", "values_value_2"],
+                }
+            ],
+            "on_host_maintenance": "on_host_maintenance_value",
+            "preemptible": True,
+        },
+        "self_link": "self_link_value",
+        "service_accounts": [
+            {"email": "email_value", "scopes": ["scopes_value_1", "scopes_value_2"]}
+        ],
+        "shielded_instance_config": {
+            "enable_integrity_monitoring": True,
+            "enable_secure_boot": True,
+            "enable_vtpm": True,
+        },
+        "shielded_instance_integrity_policy": {"update_auto_learn_policy": True},
+        "start_restricted": True,
+        "status": "status_value",
+        "status_message": "status_message_value",
+        "tags": {
+            "fingerprint": "fingerprint_value",
+            "items": ["items_value_1", "items_value_2"],
+        },
+        "zone": "zone_value",
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -2734,17 +5167,13 @@ def test_insert_unary_rest_bad_request(
         client.insert_unary(request)
 
 
-def test_insert_unary_rest_from_dict():
-    test_insert_unary_rest(request_type=dict)
-
-
-def test_insert_unary_rest_flattened(transport: str = "rest"):
+def test_insert_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -2803,9 +5232,16 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_list_rest(transport: str = "rest", request_type=compute.ListInstancesRequest):
+def test_insert_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize("request_type", [compute.ListInstancesRequest, dict,])
+def test_list_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2813,7 +5249,7 @@ def test_list_rest(transport: str = "rest", request_type=compute.ListInstancesRe
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.InstanceList(
             id="id_value",
@@ -2836,6 +5272,93 @@ def test_list_rest(transport: str = "rest", request_type=compute.ListInstancesRe
     assert response.kind == "kind_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.self_link == "self_link_value"
+
+
+def test_list_rest_required_fields(request_type=compute.ListInstancesRequest):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        ("max_results", "filter", "order_by", "page_token", "return_partial_success",)
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.InstanceList()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": request_init,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.InstanceList.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("maxResults", "filter", "orderBy", "pageToken", "returnPartialSuccess",))
+        & set(("project", "zone",))
+    )
 
 
 def test_list_rest_bad_request(
@@ -2861,17 +5384,13 @@ def test_list_rest_bad_request(
         client.list(request)
 
 
-def test_list_rest_from_dict():
-    test_list_rest(request_type=dict)
-
-
-def test_list_rest_flattened(transport: str = "rest"):
+def test_list_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.InstanceList()
 
@@ -2915,8 +5434,10 @@ def test_list_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_list_rest_pager():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_list_rest_pager(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -2956,11 +5477,10 @@ def test_list_rest_pager():
             assert page_.raw_page.next_page_token == token
 
 
-def test_list_referrers_rest(
-    transport: str = "rest", request_type=compute.ListReferrersInstancesRequest
-):
+@pytest.mark.parametrize("request_type", [compute.ListReferrersInstancesRequest, dict,])
+def test_list_referrers_rest(request_type):
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2968,7 +5488,7 @@ def test_list_referrers_rest(
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.InstanceListReferrers(
             id="id_value",
@@ -2991,6 +5511,99 @@ def test_list_referrers_rest(
     assert response.kind == "kind_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.self_link == "self_link_value"
+
+
+def test_list_referrers_rest_required_fields(
+    request_type=compute.ListReferrersInstancesRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_referrers._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_referrers._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        ("max_results", "filter", "order_by", "page_token", "return_partial_success",)
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.InstanceListReferrers()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": request_init,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.InstanceListReferrers.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_referrers(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_referrers_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_referrers._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("maxResults", "filter", "orderBy", "pageToken", "returnPartialSuccess",))
+        & set(("instance", "project", "zone",))
+    )
 
 
 def test_list_referrers_rest_bad_request(
@@ -3016,17 +5629,13 @@ def test_list_referrers_rest_bad_request(
         client.list_referrers(request)
 
 
-def test_list_referrers_rest_from_dict():
-    test_list_referrers_rest(request_type=dict)
-
-
-def test_list_referrers_rest_flattened(transport: str = "rest"):
+def test_list_referrers_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.InstanceListReferrers()
 
@@ -3079,8 +5688,10 @@ def test_list_referrers_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_list_referrers_rest_pager():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+def test_list_referrers_rest_pager(transport: str = "rest"):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -3128,24 +5739,23 @@ def test_list_referrers_rest_pager():
             assert page_.raw_page.next_page_token == token
 
 
-def test_remove_resource_policies_unary_rest(
-    transport: str = "rest", request_type=compute.RemoveResourcePoliciesInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [compute.RemoveResourcePoliciesInstanceRequest, dict,]
+)
+def test_remove_resource_policies_unary_rest(request_type):
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init[
-        "instances_remove_resource_policies_request_resource"
-    ] = compute.InstancesRemoveResourcePoliciesRequest(
-        resource_policies=["resource_policies_value"]
-    )
+    request_init["instances_remove_resource_policies_request_resource"] = {
+        "resource_policies": ["resource_policies_value_1", "resource_policies_value_2"]
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -3206,6 +5816,105 @@ def test_remove_resource_policies_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_remove_resource_policies_unary_rest_required_fields(
+    request_type=compute.RemoveResourcePoliciesInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).remove_resource_policies._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).remove_resource_policies._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.remove_resource_policies_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_remove_resource_policies_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.remove_resource_policies._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "instance",
+                "instancesRemoveResourcePoliciesRequestResource",
+                "project",
+                "zone",
+            )
+        )
+    )
+
+
 def test_remove_resource_policies_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.RemoveResourcePoliciesInstanceRequest
 ):
@@ -3215,11 +5924,9 @@ def test_remove_resource_policies_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init[
-        "instances_remove_resource_policies_request_resource"
-    ] = compute.InstancesRemoveResourcePoliciesRequest(
-        resource_policies=["resource_policies_value"]
-    )
+    request_init["instances_remove_resource_policies_request_resource"] = {
+        "resource_policies": ["resource_policies_value_1", "resource_policies_value_2"]
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -3234,17 +5941,13 @@ def test_remove_resource_policies_unary_rest_bad_request(
         client.remove_resource_policies_unary(request)
 
 
-def test_remove_resource_policies_unary_rest_from_dict():
-    test_remove_resource_policies_unary_rest(request_type=dict)
-
-
-def test_remove_resource_policies_unary_rest_flattened(transport: str = "rest"):
+def test_remove_resource_policies_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -3305,11 +6008,16 @@ def test_remove_resource_policies_unary_rest_flattened_error(transport: str = "r
         )
 
 
-def test_reset_unary_rest(
-    transport: str = "rest", request_type=compute.ResetInstanceRequest
-):
+def test_remove_resource_policies_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize("request_type", [compute.ResetInstanceRequest, dict,])
+def test_reset_unary_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -3317,7 +6025,7 @@ def test_reset_unary_rest(
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -3378,6 +6086,94 @@ def test_reset_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_reset_unary_rest_required_fields(request_type=compute.ResetInstanceRequest):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).reset._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).reset._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.reset_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_reset_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.reset._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",)) & set(("instance", "project", "zone",))
+    )
+
+
 def test_reset_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.ResetInstanceRequest
 ):
@@ -3401,17 +6197,13 @@ def test_reset_unary_rest_bad_request(
         client.reset_unary(request)
 
 
-def test_reset_unary_rest_from_dict():
-    test_reset_unary_rest(request_type=dict)
-
-
-def test_reset_unary_rest_flattened(transport: str = "rest"):
+def test_reset_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -3464,11 +6256,18 @@ def test_reset_unary_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_send_diagnostic_interrupt_rest(
-    transport: str = "rest", request_type=compute.SendDiagnosticInterruptInstanceRequest
-):
+def test_reset_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type", [compute.SendDiagnosticInterruptInstanceRequest, dict,]
+)
+def test_send_diagnostic_interrupt_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -3476,7 +6275,7 @@ def test_send_diagnostic_interrupt_rest(
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.SendDiagnosticInterruptInstanceResponse()
 
@@ -3492,6 +6291,94 @@ def test_send_diagnostic_interrupt_rest(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.SendDiagnosticInterruptInstanceResponse)
+
+
+def test_send_diagnostic_interrupt_rest_required_fields(
+    request_type=compute.SendDiagnosticInterruptInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).send_diagnostic_interrupt._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).send_diagnostic_interrupt._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.SendDiagnosticInterruptInstanceResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.SendDiagnosticInterruptInstanceResponse.to_json(
+                return_value
+            )
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.send_diagnostic_interrupt(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_send_diagnostic_interrupt_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.send_diagnostic_interrupt._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("instance", "project", "zone",)))
 
 
 def test_send_diagnostic_interrupt_rest_bad_request(
@@ -3517,17 +6404,13 @@ def test_send_diagnostic_interrupt_rest_bad_request(
         client.send_diagnostic_interrupt(request)
 
 
-def test_send_diagnostic_interrupt_rest_from_dict():
-    test_send_diagnostic_interrupt_rest(request_type=dict)
-
-
-def test_send_diagnostic_interrupt_rest_flattened(transport: str = "rest"):
+def test_send_diagnostic_interrupt_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.SendDiagnosticInterruptInstanceResponse()
 
@@ -3582,11 +6465,18 @@ def test_send_diagnostic_interrupt_rest_flattened_error(transport: str = "rest")
         )
 
 
-def test_set_deletion_protection_unary_rest(
-    transport: str = "rest", request_type=compute.SetDeletionProtectionInstanceRequest
-):
+def test_send_diagnostic_interrupt_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type", [compute.SetDeletionProtectionInstanceRequest, dict,]
+)
+def test_set_deletion_protection_unary_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -3594,7 +6484,7 @@ def test_set_deletion_protection_unary_rest(
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -3655,6 +6545,97 @@ def test_set_deletion_protection_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_set_deletion_protection_unary_rest_required_fields(
+    request_type=compute.SetDeletionProtectionInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["resource"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_deletion_protection._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["resource"] = "resource_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_deletion_protection._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("deletion_protection", "request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.set_deletion_protection_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_set_deletion_protection_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.set_deletion_protection._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("deletionProtection", "requestId",))
+        & set(("project", "resource", "zone",))
+    )
+
+
 def test_set_deletion_protection_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.SetDeletionProtectionInstanceRequest
 ):
@@ -3678,17 +6659,13 @@ def test_set_deletion_protection_unary_rest_bad_request(
         client.set_deletion_protection_unary(request)
 
 
-def test_set_deletion_protection_unary_rest_from_dict():
-    test_set_deletion_protection_unary_rest(request_type=dict)
-
-
-def test_set_deletion_protection_unary_rest_flattened(transport: str = "rest"):
+def test_set_deletion_protection_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -3741,11 +6718,18 @@ def test_set_deletion_protection_unary_rest_flattened_error(transport: str = "re
         )
 
 
-def test_set_disk_auto_delete_unary_rest(
-    transport: str = "rest", request_type=compute.SetDiskAutoDeleteInstanceRequest
-):
+def test_set_deletion_protection_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type", [compute.SetDiskAutoDeleteInstanceRequest, dict,]
+)
+def test_set_disk_auto_delete_unary_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -3753,7 +6737,7 @@ def test_set_disk_auto_delete_unary_rest(
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -3814,6 +6798,114 @@ def test_set_disk_auto_delete_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_set_disk_auto_delete_unary_rest_required_fields(
+    request_type=compute.SetDiskAutoDeleteInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["auto_delete"] = False
+    request_init["device_name"] = ""
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "autoDelete" not in jsonified_request
+    assert "deviceName" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_disk_auto_delete._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "autoDelete" in jsonified_request
+    assert jsonified_request["autoDelete"] == request_init["auto_delete"]
+    assert "deviceName" in jsonified_request
+    assert jsonified_request["deviceName"] == request_init["device_name"]
+
+    jsonified_request["autoDelete"] = True
+    jsonified_request["deviceName"] = "device_name_value"
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_disk_auto_delete._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("device_name", "request_id", "auto_delete",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "autoDelete" in jsonified_request
+    assert jsonified_request["autoDelete"] == True
+    assert "deviceName" in jsonified_request
+    assert jsonified_request["deviceName"] == "device_name_value"
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.set_disk_auto_delete_unary(request)
+
+            expected_params = [
+                ("autoDelete", False,),
+                ("deviceName", "",),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_set_disk_auto_delete_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.set_disk_auto_delete._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("deviceName", "requestId", "autoDelete",))
+        & set(("autoDelete", "deviceName", "instance", "project", "zone",))
+    )
+
+
 def test_set_disk_auto_delete_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.SetDiskAutoDeleteInstanceRequest
 ):
@@ -3837,17 +6929,13 @@ def test_set_disk_auto_delete_unary_rest_bad_request(
         client.set_disk_auto_delete_unary(request)
 
 
-def test_set_disk_auto_delete_unary_rest_from_dict():
-    test_set_disk_auto_delete_unary_rest(request_type=dict)
-
-
-def test_set_disk_auto_delete_unary_rest_flattened(transport: str = "rest"):
+def test_set_disk_auto_delete_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -3906,22 +6994,113 @@ def test_set_disk_auto_delete_unary_rest_flattened_error(transport: str = "rest"
         )
 
 
-def test_set_iam_policy_rest(
-    transport: str = "rest", request_type=compute.SetIamPolicyInstanceRequest
-):
+def test_set_disk_auto_delete_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize("request_type", [compute.SetIamPolicyInstanceRequest, dict,])
+def test_set_iam_policy_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "resource": "sample3"}
-    request_init["zone_set_policy_request_resource"] = compute.ZoneSetPolicyRequest(
-        bindings=[compute.Binding(binding_id="binding_id_value")]
-    )
+    request_init["zone_set_policy_request_resource"] = {
+        "bindings": [
+            {
+                "binding_id": "binding_id_value",
+                "condition": {
+                    "description": "description_value",
+                    "expression": "expression_value",
+                    "location": "location_value",
+                    "title": "title_value",
+                },
+                "members": ["members_value_1", "members_value_2"],
+                "role": "role_value",
+            }
+        ],
+        "etag": "etag_value",
+        "policy": {
+            "audit_configs": [
+                {
+                    "audit_log_configs": [
+                        {
+                            "exempted_members": [
+                                "exempted_members_value_1",
+                                "exempted_members_value_2",
+                            ],
+                            "ignore_child_exemptions": True,
+                            "log_type": "log_type_value",
+                        }
+                    ],
+                    "exempted_members": [
+                        "exempted_members_value_1",
+                        "exempted_members_value_2",
+                    ],
+                    "service": "service_value",
+                }
+            ],
+            "bindings": [
+                {
+                    "binding_id": "binding_id_value",
+                    "condition": {
+                        "description": "description_value",
+                        "expression": "expression_value",
+                        "location": "location_value",
+                        "title": "title_value",
+                    },
+                    "members": ["members_value_1", "members_value_2"],
+                    "role": "role_value",
+                }
+            ],
+            "etag": "etag_value",
+            "iam_owned": True,
+            "rules": [
+                {
+                    "action": "action_value",
+                    "conditions": [
+                        {
+                            "iam": "iam_value",
+                            "op": "op_value",
+                            "svc": "svc_value",
+                            "sys": "sys_value",
+                            "values": ["values_value_1", "values_value_2"],
+                        }
+                    ],
+                    "description": "description_value",
+                    "ins": ["ins_value_1", "ins_value_2"],
+                    "log_configs": [
+                        {
+                            "cloud_audit": {
+                                "authorization_logging_options": {
+                                    "permission_type": "permission_type_value"
+                                },
+                                "log_name": "log_name_value",
+                            },
+                            "counter": {
+                                "custom_fields": [
+                                    {"name": "name_value", "value": "value_value"}
+                                ],
+                                "field": "field_value",
+                                "metric": "metric_value",
+                            },
+                            "data_access": {"log_mode": "log_mode_value"},
+                        }
+                    ],
+                    "not_ins": ["not_ins_value_1", "not_ins_value_2"],
+                    "permissions": ["permissions_value_1", "permissions_value_2"],
+                }
+            ],
+            "version": 774,
+        },
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Policy(etag="etag_value", iam_owned=True, version=774,)
 
@@ -3940,6 +7119,95 @@ def test_set_iam_policy_rest(
     assert response.version == 774
 
 
+def test_set_iam_policy_rest_required_fields(
+    request_type=compute.SetIamPolicyInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["resource"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_iam_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["resource"] = "resource_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_iam_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Policy()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Policy.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.set_iam_policy(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_set_iam_policy_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.set_iam_policy._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(()) & set(("project", "resource", "zone", "zoneSetPolicyRequestResource",))
+    )
+
+
 def test_set_iam_policy_rest_bad_request(
     transport: str = "rest", request_type=compute.SetIamPolicyInstanceRequest
 ):
@@ -3949,9 +7217,95 @@ def test_set_iam_policy_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "resource": "sample3"}
-    request_init["zone_set_policy_request_resource"] = compute.ZoneSetPolicyRequest(
-        bindings=[compute.Binding(binding_id="binding_id_value")]
-    )
+    request_init["zone_set_policy_request_resource"] = {
+        "bindings": [
+            {
+                "binding_id": "binding_id_value",
+                "condition": {
+                    "description": "description_value",
+                    "expression": "expression_value",
+                    "location": "location_value",
+                    "title": "title_value",
+                },
+                "members": ["members_value_1", "members_value_2"],
+                "role": "role_value",
+            }
+        ],
+        "etag": "etag_value",
+        "policy": {
+            "audit_configs": [
+                {
+                    "audit_log_configs": [
+                        {
+                            "exempted_members": [
+                                "exempted_members_value_1",
+                                "exempted_members_value_2",
+                            ],
+                            "ignore_child_exemptions": True,
+                            "log_type": "log_type_value",
+                        }
+                    ],
+                    "exempted_members": [
+                        "exempted_members_value_1",
+                        "exempted_members_value_2",
+                    ],
+                    "service": "service_value",
+                }
+            ],
+            "bindings": [
+                {
+                    "binding_id": "binding_id_value",
+                    "condition": {
+                        "description": "description_value",
+                        "expression": "expression_value",
+                        "location": "location_value",
+                        "title": "title_value",
+                    },
+                    "members": ["members_value_1", "members_value_2"],
+                    "role": "role_value",
+                }
+            ],
+            "etag": "etag_value",
+            "iam_owned": True,
+            "rules": [
+                {
+                    "action": "action_value",
+                    "conditions": [
+                        {
+                            "iam": "iam_value",
+                            "op": "op_value",
+                            "svc": "svc_value",
+                            "sys": "sys_value",
+                            "values": ["values_value_1", "values_value_2"],
+                        }
+                    ],
+                    "description": "description_value",
+                    "ins": ["ins_value_1", "ins_value_2"],
+                    "log_configs": [
+                        {
+                            "cloud_audit": {
+                                "authorization_logging_options": {
+                                    "permission_type": "permission_type_value"
+                                },
+                                "log_name": "log_name_value",
+                            },
+                            "counter": {
+                                "custom_fields": [
+                                    {"name": "name_value", "value": "value_value"}
+                                ],
+                                "field": "field_value",
+                                "metric": "metric_value",
+                            },
+                            "data_access": {"log_mode": "log_mode_value"},
+                        }
+                    ],
+                    "not_ins": ["not_ins_value_1", "not_ins_value_2"],
+                    "permissions": ["permissions_value_1", "permissions_value_2"],
+                }
+            ],
+            "version": 774,
+        },
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -3966,17 +7320,13 @@ def test_set_iam_policy_rest_bad_request(
         client.set_iam_policy(request)
 
 
-def test_set_iam_policy_rest_from_dict():
-    test_set_iam_policy_rest(request_type=dict)
-
-
-def test_set_iam_policy_rest_flattened(transport: str = "rest"):
+def test_set_iam_policy_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Policy()
 
@@ -4037,22 +7387,28 @@ def test_set_iam_policy_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_set_labels_unary_rest(
-    transport: str = "rest", request_type=compute.SetLabelsInstanceRequest
-):
+def test_set_iam_policy_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize("request_type", [compute.SetLabelsInstanceRequest, dict,])
+def test_set_labels_unary_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init[
-        "instances_set_labels_request_resource"
-    ] = compute.InstancesSetLabelsRequest(label_fingerprint="label_fingerprint_value")
+    request_init["instances_set_labels_request_resource"] = {
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -4113,6 +7469,98 @@ def test_set_labels_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_set_labels_unary_rest_required_fields(
+    request_type=compute.SetLabelsInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_labels._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_labels._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.set_labels_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_set_labels_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.set_labels._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(("instance", "instancesSetLabelsRequestResource", "project", "zone",))
+    )
+
+
 def test_set_labels_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.SetLabelsInstanceRequest
 ):
@@ -4122,9 +7570,10 @@ def test_set_labels_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init[
-        "instances_set_labels_request_resource"
-    ] = compute.InstancesSetLabelsRequest(label_fingerprint="label_fingerprint_value")
+    request_init["instances_set_labels_request_resource"] = {
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4139,17 +7588,13 @@ def test_set_labels_unary_rest_bad_request(
         client.set_labels_unary(request)
 
 
-def test_set_labels_unary_rest_from_dict():
-    test_set_labels_unary_rest(request_type=dict)
-
-
-def test_set_labels_unary_rest_flattened(transport: str = "rest"):
+def test_set_labels_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -4210,24 +7655,31 @@ def test_set_labels_unary_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_set_machine_resources_unary_rest(
-    transport: str = "rest", request_type=compute.SetMachineResourcesInstanceRequest
-):
+def test_set_labels_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type", [compute.SetMachineResourcesInstanceRequest, dict,]
+)
+def test_set_machine_resources_unary_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init[
-        "instances_set_machine_resources_request_resource"
-    ] = compute.InstancesSetMachineResourcesRequest(
-        guest_accelerators=[compute.AcceleratorConfig(accelerator_count=1805)]
-    )
+    request_init["instances_set_machine_resources_request_resource"] = {
+        "guest_accelerators": [
+            {"accelerator_count": 1805, "accelerator_type": "accelerator_type_value"}
+        ]
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -4288,6 +7740,105 @@ def test_set_machine_resources_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_set_machine_resources_unary_rest_required_fields(
+    request_type=compute.SetMachineResourcesInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_machine_resources._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_machine_resources._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.set_machine_resources_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_set_machine_resources_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.set_machine_resources._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "instance",
+                "instancesSetMachineResourcesRequestResource",
+                "project",
+                "zone",
+            )
+        )
+    )
+
+
 def test_set_machine_resources_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.SetMachineResourcesInstanceRequest
 ):
@@ -4297,11 +7848,11 @@ def test_set_machine_resources_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init[
-        "instances_set_machine_resources_request_resource"
-    ] = compute.InstancesSetMachineResourcesRequest(
-        guest_accelerators=[compute.AcceleratorConfig(accelerator_count=1805)]
-    )
+    request_init["instances_set_machine_resources_request_resource"] = {
+        "guest_accelerators": [
+            {"accelerator_count": 1805, "accelerator_type": "accelerator_type_value"}
+        ]
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4316,17 +7867,13 @@ def test_set_machine_resources_unary_rest_bad_request(
         client.set_machine_resources_unary(request)
 
 
-def test_set_machine_resources_unary_rest_from_dict():
-    test_set_machine_resources_unary_rest(request_type=dict)
-
-
-def test_set_machine_resources_unary_rest_flattened(transport: str = "rest"):
+def test_set_machine_resources_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -4387,22 +7934,27 @@ def test_set_machine_resources_unary_rest_flattened_error(transport: str = "rest
         )
 
 
-def test_set_machine_type_unary_rest(
-    transport: str = "rest", request_type=compute.SetMachineTypeInstanceRequest
-):
+def test_set_machine_resources_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize("request_type", [compute.SetMachineTypeInstanceRequest, dict,])
+def test_set_machine_type_unary_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init[
-        "instances_set_machine_type_request_resource"
-    ] = compute.InstancesSetMachineTypeRequest(machine_type="machine_type_value")
+    request_init["instances_set_machine_type_request_resource"] = {
+        "machine_type": "machine_type_value"
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -4463,6 +8015,100 @@ def test_set_machine_type_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_set_machine_type_unary_rest_required_fields(
+    request_type=compute.SetMachineTypeInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_machine_type._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_machine_type._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.set_machine_type_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_set_machine_type_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.set_machine_type._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            ("instance", "instancesSetMachineTypeRequestResource", "project", "zone",)
+        )
+    )
+
+
 def test_set_machine_type_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.SetMachineTypeInstanceRequest
 ):
@@ -4472,9 +8118,9 @@ def test_set_machine_type_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init[
-        "instances_set_machine_type_request_resource"
-    ] = compute.InstancesSetMachineTypeRequest(machine_type="machine_type_value")
+    request_init["instances_set_machine_type_request_resource"] = {
+        "machine_type": "machine_type_value"
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4489,17 +8135,13 @@ def test_set_machine_type_unary_rest_bad_request(
         client.set_machine_type_unary(request)
 
 
-def test_set_machine_type_unary_rest_from_dict():
-    test_set_machine_type_unary_rest(request_type=dict)
-
-
-def test_set_machine_type_unary_rest_flattened(transport: str = "rest"):
+def test_set_machine_type_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -4560,22 +8202,29 @@ def test_set_machine_type_unary_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_set_metadata_unary_rest(
-    transport: str = "rest", request_type=compute.SetMetadataInstanceRequest
-):
+def test_set_machine_type_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize("request_type", [compute.SetMetadataInstanceRequest, dict,])
+def test_set_metadata_unary_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init["metadata_resource"] = compute.Metadata(
-        fingerprint="fingerprint_value"
-    )
+    request_init["metadata_resource"] = {
+        "fingerprint": "fingerprint_value",
+        "items": [{"key": "key_value", "value": "value_value"}],
+        "kind": "kind_value",
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -4636,6 +8285,97 @@ def test_set_metadata_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_set_metadata_unary_rest_required_fields(
+    request_type=compute.SetMetadataInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_metadata._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_metadata._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.set_metadata_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_set_metadata_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.set_metadata._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",)) & set(("instance", "metadataResource", "project", "zone",))
+    )
+
+
 def test_set_metadata_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.SetMetadataInstanceRequest
 ):
@@ -4645,9 +8385,11 @@ def test_set_metadata_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init["metadata_resource"] = compute.Metadata(
-        fingerprint="fingerprint_value"
-    )
+    request_init["metadata_resource"] = {
+        "fingerprint": "fingerprint_value",
+        "items": [{"key": "key_value", "value": "value_value"}],
+        "kind": "kind_value",
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4662,17 +8404,13 @@ def test_set_metadata_unary_rest_bad_request(
         client.set_metadata_unary(request)
 
 
-def test_set_metadata_unary_rest_from_dict():
-    test_set_metadata_unary_rest(request_type=dict)
-
-
-def test_set_metadata_unary_rest_flattened(transport: str = "rest"):
+def test_set_metadata_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -4729,24 +8467,29 @@ def test_set_metadata_unary_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_set_min_cpu_platform_unary_rest(
-    transport: str = "rest", request_type=compute.SetMinCpuPlatformInstanceRequest
-):
+def test_set_metadata_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type", [compute.SetMinCpuPlatformInstanceRequest, dict,]
+)
+def test_set_min_cpu_platform_unary_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init[
-        "instances_set_min_cpu_platform_request_resource"
-    ] = compute.InstancesSetMinCpuPlatformRequest(
-        min_cpu_platform="min_cpu_platform_value"
-    )
+    request_init["instances_set_min_cpu_platform_request_resource"] = {
+        "min_cpu_platform": "min_cpu_platform_value"
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -4807,6 +8550,105 @@ def test_set_min_cpu_platform_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_set_min_cpu_platform_unary_rest_required_fields(
+    request_type=compute.SetMinCpuPlatformInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_min_cpu_platform._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_min_cpu_platform._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.set_min_cpu_platform_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_set_min_cpu_platform_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.set_min_cpu_platform._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "instance",
+                "instancesSetMinCpuPlatformRequestResource",
+                "project",
+                "zone",
+            )
+        )
+    )
+
+
 def test_set_min_cpu_platform_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.SetMinCpuPlatformInstanceRequest
 ):
@@ -4816,11 +8658,9 @@ def test_set_min_cpu_platform_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init[
-        "instances_set_min_cpu_platform_request_resource"
-    ] = compute.InstancesSetMinCpuPlatformRequest(
-        min_cpu_platform="min_cpu_platform_value"
-    )
+    request_init["instances_set_min_cpu_platform_request_resource"] = {
+        "min_cpu_platform": "min_cpu_platform_value"
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4835,17 +8675,13 @@ def test_set_min_cpu_platform_unary_rest_bad_request(
         client.set_min_cpu_platform_unary(request)
 
 
-def test_set_min_cpu_platform_unary_rest_from_dict():
-    test_set_min_cpu_platform_unary_rest(request_type=dict)
-
-
-def test_set_min_cpu_platform_unary_rest_flattened(transport: str = "rest"):
+def test_set_min_cpu_platform_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -4906,20 +8742,38 @@ def test_set_min_cpu_platform_unary_rest_flattened_error(transport: str = "rest"
         )
 
 
-def test_set_scheduling_unary_rest(
-    transport: str = "rest", request_type=compute.SetSchedulingInstanceRequest
-):
+def test_set_min_cpu_platform_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize("request_type", [compute.SetSchedulingInstanceRequest, dict,])
+def test_set_scheduling_unary_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init["scheduling_resource"] = compute.Scheduling(automatic_restart=True)
+    request_init["scheduling_resource"] = {
+        "automatic_restart": True,
+        "location_hint": "location_hint_value",
+        "min_node_cpus": 1379,
+        "node_affinities": [
+            {
+                "key": "key_value",
+                "operator": "operator_value",
+                "values": ["values_value_1", "values_value_2"],
+            }
+        ],
+        "on_host_maintenance": "on_host_maintenance_value",
+        "preemptible": True,
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -4980,6 +8834,98 @@ def test_set_scheduling_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_set_scheduling_unary_rest_required_fields(
+    request_type=compute.SetSchedulingInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_scheduling._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_scheduling._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.set_scheduling_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_set_scheduling_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.set_scheduling._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(("instance", "project", "schedulingResource", "zone",))
+    )
+
+
 def test_set_scheduling_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.SetSchedulingInstanceRequest
 ):
@@ -4989,7 +8935,20 @@ def test_set_scheduling_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init["scheduling_resource"] = compute.Scheduling(automatic_restart=True)
+    request_init["scheduling_resource"] = {
+        "automatic_restart": True,
+        "location_hint": "location_hint_value",
+        "min_node_cpus": 1379,
+        "node_affinities": [
+            {
+                "key": "key_value",
+                "operator": "operator_value",
+                "values": ["values_value_1", "values_value_2"],
+            }
+        ],
+        "on_host_maintenance": "on_host_maintenance_value",
+        "preemptible": True,
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -5004,17 +8963,13 @@ def test_set_scheduling_unary_rest_bad_request(
         client.set_scheduling_unary(request)
 
 
-def test_set_scheduling_unary_rest_from_dict():
-    test_set_scheduling_unary_rest(request_type=dict)
-
-
-def test_set_scheduling_unary_rest_flattened(transport: str = "rest"):
+def test_set_scheduling_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -5071,22 +9026,30 @@ def test_set_scheduling_unary_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_set_service_account_unary_rest(
-    transport: str = "rest", request_type=compute.SetServiceAccountInstanceRequest
-):
+def test_set_scheduling_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type", [compute.SetServiceAccountInstanceRequest, dict,]
+)
+def test_set_service_account_unary_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init[
-        "instances_set_service_account_request_resource"
-    ] = compute.InstancesSetServiceAccountRequest(email="email_value")
+    request_init["instances_set_service_account_request_resource"] = {
+        "email": "email_value",
+        "scopes": ["scopes_value_1", "scopes_value_2"],
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -5147,6 +9110,105 @@ def test_set_service_account_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_set_service_account_unary_rest_required_fields(
+    request_type=compute.SetServiceAccountInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_service_account._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_service_account._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.set_service_account_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_set_service_account_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.set_service_account._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "instance",
+                "instancesSetServiceAccountRequestResource",
+                "project",
+                "zone",
+            )
+        )
+    )
+
+
 def test_set_service_account_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.SetServiceAccountInstanceRequest
 ):
@@ -5156,9 +9218,10 @@ def test_set_service_account_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init[
-        "instances_set_service_account_request_resource"
-    ] = compute.InstancesSetServiceAccountRequest(email="email_value")
+    request_init["instances_set_service_account_request_resource"] = {
+        "email": "email_value",
+        "scopes": ["scopes_value_1", "scopes_value_2"],
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -5173,17 +9236,13 @@ def test_set_service_account_unary_rest_bad_request(
         client.set_service_account_unary(request)
 
 
-def test_set_service_account_unary_rest_from_dict():
-    test_set_service_account_unary_rest(request_type=dict)
-
-
-def test_set_service_account_unary_rest_flattened(transport: str = "rest"):
+def test_set_service_account_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -5244,23 +9303,29 @@ def test_set_service_account_unary_rest_flattened_error(transport: str = "rest")
         )
 
 
-def test_set_shielded_instance_integrity_policy_unary_rest(
-    transport: str = "rest",
-    request_type=compute.SetShieldedInstanceIntegrityPolicyInstanceRequest,
-):
+def test_set_service_account_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type", [compute.SetShieldedInstanceIntegrityPolicyInstanceRequest, dict,]
+)
+def test_set_shielded_instance_integrity_policy_unary_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init[
-        "shielded_instance_integrity_policy_resource"
-    ] = compute.ShieldedInstanceIntegrityPolicy(update_auto_learn_policy=True)
+    request_init["shielded_instance_integrity_policy_resource"] = {
+        "update_auto_learn_policy": True
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -5321,6 +9386,106 @@ def test_set_shielded_instance_integrity_policy_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_set_shielded_instance_integrity_policy_unary_rest_required_fields(
+    request_type=compute.SetShieldedInstanceIntegrityPolicyInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_shielded_instance_integrity_policy._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_shielded_instance_integrity_policy._get_unset_required_fields(
+        jsonified_request
+    )
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.set_shielded_instance_integrity_policy_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_set_shielded_instance_integrity_policy_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.set_shielded_instance_integrity_policy._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            ("instance", "project", "shieldedInstanceIntegrityPolicyResource", "zone",)
+        )
+    )
+
+
 def test_set_shielded_instance_integrity_policy_unary_rest_bad_request(
     transport: str = "rest",
     request_type=compute.SetShieldedInstanceIntegrityPolicyInstanceRequest,
@@ -5331,9 +9496,9 @@ def test_set_shielded_instance_integrity_policy_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init[
-        "shielded_instance_integrity_policy_resource"
-    ] = compute.ShieldedInstanceIntegrityPolicy(update_auto_learn_policy=True)
+    request_init["shielded_instance_integrity_policy_resource"] = {
+        "update_auto_learn_policy": True
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -5348,19 +9513,13 @@ def test_set_shielded_instance_integrity_policy_unary_rest_bad_request(
         client.set_shielded_instance_integrity_policy_unary(request)
 
 
-def test_set_shielded_instance_integrity_policy_unary_rest_from_dict():
-    test_set_shielded_instance_integrity_policy_unary_rest(request_type=dict)
-
-
-def test_set_shielded_instance_integrity_policy_unary_rest_flattened(
-    transport: str = "rest",
-):
+def test_set_shielded_instance_integrity_policy_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -5423,20 +9582,28 @@ def test_set_shielded_instance_integrity_policy_unary_rest_flattened_error(
         )
 
 
-def test_set_tags_unary_rest(
-    transport: str = "rest", request_type=compute.SetTagsInstanceRequest
-):
+def test_set_shielded_instance_integrity_policy_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize("request_type", [compute.SetTagsInstanceRequest, dict,])
+def test_set_tags_unary_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init["tags_resource"] = compute.Tags(fingerprint="fingerprint_value")
+    request_init["tags_resource"] = {
+        "fingerprint": "fingerprint_value",
+        "items": ["items_value_1", "items_value_2"],
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -5497,6 +9664,97 @@ def test_set_tags_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_set_tags_unary_rest_required_fields(
+    request_type=compute.SetTagsInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_tags._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_tags._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.set_tags_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_set_tags_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.set_tags._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",)) & set(("instance", "project", "tagsResource", "zone",))
+    )
+
+
 def test_set_tags_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.SetTagsInstanceRequest
 ):
@@ -5506,7 +9764,10 @@ def test_set_tags_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init["tags_resource"] = compute.Tags(fingerprint="fingerprint_value")
+    request_init["tags_resource"] = {
+        "fingerprint": "fingerprint_value",
+        "items": ["items_value_1", "items_value_2"],
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -5521,17 +9782,13 @@ def test_set_tags_unary_rest_bad_request(
         client.set_tags_unary(request)
 
 
-def test_set_tags_unary_rest_from_dict():
-    test_set_tags_unary_rest(request_type=dict)
-
-
-def test_set_tags_unary_rest_flattened(transport: str = "rest"):
+def test_set_tags_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -5588,12 +9845,18 @@ def test_set_tags_unary_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_simulate_maintenance_event_unary_rest(
-    transport: str = "rest",
-    request_type=compute.SimulateMaintenanceEventInstanceRequest,
-):
+def test_set_tags_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type", [compute.SimulateMaintenanceEventInstanceRequest, dict,]
+)
+def test_simulate_maintenance_event_unary_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -5601,7 +9864,7 @@ def test_simulate_maintenance_event_unary_rest(
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -5662,6 +9925,92 @@ def test_simulate_maintenance_event_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_simulate_maintenance_event_unary_rest_required_fields(
+    request_type=compute.SimulateMaintenanceEventInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).simulate_maintenance_event._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).simulate_maintenance_event._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.simulate_maintenance_event_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_simulate_maintenance_event_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.simulate_maintenance_event._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("instance", "project", "zone",)))
+
+
 def test_simulate_maintenance_event_unary_rest_bad_request(
     transport: str = "rest",
     request_type=compute.SimulateMaintenanceEventInstanceRequest,
@@ -5686,17 +10035,13 @@ def test_simulate_maintenance_event_unary_rest_bad_request(
         client.simulate_maintenance_event_unary(request)
 
 
-def test_simulate_maintenance_event_unary_rest_from_dict():
-    test_simulate_maintenance_event_unary_rest(request_type=dict)
-
-
-def test_simulate_maintenance_event_unary_rest_flattened(transport: str = "rest"):
+def test_simulate_maintenance_event_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -5749,11 +10094,16 @@ def test_simulate_maintenance_event_unary_rest_flattened_error(transport: str = 
         )
 
 
-def test_start_unary_rest(
-    transport: str = "rest", request_type=compute.StartInstanceRequest
-):
+def test_simulate_maintenance_event_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize("request_type", [compute.StartInstanceRequest, dict,])
+def test_start_unary_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -5761,7 +10111,7 @@ def test_start_unary_rest(
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -5822,6 +10172,94 @@ def test_start_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_start_unary_rest_required_fields(request_type=compute.StartInstanceRequest):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).start._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).start._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.start_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_start_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.start._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",)) & set(("instance", "project", "zone",))
+    )
+
+
 def test_start_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.StartInstanceRequest
 ):
@@ -5845,17 +10283,13 @@ def test_start_unary_rest_bad_request(
         client.start_unary(request)
 
 
-def test_start_unary_rest_from_dict():
-    test_start_unary_rest(request_type=dict)
-
-
-def test_start_unary_rest_flattened(transport: str = "rest"):
+def test_start_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -5908,30 +10342,40 @@ def test_start_unary_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_start_with_encryption_key_unary_rest(
-    transport: str = "rest", request_type=compute.StartWithEncryptionKeyInstanceRequest
-):
+def test_start_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type", [compute.StartWithEncryptionKeyInstanceRequest, dict,]
+)
+def test_start_with_encryption_key_unary_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init[
-        "instances_start_with_encryption_key_request_resource"
-    ] = compute.InstancesStartWithEncryptionKeyRequest(
-        disks=[
-            compute.CustomerEncryptionKeyProtectedDisk(
-                disk_encryption_key=compute.CustomerEncryptionKey(
-                    kms_key_name="kms_key_name_value"
-                )
-            )
+    request_init["instances_start_with_encryption_key_request_resource"] = {
+        "disks": [
+            {
+                "disk_encryption_key": {
+                    "kms_key_name": "kms_key_name_value",
+                    "kms_key_service_account": "kms_key_service_account_value",
+                    "raw_key": "raw_key_value",
+                    "rsa_encrypted_key": "rsa_encrypted_key_value",
+                    "sha256": "sha256_value",
+                },
+                "source": "source_value",
+            }
         ]
-    )
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -5992,6 +10436,105 @@ def test_start_with_encryption_key_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_start_with_encryption_key_unary_rest_required_fields(
+    request_type=compute.StartWithEncryptionKeyInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).start_with_encryption_key._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).start_with_encryption_key._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.start_with_encryption_key_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_start_with_encryption_key_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.start_with_encryption_key._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "instance",
+                "instancesStartWithEncryptionKeyRequestResource",
+                "project",
+                "zone",
+            )
+        )
+    )
+
+
 def test_start_with_encryption_key_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.StartWithEncryptionKeyInstanceRequest
 ):
@@ -6001,17 +10544,20 @@ def test_start_with_encryption_key_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init[
-        "instances_start_with_encryption_key_request_resource"
-    ] = compute.InstancesStartWithEncryptionKeyRequest(
-        disks=[
-            compute.CustomerEncryptionKeyProtectedDisk(
-                disk_encryption_key=compute.CustomerEncryptionKey(
-                    kms_key_name="kms_key_name_value"
-                )
-            )
+    request_init["instances_start_with_encryption_key_request_resource"] = {
+        "disks": [
+            {
+                "disk_encryption_key": {
+                    "kms_key_name": "kms_key_name_value",
+                    "kms_key_service_account": "kms_key_service_account_value",
+                    "raw_key": "raw_key_value",
+                    "rsa_encrypted_key": "rsa_encrypted_key_value",
+                    "sha256": "sha256_value",
+                },
+                "source": "source_value",
+            }
         ]
-    )
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -6026,17 +10572,13 @@ def test_start_with_encryption_key_unary_rest_bad_request(
         client.start_with_encryption_key_unary(request)
 
 
-def test_start_with_encryption_key_unary_rest_from_dict():
-    test_start_with_encryption_key_unary_rest(request_type=dict)
-
-
-def test_start_with_encryption_key_unary_rest_flattened(transport: str = "rest"):
+def test_start_with_encryption_key_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -6109,11 +10651,16 @@ def test_start_with_encryption_key_unary_rest_flattened_error(transport: str = "
         )
 
 
-def test_stop_unary_rest(
-    transport: str = "rest", request_type=compute.StopInstanceRequest
-):
+def test_start_with_encryption_key_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize("request_type", [compute.StopInstanceRequest, dict,])
+def test_stop_unary_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -6121,7 +10668,7 @@ def test_stop_unary_rest(
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -6182,6 +10729,94 @@ def test_stop_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_stop_unary_rest_required_fields(request_type=compute.StopInstanceRequest):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).stop._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).stop._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.stop_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_stop_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.stop._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",)) & set(("instance", "project", "zone",))
+    )
+
+
 def test_stop_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.StopInstanceRequest
 ):
@@ -6205,17 +10840,13 @@ def test_stop_unary_rest_bad_request(
         client.stop_unary(request)
 
 
-def test_stop_unary_rest_from_dict():
-    test_stop_unary_rest(request_type=dict)
-
-
-def test_stop_unary_rest_flattened(transport: str = "rest"):
+def test_stop_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -6268,22 +10899,29 @@ def test_stop_unary_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_test_iam_permissions_rest(
-    transport: str = "rest", request_type=compute.TestIamPermissionsInstanceRequest
-):
+def test_stop_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type", [compute.TestIamPermissionsInstanceRequest, dict,]
+)
+def test_test_iam_permissions_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "resource": "sample3"}
-    request_init["test_permissions_request_resource"] = compute.TestPermissionsRequest(
-        permissions=["permissions_value"]
-    )
+    request_init["test_permissions_request_resource"] = {
+        "permissions": ["permissions_value_1", "permissions_value_2"]
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.TestPermissionsResponse(
             permissions=["permissions_value"],
@@ -6302,6 +10940,96 @@ def test_test_iam_permissions_rest(
     assert response.permissions == ["permissions_value"]
 
 
+def test_test_iam_permissions_rest_required_fields(
+    request_type=compute.TestIamPermissionsInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["resource"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).test_iam_permissions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["resource"] = "resource_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).test_iam_permissions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.TestPermissionsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.TestPermissionsResponse.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.test_iam_permissions(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_test_iam_permissions_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.test_iam_permissions._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(("project", "resource", "testPermissionsRequestResource", "zone",))
+    )
+
+
 def test_test_iam_permissions_rest_bad_request(
     transport: str = "rest", request_type=compute.TestIamPermissionsInstanceRequest
 ):
@@ -6311,9 +11039,9 @@ def test_test_iam_permissions_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "resource": "sample3"}
-    request_init["test_permissions_request_resource"] = compute.TestPermissionsRequest(
-        permissions=["permissions_value"]
-    )
+    request_init["test_permissions_request_resource"] = {
+        "permissions": ["permissions_value_1", "permissions_value_2"]
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -6328,17 +11056,13 @@ def test_test_iam_permissions_rest_bad_request(
         client.test_iam_permissions(request)
 
 
-def test_test_iam_permissions_rest_from_dict():
-    test_test_iam_permissions_rest(request_type=dict)
-
-
-def test_test_iam_permissions_rest_flattened(transport: str = "rest"):
+def test_test_iam_permissions_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.TestPermissionsResponse()
 
@@ -6399,24 +11123,208 @@ def test_test_iam_permissions_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_update_unary_rest(
-    transport: str = "rest", request_type=compute.UpdateInstanceRequest
-):
+def test_test_iam_permissions_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize("request_type", [compute.UpdateInstanceRequest, dict,])
+def test_update_unary_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init["instance_resource"] = compute.Instance(
-        advanced_machine_features=compute.AdvancedMachineFeatures(
-            enable_nested_virtualization=True
-        )
-    )
+    request_init["instance_resource"] = {
+        "advanced_machine_features": {
+            "enable_nested_virtualization": True,
+            "threads_per_core": 1689,
+        },
+        "can_ip_forward": True,
+        "confidential_instance_config": {"enable_confidential_compute": True},
+        "cpu_platform": "cpu_platform_value",
+        "creation_timestamp": "creation_timestamp_value",
+        "deletion_protection": True,
+        "description": "description_value",
+        "disks": [
+            {
+                "auto_delete": True,
+                "boot": True,
+                "device_name": "device_name_value",
+                "disk_encryption_key": {
+                    "kms_key_name": "kms_key_name_value",
+                    "kms_key_service_account": "kms_key_service_account_value",
+                    "raw_key": "raw_key_value",
+                    "rsa_encrypted_key": "rsa_encrypted_key_value",
+                    "sha256": "sha256_value",
+                },
+                "disk_size_gb": 1261,
+                "guest_os_features": [{"type_": "type__value"}],
+                "index": 536,
+                "initialize_params": {
+                    "description": "description_value",
+                    "disk_name": "disk_name_value",
+                    "disk_size_gb": 1261,
+                    "disk_type": "disk_type_value",
+                    "labels": {},
+                    "on_update_action": "on_update_action_value",
+                    "provisioned_iops": 1740,
+                    "resource_policies": [
+                        "resource_policies_value_1",
+                        "resource_policies_value_2",
+                    ],
+                    "source_image": "source_image_value",
+                    "source_image_encryption_key": {
+                        "kms_key_name": "kms_key_name_value",
+                        "kms_key_service_account": "kms_key_service_account_value",
+                        "raw_key": "raw_key_value",
+                        "rsa_encrypted_key": "rsa_encrypted_key_value",
+                        "sha256": "sha256_value",
+                    },
+                    "source_snapshot": "source_snapshot_value",
+                    "source_snapshot_encryption_key": {
+                        "kms_key_name": "kms_key_name_value",
+                        "kms_key_service_account": "kms_key_service_account_value",
+                        "raw_key": "raw_key_value",
+                        "rsa_encrypted_key": "rsa_encrypted_key_value",
+                        "sha256": "sha256_value",
+                    },
+                },
+                "interface": "interface_value",
+                "kind": "kind_value",
+                "licenses": ["licenses_value_1", "licenses_value_2"],
+                "mode": "mode_value",
+                "shielded_instance_initial_state": {
+                    "dbs": [
+                        {"content": "content_value", "file_type": "file_type_value"}
+                    ],
+                    "dbxs": [
+                        {"content": "content_value", "file_type": "file_type_value"}
+                    ],
+                    "keks": [
+                        {"content": "content_value", "file_type": "file_type_value"}
+                    ],
+                    "pk": {"content": "content_value", "file_type": "file_type_value"},
+                },
+                "source": "source_value",
+                "type_": "type__value",
+            }
+        ],
+        "display_device": {"enable_display": True},
+        "fingerprint": "fingerprint_value",
+        "guest_accelerators": [
+            {"accelerator_count": 1805, "accelerator_type": "accelerator_type_value"}
+        ],
+        "hostname": "hostname_value",
+        "id": 205,
+        "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
+        "last_start_timestamp": "last_start_timestamp_value",
+        "last_stop_timestamp": "last_stop_timestamp_value",
+        "last_suspended_timestamp": "last_suspended_timestamp_value",
+        "machine_type": "machine_type_value",
+        "metadata": {
+            "fingerprint": "fingerprint_value",
+            "items": [{"key": "key_value", "value": "value_value"}],
+            "kind": "kind_value",
+        },
+        "min_cpu_platform": "min_cpu_platform_value",
+        "name": "name_value",
+        "network_interfaces": [
+            {
+                "access_configs": [
+                    {
+                        "external_ipv6": "external_ipv6_value",
+                        "external_ipv6_prefix_length": 2837,
+                        "kind": "kind_value",
+                        "name": "name_value",
+                        "nat_i_p": "nat_i_p_value",
+                        "network_tier": "network_tier_value",
+                        "public_ptr_domain_name": "public_ptr_domain_name_value",
+                        "set_public_ptr": True,
+                        "type_": "type__value",
+                    }
+                ],
+                "alias_ip_ranges": [
+                    {
+                        "ip_cidr_range": "ip_cidr_range_value",
+                        "subnetwork_range_name": "subnetwork_range_name_value",
+                    }
+                ],
+                "fingerprint": "fingerprint_value",
+                "ipv6_access_configs": [
+                    {
+                        "external_ipv6": "external_ipv6_value",
+                        "external_ipv6_prefix_length": 2837,
+                        "kind": "kind_value",
+                        "name": "name_value",
+                        "nat_i_p": "nat_i_p_value",
+                        "network_tier": "network_tier_value",
+                        "public_ptr_domain_name": "public_ptr_domain_name_value",
+                        "set_public_ptr": True,
+                        "type_": "type__value",
+                    }
+                ],
+                "ipv6_access_type": "ipv6_access_type_value",
+                "ipv6_address": "ipv6_address_value",
+                "kind": "kind_value",
+                "name": "name_value",
+                "network": "network_value",
+                "network_i_p": "network_i_p_value",
+                "nic_type": "nic_type_value",
+                "queue_count": 1197,
+                "stack_type": "stack_type_value",
+                "subnetwork": "subnetwork_value",
+            }
+        ],
+        "private_ipv6_google_access": "private_ipv6_google_access_value",
+        "reservation_affinity": {
+            "consume_reservation_type": "consume_reservation_type_value",
+            "key": "key_value",
+            "values": ["values_value_1", "values_value_2"],
+        },
+        "resource_policies": ["resource_policies_value_1", "resource_policies_value_2"],
+        "satisfies_pzs": True,
+        "scheduling": {
+            "automatic_restart": True,
+            "location_hint": "location_hint_value",
+            "min_node_cpus": 1379,
+            "node_affinities": [
+                {
+                    "key": "key_value",
+                    "operator": "operator_value",
+                    "values": ["values_value_1", "values_value_2"],
+                }
+            ],
+            "on_host_maintenance": "on_host_maintenance_value",
+            "preemptible": True,
+        },
+        "self_link": "self_link_value",
+        "service_accounts": [
+            {"email": "email_value", "scopes": ["scopes_value_1", "scopes_value_2"]}
+        ],
+        "shielded_instance_config": {
+            "enable_integrity_monitoring": True,
+            "enable_secure_boot": True,
+            "enable_vtpm": True,
+        },
+        "shielded_instance_integrity_policy": {"update_auto_learn_policy": True},
+        "start_restricted": True,
+        "status": "status_value",
+        "status_message": "status_message_value",
+        "tags": {
+            "fingerprint": "fingerprint_value",
+            "items": ["items_value_1", "items_value_2"],
+        },
+        "zone": "zone_value",
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -6477,6 +11385,98 @@ def test_update_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_update_unary_rest_required_fields(request_type=compute.UpdateInstanceRequest):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        ("minimal_action", "request_id", "most_disruptive_allowed_action",)
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "put",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("minimalAction", "requestId", "mostDisruptiveAllowedAction",))
+        & set(("instance", "instanceResource", "project", "zone",))
+    )
+
+
 def test_update_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.UpdateInstanceRequest
 ):
@@ -6486,11 +11486,190 @@ def test_update_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init["instance_resource"] = compute.Instance(
-        advanced_machine_features=compute.AdvancedMachineFeatures(
-            enable_nested_virtualization=True
-        )
-    )
+    request_init["instance_resource"] = {
+        "advanced_machine_features": {
+            "enable_nested_virtualization": True,
+            "threads_per_core": 1689,
+        },
+        "can_ip_forward": True,
+        "confidential_instance_config": {"enable_confidential_compute": True},
+        "cpu_platform": "cpu_platform_value",
+        "creation_timestamp": "creation_timestamp_value",
+        "deletion_protection": True,
+        "description": "description_value",
+        "disks": [
+            {
+                "auto_delete": True,
+                "boot": True,
+                "device_name": "device_name_value",
+                "disk_encryption_key": {
+                    "kms_key_name": "kms_key_name_value",
+                    "kms_key_service_account": "kms_key_service_account_value",
+                    "raw_key": "raw_key_value",
+                    "rsa_encrypted_key": "rsa_encrypted_key_value",
+                    "sha256": "sha256_value",
+                },
+                "disk_size_gb": 1261,
+                "guest_os_features": [{"type_": "type__value"}],
+                "index": 536,
+                "initialize_params": {
+                    "description": "description_value",
+                    "disk_name": "disk_name_value",
+                    "disk_size_gb": 1261,
+                    "disk_type": "disk_type_value",
+                    "labels": {},
+                    "on_update_action": "on_update_action_value",
+                    "provisioned_iops": 1740,
+                    "resource_policies": [
+                        "resource_policies_value_1",
+                        "resource_policies_value_2",
+                    ],
+                    "source_image": "source_image_value",
+                    "source_image_encryption_key": {
+                        "kms_key_name": "kms_key_name_value",
+                        "kms_key_service_account": "kms_key_service_account_value",
+                        "raw_key": "raw_key_value",
+                        "rsa_encrypted_key": "rsa_encrypted_key_value",
+                        "sha256": "sha256_value",
+                    },
+                    "source_snapshot": "source_snapshot_value",
+                    "source_snapshot_encryption_key": {
+                        "kms_key_name": "kms_key_name_value",
+                        "kms_key_service_account": "kms_key_service_account_value",
+                        "raw_key": "raw_key_value",
+                        "rsa_encrypted_key": "rsa_encrypted_key_value",
+                        "sha256": "sha256_value",
+                    },
+                },
+                "interface": "interface_value",
+                "kind": "kind_value",
+                "licenses": ["licenses_value_1", "licenses_value_2"],
+                "mode": "mode_value",
+                "shielded_instance_initial_state": {
+                    "dbs": [
+                        {"content": "content_value", "file_type": "file_type_value"}
+                    ],
+                    "dbxs": [
+                        {"content": "content_value", "file_type": "file_type_value"}
+                    ],
+                    "keks": [
+                        {"content": "content_value", "file_type": "file_type_value"}
+                    ],
+                    "pk": {"content": "content_value", "file_type": "file_type_value"},
+                },
+                "source": "source_value",
+                "type_": "type__value",
+            }
+        ],
+        "display_device": {"enable_display": True},
+        "fingerprint": "fingerprint_value",
+        "guest_accelerators": [
+            {"accelerator_count": 1805, "accelerator_type": "accelerator_type_value"}
+        ],
+        "hostname": "hostname_value",
+        "id": 205,
+        "kind": "kind_value",
+        "label_fingerprint": "label_fingerprint_value",
+        "labels": {},
+        "last_start_timestamp": "last_start_timestamp_value",
+        "last_stop_timestamp": "last_stop_timestamp_value",
+        "last_suspended_timestamp": "last_suspended_timestamp_value",
+        "machine_type": "machine_type_value",
+        "metadata": {
+            "fingerprint": "fingerprint_value",
+            "items": [{"key": "key_value", "value": "value_value"}],
+            "kind": "kind_value",
+        },
+        "min_cpu_platform": "min_cpu_platform_value",
+        "name": "name_value",
+        "network_interfaces": [
+            {
+                "access_configs": [
+                    {
+                        "external_ipv6": "external_ipv6_value",
+                        "external_ipv6_prefix_length": 2837,
+                        "kind": "kind_value",
+                        "name": "name_value",
+                        "nat_i_p": "nat_i_p_value",
+                        "network_tier": "network_tier_value",
+                        "public_ptr_domain_name": "public_ptr_domain_name_value",
+                        "set_public_ptr": True,
+                        "type_": "type__value",
+                    }
+                ],
+                "alias_ip_ranges": [
+                    {
+                        "ip_cidr_range": "ip_cidr_range_value",
+                        "subnetwork_range_name": "subnetwork_range_name_value",
+                    }
+                ],
+                "fingerprint": "fingerprint_value",
+                "ipv6_access_configs": [
+                    {
+                        "external_ipv6": "external_ipv6_value",
+                        "external_ipv6_prefix_length": 2837,
+                        "kind": "kind_value",
+                        "name": "name_value",
+                        "nat_i_p": "nat_i_p_value",
+                        "network_tier": "network_tier_value",
+                        "public_ptr_domain_name": "public_ptr_domain_name_value",
+                        "set_public_ptr": True,
+                        "type_": "type__value",
+                    }
+                ],
+                "ipv6_access_type": "ipv6_access_type_value",
+                "ipv6_address": "ipv6_address_value",
+                "kind": "kind_value",
+                "name": "name_value",
+                "network": "network_value",
+                "network_i_p": "network_i_p_value",
+                "nic_type": "nic_type_value",
+                "queue_count": 1197,
+                "stack_type": "stack_type_value",
+                "subnetwork": "subnetwork_value",
+            }
+        ],
+        "private_ipv6_google_access": "private_ipv6_google_access_value",
+        "reservation_affinity": {
+            "consume_reservation_type": "consume_reservation_type_value",
+            "key": "key_value",
+            "values": ["values_value_1", "values_value_2"],
+        },
+        "resource_policies": ["resource_policies_value_1", "resource_policies_value_2"],
+        "satisfies_pzs": True,
+        "scheduling": {
+            "automatic_restart": True,
+            "location_hint": "location_hint_value",
+            "min_node_cpus": 1379,
+            "node_affinities": [
+                {
+                    "key": "key_value",
+                    "operator": "operator_value",
+                    "values": ["values_value_1", "values_value_2"],
+                }
+            ],
+            "on_host_maintenance": "on_host_maintenance_value",
+            "preemptible": True,
+        },
+        "self_link": "self_link_value",
+        "service_accounts": [
+            {"email": "email_value", "scopes": ["scopes_value_1", "scopes_value_2"]}
+        ],
+        "shielded_instance_config": {
+            "enable_integrity_monitoring": True,
+            "enable_secure_boot": True,
+            "enable_vtpm": True,
+        },
+        "shielded_instance_integrity_policy": {"update_auto_learn_policy": True},
+        "start_restricted": True,
+        "status": "status_value",
+        "status_message": "status_message_value",
+        "tags": {
+            "fingerprint": "fingerprint_value",
+            "items": ["items_value_1", "items_value_2"],
+        },
+        "zone": "zone_value",
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -6505,17 +11684,13 @@ def test_update_unary_rest_bad_request(
         client.update_unary(request)
 
 
-def test_update_unary_rest_from_dict():
-    test_update_unary_rest(request_type=dict)
-
-
-def test_update_unary_rest_flattened(transport: str = "rest"):
+def test_update_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -6580,22 +11755,37 @@ def test_update_unary_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_update_access_config_unary_rest(
-    transport: str = "rest", request_type=compute.UpdateAccessConfigInstanceRequest
-):
+def test_update_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type", [compute.UpdateAccessConfigInstanceRequest, dict,]
+)
+def test_update_access_config_unary_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init["access_config_resource"] = compute.AccessConfig(
-        external_ipv6="external_ipv6_value"
-    )
+    request_init["access_config_resource"] = {
+        "external_ipv6": "external_ipv6_value",
+        "external_ipv6_prefix_length": 2837,
+        "kind": "kind_value",
+        "name": "name_value",
+        "nat_i_p": "nat_i_p_value",
+        "network_tier": "network_tier_value",
+        "public_ptr_domain_name": "public_ptr_domain_name_value",
+        "set_public_ptr": True,
+        "type_": "type__value",
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -6656,6 +11846,109 @@ def test_update_access_config_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_update_access_config_unary_rest_required_fields(
+    request_type=compute.UpdateAccessConfigInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["network_interface"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "networkInterface" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_access_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "networkInterface" in jsonified_request
+    assert jsonified_request["networkInterface"] == request_init["network_interface"]
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["networkInterface"] = "network_interface_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_access_config._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id", "network_interface",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "networkInterface" in jsonified_request
+    assert jsonified_request["networkInterface"] == "network_interface_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_access_config_unary(request)
+
+            expected_params = [
+                ("networkInterface", "",),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_access_config_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_access_config._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId", "networkInterface",))
+        & set(
+            ("accessConfigResource", "instance", "networkInterface", "project", "zone",)
+        )
+    )
+
+
 def test_update_access_config_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.UpdateAccessConfigInstanceRequest
 ):
@@ -6665,9 +11958,17 @@ def test_update_access_config_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init["access_config_resource"] = compute.AccessConfig(
-        external_ipv6="external_ipv6_value"
-    )
+    request_init["access_config_resource"] = {
+        "external_ipv6": "external_ipv6_value",
+        "external_ipv6_prefix_length": 2837,
+        "kind": "kind_value",
+        "name": "name_value",
+        "nat_i_p": "nat_i_p_value",
+        "network_tier": "network_tier_value",
+        "public_ptr_domain_name": "public_ptr_domain_name_value",
+        "set_public_ptr": True,
+        "type_": "type__value",
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -6682,17 +11983,13 @@ def test_update_access_config_unary_rest_bad_request(
         client.update_access_config_unary(request)
 
 
-def test_update_access_config_unary_rest_from_dict():
-    test_update_access_config_unary_rest(request_type=dict)
-
-
-def test_update_access_config_unary_rest_flattened(transport: str = "rest"):
+def test_update_access_config_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -6755,20 +12052,27 @@ def test_update_access_config_unary_rest_flattened_error(transport: str = "rest"
         )
 
 
-def test_update_display_device_unary_rest(
-    transport: str = "rest", request_type=compute.UpdateDisplayDeviceInstanceRequest
-):
+def test_update_access_config_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type", [compute.UpdateDisplayDeviceInstanceRequest, dict,]
+)
+def test_update_display_device_unary_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init["display_device_resource"] = compute.DisplayDevice(enable_display=True)
+    request_init["display_device_resource"] = {"enable_display": True}
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -6829,6 +12133,98 @@ def test_update_display_device_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_update_display_device_unary_rest_required_fields(
+    request_type=compute.UpdateDisplayDeviceInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_display_device._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_display_device._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_display_device_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_display_device_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_display_device._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(("displayDeviceResource", "instance", "project", "zone",))
+    )
+
+
 def test_update_display_device_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.UpdateDisplayDeviceInstanceRequest
 ):
@@ -6838,7 +12234,7 @@ def test_update_display_device_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init["display_device_resource"] = compute.DisplayDevice(enable_display=True)
+    request_init["display_device_resource"] = {"enable_display": True}
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -6853,17 +12249,13 @@ def test_update_display_device_unary_rest_bad_request(
         client.update_display_device_unary(request)
 
 
-def test_update_display_device_unary_rest_from_dict():
-    test_update_display_device_unary_rest(request_type=dict)
-
-
-def test_update_display_device_unary_rest_flattened(transport: str = "rest"):
+def test_update_display_device_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -6920,22 +12312,71 @@ def test_update_display_device_unary_rest_flattened_error(transport: str = "rest
         )
 
 
-def test_update_network_interface_unary_rest(
-    transport: str = "rest", request_type=compute.UpdateNetworkInterfaceInstanceRequest
-):
+def test_update_display_device_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type", [compute.UpdateNetworkInterfaceInstanceRequest, dict,]
+)
+def test_update_network_interface_unary_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init["network_interface_resource"] = compute.NetworkInterface(
-        access_configs=[compute.AccessConfig(external_ipv6="external_ipv6_value")]
-    )
+    request_init["network_interface_resource"] = {
+        "access_configs": [
+            {
+                "external_ipv6": "external_ipv6_value",
+                "external_ipv6_prefix_length": 2837,
+                "kind": "kind_value",
+                "name": "name_value",
+                "nat_i_p": "nat_i_p_value",
+                "network_tier": "network_tier_value",
+                "public_ptr_domain_name": "public_ptr_domain_name_value",
+                "set_public_ptr": True,
+                "type_": "type__value",
+            }
+        ],
+        "alias_ip_ranges": [
+            {
+                "ip_cidr_range": "ip_cidr_range_value",
+                "subnetwork_range_name": "subnetwork_range_name_value",
+            }
+        ],
+        "fingerprint": "fingerprint_value",
+        "ipv6_access_configs": [
+            {
+                "external_ipv6": "external_ipv6_value",
+                "external_ipv6_prefix_length": 2837,
+                "kind": "kind_value",
+                "name": "name_value",
+                "nat_i_p": "nat_i_p_value",
+                "network_tier": "network_tier_value",
+                "public_ptr_domain_name": "public_ptr_domain_name_value",
+                "set_public_ptr": True,
+                "type_": "type__value",
+            }
+        ],
+        "ipv6_access_type": "ipv6_access_type_value",
+        "ipv6_address": "ipv6_address_value",
+        "kind": "kind_value",
+        "name": "name_value",
+        "network": "network_value",
+        "network_i_p": "network_i_p_value",
+        "nic_type": "nic_type_value",
+        "queue_count": 1197,
+        "stack_type": "stack_type_value",
+        "subnetwork": "subnetwork_value",
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -6996,6 +12437,115 @@ def test_update_network_interface_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_update_network_interface_unary_rest_required_fields(
+    request_type=compute.UpdateNetworkInterfaceInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["network_interface"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "networkInterface" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_network_interface._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "networkInterface" in jsonified_request
+    assert jsonified_request["networkInterface"] == request_init["network_interface"]
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["networkInterface"] = "network_interface_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_network_interface._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id", "network_interface",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "networkInterface" in jsonified_request
+    assert jsonified_request["networkInterface"] == "network_interface_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_network_interface_unary(request)
+
+            expected_params = [
+                ("networkInterface", "",),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_network_interface_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_network_interface._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId", "networkInterface",))
+        & set(
+            (
+                "instance",
+                "networkInterface",
+                "networkInterfaceResource",
+                "project",
+                "zone",
+            )
+        )
+    )
+
+
 def test_update_network_interface_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.UpdateNetworkInterfaceInstanceRequest
 ):
@@ -7005,9 +12555,51 @@ def test_update_network_interface_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init["network_interface_resource"] = compute.NetworkInterface(
-        access_configs=[compute.AccessConfig(external_ipv6="external_ipv6_value")]
-    )
+    request_init["network_interface_resource"] = {
+        "access_configs": [
+            {
+                "external_ipv6": "external_ipv6_value",
+                "external_ipv6_prefix_length": 2837,
+                "kind": "kind_value",
+                "name": "name_value",
+                "nat_i_p": "nat_i_p_value",
+                "network_tier": "network_tier_value",
+                "public_ptr_domain_name": "public_ptr_domain_name_value",
+                "set_public_ptr": True,
+                "type_": "type__value",
+            }
+        ],
+        "alias_ip_ranges": [
+            {
+                "ip_cidr_range": "ip_cidr_range_value",
+                "subnetwork_range_name": "subnetwork_range_name_value",
+            }
+        ],
+        "fingerprint": "fingerprint_value",
+        "ipv6_access_configs": [
+            {
+                "external_ipv6": "external_ipv6_value",
+                "external_ipv6_prefix_length": 2837,
+                "kind": "kind_value",
+                "name": "name_value",
+                "nat_i_p": "nat_i_p_value",
+                "network_tier": "network_tier_value",
+                "public_ptr_domain_name": "public_ptr_domain_name_value",
+                "set_public_ptr": True,
+                "type_": "type__value",
+            }
+        ],
+        "ipv6_access_type": "ipv6_access_type_value",
+        "ipv6_address": "ipv6_address_value",
+        "kind": "kind_value",
+        "name": "name_value",
+        "network": "network_value",
+        "network_i_p": "network_i_p_value",
+        "nic_type": "nic_type_value",
+        "queue_count": 1197,
+        "stack_type": "stack_type_value",
+        "subnetwork": "subnetwork_value",
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -7022,17 +12614,13 @@ def test_update_network_interface_unary_rest_bad_request(
         client.update_network_interface_unary(request)
 
 
-def test_update_network_interface_unary_rest_from_dict():
-    test_update_network_interface_unary_rest(request_type=dict)
-
-
-def test_update_network_interface_unary_rest_flattened(transport: str = "rest"):
+def test_update_network_interface_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -7099,23 +12687,31 @@ def test_update_network_interface_unary_rest_flattened_error(transport: str = "r
         )
 
 
-def test_update_shielded_instance_config_unary_rest(
-    transport: str = "rest",
-    request_type=compute.UpdateShieldedInstanceConfigInstanceRequest,
-):
+def test_update_network_interface_unary_rest_error():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type", [compute.UpdateShieldedInstanceConfigInstanceRequest, dict,]
+)
+def test_update_shielded_instance_config_unary_rest(request_type):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init["shielded_instance_config_resource"] = compute.ShieldedInstanceConfig(
-        enable_integrity_monitoring=True
-    )
+    request_init["shielded_instance_config_resource"] = {
+        "enable_integrity_monitoring": True,
+        "enable_secure_boot": True,
+        "enable_vtpm": True,
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -7176,6 +12772,100 @@ def test_update_shielded_instance_config_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_update_shielded_instance_config_unary_rest_required_fields(
+    request_type=compute.UpdateShieldedInstanceConfigInstanceRequest,
+):
+    transport_class = transports.InstancesRestTransport
+
+    request_init = {}
+    request_init["instance"] = ""
+    request_init["project"] = ""
+    request_init["zone"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_shielded_instance_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["instance"] = "instance_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["zone"] = "zone_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_shielded_instance_config._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "instance" in jsonified_request
+    assert jsonified_request["instance"] == "instance_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "zone" in jsonified_request
+    assert jsonified_request["zone"] == "zone_value"
+
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_shielded_instance_config_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_shielded_instance_config_unary_rest_unset_required_fields():
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_shielded_instance_config._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(("instance", "project", "shieldedInstanceConfigResource", "zone",))
+    )
+
+
 def test_update_shielded_instance_config_unary_rest_bad_request(
     transport: str = "rest",
     request_type=compute.UpdateShieldedInstanceConfigInstanceRequest,
@@ -7186,9 +12876,11 @@ def test_update_shielded_instance_config_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "instance": "sample3"}
-    request_init["shielded_instance_config_resource"] = compute.ShieldedInstanceConfig(
-        enable_integrity_monitoring=True
-    )
+    request_init["shielded_instance_config_resource"] = {
+        "enable_integrity_monitoring": True,
+        "enable_secure_boot": True,
+        "enable_vtpm": True,
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -7203,17 +12895,13 @@ def test_update_shielded_instance_config_unary_rest_bad_request(
         client.update_shielded_instance_config_unary(request)
 
 
-def test_update_shielded_instance_config_unary_rest_from_dict():
-    test_update_shielded_instance_config_unary_rest(request_type=dict)
-
-
-def test_update_shielded_instance_config_unary_rest_flattened(transport: str = "rest"):
+def test_update_shielded_instance_config_unary_rest_flattened():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -7276,6 +12964,12 @@ def test_update_shielded_instance_config_unary_rest_flattened_error(
         )
 
 
+def test_update_shielded_instance_config_unary_rest_error():
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.InstancesRestTransport(
@@ -7294,6 +12988,23 @@ def test_credentials_transport_error():
         client = InstancesClient(
             client_options={"credentials_file": "credentials.json"},
             transport=transport,
+        )
+
+    # It is an error to provide an api_key and a transport instance.
+    transport = transports.InstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    options = client_options.ClientOptions()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = InstancesClient(client_options=options, transport=transport,)
+
+    # It is an error to provide an api_key and a credential.
+    options = mock.Mock()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = InstancesClient(
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
@@ -7574,7 +13285,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
@@ -7626,3 +13337,30 @@ def test_client_ctx():
             with client:
                 pass
             close.assert_called()
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_class",
+    [(InstancesClient, transports.InstancesRestTransport),],
+)
+def test_api_key_credentials(client_class, transport_class):
+    with mock.patch.object(
+        google.auth._default, "get_api_key_credentials", create=True
+    ) as get_api_key_credentials:
+        mock_cred = mock.Mock()
+        get_api_key_credentials.return_value = mock_cred
+        options = client_options.ClientOptions()
+        options.api_key = "api_key"
+        with mock.patch.object(transport_class, "__init__") as patched:
+            patched.return_value = None
+            client = client_class(client_options=options)
+            patched.assert_called_once_with(
+                credentials=mock_cred,
+                credentials_file=None,
+                host=client.DEFAULT_ENDPOINT,
+                scopes=None,
+                client_cert_source_for_mtls=None,
+                quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
+                always_use_jwt_access=True,
+            )

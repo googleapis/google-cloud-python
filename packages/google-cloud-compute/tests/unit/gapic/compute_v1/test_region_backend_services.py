@@ -18,12 +18,13 @@ import mock
 
 import grpc
 from grpc.experimental import aio
+import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 
 from requests import Response
-from requests import Request
+from requests import Request, PreparedRequest
 from requests.sessions import Session
 
 from google.api_core import client_options
@@ -238,20 +239,20 @@ def test_region_backend_services_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -303,7 +304,7 @@ def test_region_backend_services_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -380,6 +381,80 @@ def test_region_backend_services_client_mtls_env_auto(
                 )
 
 
+@pytest.mark.parametrize("client_class", [RegionBackendServicesClient])
+@mock.patch.object(
+    RegionBackendServicesClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(RegionBackendServicesClient),
+)
+def test_region_backend_services_client_get_mtls_endpoint_and_cert_source(client_class):
+    mock_client_cert_source = mock.Mock()
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        mock_api_endpoint = "foo"
+        options = client_options.ClientOptions(
+            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
+        )
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
+            options
+        )
+        assert api_endpoint == mock_api_endpoint
+        assert cert_source == mock_client_cert_source
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "false".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+        mock_client_cert_source = mock.Mock()
+        mock_api_endpoint = "foo"
+        options = client_options.ClientOptions(
+            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
+        )
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
+            options
+        )
+        assert api_endpoint == mock_api_endpoint
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+        assert api_endpoint == client_class.DEFAULT_ENDPOINT
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "always".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+        assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert doesn't exist.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch(
+            "google.auth.transport.mtls.has_default_client_cert_source",
+            return_value=False,
+        ):
+            api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+            assert api_endpoint == client_class.DEFAULT_ENDPOINT
+            assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch(
+            "google.auth.transport.mtls.has_default_client_cert_source",
+            return_value=True,
+        ):
+            with mock.patch(
+                "google.auth.transport.mtls.default_client_cert_source",
+                return_value=mock_client_cert_source,
+            ):
+                (
+                    api_endpoint,
+                    cert_source,
+                ) = client_class.get_mtls_endpoint_and_cert_source()
+                assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+                assert cert_source == mock_client_cert_source
+
+
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
@@ -397,7 +472,7 @@ def test_region_backend_services_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -427,7 +502,7 @@ def test_region_backend_services_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -440,11 +515,12 @@ def test_region_backend_services_client_client_options_credentials_file(
         )
 
 
-def test_delete_unary_rest(
-    transport: str = "rest", request_type=compute.DeleteRegionBackendServiceRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [compute.DeleteRegionBackendServiceRequest, dict,]
+)
+def test_delete_unary_rest(request_type):
     client = RegionBackendServicesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -456,7 +532,7 @@ def test_delete_unary_rest(
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -517,6 +593,96 @@ def test_delete_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_delete_unary_rest_required_fields(
+    request_type=compute.DeleteRegionBackendServiceRequest,
+):
+    transport_class = transports.RegionBackendServicesRestTransport
+
+    request_init = {}
+    request_init["backend_service"] = ""
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["backendService"] = "backend_service_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "backendService" in jsonified_request
+    assert jsonified_request["backendService"] == "backend_service_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+
+    client = RegionBackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": request_init,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_unary_rest_unset_required_fields():
+    transport = transports.RegionBackendServicesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",)) & set(("backendService", "project", "region",))
+    )
+
+
 def test_delete_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DeleteRegionBackendServiceRequest
 ):
@@ -544,17 +710,13 @@ def test_delete_unary_rest_bad_request(
         client.delete_unary(request)
 
 
-def test_delete_unary_rest_from_dict():
-    test_delete_unary_rest(request_type=dict)
-
-
-def test_delete_unary_rest_flattened(transport: str = "rest"):
+def test_delete_unary_rest_flattened():
     client = RegionBackendServicesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -609,11 +771,18 @@ def test_delete_unary_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_get_rest(
-    transport: str = "rest", request_type=compute.GetRegionBackendServiceRequest
-):
+def test_delete_unary_rest_error():
     client = RegionBackendServicesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type", [compute.GetRegionBackendServiceRequest, dict,]
+)
+def test_get_rest(request_type):
+    client = RegionBackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -625,7 +794,7 @@ def test_get_rest(
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.BackendService(
             affinity_cookie_ttl_sec=2432,
@@ -686,6 +855,92 @@ def test_get_rest(
     assert response.timeout_sec == 1185
 
 
+def test_get_rest_required_fields(request_type=compute.GetRegionBackendServiceRequest):
+    transport_class = transports.RegionBackendServicesRestTransport
+
+    request_init = {}
+    request_init["backend_service"] = ""
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["backendService"] = "backend_service_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "backendService" in jsonified_request
+    assert jsonified_request["backendService"] == "backend_service_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+
+    client = RegionBackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.BackendService()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": request_init,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.BackendService.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_rest_unset_required_fields():
+    transport = transports.RegionBackendServicesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(()) & set(("backendService", "project", "region",))
+    )
+
+
 def test_get_rest_bad_request(
     transport: str = "rest", request_type=compute.GetRegionBackendServiceRequest
 ):
@@ -713,17 +968,13 @@ def test_get_rest_bad_request(
         client.get(request)
 
 
-def test_get_rest_from_dict():
-    test_get_rest(request_type=dict)
-
-
-def test_get_rest_flattened(transport: str = "rest"):
+def test_get_rest_flattened():
     client = RegionBackendServicesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.BackendService()
 
@@ -778,11 +1029,18 @@ def test_get_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_get_health_rest(
-    transport: str = "rest", request_type=compute.GetHealthRegionBackendServiceRequest
-):
+def test_get_rest_error():
     client = RegionBackendServicesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type", [compute.GetHealthRegionBackendServiceRequest, dict,]
+)
+def test_get_health_rest(request_type):
+    client = RegionBackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -791,13 +1049,11 @@ def test_get_health_rest(
         "region": "sample2",
         "backend_service": "sample3",
     }
-    request_init["resource_group_reference_resource"] = compute.ResourceGroupReference(
-        group="group_value"
-    )
+    request_init["resource_group_reference_resource"] = {"group": "group_value"}
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.BackendServiceGroupHealth(kind="kind_value",)
 
@@ -814,6 +1070,98 @@ def test_get_health_rest(
     assert response.kind == "kind_value"
 
 
+def test_get_health_rest_required_fields(
+    request_type=compute.GetHealthRegionBackendServiceRequest,
+):
+    transport_class = transports.RegionBackendServicesRestTransport
+
+    request_init = {}
+    request_init["backend_service"] = ""
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_health._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["backendService"] = "backend_service_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_health._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "backendService" in jsonified_request
+    assert jsonified_request["backendService"] == "backend_service_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+
+    client = RegionBackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.BackendServiceGroupHealth()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.BackendServiceGroupHealth.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_health(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_health_rest_unset_required_fields():
+    transport = transports.RegionBackendServicesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_health._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            ("backendService", "project", "region", "resourceGroupReferenceResource",)
+        )
+    )
+
+
 def test_get_health_rest_bad_request(
     transport: str = "rest", request_type=compute.GetHealthRegionBackendServiceRequest
 ):
@@ -827,9 +1175,7 @@ def test_get_health_rest_bad_request(
         "region": "sample2",
         "backend_service": "sample3",
     }
-    request_init["resource_group_reference_resource"] = compute.ResourceGroupReference(
-        group="group_value"
-    )
+    request_init["resource_group_reference_resource"] = {"group": "group_value"}
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -844,17 +1190,13 @@ def test_get_health_rest_bad_request(
         client.get_health(request)
 
 
-def test_get_health_rest_from_dict():
-    test_get_health_rest(request_type=dict)
-
-
-def test_get_health_rest_flattened(transport: str = "rest"):
+def test_get_health_rest_flattened():
     client = RegionBackendServicesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.BackendServiceGroupHealth()
 
@@ -915,22 +1257,152 @@ def test_get_health_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_insert_unary_rest(
-    transport: str = "rest", request_type=compute.InsertRegionBackendServiceRequest
-):
+def test_get_health_rest_error():
     client = RegionBackendServicesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type", [compute.InsertRegionBackendServiceRequest, dict,]
+)
+def test_insert_unary_rest(request_type):
+    client = RegionBackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
-    request_init["backend_service_resource"] = compute.BackendService(
-        affinity_cookie_ttl_sec=2432
-    )
+    request_init["backend_service_resource"] = {
+        "affinity_cookie_ttl_sec": 2432,
+        "backends": [
+            {
+                "balancing_mode": "balancing_mode_value",
+                "capacity_scaler": 0.1575,
+                "description": "description_value",
+                "failover": True,
+                "group": "group_value",
+                "max_connections": 1608,
+                "max_connections_per_endpoint": 2990,
+                "max_connections_per_instance": 2978,
+                "max_rate": 849,
+                "max_rate_per_endpoint": 0.22310000000000002,
+                "max_rate_per_instance": 0.22190000000000001,
+                "max_utilization": 0.1633,
+            }
+        ],
+        "cdn_policy": {
+            "bypass_cache_on_request_headers": [{"header_name": "header_name_value"}],
+            "cache_key_policy": {
+                "include_host": True,
+                "include_protocol": True,
+                "include_query_string": True,
+                "query_string_blacklist": [
+                    "query_string_blacklist_value_1",
+                    "query_string_blacklist_value_2",
+                ],
+                "query_string_whitelist": [
+                    "query_string_whitelist_value_1",
+                    "query_string_whitelist_value_2",
+                ],
+            },
+            "cache_mode": "cache_mode_value",
+            "client_ttl": 1074,
+            "default_ttl": 1176,
+            "max_ttl": 761,
+            "negative_caching": True,
+            "negative_caching_policy": [{"code": 411, "ttl": 340}],
+            "request_coalescing": True,
+            "serve_while_stale": 1813,
+            "signed_url_cache_max_age_sec": 2890,
+            "signed_url_key_names": [
+                "signed_url_key_names_value_1",
+                "signed_url_key_names_value_2",
+            ],
+        },
+        "circuit_breakers": {
+            "max_connections": 1608,
+            "max_pending_requests": 2149,
+            "max_requests": 1313,
+            "max_requests_per_connection": 2902,
+            "max_retries": 1187,
+        },
+        "connection_draining": {"draining_timeout_sec": 2124},
+        "consistent_hash": {
+            "http_cookie": {
+                "name": "name_value",
+                "path": "path_value",
+                "ttl": {"nanos": 543, "seconds": 751},
+            },
+            "http_header_name": "http_header_name_value",
+            "minimum_ring_size": 1829,
+        },
+        "creation_timestamp": "creation_timestamp_value",
+        "custom_request_headers": [
+            "custom_request_headers_value_1",
+            "custom_request_headers_value_2",
+        ],
+        "custom_response_headers": [
+            "custom_response_headers_value_1",
+            "custom_response_headers_value_2",
+        ],
+        "description": "description_value",
+        "enable_c_d_n": True,
+        "failover_policy": {
+            "disable_connection_drain_on_failover": True,
+            "drop_traffic_if_unhealthy": True,
+            "failover_ratio": 0.1494,
+        },
+        "fingerprint": "fingerprint_value",
+        "health_checks": ["health_checks_value_1", "health_checks_value_2"],
+        "iap": {
+            "enabled": True,
+            "oauth2_client_id": "oauth2_client_id_value",
+            "oauth2_client_secret": "oauth2_client_secret_value",
+            "oauth2_client_secret_sha256": "oauth2_client_secret_sha256_value",
+        },
+        "id": 205,
+        "kind": "kind_value",
+        "load_balancing_scheme": "load_balancing_scheme_value",
+        "locality_lb_policy": "locality_lb_policy_value",
+        "log_config": {"enable": True, "sample_rate": 0.1165},
+        "max_stream_duration": {"nanos": 543, "seconds": 751},
+        "name": "name_value",
+        "network": "network_value",
+        "outlier_detection": {
+            "base_ejection_time": {"nanos": 543, "seconds": 751},
+            "consecutive_errors": 1956,
+            "consecutive_gateway_failure": 2880,
+            "enforcing_consecutive_errors": 3006,
+            "enforcing_consecutive_gateway_failure": 3930,
+            "enforcing_success_rate": 2334,
+            "interval": {"nanos": 543, "seconds": 751},
+            "max_ejection_percent": 2118,
+            "success_rate_minimum_hosts": 2799,
+            "success_rate_request_volume": 2915,
+            "success_rate_stdev_factor": 2663,
+        },
+        "port": 453,
+        "port_name": "port_name_value",
+        "protocol": "protocol_value",
+        "region": "region_value",
+        "security_policy": "security_policy_value",
+        "security_settings": {
+            "client_tls_policy": "client_tls_policy_value",
+            "subject_alt_names": [
+                "subject_alt_names_value_1",
+                "subject_alt_names_value_2",
+            ],
+        },
+        "self_link": "self_link_value",
+        "session_affinity": "session_affinity_value",
+        "subsetting": {"policy": "policy_value"},
+        "timeout_sec": 1185,
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -991,6 +1463,93 @@ def test_insert_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_insert_unary_rest_required_fields(
+    request_type=compute.InsertRegionBackendServiceRequest,
+):
+    transport_class = transports.RegionBackendServicesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).insert._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).insert._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+
+    client = RegionBackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.insert_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_insert_unary_rest_unset_required_fields():
+    transport = transports.RegionBackendServicesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.insert._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",)) & set(("backendServiceResource", "project", "region",))
+    )
+
+
 def test_insert_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.InsertRegionBackendServiceRequest
 ):
@@ -1000,9 +1559,132 @@ def test_insert_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
-    request_init["backend_service_resource"] = compute.BackendService(
-        affinity_cookie_ttl_sec=2432
-    )
+    request_init["backend_service_resource"] = {
+        "affinity_cookie_ttl_sec": 2432,
+        "backends": [
+            {
+                "balancing_mode": "balancing_mode_value",
+                "capacity_scaler": 0.1575,
+                "description": "description_value",
+                "failover": True,
+                "group": "group_value",
+                "max_connections": 1608,
+                "max_connections_per_endpoint": 2990,
+                "max_connections_per_instance": 2978,
+                "max_rate": 849,
+                "max_rate_per_endpoint": 0.22310000000000002,
+                "max_rate_per_instance": 0.22190000000000001,
+                "max_utilization": 0.1633,
+            }
+        ],
+        "cdn_policy": {
+            "bypass_cache_on_request_headers": [{"header_name": "header_name_value"}],
+            "cache_key_policy": {
+                "include_host": True,
+                "include_protocol": True,
+                "include_query_string": True,
+                "query_string_blacklist": [
+                    "query_string_blacklist_value_1",
+                    "query_string_blacklist_value_2",
+                ],
+                "query_string_whitelist": [
+                    "query_string_whitelist_value_1",
+                    "query_string_whitelist_value_2",
+                ],
+            },
+            "cache_mode": "cache_mode_value",
+            "client_ttl": 1074,
+            "default_ttl": 1176,
+            "max_ttl": 761,
+            "negative_caching": True,
+            "negative_caching_policy": [{"code": 411, "ttl": 340}],
+            "request_coalescing": True,
+            "serve_while_stale": 1813,
+            "signed_url_cache_max_age_sec": 2890,
+            "signed_url_key_names": [
+                "signed_url_key_names_value_1",
+                "signed_url_key_names_value_2",
+            ],
+        },
+        "circuit_breakers": {
+            "max_connections": 1608,
+            "max_pending_requests": 2149,
+            "max_requests": 1313,
+            "max_requests_per_connection": 2902,
+            "max_retries": 1187,
+        },
+        "connection_draining": {"draining_timeout_sec": 2124},
+        "consistent_hash": {
+            "http_cookie": {
+                "name": "name_value",
+                "path": "path_value",
+                "ttl": {"nanos": 543, "seconds": 751},
+            },
+            "http_header_name": "http_header_name_value",
+            "minimum_ring_size": 1829,
+        },
+        "creation_timestamp": "creation_timestamp_value",
+        "custom_request_headers": [
+            "custom_request_headers_value_1",
+            "custom_request_headers_value_2",
+        ],
+        "custom_response_headers": [
+            "custom_response_headers_value_1",
+            "custom_response_headers_value_2",
+        ],
+        "description": "description_value",
+        "enable_c_d_n": True,
+        "failover_policy": {
+            "disable_connection_drain_on_failover": True,
+            "drop_traffic_if_unhealthy": True,
+            "failover_ratio": 0.1494,
+        },
+        "fingerprint": "fingerprint_value",
+        "health_checks": ["health_checks_value_1", "health_checks_value_2"],
+        "iap": {
+            "enabled": True,
+            "oauth2_client_id": "oauth2_client_id_value",
+            "oauth2_client_secret": "oauth2_client_secret_value",
+            "oauth2_client_secret_sha256": "oauth2_client_secret_sha256_value",
+        },
+        "id": 205,
+        "kind": "kind_value",
+        "load_balancing_scheme": "load_balancing_scheme_value",
+        "locality_lb_policy": "locality_lb_policy_value",
+        "log_config": {"enable": True, "sample_rate": 0.1165},
+        "max_stream_duration": {"nanos": 543, "seconds": 751},
+        "name": "name_value",
+        "network": "network_value",
+        "outlier_detection": {
+            "base_ejection_time": {"nanos": 543, "seconds": 751},
+            "consecutive_errors": 1956,
+            "consecutive_gateway_failure": 2880,
+            "enforcing_consecutive_errors": 3006,
+            "enforcing_consecutive_gateway_failure": 3930,
+            "enforcing_success_rate": 2334,
+            "interval": {"nanos": 543, "seconds": 751},
+            "max_ejection_percent": 2118,
+            "success_rate_minimum_hosts": 2799,
+            "success_rate_request_volume": 2915,
+            "success_rate_stdev_factor": 2663,
+        },
+        "port": 453,
+        "port_name": "port_name_value",
+        "protocol": "protocol_value",
+        "region": "region_value",
+        "security_policy": "security_policy_value",
+        "security_settings": {
+            "client_tls_policy": "client_tls_policy_value",
+            "subject_alt_names": [
+                "subject_alt_names_value_1",
+                "subject_alt_names_value_2",
+            ],
+        },
+        "self_link": "self_link_value",
+        "session_affinity": "session_affinity_value",
+        "subsetting": {"policy": "policy_value"},
+        "timeout_sec": 1185,
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -1017,17 +1699,13 @@ def test_insert_unary_rest_bad_request(
         client.insert_unary(request)
 
 
-def test_insert_unary_rest_from_dict():
-    test_insert_unary_rest(request_type=dict)
-
-
-def test_insert_unary_rest_flattened(transport: str = "rest"):
+def test_insert_unary_rest_flattened():
     client = RegionBackendServicesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -1082,11 +1760,18 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_list_rest(
-    transport: str = "rest", request_type=compute.ListRegionBackendServicesRequest
-):
+def test_insert_unary_rest_error():
     client = RegionBackendServicesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type", [compute.ListRegionBackendServicesRequest, dict,]
+)
+def test_list_rest(request_type):
+    client = RegionBackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1094,7 +1779,7 @@ def test_list_rest(
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.BackendServiceList(
             id="id_value",
@@ -1117,6 +1802,95 @@ def test_list_rest(
     assert response.kind == "kind_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.self_link == "self_link_value"
+
+
+def test_list_rest_required_fields(
+    request_type=compute.ListRegionBackendServicesRequest,
+):
+    transport_class = transports.RegionBackendServicesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        ("max_results", "filter", "order_by", "page_token", "return_partial_success",)
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+
+    client = RegionBackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.BackendServiceList()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": request_init,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.BackendServiceList.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_rest_unset_required_fields():
+    transport = transports.RegionBackendServicesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("maxResults", "filter", "orderBy", "pageToken", "returnPartialSuccess",))
+        & set(("project", "region",))
+    )
 
 
 def test_list_rest_bad_request(
@@ -1142,17 +1916,13 @@ def test_list_rest_bad_request(
         client.list(request)
 
 
-def test_list_rest_from_dict():
-    test_list_rest(request_type=dict)
-
-
-def test_list_rest_flattened(transport: str = "rest"):
+def test_list_rest_flattened():
     client = RegionBackendServicesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.BackendServiceList()
 
@@ -1198,9 +1968,9 @@ def test_list_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_list_rest_pager():
+def test_list_rest_pager(transport: str = "rest"):
     client = RegionBackendServicesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1249,11 +2019,12 @@ def test_list_rest_pager():
             assert page_.raw_page.next_page_token == token
 
 
-def test_patch_unary_rest(
-    transport: str = "rest", request_type=compute.PatchRegionBackendServiceRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [compute.PatchRegionBackendServiceRequest, dict,]
+)
+def test_patch_unary_rest(request_type):
     client = RegionBackendServicesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1262,13 +2033,136 @@ def test_patch_unary_rest(
         "region": "sample2",
         "backend_service": "sample3",
     }
-    request_init["backend_service_resource"] = compute.BackendService(
-        affinity_cookie_ttl_sec=2432
-    )
+    request_init["backend_service_resource"] = {
+        "affinity_cookie_ttl_sec": 2432,
+        "backends": [
+            {
+                "balancing_mode": "balancing_mode_value",
+                "capacity_scaler": 0.1575,
+                "description": "description_value",
+                "failover": True,
+                "group": "group_value",
+                "max_connections": 1608,
+                "max_connections_per_endpoint": 2990,
+                "max_connections_per_instance": 2978,
+                "max_rate": 849,
+                "max_rate_per_endpoint": 0.22310000000000002,
+                "max_rate_per_instance": 0.22190000000000001,
+                "max_utilization": 0.1633,
+            }
+        ],
+        "cdn_policy": {
+            "bypass_cache_on_request_headers": [{"header_name": "header_name_value"}],
+            "cache_key_policy": {
+                "include_host": True,
+                "include_protocol": True,
+                "include_query_string": True,
+                "query_string_blacklist": [
+                    "query_string_blacklist_value_1",
+                    "query_string_blacklist_value_2",
+                ],
+                "query_string_whitelist": [
+                    "query_string_whitelist_value_1",
+                    "query_string_whitelist_value_2",
+                ],
+            },
+            "cache_mode": "cache_mode_value",
+            "client_ttl": 1074,
+            "default_ttl": 1176,
+            "max_ttl": 761,
+            "negative_caching": True,
+            "negative_caching_policy": [{"code": 411, "ttl": 340}],
+            "request_coalescing": True,
+            "serve_while_stale": 1813,
+            "signed_url_cache_max_age_sec": 2890,
+            "signed_url_key_names": [
+                "signed_url_key_names_value_1",
+                "signed_url_key_names_value_2",
+            ],
+        },
+        "circuit_breakers": {
+            "max_connections": 1608,
+            "max_pending_requests": 2149,
+            "max_requests": 1313,
+            "max_requests_per_connection": 2902,
+            "max_retries": 1187,
+        },
+        "connection_draining": {"draining_timeout_sec": 2124},
+        "consistent_hash": {
+            "http_cookie": {
+                "name": "name_value",
+                "path": "path_value",
+                "ttl": {"nanos": 543, "seconds": 751},
+            },
+            "http_header_name": "http_header_name_value",
+            "minimum_ring_size": 1829,
+        },
+        "creation_timestamp": "creation_timestamp_value",
+        "custom_request_headers": [
+            "custom_request_headers_value_1",
+            "custom_request_headers_value_2",
+        ],
+        "custom_response_headers": [
+            "custom_response_headers_value_1",
+            "custom_response_headers_value_2",
+        ],
+        "description": "description_value",
+        "enable_c_d_n": True,
+        "failover_policy": {
+            "disable_connection_drain_on_failover": True,
+            "drop_traffic_if_unhealthy": True,
+            "failover_ratio": 0.1494,
+        },
+        "fingerprint": "fingerprint_value",
+        "health_checks": ["health_checks_value_1", "health_checks_value_2"],
+        "iap": {
+            "enabled": True,
+            "oauth2_client_id": "oauth2_client_id_value",
+            "oauth2_client_secret": "oauth2_client_secret_value",
+            "oauth2_client_secret_sha256": "oauth2_client_secret_sha256_value",
+        },
+        "id": 205,
+        "kind": "kind_value",
+        "load_balancing_scheme": "load_balancing_scheme_value",
+        "locality_lb_policy": "locality_lb_policy_value",
+        "log_config": {"enable": True, "sample_rate": 0.1165},
+        "max_stream_duration": {"nanos": 543, "seconds": 751},
+        "name": "name_value",
+        "network": "network_value",
+        "outlier_detection": {
+            "base_ejection_time": {"nanos": 543, "seconds": 751},
+            "consecutive_errors": 1956,
+            "consecutive_gateway_failure": 2880,
+            "enforcing_consecutive_errors": 3006,
+            "enforcing_consecutive_gateway_failure": 3930,
+            "enforcing_success_rate": 2334,
+            "interval": {"nanos": 543, "seconds": 751},
+            "max_ejection_percent": 2118,
+            "success_rate_minimum_hosts": 2799,
+            "success_rate_request_volume": 2915,
+            "success_rate_stdev_factor": 2663,
+        },
+        "port": 453,
+        "port_name": "port_name_value",
+        "protocol": "protocol_value",
+        "region": "region_value",
+        "security_policy": "security_policy_value",
+        "security_settings": {
+            "client_tls_policy": "client_tls_policy_value",
+            "subject_alt_names": [
+                "subject_alt_names_value_1",
+                "subject_alt_names_value_2",
+            ],
+        },
+        "self_link": "self_link_value",
+        "session_affinity": "session_affinity_value",
+        "subsetting": {"policy": "policy_value"},
+        "timeout_sec": 1185,
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -1329,6 +2223,98 @@ def test_patch_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_patch_unary_rest_required_fields(
+    request_type=compute.PatchRegionBackendServiceRequest,
+):
+    transport_class = transports.RegionBackendServicesRestTransport
+
+    request_init = {}
+    request_init["backend_service"] = ""
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).patch._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["backendService"] = "backend_service_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).patch._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "backendService" in jsonified_request
+    assert jsonified_request["backendService"] == "backend_service_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+
+    client = RegionBackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.patch_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_patch_unary_rest_unset_required_fields():
+    transport = transports.RegionBackendServicesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.patch._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(("backendService", "backendServiceResource", "project", "region",))
+    )
+
+
 def test_patch_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.PatchRegionBackendServiceRequest
 ):
@@ -1342,9 +2328,132 @@ def test_patch_unary_rest_bad_request(
         "region": "sample2",
         "backend_service": "sample3",
     }
-    request_init["backend_service_resource"] = compute.BackendService(
-        affinity_cookie_ttl_sec=2432
-    )
+    request_init["backend_service_resource"] = {
+        "affinity_cookie_ttl_sec": 2432,
+        "backends": [
+            {
+                "balancing_mode": "balancing_mode_value",
+                "capacity_scaler": 0.1575,
+                "description": "description_value",
+                "failover": True,
+                "group": "group_value",
+                "max_connections": 1608,
+                "max_connections_per_endpoint": 2990,
+                "max_connections_per_instance": 2978,
+                "max_rate": 849,
+                "max_rate_per_endpoint": 0.22310000000000002,
+                "max_rate_per_instance": 0.22190000000000001,
+                "max_utilization": 0.1633,
+            }
+        ],
+        "cdn_policy": {
+            "bypass_cache_on_request_headers": [{"header_name": "header_name_value"}],
+            "cache_key_policy": {
+                "include_host": True,
+                "include_protocol": True,
+                "include_query_string": True,
+                "query_string_blacklist": [
+                    "query_string_blacklist_value_1",
+                    "query_string_blacklist_value_2",
+                ],
+                "query_string_whitelist": [
+                    "query_string_whitelist_value_1",
+                    "query_string_whitelist_value_2",
+                ],
+            },
+            "cache_mode": "cache_mode_value",
+            "client_ttl": 1074,
+            "default_ttl": 1176,
+            "max_ttl": 761,
+            "negative_caching": True,
+            "negative_caching_policy": [{"code": 411, "ttl": 340}],
+            "request_coalescing": True,
+            "serve_while_stale": 1813,
+            "signed_url_cache_max_age_sec": 2890,
+            "signed_url_key_names": [
+                "signed_url_key_names_value_1",
+                "signed_url_key_names_value_2",
+            ],
+        },
+        "circuit_breakers": {
+            "max_connections": 1608,
+            "max_pending_requests": 2149,
+            "max_requests": 1313,
+            "max_requests_per_connection": 2902,
+            "max_retries": 1187,
+        },
+        "connection_draining": {"draining_timeout_sec": 2124},
+        "consistent_hash": {
+            "http_cookie": {
+                "name": "name_value",
+                "path": "path_value",
+                "ttl": {"nanos": 543, "seconds": 751},
+            },
+            "http_header_name": "http_header_name_value",
+            "minimum_ring_size": 1829,
+        },
+        "creation_timestamp": "creation_timestamp_value",
+        "custom_request_headers": [
+            "custom_request_headers_value_1",
+            "custom_request_headers_value_2",
+        ],
+        "custom_response_headers": [
+            "custom_response_headers_value_1",
+            "custom_response_headers_value_2",
+        ],
+        "description": "description_value",
+        "enable_c_d_n": True,
+        "failover_policy": {
+            "disable_connection_drain_on_failover": True,
+            "drop_traffic_if_unhealthy": True,
+            "failover_ratio": 0.1494,
+        },
+        "fingerprint": "fingerprint_value",
+        "health_checks": ["health_checks_value_1", "health_checks_value_2"],
+        "iap": {
+            "enabled": True,
+            "oauth2_client_id": "oauth2_client_id_value",
+            "oauth2_client_secret": "oauth2_client_secret_value",
+            "oauth2_client_secret_sha256": "oauth2_client_secret_sha256_value",
+        },
+        "id": 205,
+        "kind": "kind_value",
+        "load_balancing_scheme": "load_balancing_scheme_value",
+        "locality_lb_policy": "locality_lb_policy_value",
+        "log_config": {"enable": True, "sample_rate": 0.1165},
+        "max_stream_duration": {"nanos": 543, "seconds": 751},
+        "name": "name_value",
+        "network": "network_value",
+        "outlier_detection": {
+            "base_ejection_time": {"nanos": 543, "seconds": 751},
+            "consecutive_errors": 1956,
+            "consecutive_gateway_failure": 2880,
+            "enforcing_consecutive_errors": 3006,
+            "enforcing_consecutive_gateway_failure": 3930,
+            "enforcing_success_rate": 2334,
+            "interval": {"nanos": 543, "seconds": 751},
+            "max_ejection_percent": 2118,
+            "success_rate_minimum_hosts": 2799,
+            "success_rate_request_volume": 2915,
+            "success_rate_stdev_factor": 2663,
+        },
+        "port": 453,
+        "port_name": "port_name_value",
+        "protocol": "protocol_value",
+        "region": "region_value",
+        "security_policy": "security_policy_value",
+        "security_settings": {
+            "client_tls_policy": "client_tls_policy_value",
+            "subject_alt_names": [
+                "subject_alt_names_value_1",
+                "subject_alt_names_value_2",
+            ],
+        },
+        "self_link": "self_link_value",
+        "session_affinity": "session_affinity_value",
+        "subsetting": {"policy": "policy_value"},
+        "timeout_sec": 1185,
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -1359,17 +2468,13 @@ def test_patch_unary_rest_bad_request(
         client.patch_unary(request)
 
 
-def test_patch_unary_rest_from_dict():
-    test_patch_unary_rest(request_type=dict)
-
-
-def test_patch_unary_rest_flattened(transport: str = "rest"):
+def test_patch_unary_rest_flattened():
     client = RegionBackendServicesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -1430,11 +2535,18 @@ def test_patch_unary_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_update_unary_rest(
-    transport: str = "rest", request_type=compute.UpdateRegionBackendServiceRequest
-):
+def test_patch_unary_rest_error():
     client = RegionBackendServicesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type", [compute.UpdateRegionBackendServiceRequest, dict,]
+)
+def test_update_unary_rest(request_type):
+    client = RegionBackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1443,13 +2555,136 @@ def test_update_unary_rest(
         "region": "sample2",
         "backend_service": "sample3",
     }
-    request_init["backend_service_resource"] = compute.BackendService(
-        affinity_cookie_ttl_sec=2432
-    )
+    request_init["backend_service_resource"] = {
+        "affinity_cookie_ttl_sec": 2432,
+        "backends": [
+            {
+                "balancing_mode": "balancing_mode_value",
+                "capacity_scaler": 0.1575,
+                "description": "description_value",
+                "failover": True,
+                "group": "group_value",
+                "max_connections": 1608,
+                "max_connections_per_endpoint": 2990,
+                "max_connections_per_instance": 2978,
+                "max_rate": 849,
+                "max_rate_per_endpoint": 0.22310000000000002,
+                "max_rate_per_instance": 0.22190000000000001,
+                "max_utilization": 0.1633,
+            }
+        ],
+        "cdn_policy": {
+            "bypass_cache_on_request_headers": [{"header_name": "header_name_value"}],
+            "cache_key_policy": {
+                "include_host": True,
+                "include_protocol": True,
+                "include_query_string": True,
+                "query_string_blacklist": [
+                    "query_string_blacklist_value_1",
+                    "query_string_blacklist_value_2",
+                ],
+                "query_string_whitelist": [
+                    "query_string_whitelist_value_1",
+                    "query_string_whitelist_value_2",
+                ],
+            },
+            "cache_mode": "cache_mode_value",
+            "client_ttl": 1074,
+            "default_ttl": 1176,
+            "max_ttl": 761,
+            "negative_caching": True,
+            "negative_caching_policy": [{"code": 411, "ttl": 340}],
+            "request_coalescing": True,
+            "serve_while_stale": 1813,
+            "signed_url_cache_max_age_sec": 2890,
+            "signed_url_key_names": [
+                "signed_url_key_names_value_1",
+                "signed_url_key_names_value_2",
+            ],
+        },
+        "circuit_breakers": {
+            "max_connections": 1608,
+            "max_pending_requests": 2149,
+            "max_requests": 1313,
+            "max_requests_per_connection": 2902,
+            "max_retries": 1187,
+        },
+        "connection_draining": {"draining_timeout_sec": 2124},
+        "consistent_hash": {
+            "http_cookie": {
+                "name": "name_value",
+                "path": "path_value",
+                "ttl": {"nanos": 543, "seconds": 751},
+            },
+            "http_header_name": "http_header_name_value",
+            "minimum_ring_size": 1829,
+        },
+        "creation_timestamp": "creation_timestamp_value",
+        "custom_request_headers": [
+            "custom_request_headers_value_1",
+            "custom_request_headers_value_2",
+        ],
+        "custom_response_headers": [
+            "custom_response_headers_value_1",
+            "custom_response_headers_value_2",
+        ],
+        "description": "description_value",
+        "enable_c_d_n": True,
+        "failover_policy": {
+            "disable_connection_drain_on_failover": True,
+            "drop_traffic_if_unhealthy": True,
+            "failover_ratio": 0.1494,
+        },
+        "fingerprint": "fingerprint_value",
+        "health_checks": ["health_checks_value_1", "health_checks_value_2"],
+        "iap": {
+            "enabled": True,
+            "oauth2_client_id": "oauth2_client_id_value",
+            "oauth2_client_secret": "oauth2_client_secret_value",
+            "oauth2_client_secret_sha256": "oauth2_client_secret_sha256_value",
+        },
+        "id": 205,
+        "kind": "kind_value",
+        "load_balancing_scheme": "load_balancing_scheme_value",
+        "locality_lb_policy": "locality_lb_policy_value",
+        "log_config": {"enable": True, "sample_rate": 0.1165},
+        "max_stream_duration": {"nanos": 543, "seconds": 751},
+        "name": "name_value",
+        "network": "network_value",
+        "outlier_detection": {
+            "base_ejection_time": {"nanos": 543, "seconds": 751},
+            "consecutive_errors": 1956,
+            "consecutive_gateway_failure": 2880,
+            "enforcing_consecutive_errors": 3006,
+            "enforcing_consecutive_gateway_failure": 3930,
+            "enforcing_success_rate": 2334,
+            "interval": {"nanos": 543, "seconds": 751},
+            "max_ejection_percent": 2118,
+            "success_rate_minimum_hosts": 2799,
+            "success_rate_request_volume": 2915,
+            "success_rate_stdev_factor": 2663,
+        },
+        "port": 453,
+        "port_name": "port_name_value",
+        "protocol": "protocol_value",
+        "region": "region_value",
+        "security_policy": "security_policy_value",
+        "security_settings": {
+            "client_tls_policy": "client_tls_policy_value",
+            "subject_alt_names": [
+                "subject_alt_names_value_1",
+                "subject_alt_names_value_2",
+            ],
+        },
+        "self_link": "self_link_value",
+        "session_affinity": "session_affinity_value",
+        "subsetting": {"policy": "policy_value"},
+        "timeout_sec": 1185,
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -1510,6 +2745,98 @@ def test_update_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_update_unary_rest_required_fields(
+    request_type=compute.UpdateRegionBackendServiceRequest,
+):
+    transport_class = transports.RegionBackendServicesRestTransport
+
+    request_init = {}
+    request_init["backend_service"] = ""
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["backendService"] = "backend_service_value"
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "backendService" in jsonified_request
+    assert jsonified_request["backendService"] == "backend_service_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+
+    client = RegionBackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "put",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_unary_rest_unset_required_fields():
+    transport = transports.RegionBackendServicesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(("backendService", "backendServiceResource", "project", "region",))
+    )
+
+
 def test_update_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.UpdateRegionBackendServiceRequest
 ):
@@ -1523,9 +2850,132 @@ def test_update_unary_rest_bad_request(
         "region": "sample2",
         "backend_service": "sample3",
     }
-    request_init["backend_service_resource"] = compute.BackendService(
-        affinity_cookie_ttl_sec=2432
-    )
+    request_init["backend_service_resource"] = {
+        "affinity_cookie_ttl_sec": 2432,
+        "backends": [
+            {
+                "balancing_mode": "balancing_mode_value",
+                "capacity_scaler": 0.1575,
+                "description": "description_value",
+                "failover": True,
+                "group": "group_value",
+                "max_connections": 1608,
+                "max_connections_per_endpoint": 2990,
+                "max_connections_per_instance": 2978,
+                "max_rate": 849,
+                "max_rate_per_endpoint": 0.22310000000000002,
+                "max_rate_per_instance": 0.22190000000000001,
+                "max_utilization": 0.1633,
+            }
+        ],
+        "cdn_policy": {
+            "bypass_cache_on_request_headers": [{"header_name": "header_name_value"}],
+            "cache_key_policy": {
+                "include_host": True,
+                "include_protocol": True,
+                "include_query_string": True,
+                "query_string_blacklist": [
+                    "query_string_blacklist_value_1",
+                    "query_string_blacklist_value_2",
+                ],
+                "query_string_whitelist": [
+                    "query_string_whitelist_value_1",
+                    "query_string_whitelist_value_2",
+                ],
+            },
+            "cache_mode": "cache_mode_value",
+            "client_ttl": 1074,
+            "default_ttl": 1176,
+            "max_ttl": 761,
+            "negative_caching": True,
+            "negative_caching_policy": [{"code": 411, "ttl": 340}],
+            "request_coalescing": True,
+            "serve_while_stale": 1813,
+            "signed_url_cache_max_age_sec": 2890,
+            "signed_url_key_names": [
+                "signed_url_key_names_value_1",
+                "signed_url_key_names_value_2",
+            ],
+        },
+        "circuit_breakers": {
+            "max_connections": 1608,
+            "max_pending_requests": 2149,
+            "max_requests": 1313,
+            "max_requests_per_connection": 2902,
+            "max_retries": 1187,
+        },
+        "connection_draining": {"draining_timeout_sec": 2124},
+        "consistent_hash": {
+            "http_cookie": {
+                "name": "name_value",
+                "path": "path_value",
+                "ttl": {"nanos": 543, "seconds": 751},
+            },
+            "http_header_name": "http_header_name_value",
+            "minimum_ring_size": 1829,
+        },
+        "creation_timestamp": "creation_timestamp_value",
+        "custom_request_headers": [
+            "custom_request_headers_value_1",
+            "custom_request_headers_value_2",
+        ],
+        "custom_response_headers": [
+            "custom_response_headers_value_1",
+            "custom_response_headers_value_2",
+        ],
+        "description": "description_value",
+        "enable_c_d_n": True,
+        "failover_policy": {
+            "disable_connection_drain_on_failover": True,
+            "drop_traffic_if_unhealthy": True,
+            "failover_ratio": 0.1494,
+        },
+        "fingerprint": "fingerprint_value",
+        "health_checks": ["health_checks_value_1", "health_checks_value_2"],
+        "iap": {
+            "enabled": True,
+            "oauth2_client_id": "oauth2_client_id_value",
+            "oauth2_client_secret": "oauth2_client_secret_value",
+            "oauth2_client_secret_sha256": "oauth2_client_secret_sha256_value",
+        },
+        "id": 205,
+        "kind": "kind_value",
+        "load_balancing_scheme": "load_balancing_scheme_value",
+        "locality_lb_policy": "locality_lb_policy_value",
+        "log_config": {"enable": True, "sample_rate": 0.1165},
+        "max_stream_duration": {"nanos": 543, "seconds": 751},
+        "name": "name_value",
+        "network": "network_value",
+        "outlier_detection": {
+            "base_ejection_time": {"nanos": 543, "seconds": 751},
+            "consecutive_errors": 1956,
+            "consecutive_gateway_failure": 2880,
+            "enforcing_consecutive_errors": 3006,
+            "enforcing_consecutive_gateway_failure": 3930,
+            "enforcing_success_rate": 2334,
+            "interval": {"nanos": 543, "seconds": 751},
+            "max_ejection_percent": 2118,
+            "success_rate_minimum_hosts": 2799,
+            "success_rate_request_volume": 2915,
+            "success_rate_stdev_factor": 2663,
+        },
+        "port": 453,
+        "port_name": "port_name_value",
+        "protocol": "protocol_value",
+        "region": "region_value",
+        "security_policy": "security_policy_value",
+        "security_settings": {
+            "client_tls_policy": "client_tls_policy_value",
+            "subject_alt_names": [
+                "subject_alt_names_value_1",
+                "subject_alt_names_value_2",
+            ],
+        },
+        "self_link": "self_link_value",
+        "session_affinity": "session_affinity_value",
+        "subsetting": {"policy": "policy_value"},
+        "timeout_sec": 1185,
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -1540,17 +2990,13 @@ def test_update_unary_rest_bad_request(
         client.update_unary(request)
 
 
-def test_update_unary_rest_from_dict():
-    test_update_unary_rest(request_type=dict)
-
-
-def test_update_unary_rest_flattened(transport: str = "rest"):
+def test_update_unary_rest_flattened():
     client = RegionBackendServicesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -1611,6 +3057,12 @@ def test_update_unary_rest_flattened_error(transport: str = "rest"):
         )
 
 
+def test_update_unary_rest_error():
+    client = RegionBackendServicesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.RegionBackendServicesRestTransport(
@@ -1629,6 +3081,25 @@ def test_credentials_transport_error():
         client = RegionBackendServicesClient(
             client_options={"credentials_file": "credentials.json"},
             transport=transport,
+        )
+
+    # It is an error to provide an api_key and a transport instance.
+    transport = transports.RegionBackendServicesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    options = client_options.ClientOptions()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = RegionBackendServicesClient(
+            client_options=options, transport=transport,
+        )
+
+    # It is an error to provide an api_key and a credential.
+    options = mock.Mock()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = RegionBackendServicesClient(
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
@@ -1875,7 +3346,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
@@ -1927,3 +3398,30 @@ def test_client_ctx():
             with client:
                 pass
             close.assert_called()
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_class",
+    [(RegionBackendServicesClient, transports.RegionBackendServicesRestTransport),],
+)
+def test_api_key_credentials(client_class, transport_class):
+    with mock.patch.object(
+        google.auth._default, "get_api_key_credentials", create=True
+    ) as get_api_key_credentials:
+        mock_cred = mock.Mock()
+        get_api_key_credentials.return_value = mock_cred
+        options = client_options.ClientOptions()
+        options.api_key = "api_key"
+        with mock.patch.object(transport_class, "__init__") as patched:
+            patched.return_value = None
+            client = client_class(client_options=options)
+            patched.assert_called_once_with(
+                credentials=mock_cred,
+                credentials_file=None,
+                host=client.DEFAULT_ENDPOINT,
+                scopes=None,
+                client_cert_source_for_mtls=None,
+                quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
+                always_use_jwt_access=True,
+            )

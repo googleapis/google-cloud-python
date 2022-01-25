@@ -18,12 +18,13 @@ import mock
 
 import grpc
 from grpc.experimental import aio
+import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 
 from requests import Response
-from requests import Request
+from requests import Request, PreparedRequest
 from requests.sessions import Session
 
 from google.api_core import client_options
@@ -228,20 +229,20 @@ def test_region_instances_client_client_options(
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = client_class(transport=transport_name)
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -293,7 +294,7 @@ def test_region_instances_client_mtls_env_auto(
         )
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
-            client = client_class(transport=transport_name, client_options=options)
+            client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
@@ -370,6 +371,80 @@ def test_region_instances_client_mtls_env_auto(
                 )
 
 
+@pytest.mark.parametrize("client_class", [RegionInstancesClient])
+@mock.patch.object(
+    RegionInstancesClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(RegionInstancesClient),
+)
+def test_region_instances_client_get_mtls_endpoint_and_cert_source(client_class):
+    mock_client_cert_source = mock.Mock()
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        mock_api_endpoint = "foo"
+        options = client_options.ClientOptions(
+            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
+        )
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
+            options
+        )
+        assert api_endpoint == mock_api_endpoint
+        assert cert_source == mock_client_cert_source
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "false".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+        mock_client_cert_source = mock.Mock()
+        mock_api_endpoint = "foo"
+        options = client_options.ClientOptions(
+            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
+        )
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
+            options
+        )
+        assert api_endpoint == mock_api_endpoint
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+        assert api_endpoint == client_class.DEFAULT_ENDPOINT
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "always".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+        assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+        assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert doesn't exist.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch(
+            "google.auth.transport.mtls.has_default_client_cert_source",
+            return_value=False,
+        ):
+            api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
+            assert api_endpoint == client_class.DEFAULT_ENDPOINT
+            assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch(
+            "google.auth.transport.mtls.has_default_client_cert_source",
+            return_value=True,
+        ):
+            with mock.patch(
+                "google.auth.transport.mtls.default_client_cert_source",
+                return_value=mock_client_cert_source,
+            ):
+                (
+                    api_endpoint,
+                    cert_source,
+                ) = client_class.get_mtls_endpoint_and_cert_source()
+                assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+                assert cert_source == mock_client_cert_source
+
+
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [(RegionInstancesClient, transports.RegionInstancesRestTransport, "rest"),],
@@ -381,7 +456,7 @@ def test_region_instances_client_client_options_scopes(
     options = client_options.ClientOptions(scopes=["1", "2"],)
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -405,7 +480,7 @@ def test_region_instances_client_client_options_credentials_file(
     options = client_options.ClientOptions(credentials_file="credentials.json")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
-        client = client_class(transport=transport_name, client_options=options)
+        client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
@@ -418,22 +493,201 @@ def test_region_instances_client_client_options_credentials_file(
         )
 
 
-def test_bulk_insert_unary_rest(
-    transport: str = "rest", request_type=compute.BulkInsertRegionInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type", [compute.BulkInsertRegionInstanceRequest, dict,]
+)
+def test_bulk_insert_unary_rest(request_type):
     client = RegionInstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
-    request_init[
-        "bulk_insert_instance_resource_resource"
-    ] = compute.BulkInsertInstanceResource(count=553)
+    request_init["bulk_insert_instance_resource_resource"] = {
+        "count": 553,
+        "instance_properties": {
+            "advanced_machine_features": {
+                "enable_nested_virtualization": True,
+                "threads_per_core": 1689,
+            },
+            "can_ip_forward": True,
+            "confidential_instance_config": {"enable_confidential_compute": True},
+            "description": "description_value",
+            "disks": [
+                {
+                    "auto_delete": True,
+                    "boot": True,
+                    "device_name": "device_name_value",
+                    "disk_encryption_key": {
+                        "kms_key_name": "kms_key_name_value",
+                        "kms_key_service_account": "kms_key_service_account_value",
+                        "raw_key": "raw_key_value",
+                        "rsa_encrypted_key": "rsa_encrypted_key_value",
+                        "sha256": "sha256_value",
+                    },
+                    "disk_size_gb": 1261,
+                    "guest_os_features": [{"type_": "type__value"}],
+                    "index": 536,
+                    "initialize_params": {
+                        "description": "description_value",
+                        "disk_name": "disk_name_value",
+                        "disk_size_gb": 1261,
+                        "disk_type": "disk_type_value",
+                        "labels": {},
+                        "on_update_action": "on_update_action_value",
+                        "provisioned_iops": 1740,
+                        "resource_policies": [
+                            "resource_policies_value_1",
+                            "resource_policies_value_2",
+                        ],
+                        "source_image": "source_image_value",
+                        "source_image_encryption_key": {
+                            "kms_key_name": "kms_key_name_value",
+                            "kms_key_service_account": "kms_key_service_account_value",
+                            "raw_key": "raw_key_value",
+                            "rsa_encrypted_key": "rsa_encrypted_key_value",
+                            "sha256": "sha256_value",
+                        },
+                        "source_snapshot": "source_snapshot_value",
+                        "source_snapshot_encryption_key": {
+                            "kms_key_name": "kms_key_name_value",
+                            "kms_key_service_account": "kms_key_service_account_value",
+                            "raw_key": "raw_key_value",
+                            "rsa_encrypted_key": "rsa_encrypted_key_value",
+                            "sha256": "sha256_value",
+                        },
+                    },
+                    "interface": "interface_value",
+                    "kind": "kind_value",
+                    "licenses": ["licenses_value_1", "licenses_value_2"],
+                    "mode": "mode_value",
+                    "shielded_instance_initial_state": {
+                        "dbs": [
+                            {"content": "content_value", "file_type": "file_type_value"}
+                        ],
+                        "dbxs": [
+                            {"content": "content_value", "file_type": "file_type_value"}
+                        ],
+                        "keks": [
+                            {"content": "content_value", "file_type": "file_type_value"}
+                        ],
+                        "pk": {
+                            "content": "content_value",
+                            "file_type": "file_type_value",
+                        },
+                    },
+                    "source": "source_value",
+                    "type_": "type__value",
+                }
+            ],
+            "guest_accelerators": [
+                {
+                    "accelerator_count": 1805,
+                    "accelerator_type": "accelerator_type_value",
+                }
+            ],
+            "labels": {},
+            "machine_type": "machine_type_value",
+            "metadata": {
+                "fingerprint": "fingerprint_value",
+                "items": [{"key": "key_value", "value": "value_value"}],
+                "kind": "kind_value",
+            },
+            "min_cpu_platform": "min_cpu_platform_value",
+            "network_interfaces": [
+                {
+                    "access_configs": [
+                        {
+                            "external_ipv6": "external_ipv6_value",
+                            "external_ipv6_prefix_length": 2837,
+                            "kind": "kind_value",
+                            "name": "name_value",
+                            "nat_i_p": "nat_i_p_value",
+                            "network_tier": "network_tier_value",
+                            "public_ptr_domain_name": "public_ptr_domain_name_value",
+                            "set_public_ptr": True,
+                            "type_": "type__value",
+                        }
+                    ],
+                    "alias_ip_ranges": [
+                        {
+                            "ip_cidr_range": "ip_cidr_range_value",
+                            "subnetwork_range_name": "subnetwork_range_name_value",
+                        }
+                    ],
+                    "fingerprint": "fingerprint_value",
+                    "ipv6_access_configs": [
+                        {
+                            "external_ipv6": "external_ipv6_value",
+                            "external_ipv6_prefix_length": 2837,
+                            "kind": "kind_value",
+                            "name": "name_value",
+                            "nat_i_p": "nat_i_p_value",
+                            "network_tier": "network_tier_value",
+                            "public_ptr_domain_name": "public_ptr_domain_name_value",
+                            "set_public_ptr": True,
+                            "type_": "type__value",
+                        }
+                    ],
+                    "ipv6_access_type": "ipv6_access_type_value",
+                    "ipv6_address": "ipv6_address_value",
+                    "kind": "kind_value",
+                    "name": "name_value",
+                    "network": "network_value",
+                    "network_i_p": "network_i_p_value",
+                    "nic_type": "nic_type_value",
+                    "queue_count": 1197,
+                    "stack_type": "stack_type_value",
+                    "subnetwork": "subnetwork_value",
+                }
+            ],
+            "private_ipv6_google_access": "private_ipv6_google_access_value",
+            "reservation_affinity": {
+                "consume_reservation_type": "consume_reservation_type_value",
+                "key": "key_value",
+                "values": ["values_value_1", "values_value_2"],
+            },
+            "resource_policies": [
+                "resource_policies_value_1",
+                "resource_policies_value_2",
+            ],
+            "scheduling": {
+                "automatic_restart": True,
+                "location_hint": "location_hint_value",
+                "min_node_cpus": 1379,
+                "node_affinities": [
+                    {
+                        "key": "key_value",
+                        "operator": "operator_value",
+                        "values": ["values_value_1", "values_value_2"],
+                    }
+                ],
+                "on_host_maintenance": "on_host_maintenance_value",
+                "preemptible": True,
+            },
+            "service_accounts": [
+                {"email": "email_value", "scopes": ["scopes_value_1", "scopes_value_2"]}
+            ],
+            "shielded_instance_config": {
+                "enable_integrity_monitoring": True,
+                "enable_secure_boot": True,
+                "enable_vtpm": True,
+            },
+            "tags": {
+                "fingerprint": "fingerprint_value",
+                "items": ["items_value_1", "items_value_2"],
+            },
+        },
+        "location_policy": {"locations": {}},
+        "min_count": 972,
+        "name_pattern": "name_pattern_value",
+        "per_instance_properties": {},
+        "source_instance_template": "source_instance_template_value",
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation(
             client_operation_id="client_operation_id_value",
@@ -494,6 +748,94 @@ def test_bulk_insert_unary_rest(
     assert response.zone == "zone_value"
 
 
+def test_bulk_insert_unary_rest_required_fields(
+    request_type=compute.BulkInsertRegionInstanceRequest,
+):
+    transport_class = transports.RegionInstancesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).bulk_insert._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).bulk_insert._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+
+    client = RegionInstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.bulk_insert_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_bulk_insert_unary_rest_unset_required_fields():
+    transport = transports.RegionInstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.bulk_insert._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(("bulkInsertInstanceResourceResource", "project", "region",))
+    )
+
+
 def test_bulk_insert_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.BulkInsertRegionInstanceRequest
 ):
@@ -503,9 +845,187 @@ def test_bulk_insert_unary_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
-    request_init[
-        "bulk_insert_instance_resource_resource"
-    ] = compute.BulkInsertInstanceResource(count=553)
+    request_init["bulk_insert_instance_resource_resource"] = {
+        "count": 553,
+        "instance_properties": {
+            "advanced_machine_features": {
+                "enable_nested_virtualization": True,
+                "threads_per_core": 1689,
+            },
+            "can_ip_forward": True,
+            "confidential_instance_config": {"enable_confidential_compute": True},
+            "description": "description_value",
+            "disks": [
+                {
+                    "auto_delete": True,
+                    "boot": True,
+                    "device_name": "device_name_value",
+                    "disk_encryption_key": {
+                        "kms_key_name": "kms_key_name_value",
+                        "kms_key_service_account": "kms_key_service_account_value",
+                        "raw_key": "raw_key_value",
+                        "rsa_encrypted_key": "rsa_encrypted_key_value",
+                        "sha256": "sha256_value",
+                    },
+                    "disk_size_gb": 1261,
+                    "guest_os_features": [{"type_": "type__value"}],
+                    "index": 536,
+                    "initialize_params": {
+                        "description": "description_value",
+                        "disk_name": "disk_name_value",
+                        "disk_size_gb": 1261,
+                        "disk_type": "disk_type_value",
+                        "labels": {},
+                        "on_update_action": "on_update_action_value",
+                        "provisioned_iops": 1740,
+                        "resource_policies": [
+                            "resource_policies_value_1",
+                            "resource_policies_value_2",
+                        ],
+                        "source_image": "source_image_value",
+                        "source_image_encryption_key": {
+                            "kms_key_name": "kms_key_name_value",
+                            "kms_key_service_account": "kms_key_service_account_value",
+                            "raw_key": "raw_key_value",
+                            "rsa_encrypted_key": "rsa_encrypted_key_value",
+                            "sha256": "sha256_value",
+                        },
+                        "source_snapshot": "source_snapshot_value",
+                        "source_snapshot_encryption_key": {
+                            "kms_key_name": "kms_key_name_value",
+                            "kms_key_service_account": "kms_key_service_account_value",
+                            "raw_key": "raw_key_value",
+                            "rsa_encrypted_key": "rsa_encrypted_key_value",
+                            "sha256": "sha256_value",
+                        },
+                    },
+                    "interface": "interface_value",
+                    "kind": "kind_value",
+                    "licenses": ["licenses_value_1", "licenses_value_2"],
+                    "mode": "mode_value",
+                    "shielded_instance_initial_state": {
+                        "dbs": [
+                            {"content": "content_value", "file_type": "file_type_value"}
+                        ],
+                        "dbxs": [
+                            {"content": "content_value", "file_type": "file_type_value"}
+                        ],
+                        "keks": [
+                            {"content": "content_value", "file_type": "file_type_value"}
+                        ],
+                        "pk": {
+                            "content": "content_value",
+                            "file_type": "file_type_value",
+                        },
+                    },
+                    "source": "source_value",
+                    "type_": "type__value",
+                }
+            ],
+            "guest_accelerators": [
+                {
+                    "accelerator_count": 1805,
+                    "accelerator_type": "accelerator_type_value",
+                }
+            ],
+            "labels": {},
+            "machine_type": "machine_type_value",
+            "metadata": {
+                "fingerprint": "fingerprint_value",
+                "items": [{"key": "key_value", "value": "value_value"}],
+                "kind": "kind_value",
+            },
+            "min_cpu_platform": "min_cpu_platform_value",
+            "network_interfaces": [
+                {
+                    "access_configs": [
+                        {
+                            "external_ipv6": "external_ipv6_value",
+                            "external_ipv6_prefix_length": 2837,
+                            "kind": "kind_value",
+                            "name": "name_value",
+                            "nat_i_p": "nat_i_p_value",
+                            "network_tier": "network_tier_value",
+                            "public_ptr_domain_name": "public_ptr_domain_name_value",
+                            "set_public_ptr": True,
+                            "type_": "type__value",
+                        }
+                    ],
+                    "alias_ip_ranges": [
+                        {
+                            "ip_cidr_range": "ip_cidr_range_value",
+                            "subnetwork_range_name": "subnetwork_range_name_value",
+                        }
+                    ],
+                    "fingerprint": "fingerprint_value",
+                    "ipv6_access_configs": [
+                        {
+                            "external_ipv6": "external_ipv6_value",
+                            "external_ipv6_prefix_length": 2837,
+                            "kind": "kind_value",
+                            "name": "name_value",
+                            "nat_i_p": "nat_i_p_value",
+                            "network_tier": "network_tier_value",
+                            "public_ptr_domain_name": "public_ptr_domain_name_value",
+                            "set_public_ptr": True,
+                            "type_": "type__value",
+                        }
+                    ],
+                    "ipv6_access_type": "ipv6_access_type_value",
+                    "ipv6_address": "ipv6_address_value",
+                    "kind": "kind_value",
+                    "name": "name_value",
+                    "network": "network_value",
+                    "network_i_p": "network_i_p_value",
+                    "nic_type": "nic_type_value",
+                    "queue_count": 1197,
+                    "stack_type": "stack_type_value",
+                    "subnetwork": "subnetwork_value",
+                }
+            ],
+            "private_ipv6_google_access": "private_ipv6_google_access_value",
+            "reservation_affinity": {
+                "consume_reservation_type": "consume_reservation_type_value",
+                "key": "key_value",
+                "values": ["values_value_1", "values_value_2"],
+            },
+            "resource_policies": [
+                "resource_policies_value_1",
+                "resource_policies_value_2",
+            ],
+            "scheduling": {
+                "automatic_restart": True,
+                "location_hint": "location_hint_value",
+                "min_node_cpus": 1379,
+                "node_affinities": [
+                    {
+                        "key": "key_value",
+                        "operator": "operator_value",
+                        "values": ["values_value_1", "values_value_2"],
+                    }
+                ],
+                "on_host_maintenance": "on_host_maintenance_value",
+                "preemptible": True,
+            },
+            "service_accounts": [
+                {"email": "email_value", "scopes": ["scopes_value_1", "scopes_value_2"]}
+            ],
+            "shielded_instance_config": {
+                "enable_integrity_monitoring": True,
+                "enable_secure_boot": True,
+                "enable_vtpm": True,
+            },
+            "tags": {
+                "fingerprint": "fingerprint_value",
+                "items": ["items_value_1", "items_value_2"],
+            },
+        },
+        "location_policy": {"locations": {}},
+        "min_count": 972,
+        "name_pattern": "name_pattern_value",
+        "per_instance_properties": {},
+        "source_instance_template": "source_instance_template_value",
+    }
     request = request_type(request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -520,17 +1040,13 @@ def test_bulk_insert_unary_rest_bad_request(
         client.bulk_insert_unary(request)
 
 
-def test_bulk_insert_unary_rest_from_dict():
-    test_bulk_insert_unary_rest(request_type=dict)
-
-
-def test_bulk_insert_unary_rest_flattened(transport: str = "rest"):
+def test_bulk_insert_unary_rest_flattened():
     client = RegionInstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
+    with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Operation()
 
@@ -585,6 +1101,12 @@ def test_bulk_insert_unary_rest_flattened_error(transport: str = "rest"):
         )
 
 
+def test_bulk_insert_unary_rest_error():
+    client = RegionInstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.RegionInstancesRestTransport(
@@ -603,6 +1125,23 @@ def test_credentials_transport_error():
         client = RegionInstancesClient(
             client_options={"credentials_file": "credentials.json"},
             transport=transport,
+        )
+
+    # It is an error to provide an api_key and a transport instance.
+    transport = transports.RegionInstancesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    options = client_options.ClientOptions()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = RegionInstancesClient(client_options=options, transport=transport,)
+
+    # It is an error to provide an api_key and a credential.
+    options = mock.Mock()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = RegionInstancesClient(
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
@@ -839,7 +1378,7 @@ def test_parse_common_location_path():
     assert expected == actual
 
 
-def test_client_withDEFAULT_CLIENT_INFO():
+def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
@@ -891,3 +1430,30 @@ def test_client_ctx():
             with client:
                 pass
             close.assert_called()
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_class",
+    [(RegionInstancesClient, transports.RegionInstancesRestTransport),],
+)
+def test_api_key_credentials(client_class, transport_class):
+    with mock.patch.object(
+        google.auth._default, "get_api_key_credentials", create=True
+    ) as get_api_key_credentials:
+        mock_cred = mock.Mock()
+        get_api_key_credentials.return_value = mock_cred
+        options = client_options.ClientOptions()
+        options.api_key = "api_key"
+        with mock.patch.object(transport_class, "__init__") as patched:
+            patched.return_value = None
+            client = client_class(client_options=options)
+            patched.assert_called_once_with(
+                credentials=mock_cred,
+                credentials_file=None,
+                host=client.DEFAULT_ENDPOINT,
+                scopes=None,
+                client_cert_source_for_mtls=None,
+                quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
+                always_use_jwt_access=True,
+            )
