@@ -50,6 +50,8 @@ from .types.cluster_service import GetClusterRequest
 from .types.cluster_service import GetJSONWebKeysRequest
 from .types.cluster_service import GetJSONWebKeysResponse
 from .types.cluster_service import GetNodePoolRequest
+from .types.cluster_service import GetOpenIDConfigRequest
+from .types.cluster_service import GetOpenIDConfigResponse
 from .types.cluster_service import GetOperationRequest
 from .types.cluster_service import GetServerConfigRequest
 from .types.cluster_service import HorizontalPodAutoscaling
@@ -176,6 +178,8 @@ __all__ = (
     "GetJSONWebKeysRequest",
     "GetJSONWebKeysResponse",
     "GetNodePoolRequest",
+    "GetOpenIDConfigRequest",
+    "GetOpenIDConfigResponse",
     "GetOperationRequest",
     "GetServerConfigRequest",
     "HorizontalPodAutoscaling",

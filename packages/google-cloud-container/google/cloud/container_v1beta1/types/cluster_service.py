@@ -147,6 +147,8 @@ __protobuf__ = proto.module(
         "ResourceUsageExportConfig",
         "ShieldedNodes",
         "VirtualNIC",
+        "GetOpenIDConfigRequest",
+        "GetOpenIDConfigResponse",
         "GetJSONWebKeysRequest",
         "Jwk",
         "GetJSONWebKeysResponse",
@@ -4776,6 +4778,52 @@ class VirtualNIC(proto.Message):
     """
 
     enabled = proto.Field(proto.BOOL, number=1,)
+
+
+class GetOpenIDConfigRequest(proto.Message):
+    r"""GetOpenIDConfigRequest gets the OIDC discovery document for
+    the cluster. See the OpenID Connect Discovery 1.0 specification
+    for details.
+
+    Attributes:
+        parent (str):
+            The cluster (project, location, cluster name) to get the
+            discovery document for. Specified in the format
+            ``projects/*/locations/*/clusters/*``.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+
+
+class GetOpenIDConfigResponse(proto.Message):
+    r"""GetOpenIDConfigResponse is an OIDC discovery document for the
+    cluster. See the OpenID Connect Discovery 1.0 specification for
+    details.
+
+    Attributes:
+        issuer (str):
+            OIDC Issuer.
+        jwks_uri (str):
+            JSON Web Key uri.
+        response_types_supported (Sequence[str]):
+            Supported response types.
+        subject_types_supported (Sequence[str]):
+            Supported subject types.
+        id_token_signing_alg_values_supported (Sequence[str]):
+            supported ID Token signing Algorithms.
+        claims_supported (Sequence[str]):
+            Supported claims.
+        grant_types (Sequence[str]):
+            Supported grant types.
+    """
+
+    issuer = proto.Field(proto.STRING, number=1,)
+    jwks_uri = proto.Field(proto.STRING, number=2,)
+    response_types_supported = proto.RepeatedField(proto.STRING, number=3,)
+    subject_types_supported = proto.RepeatedField(proto.STRING, number=4,)
+    id_token_signing_alg_values_supported = proto.RepeatedField(proto.STRING, number=5,)
+    claims_supported = proto.RepeatedField(proto.STRING, number=6,)
+    grant_types = proto.RepeatedField(proto.STRING, number=7,)
 
 
 class GetJSONWebKeysRequest(proto.Message):
