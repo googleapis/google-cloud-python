@@ -71,6 +71,24 @@ for library in s.get_staging_dirs(default_version):
     flags=re.MULTILINE | re.DOTALL,
     )
 
+    # Remove `get_mtls_endpoint_and_cert_source` method
+    s.replace(
+        library / "grafeas/**/client.py",
+        """@classmethod
+    def get_mtls_endpoint_and_cert_source.*?return api_endpoint, client_cert_source""",
+        "",
+        flags=re.MULTILINE | re.DOTALL,
+    )
+
+    # Remove `get_mtls_endpoint_and_cert_source` method
+    s.replace(
+        library / "grafeas/**/async_client.py",
+        """@classmethod
+    def get_mtls_endpoint_and_cert_source.*?return GrafeasClient.get_mtls_endpoint_and_cert_source\(client_options\)  # type: ignore""",
+        "",
+        flags=re.MULTILINE | re.DOTALL,
+    )
+
     # Remove credentials and client options from the service celint
     # A transport must be used to initialize the client
     s.replace(
@@ -182,12 +200,19 @@ def test_get_occurrence""",
     flags=re.MULTILINE | re.DOTALL,
     )
 
-    # Work around gapic generator bug https://github.com/googleapis/gapic-generator-python/issues/902
-    s.replace(library / f"grafeas/grafeas_{library.name}/types/*.py",
-                r""".
-    Attributes:""",
-                r""".\n
-    Attributes:""",
+    # remove test api key credentials
+    s.replace(
+        library / "tests/**/test_grafeas.py",
+        """@pytest.mark.parametrize\("client_class,transport_class", \[
+    \(GrafeasClient, transports.GrafeasGrpcTransport\),
+    \(GrafeasAsyncClient, transports.GrafeasGrpcAsyncIOTransport\),
+\]\)
+def test_api_key_credentials.*?client_info=transports.base.DEFAULT_CLIENT_INFO,
+                always_use_jwt_access=True,
+            \)""",
+    """""",
+
+    flags=re.MULTILINE | re.DOTALL,
     )
 
     excludes = ["README.rst", "setup.py", "docs/index.rst"]
