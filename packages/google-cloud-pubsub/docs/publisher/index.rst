@@ -72,7 +72,7 @@ The way that this works is that on the first message that you send, a new batch
 is created automatically.  For every subsequent message, if there is already a
 valid batch that is still accepting messages, then that batch is used. When the
 batch is created, it begins a countdown that publishes the batch once
-sufficient time has elapsed (by default, this is 0.05 seconds).
+sufficient time has elapsed (by default, this is 0.01 seconds).
 
 If you need different batching settings, simply provide a
 :class:`~.pubsub_v1.types.BatchSettings` object when you instantiate the
@@ -84,11 +84,23 @@ If you need different batching settings, simply provide a
     from google.cloud.pubsub import types
 
     client = pubsub.PublisherClient(
-        batch_settings=types.BatchSettings(max_messages=500),
+        batch_settings=types.BatchSettings(
+                                            max_messages=500, # default 100
+                                            max_bytes=1024, # default 1 MB
+                                            max_latency=1 # default .01 seconds
+                                            ),
     )
 
-Pub/Sub accepts a maximum of 1,000 messages in a batch, and the size of a
-batch can not exceed 10 megabytes.
+The `max_bytes` argument is the maximum total size of the messages to collect
+before automatically publishing the batch, (in bytes) including any byte size
+overhead of the publish request itself. The maximum value is bound by the
+server-side limit of 10_000_000 bytes.  The default value is 1 MB.
+
+The `max_messages` argument is the maximum number of messages to collect
+before automatically publishing the batch, the default value is 100 messages.
+
+The `max_latency` is the maximum number of seconds to wait for additional
+messages before automatically publishing the batch, the default is .01 seconds.
 
 
 Futures

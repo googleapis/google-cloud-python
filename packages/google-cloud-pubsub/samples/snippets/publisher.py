@@ -189,7 +189,7 @@ def publish_messages_with_batch_settings(project_id: str, topic_id: str) -> None
     # or 1 KiB of data, or 1 second has passed.
     batch_settings = pubsub_v1.types.BatchSettings(
         max_messages=10,  # default 100
-        max_bytes=1024,  # default 1 MiB
+        max_bytes=1024,  # default 1 MB
         max_latency=1,  # default 10 ms
     )
     publisher = pubsub_v1.PublisherClient(batch_settings)
