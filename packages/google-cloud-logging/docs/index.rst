@@ -1,17 +1,31 @@
 .. include:: README.rst
 
+Usage Guide
+-------------------
+.. toctree::
+   :maxdepth: 2
+
+   usage
+
 Documentation
 -------------------
 .. toctree::
    :maxdepth: 3
 
-   v2
+   client
+   logger
+   entries
+   metric
+   resource
+   sink
+   handlers
+   transport
    
 
-Migration Guide
----------------
+Migration Guides
+----------------
 
-See the guide below for instructions on migrating to the 2.x release of this library.
+See the guide below for instructions on migrating between major releases of this library.
 
 .. toctree::
     :maxdepth: 2

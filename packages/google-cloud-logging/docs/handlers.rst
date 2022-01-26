@@ -1,6 +1,9 @@
-Python Logging Module Handler
-==============================
+Handlers
+----------------
+.. toctree::
+   :maxdepth: 2
 
-.. automodule:: google.cloud.logging_v2.handlers.handlers
-  :members:
-  :show-inheritance:
+   handlers-cloud-logging
+   handlers-structured-log
+   handlers-app-engine
+   handlers-container-engine
