@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+## [2.7.0](https://github.com/googleapis/python-recommender/compare/v2.6.0...v2.7.0) (2022-01-26)
+
+
+### Features
+
+* **v1:** add recommendation priority / insight severity ([#165](https://github.com/googleapis/python-recommender/issues/165)) ([7c578fe](https://github.com/googleapis/python-recommender/commit/7c578fe399eda51ca153e31395619f8cf2236cad))
+* **v1:** add recommendation security projection ([7c578fe](https://github.com/googleapis/python-recommender/commit/7c578fe399eda51ca153e31395619f8cf2236cad))
+* **v1:** add recommendation xor_group_id ([7c578fe](https://github.com/googleapis/python-recommender/commit/7c578fe399eda51ca153e31395619f8cf2236cad))
+
 ## [2.6.0](https://github.com/googleapis/python-recommender/compare/v2.5.1...v2.6.0) (2022-01-25)
 
 
