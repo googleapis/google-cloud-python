@@ -20,14 +20,31 @@ the versions in the later versions of pandas.
 """
 
 import operator
+from typing import Any
 
 import numpy
 import packaging.version
 import pandas
-from pandas._libs.lib import is_integer
+from pandas.api.types import is_integer
+import pandas.compat.numpy.function
+import pandas.core.nanops
 
 
 pandas_release = packaging.version.parse(pandas.__version__).release
+
+# Create aliases for private methods in case they move in a future version.
+nanall = pandas.core.nanops.nanall
+nanany = pandas.core.nanops.nanany
+nanmax = pandas.core.nanops.nanmax
+nanmin = pandas.core.nanops.nanmin
+numpy_validate_all = pandas.compat.numpy.function.validate_all
+numpy_validate_any = pandas.compat.numpy.function.validate_any
+numpy_validate_max = pandas.compat.numpy.function.validate_max
+numpy_validate_min = pandas.compat.numpy.function.validate_min
+
+if pandas_release >= (1, 2):
+    nanmedian = pandas.core.nanops.nanmedian
+    numpy_validate_median = pandas.compat.numpy.function.validate_median
 
 
 def import_default(module_name, force=False, default=None):
@@ -55,6 +72,10 @@ def import_default(module_name, force=False, default=None):
     return getattr(module, name, default)
 
 
+# pandas.core.arraylike.OpsMixin is private, but the related public API
+# "ExtensionScalarOpsMixin" is not sufficient for adding dates to times.
+# It results in unsupported operand type(s) for +: 'datetime.time' and
+# 'datetime.date'
 @import_default("pandas.core.arraylike")
 class OpsMixin:
     def _cmp_method(self, other, op):  # pragma: NO COVER
@@ -81,6 +102,8 @@ class OpsMixin:
     __add__ = __radd__ = __sub__ = lambda self, other: NotImplemented
 
 
+# TODO: use public API once pandas 1.5 / 2.x is released.
+# See: https://github.com/pandas-dev/pandas/pull/45544
 @import_default("pandas.core.arrays._mixins", pandas_release < (1, 3))
 class NDArrayBackedExtensionArray(pandas.core.arrays.base.ExtensionArray):
 
@@ -129,6 +152,28 @@ class NDArrayBackedExtensionArray(pandas.core.arrays.base.ExtensionArray):
 
     def repeat(self, n):
         return self.__class__(self._ndarray.repeat(n), self._dtype)
+
+    def take(
+        self,
+        indices,
+        *,
+        allow_fill: bool = False,
+        fill_value: Any = None,
+        axis: int = 0,
+    ):
+        from pandas.core.algorithms import take
+
+        if allow_fill:
+            fill_value = self._validate_scalar(fill_value)
+
+        new_data = take(
+            self._ndarray,
+            indices,
+            allow_fill=allow_fill,
+            fill_value=fill_value,
+            axis=axis,
+        )
+        return self._from_backing_data(new_data)
 
     @classmethod
     def _concat_same_type(cls, to_concat, axis=0):
