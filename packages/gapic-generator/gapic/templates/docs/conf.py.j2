@@ -63,8 +63,8 @@ source_suffix = [".rst", ".md"]
 # The encoding of source files.
 # source_encoding = 'utf-8-sig'
 
-# The master toctree document.
-master_doc = "index"
+# The root toctree document.
+root_doc = "index"
 
 # General information about the project.
 project = u"{{ api.naming.warehouse_package_name }}"
@@ -261,7 +261,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (
-        master_doc,
+        root_doc,
         "{{ api.naming.warehouse_package_name }}.tex",
         u"{{ api.naming.warehouse_package_name }} Documentation",
         author,
@@ -296,7 +296,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     (
-        master_doc,
+        root_doc,
         "{{ api.naming.warehouse_package_name }}",
         u"{{ api.naming.long_name }} Documentation",
         [author],
@@ -315,7 +315,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (
-        master_doc,
+        root_doc,
         "{{ api.naming.warehouse_package_name }}",
         u"{{ api.naming.warehouse_package_name }} Documentation",
         author,

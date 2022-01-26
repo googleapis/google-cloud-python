@@ -21,7 +21,7 @@ Locating Templates
 ------------------
 
 Templates are included in output simply on the basis that they exist.
-**There is no master list of templates**; it is assumed that every template
+**There is no primary list of templates**; it is assumed that every template
 should be rendered (unless its name begins with a single underscore).
 
 .. note::

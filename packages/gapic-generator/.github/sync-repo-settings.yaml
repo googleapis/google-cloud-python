@@ -2,7 +2,7 @@ rebaseMergeAllowed: true
 squashMergeAllowed: true
 mergeCommitAllowed: false
 branchProtectionRules:
-- pattern: master
+- pattern: main
   isAdminEnforced: true
   requiredStatusCheckContexts:
     - 'cla/google'

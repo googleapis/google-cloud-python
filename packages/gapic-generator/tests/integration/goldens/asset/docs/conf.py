@@ -74,8 +74,8 @@ source_suffix = [".rst", ".md"]
 # The encoding of source files.
 # source_encoding = 'utf-8-sig'
 
-# The master toctree document.
-master_doc = "index"
+# The root toctree document.
+root_doc = "index"
 
 # General information about the project.
 project = u"google-cloud-asset"
@@ -272,7 +272,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (
-        master_doc,
+        root_doc,
         "google-cloud-asset.tex",
         u"google-cloud-asset Documentation",
         author,
@@ -307,7 +307,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     (
-        master_doc,
+        root_doc,
         "google-cloud-asset",
         u"Google Cloud Asset Documentation",
         [author],
@@ -326,7 +326,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (
-        master_doc,
+        root_doc,
         "google-cloud-asset",
         u"google-cloud-asset Documentation",
         author,
