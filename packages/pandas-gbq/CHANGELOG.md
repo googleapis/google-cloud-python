@@ -5,7 +5,8 @@
 
 ### ⚠ BREAKING CHANGES
 
-* use nullable Int64 and boolean dtypes if available (#445)
+* the first argument of `read_gbq` is renamed from `query` to `query_or_table` ([#443](https://github.com/googleapis/python-bigquery-pandas/issues/443)) ([bf0e863](https://github.com/googleapis/python-bigquery-pandas/commit/bf0e863ff6506eca267b14e59e47417bd60e947f))
+* use nullable Int64 and boolean dtypes if available ([#445](https://github.com/googleapis/python-bigquery-pandas/issues/445)) ([89078f8](https://github.com/googleapis/python-bigquery-pandas/commit/89078f89478469aa60a0a8b8e1e0c4a59aa059e0))
 
 ### Features
 
