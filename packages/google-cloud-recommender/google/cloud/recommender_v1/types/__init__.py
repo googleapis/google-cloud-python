@@ -25,6 +25,7 @@ from .recommendation import (
     Recommendation,
     RecommendationContent,
     RecommendationStateInfo,
+    SecurityProjection,
     ValueMatcher,
 )
 from .recommender_service import (
@@ -50,6 +51,7 @@ __all__ = (
     "Recommendation",
     "RecommendationContent",
     "RecommendationStateInfo",
+    "SecurityProjection",
     "ValueMatcher",
     "GetInsightRequest",
     "GetRecommendationRequest",

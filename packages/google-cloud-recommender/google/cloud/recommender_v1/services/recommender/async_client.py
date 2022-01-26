@@ -225,7 +225,7 @@ class RecommenderAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInsightsAsyncPager:
-        r"""Lists insights for a Cloud project. Requires the
+        r"""Lists insights for the specified Cloud Resource. Requires the
         recommender.*.list IAM permission for the specified insight
         type.
 
@@ -237,14 +237,20 @@ class RecommenderAsyncClient:
                 Required. The container resource on which to execute the
                 request. Acceptable formats:
 
-                1.
+                -  ``projects/[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
 
-                "projects/[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]",
+                -  ``projects/[PROJECT_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
+
+                -  ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
+
+                -  ``folders/[FOLDER_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
+
+                -  ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]``
 
                 LOCATION here refers to GCP Locations:
                 https://cloud.google.com/about/locations/
                 INSIGHT_TYPE_ID refers to supported insight types:
-                https://cloud.google.com/recommender/docs/insights/insight-types.)
+                https://cloud.google.com/recommender/docs/insights/insight-types.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -508,8 +514,9 @@ class RecommenderAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRecommendationsAsyncPager:
-        r"""Lists recommendations for a Cloud project. Requires the
-        recommender.*.list IAM permission for the specified recommender.
+        r"""Lists recommendations for the specified Cloud Resource. Requires
+        the recommender.*.list IAM permission for the specified
+        recommender.
 
         Args:
             request (Union[google.cloud.recommender_v1.types.ListRecommendationsRequest, dict]):
@@ -519,9 +526,15 @@ class RecommenderAsyncClient:
                 Required. The container resource on which to execute the
                 request. Acceptable formats:
 
-                1.
+                -  ``projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
 
-                "projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]",
+                -  ``projects/[PROJECT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
+
+                -  ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
+
+                -  ``folders/[FOLDER_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
+
+                -  ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]``
 
                 LOCATION here refers to GCP Locations:
                 https://cloud.google.com/about/locations/ RECOMMENDER_ID
@@ -533,9 +546,26 @@ class RecommenderAsyncClient:
                 should not be set.
             filter (:class:`str`):
                 Filter expression to restrict the recommendations
-                returned. Supported filter fields: state_info.state Eg:
-                \`state_info.state:"DISMISSED" or
-                state_info.state:"FAILED"
+                returned. Supported filter fields:
+
+                -  ``state_info.state``
+
+                -  ``recommenderSubtype``
+
+                -  ``priority``
+
+                Examples:
+
+                -  ``stateInfo.state = ACTIVE OR stateInfo.state = DISMISSED``
+
+                -  ``recommenderSubtype = REMOVE_ROLE OR recommenderSubtype = REPLACE_ROLE``
+
+                -  ``priority = P1 OR priority = P2``
+
+                -  ``stateInfo.state = ACTIVE AND (priority = P1 OR priority = P2)``
+
+                (These expressions are based on the filter language
+                described at https://google.aip.dev/160)
 
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this

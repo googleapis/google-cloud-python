@@ -56,6 +56,8 @@ class Insight(proto.Message):
             Information state and metadata.
         category (google.cloud.recommender_v1.types.Insight.Category):
             Category being targeted by the insight.
+        severity (google.cloud.recommender_v1.types.Insight.Severity):
+            Insight's severity.
         etag (str):
             Fingerprint of the Insight. Provides
             optimistic locking when updating states.
@@ -70,6 +72,14 @@ class Insight(proto.Message):
         SECURITY = 2
         PERFORMANCE = 3
         MANAGEABILITY = 4
+
+    class Severity(proto.Enum):
+        r"""Insight severity levels."""
+        SEVERITY_UNSPECIFIED = 0
+        LOW = 1
+        MEDIUM = 2
+        HIGH = 3
+        CRITICAL = 4
 
     class RecommendationReference(proto.Message):
         r"""Reference to an associated recommendation.
@@ -95,6 +105,7 @@ class Insight(proto.Message):
     )
     state_info = proto.Field(proto.MESSAGE, number=6, message="InsightStateInfo",)
     category = proto.Field(proto.ENUM, number=7, enum=Category,)
+    severity = proto.Field(proto.ENUM, number=15, enum=Severity,)
     etag = proto.Field(proto.STRING, number=11,)
     associated_recommendations = proto.RepeatedField(
         proto.MESSAGE, number=8, message=RecommendationReference,

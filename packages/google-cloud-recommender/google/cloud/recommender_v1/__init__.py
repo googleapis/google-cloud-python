@@ -26,6 +26,7 @@ from .types.recommendation import OperationGroup
 from .types.recommendation import Recommendation
 from .types.recommendation import RecommendationContent
 from .types.recommendation import RecommendationStateInfo
+from .types.recommendation import SecurityProjection
 from .types.recommendation import ValueMatcher
 from .types.recommender_service import GetInsightRequest
 from .types.recommender_service import GetRecommendationRequest
@@ -60,5 +61,6 @@ __all__ = (
     "RecommendationContent",
     "RecommendationStateInfo",
     "RecommenderClient",
+    "SecurityProjection",
     "ValueMatcher",
 )

@@ -901,6 +901,7 @@ def test_get_insight(request_type, transport: str = "grpc"):
             target_resources=["target_resources_value"],
             insight_subtype="insight_subtype_value",
             category=insight.Insight.Category.COST,
+            severity=insight.Insight.Severity.LOW,
             etag="etag_value",
         )
         response = client.get_insight(request)
@@ -917,6 +918,7 @@ def test_get_insight(request_type, transport: str = "grpc"):
     assert response.target_resources == ["target_resources_value"]
     assert response.insight_subtype == "insight_subtype_value"
     assert response.category == insight.Insight.Category.COST
+    assert response.severity == insight.Insight.Severity.LOW
     assert response.etag == "etag_value"
 
 
@@ -957,6 +959,7 @@ async def test_get_insight_async(
                 target_resources=["target_resources_value"],
                 insight_subtype="insight_subtype_value",
                 category=insight.Insight.Category.COST,
+                severity=insight.Insight.Severity.LOW,
                 etag="etag_value",
             )
         )
@@ -974,6 +977,7 @@ async def test_get_insight_async(
     assert response.target_resources == ["target_resources_value"]
     assert response.insight_subtype == "insight_subtype_value"
     assert response.category == insight.Insight.Category.COST
+    assert response.severity == insight.Insight.Severity.LOW
     assert response.etag == "etag_value"
 
 
@@ -1120,6 +1124,7 @@ def test_mark_insight_accepted(request_type, transport: str = "grpc"):
             target_resources=["target_resources_value"],
             insight_subtype="insight_subtype_value",
             category=insight.Insight.Category.COST,
+            severity=insight.Insight.Severity.LOW,
             etag="etag_value",
         )
         response = client.mark_insight_accepted(request)
@@ -1136,6 +1141,7 @@ def test_mark_insight_accepted(request_type, transport: str = "grpc"):
     assert response.target_resources == ["target_resources_value"]
     assert response.insight_subtype == "insight_subtype_value"
     assert response.category == insight.Insight.Category.COST
+    assert response.severity == insight.Insight.Severity.LOW
     assert response.etag == "etag_value"
 
 
@@ -1181,6 +1187,7 @@ async def test_mark_insight_accepted_async(
                 target_resources=["target_resources_value"],
                 insight_subtype="insight_subtype_value",
                 category=insight.Insight.Category.COST,
+                severity=insight.Insight.Severity.LOW,
                 etag="etag_value",
             )
         )
@@ -1198,6 +1205,7 @@ async def test_mark_insight_accepted_async(
     assert response.target_resources == ["target_resources_value"]
     assert response.insight_subtype == "insight_subtype_value"
     assert response.category == insight.Insight.Category.COST
+    assert response.severity == insight.Insight.Severity.LOW
     assert response.etag == "etag_value"
 
 
@@ -1780,7 +1788,9 @@ def test_get_recommendation(request_type, transport: str = "grpc"):
             name="name_value",
             description="description_value",
             recommender_subtype="recommender_subtype_value",
+            priority=recommendation.Recommendation.Priority.P4,
             etag="etag_value",
+            xor_group_id="xor_group_id_value",
         )
         response = client.get_recommendation(request)
 
@@ -1794,7 +1804,9 @@ def test_get_recommendation(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.recommender_subtype == "recommender_subtype_value"
+    assert response.priority == recommendation.Recommendation.Priority.P4
     assert response.etag == "etag_value"
+    assert response.xor_group_id == "xor_group_id_value"
 
 
 def test_get_recommendation_empty_call():
@@ -1837,7 +1849,9 @@ async def test_get_recommendation_async(
                 name="name_value",
                 description="description_value",
                 recommender_subtype="recommender_subtype_value",
+                priority=recommendation.Recommendation.Priority.P4,
                 etag="etag_value",
+                xor_group_id="xor_group_id_value",
             )
         )
         response = await client.get_recommendation(request)
@@ -1852,7 +1866,9 @@ async def test_get_recommendation_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.recommender_subtype == "recommender_subtype_value"
+    assert response.priority == recommendation.Recommendation.Priority.P4
     assert response.etag == "etag_value"
+    assert response.xor_group_id == "xor_group_id_value"
 
 
 @pytest.mark.asyncio
@@ -2008,7 +2024,9 @@ def test_mark_recommendation_claimed(request_type, transport: str = "grpc"):
             name="name_value",
             description="description_value",
             recommender_subtype="recommender_subtype_value",
+            priority=recommendation.Recommendation.Priority.P4,
             etag="etag_value",
+            xor_group_id="xor_group_id_value",
         )
         response = client.mark_recommendation_claimed(request)
 
@@ -2022,7 +2040,9 @@ def test_mark_recommendation_claimed(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.recommender_subtype == "recommender_subtype_value"
+    assert response.priority == recommendation.Recommendation.Priority.P4
     assert response.etag == "etag_value"
+    assert response.xor_group_id == "xor_group_id_value"
 
 
 def test_mark_recommendation_claimed_empty_call():
@@ -2065,7 +2085,9 @@ async def test_mark_recommendation_claimed_async(
                 name="name_value",
                 description="description_value",
                 recommender_subtype="recommender_subtype_value",
+                priority=recommendation.Recommendation.Priority.P4,
                 etag="etag_value",
+                xor_group_id="xor_group_id_value",
             )
         )
         response = await client.mark_recommendation_claimed(request)
@@ -2080,7 +2102,9 @@ async def test_mark_recommendation_claimed_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.recommender_subtype == "recommender_subtype_value"
+    assert response.priority == recommendation.Recommendation.Priority.P4
     assert response.etag == "etag_value"
+    assert response.xor_group_id == "xor_group_id_value"
 
 
 @pytest.mark.asyncio
@@ -2262,7 +2286,9 @@ def test_mark_recommendation_succeeded(request_type, transport: str = "grpc"):
             name="name_value",
             description="description_value",
             recommender_subtype="recommender_subtype_value",
+            priority=recommendation.Recommendation.Priority.P4,
             etag="etag_value",
+            xor_group_id="xor_group_id_value",
         )
         response = client.mark_recommendation_succeeded(request)
 
@@ -2276,7 +2302,9 @@ def test_mark_recommendation_succeeded(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.recommender_subtype == "recommender_subtype_value"
+    assert response.priority == recommendation.Recommendation.Priority.P4
     assert response.etag == "etag_value"
+    assert response.xor_group_id == "xor_group_id_value"
 
 
 def test_mark_recommendation_succeeded_empty_call():
@@ -2319,7 +2347,9 @@ async def test_mark_recommendation_succeeded_async(
                 name="name_value",
                 description="description_value",
                 recommender_subtype="recommender_subtype_value",
+                priority=recommendation.Recommendation.Priority.P4,
                 etag="etag_value",
+                xor_group_id="xor_group_id_value",
             )
         )
         response = await client.mark_recommendation_succeeded(request)
@@ -2334,7 +2364,9 @@ async def test_mark_recommendation_succeeded_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.recommender_subtype == "recommender_subtype_value"
+    assert response.priority == recommendation.Recommendation.Priority.P4
     assert response.etag == "etag_value"
+    assert response.xor_group_id == "xor_group_id_value"
 
 
 @pytest.mark.asyncio
@@ -2516,7 +2548,9 @@ def test_mark_recommendation_failed(request_type, transport: str = "grpc"):
             name="name_value",
             description="description_value",
             recommender_subtype="recommender_subtype_value",
+            priority=recommendation.Recommendation.Priority.P4,
             etag="etag_value",
+            xor_group_id="xor_group_id_value",
         )
         response = client.mark_recommendation_failed(request)
 
@@ -2530,7 +2564,9 @@ def test_mark_recommendation_failed(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.recommender_subtype == "recommender_subtype_value"
+    assert response.priority == recommendation.Recommendation.Priority.P4
     assert response.etag == "etag_value"
+    assert response.xor_group_id == "xor_group_id_value"
 
 
 def test_mark_recommendation_failed_empty_call():
@@ -2573,7 +2609,9 @@ async def test_mark_recommendation_failed_async(
                 name="name_value",
                 description="description_value",
                 recommender_subtype="recommender_subtype_value",
+                priority=recommendation.Recommendation.Priority.P4,
                 etag="etag_value",
+                xor_group_id="xor_group_id_value",
             )
         )
         response = await client.mark_recommendation_failed(request)
@@ -2588,7 +2626,9 @@ async def test_mark_recommendation_failed_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.recommender_subtype == "recommender_subtype_value"
+    assert response.priority == recommendation.Recommendation.Priority.P4
     assert response.etag == "etag_value"
+    assert response.xor_group_id == "xor_group_id_value"
 
 
 @pytest.mark.asyncio

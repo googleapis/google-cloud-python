@@ -28,6 +28,7 @@ from google.cloud.recommender_v1.types.recommendation import OperationGroup
 from google.cloud.recommender_v1.types.recommendation import Recommendation
 from google.cloud.recommender_v1.types.recommendation import RecommendationContent
 from google.cloud.recommender_v1.types.recommendation import RecommendationStateInfo
+from google.cloud.recommender_v1.types.recommendation import SecurityProjection
 from google.cloud.recommender_v1.types.recommendation import ValueMatcher
 from google.cloud.recommender_v1.types.recommender_service import GetInsightRequest
 from google.cloud.recommender_v1.types.recommender_service import (
@@ -66,6 +67,7 @@ __all__ = (
     "Recommendation",
     "RecommendationContent",
     "RecommendationStateInfo",
+    "SecurityProjection",
     "ValueMatcher",
     "GetInsightRequest",
     "GetRecommendationRequest",

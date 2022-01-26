@@ -240,7 +240,7 @@ class RecommenderGrpcTransport(RecommenderTransport):
     ]:
         r"""Return a callable for the list insights method over gRPC.
 
-        Lists insights for a Cloud project. Requires the
+        Lists insights for the specified Cloud Resource. Requires the
         recommender.*.list IAM permission for the specified insight
         type.
 
@@ -331,8 +331,9 @@ class RecommenderGrpcTransport(RecommenderTransport):
     ]:
         r"""Return a callable for the list recommendations method over gRPC.
 
-        Lists recommendations for a Cloud project. Requires the
-        recommender.*.list IAM permission for the specified recommender.
+        Lists recommendations for the specified Cloud Resource. Requires
+        the recommender.*.list IAM permission for the specified
+        recommender.
 
         Returns:
             Callable[[~.ListRecommendationsRequest],

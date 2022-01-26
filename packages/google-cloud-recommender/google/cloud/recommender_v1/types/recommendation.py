@@ -30,6 +30,7 @@ __protobuf__ = proto.module(
         "Operation",
         "ValueMatcher",
         "CostProjection",
+        "SecurityProjection",
         "Impact",
         "RecommendationStateInfo",
     },
@@ -72,6 +73,8 @@ class Recommendation(proto.Message):
             recommendation may have when trying to optimize
             for the primary category. These may be positive
             or negative.
+        priority (google.cloud.recommender_v1.types.Recommendation.Priority):
+            Recommendation's priority.
         content (google.cloud.recommender_v1.types.RecommendationContent):
             Content of the recommendation describing
             recommended changes to resources.
@@ -83,7 +86,22 @@ class Recommendation(proto.Message):
             optimistic locking when updating states.
         associated_insights (Sequence[google.cloud.recommender_v1.types.Recommendation.InsightReference]):
             Insights that led to this recommendation.
+        xor_group_id (str):
+            Corresponds to a mutually exclusive group ID
+            within a recommender. A non-empty ID indicates
+            that the recommendation belongs to a mutually
+            exclusive group. This means that only one
+            recommendation within the group is suggested to
+            be applied.
     """
+
+    class Priority(proto.Enum):
+        r"""Recommendation priority levels."""
+        PRIORITY_UNSPECIFIED = 0
+        P4 = 1
+        P3 = 2
+        P2 = 3
+        P1 = 4
 
     class InsightReference(proto.Message):
         r"""Reference to an associated insight.
@@ -104,6 +122,7 @@ class Recommendation(proto.Message):
     )
     primary_impact = proto.Field(proto.MESSAGE, number=5, message="Impact",)
     additional_impact = proto.RepeatedField(proto.MESSAGE, number=6, message="Impact",)
+    priority = proto.Field(proto.ENUM, number=17, enum=Priority,)
     content = proto.Field(proto.MESSAGE, number=7, message="RecommendationContent",)
     state_info = proto.Field(
         proto.MESSAGE, number=10, message="RecommendationStateInfo",
@@ -112,6 +131,7 @@ class Recommendation(proto.Message):
     associated_insights = proto.RepeatedField(
         proto.MESSAGE, number=14, message=InsightReference,
     )
+    xor_group_id = proto.Field(proto.STRING, number=18,)
 
 
 class RecommendationContent(proto.Message):
@@ -124,11 +144,15 @@ class RecommendationContent(proto.Message):
             resources grouped in such a way that, all
             operations within one group are expected to be
             performed atomically and in an order.
+        overview (google.protobuf.struct_pb2.Struct):
+            Condensed overview information about the
+            recommendation.
     """
 
     operation_groups = proto.RepeatedField(
         proto.MESSAGE, number=2, message="OperationGroup",
     )
+    overview = proto.Field(proto.MESSAGE, number=3, message=struct_pb2.Struct,)
 
 
 class OperationGroup(proto.Message):
@@ -167,7 +191,7 @@ class Operation(proto.Message):
     Attributes:
         action (str):
             Type of this operation. Contains one of
-            'and', 'remove', 'replace', 'move', 'copy',
+            'add', 'remove', 'replace', 'move', 'copy',
             'test' and custom operations. This field is
             case-insensitive and always populated.
         resource_type (str):
@@ -245,7 +269,7 @@ class Operation(proto.Message):
             implicit AND must be performed.
         path_value_matchers (Sequence[google.cloud.recommender_v1.types.Operation.PathValueMatchersEntry]):
             Similar to path_filters, this contains set of filters to
-            apply if ``path`` field referes to array elements. This is
+            apply if ``path`` field refers to array elements. This is
             meant to support value matching beyond exact match. To
             perform exact match, use path_filters. When both
             path_filters and path_value_matchers are set, an implicit
@@ -304,6 +328,9 @@ class CostProjection(proto.Message):
             cost savings and positive cost units indicate
             increase. See google.type.Money documentation
             for positive/negative units.
+            A user's permissions may affect whether the cost
+            is computed using list prices or custom contract
+            prices.
         duration (google.protobuf.duration_pb2.Duration):
             Duration for which this cost applies.
     """
@@ -312,10 +339,26 @@ class CostProjection(proto.Message):
     duration = proto.Field(proto.MESSAGE, number=2, message=duration_pb2.Duration,)
 
 
+class SecurityProjection(proto.Message):
+    r"""Contains various ways of describing the impact on Security.
+
+    Attributes:
+        details (google.protobuf.struct_pb2.Struct):
+            Additional security impact details that is
+            provided by the recommender.
+    """
+
+    details = proto.Field(proto.MESSAGE, number=2, message=struct_pb2.Struct,)
+
+
 class Impact(proto.Message):
     r"""Contains the impact a recommendation can have for a given
     category.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -324,6 +367,10 @@ class Impact(proto.Message):
             Category that is being targeted.
         cost_projection (google.cloud.recommender_v1.types.CostProjection):
             Use with CategoryType.COST
+
+            This field is a member of `oneof`_ ``projection``.
+        security_projection (google.cloud.recommender_v1.types.SecurityProjection):
+            Use with CategoryType.SECURITY
 
             This field is a member of `oneof`_ ``projection``.
     """
@@ -339,6 +386,9 @@ class Impact(proto.Message):
     category = proto.Field(proto.ENUM, number=1, enum=Category,)
     cost_projection = proto.Field(
         proto.MESSAGE, number=100, oneof="projection", message="CostProjection",
+    )
+    security_projection = proto.Field(
+        proto.MESSAGE, number=101, oneof="projection", message="SecurityProjection",
     )
 
 
