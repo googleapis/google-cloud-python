@@ -28,8 +28,6 @@ from google.cloud import documentai_v1beta3
 
 
 def sample_fetch_processor_types():
-    """Snippet for fetch_processor_types"""
-
     # Create a client
     client = documentai_v1beta3.DocumentProcessorServiceClient()
 

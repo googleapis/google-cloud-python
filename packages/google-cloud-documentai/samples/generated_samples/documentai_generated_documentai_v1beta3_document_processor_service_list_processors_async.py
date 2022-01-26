@@ -28,8 +28,6 @@ from google.cloud import documentai_v1beta3
 
 
 async def sample_list_processors():
-    """Snippet for list_processors"""
-
     # Create a client
     client = documentai_v1beta3.DocumentProcessorServiceAsyncClient()
 

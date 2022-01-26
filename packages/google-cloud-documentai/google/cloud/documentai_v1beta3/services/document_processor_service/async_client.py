@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -137,6 +137,42 @@ class DocumentProcessorServiceAsyncClient:
 
     from_service_account_json = from_service_account_file
 
+    @classmethod
+    def get_mtls_endpoint_and_cert_source(
+        cls, client_options: Optional[ClientOptions] = None
+    ):
+        """Return the API endpoint and client cert source for mutual TLS.
+
+        The client cert source is determined in the following order:
+        (1) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not "true", the
+        client cert source is None.
+        (2) if `client_options.client_cert_source` is provided, use the provided one; if the
+        default client cert source exists, use the default one; otherwise the client cert
+        source is None.
+
+        The API endpoint is determined in the following order:
+        (1) if `client_options.api_endpoint` if provided, use the provided one.
+        (2) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is "always", use the
+        default mTLS endpoint; if the environment variabel is "never", use the default API
+        endpoint; otherwise if client cert source exists, use the default mTLS endpoint, otherwise
+        use the default API endpoint.
+
+        More details can be found at https://google.aip.dev/auth/4114.
+
+        Args:
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+                client. Only the `api_endpoint` and `client_cert_source` properties may be used
+                in this method.
+
+        Returns:
+            Tuple[str, Callable[[], Tuple[bytes, bytes]]]: returns the API endpoint and the
+                client cert source to use.
+
+        Raises:
+            google.auth.exceptions.MutualTLSChannelError: If any errors happen.
+        """
+        return DocumentProcessorServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+
     @property
     def transport(self) -> DocumentProcessorServiceTransport:
         """Returns the transport used by the client instance.
@@ -208,6 +244,34 @@ class DocumentProcessorServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document_processor_service.ProcessResponse:
         r"""Processes a single document.
+
+        .. code-block::
+
+            from google.cloud import documentai_v1beta3
+
+            def sample_process_document():
+                # Create a client
+                client = documentai_v1beta3.DocumentProcessorServiceClient()
+
+                # Initialize request argument(s)
+                inline_document = documentai_v1beta3.Document()
+                inline_document.uri = "uri_value"
+
+                project = "my-project-id"
+                location = "us-central1"
+                processor = "processor_value"
+                name = f"projects/{project}/locations/{location}/processors/{processor}"
+
+                request = documentai_v1beta3.ProcessRequest(
+                    inline_document=inline_document,
+                    name=name,
+                )
+
+                # Make the request
+                response = client.process_document(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.ProcessRequest, dict]):
@@ -290,6 +354,33 @@ class DocumentProcessorServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""LRO endpoint to batch process many documents. The output is
         written to Cloud Storage as JSON in the [Document] format.
+
+
+        .. code-block::
+
+            from google.cloud import documentai_v1beta3
+
+            def sample_batch_process_documents():
+                # Create a client
+                client = documentai_v1beta3.DocumentProcessorServiceClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                processor = "processor_value"
+                name = f"projects/{project}/locations/{location}/processors/{processor}"
+
+                request = documentai_v1beta3.BatchProcessRequest(
+                    name=name,
+                )
+
+                # Make the request
+                operation = client.batch_process_documents(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.BatchProcessRequest, dict]):
@@ -385,6 +476,30 @@ class DocumentProcessorServiceAsyncClient:
     ) -> document_processor_service.FetchProcessorTypesResponse:
         r"""Fetches processor types.
 
+        .. code-block::
+
+            from google.cloud import documentai_v1beta3
+
+            def sample_fetch_processor_types():
+                # Create a client
+                client = documentai_v1beta3.DocumentProcessorServiceClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                processor_type = "processor_type_value"
+                parent = f"projects/{project}/locations/{location}/processorTypes/{processor_type}"
+
+                request = documentai_v1beta3.FetchProcessorTypesRequest(
+                    parent=parent,
+                )
+
+                # Make the request
+                response = client.fetch_processor_types(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.FetchProcessorTypesRequest, dict]):
                 The request object. Request message for fetch processor
@@ -456,6 +571,29 @@ class DocumentProcessorServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListProcessorsAsyncPager:
         r"""Lists all processors which belong to this project.
+
+        .. code-block::
+
+            from google.cloud import documentai_v1beta3
+
+            def sample_list_processors():
+                # Create a client
+                client = documentai_v1beta3.DocumentProcessorServiceClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                processor = "processor_value"
+                parent = f"projects/{project}/locations/{location}/processors/{processor}"
+
+                request = documentai_v1beta3.ListProcessorsRequest(
+                    parent=parent,
+                )
+
+                # Make the request
+                page_result = client.list_processors(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.ListProcessorsRequest, dict]):
@@ -540,6 +678,31 @@ class DocumentProcessorServiceAsyncClient:
         r"""Creates a processor from the type processor that the
         user chose. The processor will be at "ENABLED" state by
         default after its creation.
+
+
+        .. code-block::
+
+            from google.cloud import documentai_v1beta3
+
+            def sample_create_processor():
+                # Create a client
+                client = documentai_v1beta3.DocumentProcessorServiceClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                processor = "processor_value"
+                parent = f"projects/{project}/locations/{location}/processors/{processor}"
+
+                request = documentai_v1beta3.CreateProcessorRequest(
+                    parent=parent,
+                )
+
+                # Make the request
+                response = client.create_processor(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.CreateProcessorRequest, dict]):
@@ -629,6 +792,33 @@ class DocumentProcessorServiceAsyncClient:
         r"""Deletes the processor, unloads all deployed model
         artifacts if it was enabled and then deletes all
         artifacts associated with this processor.
+
+
+        .. code-block::
+
+            from google.cloud import documentai_v1beta3
+
+            def sample_delete_processor():
+                # Create a client
+                client = documentai_v1beta3.DocumentProcessorServiceClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                processor = "processor_value"
+                name = f"projects/{project}/locations/{location}/processors/{processor}"
+
+                request = documentai_v1beta3.DeleteProcessorRequest(
+                    name=name,
+                )
+
+                # Make the request
+                operation = client.delete_processor(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.DeleteProcessorRequest, dict]):
@@ -721,6 +911,32 @@ class DocumentProcessorServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Enables a processor
 
+        .. code-block::
+
+            from google.cloud import documentai_v1beta3
+
+            def sample_enable_processor():
+                # Create a client
+                client = documentai_v1beta3.DocumentProcessorServiceClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                processor = "processor_value"
+                name = f"projects/{project}/locations/{location}/processors/{processor}"
+
+                request = documentai_v1beta3.EnableProcessorRequest(
+                    name=name,
+                )
+
+                # Make the request
+                operation = client.enable_processor(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.EnableProcessorRequest, dict]):
                 The request object. Request message for the enable
@@ -780,6 +996,32 @@ class DocumentProcessorServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Disables a processor
+
+        .. code-block::
+
+            from google.cloud import documentai_v1beta3
+
+            def sample_disable_processor():
+                # Create a client
+                client = documentai_v1beta3.DocumentProcessorServiceClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                processor = "processor_value"
+                name = f"projects/{project}/locations/{location}/processors/{processor}"
+
+                request = documentai_v1beta3.DisableProcessorRequest(
+                    name=name,
+                )
+
+                # Make the request
+                operation = client.disable_processor(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.DisableProcessorRequest, dict]):
@@ -842,6 +1084,37 @@ class DocumentProcessorServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Send a document for Human Review. The input document
         should be processed by the specified processor.
+
+
+        .. code-block::
+
+            from google.cloud import documentai_v1beta3
+
+            def sample_review_document():
+                # Create a client
+                client = documentai_v1beta3.DocumentProcessorServiceClient()
+
+                # Initialize request argument(s)
+                inline_document = documentai_v1beta3.Document()
+                inline_document.uri = "uri_value"
+
+                project = "my-project-id"
+                location = "us-central1"
+                processor = "processor_value"
+                human_review_config = f"projects/{project}/locations/{location}/processors/{processor}/humanReviewConfig"
+
+                request = documentai_v1beta3.ReviewDocumentRequest(
+                    inline_document=inline_document,
+                    human_review_config=human_review_config,
+                )
+
+                # Make the request
+                operation = client.review_document(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.documentai_v1beta3.types.ReviewDocumentRequest, dict]):

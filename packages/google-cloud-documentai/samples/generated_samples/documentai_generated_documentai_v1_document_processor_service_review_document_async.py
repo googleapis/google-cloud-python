@@ -28,8 +28,6 @@ from google.cloud import documentai_v1
 
 
 async def sample_review_document():
-    """Snippet for review_document"""
-
     # Create a client
     client = documentai_v1.DocumentProcessorServiceAsyncClient()
 

@@ -28,8 +28,6 @@ from google.cloud import documentai_v1beta3
 
 
 async def sample_batch_process_documents():
-    """Snippet for batch_process_documents"""
-
     # Create a client
     client = documentai_v1beta3.DocumentProcessorServiceAsyncClient()
 

@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -125,6 +125,42 @@ class DocumentProcessorServiceAsyncClient:
 
     from_service_account_json = from_service_account_file
 
+    @classmethod
+    def get_mtls_endpoint_and_cert_source(
+        cls, client_options: Optional[ClientOptions] = None
+    ):
+        """Return the API endpoint and client cert source for mutual TLS.
+
+        The client cert source is determined in the following order:
+        (1) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not "true", the
+        client cert source is None.
+        (2) if `client_options.client_cert_source` is provided, use the provided one; if the
+        default client cert source exists, use the default one; otherwise the client cert
+        source is None.
+
+        The API endpoint is determined in the following order:
+        (1) if `client_options.api_endpoint` if provided, use the provided one.
+        (2) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is "always", use the
+        default mTLS endpoint; if the environment variabel is "never", use the default API
+        endpoint; otherwise if client cert source exists, use the default mTLS endpoint, otherwise
+        use the default API endpoint.
+
+        More details can be found at https://google.aip.dev/auth/4114.
+
+        Args:
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+                client. Only the `api_endpoint` and `client_cert_source` properties may be used
+                in this method.
+
+        Returns:
+            Tuple[str, Callable[[], Tuple[bytes, bytes]]]: returns the API endpoint and the
+                client cert source to use.
+
+        Raises:
+            google.auth.exceptions.MutualTLSChannelError: If any errors happen.
+        """
+        return DocumentProcessorServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+
     @property
     def transport(self) -> DocumentProcessorServiceTransport:
         """Returns the transport used by the client instance.
@@ -196,6 +232,34 @@ class DocumentProcessorServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document_processor_service.ProcessResponse:
         r"""Processes a single document.
+
+        .. code-block::
+
+            from google.cloud import documentai_v1
+
+            def sample_process_document():
+                # Create a client
+                client = documentai_v1.DocumentProcessorServiceClient()
+
+                # Initialize request argument(s)
+                inline_document = documentai_v1.Document()
+                inline_document.uri = "uri_value"
+
+                project = "my-project-id"
+                location = "us-central1"
+                processor = "processor_value"
+                name = f"projects/{project}/locations/{location}/processors/{processor}"
+
+                request = documentai_v1.ProcessRequest(
+                    inline_document=inline_document,
+                    name=name,
+                )
+
+                # Make the request
+                response = client.process_document(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.documentai_v1.types.ProcessRequest, dict]):
@@ -278,6 +342,33 @@ class DocumentProcessorServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""LRO endpoint to batch process many documents. The output is
         written to Cloud Storage as JSON in the [Document] format.
+
+
+        .. code-block::
+
+            from google.cloud import documentai_v1
+
+            def sample_batch_process_documents():
+                # Create a client
+                client = documentai_v1.DocumentProcessorServiceClient()
+
+                # Initialize request argument(s)
+                project = "my-project-id"
+                location = "us-central1"
+                processor = "processor_value"
+                name = f"projects/{project}/locations/{location}/processors/{processor}"
+
+                request = documentai_v1.BatchProcessRequest(
+                    name=name,
+                )
+
+                # Make the request
+                operation = client.batch_process_documents(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.documentai_v1.types.BatchProcessRequest, dict]):
@@ -371,6 +462,37 @@ class DocumentProcessorServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Send a document for Human Review. The input document
         should be processed by the specified processor.
+
+
+        .. code-block::
+
+            from google.cloud import documentai_v1
+
+            def sample_review_document():
+                # Create a client
+                client = documentai_v1.DocumentProcessorServiceClient()
+
+                # Initialize request argument(s)
+                inline_document = documentai_v1.Document()
+                inline_document.uri = "uri_value"
+
+                project = "my-project-id"
+                location = "us-central1"
+                processor = "processor_value"
+                human_review_config = f"projects/{project}/locations/{location}/processors/{processor}/humanReviewConfig"
+
+                request = documentai_v1.ReviewDocumentRequest(
+                    inline_document=inline_document,
+                    human_review_config=human_review_config,
+                )
+
+                # Make the request
+                operation = client.review_document(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.documentai_v1.types.ReviewDocumentRequest, dict]):

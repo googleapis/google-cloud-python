@@ -28,8 +28,6 @@ from google.cloud import documentai_v1beta3
 
 
 def sample_create_processor():
-    """Snippet for create_processor"""
-
     # Create a client
     client = documentai_v1beta3.DocumentProcessorServiceClient()
 

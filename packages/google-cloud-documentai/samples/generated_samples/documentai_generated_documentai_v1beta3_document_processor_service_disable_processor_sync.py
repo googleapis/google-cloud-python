@@ -28,8 +28,6 @@ from google.cloud import documentai_v1beta3
 
 
 def sample_disable_processor():
-    """Snippet for disable_processor"""
-
     # Create a client
     client = documentai_v1beta3.DocumentProcessorServiceClient()
 
