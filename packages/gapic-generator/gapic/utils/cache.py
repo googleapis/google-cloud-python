@@ -29,7 +29,7 @@ def cached_property(fx):
     """
     @functools.wraps(fx)
     def inner(self):
-        # Sanity check: If there is no cache at all, create an empty cache.
+        # Quick check: If there is no cache at all, create an empty cache.
         if not hasattr(self, '_cached_values'):
             object.__setattr__(self, '_cached_values', {})
 

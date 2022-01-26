@@ -541,7 +541,7 @@ class MessageType:
                 visited_messages=frozenset({self}),
             )
 
-        # Sanity check: If cursor is a repeated field, then raise an exception.
+        # Quick check: If cursor is a repeated field, then raise an exception.
         # Repeated fields are only permitted in the terminal position.
         if cursor.repeated:
             raise KeyError(
@@ -552,7 +552,7 @@ class MessageType:
                 'in the fields list in a position other than the end.',
             )
 
-        # Sanity check: If this cursor has no message, there is a problem.
+        # Quick check: If this cursor has no message, there is a problem.
         if not cursor.message:
             raise KeyError(
                 f'Field {".".join(field_path)} could not be resolved from '

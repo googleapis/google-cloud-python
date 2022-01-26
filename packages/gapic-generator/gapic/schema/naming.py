@@ -77,7 +77,7 @@ class Naming(abc.ABC):
         proto_packages = {fd.package for fd in file_descriptors}
         root_package = os.path.commonprefix(tuple(proto_packages)).rstrip('.')
 
-        # Sanity check: If there is no common ground in the package,
+        # Quick check: If there is no common ground in the package,
         # we are obviously in trouble.
         if not root_package:
             raise ValueError(
@@ -119,7 +119,7 @@ class Naming(abc.ABC):
             version=match.get('version', ''),
         )
 
-        # Sanity check: Ensure that the package directives all inferred
+        # Quick check: Ensure that the package directives all inferred
         # the same information.
         if not package_info.version and len(proto_packages) > 1:
             raise ValueError('All protos must have the same proto package '

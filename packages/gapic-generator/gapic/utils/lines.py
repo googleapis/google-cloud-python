@@ -62,7 +62,7 @@ def wrap(text: str, width: int, *, offset: int = None, indent: int = 0) -> str:
     Returns:
         str: The wrapped string.
     """
-    # Sanity check: If there is empty text, abort.
+    # Quick check: If there is empty text, abort.
     if not text:
         return ''
 

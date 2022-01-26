@@ -37,7 +37,7 @@ def rst(text: str, width: int = 72, indent: int = 0, nl: bool = None,
     Returns:
         str: The same text, in RST format.
     """
-    # Sanity check: If the text block does not appear to have any formatting,
+    # Quick check: If the text block does not appear to have any formatting,
     # do not convert it.
     # (This makes code generation significantly faster; calling out to pandoc
     # is by far the most expensive thing we do.)

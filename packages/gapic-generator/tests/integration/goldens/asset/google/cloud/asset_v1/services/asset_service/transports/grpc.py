@@ -231,7 +231,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         This property caches on the instance; repeated calls return the same
         client.
         """
-        # Sanity check: Only create a new client if we do not already have one.
+        # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
             self._operations_client = operations_v1.OperationsClient(
                 self.grpc_channel

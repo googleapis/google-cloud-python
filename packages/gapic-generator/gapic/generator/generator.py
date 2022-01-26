@@ -112,7 +112,7 @@ class Generator:
         # and instead of iterating over it/them, we iterate over samples
         # and plug those into the template.
         for template_name in client_templates:
-            # Sanity check: Skip "private" templates.
+            # Quick check: Skip "private" templates.
             filename = template_name.split("/")[-1]
             if filename.startswith("_") and filename != "__init__.py.j2":
                 continue
@@ -242,7 +242,7 @@ class Generator:
         if not opts.metadata and template_name.endswith("gapic_metadata.json.j2"):
             return answer
 
-        # Sanity check: Rendering per service and per proto would be a
+        # Quick check: Rendering per service and per proto would be a
         # combinatorial explosion and is almost certainly not what anyone
         # ever wants. Error colorfully on it.
         if "%service" in template_name and "%proto" in template_name:
@@ -343,7 +343,7 @@ class Generator:
             name=fn,
         )
 
-        # Sanity check: Do not render empty files.
+        # Quick check: Do not render empty files.
         if utils.empty(cgr_file.content) and not fn.endswith(
             ("py.typed", "__init__.py")
         ):

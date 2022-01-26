@@ -195,7 +195,7 @@ class Proto:
         answer = {
             t.ident.python_import
             for m in self.all_messages.values()
-            # Sanity check: We do make sure that we are not trying to have
+            # Quick check: We do make sure that we are not trying to have
             # a module import itself.
             for t in m.field_types if t.ident.python_import != self_reference
         }

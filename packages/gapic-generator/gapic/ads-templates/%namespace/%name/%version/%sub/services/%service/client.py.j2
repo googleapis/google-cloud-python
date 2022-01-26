@@ -388,7 +388,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         {% if not method.client_streaming %}
         # Create or coerce a protobuf request object.
         {% if method.flattened_fields %}
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([{{ method.flattened_fields.values()|join(", ", attribute="name") }}])
         if request is not None and has_flattened_params:

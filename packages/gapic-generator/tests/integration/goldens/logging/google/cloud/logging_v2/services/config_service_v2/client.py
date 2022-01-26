@@ -486,7 +486,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -983,7 +983,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -1403,7 +1403,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -1525,7 +1525,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([sink_name])
         if request is not None and has_flattened_params:
@@ -1657,7 +1657,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, sink])
         if request is not None and has_flattened_params:
@@ -1813,7 +1813,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([sink_name, sink, update_mask])
         if request is not None and has_flattened_params:
@@ -1917,7 +1917,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([sink_name])
         if request is not None and has_flattened_params:
@@ -2020,7 +2020,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -2145,7 +2145,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -2280,7 +2280,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, exclusion])
         if request is not None and has_flattened_params:
@@ -2429,7 +2429,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, exclusion, update_mask])
         if request is not None and has_flattened_params:
@@ -2532,7 +2532,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:

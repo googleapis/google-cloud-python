@@ -137,7 +137,7 @@ def test_generate_manifest():
     assert parsed_manifest == expected_parsed_manifest
 
 
-def test_generate_manifest_relative_path_sanity():
+def test_generate_manifest_relative_path_quick_check():
     with pytest.raises(types.InvalidSampleFpath):
         manifest.generate(
             {"molluscs/squid.py": {"id": "squid_sample"}}.items(),
