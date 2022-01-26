@@ -1015,7 +1015,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     {% set mock_value = req_field.primitive_mock_as_str() %}
     {% if method.query_params %}
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(({% for param in method.query_params %}"{{param|camel_case }}", {% endfor %}))
+    assert not set(unset_fields) - set(({% for param in method.query_params|sort %}"{{param|camel_case }}", {% endfor %}))
     {% endif %}
     jsonified_request["{{ field_name }}"] = {{ mock_value }}
     {% endfor %}
@@ -1023,7 +1023,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.name | snake_case }}._get_unset_required_fields(jsonified_request)
     {% if method.query_params %}
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(({% for param in method.query_params %}"{{param}}",
+    assert not set(unset_fields) - set(({% for param in method.query_params|sort %}"{{param}}",
 {% endfor %}))
     {% endif %}
     jsonified_request.update(unset_fields)
@@ -1109,7 +1109,7 @@ def test_{{ method_name }}_rest_unset_required_fields():
     transport = transports.{{ service.rest_transport_name }}(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.{{ method.name|snake_case }}._get_unset_required_fields({})
-    assert set(unset_fields) == (set(({% for param in method.query_params %}"{{ param|camel_case }}", {% endfor %})) & set(({% for param in method.input.required_fields %}"{{param.name|camel_case}}", {% endfor %})))
+    assert set(unset_fields) == (set(({% for param in method.query_params|sort %}"{{ param|camel_case }}", {% endfor %})) & set(({% for param in method.input.required_fields %}"{{param.name|camel_case}}", {% endfor %})))
 
 
     {% endif %}{# required_fields #}
