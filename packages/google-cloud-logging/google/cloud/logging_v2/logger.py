@@ -158,7 +158,7 @@ class Logger(object):
         client.logging_api.write_entries([api_repr])
 
     def log_empty(self, *, client=None, **kw):
-        """Log an empty message via a POST request
+        """Log an empty message
 
         See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/write
@@ -173,7 +173,7 @@ class Logger(object):
         self._do_log(client, LogEntry, **kw)
 
     def log_text(self, text, *, client=None, **kw):
-        """Log a text message via a POST request
+        """Log a text message
 
         See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/write
@@ -189,7 +189,7 @@ class Logger(object):
         self._do_log(client, TextEntry, text, **kw)
 
     def log_struct(self, info, *, client=None, **kw):
-        """Log a structured message via a POST request
+        """Log a dictionary message
 
         See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/write
@@ -209,7 +209,7 @@ class Logger(object):
         self._do_log(client, StructEntry, info, **kw)
 
     def log_proto(self, message, *, client=None, **kw):
-        """Log a protobuf message via a POST request
+        """Log a protobuf message
 
         See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/list
@@ -226,8 +226,7 @@ class Logger(object):
         self._do_log(client, ProtobufEntry, message, **kw)
 
     def log(self, message=None, *, client=None, **kw):
-        """Log an arbitrary message via a POST request.
-        Type will be inferred based on the input message.
+        """Log an arbitrary message. Type will be inferred based on the input.
 
         See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/list
