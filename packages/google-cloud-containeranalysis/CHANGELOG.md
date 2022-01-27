@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.0](https://github.com/googleapis/python-containeranalysis/compare/v2.6.3...v2.7.0) (2022-01-25)
+
+
+### Features
+
+* add api key support ([#236](https://github.com/googleapis/python-containeranalysis/issues/236)) ([a6ea0c6](https://github.com/googleapis/python-containeranalysis/commit/a6ea0c69d61c1f07220c42d32bf05a93b35db664))
+
 ### [2.6.3](https://github.com/googleapis/python-containeranalysis/compare/v2.6.2...v2.6.3) (2022-01-13)
 
 
