@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/googleapis/python-binary-authorization/compare/v1.1.0...v1.2.0) (2022-01-25)
+
+
+### Features
+
+* add api key support ([#110](https://github.com/googleapis/python-binary-authorization/issues/110)) ([e4b39f0](https://github.com/googleapis/python-binary-authorization/commit/e4b39f0c78e2a8775deac76444c4bc350ec6cc1f))
+
 ## [1.1.0](https://www.github.com/googleapis/python-binary-authorization/compare/v1.0.1...v1.1.0) (2021-11-09)
 
 
