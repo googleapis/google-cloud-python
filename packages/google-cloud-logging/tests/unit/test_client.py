@@ -239,14 +239,20 @@ class TestClient(unittest.TestCase):
 
     def test_logger(self):
         from google.cloud.logging import Logger
+        from google.cloud.logging_v2.logger import _GLOBAL_RESOURCE
 
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
-        logger = client.logger(self.LOGGER_NAME)
+        labels = {"test": "true"}
+        logger = client.logger(
+            self.LOGGER_NAME, resource=_GLOBAL_RESOURCE, labels=labels
+        )
         self.assertIsInstance(logger, Logger)
         self.assertEqual(logger.name, self.LOGGER_NAME)
         self.assertIs(logger.client, client)
         self.assertEqual(logger.project, self.PROJECT)
+        self.assertEqual(logger.default_resource, _GLOBAL_RESOURCE)
+        self.assertEqual(logger.labels, labels)
 
     def test_list_entries_defaults(self):
         from google.cloud.logging import TextEntry

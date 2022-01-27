@@ -182,16 +182,21 @@ class Client(ClientWithProject):
                 self._metrics_api = JSONMetricsAPI(self)
         return self._metrics_api
 
-    def logger(self, name):
+    def logger(self, name, *, labels=None, resource=None):
         """Creates a logger bound to the current client.
 
         Args:
             name (str): The name of the logger to be constructed.
+            resource (Optional[~logging_v2.Resource]): a monitored resource object
+                representing the resource the code was run on. If not given, will
+                be inferred from the environment.
+            labels (Optional[dict]): Mapping of default labels for entries written
+                via this logger.
 
         Returns:
             ~logging_v2.logger.Logger: Logger created with the current client.
         """
-        return Logger(name, client=self)
+        return Logger(name, client=self, labels=labels, resource=resource)
 
     def list_entries(
         self,
