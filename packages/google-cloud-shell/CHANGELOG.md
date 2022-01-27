@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-shell/compare/v1.2.2...v1.3.0) (2022-01-25)
+
+
+### Features
+
+* add api key support ([#70](https://github.com/googleapis/python-shell/issues/70)) ([3e91fb8](https://github.com/googleapis/python-shell/commit/3e91fb8bacf28a19e167a357829ffcbb9e0e02c9))
+
 ### [1.2.2](https://www.github.com/googleapis/python-shell/compare/v1.2.1...v1.2.2) (2022-01-07)
 
 
