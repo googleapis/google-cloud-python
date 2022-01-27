@@ -1251,7 +1251,7 @@ def test_{{ method.name|snake_case }}_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         {% with uri = method.http_options[0].uri %}
-        assert path_template.validate("https://%s{{ uri }}" % client.transport._host, args[1])
+        assert path_template.validate("%s{{ uri }}" % client.transport._host, args[1])
         {% endwith %}
         {# TODO(kbandes) - reverse-transcode request args to check all request fields #}
 

@@ -30,6 +30,18 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
     from google.showcase import EchoAsyncClient
     from google.showcase import IdentityAsyncClient
 
+    _test_event_loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(_test_event_loop)
+
+    # NOTE(lidiz) We must override the default event_loop fixture from
+    # pytest-asyncio. pytest fixture frees resources once there isn't any reference
+    # to it. So, the event loop might close before tests finishes. In the
+    # customized version, we don't close the event loop.
+
+    @pytest.fixture
+    def event_loop():
+        return asyncio.get_event_loop()
+
     @pytest.fixture
     def async_echo(use_mtls, event_loop):
         return construct_client(
@@ -47,18 +59,6 @@ if os.environ.get("GAPIC_PYTHON_ASYNC", "true") == "true":
             transport_name="grpc_asyncio",
             channel_creator=aio.insecure_channel
         )
-
-    _test_event_loop = asyncio.new_event_loop()
-
-    # NOTE(lidiz) We must override the default event_loop fixture from
-    # pytest-asyncio. pytest fixture frees resources once there isn't any reference
-    # to it. So, the event loop might close before tests finishes. In the
-    # customized version, we don't close the event loop.
-
-    @pytest.fixture
-    def event_loop():
-        asyncio.set_event_loop(_test_event_loop)
-        return asyncio.get_event_loop()
 
 
 dir = os.path.dirname(__file__)
@@ -108,12 +108,15 @@ def construct_client(
         transport_cls = client_class.get_transport_class(transport_name)
         if transport_name in ["grpc", "grpc_asyncio"]:
             transport = transport_cls(
+                credentials=credentials.AnonymousCredentials(),
                 channel=channel_creator("localhost:7469"),
             )
         elif transport_name == "rest":
             # The custom host explicitly bypasses https.
             transport = transport_cls(
-                host="http://localhost:7469",
+                credentials=credentials.AnonymousCredentials(),
+                host="localhost:7469",
+                url_scheme="http",
             )
         else:
             raise RuntimeError(f"Unexpected transport type: {transport_name}")

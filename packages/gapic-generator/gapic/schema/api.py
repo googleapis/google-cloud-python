@@ -628,15 +628,25 @@ class _ProtoBuilder:
 
     @cached_property
     def api_enums(self) -> Mapping[str, wrappers.EnumType]:
-        return collections.ChainMap({}, self.proto_enums,
-                                    *[p.all_enums for p in self.prior_protos.values()],
-                                    )
+        return collections.ChainMap(
+            {},
+            self.proto_enums,
+            # This is actually fine from a typing perspective:
+            # we're agglutinating all the prior protos' enums, which are
+            # stored in maps. This is just a convenient way to expand it out.
+            *[p.all_enums for p in self.prior_protos.values()],  # type: ignore
+        )
 
     @cached_property
     def api_messages(self) -> Mapping[str, wrappers.MessageType]:
-        return collections.ChainMap({}, self.proto_messages,
-                                    *[p.all_messages for p in self.prior_protos.values()],
-                                    )
+        return collections.ChainMap(
+            {},
+            self.proto_messages,
+            # This is actually fine from a typing perspective:
+            # we're agglutinating all the prior protos' enums, which are
+            # stored in maps. This is just a convenient way to expand it out.
+            *[p.all_messages for p in self.prior_protos.values()],  # type: ignore
+        )
 
     def _load_children(self,
                        children: Sequence, loader: Callable, *,

@@ -563,6 +563,25 @@ def test_method_query_params_no_body():
     assert method.query_params == {'region'}
 
 
+def test_method_query_params_star_body():
+    # tests only the basic case of grpc transcoding
+    http_rule = http_pb2.HttpRule(
+        post='/v1/{project}/topics',
+        body='*'
+    )
+    input_message = make_message(
+        'MethodInput',
+        fields=(
+            make_field('region'),
+            make_field('project'),
+            make_field('address')
+        )
+    )
+    method = make_method('DoSomething', http_rule=http_rule,
+                         input_message=input_message)
+    assert method.query_params == set()
+
+
 def test_method_query_params_no_http_rule():
     method = make_method('DoSomething')
     assert method.query_params == set()

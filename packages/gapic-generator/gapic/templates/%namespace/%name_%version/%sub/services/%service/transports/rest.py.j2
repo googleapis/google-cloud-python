@@ -19,7 +19,8 @@ from google.protobuf import json_format
 {% endif %}
 from requests import __version__ as requests_version
 import dataclasses
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import re
+from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
@@ -175,6 +176,14 @@ class {{service.name}}RestTransport({{service.name}}Transport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
+        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
+        if maybe_url_match is None:
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
+
+        url_match_items = maybe_url_match.groupdict()
+
+        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
+
         super().__init__(
             host=host,
             credentials=credentials,
@@ -184,7 +193,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
         self._session = AuthorizedSession(
             self._credentials, default_host=self.DEFAULT_HOST)
         {% if service.has_lro %}
-        self._operations_client = None
+        self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         {% endif %}
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -202,7 +211,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
         """
         # Only create a new client if we do not already have one.
         if self._operations_client is None:
-            http_options = {
+            http_options: Dict[str, List[Dict[str, str]]] = {
             {% for selector, rules in api.http_options.items() %}
             {% if selector.startswith('google.longrunning.Operations') %}
                 '{{ selector }}': [
@@ -238,9 +247,10 @@ class {{service.name}}RestTransport({{service.name}}Transport):
         def __hash__(self):
             return hash("{{method.name}}")
 
+
         {% if not (method.server_streaming or method.client_streaming) %}
         {% if method.input.required_fields %}
-        __REQUIRED_FIELDS_DEFAULT_VALUES =  {
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
         {% for req_field in method.input.required_fields if req_field.is_primitive and req_field.name in method.query_params %}
             "{{ req_field.name | camel_case }}" : {% if req_field.field_pb.type == 9 %}"{{req_field.field_pb.default_value }}"{% else %}{{ req_field.type.python_type(req_field.field_pb.default_value or 0) }}{% endif %},{# default is str #}
         {% endfor %}
@@ -258,7 +268,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: float=None,
                 metadata: Sequence[Tuple[str, str]]=(),
-                ) -> {{method.output.ident}}:
+                ){% if not method.void %} -> {{method.output.ident}}{% endif %}:
     {% if method.http_options and not (method.server_streaming or method.client_streaming) %}
             r"""Call the {{- ' ' -}}
             {{ (method.name|snake_case).replace('_',' ')|wrap(
@@ -282,7 +292,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             {% endif %}
             """
 
-            http_options = [
+            http_options: List[Dict[str, str]] = [
             {%- for rule in method.http_options %}{
                 'method': '{{ rule.method }}',
                 'uri': '{{ rule.uri }}',
@@ -330,8 +340,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             headers = dict(metadata)
             headers['Content-Type'] = 'application/json'
             response = getattr(self._session, method)(
-                # Replace with proper schema configuration (http/https) logic
-                "https://{host}{uri}".format(host=self._host, uri=uri),
+                "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params),
@@ -344,6 +353,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
             {% if not method.void %}
             # Return the response
             {% if method.lro %}
@@ -357,6 +367,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             {% endif %}{# method.lro #}
             resp = self._interceptor.post_{{ method.name|snake_case }}(resp)
             return resp
+
             {% endif %}{# method.void #}
      {% else %}{# method.http_options and not (method.server_streaming or method.client_streaming) #}
             {% if not method.http_options %}
@@ -384,7 +395,9 @@ class {{service.name}}RestTransport({{service.name}}Transport):
         if not stub:
             stub = self._STUBS["{{method.name | snake_case}}"] = self._{{method.name}}(self._session, self._host, self._interceptor)
 
-        return stub
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return stub # type: ignore
 
     {% endfor %}
 

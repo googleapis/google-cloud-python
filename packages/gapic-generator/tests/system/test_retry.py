@@ -20,7 +20,8 @@ from google.rpc import code_pb2
 
 
 def test_retry_bubble(echo):
-    with pytest.raises(exceptions.DeadlineExceeded):
+    # Note: InvalidArgument is from gRPC, InternalServerError from http
+    with pytest.raises((exceptions.DeadlineExceeded, exceptions.InternalServerError)):
         echo.echo({
             'error': {
                 'code': code_pb2.Code.Value('DEADLINE_EXCEEDED'),

@@ -26,6 +26,10 @@ def test_client(echo):
 
 
 def test_client_destroyed(echo):
+    # The REST session is fine with being closed multiple times.
+    if "rest" in str(echo.transport).lower():
+        return
+
     echo.__exit__(None, None, None)
     with pytest.raises(ValueError):
         echo.echo({
