@@ -22,6 +22,7 @@ from google.cloud.logging_v2.entries import ProtobufEntry
 from google.cloud.logging_v2.entries import StructEntry
 from google.cloud.logging_v2.entries import TextEntry
 from google.cloud.logging_v2.resource import Resource
+from google.cloud.logging_v2.handlers._monitored_resources import detect_resource
 
 import google.protobuf.message
 
@@ -51,19 +52,23 @@ class Logger(object):
     See https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.logs
     """
 
-    def __init__(self, name, client, *, labels=None, resource=_GLOBAL_RESOURCE):
+    def __init__(self, name, client, *, labels=None, resource=None):
         """
         Args:
             name (str): The name of the logger.
             client (~logging_v2.client.Client):
                 A client which holds credentials and project configuration
                 for the logger (which requires a project).
-            resource (~logging_v2.Resource): a monitored resource object
-                representing the resource the code was run on.
+            resource (Optional[~logging_v2.Resource]): a monitored resource object
+                representing the resource the code was run on. If not given, will
+                be inferred from the environment.
             labels (Optional[dict]): Mapping of default labels for entries written
                 via this logger.
 
         """
+        if not resource:
+            # infer the correct monitored resource from the local environment
+            resource = detect_resource(client.project)
         self.name = name
         self._client = client
         self.labels = labels
