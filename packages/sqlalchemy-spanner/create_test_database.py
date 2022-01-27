@@ -27,7 +27,8 @@ from google.cloud.spanner_v1.instance import Instance
 USE_EMULATOR = os.getenv("SPANNER_EMULATOR_HOST") is not None
 
 PROJECT = os.getenv(
-    "GOOGLE_CLOUD_PROJECT", os.getenv("PROJECT_ID", "emulator-test-project"),
+    "GOOGLE_CLOUD_PROJECT",
+    os.getenv("PROJECT_ID", "emulator-test-project"),
 )
 CLIENT = None
 
@@ -56,6 +57,7 @@ def delete_stale_test_instances():
         # therefore instance can just be deleted.
         try:
             instance.delete()
+            time.sleep(5)  # Sleep for 5 seconds to give time for cooldown.
         except ResourceExhausted:
             print(
                 "Unable to drop stale instance '{}'. May need manual delete.".format(
