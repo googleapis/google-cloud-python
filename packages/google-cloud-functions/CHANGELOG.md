@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-functions/compare/v1.4.0...v1.5.0) (2022-01-25)
+
+
+### Features
+
+* add api key support ([#146](https://github.com/googleapis/python-functions/issues/146)) ([258eb69](https://github.com/googleapis/python-functions/commit/258eb698ed1c1adb92b039661ba78b17dc2f5851))
+
 ## [1.4.0](https://www.github.com/googleapis/python-functions/compare/v1.3.1...v1.4.0) (2021-11-05)
 
 
