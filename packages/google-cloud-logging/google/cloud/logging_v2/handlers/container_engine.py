@@ -20,8 +20,13 @@ metadata such as log level is properly captured.
 """
 
 import logging.handlers
+import warnings
 
 from google.cloud.logging_v2.handlers._helpers import format_stackdriver_json
+
+_DEPRECATION_MSG = (
+    "ContainerEngineHandler is deprecated. Use StructuredLogHandler instead."
+)
 
 
 class ContainerEngineHandler(logging.StreamHandler):
@@ -29,6 +34,8 @@ class ContainerEngineHandler(logging.StreamHandler):
 
     This handler is written to format messages for the Google Container Engine
     (GKE) fluentd plugin, so that metadata such as log level are properly set.
+
+    DEPRECATED:  use StructuredLogHandler to write formatted logs to standard out instead.
     """
 
     def __init__(self, *, name=None, stream=None):
@@ -40,6 +47,7 @@ class ContainerEngineHandler(logging.StreamHandler):
         """
         super(ContainerEngineHandler, self).__init__(stream=stream)
         self.name = name
+        warnings.warn(_DEPRECATION_MSG, DeprecationWarning)
 
     def format(self, record):
         """Format the message into JSON expected by fluentd.

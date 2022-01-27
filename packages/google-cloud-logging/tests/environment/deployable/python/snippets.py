@@ -14,7 +14,7 @@
 
 import logging
 import os
-
+import json
 
 try:
     import google.cloud.logging
@@ -39,13 +39,34 @@ def simplelog(log_name=None, log_text="simple_log", severity="DEFAULT", **kwargs
     logger.log_text(log_text, severity=severity)
 
 
-def pylogging_json(log_text=None, severity="WARNING", **kwargs):
+def jsonlog(log_name=None, log_text=None, severity="DEFAULT", **kwargs):
+    # allowed severity: default, debug, info, notice, warning, error, critical, alert, emergency
+    severity = severity.upper()
+    client = google.cloud.logging.Client()
+    logger = client.logger(log_name)
+
+    # build json message
+    message = {}
+    for k, v in kwargs.items():
+        message[k] = int(v) if v.isnumeric() else v
+    if log_text:
+        message["message"] = log_text
+
+    logger.log_struct(message, severity=severity)
+
+
+def pylogging_json(log_text=None, severity="WARNING", string_encode=False, **kwargs):
     # allowed severity: debug, info, warning, error, critical
 
     # build json message
     message = {}
-    for k in kwargs.keys():
-        message[k] = kwargs[k]
+    for k, v in kwargs.items():
+        message[k] = int(v) if v.isnumeric() else v
+    if log_text:
+        message["message"] = log_text
+    if string_encode:
+        str_msg = json.dumps(message, ensure_ascii=False)
+        message = json.dumps({**message, "raw_str": str_msg}, ensure_ascii=False)
 
     severity = severity.upper()
     if severity == "DEBUG":
@@ -58,6 +79,7 @@ def pylogging_json(log_text=None, severity="WARNING", **kwargs):
         logging.error(message)
     else:
         logging.critical(message)
+
 
 def pylogging(log_text="pylogging", severity="WARNING", **kwargs):
     # allowed severity: debug, info, warning, error, critical
@@ -100,21 +122,30 @@ def pylogging(log_text="pylogging", severity="WARNING", **kwargs):
     else:
         logging.critical(log_text, extra=kwargs)
 
+
 def pylogging_multiline(log_text="pylogging", second_line="line 2", **kwargs):
     logging.error(f"{log_text}\n{second_line}")
+
 
 def pylogging_complex_chars(**kwargs):
     logging.error('}"{!@[')
 
-def pylogging_with_formatter(log_text="pylogging", format_str="%(name)s :: %(levelname)s :: %(message)s", **kwargs):
+
+def pylogging_with_formatter(
+    log_text="pylogging",
+    format_str="%(name)s :: %(levelname)s :: %(message)s",
+    **kwargs,
+):
     root_logger = logging.getLogger()
     handler = root_logger.handlers[0]
     handler.setFormatter(logging.Formatter(fmt=format_str))
     logging.error(log_text)
     handler.setFormatter(None)
 
+
 def pylogging_with_arg(log_text="my_arg", **kwargs):
     logging.error("Arg: %s", log_text)
+
 
 def pylogging_flask(
     log_text="pylogging_flask",
@@ -122,15 +153,26 @@ def pylogging_flask(
     base_url="http://google",
     agent="Chrome",
     trace="123",
+    traceparent="",
     **kwargs,
 ):
     import flask
 
     app = flask.Flask(__name__)
     with app.test_request_context(
-        path, base_url, headers={"User-Agent": agent, "X_CLOUD_TRACE_CONTEXT": trace}
+        path, base_url, headers={"User-Agent": agent, "X_CLOUD_TRACE_CONTEXT": trace, "TRACEPARENT":traceparent}
     ):
         logging.info(log_text)
+
+def pylogging_pandas(log_text="pylogging_pandas", **kwargs):
+    """
+    Ensure pandas dataframes are handled properly
+    https://github.com/googleapis/python-logging/issues/409
+    """
+    import pandas as pd
+    df = pd.DataFrame(columns=['log_text'])
+    df = df.append({"log_text": log_text}, ignore_index=True)
+    logging.error(df)
 
 def pylogging_exception(log_text="pylogging_exception", exception_text="Test", **kwargs):
     try:

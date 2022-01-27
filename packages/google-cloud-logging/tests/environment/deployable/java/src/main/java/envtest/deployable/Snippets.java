@@ -22,9 +22,7 @@ import com.google.cloud.logging.Logging;
 import com.google.cloud.logging.LoggingOptions;
 import com.google.cloud.logging.Payload.StringPayload;
 import com.google.cloud.logging.Severity;
-import com.google.cloud.logging.MonitoredResourceUtil;
-import com.google.logging.type.LogSeverity;
-import com.google.cloud.logging.Synchronicity;
+import java.lang.reflect.InvocationTargetException;
 
 public class Snippets {
 
@@ -52,7 +50,7 @@ public class Snippets {
         return severity;
     }
 
-    public void simplelog(Map<String,String> args){
+    public void simplelog(Map<String,String> args) throws InvocationTargetException {
         System.out.println("Called Simplelog!");
         // pull out arguments
         String logText = args.getOrDefault("log_text", "simplelog");
@@ -63,15 +61,19 @@ public class Snippets {
         Severity severity = getSeverity(severityString);
 
         // Instantiates a client
-        Logging logging = LoggingOptions.getDefaultInstance().getService();
-        LogEntry entry =
-            LogEntry.newBuilder(StringPayload.of(logText))
-                .setSeverity(severity)
-                .setLogName(logName)
-                .setResource(MonitoredResource.newBuilder("global").build())
-                .build();
+        try (Logging logging = LoggingOptions.getDefaultInstance().getService()) {
+            LogEntry entry =
+                LogEntry.newBuilder(StringPayload.of(logText))
+                    .setSeverity(severity)
+                    .setLogName(logName)
+                    .setResource(MonitoredResource.newBuilder("global").build())
+                    .build();
 
-         //Writes the log entry asynchronously
-        logging.write(Collections.singleton(entry));
+            //Writes the log entry asynchronously
+            logging.write(Collections.singleton(entry));
+        }
+        catch (Exception ex) {
+            throw new InvocationTargetException(ex, "Failed to close Logging instance");
+        }
     }
 }

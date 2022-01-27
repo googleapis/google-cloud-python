@@ -16,6 +16,8 @@ import logging
 import unittest
 import inspect
 import re
+import uuid
+import json
 
 import google.cloud.logging
 
@@ -27,42 +29,69 @@ class CommonPython:
         log_text = f"{inspect.currentframe().f_code.co_name}"
         log_list = self.trigger_and_retrieve(log_text, "pylogging")
 
-        found_log = None
-        for log in log_list:
-            message = (
-                log.payload.get("message", None)
-                if isinstance(log.payload, dict)
-                else str(log.payload)
-            )
-            if message and log_text in message:
-                found_log = log
+        found_log = log_list[-1]
+
         self.assertIsNotNone(found_log, "expected log text not found")
+        self.assertTrue(isinstance(found_log.payload, str), "expected textPayload")
+        self.assertTrue(found_log.payload.startswith(log_text))
+        self.assertEqual(len(log_list), 1, "expected 1 log")
 
     def test_pylogging_receive_unicode_log(self):
         log_text = f"{inspect.currentframe().f_code.co_name} 嗨 世界 😀"
         log_list = self.trigger_and_retrieve(log_text, "pylogging")
 
-        found_log = None
-        for log in log_list:
-            message = (
-                log.payload.get("message", None)
-                if isinstance(log.payload, dict)
-                else str(log.payload)
-            )
-            if message and log_text in message:
-                found_log = log
-        self.assertIsNotNone(found_log, "expected unicode log not found")
+        found_log = log_list[-1]
+
+        self.assertIsNotNone(found_log, "expected log text not found")
+        self.assertTrue(isinstance(found_log.payload, str), "expected textPayload")
+        self.assertTrue(found_log.payload.startswith(log_text))
+
+    def test_pylogging_json_log(self):
+        log_text = f"{inspect.currentframe().f_code.co_name} {uuid.uuid1()}"
+        log_dict = {"unicode_field": "嗨 世界 😀", "num_field": 2}
+        log_list = self.trigger_and_retrieve(
+            log_text, "pylogging_json", append_uuid=False, **log_dict
+        )
+
+        found_log = log_list[-1]
+
+        self.assertIsNotNone(found_log, "expected log text not found")
+        self.assertTrue(isinstance(found_log.payload, dict), "expected jsonPayload")
+        expected_dict = {"message": log_text, **log_dict}
+        self.assertEqual(found_log.payload, expected_dict)
+
+    def test_pylogging_encoded_json_log(self):
+        log_text = f"{inspect.currentframe().f_code.co_name} {uuid.uuid1()}"
+        log_dict = {"unicode_field": "嗨 世界 😀", "num_field": 2}
+        log_list = self.trigger_and_retrieve(
+            log_text,
+            "pylogging_json",
+            string_encode="True",
+            append_uuid=False,
+            **log_dict,
+        )
+
+        found_log = log_list[-1]
+
+        self.assertIsNotNone(found_log, "expected log text not found")
+        self.assertTrue(isinstance(found_log.payload, dict), "expected jsonPayload")
+        raw_str = found_log.payload.pop("raw_str")
+        expected_dict = {"message": log_text, **log_dict}
+        self.assertEqual(json.loads(raw_str), expected_dict)
+        self.assertEqual(found_log.payload, expected_dict)
 
     def test_pylogging_multiline(self):
         first_line = f"{inspect.currentframe().f_code.co_name}"
         second_line = "hello world"
-        log_list = self.trigger_and_retrieve(first_line, "pylogging_multiline", second_line=second_line)
+        log_list = self.trigger_and_retrieve(
+            first_line, "pylogging_multiline", second_line=second_line
+        )
         found_log = log_list[-1]
         found_message = (
-                found_log.payload.get("message", None)
-                if isinstance(found_log.payload, dict)
-                else str(found_log.payload)
-            )
+            found_log.payload.get("message", None)
+            if isinstance(found_log.payload, dict)
+            else str(found_log.payload)
+        )
 
         self.assertTrue(re.match(f"{first_line} .*\n{second_line}", found_message))
 
@@ -72,23 +101,25 @@ class CommonPython:
         log_list = self.trigger_and_retrieve(log_text, "pylogging_with_arg")
         found_log = log_list[-1]
         found_message = (
-                found_log.payload.get("message", None)
-                if isinstance(found_log.payload, dict)
-                else str(found_log.payload)
-            )
+            found_log.payload.get("message", None)
+            if isinstance(found_log.payload, dict)
+            else str(found_log.payload)
+        )
 
         self.assertTrue(re.match(f"Arg: {log_text} .*", found_message))
 
     def test_pylogging_with_formatter(self):
         log_text = f"{inspect.currentframe().f_code.co_name}"
-        format_str = '%(levelname)s :: %(message)s'
-        log_list = self.trigger_and_retrieve(log_text, "pylogging_with_formatter", format_str=format_str)
+        format_str = "%(levelname)s :: %(message)s"
+        log_list = self.trigger_and_retrieve(
+            log_text, "pylogging_with_formatter", format_str=format_str
+        )
         found_log = log_list[-1]
         found_message = (
-                found_log.payload.get("message", None)
-                if isinstance(found_log.payload, dict)
-                else str(found_log.payload)
-            )
+            found_log.payload.get("message", None)
+            if isinstance(found_log.payload, dict)
+            else str(found_log.payload)
+        )
 
         self.assertTrue(re.match(f"ERROR :: {log_text} .*", found_message))
 
@@ -118,10 +149,6 @@ class CommonPython:
             self.assertEqual(found_severity.lower(), severity.lower())
 
     def test_source_location_pylogging(self):
-        if self.environment == "kubernetes" or "appengine" in self.environment:
-            # disable these tests on environments with custom handlers
-            # todo: enable in v3.0.0
-            return
         log_text = f"{inspect.currentframe().f_code.co_name}"
         log_list = self.trigger_and_retrieve(log_text, "pylogging")
         found_source = log_list[-1].source_location
@@ -135,10 +162,6 @@ class CommonPython:
         self.assertTrue(int(found_source["line"]) > 0)
 
     def test_flask_http_request_pylogging(self):
-        if self.environment == "kubernetes" or "appengine" in self.environment:
-            # disable these tests on environments with custom handlers
-            # todo: enable in v3.0.0
-            return
         log_text = f"{inspect.currentframe().f_code.co_name}"
 
         expected_agent = "test-agent"
@@ -170,18 +193,50 @@ class CommonPython:
 
         found_trace = log_list[-1].trace
         found_span = log_list[-1].span_id
+        found_sampled = log_list[-1].trace_sampled
         self.assertIsNotNone(found_trace)
         self.assertIn("projects/", found_trace)
         if self.environment != "functions":
             # functions seems to override the user's trace value
             self.assertIn(expected_trace, found_trace)
             self.assertEqual(expected_span, found_span)
+            self.assertTrue(found_sampled)
+
+    def test_flask_traceparent(self):
+        log_text = f"{inspect.currentframe().f_code.co_name}"
+
+        expected_agent = "test-agent"
+        expected_base_url = "http://test"
+        expected_path = "/pylogging"
+        expected_trace = "4bf92f3577b34da6a3ce929d0e0e4736"
+        expected_span = "00f067aa0ba902b7"
+        trace_header = f"00-{expected_trace}-{expected_span}-09"
+
+        log_list = self.trigger_and_retrieve(
+            log_text,
+            "pylogging_flask",
+            path=expected_path,
+            trace="",
+            traceparent=trace_header,
+            base_url=expected_base_url,
+            agent=expected_agent,
+        )
+        found_request = log_list[-1].http_request
+
+        self.assertIsNotNone(found_request)
+
+        found_trace = log_list[-1].trace
+        found_span = log_list[-1].span_id
+        found_sampled = log_list[-1].trace_sampled
+        self.assertIsNotNone(found_trace)
+        self.assertIn("projects/", found_trace)
+        if self.environment != "functions":
+            # functions seems to override the user's trace value
+            self.assertIn(expected_trace, found_trace)
+            self.assertEqual(expected_span, found_span)
+            self.assertTrue(found_sampled)
 
     def test_pylogging_extras(self):
-        if self.environment == "kubernetes" or "appengine" in self.environment:
-            # disable these tests on environments with custom handlers
-            # todo: enable in v3.0.0
-            return
         log_text = f"{inspect.currentframe().f_code.co_name}"
         kwargs = {
             "trace": "123",
@@ -232,10 +287,6 @@ class CommonPython:
         self.assertEqual(found_log.labels["custom"], kwargs["label_custom"])
 
     def test_pylogging_extras_sparse(self):
-        if self.environment == "kubernetes" or "appengine" in self.environment:
-            # disable these tests on environments with custom handlers
-            # todo: enable in v3.0.0
-            return
         log_text = f"{inspect.currentframe().f_code.co_name}"
         kwargs = {
             "requestMethod": "POST",
@@ -277,3 +328,23 @@ class CommonPython:
         self.assertIn(log_text, message)
         self.assertIn(f"Exception: {exception_text}", message)
         self.assertIn("Traceback (most recent call last):", message)
+
+    def test_pylogging_pandas(self):
+        """
+        Ensure pandas dataframes are parsed without crashing
+        https://github.com/googleapis/python-logging/issues/409
+        """
+        import pandas as pd
+        log_text = f"{inspect.currentframe().f_code.co_name} {str(uuid.uuid1())[-10:]}"
+
+        log_list = self.trigger_and_retrieve(log_text, "pylogging_pandas", append_uuid=False)
+        found_log = log_list[-1]
+
+        message = (found_log.payload.get("message", None)
+                    if isinstance(found_log.payload, dict)
+                    else str(found_log.payload))
+
+        df = pd.DataFrame(columns=['log_text'])
+        df = df.append({"log_text": log_text}, ignore_index=True)
+
+        self.assertEqual(str(df), message)

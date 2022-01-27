@@ -719,7 +719,7 @@ class TestClient(unittest.TestCase):
         import os
         from google.cloud._testing import _Monkey
         from google.cloud.logging_v2.handlers._monitored_resources import _GAE_ENV_VARS
-        from google.cloud.logging.handlers import AppEngineHandler
+        from google.cloud.logging.handlers import CloudLoggingHandler
 
         credentials = _make_credentials()
         client = self._make_one(
@@ -733,10 +733,10 @@ class TestClient(unittest.TestCase):
 
         handler.transport.worker.stop()
 
-        self.assertIsInstance(handler, AppEngineHandler)
+        self.assertIsInstance(handler, CloudLoggingHandler)
 
     def test_get_default_handler_container_engine(self):
-        from google.cloud.logging.handlers import ContainerEngineHandler
+        from google.cloud.logging.handlers import StructuredLogHandler
 
         credentials = _make_credentials()
         client = self._make_one(
@@ -751,7 +751,7 @@ class TestClient(unittest.TestCase):
         with patch:
             handler = client.get_default_handler()
 
-        self.assertIsInstance(handler, ContainerEngineHandler)
+        self.assertIsInstance(handler, StructuredLogHandler)
 
     def test_get_default_handler_general(self):
         import io

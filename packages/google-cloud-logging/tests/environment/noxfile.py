@@ -153,6 +153,7 @@ def tests(session, language, platform):
         "google-cloud-storage",
         "google-cloud-testutils",
         "google-cloud-logging",
+        "pandas",
     )
 
     test_path = f"./tests/{language}/test_{platform}.py"

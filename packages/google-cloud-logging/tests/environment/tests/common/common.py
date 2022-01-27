@@ -30,6 +30,7 @@ import os
 import sys
 import uuid
 import inspect
+import random
 
 from test_utils.retry import RetryErrors
 from grpc import RpcError
@@ -94,7 +95,7 @@ class Common:
 
     @RetryErrors(exception=(LogsNotFound, RpcError), delay=2, max_tries=2)
     def trigger_and_retrieve(
-        self, log_text, snippet, append_uuid=True, ignore_protos=True, max_tries=6, **kwargs
+        self, log_text, snippet, append_uuid=True, ignore_protos=True, max_tries=3, **kwargs
     ):
         """
         Trigger a snippet deployed in the cloud by envctl, and return resulting
@@ -118,7 +119,7 @@ class Common:
         if append_uuid:
             log_text = f"{log_text} {uuid.uuid1()}"
         self._trigger(snippet, log_text=log_text, **kwargs)
-        sleep(2)
+        sleep(10)
         filter_str = self._add_time_condition_to_filter(log_text)
         print(filter_str)
         # give the command time to be received
@@ -128,9 +129,19 @@ class Common:
             try:
                 log_list = self._get_logs(filter_str, ignore_protos)
                 return log_list
-            except (LogsNotFound, RpcError) as e:
+            except RpcError as e:
+                print(f"RPC error: {e}")
+                # most RpcErrors come from exceeding the reads per minute quota
+                # wait at least 60 seconds
+                # use a randomized backoff so parallel runs don't start up at 
+                # the same time again
+                sleep(random.randint(60, 300))
+                tries += 1
+            except LogsNotFound as e:
                 print("logs not found...")
-                sleep(5)
+                # logs may not have been fully ingested into Cloud Logging
+                # Wait before trying again
+                sleep(10 * (tries+1))
                 tries += 1
         # log not found
         raise LogsNotFound
@@ -199,10 +210,26 @@ class Common:
                 found_log = log
         self.assertIsNotNone(found_log, "expected unicode log not found")
 
+    def test_json_log(self):
+        if self.language not in ["python"]:
+            # TODO: other languages to also support this test
+            return True
+        log_text = f"{inspect.currentframe().f_code.co_name} {uuid.uuid1()}"
+        log_dict = {"unicode_field": "嗨 世界 😀", "num_field": 2}
+        log_list = self.trigger_and_retrieve(
+            log_text, "jsonlog", append_uuid=False, **log_dict
+        )
+
+        found_log = log_list[-1]
+
+        self.assertIsNotNone(found_log, "expected log text not found")
+        self.assertTrue(isinstance(found_log.payload, dict), "expected jsonPayload")
+        expected_dict = {"message": log_text, **log_dict}
+        self.assertEqual(found_log.payload, expected_dict)
+
     def test_monitored_resource(self):
-        if self.language == 'java' or self.language == 'python':
+        if self.language == 'java':
             # TODO: implement in java
-            # TODO: remove python after v3.0.0
             return True
 
         log_text = f"{inspect.currentframe().f_code.co_name}"
@@ -214,8 +241,9 @@ class Common:
 
         self.assertEqual(found_resource.type, self.monitored_resource_name)
         for label in self.monitored_resource_labels:
-            self.assertTrue(found_resource.labels[label],
-                f'resource.labels[{label}] is not set')
+            self.assertTrue(
+                found_resource.labels[label], f"resource.labels[{label}] is not set"
+            )
 
     def test_severity(self):
         log_text = f"{inspect.currentframe().f_code.co_name}"

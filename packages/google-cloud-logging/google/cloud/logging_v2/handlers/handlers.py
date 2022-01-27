@@ -33,7 +33,14 @@ EXCLUDED_LOGGER_DEFAULTS = (
     "werkzeug",
 )
 
+"""These environments require us to remove extra handlers on setup"""
 _CLEAR_HANDLER_RESOURCE_TYPES = ("gae_app", "cloud_function")
+
+"""Extra trace label to be added on App Engine environments"""
+_GAE_TRACE_ID_LABEL = "appengine.googleapis.com/trace_id"
+
+"""Resource name for App Engine environments"""
+_GAE_RESOURCE_TYPE = "gae_app"
 
 
 class CloudLoggingFilter(logging.Filter):
@@ -44,10 +51,6 @@ class CloudLoggingFilter(logging.Filter):
     to include new Cloud Logging relevant data. This data can be manually
     overwritten using the `extras` argument when writing logs.
     """
-
-    # The subset of http_request fields have been tested to work consistently across GCP environments
-    # https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#httprequest
-    _supported_http_fields = ("requestMethod", "requestUrl", "userAgent", "protocol")
 
     def __init__(self, project=None, default_labels=None):
         self.project = project
@@ -80,13 +83,6 @@ class CloudLoggingFilter(logging.Filter):
         user_labels = getattr(record, "labels", {})
         # infer request data from the environment
         inferred_http, inferred_trace, inferred_span = get_request_data()
-        if inferred_http is not None:
-            # filter inferred_http to include only well-supported fields
-            inferred_http = {
-                k: v
-                for (k, v) in inferred_http.items()
-                if k in self._supported_http_fields and v is not None
-            }
         if inferred_trace is not None and self.project is not None:
             # add full path for detected trace
             inferred_trace = f"projects/{self.project}/traces/{inferred_trace}"
@@ -188,12 +184,17 @@ class CloudLoggingHandler(logging.StreamHandler):
             record (logging.LogRecord): The record to be logged.
         """
         message = super(CloudLoggingHandler, self).format(record)
+        labels = record._labels
+        resource = record._resource or self.resource
+        if resource.type == _GAE_RESOURCE_TYPE and record._trace is not None:
+            # add GAE-specific label
+            labels = {_GAE_TRACE_ID_LABEL: record._trace, **(labels or {})}
         # send off request
         self.transport.send(
             record,
             message,
-            resource=(record._resource or self.resource),
-            labels=record._labels,
+            resource=resource,
+            labels=labels,
             trace=record._trace,
             span_id=record._span_id,
             http_request=record._http_request,

@@ -14,6 +14,7 @@
 
 import logging
 import unittest
+import inspect
 
 import google.cloud.logging
 
@@ -28,3 +29,21 @@ class TestAppEngineFlexContainer(Common, CommonPython, unittest.TestCase):
 
     monitored_resource_name = "gae_app"
     monitored_resource_labels = ["project_id", "module_id", "version_id", "zone"]
+
+    def test_pylogging_gae_trace_label(self):
+        """
+        Check to make sure 'appengine.googleapis.com/trace_id' label is set on GAE environments
+        """
+        expected_trace = "123"
+        log_text = f"{inspect.currentframe().f_code.co_name}"
+        log_list = self.trigger_and_retrieve(
+            log_text, "pylogging_flask", trace=expected_trace
+        )
+        found_log = log_list[-1]
+
+        self.assertIsNotNone(found_log.labels)
+        self.assertIsNotNone(found_log.trace)
+        self.assertEqual(
+            found_log.labels["appengine.googleapis.com/trace_id"], found_log.trace
+        )
+        self.assertIn(expected_trace, found_log.trace)

@@ -25,45 +25,23 @@ import com.google.cloud.pubsub.v1.MessageReceiver;
 import com.google.cloud.pubsub.v1.Subscriber;
 import com.google.cloud.pubsub.v1.SubscriptionAdminClient;
 import com.google.pubsub.v1.PushConfig;
-import com.google.pubsub.v1.ProjectTopicName;
 import com.google.pubsub.v1.ProjectSubscriptionName;
-import com.google.common.util.concurrent.MoreExecutors;
 import com.google.pubsub.v1.PubsubMessage;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.io.IOException;
-import java.lang.Thread;
-import java.lang.InterruptedException;
 import java.lang.NoSuchMethodException;
 import java.lang.IllegalAccessException;
 import java.lang.reflect.InvocationTargetException;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.auth.oauth2.ServiceAccountCredentials;
-import com.google.cloud.logging.Severity;
-import com.google.cloud.pubsub.v1.AckReplyConsumer;
-import com.google.cloud.pubsub.v1.MessageReceiver;
-import com.google.cloud.pubsub.v1.Subscriber;
-import com.google.cloud.pubsub.v1.SubscriptionAdminClient;
-import com.google.pubsub.v1.ProjectSubscriptionName;
-import com.google.pubsub.v1.PubsubMessage;
-import com.google.pubsub.v1.PushConfig;
 import com.google.pubsub.v1.TopicName;
-import com.sun.net.httpserver.HttpServer;
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpExchange;
 
-import java.io.OutputStream;
-import java.net.InetSocketAddress;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.Map;
 import java.lang.reflect.Method;
 
 import java.io.BufferedReader;
 import java.net.URL;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.HttpURLConnection;
 
 /**
@@ -72,8 +50,6 @@ import java.net.HttpURLConnection;
  */
 @SpringBootApplication
 public class DeployableApplication {
-
-    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(DeployableApplication.class);
 
     private static String getProjectId() throws RuntimeException {
         try {
@@ -116,7 +92,7 @@ public class DeployableApplication {
         MessageReceiver receiver = (PubsubMessage message, AckReplyConsumer consumer) -> {
           consumer.ack();
           String fnName = message.getData().toStringUtf8();
-          Map<String, String> args = message.getAttributes();
+          Map<String, String> args = message.getAttributesMap();
           triggerSnippet(fnName, args);
         };
         // start subscriber
@@ -134,7 +110,7 @@ public class DeployableApplication {
     public static void triggerSnippet(String fnName, Map<String,String> args) {
       try {
           Snippets obj = new Snippets();
-          Class c = obj.getClass();
+          Class<?> c = obj.getClass();
           Method found = c.getDeclaredMethod(fnName, new Class[] {Map.class});
           found.invoke(obj, args);
       } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
@@ -143,11 +119,6 @@ public class DeployableApplication {
     }
 
     public static void main(String[] args) throws IOException, RuntimeException {
-        String projectId = "";
-        String topicId;
-        String subscriptionId;
-
-
         Logger root = (Logger)LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
         root.setLevel(Level.INFO);
 
