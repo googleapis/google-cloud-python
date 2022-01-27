@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-appengine-admin/compare/v1.2.1...v1.3.0) (2022-01-25)
+
+
+### Features
+
+* add api key support ([#100](https://github.com/googleapis/python-appengine-admin/issues/100)) ([67f3bb4](https://github.com/googleapis/python-appengine-admin/commit/67f3bb4c0fa31f795c6aef4bd19b9a5fe9da0360))
+
 ### [1.2.1](https://www.github.com/googleapis/python-appengine-admin/compare/v1.2.0...v1.2.1) (2021-11-01)
 
 
