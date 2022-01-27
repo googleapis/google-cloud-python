@@ -32,7 +32,6 @@ from google.api_core.exceptions import RetryError
 from google.api_core.exceptions import ServiceUnavailable
 import google.cloud.logging
 from google.cloud._helpers import UTC
-from google.cloud.logging_v2.handlers import AppEngineHandler
 from google.cloud.logging_v2.handlers import CloudLoggingHandler
 from google.cloud.logging_v2.handlers.transports import SyncTransport
 from google.cloud.logging_v2 import client
@@ -401,6 +400,35 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(request["requestUrl"], URI)
         self.assertEqual(request["status"], STATUS)
 
+    def test_log_w_text(self):
+        TEXT_PAYLOAD = "System test: test_log_w_text"
+        logger = Config.CLIENT.logger(self._logger_name("log_w_text"))
+        self.to_delete.append(logger)
+        logger.log(TEXT_PAYLOAD)
+        entries = _list_entries(logger)
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0].payload, TEXT_PAYLOAD)
+
+    def test_log_w_struct(self):
+        logger = Config.CLIENT.logger(self._logger_name("log_w_struct"))
+        self.to_delete.append(logger)
+
+        logger.log(self.JSON_PAYLOAD)
+        entries = _list_entries(logger)
+
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0].payload, self.JSON_PAYLOAD)
+
+    def test_log_empty(self):
+        logger = Config.CLIENT.logger(self._logger_name("log_empty"))
+        self.to_delete.append(logger)
+
+        logger.log()
+        entries = _list_entries(logger)
+
+        self.assertEqual(len(entries), 1)
+        self.assertIsNone(entries[0].payload)
+
     def test_log_handler_async(self):
         LOG_MESSAGE = "It was the worst of times"
 
@@ -415,7 +443,7 @@ class TestLogging(unittest.TestCase):
         cloud_logger.warning(LOG_MESSAGE)
         handler.flush()
         entries = _list_entries(logger)
-        expected_payload = {"message": LOG_MESSAGE, "python_logger": handler.name}
+        expected_payload = LOG_MESSAGE
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, expected_payload)
 
@@ -437,44 +465,46 @@ class TestLogging(unittest.TestCase):
         cloud_logger.warning(LOG_MESSAGE)
 
         entries = _list_entries(logger)
-        expected_payload = {"message": LOG_MESSAGE, "python_logger": LOGGER_NAME}
+        expected_payload = LOG_MESSAGE
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, expected_payload)
 
     def test_handlers_w_extras(self):
         LOG_MESSAGE = "Testing with injected extras."
+        LOGGER_NAME = "handler_extras"
+        handler_name = self._logger_name(LOGGER_NAME)
 
-        for cls in [CloudLoggingHandler, AppEngineHandler]:
-            LOGGER_NAME = f"{cls.__name__}-handler_extras"
-            handler_name = self._logger_name(LOGGER_NAME)
+        handler = CloudLoggingHandler(
+            Config.CLIENT, name=handler_name, transport=SyncTransport
+        )
 
-            handler = cls(Config.CLIENT, name=handler_name, transport=SyncTransport)
+        # only create the logger to delete, hidden otherwise
+        logger = Config.CLIENT.logger(handler.name)
+        self.to_delete.append(logger)
 
-            # only create the logger to delete, hidden otherwise
-            logger = Config.CLIENT.logger(handler.name)
-            self.to_delete.append(logger)
+        cloud_logger = logging.getLogger(LOGGER_NAME)
+        cloud_logger.addHandler(handler)
+        expected_request = {"requestUrl": "localhost"}
+        expected_source = {"file": "test.py"}
+        extra = {
+            "trace": "123",
+            "span_id": "456",
+            "http_request": expected_request,
+            "source_location": expected_source,
+            "resource": Resource(type="cloudiot_device", labels={}),
+            "labels": {"test-label": "manual"},
+        }
+        cloud_logger.warn(LOG_MESSAGE, extra=extra)
 
-            cloud_logger = logging.getLogger(LOGGER_NAME)
-            cloud_logger.addHandler(handler)
-            expected_request = {"requestUrl": "localhost"}
-            expected_source = {"file": "test.py"}
-            extra = {
-                "trace": "123",
-                "span_id": "456",
-                "http_request": expected_request,
-                "source_location": expected_source,
-                "resource": Resource(type="cloudiot_device", labels={}),
-                "labels": {"test-label": "manual"},
-            }
-            cloud_logger.warning(LOG_MESSAGE, extra=extra)
-
-            entries = _list_entries(logger)
-            self.assertEqual(len(entries), 1)
-            self.assertEqual(entries[0].trace, extra["trace"])
-            self.assertEqual(entries[0].span_id, extra["span_id"])
-            self.assertEqual(entries[0].http_request, expected_request)
-            self.assertEqual(entries[0].labels, extra["labels"])
-            self.assertEqual(entries[0].resource.type, extra["resource"].type)
+        entries = _list_entries(logger)
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0].trace, extra["trace"])
+        self.assertEqual(entries[0].span_id, extra["span_id"])
+        self.assertEqual(entries[0].http_request, expected_request)
+        self.assertEqual(
+            entries[0].labels, {**extra["labels"], "python_logger": LOGGER_NAME}
+        )
+        self.assertEqual(entries[0].resource.type, extra["resource"].type)
 
     def test_log_root_handler(self):
         LOG_MESSAGE = "It was the best of times."
@@ -490,7 +520,7 @@ class TestLogging(unittest.TestCase):
         logging.warning(LOG_MESSAGE)
 
         entries = _list_entries(logger)
-        expected_payload = {"message": LOG_MESSAGE, "python_logger": "root"}
+        expected_payload = LOG_MESSAGE
 
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, expected_payload)
