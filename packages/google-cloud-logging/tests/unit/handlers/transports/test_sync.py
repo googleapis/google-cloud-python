@@ -41,26 +41,51 @@ class TestSyncHandler(unittest.TestCase):
 
         client = _Client(self.PROJECT)
 
-        stackdriver_logger_name = "python"
+        client_name = "python"
         python_logger_name = "mylogger"
-        transport = self._make_one(client, stackdriver_logger_name)
+        transport = self._make_one(client, client_name)
         message = "hello world"
         record = logging.LogRecord(
             python_logger_name, logging.INFO, None, None, message, None, None
         )
 
         transport.send(record, message, resource=_GLOBAL_RESOURCE)
-        EXPECTED_STRUCT = {"message": message, "python_logger": python_logger_name}
         EXPECTED_SENT = (
-            EXPECTED_STRUCT,
+            message,
             LogSeverity.INFO,
             _GLOBAL_RESOURCE,
-            None,
+            {"python_logger": python_logger_name},
             None,
             None,
             None,
         )
-        self.assertEqual(transport.logger.log_struct_called_with, EXPECTED_SENT)
+        self.assertEqual(transport.logger.log_called_with, EXPECTED_SENT)
+
+    def test_send_struct(self):
+        from google.cloud.logging_v2.logger import _GLOBAL_RESOURCE
+        from google.cloud.logging_v2._helpers import LogSeverity
+
+        client = _Client(self.PROJECT)
+
+        client_name = "python"
+        python_logger_name = "mylogger"
+        transport = self._make_one(client, client_name)
+        message = {"message": "hello world", "extra": "test"}
+        record = logging.LogRecord(
+            python_logger_name, logging.INFO, None, None, message, None, None
+        )
+
+        transport.send(record, message, resource=_GLOBAL_RESOURCE)
+        EXPECTED_SENT = (
+            message,
+            LogSeverity.INFO,
+            _GLOBAL_RESOURCE,
+            {"python_logger": python_logger_name},
+            None,
+            None,
+            None,
+        )
+        self.assertEqual(transport.logger.log_called_with, EXPECTED_SENT)
 
 
 class _Logger(object):
@@ -69,7 +94,7 @@ class _Logger(object):
     def __init__(self, name):
         self.name = name
 
-    def log_struct(
+    def log(
         self,
         message,
         severity=None,
@@ -79,7 +104,7 @@ class _Logger(object):
         span_id=None,
         http_request=None,
     ):
-        self.log_struct_called_with = (
+        self.log_called_with = (
             message,
             severity,
             resource,

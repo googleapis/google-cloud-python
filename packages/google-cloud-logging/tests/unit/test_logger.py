@@ -464,6 +464,80 @@ class TestLogger(unittest.TestCase):
 
         self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
 
+    def test_log_inference_empty(self):
+        DEFAULT_LABELS = {"foo": "spam"}
+        ENTRIES = [
+            {
+                "logName": "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME),
+                "resource": {"type": "global", "labels": {}},
+                "labels": DEFAULT_LABELS,
+            }
+        ]
+        client = _Client(self.PROJECT)
+        api = client.logging_api = _DummyLoggingAPI()
+        logger = self._make_one(self.LOGGER_NAME, client=client, labels=DEFAULT_LABELS)
+
+        logger.log()
+
+        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+
+    def test_log_inference_text(self):
+        RESOURCE = {"type": "global", "labels": {}}
+        TEXT = "TEXT"
+        ENTRIES = [
+            {
+                "logName": "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME),
+                "textPayload": TEXT,
+                "resource": RESOURCE,
+            }
+        ]
+        client = _Client(self.PROJECT)
+        api = client.logging_api = _DummyLoggingAPI()
+        logger = self._make_one(self.LOGGER_NAME, client=client)
+
+        logger.log(TEXT)
+
+        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+
+    def test_log_inference_struct(self):
+        STRUCT = {"message": "MESSAGE", "weather": "cloudy"}
+        RESOURCE = {"type": "global", "labels": {}}
+        ENTRIES = [
+            {
+                "logName": "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME),
+                "jsonPayload": STRUCT,
+                "resource": RESOURCE,
+            }
+        ]
+        client = _Client(self.PROJECT)
+        api = client.logging_api = _DummyLoggingAPI()
+        logger = self._make_one(self.LOGGER_NAME, client=client)
+
+        logger.log(STRUCT)
+
+        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+
+    def test_log_inference_proto(self):
+        import json
+        from google.protobuf.json_format import MessageToJson
+        from google.protobuf.struct_pb2 import Struct, Value
+
+        message = Struct(fields={"foo": Value(bool_value=True)})
+        ENTRIES = [
+            {
+                "logName": "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME),
+                "protoPayload": json.loads(MessageToJson(message)),
+                "resource": {"type": "global", "labels": {}},
+            }
+        ]
+        client = _Client(self.PROJECT)
+        api = client.logging_api = _DummyLoggingAPI()
+        logger = self._make_one(self.LOGGER_NAME, client=client)
+
+        logger.log(message)
+
+        self.assertEqual(api._write_entries_called_with, (ENTRIES, None, None, None))
+
     def test_delete_w_bound_client(self):
         client = _Client(project=self.PROJECT)
         api = client.logging_api = _DummyLoggingAPI()
@@ -890,6 +964,123 @@ class TestBatch(unittest.TestCase):
         batch = self._make_one(logger, client=client)
         batch.log_proto(
             message,
+            labels=LABELS,
+            insert_id=IID,
+            severity=SEVERITY,
+            http_request=REQUEST,
+            timestamp=TIMESTAMP,
+            resource=RESOURCE,
+            trace=TRACE,
+            span_id=SPANID,
+            trace_sampled=True,
+        )
+        self.assertEqual(batch.entries, [ENTRY])
+
+    def test_log_inference_empty(self):
+        """
+        When calling batch.log with empty input, it should
+        call batch.log_empty
+        """
+        from google.cloud.logging import LogEntry
+
+        ENTRY = LogEntry()
+        client = _Client(project=self.PROJECT, connection=_make_credentials())
+        logger = _Logger()
+        batch = self._make_one(logger, client=client)
+        batch.log()
+        self.assertEqual(batch.entries, [ENTRY])
+
+    def test_log_inference_text(self):
+        """
+        When calling batch.log with text input, it should
+        call batch.log_text
+        """
+        from google.cloud.logging_v2.entries import _GLOBAL_RESOURCE
+        from google.cloud.logging import TextEntry
+
+        TEXT = "This is the entry text"
+        ENTRY = TextEntry(payload=TEXT, resource=_GLOBAL_RESOURCE)
+        client = _Client(project=self.PROJECT, connection=_make_credentials())
+        logger = _Logger()
+        batch = self._make_one(logger, client=client)
+        batch.log(TEXT)
+        self.assertEqual(batch.entries, [ENTRY])
+
+    def test_log_inference_struct(self):
+        """
+        When calling batch.struct with text input, it should
+        call batch.log_struct
+        """
+        from google.cloud.logging_v2.entries import _GLOBAL_RESOURCE
+        from google.cloud.logging import StructEntry
+
+        STRUCT = {"message": "Message text", "weather": "partly cloudy"}
+        ENTRY = StructEntry(payload=STRUCT, resource=_GLOBAL_RESOURCE)
+        client = _Client(project=self.PROJECT, connection=_make_credentials())
+        logger = _Logger()
+        batch = self._make_one(logger, client=client)
+        batch.log(STRUCT)
+        self.assertEqual(batch.entries, [ENTRY])
+
+    def test_log_inference_proto(self):
+        """
+        When calling batch.log with proto input, it should
+        call batch.log_proto
+        """
+        from google.cloud.logging_v2.entries import _GLOBAL_RESOURCE
+        from google.cloud.logging import ProtobufEntry
+        from google.protobuf.struct_pb2 import Struct
+        from google.protobuf.struct_pb2 import Value
+
+        message = Struct(fields={"foo": Value(bool_value=True)})
+        ENTRY = ProtobufEntry(payload=message, resource=_GLOBAL_RESOURCE)
+        client = _Client(project=self.PROJECT, connection=_make_credentials())
+        logger = _Logger()
+        batch = self._make_one(logger, client=client)
+        batch.log(message)
+        self.assertEqual(batch.entries, [ENTRY])
+
+    def test_log_inference_struct_explicit(self):
+        """
+        When calling batch.log with struct input, it should
+        call batch.log_struct, along with input arguments
+        """
+        import datetime
+        from google.cloud.logging import Resource
+        from google.cloud.logging import StructEntry
+
+        STRUCT = {"message": "Message text", "weather": "partly cloudy"}
+        LABELS = {"foo": "bar", "baz": "qux"}
+        IID = "IID"
+        SEVERITY = "CRITICAL"
+        METHOD = "POST"
+        URI = "https://api.example.com/endpoint"
+        STATUS = "500"
+        TRACE = "12345678-1234-5678-1234-567812345678"
+        SPANID = "000000000000004a"
+        REQUEST = {"requestMethod": METHOD, "requestUrl": URI, "status": STATUS}
+        TIMESTAMP = datetime.datetime(2016, 12, 31, 0, 1, 2, 999999)
+        RESOURCE = Resource(
+            type="gae_app", labels={"module_id": "default", "version_id": "test"}
+        )
+        ENTRY = StructEntry(
+            payload=STRUCT,
+            labels=LABELS,
+            insert_id=IID,
+            severity=SEVERITY,
+            http_request=REQUEST,
+            timestamp=TIMESTAMP,
+            resource=RESOURCE,
+            trace=TRACE,
+            span_id=SPANID,
+            trace_sampled=True,
+        )
+
+        client = _Client(project=self.PROJECT, connection=_make_credentials())
+        logger = _Logger()
+        batch = self._make_one(logger, client=client)
+        batch.log(
+            STRUCT,
             labels=LABELS,
             insert_id=IID,
             severity=SEVERITY,

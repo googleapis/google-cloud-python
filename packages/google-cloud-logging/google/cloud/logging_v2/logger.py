@@ -14,6 +14,8 @@
 
 """Define API Loggers."""
 
+import collections
+
 from google.cloud.logging_v2._helpers import _add_defaults_to_filter
 from google.cloud.logging_v2.entries import LogEntry
 from google.cloud.logging_v2.entries import ProtobufEntry
@@ -21,6 +23,7 @@ from google.cloud.logging_v2.entries import StructEntry
 from google.cloud.logging_v2.entries import TextEntry
 from google.cloud.logging_v2.resource import Resource
 
+import google.protobuf.message
 
 _GLOBAL_RESOURCE = Resource(type="global", labels={})
 
@@ -197,6 +200,30 @@ class Logger(object):
         """
         self._do_log(client, ProtobufEntry, message, **kw)
 
+    def log(self, message=None, *, client=None, **kw):
+        """Log an arbitrary message via a POST request.
+        Type will be inferred based on the input message.
+
+        See
+        https://cloud.google.com/logging/docs/reference/v2/rest/v2/entries/list
+
+        Args:
+            message (Optional[str or dict or google.protobuf.Message]): The message. to log
+            client (Optional[~logging_v2.client.Client]):
+                The client to use.  If not passed, falls back to the
+                ``client`` stored on the current sink.
+            kw (Optional[dict]): additional keyword arguments for the entry.
+                See :class:`~logging_v2.entries.LogEntry`.
+        """
+        entry_type = LogEntry
+        if isinstance(message, google.protobuf.message.Message):
+            entry_type = ProtobufEntry
+        elif isinstance(message, collections.abc.Mapping):
+            entry_type = StructEntry
+        elif isinstance(message, str):
+            entry_type = TextEntry
+        self._do_log(client, entry_type, message, **kw)
+
     def delete(self, logger_name=None, *, client=None):
         """Delete all entries in a logger via a DELETE request
 
@@ -360,6 +387,24 @@ class Batch(object):
                 See :class:`~logging_v2.entries.LogEntry`.
         """
         self.entries.append(ProtobufEntry(payload=message, **kw))
+
+    def log(self, message=None, **kw):
+        """Add an arbitrary message to be logged during :meth:`commit`.
+        Type will be inferred based on the input message.
+
+        Args:
+            message (Optional[str or dict or google.protobuf.Message]): The message. to log
+            kw (Optional[dict]): Additional keyword arguments for the entry.
+                See :class:`~logging_v2.entries.LogEntry`.
+        """
+        entry_type = LogEntry
+        if isinstance(message, google.protobuf.message.Message):
+            entry_type = ProtobufEntry
+        elif isinstance(message, collections.abc.Mapping):
+            entry_type = StructEntry
+        elif isinstance(message, str):
+            entry_type = TextEntry
+        self.entries.append(entry_type(payload=message, **kw))
 
     def commit(self, *, client=None):
         """Send saved log entries as a single API call.

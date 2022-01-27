@@ -169,6 +169,8 @@ def _create_global_resource(project):
 
 def detect_resource(project=""):
     """Return the default monitored resource based on the local environment.
+    If GCP resource not found, defaults to `global`.
+
     Args:
         project (str): The project ID to pass on to the resource (if needed)
     Returns:
