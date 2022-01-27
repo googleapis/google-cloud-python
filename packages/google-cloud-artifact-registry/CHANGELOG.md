@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.1.0](https://github.com/googleapis/python-artifact-registry/compare/v1.0.2...v1.1.0) (2022-01-25)
+
+
+### Features
+
+* add api key support ([#119](https://github.com/googleapis/python-artifact-registry/issues/119)) ([d22f2d9](https://github.com/googleapis/python-artifact-registry/commit/d22f2d93ffcc169540991d224a54c81eb7ca09a4))
+* add APIs for importing and uploading Apt and Yum artifacts ([#116](https://github.com/googleapis/python-artifact-registry/issues/116)) ([a86d4f1](https://github.com/googleapis/python-artifact-registry/commit/a86d4f143c401e20052182b7bba3b9178014dace))
+* add order_by support for listing versions ([a86d4f1](https://github.com/googleapis/python-artifact-registry/commit/a86d4f143c401e20052182b7bba3b9178014dace))
+* add version policy support for Maven repositories ([a86d4f1](https://github.com/googleapis/python-artifact-registry/commit/a86d4f143c401e20052182b7bba3b9178014dace))
+
+
+### Bug Fixes
+
+* mark a few resource name fields as required ([a86d4f1](https://github.com/googleapis/python-artifact-registry/commit/a86d4f143c401e20052182b7bba3b9178014dace))
+
 ### [1.0.2](https://www.github.com/googleapis/python-artifact-registry/compare/v1.0.1...v1.0.2) (2022-01-07)
 
 
