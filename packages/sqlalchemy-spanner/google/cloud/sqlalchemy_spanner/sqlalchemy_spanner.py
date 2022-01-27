@@ -495,7 +495,7 @@ class SpannerDialect(DefaultDialect):
     Represents an API layer to control Cloud Spanner database with SQLAlchemy API.
     """
 
-    name = "spanner"
+    name = "spanner+spanner"
     driver = "spanner"
     positional = False
     paramstyle = "format"
@@ -512,6 +512,7 @@ class SpannerDialect(DefaultDialect):
     supports_native_enum = True
     supports_native_boolean = True
     supports_native_decimal = True
+    supports_statement_cache = True
 
     ddl_compiler = SpannerDDLCompiler
     preparer = SpannerIdentifierPreparer

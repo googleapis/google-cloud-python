@@ -64,8 +64,7 @@ UPGRADE_CODE = """def upgrade():
     op.alter_column(
         'account',
         'name',
-        existing_type=sa.String(50),
-        nullable=True,
+        existing_type=sa.String(70),
     )"""
 
 
@@ -114,7 +113,7 @@ def lint_setup_py(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
-def compliance_test(session):
+def compliance_test_13(session):
     """Run SQLAlchemy dialect compliance test suite."""
 
     # Check the value of `RUN_COMPLIANCE_TESTS` env var. It defaults to true.
@@ -132,7 +131,6 @@ def compliance_test(session):
         "pytest", "pytest-cov", "pytest-asyncio",
     )
 
-    session.install("pytest")
     session.install("mock")
     session.install("-e", ".[tracing]")
     session.run("python", "create_test_database.py")
@@ -145,7 +143,46 @@ def compliance_test(session):
         "--cov-config=.coveragerc",
         "--cov-report=",
         "--cov-fail-under=0",
-        "test",
+        "--asyncio-mode=auto",
+        "test/test_suite_13.py",
+    )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def compliance_test_14(session):
+    """Run SQLAlchemy dialect compliance test suite."""
+
+    # Check the value of `RUN_COMPLIANCE_TESTS` env var. It defaults to true.
+    if os.environ.get("RUN_COMPLIANCE_TESTS", "true") == "false":
+        session.skip("RUN_COMPLIANCE_TESTS is set to false, skipping")
+    # Sanity check: Only run tests if the environment variable is set.
+    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "") and not os.environ.get(
+        "SPANNER_EMULATOR_HOST", ""
+    ):
+        session.skip(
+            "Credentials or emulator host must be set via environment variable"
+        )
+
+    session.install(
+        "pytest", "pytest-cov", "pytest-asyncio",
+    )
+
+    session.install("mock")
+    session.install("-e", ".[tracing]")
+    session.run("python", "create_test_database.py")
+
+    session.install("sqlalchemy>=1.4")
+
+    session.run(
+        "py.test",
+        "--cov=google.cloud.sqlalchemy_spanner",
+        "--cov=tests",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        "--cov-fail-under=0",
+        "--asyncio-mode=auto",
+        "test/test_suite_14.py",
     )
 
 
@@ -180,7 +217,7 @@ def migration_test(session):
         "GOOGLE_CLOUD_PROJECT", os.getenv("PROJECT_ID", "emulator-test-project"),
     )
     db_url = (
-        f"spanner:///projects/{project}/instances/"
+        f"spanner+spanner:///projects/{project}/instances/"
         "sqlalchemy-dialect-test/databases/compliance-test"
     )
 

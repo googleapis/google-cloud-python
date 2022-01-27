@@ -82,19 +82,18 @@ def create_test_instance():
 
     instance = CLIENT.instance(instance_id, instance_config, labels=labels)
 
+    try:
+        created_op = instance.create()
+        created_op.result(1800)  # block until completion
+    except AlreadyExists:
+        pass  # instance was already created
 
     try:
-      created_op = instance.create()
-      created_op.result(1800)  # block until completion
+        database = instance.database("compliance-test")
+        created_op = database.create()
+        created_op.result(1800)
     except AlreadyExists:
-      pass  # instance was already created
-
-    try:
-      database = instance.database("compliance-test")
-      created_op = database.create()
-      created_op.result(1800)
-    except AlreadyExists:
-      pass  # instance was already created
+        pass  # instance was already created
 
     set_test_config(PROJECT, instance_id)
 

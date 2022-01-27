@@ -21,7 +21,7 @@ import sys
 def set_test_config(project, instance):
     config = configparser.ConfigParser()
     url = (
-        f"spanner:///projects/{project}/instances/{instance}/"
+        f"spanner+spanner:///projects/{project}/instances/{instance}/"
         "databases/compliance-test"
     )
     config.add_section("db")
@@ -38,4 +38,4 @@ def main(argv):
 
 
 if __name__ == "__main__":
-   main(sys.argv[1:])
+    main(sys.argv[1:])

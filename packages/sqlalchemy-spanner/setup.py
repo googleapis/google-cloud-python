@@ -60,7 +60,7 @@ setuptools.setup(
     description=description,
     entry_points={
         "sqlalchemy.dialects": [
-            "spanner = google.cloud.sqlalchemy_spanner:SpannerDialect"
+            "spanner.spanner = google.cloud.sqlalchemy_spanner:SpannerDialect"
         ]
     },
     install_requires=dependencies,

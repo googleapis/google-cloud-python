@@ -9,7 +9,8 @@ branchProtectionRules:
   requiredStatusCheckContexts:
     - 'lint'
     - 'unit'
-    - 'compliance_tests'
+    - 'compliance_tests_13'
+    - 'compliance_tests_14'
     - 'migration_tests'
     - 'cla/google'
     - 'Kokoro'

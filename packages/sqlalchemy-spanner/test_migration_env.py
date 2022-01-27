@@ -41,7 +41,7 @@ target_metadata = None
 
 
 class SpannerImpl(DefaultImpl):
-    __dialect__ = "spanner"
+    __dialect__ = "spanner+spanner"
 
 
 def run_migrations_offline():
