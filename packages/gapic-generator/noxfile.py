@@ -146,11 +146,16 @@ def fragment(session):
     )
     session.install("-e", ".")
 
-    with ThreadPoolExecutor() as p:
-        all_outs = p.map(FragTester(session, False), FRAGMENT_FILES)
+    if os.environ.get("PARALLEL_FRAGMENT_TESTS", "false").lower() == "true":
+        with ThreadPoolExecutor() as p:
+            all_outs = p.map(FragTester(session, False), FRAGMENT_FILES)
 
-    output = "".join(all_outs)
-    session.log(output)
+        output = "".join(all_outs)
+        session.log(output)
+    else:
+        tester = FragTester(session, False)
+        for frag in FRAGMENT_FILES:
+            session.log(tester(frag))
 
 
 @nox.session(python=ALL_PYTHON[1:])
@@ -166,11 +171,16 @@ def fragment_alternative_templates(session):
     )
     session.install("-e", ".")
 
-    with ThreadPoolExecutor() as p:
-        all_outs = p.map(FragTester(session, True), FRAGMENT_FILES)
+    if os.environ.get("PARALLEL_FRAGMENT_TESTS", "false").lower() == "true":
+        with ThreadPoolExecutor() as p:
+            all_outs = p.map(FragTester(session, True), FRAGMENT_FILES)
 
-    output = "".join(all_outs)
-    session.log(output)
+        output = "".join(all_outs)
+        session.log(output)
+    else:
+        tester = FragTester(session, True)
+        for frag in FRAGMENT_FILES:
+            session.log(tester(frag))
 
 
 # TODO(yon-mg): -add compute context manager that includes rest transport
