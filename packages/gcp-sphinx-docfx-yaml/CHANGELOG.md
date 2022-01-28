@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/sphinx-docfx-yaml/compare/v1.3.3...v1.4.0) (2022-01-28)
+
+
+### Features
+
+* add syntax highlighting support for Markdown pages ([#170](https://github.com/googleapis/sphinx-docfx-yaml/issues/170)) ([9898807](https://github.com/googleapis/sphinx-docfx-yaml/commit/98988072c3a32ff1d1be44cb835eea0ad787e8e9))
+
 ### [1.3.3](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v1.3.2...v1.3.3) (2021-11-29)
 
 
