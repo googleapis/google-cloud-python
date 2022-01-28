@@ -331,7 +331,7 @@ def test_required_fields():
     assert set(request.required_fields) == {mass_kg, length_m, color}
 
 
-def test_is_diregapic_operation():
+def test_is_extended_operation():
     T = descriptor_pb2.FieldDescriptorProto.Type
 
     # Canonical Operation
@@ -349,7 +349,7 @@ def test_is_diregapic_operation():
         options.Extensions[ex_ops_pb2.operation_field] = f.number
         f.options.MergeFrom(options)
 
-    assert operation.is_diregapic_operation
+    assert operation.is_extended_operation
 
     # Missing a required field
 
@@ -367,7 +367,7 @@ def test_is_diregapic_operation():
         options.Extensions[ex_ops_pb2.operation_field] = f.number
         f.options.MergeFrom(options)
 
-    assert not missing.is_diregapic_operation
+    assert not missing.is_extended_operation
 
     # Named incorrectly
 
@@ -383,7 +383,7 @@ def test_is_diregapic_operation():
         options.Extensions[ex_ops_pb2.operation_field] = f.number
         f.options.MergeFrom(options)
 
-    assert not my_message.is_diregapic_operation
+    assert not my_message.is_extended_operation
 
     # Duplicated annotation
     for mapping in range(1, 5):
@@ -401,4 +401,4 @@ def test_is_diregapic_operation():
             f.options.MergeFrom(options)
 
         with pytest.raises(TypeError):
-            duplicate.is_diregapic_operation
+            duplicate.is_extended_operation

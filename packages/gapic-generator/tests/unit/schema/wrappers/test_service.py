@@ -589,7 +589,7 @@ def test_operation_polling_method():
     assert not user_service.custom_polling_method
 
 
-def test_diregapic_lro_detection():
+def test_extended_operations_lro_detection():
     T = descriptor_pb2.FieldDescriptorProto.Type
 
     operation = make_message(

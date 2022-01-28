@@ -30,6 +30,7 @@ from google.api_core import exceptions
 from google.api import http_pb2  # type: ignore
 from google.api import resource_pb2  # type: ignore
 from google.api import service_pb2  # type: ignore
+from google.cloud import extended_operations_pb2 as ex_ops_pb2  # type: ignore
 from google.gapic.metadata import gapic_metadata_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import descriptor_pb2
@@ -473,6 +474,20 @@ class API:
             for proto in self.all_protos.values()
             for message in proto.all_messages.values()
         )
+
+    def get_custom_operation_service(self, method: "wrappers.Method") -> "wrappers.Service":
+        if not method.output.is_extended_operation:
+            raise ValueError(
+                f"Method is not an extended operation LRO: {method.name}")
+
+        op_serv_name = self.naming.proto_package + "." + \
+            method.options.Extensions[ex_ops_pb2.operation_service]
+        op_serv = self.services[op_serv_name]
+        if not op_serv.custom_polling_method:
+            raise ValueError(
+                f"Service is not an extended operation operation service: {op_serv.name}")
+
+        return op_serv
 
 
 class _ProtoBuilder:

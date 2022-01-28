@@ -360,7 +360,7 @@ class MessageType:
         return oneof_fields
 
     @utils.cached_property
-    def is_diregapic_operation(self) -> bool:
+    def is_extended_operation(self) -> bool:
         if not self.name == "Operation":
             return False
 
@@ -877,7 +877,7 @@ class Method:
 
     @property
     def is_operation_polling_method(self):
-        return self.output.is_diregapic_operation and self.options.Extensions[ex_ops_pb2.operation_polling_method]
+        return self.output.is_extended_operation and self.options.Extensions[ex_ops_pb2.operation_polling_method]
 
     @utils.cached_property
     def client_output(self):
