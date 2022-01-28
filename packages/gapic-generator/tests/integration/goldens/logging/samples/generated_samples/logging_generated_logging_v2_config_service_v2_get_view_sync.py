@@ -32,14 +32,8 @@ def sample_get_view():
     client = logging_v2.ConfigServiceV2Client()
 
     # Initialize request argument(s)
-    project = "my-project-id"
-    location = "us-central1"
-    bucket = "bucket_value"
-    view = "view_value"
-    name = f"projects/{project}/locations/{location}/buckets/{bucket}/views/{view}"
-
     request = logging_v2.GetViewRequest(
-        name=name,
+        name="name_value",
     )
 
     # Make the request

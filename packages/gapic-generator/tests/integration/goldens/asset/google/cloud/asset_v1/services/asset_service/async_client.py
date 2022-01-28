@@ -619,12 +619,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = asset_v1.AssetServiceClient()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                feed = "feed_value"
-                name = f"projects/{project}/feeds/{feed}"
-
                 request = asset_v1.GetFeedRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
@@ -938,12 +934,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = asset_v1.AssetServiceClient()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                feed = "feed_value"
-                name = f"projects/{project}/feeds/{feed}"
-
                 request = asset_v1.DeleteFeedRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request

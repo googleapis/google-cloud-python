@@ -32,12 +32,8 @@ async def sample_list_logs():
     client = logging_v2.LoggingServiceV2AsyncClient()
 
     # Initialize request argument(s)
-    project = "my-project-id"
-    log = "log_value"
-    parent = f"projects/{project}/logs/{log}"
-
     request = logging_v2.ListLogsRequest(
-        parent=parent,
+        parent="parent_value",
     )
 
     # Make the request

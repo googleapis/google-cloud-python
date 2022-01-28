@@ -32,16 +32,12 @@ def sample_update_sink():
     client = logging_v2.ConfigServiceV2Client()
 
     # Initialize request argument(s)
-    project = "my-project-id"
-    sink = "sink_value"
-    sink_name = f"projects/{project}/sinks/{sink}"
-
     sink = logging_v2.LogSink()
     sink.name = "name_value"
     sink.destination = "destination_value"
 
     request = logging_v2.UpdateSinkRequest(
-        sink_name=sink_name,
+        sink_name="sink_name_value",
         sink=sink,
     )
 

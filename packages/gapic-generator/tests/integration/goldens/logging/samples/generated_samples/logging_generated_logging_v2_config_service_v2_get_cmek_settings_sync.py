@@ -32,11 +32,8 @@ def sample_get_cmek_settings():
     client = logging_v2.ConfigServiceV2Client()
 
     # Initialize request argument(s)
-    project = "my-project-id"
-    name = f"projects/{project}/cmekSettings"
-
     request = logging_v2.GetCmekSettingsRequest(
-        name=name,
+        name="name_value",
     )
 
     # Make the request

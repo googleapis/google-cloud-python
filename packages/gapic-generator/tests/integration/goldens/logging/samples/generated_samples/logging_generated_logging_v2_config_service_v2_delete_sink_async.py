@@ -32,12 +32,8 @@ async def sample_delete_sink():
     client = logging_v2.ConfigServiceV2AsyncClient()
 
     # Initialize request argument(s)
-    project = "my-project-id"
-    sink = "sink_value"
-    sink_name = f"projects/{project}/sinks/{sink}"
-
     request = logging_v2.DeleteSinkRequest(
-        sink_name=sink_name,
+        sink_name="sink_name_value",
     )
 
     # Make the request

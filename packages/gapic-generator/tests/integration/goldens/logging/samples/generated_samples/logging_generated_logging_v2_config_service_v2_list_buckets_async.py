@@ -32,13 +32,8 @@ async def sample_list_buckets():
     client = logging_v2.ConfigServiceV2AsyncClient()
 
     # Initialize request argument(s)
-    project = "my-project-id"
-    location = "us-central1"
-    bucket = "bucket_value"
-    parent = f"projects/{project}/locations/{location}/buckets/{bucket}"
-
     request = logging_v2.ListBucketsRequest(
-        parent=parent,
+        parent="parent_value",
     )
 
     # Make the request

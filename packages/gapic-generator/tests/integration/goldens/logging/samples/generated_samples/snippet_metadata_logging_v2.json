@@ -14,12 +14,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_CreateBucket_async",
       "segments": [
         {
-          "end": 50,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 50,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -29,18 +29,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 44,
+          "end": 39,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 47,
-          "start": 45,
+          "end": 42,
+          "start": 40,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 51,
-          "start": 48,
+          "end": 46,
+          "start": 43,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -58,12 +58,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_CreateBucket_sync",
       "segments": [
         {
-          "end": 50,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 50,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -73,18 +73,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 44,
+          "end": 39,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 47,
-          "start": 45,
+          "end": 42,
+          "start": 40,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 51,
-          "start": 48,
+          "end": 46,
+          "start": 43,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -103,12 +103,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_CreateExclusion_async",
       "segments": [
         {
-          "end": 53,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
@@ -118,18 +118,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 43,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 46,
+          "start": 44,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 50,
+          "start": 47,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -147,12 +147,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_CreateExclusion_sync",
       "segments": [
         {
-          "end": 53,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
@@ -162,18 +162,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 43,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 46,
+          "start": 44,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 50,
+          "start": 47,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -192,12 +192,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_CreateSink_async",
       "segments": [
         {
-          "end": 53,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
@@ -207,18 +207,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 43,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 46,
+          "start": 44,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 50,
+          "start": 47,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -236,12 +236,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_CreateSink_sync",
       "segments": [
         {
-          "end": 53,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
@@ -251,18 +251,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 43,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 46,
+          "start": 44,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 50,
+          "start": 47,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -370,12 +370,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_DeleteBucket_async",
       "segments": [
         {
-          "end": 47,
+          "end": 42,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 47,
+          "end": 42,
           "start": 27,
           "type": "SHORT"
         },
@@ -385,16 +385,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 43,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 44,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 48,
+          "end": 43,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -412,12 +412,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_DeleteBucket_sync",
       "segments": [
         {
-          "end": 47,
+          "end": 42,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 47,
+          "end": 42,
           "start": 27,
           "type": "SHORT"
         },
@@ -427,16 +427,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 43,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 44,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 48,
+          "end": 43,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -455,12 +455,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_DeleteExclusion_async",
       "segments": [
         {
-          "end": 46,
+          "end": 42,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 42,
           "start": 27,
           "type": "SHORT"
         },
@@ -470,16 +470,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 43,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 43,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -497,12 +497,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_DeleteExclusion_sync",
       "segments": [
         {
-          "end": 46,
+          "end": 42,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 42,
           "start": 27,
           "type": "SHORT"
         },
@@ -512,16 +512,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 43,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 43,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -540,12 +540,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_DeleteSink_async",
       "segments": [
         {
-          "end": 46,
+          "end": 42,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 42,
           "start": 27,
           "type": "SHORT"
         },
@@ -555,16 +555,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 43,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 43,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -582,12 +582,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_DeleteSink_sync",
       "segments": [
         {
-          "end": 46,
+          "end": 42,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 42,
           "start": 27,
           "type": "SHORT"
         },
@@ -597,16 +597,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 43,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 43,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -625,12 +625,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_DeleteView_async",
       "segments": [
         {
-          "end": 48,
+          "end": 42,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 42,
           "start": 27,
           "type": "SHORT"
         },
@@ -640,16 +640,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 44,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 45,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
+          "end": 43,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -667,12 +667,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_DeleteView_sync",
       "segments": [
         {
-          "end": 48,
+          "end": 42,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 42,
           "start": 27,
           "type": "SHORT"
         },
@@ -682,16 +682,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 44,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 45,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
+          "end": 43,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -710,12 +710,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_GetBucket_async",
       "segments": [
         {
-          "end": 49,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 49,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -725,18 +725,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 43,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 46,
-          "start": 44,
+          "end": 41,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 50,
-          "start": 47,
+          "end": 45,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -754,12 +754,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_GetBucket_sync",
       "segments": [
         {
-          "end": 49,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 49,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -769,18 +769,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 43,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 46,
-          "start": 44,
+          "end": 41,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 50,
-          "start": 47,
+          "end": 45,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -799,12 +799,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_GetCmekSettings_async",
       "segments": [
         {
-          "end": 47,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 47,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -814,18 +814,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 41,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 44,
-          "start": 42,
+          "end": 41,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 48,
-          "start": 45,
+          "end": 45,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -843,12 +843,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_GetCmekSettings_sync",
       "segments": [
         {
-          "end": 47,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 47,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -858,18 +858,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 41,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 44,
-          "start": 42,
+          "end": 41,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 48,
-          "start": 45,
+          "end": 45,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -888,12 +888,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_GetExclusion_async",
       "segments": [
         {
-          "end": 48,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -903,18 +903,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 43,
+          "end": 41,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 45,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -932,12 +932,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_GetExclusion_sync",
       "segments": [
         {
-          "end": 48,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -947,18 +947,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 43,
+          "end": 41,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 45,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -977,12 +977,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_GetSink_async",
       "segments": [
         {
-          "end": 48,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -992,18 +992,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 43,
+          "end": 41,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 45,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1021,12 +1021,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_GetSink_sync",
       "segments": [
         {
-          "end": 48,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -1036,18 +1036,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 43,
+          "end": 41,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 45,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1066,12 +1066,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_GetView_async",
       "segments": [
         {
-          "end": 50,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 50,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -1081,18 +1081,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 44,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 47,
-          "start": 45,
+          "end": 41,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 51,
-          "start": 48,
+          "end": 45,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1110,12 +1110,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_GetView_sync",
       "segments": [
         {
-          "end": 50,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 50,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -1125,18 +1125,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 44,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 47,
-          "start": 45,
+          "end": 41,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 51,
-          "start": 48,
+          "end": 45,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1155,12 +1155,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_ListBuckets_async",
       "segments": [
         {
-          "end": 48,
+          "end": 43,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 43,
           "start": 27,
           "type": "SHORT"
         },
@@ -1170,16 +1170,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 43,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 44,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
+          "end": 44,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1197,12 +1197,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_ListBuckets_sync",
       "segments": [
         {
-          "end": 48,
+          "end": 43,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 43,
           "start": 27,
           "type": "SHORT"
         },
@@ -1212,16 +1212,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 43,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 44,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
+          "end": 44,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1240,12 +1240,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_ListExclusions_async",
       "segments": [
         {
-          "end": 47,
+          "end": 43,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 47,
+          "end": 43,
           "start": 27,
           "type": "SHORT"
         },
@@ -1255,16 +1255,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 43,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 48,
+          "end": 44,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1282,12 +1282,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_ListExclusions_sync",
       "segments": [
         {
-          "end": 47,
+          "end": 43,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 47,
+          "end": 43,
           "start": 27,
           "type": "SHORT"
         },
@@ -1297,16 +1297,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 43,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 48,
+          "end": 44,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1325,12 +1325,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_ListSinks_async",
       "segments": [
         {
-          "end": 47,
+          "end": 43,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 47,
+          "end": 43,
           "start": 27,
           "type": "SHORT"
         },
@@ -1340,16 +1340,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 43,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 48,
+          "end": 44,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1367,12 +1367,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_ListSinks_sync",
       "segments": [
         {
-          "end": 47,
+          "end": 43,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 47,
+          "end": 43,
           "start": 27,
           "type": "SHORT"
         },
@@ -1382,16 +1382,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 43,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 48,
+          "end": 44,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1495,12 +1495,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_UndeleteBucket_async",
       "segments": [
         {
-          "end": 47,
+          "end": 42,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 47,
+          "end": 42,
           "start": 27,
           "type": "SHORT"
         },
@@ -1510,16 +1510,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 43,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 44,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 48,
+          "end": 43,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1537,12 +1537,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_UndeleteBucket_sync",
       "segments": [
         {
-          "end": 47,
+          "end": 42,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 47,
+          "end": 42,
           "start": 27,
           "type": "SHORT"
         },
@@ -1552,16 +1552,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 43,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 44,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 48,
+          "end": 43,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1580,12 +1580,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_UpdateBucket_async",
       "segments": [
         {
-          "end": 49,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 49,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -1595,18 +1595,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 43,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 46,
-          "start": 44,
+          "end": 41,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 50,
-          "start": 47,
+          "end": 45,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1624,12 +1624,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_UpdateBucket_sync",
       "segments": [
         {
-          "end": 49,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 49,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -1639,18 +1639,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 43,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 46,
-          "start": 44,
+          "end": 41,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 50,
-          "start": 47,
+          "end": 45,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1758,12 +1758,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_UpdateExclusion_async",
       "segments": [
         {
-          "end": 53,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
@@ -1773,18 +1773,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 43,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 46,
+          "start": 44,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 50,
+          "start": 47,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1802,12 +1802,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_UpdateExclusion_sync",
       "segments": [
         {
-          "end": 53,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
@@ -1817,18 +1817,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 43,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 46,
+          "start": 44,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 50,
+          "start": 47,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1847,12 +1847,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_UpdateSink_async",
       "segments": [
         {
-          "end": 53,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
@@ -1862,18 +1862,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 43,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 46,
+          "start": 44,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 50,
+          "start": 47,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1891,12 +1891,12 @@
       "regionTag": "logging_generated_logging_v2_ConfigServiceV2_UpdateSink_sync",
       "segments": [
         {
-          "end": 53,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
@@ -1906,18 +1906,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 43,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 46,
+          "start": 44,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 50,
+          "start": 47,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -2025,12 +2025,12 @@
       "regionTag": "logging_generated_logging_v2_LoggingServiceV2_DeleteLog_async",
       "segments": [
         {
-          "end": 46,
+          "end": 42,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 42,
           "start": 27,
           "type": "SHORT"
         },
@@ -2040,16 +2040,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 43,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 43,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -2067,12 +2067,12 @@
       "regionTag": "logging_generated_logging_v2_LoggingServiceV2_DeleteLog_sync",
       "segments": [
         {
-          "end": 46,
+          "end": 42,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 42,
           "start": 27,
           "type": "SHORT"
         },
@@ -2082,16 +2082,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 43,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 43,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -2110,12 +2110,12 @@
       "regionTag": "logging_generated_logging_v2_LoggingServiceV2_ListLogEntries_async",
       "segments": [
         {
-          "end": 47,
+          "end": 43,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 47,
+          "end": 43,
           "start": 27,
           "type": "SHORT"
         },
@@ -2125,16 +2125,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 43,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 48,
+          "end": 44,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -2152,12 +2152,12 @@
       "regionTag": "logging_generated_logging_v2_LoggingServiceV2_ListLogEntries_sync",
       "segments": [
         {
-          "end": 47,
+          "end": 43,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 47,
+          "end": 43,
           "start": 27,
           "type": "SHORT"
         },
@@ -2167,16 +2167,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 43,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 48,
+          "end": 44,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -2195,12 +2195,12 @@
       "regionTag": "logging_generated_logging_v2_LoggingServiceV2_ListLogs_async",
       "segments": [
         {
-          "end": 47,
+          "end": 43,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 47,
+          "end": 43,
           "start": 27,
           "type": "SHORT"
         },
@@ -2210,16 +2210,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 43,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 48,
+          "end": 44,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -2237,12 +2237,12 @@
       "regionTag": "logging_generated_logging_v2_LoggingServiceV2_ListLogs_sync",
       "segments": [
         {
-          "end": 47,
+          "end": 43,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 47,
+          "end": 43,
           "start": 27,
           "type": "SHORT"
         },
@@ -2252,16 +2252,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 43,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 48,
+          "end": 44,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -2539,12 +2539,12 @@
       "regionTag": "logging_generated_logging_v2_MetricsServiceV2_CreateLogMetric_async",
       "segments": [
         {
-          "end": 53,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
@@ -2554,18 +2554,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 43,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 46,
+          "start": 44,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 50,
+          "start": 47,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -2583,12 +2583,12 @@
       "regionTag": "logging_generated_logging_v2_MetricsServiceV2_CreateLogMetric_sync",
       "segments": [
         {
-          "end": 53,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
@@ -2598,18 +2598,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 43,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 46,
+          "start": 44,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 50,
+          "start": 47,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -2628,12 +2628,12 @@
       "regionTag": "logging_generated_logging_v2_MetricsServiceV2_DeleteLogMetric_async",
       "segments": [
         {
-          "end": 46,
+          "end": 42,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 42,
           "start": 27,
           "type": "SHORT"
         },
@@ -2643,16 +2643,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 43,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 43,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -2670,12 +2670,12 @@
       "regionTag": "logging_generated_logging_v2_MetricsServiceV2_DeleteLogMetric_sync",
       "segments": [
         {
-          "end": 46,
+          "end": 42,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 42,
           "start": 27,
           "type": "SHORT"
         },
@@ -2685,16 +2685,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 43,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 43,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -2713,12 +2713,12 @@
       "regionTag": "logging_generated_logging_v2_MetricsServiceV2_GetLogMetric_async",
       "segments": [
         {
-          "end": 48,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -2728,18 +2728,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 43,
+          "end": 41,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 45,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -2757,12 +2757,12 @@
       "regionTag": "logging_generated_logging_v2_MetricsServiceV2_GetLogMetric_sync",
       "segments": [
         {
-          "end": 48,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -2772,18 +2772,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 43,
+          "end": 41,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 45,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -2802,12 +2802,12 @@
       "regionTag": "logging_generated_logging_v2_MetricsServiceV2_ListLogMetrics_async",
       "segments": [
         {
-          "end": 46,
+          "end": 43,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 43,
           "start": 27,
           "type": "SHORT"
         },
@@ -2817,16 +2817,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 41,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 42,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 44,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -2844,12 +2844,12 @@
       "regionTag": "logging_generated_logging_v2_MetricsServiceV2_ListLogMetrics_sync",
       "segments": [
         {
-          "end": 46,
+          "end": 43,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 43,
           "start": 27,
           "type": "SHORT"
         },
@@ -2859,16 +2859,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 41,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 42,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 44,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -2887,12 +2887,12 @@
       "regionTag": "logging_generated_logging_v2_MetricsServiceV2_UpdateLogMetric_async",
       "segments": [
         {
-          "end": 53,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
@@ -2902,18 +2902,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 43,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 46,
+          "start": 44,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 50,
+          "start": 47,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -2931,12 +2931,12 @@
       "regionTag": "logging_generated_logging_v2_MetricsServiceV2_UpdateLogMetric_sync",
       "segments": [
         {
-          "end": 53,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
@@ -2946,18 +2946,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 43,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 46,
+          "start": 44,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 50,
+          "start": 47,
           "type": "RESPONSE_HANDLING"
         }
       ]

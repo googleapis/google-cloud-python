@@ -162,43 +162,6 @@ def test_preprocess_sample():
     ]
 
 
-def test_preprocess_sample_resource_message_field():
-    # Verify that the default response is added.
-    sample = {"service": "Mollusc", "rpc": "Classify"}
-
-    classify_request_message = DummyMessage(
-        fields={
-            "parent": DummyField(is_primitive=True, type=str, required=True, name="parent", resource_reference="parent"),
-            },
-        type=DummyMessageTypePB(name="ClassifyRequest"),
-        ident=DummyIdent(name="ClassifyRequest")
-        )
-
-    api_schema = DummyApiSchema(
-        services={"Mollusc": DummyService(
-            methods={}, client_name="MolluscClient",
-            resource_messages_dict={"parent": DummyMessage(
-                resource_path="projects/{project}")}
-            )},
-        naming=DummyNaming(warehouse_package_name="mollusc-cephalopod-teuthida-",
-                           versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
-        messages=classify_request_message,
-
-    )
-
-    rpc = DummyMethod(input=classify_request_message)
-
-    samplegen.Validator.preprocess_sample(sample, api_schema, rpc)
-
-    # assert mock request is created
-    assert sample["request"] == [
-        {
-            "field": "parent%project",
-            "value": '"my-project-id"'
-        }
-    ]
-
-
 def test_preprocess_sample_with_enum_field():
     # Verify that the default response is added.
     sample = {"service": "Mollusc", "rpc": "Classify"}

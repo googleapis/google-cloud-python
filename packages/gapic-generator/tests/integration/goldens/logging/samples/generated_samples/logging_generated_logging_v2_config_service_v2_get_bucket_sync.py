@@ -32,13 +32,8 @@ def sample_get_bucket():
     client = logging_v2.ConfigServiceV2Client()
 
     # Initialize request argument(s)
-    project = "my-project-id"
-    location = "us-central1"
-    bucket = "bucket_value"
-    name = f"projects/{project}/locations/{location}/buckets/{bucket}"
-
     request = logging_v2.GetBucketRequest(
-        name=name,
+        name="name_value",
     )
 
     # Make the request

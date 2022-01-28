@@ -32,11 +32,8 @@ async def sample_list_log_metrics():
     client = logging_v2.MetricsServiceV2AsyncClient()
 
     # Initialize request argument(s)
-    project = "my-project-id"
-    parent = f"projects/{project}"
-
     request = logging_v2.ListLogMetricsRequest(
-        parent=parent,
+        parent="parent_value",
     )
 
     # Make the request

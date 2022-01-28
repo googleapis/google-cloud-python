@@ -928,37 +928,6 @@ def parse_handwritten_specs(sample_configs: Sequence[str]) -> Generator[Dict[str
                     yield spec
 
 
-def _generate_resource_path_request_object(field_name: str, message: wrappers.MessageType) -> List[Dict[str, str]]:
-    """Given a message that represents a resource, generate request objects that 
-    populate the resource path args.
-
-    Args:
-        field_name (str): The name of the field.
-        message (wrappers.MessageType): The message the field belongs to.
-
-    Returns:
-        List[Dict[str, str]]: A list of dicts that can be turned into TransformedRequests.
-    """
-    request = []
-
-    # Look for specific field names to substitute more realistic values
-    special_values_dict = {
-        "project": '"my-project-id"',
-        "location": '"us-central1"'
-    }
-
-    for resource_path_arg in message.resource_path_args:
-        value = special_values_dict.get(
-            resource_path_arg, f'"{resource_path_arg}_value"')
-        request.append({
-            # See TransformedRequest.build() for how 'field' is parsed
-            "field": f"{field_name}%{resource_path_arg}",
-            "value": value,
-        })
-
-    return request
-
-
 def generate_request_object(api_schema: api.API, service: wrappers.Service, message: wrappers.MessageType, field_name_prefix: str = ""):
     """Generate dummy input for a given message.
 
@@ -993,18 +962,8 @@ def generate_request_object(api_schema: api.API, service: wrappers.Service, mess
 
         # TODO(busunkim): Properly handle map fields
         if field.is_primitive:
-            resource_reference_message = service.resource_messages_dict.get(
-                field.resource_reference)
-            # Some resource patterns have no resource_path_args
-            # https://github.com/googleapis/gapic-generator-python/issues/701
-            if resource_reference_message and resource_reference_message.resource_path_args:
-                request += _generate_resource_path_request_object(
-                    field_name,
-                    resource_reference_message
-                )
-            else:
-                request.append(
-                    {"field": field_name, "value": field.mock_value_original_type})
+            request.append(
+                {"field": field_name, "value": field.mock_value_original_type})
         elif field.enum:
             # Choose the last enum value in the list since index 0 is often "unspecified"
             request.append(

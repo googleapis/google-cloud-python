@@ -32,16 +32,12 @@ def sample_create_exclusion():
     client = logging_v2.ConfigServiceV2Client()
 
     # Initialize request argument(s)
-    project = "my-project-id"
-    exclusion = "exclusion_value"
-    parent = f"projects/{project}/exclusions/{exclusion}"
-
     exclusion = logging_v2.LogExclusion()
     exclusion.name = "name_value"
     exclusion.filter = "filter_value"
 
     request = logging_v2.CreateExclusionRequest(
-        parent=parent,
+        parent="parent_value",
         exclusion=exclusion,
     )
 

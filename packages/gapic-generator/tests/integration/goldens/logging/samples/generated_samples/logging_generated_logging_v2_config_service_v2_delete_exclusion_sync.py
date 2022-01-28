@@ -32,12 +32,8 @@ def sample_delete_exclusion():
     client = logging_v2.ConfigServiceV2Client()
 
     # Initialize request argument(s)
-    project = "my-project-id"
-    exclusion = "exclusion_value"
-    name = f"projects/{project}/exclusions/{exclusion}"
-
     request = logging_v2.DeleteExclusionRequest(
-        name=name,
+        name="name_value",
     )
 
     # Make the request

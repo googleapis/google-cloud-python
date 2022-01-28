@@ -32,12 +32,8 @@ def sample_sign_jwt():
     client = credentials_v1.IAMCredentialsClient()
 
     # Initialize request argument(s)
-    project = "my-project-id"
-    service_account = "service_account_value"
-    name = f"projects/{project}/serviceAccounts/{service_account}"
-
     request = credentials_v1.SignJwtRequest(
-        name=name,
+        name="name_value",
         payload="payload_value",
     )
 

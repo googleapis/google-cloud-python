@@ -209,12 +209,8 @@ class LoggingServiceV2AsyncClient:
                 client = logging_v2.LoggingServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                log = "log_value"
-                log_name = f"projects/{project}/logs/{log}"
-
                 request = logging_v2.DeleteLogRequest(
-                    log_name=log_name,
+                    log_name="log_name_value",
                 )
 
                 # Make the request
@@ -512,12 +508,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = logging_v2.LoggingServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                log = "log_value"
-                resource_names = f"projects/{project}/logs/{log}"
-
                 request = logging_v2.ListLogEntriesRequest(
-                    resource_names=resource_names,
+                    resource_names=['resource_names_value_1', 'resource_names_value_2'],
                 )
 
                 # Make the request
@@ -755,12 +747,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 client = logging_v2.LoggingServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                log = "log_value"
-                parent = f"projects/{project}/logs/{log}"
-
                 request = logging_v2.ListLogsRequest(
-                    parent=parent,
+                    parent="parent_value",
                 )
 
                 # Make the request

@@ -436,13 +436,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                location = "us-central1"
-                bucket = "bucket_value"
-                parent = f"projects/{project}/locations/{location}/buckets/{bucket}"
-
                 request = logging_v2.ListBucketsRequest(
-                    parent=parent,
+                    parent="parent_value",
                 )
 
                 # Make the request
@@ -555,13 +550,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                location = "us-central1"
-                bucket = "bucket_value"
-                name = f"projects/{project}/locations/{location}/buckets/{bucket}"
-
                 request = logging_v2.GetBucketRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
@@ -636,13 +626,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                location = "us-central1"
-                bucket = "bucket_value"
-                parent = f"projects/{project}/locations/{location}/buckets/{bucket}"
-
                 request = logging_v2.CreateBucketRequest(
-                    parent=parent,
+                    parent="parent_value",
                     bucket_id="bucket_id_value",
                 )
 
@@ -726,13 +711,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                location = "us-central1"
-                bucket = "bucket_value"
-                name = f"projects/{project}/locations/{location}/buckets/{bucket}"
-
                 request = logging_v2.UpdateBucketRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
@@ -807,13 +787,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                location = "us-central1"
-                bucket = "bucket_value"
-                name = f"projects/{project}/locations/{location}/buckets/{bucket}"
-
                 request = logging_v2.DeleteBucketRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
@@ -877,13 +852,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                location = "us-central1"
-                bucket = "bucket_value"
-                name = f"projects/{project}/locations/{location}/buckets/{bucket}"
-
                 request = logging_v2.UndeleteBucketRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
@@ -1052,14 +1022,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                location = "us-central1"
-                bucket = "bucket_value"
-                view = "view_value"
-                name = f"projects/{project}/locations/{location}/buckets/{bucket}/views/{view}"
-
                 request = logging_v2.GetViewRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
@@ -1288,14 +1252,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                location = "us-central1"
-                bucket = "bucket_value"
-                view = "view_value"
-                name = f"projects/{project}/locations/{location}/buckets/{bucket}/views/{view}"
-
                 request = logging_v2.DeleteViewRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
@@ -1358,12 +1316,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                sink = "sink_value"
-                parent = f"projects/{project}/sinks/{sink}"
-
                 request = logging_v2.ListSinksRequest(
-                    parent=parent,
+                    parent="parent_value",
                 )
 
                 # Make the request
@@ -1473,12 +1427,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                sink = "sink_value"
-                sink_name = f"projects/{project}/sinks/{sink}"
-
                 request = logging_v2.GetSinkRequest(
-                    sink_name=sink_name,
+                    sink_name="sink_name_value",
                 )
 
                 # Make the request
@@ -1592,16 +1542,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                sink = "sink_value"
-                parent = f"projects/{project}/sinks/{sink}"
-
                 sink = logging_v2.LogSink()
                 sink.name = "name_value"
                 sink.destination = "destination_value"
 
                 request = logging_v2.CreateSinkRequest(
-                    parent=parent,
+                    parent="parent_value",
                     sink=sink,
                 )
 
@@ -1728,16 +1674,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                sink = "sink_value"
-                sink_name = f"projects/{project}/sinks/{sink}"
-
                 sink = logging_v2.LogSink()
                 sink.name = "name_value"
                 sink.destination = "destination_value"
 
                 request = logging_v2.UpdateSinkRequest(
-                    sink_name=sink_name,
+                    sink_name="sink_name_value",
                     sink=sink,
                 )
 
@@ -1880,12 +1822,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                sink = "sink_value"
-                sink_name = f"projects/{project}/sinks/{sink}"
-
                 request = logging_v2.DeleteSinkRequest(
-                    sink_name=sink_name,
+                    sink_name="sink_name_value",
                 )
 
                 # Make the request
@@ -1975,12 +1913,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                exclusion = "exclusion_value"
-                parent = f"projects/{project}/exclusions/{exclusion}"
-
                 request = logging_v2.ListExclusionsRequest(
-                    parent=parent,
+                    parent="parent_value",
                 )
 
                 # Make the request
@@ -2090,12 +2024,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                exclusion = "exclusion_value"
-                name = f"projects/{project}/exclusions/{exclusion}"
-
                 request = logging_v2.GetExclusionRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
@@ -2211,16 +2141,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                exclusion = "exclusion_value"
-                parent = f"projects/{project}/exclusions/{exclusion}"
-
                 exclusion = logging_v2.LogExclusion()
                 exclusion.name = "name_value"
                 exclusion.filter = "filter_value"
 
                 request = logging_v2.CreateExclusionRequest(
-                    parent=parent,
+                    parent="parent_value",
                     exclusion=exclusion,
                 )
 
@@ -2347,16 +2273,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                exclusion = "exclusion_value"
-                name = f"projects/{project}/exclusions/{exclusion}"
-
                 exclusion = logging_v2.LogExclusion()
                 exclusion.name = "name_value"
                 exclusion.filter = "filter_value"
 
                 request = logging_v2.UpdateExclusionRequest(
-                    name=name,
+                    name="name_value",
                     exclusion=exclusion,
                 )
 
@@ -2494,12 +2416,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                exclusion = "exclusion_value"
-                name = f"projects/{project}/exclusions/{exclusion}"
-
                 request = logging_v2.DeleteExclusionRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request
@@ -2598,11 +2516,8 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 client = logging_v2.ConfigServiceV2Client()
 
                 # Initialize request argument(s)
-                project = "my-project-id"
-                name = f"projects/{project}/cmekSettings"
-
                 request = logging_v2.GetCmekSettingsRequest(
-                    name=name,
+                    name="name_value",
                 )
 
                 # Make the request

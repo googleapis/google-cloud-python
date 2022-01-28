@@ -32,12 +32,8 @@ async def sample_delete_feed():
     client = asset_v1.AssetServiceAsyncClient()
 
     # Initialize request argument(s)
-    project = "my-project-id"
-    feed = "feed_value"
-    name = f"projects/{project}/feeds/{feed}"
-
     request = asset_v1.DeleteFeedRequest(
-        name=name,
+        name="name_value",
     )
 
     # Make the request

@@ -366,12 +366,12 @@
       "regionTag": "cloudasset_generated_asset_v1_AssetService_DeleteFeed_async",
       "segments": [
         {
-          "end": 46,
+          "end": 42,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 42,
           "start": 27,
           "type": "SHORT"
         },
@@ -381,16 +381,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 43,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 43,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -408,12 +408,12 @@
       "regionTag": "cloudasset_generated_asset_v1_AssetService_DeleteFeed_sync",
       "segments": [
         {
-          "end": 46,
+          "end": 42,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 42,
           "start": 27,
           "type": "SHORT"
         },
@@ -423,16 +423,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 43,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 43,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -536,12 +536,12 @@
       "regionTag": "cloudasset_generated_asset_v1_AssetService_GetFeed_async",
       "segments": [
         {
-          "end": 48,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -551,18 +551,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 43,
+          "end": 41,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 45,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -580,12 +580,12 @@
       "regionTag": "cloudasset_generated_asset_v1_AssetService_GetFeed_sync",
       "segments": [
         {
-          "end": 48,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 48,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -595,18 +595,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 42,
+          "end": 38,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 45,
-          "start": 43,
+          "end": 41,
+          "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 49,
-          "start": 46,
+          "end": 45,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
