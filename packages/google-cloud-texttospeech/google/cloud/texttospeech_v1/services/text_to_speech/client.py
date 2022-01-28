@@ -398,15 +398,13 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
             language_code (str):
                 Optional. Recommended.
                 `BCP-47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__
-                language tag. If specified, the ListVoices call will
+                language tag. If not specified, the API will return all
+                supported voices. If specified, the ListVoices call will
                 only return voices that can be used to synthesize this
-                language_code. E.g. when specifying ``"en-NZ"``, you
-                will get supported ``"en-\*"`` voices; when specifying
-                ``"no"``, you will get supported ``"no-\*"`` (Norwegian)
-                and ``"nb-\*"`` (Norwegian Bokmal) voices; specifying
-                ``"zh"`` will also get supported ``"cmn-\*"`` voices;
-                specifying ``"zh-hk"`` will also get supported
-                ``"yue-\*"`` voices.
+                language_code. For example, if you specify ``"en-NZ"``,
+                all ``"en-NZ"`` voices will be returned. If you specify
+                ``"no"``, both ``"no-\*"`` (Norwegian) and ``"nb-\*"``
+                (Norwegian Bokmal) voices will be returned.
 
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
