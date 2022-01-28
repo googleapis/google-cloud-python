@@ -51,6 +51,9 @@ def reset_connection(dbapi_conn, connection_record):
     if getattr(dbapi_conn.connection, "staleness", None) is not None:
         dbapi_conn.connection.staleness = None
 
+    if getattr(dbapi_conn.connection, "read_only", None) is not None:
+        dbapi_conn.connection.read_only = False
+
 
 # register a method to get a single value of a JSON object
 OPERATORS[json_getitem_op] = operator_lookup["json_getitem_op"]
