@@ -27,6 +27,7 @@ __protobuf__ = proto.module(
     manifest={
         "NodeInfo",
         "Instance",
+        "PersistenceConfig",
         "RescheduleMaintenanceRequest",
         "MaintenancePolicy",
         "WeeklyMaintenanceWindow",
@@ -230,6 +231,9 @@ class Instance(proto.Message):
         read_replicas_mode (google.cloud.redis_v1beta1.types.Instance.ReadReplicasMode):
             Optional. Read replica mode. Can only be
             specified when trying to create the instance.
+        persistence_config (google.cloud.redis_v1beta1.types.PersistenceConfig):
+            Optional. Persistence configuration
+            parameters
     """
 
     class State(proto.Enum):
@@ -307,6 +311,59 @@ class Instance(proto.Message):
     read_endpoint = proto.Field(proto.STRING, number=33,)
     read_endpoint_port = proto.Field(proto.INT32, number=34,)
     read_replicas_mode = proto.Field(proto.ENUM, number=35, enum=ReadReplicasMode,)
+    persistence_config = proto.Field(
+        proto.MESSAGE, number=37, message="PersistenceConfig",
+    )
+
+
+class PersistenceConfig(proto.Message):
+    r"""Configuration of the persistence functionality.
+
+    Attributes:
+        persistence_mode (google.cloud.redis_v1beta1.types.PersistenceConfig.PersistenceMode):
+            Optional. Controls whether Persistence
+            features are enabled. If not provided, the
+            existing value will be used.
+        rdb_snapshot_period (google.cloud.redis_v1beta1.types.PersistenceConfig.SnapshotPeriod):
+            Optional. Period between RDB snapshots. Snapshots will be
+            attempted every period starting from the provided snapshot
+            start time. For example, a start time of 01/01/2033 06:45
+            and SIX_HOURS snapshot period will do nothing until
+            01/01/2033, and then trigger snapshots every day at 06:45,
+            12:45, 18:45, and 00:45 the next day, and so on. If not
+            provided, TWENTY_FOUR_HOURS will be used as default.
+        rdb_next_snapshot_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The next time that a snapshot
+            attempt is scheduled to occur.
+        rdb_snapshot_start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. Date and time that the first
+            snapshot was/will be attempted, and to which
+            future snapshots will be aligned. If not
+            provided, the current time will be used.
+    """
+
+    class PersistenceMode(proto.Enum):
+        r"""Available Persistence modes."""
+        PERSISTENCE_MODE_UNSPECIFIED = 0
+        DISABLED = 1
+        RDB = 2
+
+    class SnapshotPeriod(proto.Enum):
+        r"""Available snapshot periods for scheduling."""
+        SNAPSHOT_PERIOD_UNSPECIFIED = 0
+        ONE_HOUR = 3
+        SIX_HOURS = 4
+        TWELVE_HOURS = 5
+        TWENTY_FOUR_HOURS = 6
+
+    persistence_mode = proto.Field(proto.ENUM, number=1, enum=PersistenceMode,)
+    rdb_snapshot_period = proto.Field(proto.ENUM, number=2, enum=SnapshotPeriod,)
+    rdb_next_snapshot_time = proto.Field(
+        proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,
+    )
+    rdb_snapshot_start_time = proto.Field(
+        proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,
+    )
 
 
 class RescheduleMaintenanceRequest(proto.Message):

@@ -36,6 +36,7 @@ from .types.cloud_redis import MaintenancePolicy
 from .types.cloud_redis import MaintenanceSchedule
 from .types.cloud_redis import NodeInfo
 from .types.cloud_redis import OutputConfig
+from .types.cloud_redis import PersistenceConfig
 from .types.cloud_redis import RescheduleMaintenanceRequest
 from .types.cloud_redis import TlsCertificate
 from .types.cloud_redis import UpdateInstanceRequest
@@ -65,6 +66,7 @@ __all__ = (
     "MaintenanceSchedule",
     "NodeInfo",
     "OutputConfig",
+    "PersistenceConfig",
     "RescheduleMaintenanceRequest",
     "TlsCertificate",
     "UpdateInstanceRequest",
