@@ -22,7 +22,7 @@ from google.resumable_media import common
 from google.resumable_media import _helpers
 from google.resumable_media.requests import download as download_mod
 from google.resumable_media.requests import _request_helpers
-
+from google.resumable_media._helpers import _base_headers
 
 URL_PREFIX = "https://www.googleapis.com/download/storage/v1/b/{BUCKET}/o/"
 EXAMPLE_URL = URL_PREFIX + "{OBJECT}?alt=media"
@@ -241,7 +241,7 @@ class TestDownload(object):
 
         assert stream.getvalue() == b"".join(chunks)
         assert download.finished
-        assert download._headers == {}
+        assert download._headers == _base_headers({})
 
         error = exc_info.value
         assert error.response is transport.request.return_value
@@ -260,7 +260,7 @@ class TestDownload(object):
             "GET",
             EXAMPLE_URL,
             data=None,
-            headers={},
+            headers=_base_headers({}),
             stream=True,
             timeout=EXPECTED_TIMEOUT,
         )
@@ -271,7 +271,7 @@ class TestDownload(object):
         self._consume_helper(end=end, headers=headers)
         range_bytes = "bytes={:d}-{:d}".format(0, end)
         # Make sure the headers have been modified.
-        assert headers == {"range": range_bytes}
+        assert headers == _base_headers({"range": range_bytes})
 
 
 class TestRawDownload(object):
@@ -494,7 +494,7 @@ class TestRawDownload(object):
 
         assert stream.getvalue() == b"".join(chunks)
         assert download.finished
-        assert download._headers == {}
+        assert download._headers == _base_headers({})
 
         error = exc_info.value
         assert error.response is transport.request.return_value
@@ -513,7 +513,7 @@ class TestRawDownload(object):
             "GET",
             EXAMPLE_URL,
             data=None,
-            headers={},
+            headers=_base_headers({}),
             stream=True,
             timeout=EXPECTED_TIMEOUT,
         )
@@ -524,7 +524,7 @@ class TestRawDownload(object):
         self._consume_helper(end=end, headers=headers)
         range_bytes = "bytes={:d}-{:d}".format(0, end)
         # Make sure the headers have been modified.
-        assert headers == {"range": range_bytes}
+        assert headers == _base_headers({"range": range_bytes})
 
 
 class TestChunkedDownload(object):
@@ -589,7 +589,7 @@ class TestChunkedDownload(object):
         ret_val = download.consume_next_chunk(transport)
         assert ret_val is transport.request.return_value
         range_bytes = "bytes={:d}-{:d}".format(start, start + chunk_size - 1)
-        download_headers = {"range": range_bytes}
+        download_headers = _base_headers({"range": range_bytes})
         transport.request.assert_called_once_with(
             "GET",
             EXAMPLE_URL,
@@ -618,7 +618,7 @@ class TestChunkedDownload(object):
         download.consume_next_chunk(transport, timeout=14.7)
 
         range_bytes = "bytes={:d}-{:d}".format(start, start + chunk_size - 1)
-        download_headers = {"range": range_bytes}
+        download_headers = _base_headers({"range": range_bytes})
         transport.request.assert_called_once_with(
             "GET",
             EXAMPLE_URL,
@@ -695,7 +695,7 @@ class TestRawChunkedDownload(object):
             "GET",
             EXAMPLE_URL,
             data=None,
-            headers=download_headers,
+            headers=_base_headers(download_headers),
             stream=True,
             timeout=EXPECTED_TIMEOUT,
         )
@@ -725,7 +725,7 @@ class TestRawChunkedDownload(object):
             "GET",
             EXAMPLE_URL,
             data=None,
-            headers=download_headers,
+            headers=_base_headers(download_headers),
             stream=True,
             timeout=14.7,
         )

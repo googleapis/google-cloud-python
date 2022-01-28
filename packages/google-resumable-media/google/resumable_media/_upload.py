@@ -83,7 +83,7 @@ class UploadBase(object):
         self.upload_url = upload_url
         if headers is None:
             headers = {}
-        self._headers = headers
+        self._headers = _helpers._base_headers(headers)
         self._finished = False
         self._retry_strategy = common.RetryStrategy()
 
