@@ -4,11 +4,14 @@ from docfx_yaml.extension import convert_cross_references
 from docfx_yaml.extension import search_cross_references
 from docfx_yaml.extension import format_code
 from docfx_yaml.extension import extract_product_name
+from docfx_yaml.extension import highlight_md_codeblocks
 
 import unittest
 from parameterized import parameterized
 
 from yaml import load, Loader
+
+import tempfile
 
 class TestGenerate(unittest.TestCase):
     def test_indent_code_left(self):
@@ -189,6 +192,39 @@ for i in range(10):
         short_product_name = extract_product_name(short_name)
 
         self.assertEqual(short_name_want, short_product_name)
+
+
+    # Filenames to test markdown syntax highlight with.
+    test_markdown_filenames = [
+        [
+            "tests/markdown_syntax_highlight.md",
+            "tests/markdown_syntax_highlight_want.md"
+        ],
+        [
+            "tests/markdown_no_highlight.md",
+            "tests/markdown_no_highlight_want.md"
+        ],
+        [
+            "tests/markdown_mixed_highlight.md",
+            "tests/markdown_mixed_highlight_want.md"
+        ],
+    ]
+    @parameterized.expand(test_markdown_filenames)
+    def test_highlight_md_codeblocks(self, base_filename, want_filename):
+        # Test to ensure codeblocks in markdown files are correctly highlighted.
+
+        # Copy the base file we'll need to test.
+        with tempfile.NamedTemporaryFile(mode='r+', delete=False) as test_file:
+            with open(base_filename) as base_file:
+                test_file.write(base_file.read())
+                test_file.flush()
+
+            highlight_md_codeblocks(test_file.name)
+            test_file.seek(0)
+
+            with open(want_filename) as mdfile_want:
+                self.assertEqual(test_file.read(), mdfile_want.read())
+
 
 if __name__ == '__main__':
     unittest.main()

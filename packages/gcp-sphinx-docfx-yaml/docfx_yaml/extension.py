@@ -1268,6 +1268,52 @@ def extract_header_from_markdown(mdfile_iterator):
     return mdfile_name
 
 
+# For a given markdown file, adds syntax highlighting to code blocks.
+def highlight_md_codeblocks(mdfile):
+    fence = '```'
+    fence_with_python = '```python'
+    new_lines = []
+
+    with open(mdfile) as mdfile_iterator:
+        file_content = mdfile_iterator.read()
+        # If there is an odd number of code block annotations, do not syntax
+        # highlight.
+        if file_content.count(fence) % 2 != 0:
+            print(f'{mdfile_iterator.name} contains wrong format of code blocks. Skipping syntax highlighting.')
+            return
+        # Retrieve code block positions to replace
+        codeblocks = [[m.start(), m.end()] for m in re.finditer(
+                                                      fence,
+                                                      file_content)]
+
+        # This is equivalent to grabbing every odd index item.
+        codeblocks = codeblocks[::2]
+        # Used to store code blocks that come without language indicators.
+        blocks_without_indicators = []
+
+        # Check if the fence comes without a language indicator. If so, include
+        # this to a list to render.
+        for start, end in codeblocks:
+            if file_content[end] == '\n':
+                blocks_without_indicators.append([start, end])
+
+        # Stitch content that does not need to be parsed, and replace with
+        # `fence_with_python` for parsed portions.
+        prev_start = prev_end = 0
+        for start, end in blocks_without_indicators:
+            new_lines.append(file_content[prev_end:start])
+            new_lines.append(fence_with_python)
+            prev_start, prev_end = start, end
+
+        # Include rest of the content.
+        new_lines.append(file_content[prev_end:])
+
+    # Overwrite with newly parsed content.
+    with open(mdfile, 'w') as mdfile_iterator:
+        new_content = ''.join(new_lines)
+        mdfile_iterator.write(new_content)
+
+
 # Given generated markdown files, incorporate them into the docfx_yaml output.
 # The markdown file metadata will be added to top level of the TOC.
 def find_markdown_pages(app, outdir):
@@ -1294,6 +1340,7 @@ def find_markdown_pages(app, outdir):
     # For each file, if it is a markdown file move to the top level pages.
     for mdfile in markdown_dir.iterdir():
         if mdfile.is_file() and mdfile.name.lower() not in files_to_ignore:
+            highlight_md_codeblocks(markdown_dir / mdfile.name)
             shutil.copy(mdfile, f"{outdir}/{mdfile.name.lower()}")
 
             # Extract the header name for TOC.
