@@ -2,6 +2,6 @@ black==21.10.b0
 parameterized==0.8.1
 # google-resumable-media-python requires manual update as this repo isn't templated.
 # python-api-core also requires manual update as it is not templated.
-sphinx==4.3.2
+sphinx==4.4.0
 -e .
 tox
