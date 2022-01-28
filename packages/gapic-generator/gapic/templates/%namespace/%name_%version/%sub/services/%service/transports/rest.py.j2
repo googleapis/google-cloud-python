@@ -231,6 +231,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
 
             rest_transport = operations_v1.OperationsRestTransport(
                     host=self._host,
+                    # use the credentials which are saved
                     credentials=self._credentials,
                     scopes=self._scopes,
                     http_options=http_options)

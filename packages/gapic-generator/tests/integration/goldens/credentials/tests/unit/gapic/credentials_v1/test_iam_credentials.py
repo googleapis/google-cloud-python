@@ -385,15 +385,16 @@ def test_iam_credentials_client_client_options_scopes(client_class, transport_cl
             always_use_jwt_access=True,
         )
 
-@pytest.mark.parametrize("client_class,transport_class,transport_name", [
-    (IAMCredentialsClient, transports.IAMCredentialsGrpcTransport, "grpc"),
-    (IAMCredentialsAsyncClient, transports.IAMCredentialsGrpcAsyncIOTransport, "grpc_asyncio"),
+@pytest.mark.parametrize("client_class,transport_class,transport_name,grpc_helpers", [
+    (IAMCredentialsClient, transports.IAMCredentialsGrpcTransport, "grpc", grpc_helpers),
+    (IAMCredentialsAsyncClient, transports.IAMCredentialsGrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
 ])
-def test_iam_credentials_client_client_options_credentials_file(client_class, transport_class, transport_name):
+def test_iam_credentials_client_client_options_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(
         credentials_file="credentials.json"
     )
+
     with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -407,6 +408,37 @@ def test_iam_credentials_client_client_options_credentials_file(client_class, tr
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
         )
+
+    if "grpc" in transport_name:
+        # test that the credentials from file are saved and used as the credentials.
+        with mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds, mock.patch.object(
+            google.auth, "default", autospec=True
+        ) as adc, mock.patch.object(
+            grpc_helpers, "create_channel"
+        ) as create_channel:
+            creds = ga_credentials.AnonymousCredentials()
+            file_creds = ga_credentials.AnonymousCredentials()
+            load_creds.return_value = (file_creds, None)
+            adc.return_value = (creds, None)
+            client = client_class(client_options=options, transport=transport_name)
+            create_channel.assert_called_with(
+                "iamcredentials.googleapis.com:443",
+                credentials=file_creds,
+                credentials_file=None,
+                quota_project_id=None,
+                default_scopes=(
+                    'https://www.googleapis.com/auth/cloud-platform',
+),
+                scopes=None,
+                default_host="iamcredentials.googleapis.com",
+                ssl_credentials=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
+            )
 
 def test_iam_credentials_client_client_options_from_dict():
     with mock.patch('google.iam.credentials_v1.services.iam_credentials.transports.IAMCredentialsGrpcTransport.__init__') as grpc_transport:
