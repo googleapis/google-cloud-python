@@ -23,10 +23,6 @@ metadata = (("showcase-trailer", "hello world"),)
 
 
 def test_unary_stream(echo):
-    if isinstance(echo.transport, type(echo).get_transport_class("rest")):
-        # (TODO: dovs) Temporarily disabling rest
-        return
-
     content = 'The hail in Wales falls mainly on the snails.'
     responses = echo.expand({
         'content': content,
@@ -37,8 +33,8 @@ def test_unary_stream(echo):
     for ground_truth, response in zip(content.split(' '), responses):
         assert response.content == ground_truth
     assert ground_truth == 'snails.'
-
-    assert responses.trailing_metadata() == metadata
+    if isinstance(echo.transport, type(echo).get_transport_class("grpc")):
+        assert responses.trailing_metadata() == metadata
 
 
 def test_stream_unary(echo):

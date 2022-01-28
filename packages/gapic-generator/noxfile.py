@@ -342,7 +342,6 @@ def showcase_unit(
     session, templates="DEFAULT", other_opts: typing.Iterable[str] = (),
 ):
     """Run the generated unit tests against the Showcase library."""
-
     with showcase_library(session, templates=templates, other_opts=other_opts) as lib:
         session.chdir(lib)
         run_showcase_unit_tests(session)

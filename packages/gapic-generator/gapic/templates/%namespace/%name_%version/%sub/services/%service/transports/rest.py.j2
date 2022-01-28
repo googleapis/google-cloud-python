@@ -11,8 +11,10 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.api_core import rest_helpers
+from google.api_core import rest_streaming
 from google.api_core import path_template
 from google.api_core import gapic_v1
+
 {% if service.has_lro %}
 from google.api_core import operations_v1
 from google.protobuf import json_format
@@ -66,7 +68,7 @@ class {{ service.name }}RestInterceptor:
 
     .. code-block:
         class MyCustom{{ service.name }}Interceptor({{ service.name }}RestInterceptor):
-    {% for _, method in service.methods|dictsort if not (method.server_streaming or method.client_streaming) %}
+    {% for _, method in service.methods|dictsort if not method.client_streaming %}
             def pre_{{ method.name|snake_case }}(request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -82,7 +84,7 @@ class {{ service.name }}RestInterceptor:
 
 
     """
-    {% for method in service.methods.values()|sort(attribute="name") if not (method.server_streaming or method.client_streaming) %}
+    {% for method in service.methods.values()|sort(attribute="name") if not method.client_streaming %}
     def pre_{{ method.name|snake_case }}(self, request: {{method.input.ident}}, metadata: Sequence[Tuple[str, str]]) -> Tuple[{{method.input.ident}}, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for {{ method.name|snake_case }}
 
@@ -92,7 +94,11 @@ class {{ service.name }}RestInterceptor:
         return request, metadata
 
     {% if not method.void %}
+    {% if not method.server_streaming %}
     def post_{{ method.name|snake_case }}(self, response: {{method.output.ident}}) -> {{method.output.ident}}:
+    {% else %}
+    def post_{{ method.name|snake_case }}(self, response: rest_streaming.ResponseIterator) -> rest_streaming.ResponseIterator:
+    {% endif %}
         """Post-rpc interceptor for {{ method.name|snake_case }}
 
         Override in a subclass to manipulate the response
@@ -248,8 +254,7 @@ class {{service.name}}RestTransport({{service.name}}Transport):
         def __hash__(self):
             return hash("{{method.name}}")
 
-
-        {% if not (method.server_streaming or method.client_streaming) %}
+        {% if not method.client_streaming %}
         {% if method.input.required_fields %}
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
         {% for req_field in method.input.required_fields if req_field.is_primitive and req_field.name in method.query_params %}
@@ -262,15 +267,15 @@ class {{service.name}}RestTransport({{service.name}}Transport):
         def _get_unset_required_fields(cls, message_dict):
             return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
         {% endif %}{# required fields #}
-        {% endif %}{# not (method.server_streaming or method.client_streaming) #}
+        {% endif %}{# not method.client_streaming #}
 
         def __call__(self,
                 request: {{method.input.ident}}, *,
                 retry: OptionalRetry=gapic_v1.method.DEFAULT,
                 timeout: float=None,
                 metadata: Sequence[Tuple[str, str]]=(),
-                ){% if not method.void %} -> {{method.output.ident}}{% endif %}:
-    {% if method.http_options and not (method.server_streaming or method.client_streaming) %}
+                ){% if not method.void %} -> {% if not method.server_streaming %}{{method.output.ident}}{% else %}rest_streaming.ResponseIterator{% endif %}{% endif %}:
+    {% if method.http_options and not method.client_streaming %}
             r"""Call the {{- ' ' -}}
             {{ (method.name|snake_case).replace('_',' ')|wrap(
                     width=70, offset=45, indent=8) }}
@@ -360,6 +365,8 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             {% if method.lro %}
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            {% elif method.server_streaming %}
+            resp = rest_streaming.ResponseIterator(response, {{method.output.ident}})
             {% else %}
             resp = {{method.output.ident}}.from_json(
                 response.content,
@@ -370,14 +377,14 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             return resp
 
             {% endif %}{# method.void #}
-     {% else %}{# method.http_options and not (method.server_streaming or method.client_streaming) #}
+     {% else %}{# method.http_options and not method.client_streaming #}
             {% if not method.http_options %}
             raise RuntimeError(
                 "Cannot define a method without a valid 'google.api.http' annotation.")
 
-            {% elif method.server_streaming or method.client_streaming %}
+            {% elif method.client_streaming %}
             raise NotImplementedError(
-                "Streaming over REST is not yet defined for python client")
+                "Client streaming over REST is not yet defined for python client")
 
             {% else %}
             raise NotImplementedError()

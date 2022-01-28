@@ -8,6 +8,7 @@ import mock
 import grpc
 from grpc.experimental import aio
 {% if "rest" in opts.transport %}
+from collections.abc import Iterable
 import json
 {% endif %}
 import math
@@ -861,8 +862,8 @@ def test_{{ method_name }}_raw_page_lro():
 {% endfor %} {# method in methods for grpc #}
 
 {% for method in service.methods.values() if 'rest' in opts.transport %}{% with method_name = method.name|snake_case + "_unary" if method.operation_service else method.name|snake_case %}{% if method.http_options %}
-{# TODO(kbandes): remove this if condition when streaming are supported. #}
-{% if not (method.server_streaming or method.client_streaming) %}
+{# TODO(kbandes): remove this if condition when client streaming are supported. #}
+{% if not method.client_streaming %}
 @pytest.mark.parametrize("request_type", [
   {{ method.input.ident }},
   dict,
@@ -884,8 +885,6 @@ def test_{{ method_name }}_rest(request_type, transport: str = 'rest'):
         return_value = None
         {% elif method.lro %}
         return_value = operations_pb2.Operation(name='operations/spam')
-        {% elif method.server_streaming %}
-        return_value = iter([{{ method.output.ident }}()])
         {% else %}
         return_value = {{ method.output.ident }}(
             {% for field in method.output.fields.values() | rejectattr('message')%}
@@ -905,6 +904,8 @@ def test_{{ method_name }}_rest(request_type, transport: str = 'rest'):
         req.return_value.request = PreparedRequest()
         {% if method.void %}
         json_return_value = ''
+        {% elif method.server_streaming %}
+        json_return_value = "[{}]".format({{ method.output.ident }}.to_json(return_value))
         {% else %}
         json_return_value = {{ method.output.ident }}.to_json(return_value)
         {% endif %}
@@ -914,6 +915,10 @@ def test_{{ method_name }}_rest(request_type, transport: str = 'rest'):
             # the request over the wire, so an empty request is fine.
             {% if method.client_streaming %}
             client.{{ method_name }}(iter([requests]))
+            {% elif method.server_streaming %}
+            with mock.patch.object(response_value, 'iter_content') as iter_content:
+                iter_content.return_value = iter(json_return_value)
+                response = client.{{ method_name }}(request)
             {% else %}
             client.{{ method_name }}(request)
             {% endif %}
@@ -950,8 +955,6 @@ def test_{{ method.name|snake_case }}_rest(request_type):
         return_value = None
         {% elif method.lro %}
         return_value = operations_pb2.Operation(name='operations/spam')
-        {% elif method.server_streaming %}
-        return_value = iter([{{ method.output.ident }}()])
         {% else %}
         return_value = {{ method.output.ident }}(
             {% for field in method.output.fields.values() | rejectattr('message')%}
@@ -974,6 +977,8 @@ def test_{{ method.name|snake_case }}_rest(request_type):
         json_return_value = ''
         {% elif method.lro %}
         json_return_value = json_format.MessageToJson(return_value)
+    {% elif method.server_streaming %}
+        json_return_value = "[{}]".format({{ method.output.ident }}.to_json(return_value))
     {% else %}
         json_return_value = {{ method.output.ident }}.to_json(return_value)
     {% endif %}
@@ -981,6 +986,10 @@ def test_{{ method.name|snake_case }}_rest(request_type):
         req.return_value = response_value
         {% if method.client_streaming %}
         response = client.{{ method.name|snake_case }}(iter(requests))
+        {% elif method.server_streaming %}
+        with mock.patch.object(response_value, 'iter_content') as iter_content:
+            iter_content.return_value = iter(json_return_value)
+            response = client.{{ method_name }}(request)
         {% else %}
         response = client.{{ method_name }}(request)
         {% endif %}
@@ -989,6 +998,11 @@ def test_{{ method.name|snake_case }}_rest(request_type):
     {# Cheeser assertion to force code coverage for bad paginated methods #}
     assert response.raw_page is response
 
+    {% endif %}
+
+    {% if method.server_streaming %}
+    assert isinstance(response, Iterable)
+    response = next(response)
     {% endif %}
 
     # Establish that the response is the type that we expect.
@@ -1085,8 +1099,6 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     return_value = None
     {% elif method.lro %}
     return_value = operations_pb2.Operation(name='operations/spam')
-    {% elif method.server_streaming %}
-    return_value = iter([{{ method.output.ident }}()])
     {% else %}
     return_value = {{ method.output.ident }}()
     {% endif %}
@@ -1114,6 +1126,8 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
             json_return_value = ''
             {% elif method.lro %}
             json_return_value = json_format.MessageToJson(return_value)
+            {% elif method.server_streaming %}
+            json_return_value = "[{}]".format({{ method.output.ident }}.to_json(return_value))
             {% else %}
             json_return_value = {{ method.output.ident }}.to_json(return_value)
             {% endif %}
@@ -1122,6 +1136,10 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
 
             {% if method.client_streaming %}
             response = client.{{ method.name|snake_case }}(iter(requests))
+            {% elif method.server_streaming %}
+            with mock.patch.object(response_value, 'iter_content') as iter_content:
+                iter_content.return_value = iter(json_return_value)
+                response = client.{{ method_name }}(request)
             {% else %}
             response = client.{{ method_name }}(request)
             {% endif %}
@@ -1248,8 +1266,6 @@ def test_{{ method.name|snake_case }}_rest_flattened():
         return_value = None
         {% elif method.lro %}
         return_value = operations_pb2.Operation(name='operations/spam')
-        {% elif method.server_streaming %}
-        return_value = iter([{{ method.output.ident }}()])
         {% else %}
         return_value = {{ method.output.ident }}()
         {% endif %}
@@ -1261,6 +1277,8 @@ def test_{{ method.name|snake_case }}_rest_flattened():
         json_return_value = ''
         {% elif method.lro %}
         json_return_value = json_format.MessageToJson(return_value)
+    {% elif method.server_streaming %}
+        json_return_value = "[{}]".format({{ method.output.ident }}.to_json(return_value))
     {% else %}
         json_return_value = {{ method.output.ident }}.to_json(return_value)
     {% endif %}
@@ -1281,7 +1299,14 @@ def test_{{ method.name|snake_case }}_rest_flattened():
             {% endfor %}
         )
         mock_args.update(sample_request)
+
+        {% if method.server_streaming %}
+        with mock.patch.object(response_value, 'iter_content') as iter_content:
+            iter_content.return_value = iter(json_return_value)
+            client.{{ method_name }}(**mock_args)
+        {% else %}
         client.{{ method_name }}(**mock_args)
+        {% endif %}
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1385,6 +1410,9 @@ def test_{{ method_name }}_rest_pager(transport: str = 'rest'):
         response = tuple({{ method.output.ident }}.to_json(x) for x in response)
         return_values = tuple(Response() for i in response)
         for return_val, response_val in zip(return_values, response):
+            {% if method.server_streaming %}
+            response_val = "[{}]".format({{ method.output.ident }}.to_json(response_val))
+            {% endif %}
             return_val._content = response_val.encode('UTF-8')
             return_val.status_code = 200
         req.side_effect = return_values
