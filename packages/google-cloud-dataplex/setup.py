@@ -20,7 +20,7 @@ import os
 import setuptools
 
 
-name = "google-cloud-access-approval"
+name = "google-cloud-dataplex"
 description = "Dataplex API client library"
 url = "https://github.com/googleapis/python-dataplex"
 version = "0.1.0"
