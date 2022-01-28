@@ -1,0 +1,16 @@
+{
+    "name": "dataplex",
+    "name_pretty": "Cloud Dataplex API",
+    "product_documentation": "https://cloud.google.com/dataplex",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/dataplex/latest",
+    "issue_tracker": "",
+    "release_level": "preview",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-dataplex",
+    "distribution_name": "google-cloud-dataplex",
+    "api_id": "dataplex.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": "",
+    "api_shortname": "dataplex"
+}
