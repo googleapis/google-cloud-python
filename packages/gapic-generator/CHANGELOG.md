@@ -1,6 +1,19 @@
 # Changelog
 
 
+## [0.61.0](https://github.com/googleapis/gapic-generator-python/compare/v0.60.0...v0.61.0) (2022-01-28)
+
+
+### Features
+
+* add interceptor-like functionality to REST transport ([#1142](https://github.com/googleapis/gapic-generator-python/issues/1142)) ([fe57eb2](https://github.com/googleapis/gapic-generator-python/commit/fe57eb26badb596fd9bd8a0b8b65f00f060b009d))
+
+
+### Bug Fixes
+
+* preserve hyperlinks with hyphens ([#1140](https://github.com/googleapis/gapic-generator-python/issues/1140)) ([b091bfc](https://github.com/googleapis/gapic-generator-python/commit/b091bfc523ee40af4ef0b28abfc0c26dcdf09ebe)), closes [#1131](https://github.com/googleapis/gapic-generator-python/issues/1131)
+* resolve DuplicateCredentialArgs when using credentials_file ([#1159](https://github.com/googleapis/gapic-generator-python/issues/1159)) ([fccd2ba](https://github.com/googleapis/gapic-generator-python/commit/fccd2ba4f67c92bce5d9f7a2d59d5f1ea28829b5))
+
 ## [0.60.0](https://github.com/googleapis/gapic-generator-python/compare/v0.59.1...v0.60.0) (2022-01-19)
 
 
