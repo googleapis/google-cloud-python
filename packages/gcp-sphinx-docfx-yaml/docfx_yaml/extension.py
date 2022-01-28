@@ -1327,9 +1327,6 @@ def find_markdown_pages(app, outdir):
 
         "readme.md",    # README does not seem to work in cloud site
                         # See https://github.com/googleapis/sphinx-docfx-yaml/issues/107.
-
-        "upgrading.md", # Currently the formatting breaks, will need to come back to it.
-                        # See https://github.com/googleapis/sphinx-docfx-yaml/issues/108.
     ]
 
     markdown_dir = Path(app.builder.outdir).parent / "markdown"
