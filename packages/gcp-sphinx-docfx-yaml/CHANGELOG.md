@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.4.1](https://github.com/googleapis/sphinx-docfx-yaml/compare/v1.4.0...v1.4.1) (2022-01-28)
+
+
+### Bug Fixes
+
+* enable upgrading docs ([#172](https://github.com/googleapis/sphinx-docfx-yaml/issues/172)) ([bb68ea9](https://github.com/googleapis/sphinx-docfx-yaml/commit/bb68ea95ded306ccb3513c9684ce2d1ad6b3e74c))
+
 ## [1.4.0](https://github.com/googleapis/sphinx-docfx-yaml/compare/v1.3.3...v1.4.0) (2022-01-28)
 
 
