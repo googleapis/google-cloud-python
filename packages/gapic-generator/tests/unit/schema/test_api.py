@@ -233,7 +233,27 @@ def test_proto_keyword_fname():
             name='class.proto',
             package='google.keywords.v1',
             messages=(make_message_pb2(name='ClassRequest', fields=()),),
-        )
+        ),
+        make_file_pb2(
+            name='metadata.proto',
+            package='google.keywords.v1',
+            messages=(make_message_pb2(name='MetadataRequest', fields=()),),
+        ),
+        make_file_pb2(
+            name='retry.proto',
+            package='google.keywords.v1',
+            messages=(make_message_pb2(name='RetryRequest', fields=()),),
+        ),
+        make_file_pb2(
+            name='timeout.proto',
+            package='google.keywords.v1',
+            messages=(make_message_pb2(name='TimeoutRequest', fields=()),),
+        ),
+        make_file_pb2(
+            name='request.proto',
+            package='google.keywords.v1',
+            messages=(make_message_pb2(name='RequestRequest', fields=()),),
+        ),
     )
 
     # We can't create new collisions, so check that renames cascade.
@@ -243,6 +263,10 @@ def test_proto_keyword_fname():
         'import__.proto',
         'class_.proto',
         'class__.proto',
+        'metadata_.proto',
+        'retry_.proto',
+        'timeout_.proto',
+        'request_.proto',
     }
 
 

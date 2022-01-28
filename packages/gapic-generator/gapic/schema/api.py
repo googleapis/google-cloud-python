@@ -262,12 +262,16 @@ class API:
             file_descriptors,
         ), opts=opts)
 
+        # "metadata", "retry", "timeout", and "request" are reserved words in client methods.
+        invalid_module_names = set(keyword.kwlist) | {
+            "metadata", "retry", "timeout", "request"}
+
         def disambiguate_keyword_fname(
                 full_path: str,
                 visited_names: Container[str]) -> str:
             path, fname = os.path.split(full_path)
             name, ext = os.path.splitext(fname)
-            if name in keyword.kwlist or full_path in visited_names:
+            if name in invalid_module_names or full_path in visited_names:
                 name += "_"
                 full_path = os.path.join(path, name + ext)
                 if full_path in visited_names:
