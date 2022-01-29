@@ -399,6 +399,22 @@ class TestImpersonatedCredentials(object):
         request_kwargs = request.call_args[1]
         assert request_kwargs["url"] == self.IAM_ENDPOINT_OVERRIDE
 
+    def test_with_scopes(self):
+        credentials = self.make_credentials()
+        credentials._target_scopes = []
+        assert credentials.requires_scopes is True
+        credentials = credentials.with_scopes(["fake_scope1", "fake_scope2"])
+        assert credentials.requires_scopes is False
+        assert credentials._target_scopes == ["fake_scope1", "fake_scope2"]
+
+    def test_with_scopes_provide_default_scopes(self):
+        credentials = self.make_credentials()
+        credentials._target_scopes = []
+        credentials = credentials.with_scopes(
+            ["fake_scope1"], default_scopes=["fake_scope2"]
+        )
+        assert credentials._target_scopes == ["fake_scope1"]
+
     def test_id_token_success(
         self, mock_donor_credentials, mock_authorizedsession_idtoken
     ):

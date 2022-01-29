@@ -1089,6 +1089,60 @@ def test_default_no_warning_with_quota_project_id_for_user_creds(get_adc_path):
     credentials, project_id = _default.default(quota_project_id="project-foo")
 
 
+@mock.patch(
+    "google.auth._cloud_sdk.get_application_default_credentials_path", autospec=True
+)
+def test_default_impersonated_service_account(get_adc_path):
+    get_adc_path.return_value = IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_FILE
+
+    credentials, _ = _default.default()
+
+    assert isinstance(credentials, impersonated_credentials.Credentials)
+    assert isinstance(
+        credentials._source_credentials, google.oauth2.credentials.Credentials
+    )
+    assert credentials.service_account_email == "service-account-target@example.com"
+    assert credentials._delegates == ["service-account-delegate@example.com"]
+    assert not credentials._quota_project_id
+    assert not credentials._target_scopes
+
+
+@mock.patch(
+    "google.auth._cloud_sdk.get_application_default_credentials_path", autospec=True
+)
+def test_default_impersonated_service_account_set_scopes(get_adc_path):
+    get_adc_path.return_value = IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_FILE
+    scopes = ["scope1", "scope2"]
+
+    credentials, _ = _default.default(scopes=scopes)
+    assert credentials._target_scopes == scopes
+
+
+@mock.patch(
+    "google.auth._cloud_sdk.get_application_default_credentials_path", autospec=True
+)
+def test_default_impersonated_service_account_set_default_scopes(get_adc_path):
+    get_adc_path.return_value = IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_FILE
+    default_scopes = ["scope1", "scope2"]
+
+    credentials, _ = _default.default(default_scopes=default_scopes)
+    assert credentials._target_scopes == default_scopes
+
+
+@mock.patch(
+    "google.auth._cloud_sdk.get_application_default_credentials_path", autospec=True
+)
+def test_default_impersonated_service_account_set_both_scopes_and_default_scopes(
+    get_adc_path
+):
+    get_adc_path.return_value = IMPERSONATED_SERVICE_ACCOUNT_AUTHORIZED_USER_SOURCE_FILE
+    scopes = ["scope1", "scope2"]
+    default_scopes = ["scope3", "scope4"]
+
+    credentials, _ = _default.default(scopes=scopes, default_scopes=default_scopes)
+    assert credentials._target_scopes == scopes
+
+
 def test__get_api_key_credentials_no_env_var():
     cred, project_id = _default._get_api_key_credentials(quota_project_id="project-foo")
     assert cred is None

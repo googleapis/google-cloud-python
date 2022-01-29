@@ -120,7 +120,9 @@ def _make_iam_token_request(
         six.raise_from(new_exc, caught_exc)
 
 
-class Credentials(credentials.CredentialsWithQuotaProject, credentials.Signing):
+class Credentials(
+    credentials.Scoped, credentials.CredentialsWithQuotaProject, credentials.Signing
+):
     """This module defines impersonated credentials which are essentially
     impersonated identities.
 
@@ -309,6 +311,10 @@ class Credentials(credentials.CredentialsWithQuotaProject, credentials.Signing):
     def signer(self):
         return self
 
+    @property
+    def requires_scopes(self):
+        return not self._target_scopes
+
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
     def with_quota_project(self, quota_project_id):
         return self.__class__(
@@ -318,6 +324,18 @@ class Credentials(credentials.CredentialsWithQuotaProject, credentials.Signing):
             delegates=self._delegates,
             lifetime=self._lifetime,
             quota_project_id=quota_project_id,
+            iam_endpoint_override=self._iam_endpoint_override,
+        )
+
+    @_helpers.copy_docstring(credentials.Scoped)
+    def with_scopes(self, scopes, default_scopes=None):
+        return self.__class__(
+            self._source_credentials,
+            target_principal=self._target_principal,
+            target_scopes=scopes or default_scopes,
+            delegates=self._delegates,
+            lifetime=self._lifetime,
+            quota_project_id=self._quota_project_id,
             iam_endpoint_override=self._iam_endpoint_override,
         )
 
