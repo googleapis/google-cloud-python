@@ -19,7 +19,6 @@ import mock
 import pytest  # type: ignore
 
 from google.auth import _default
-from google.auth import api_key
 from google.auth import app_engine
 from google.auth import aws
 from google.auth import compute_engine
@@ -1141,46 +1140,3 @@ def test_default_impersonated_service_account_set_both_scopes_and_default_scopes
 
     credentials, _ = _default.default(scopes=scopes, default_scopes=default_scopes)
     assert credentials._target_scopes == scopes
-
-
-def test__get_api_key_credentials_no_env_var():
-    cred, project_id = _default._get_api_key_credentials(quota_project_id="project-foo")
-    assert cred is None
-    assert project_id is None
-
-
-def test__get_api_key_credentials_from_env_var():
-    with mock.patch.dict(os.environ, {environment_vars.API_KEY: "api-key"}):
-        cred, project_id = _default._get_api_key_credentials(
-            quota_project_id="project-foo"
-        )
-        assert isinstance(cred, api_key.Credentials)
-        assert cred.token == "api-key"
-        assert project_id == "project-foo"
-
-
-def test_exception_with_api_key_and_adc_env_var():
-    with mock.patch.dict(os.environ, {environment_vars.API_KEY: "api-key"}):
-        with mock.patch.dict(
-            os.environ, {environment_vars.CREDENTIALS: "/path/to/json"}
-        ):
-            with pytest.raises(exceptions.DefaultCredentialsError) as excinfo:
-                _default.default()
-
-            assert excinfo.match(
-                r"GOOGLE_API_KEY and GOOGLE_APPLICATION_CREDENTIALS are mutually exclusive"
-            )
-
-
-def test_default_api_key_from_env_var():
-    with mock.patch.dict(os.environ, {environment_vars.API_KEY: "api-key"}):
-        cred, project_id = _default.default()
-        assert isinstance(cred, api_key.Credentials)
-        assert cred.token == "api-key"
-        assert project_id is None
-
-
-def test_get_api_key_credentials():
-    cred = _default.get_api_key_credentials("api-key")
-    assert isinstance(cred, api_key.Credentials)
-    assert cred.token == "api-key"

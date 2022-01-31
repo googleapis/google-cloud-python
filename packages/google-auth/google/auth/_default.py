@@ -345,24 +345,6 @@ def _get_external_account_credentials(
     return credentials, credentials.get_project_id(request=request)
 
 
-def _get_api_key_credentials(quota_project_id=None):
-    """Gets API key credentials and project ID."""
-    from google.auth import api_key
-
-    api_key_value = os.environ.get(environment_vars.API_KEY)
-    if api_key_value:
-        return api_key.Credentials(api_key_value), quota_project_id
-    else:
-        return None, None
-
-
-def get_api_key_credentials(api_key_value):
-    """Gets API key credentials using the given api key value."""
-    from google.auth import api_key
-
-    return api_key.Credentials(api_key_value)
-
-
 def _get_authorized_user_credentials(filename, info, scopes=None):
     from google.oauth2 import credentials
 
@@ -458,14 +440,7 @@ def default(scopes=None, request=None, quota_project_id=None, default_scopes=Non
     This function acquires credentials from the environment in the following
     order:
 
-    1. If both ``GOOGLE_API_KEY`` and ``GOOGLE_APPLICATION_CREDENTIALS``
-       environment variables are set, throw an exception.
-
-       If ``GOOGLE_API_KEY`` is set, an `API Key`_ credentials will be returned.
-       The project ID returned is the one defined by ``GOOGLE_CLOUD_PROJECT`` or
-       ``GCLOUD_PROJECT`` environment variables.
-
-       If the environment variable ``GOOGLE_APPLICATION_CREDENTIALS`` is set
+    1. If the environment variable ``GOOGLE_APPLICATION_CREDENTIALS`` is set
        to the path of a valid service account JSON private key file, then it is
        loaded and returned. The project ID returned is the project ID defined
        in the service account file if available (some older files do not
@@ -513,7 +488,6 @@ def default(scopes=None, request=None, quota_project_id=None, default_scopes=Non
     .. _Metadata Service: https://cloud.google.com/compute/docs\
             /storing-retrieving-metadata
     .. _Cloud Run: https://cloud.google.com/run
-    .. _API Key: https://cloud.google.com/docs/authentication/api-keys
 
     Example::
 
@@ -555,19 +529,11 @@ def default(scopes=None, request=None, quota_project_id=None, default_scopes=Non
         environment_vars.PROJECT, os.environ.get(environment_vars.LEGACY_PROJECT)
     )
 
-    if os.environ.get(environment_vars.API_KEY) and os.environ.get(
-        environment_vars.CREDENTIALS
-    ):
-        raise exceptions.DefaultCredentialsError(
-            "Environment variables GOOGLE_API_KEY and GOOGLE_APPLICATION_CREDENTIALS are mutually exclusive"
-        )
-
     checkers = (
         # Avoid passing scopes here to prevent passing scopes to user credentials.
         # with_scopes_if_required() below will ensure scopes/default scopes are
         # safely set on the returned credentials since requires_scopes will
         # guard against setting scopes on user credentials.
-        lambda: _get_api_key_credentials(quota_project_id=quota_project_id),
         lambda: _get_explicit_environ_credentials(quota_project_id=quota_project_id),
         lambda: _get_gcloud_sdk_credentials(quota_project_id=quota_project_id),
         _get_gae_credentials,
