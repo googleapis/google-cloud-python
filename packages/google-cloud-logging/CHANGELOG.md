@@ -4,6 +4,45 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [3.0.0](https://github.com/googleapis/python-logging/compare/v2.7.0...v3.0.0) (2022-01-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* make logging API more friendly to use (#422)
+* api consistency between HTTP and Gapic layers (#375)
+* support string-encoded json (#339)
+* Infer default resource in logger (#315)
+* support json logs (#316)
+* deprecate AppEngineHandler and ContainerEngineHandler (#310)
+
+### Features
+
+* add api key support ([#472](https://github.com/googleapis/python-logging/issues/472)) ([81ca8c6](https://github.com/googleapis/python-logging/commit/81ca8c616acb988be1fbecfc2a0b1a5b39280149))
+* add json_fields extras argument for adding to jsonPayload ([#447](https://github.com/googleapis/python-logging/issues/447)) ([a760e02](https://github.com/googleapis/python-logging/commit/a760e02371a55d6262e42de9e0222fffa2c7192b))
+* avoid importing grpc when explicitly disabled ([#416](https://github.com/googleapis/python-logging/issues/416)) ([818213e](https://github.com/googleapis/python-logging/commit/818213e143d6a1941211a48e0b23069a426ac300))
+* Infer default resource in logger ([#315](https://github.com/googleapis/python-logging/issues/315)) ([c632503](https://github.com/googleapis/python-logging/commit/c63250399fcd6e1317d341e98fab11095c443e5e))
+* make logging API more friendly to use ([#422](https://github.com/googleapis/python-logging/issues/422)) ([83d9ca8](https://github.com/googleapis/python-logging/commit/83d9ca8521fe7c470bb6755a48a97496515d7abc))
+* support json logs ([#316](https://github.com/googleapis/python-logging/issues/316)) ([5267152](https://github.com/googleapis/python-logging/commit/5267152574b2ee96eb6f5c536a762f58bd2f886e))
+* support string-encoded json ([#339](https://github.com/googleapis/python-logging/issues/339)) ([6fa1773](https://github.com/googleapis/python-logging/commit/6fa17735fe3edb45483ec5e3abd1f53c24ffa881))
+* trace improvements ([#450](https://github.com/googleapis/python-logging/issues/450)) ([e0c5fc0](https://github.com/googleapis/python-logging/commit/e0c5fc02160ae87faf4ba5c2b62be86de6b02cf3))
+
+
+### Bug Fixes
+
+* allow reading logs from non-project paths ([#444](https://github.com/googleapis/python-logging/issues/444)) ([97e32b6](https://github.com/googleapis/python-logging/commit/97e32b67603553fe350b6327455fc9f80b8aa6ce))
+* api consistency between HTTP and Gapic layers ([#375](https://github.com/googleapis/python-logging/issues/375)) ([e1506fa](https://github.com/googleapis/python-logging/commit/e1506fa9030776353878048ce562c53bf6ccf7bf))
+
+
+### Miscellaneous Chores
+
+* deprecate AppEngineHandler and ContainerEngineHandler ([#310](https://github.com/googleapis/python-logging/issues/310)) ([e3cac88](https://github.com/googleapis/python-logging/commit/e3cac888d40bf67af11e57b74615b0c3b8e8aa3e))
+
+
+### Documentation
+
+* update usage guide for v3.0.0 ([#456](https://github.com/googleapis/python-logging/issues/456)) ([8a67b73](https://github.com/googleapis/python-logging/commit/8a67b73cdfcb9da545671be6cf59c724360b1544))
+
 ## [2.7.0](https://www.github.com/googleapis/python-logging/compare/v2.6.0...v2.7.0) (2021-11-02)
 
 
