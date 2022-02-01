@@ -415,6 +415,9 @@ Libraries
    * - `Dataflow <https://github.com/googleapis/python-dataflow-client>`_
      - |preview|
      - |PyPI-google-cloud-dataflow-client|
+   * - `Dataplex API <https://github.com/googleapis/python-dataplex>`_
+     - |preview|
+     - |PyPI-google-cloud-dataplex|
    * - `Datastream <https://github.com/googleapis/python-datastream>`_
      - |preview|
      - |PyPI-google-cloud-datastream|
@@ -685,6 +688,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-data-qna
 .. |PyPI-google-cloud-dataflow-client| image:: https://img.shields.io/pypi/v/google-cloud-dataflow-client.svg
      :target: https://pypi.org/project/google-cloud-dataflow-client
+.. |PyPI-google-cloud-dataplex| image:: https://img.shields.io/pypi/v/google-cloud-dataplex.svg
+     :target: https://pypi.org/project/google-cloud-dataplex
 .. |PyPI-google-cloud-datastream| image:: https://img.shields.io/pypi/v/google-cloud-datastream.svg
      :target: https://pypi.org/project/google-cloud-datastream
 .. |PyPI-google-cloud-error-reporting| image:: https://img.shields.io/pypi/v/google-cloud-error-reporting.svg
