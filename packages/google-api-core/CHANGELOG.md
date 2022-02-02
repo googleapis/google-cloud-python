@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.5.0](https://github.com/googleapis/python-api-core/compare/v2.4.0...v2.5.0) (2022-02-02)
+
+
+### Features
+
+* add api_key to client options ([#248](https://github.com/googleapis/python-api-core/issues/248)) ([5e5ad37](https://github.com/googleapis/python-api-core/commit/5e5ad37b8161109d65b0fab43636f7424e570fa3))
+
+
+### Bug Fixes
+
+* **deps:** remove setuptools from dependencies ([#339](https://github.com/googleapis/python-api-core/issues/339)) ([c782f29](https://github.com/googleapis/python-api-core/commit/c782f294b50b078f01959627fb82aa4c5efec333))
+
+
+### Documentation
+
+* fix typo in library name ([#332](https://github.com/googleapis/python-api-core/issues/332)) ([f267111](https://github.com/googleapis/python-api-core/commit/f267111823545a6c67ef5f10b85cd8c2fab8a612))
+
 ## [2.4.0](https://www.github.com/googleapis/python-api-core/compare/v2.3.2...v2.4.0) (2022-01-11)
 
 
