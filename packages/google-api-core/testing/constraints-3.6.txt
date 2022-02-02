@@ -9,7 +9,6 @@ googleapis-common-protos==1.52.0
 protobuf==3.12.0
 google-auth==1.25.0
 requests==2.18.0
-setuptools==40.3.0
 packaging==14.3
 grpcio==1.33.2
 grpcio-gcp==0.2.2
