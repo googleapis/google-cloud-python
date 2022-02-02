@@ -443,6 +443,6 @@ def docs(session):
 def mypy(session):
     """Perform typecheck analysis."""
 
-    session.install("mypy", "types-protobuf", "types-PyYAML", "types-dataclasses")
+    session.install("mypy", "types-protobuf<=3.19.7", "types-PyYAML", "types-dataclasses")
     session.install(".")
     session.run("mypy", "gapic")
