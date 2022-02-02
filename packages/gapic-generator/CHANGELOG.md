@@ -1,6 +1,13 @@
 # Changelog
 
 
+### [0.62.1](https://github.com/googleapis/gapic-generator-python/compare/v0.62.0...v0.62.1) (2022-02-02)
+
+
+### Bug Fixes
+
+* **deps:** require setuptools<=60.5.0 ([#1179](https://github.com/googleapis/gapic-generator-python/issues/1179)) ([fb56af7](https://github.com/googleapis/gapic-generator-python/commit/fb56af7cd33931f6747b5ce1fb8502bcbc74dcc7))
+
 ## [0.62.0](https://github.com/googleapis/gapic-generator-python/compare/v0.61.0...v0.62.0) (2022-01-28)
 
 
