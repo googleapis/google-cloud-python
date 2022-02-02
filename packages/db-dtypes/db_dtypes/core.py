@@ -16,7 +16,6 @@ from typing import Optional
 
 import numpy
 import pandas
-from pandas import NaT
 import pandas.api.extensions
 from pandas.api.types import is_dtype_equal, is_list_like, pandas_dtype
 
@@ -27,8 +26,8 @@ pandas_release = pandas_backports.pandas_release
 
 
 class BaseDatetimeDtype(pandas.api.extensions.ExtensionDtype):
-    na_value = NaT
-    kind = "o"
+    na_value = pandas.NaT
+    kind = "O"
     names = None
 
     @classmethod

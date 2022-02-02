@@ -42,7 +42,7 @@ numpy_validate_any = pandas.compat.numpy.function.validate_any
 numpy_validate_max = pandas.compat.numpy.function.validate_max
 numpy_validate_min = pandas.compat.numpy.function.validate_min
 
-if pandas_release >= (1, 2):
+if pandas_release >= (1, 3):
     nanmedian = pandas.core.nanops.nanmedian
     numpy_validate_median = pandas.compat.numpy.function.validate_median
 

@@ -19,6 +19,7 @@ import pytest
 
 # To register the types.
 import db_dtypes  # noqa
+from db_dtypes import pandas_backports
 
 
 @pytest.mark.parametrize(
@@ -82,3 +83,32 @@ def test_time_parsing(value, expected):
 def test_time_parsing_errors(value, error):
     with pytest.raises(ValueError, match=error):
         pandas.Series([value], dtype="dbtime")
+
+
+@pytest.mark.skipif(
+    not hasattr(pandas_backports, "numpy_validate_median"),
+    reason="median not available with this version of pandas",
+)
+@pytest.mark.parametrize(
+    "values, expected",
+    [
+        (
+            ["00:00:00", "12:34:56.789101", "23:59:59.999999"],
+            datetime.time(12, 34, 56, 789101),
+        ),
+        (
+            [
+                None,
+                "06:30:00",
+                pandas.NA if hasattr(pandas, "NA") else None,
+                pandas.NaT,
+                float("nan"),
+            ],
+            datetime.time(6, 30),
+        ),
+        (["2:22:21.222222", "2:22:23.222222"], datetime.time(2, 22, 22, 222222)),
+    ],
+)
+def test_date_median(values, expected):
+    series = pandas.Series(values, dtype="dbtime")
+    assert series.median() == expected

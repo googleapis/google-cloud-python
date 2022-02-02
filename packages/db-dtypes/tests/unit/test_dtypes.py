@@ -23,8 +23,8 @@ np = pytest.importorskip("numpy")
 pandas_release = packaging.version.parse(pd.__version__).release
 
 SAMPLE_RAW_VALUES = dict(
-    dbdate=(datetime.date(2021, 2, 2), "2021-2-3", None),
-    dbtime=(datetime.time(1, 2, 2), "1:2:3.5", None),
+    dbdate=(datetime.date(2021, 2, 2), "2021-2-3", pd.NaT),
+    dbtime=(datetime.time(1, 2, 2), "1:2:3.5", pd.NaT),
 )
 SAMPLE_VALUES = dict(
     dbdate=(
@@ -90,7 +90,7 @@ def test_array_construction(dtype, factory_method):
         factory = getattr(factory, factory_method)
         if factory_method == "_from_sequence_of_strings":
             sample_raw_values = [
-                str(v) if v is not None else v for v in sample_raw_values
+                str(v) if not pd.isna(v) else v for v in sample_raw_values
             ]
     a = factory(sample_raw_values)
     assert len(a) == 3
@@ -98,11 +98,11 @@ def test_array_construction(dtype, factory_method):
     assert a.shape == (3,)
     sample_values = SAMPLE_VALUES[dtype]
     assert a[0], a[1] == sample_values[:2]
-    assert a[2] is None
+    assert pd.isna(a[2]) and a[2] is pd.NaT
 
     # implementation details:
     assert a.nbytes == 24
-    assert np.array_equal(
+    np.testing.assert_array_equal(
         a._ndarray
         == np.array(SAMPLE_DT_VALUES[dtype][:2] + ("NaT",), dtype="datetime64[us]"),
         [True, True, False],
@@ -121,7 +121,7 @@ def test_time_series_construction(dtype):
     s = pd.Series(SAMPLE_RAW_VALUES[dtype], dtype=dtype)
     assert len(s) == 3
     assert s[0], s[1] == sample_values[:2]
-    assert s[2] is None
+    assert s[2] is pd.NaT
     assert s.nbytes == 24
     assert isinstance(s.array, _cls(dtype))
 
@@ -166,8 +166,8 @@ def test_timearray_comparisons(
         # Note that the right_obs comparisons work because
         # they're called on right_obs rather then left, because
         # TimeArrays only support comparisons with TimeArrays.
-        assert np.array_equal(comparisons[op](left, r), expected)
-        assert np.array_equal(complements[op](left, r), ~expected)
+        np.testing.assert_array_equal(comparisons[op](left, r), expected)
+        np.testing.assert_array_equal(complements[op](left, r), ~expected)
 
     # Bad shape
     for bad_shape in ([], [1, 2, 3]):
@@ -186,10 +186,10 @@ def test_timearray_comparisons(
         [1],  # a single-element array gets broadcast
     ):
         if op == "==":
-            assert np.array_equal(
+            np.testing.assert_array_equal(
                 comparisons[op](left, np.array(bad_items)), np.array([False, False])
             )
-            assert np.array_equal(
+            np.testing.assert_array_equal(
                 complements[op](left, np.array(bad_items)), np.array([True, True])
             )
         else:
@@ -204,7 +204,7 @@ def test_timearray_comparisons(
 def test___getitem___arrayindex(dtype):
     cls = _cls(dtype)
     sample_values = SAMPLE_VALUES[dtype]
-    assert np.array_equal(
+    np.testing.assert_array_equal(
         cls(sample_values)[[1, 3]], cls([sample_values[1], sample_values[3]]),
     )
 
@@ -215,21 +215,23 @@ def test_timearray_slicing(dtype):
     b = a[:]
     assert b is not a
     assert b.__class__ == a.__class__
-    assert np.array_equal(b, a)
+    np.testing.assert_array_equal(b._ndarray, a._ndarray)
 
     sample_values = SAMPLE_VALUES[dtype]
     cls = _cls(dtype)
-    assert np.array_equal(a[:1], cls._from_sequence(sample_values[:1]))
+    np.testing.assert_array_equal(
+        a[:1]._ndarray, cls._from_sequence(sample_values[:1])._ndarray
+    )
 
     # Assignment works:
     a[:1] = cls._from_sequence([sample_values[2]])
-    assert np.array_equal(
+    np.testing.assert_array_equal(
         a[:2], cls._from_sequence([sample_values[2], sample_values[1]])
     )
 
     # Series also work:
     s = pd.Series(SAMPLE_RAW_VALUES[dtype], dtype=dtype)
-    assert np.array_equal(s[:1].array, cls._from_sequence([sample_values[0]]))
+    np.testing.assert_array_equal(s[:1].array, cls._from_sequence([sample_values[0]]))
 
 
 @for_date_and_time
@@ -238,9 +240,13 @@ def test_item_assignment(dtype):
     sample_values = SAMPLE_VALUES[dtype]
     cls = _cls(dtype)
     a[0] = sample_values[2]
-    assert np.array_equal(a, cls._from_sequence([sample_values[2], sample_values[1]]))
+    np.testing.assert_array_equal(
+        a, cls._from_sequence([sample_values[2], sample_values[1]])
+    )
     a[1] = None
-    assert np.array_equal(a, cls._from_sequence([sample_values[2], None]))
+    np.testing.assert_array_equal(
+        a._ndarray, cls._from_sequence([sample_values[2], None])._ndarray
+    )
 
 
 @for_date_and_time
@@ -249,9 +255,9 @@ def test_array_assignment(dtype):
     cls = _cls(dtype)
     sample_values = SAMPLE_VALUES[dtype]
     a[a.isna()] = sample_values[3]
-    assert np.array_equal(a, cls([sample_values[i] for i in (0, 1, 3)]))
+    np.testing.assert_array_equal(a, cls([sample_values[i] for i in (0, 1, 3)]))
     a[[0, 2]] = sample_values[2]
-    assert np.array_equal(a, cls([sample_values[i] for i in (2, 1, 2)]))
+    np.testing.assert_array_equal(a, cls([sample_values[i] for i in (2, 1, 2)]))
 
 
 @for_date_and_time
@@ -270,7 +276,7 @@ def test_copy(dtype):
     b = a.copy()
     assert b is not a
     assert b._ndarray is not a._ndarray
-    assert np.array_equal(b, a)
+    np.testing.assert_array_equal(b, a)
 
 
 @for_date_and_time
@@ -280,7 +286,7 @@ def test_from_ndarray_copy(dtype):
     a = cls._from_sequence(sample_values)
     b = cls(a._ndarray, copy=True)
     assert b._ndarray is not a._ndarray
-    assert np.array_equal(b, a)
+    np.testing.assert_array_equal(b, a)
 
 
 @for_date_and_time
@@ -310,7 +316,7 @@ def test__validate_scalar_invalid(dtype):
     [
         (False, None),
         (True, None),
-        (True, pd._libs.NaT if pd else None),
+        (True, pd.NaT if pd else None),
         (True, np.NaN if pd else None),
         (True, 42),
     ],
@@ -326,7 +332,7 @@ def test_take(dtype, allow_fill, fill_value):
                 else datetime.time(0, 42, 42, 424242)
             )
         else:
-            expected_fill = None
+            expected_fill = pd.NaT
         b = a.take([1, -1, 3], allow_fill=True, fill_value=fill_value)
         expect = [sample_values[1], expected_fill, sample_values[3]]
     else:
@@ -370,7 +376,7 @@ def test__concat_same_type_not_same_type(dtype):
 
 @for_date_and_time
 def test_dropna(dtype):
-    assert np.array_equal(_make_one(dtype).dropna(), _make_one(dtype)[:2])
+    np.testing.assert_array_equal(_make_one(dtype).dropna(), _make_one(dtype)[:2])
 
 
 @pytest.mark.parametrize(
@@ -398,14 +404,18 @@ def test_fillna(dtype, value, meth, limit, expect):
     elif value is not None:
         value = sample_values[value]
     expect = cls([None if i is None else sample_values[i] for i in expect])
-    assert np.array_equal(a.fillna(value, meth, limit), expect)
+    np.testing.assert_array_equal(
+        a.fillna(value, meth, limit)._ndarray, expect._ndarray
+    )
 
 
 @for_date_and_time
 def test_unique(dtype):
     cls = _cls(dtype)
     sample_values = SAMPLE_VALUES[dtype]
-    assert np.array_equal(cls(sample_values * 3).unique(), cls(sample_values),)
+    np.testing.assert_array_equal(
+        cls(sample_values * 3).unique(), cls(sample_values),
+    )
 
 
 @for_date_and_time
@@ -421,7 +431,7 @@ def test_astype_copy(dtype):
     b = a.astype(a.dtype, copy=True)
     assert b is not a
     assert b.__class__ is a.__class__
-    assert np.array_equal(b, a)
+    np.testing.assert_array_equal(b._ndarray, a._ndarray)
 
 
 @pytest.mark.parametrize(
@@ -452,7 +462,7 @@ def test_asdatetime(dtype, same):
 
         b = a.astype(dt, copy=copy)
         assert b is not a._ndarray
-        assert np.array_equal(b[:2], a._ndarray[:2])
+        np.testing.assert_array_equal(b[:2], a._ndarray[:2])
         assert pd.isna(b[2]) and str(b[2]) == "NaT"
 
 
@@ -482,7 +492,7 @@ def test_astimedelta(dtype):
 
     a = _cls("dbtime")([t, None])
     b = a.astype(dtype)
-    np.array_equal(b[:1], expect)
+    np.testing.assert_array_equal(b[:1], expect)
     assert pd.isna(b[1]) and str(b[1]) == "NaT"
 
 
@@ -523,7 +533,7 @@ def test_min_max_median(dtype):
         a = cls(data)
         assert a.min() == sample_values[0]
         assert a.max() == sample_values[-1]
-        if pandas_release >= (1, 2):
+        if pandas_release >= (1, 3):
             assert (
                 a.median() == datetime.time(1, 2, 4)
                 if dtype == "dbtime"
@@ -531,26 +541,26 @@ def test_min_max_median(dtype):
             )
 
     empty = cls([])
-    assert empty.min() is None
-    assert empty.max() is None
-    if pandas_release >= (1, 2):
-        assert empty.median() is None
+    assert empty.min() is pd.NaT
+    assert empty.max() is pd.NaT
+    if pandas_release >= (1, 3):
+        assert empty.median() is pd.NaT
     empty = cls([None])
-    assert empty.min() is None
-    assert empty.max() is None
-    assert empty.min(skipna=False) is None
-    assert empty.max(skipna=False) is None
-    if pandas_release >= (1, 2):
+    assert empty.min() is pd.NaT
+    assert empty.max() is pd.NaT
+    assert empty.min(skipna=False) is pd.NaT
+    assert empty.max(skipna=False) is pd.NaT
+    if pandas_release >= (1, 3):
         with pytest.warns(RuntimeWarning, match="empty slice"):
             # It's weird that we get the warning here, and not
             # below. :/
-            assert empty.median() is None
-        assert empty.median(skipna=False) is None
+            assert empty.median() is pd.NaT
+        assert empty.median(skipna=False) is pd.NaT
 
     a = _make_one(dtype)
     assert a.min() == sample_values[0]
     assert a.max() == sample_values[1]
-    if pandas_release >= (1, 2):
+    if pandas_release >= (1, 3):
         assert (
             a.median() == datetime.time(1, 2, 2, 750000)
             if dtype == "dbtime"
@@ -563,14 +573,14 @@ def test_date_add():
     times = _cls("dbtime")(SAMPLE_VALUES["dbtime"])
     expect = dates.astype("datetime64") + times.astype("timedelta64")
 
-    assert np.array_equal(dates + times, expect)
-    assert np.array_equal(times + dates, expect)
+    np.testing.assert_array_equal(dates + times, expect)
+    np.testing.assert_array_equal(times + dates, expect)
 
     do = pd.DateOffset(days=1)
     expect = dates.astype("object") + do
-    assert np.array_equal(dates + do, expect)
+    np.testing.assert_array_equal(dates + do, expect)
     if pandas_release >= (1, 1):
-        assert np.array_equal(do + dates, expect)
+        np.testing.assert_array_equal(do + dates, expect)
 
     with pytest.raises(TypeError):
         dates + times.astype("timedelta64")
@@ -587,8 +597,8 @@ def test_date_add():
 
     do = pd.Series([pd.DateOffset(days=i) for i in range(4)])
     expect = dates.astype("object") + do
-    assert np.array_equal(dates + do, expect)
-    assert np.array_equal(do + dates, expect)
+    np.testing.assert_array_equal(dates + do, expect)
+    np.testing.assert_array_equal(do + dates, expect)
 
 
 def test_date_sub():
@@ -602,11 +612,11 @@ def test_date_sub():
         )
     )
     expect = dates.astype("datetime64") - dates2.astype("datetime64")
-    assert np.array_equal(dates - dates2, expect)
+    np.testing.assert_array_equal(dates - dates2, expect)
 
     do = pd.DateOffset(days=1)
     expect = dates.astype("object") - do
-    assert np.array_equal(dates - do, expect)
+    np.testing.assert_array_equal(dates - do, expect)
 
     with pytest.raises(TypeError):
         dates - 42
@@ -620,4 +630,4 @@ def test_date_sub():
 
     do = pd.Series([pd.DateOffset(days=i) for i in range(4)])
     expect = dates.astype("object") - do
-    assert np.array_equal(dates - do, expect)
+    np.testing.assert_array_equal(dates - do, expect)
