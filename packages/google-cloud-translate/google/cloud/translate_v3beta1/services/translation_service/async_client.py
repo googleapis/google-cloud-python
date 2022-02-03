@@ -326,7 +326,7 @@ class TranslationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, model, mime_type])
         if request is not None and has_flattened_params:
@@ -445,7 +445,7 @@ class TranslationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, display_language_code, model])
         if request is not None and has_flattened_params:
@@ -625,11 +625,11 @@ class TranslationServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Translates a large volume of documents in
-        asynchronous batch mode. This function provides real-
-        time output as the inputs are being processed. If caller
-        cancels a request, the partial results (for an input
-        file, it's all or nothing) may still be available on the
-        specified output location.
+        asynchronous batch mode. This function provides
+        real-time output as the inputs are being processed. If
+        caller cancels a request, the partial results (for an
+        input file, it's all or nothing) may still be available
+        on the specified output location.
         This call returns immediately and you can use
         google.longrunning.Operation.name to poll the status of
         the call.
@@ -711,7 +711,7 @@ class TranslationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
@@ -813,7 +813,7 @@ class TranslationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, glossary])
         if request is not None and has_flattened_params:
@@ -932,7 +932,7 @@ class TranslationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter])
         if request is not None and has_flattened_params:
@@ -1021,7 +1021,7 @@ class TranslationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1106,7 +1106,7 @@ class TranslationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:

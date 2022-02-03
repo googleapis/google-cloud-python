@@ -71,8 +71,9 @@ class TranslateTextGlossaryConfig(proto.Message):
             Required. Specifies the glossary used for this translation.
             Use this format: projects/\ */locations/*/glossaries/\*
         ignore_case (bool):
-            Optional. Indicates match is case-
-            nsensitive. Default value is false if missing.
+            Optional. Indicates match is
+            case-insensitive. Default value is false if
+            missing.
     """
 
     glossary = proto.Field(proto.STRING, number=1,)
