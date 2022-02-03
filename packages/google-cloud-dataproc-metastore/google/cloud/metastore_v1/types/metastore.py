@@ -289,8 +289,8 @@ class MetadataImport(proto.Message):
 
     Attributes:
         database_dump (google.cloud.metastore_v1.types.MetadataImport.DatabaseDump):
-            Immutable. A database dump from a pre-
-            xisting metastore's database.
+            Immutable. A database dump from a
+            pre-existing metastore's database.
 
             This field is a member of `oneof`_ ``metadata``.
         name (str):
