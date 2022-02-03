@@ -443,8 +443,8 @@ class ListTransferableSkusRequest(proto.Message):
             https://support.google.com/a/answer/7643790 for
             more details.
         language_code (str):
-            The BCP-47 language code. For example, "en-
-            S". The response will localize in the
+            The BCP-47 language code. For example,
+            "en-US". The response will localize in the
             corresponding language code, if specified. The
             default value is "en-US".
             Optional.
@@ -526,8 +526,8 @@ class ListTransferableOffersRequest(proto.Message):
         sku (str):
             Required. The SKU to look up Offers for.
         language_code (str):
-            The BCP-47 language code. For example, "en-
-            S". The response will localize in the
+            The BCP-47 language code. For example,
+            "en-US". The response will localize in the
             corresponding language code, if specified. The
             default value is "en-US".
     """
