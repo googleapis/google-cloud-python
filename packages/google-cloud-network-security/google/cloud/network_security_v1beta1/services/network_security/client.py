@@ -502,7 +502,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -589,7 +589,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -688,7 +688,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [parent, authorization_policy, authorization_policy_id]
@@ -798,7 +798,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([authorization_policy, update_mask])
         if request is not None and has_flattened_params:
@@ -901,7 +901,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -989,7 +989,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -1072,7 +1072,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1169,7 +1169,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, server_tls_policy, server_tls_policy_id])
         if request is not None and has_flattened_params:
@@ -1270,7 +1270,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([server_tls_policy, update_mask])
         if request is not None and has_flattened_params:
@@ -1367,7 +1367,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1451,7 +1451,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -1533,7 +1533,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1629,7 +1629,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, client_tls_policy, client_tls_policy_id])
         if request is not None and has_flattened_params:
@@ -1729,7 +1729,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([client_tls_policy, update_mask])
         if request is not None and has_flattened_params:
@@ -1826,7 +1826,7 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
