@@ -1341,13 +1341,13 @@ class GitHubEventsConfig(proto.Message):
         owner (str):
             Owner of the repository. For example: The
             owner for
-            https://github.com/googlecloudplatform/cloud-
-            builders is "googlecloudplatform".
+            https://github.com/googlecloudplatform/cloud-builders
+            is "googlecloudplatform".
         name (str):
             Name of the repository. For example: The name
             for
-            https://github.com/googlecloudplatform/cloud-
-            builders is "cloud-builders".
+            https://github.com/googlecloudplatform/cloud-builders
+            is "cloud-builders".
         pull_request (google.cloud.devtools.cloudbuild_v1.types.PullRequestFilter):
             filter to match changes in pull requests.
 
