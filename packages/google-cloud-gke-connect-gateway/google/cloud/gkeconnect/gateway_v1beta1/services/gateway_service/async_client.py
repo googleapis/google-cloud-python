@@ -224,8 +224,8 @@ class GatewayServiceAsyncClient:
                 that can't be represented as JSON, such as raw binary or
                 an HTML page.
 
-                This message can be used both in streaming and non-
-                streaming API methods in the request as well as the
+                This message can be used both in streaming and
+                non-streaming API methods in the request as well as the
                 response.
 
                 It can be used as a top-level request field, which is
@@ -358,8 +358,8 @@ class GatewayServiceAsyncClient:
                 that can't be represented as JSON, such as raw binary or
                 an HTML page.
 
-                This message can be used both in streaming and non-
-                streaming API methods in the request as well as the
+                This message can be used both in streaming and
+                non-streaming API methods in the request as well as the
                 response.
 
                 It can be used as a top-level request field, which is
@@ -492,8 +492,8 @@ class GatewayServiceAsyncClient:
                 that can't be represented as JSON, such as raw binary or
                 an HTML page.
 
-                This message can be used both in streaming and non-
-                streaming API methods in the request as well as the
+                This message can be used both in streaming and
+                non-streaming API methods in the request as well as the
                 response.
 
                 It can be used as a top-level request field, which is
@@ -626,8 +626,8 @@ class GatewayServiceAsyncClient:
                 that can't be represented as JSON, such as raw binary or
                 an HTML page.
 
-                This message can be used both in streaming and non-
-                streaming API methods in the request as well as the
+                This message can be used both in streaming and
+                non-streaming API methods in the request as well as the
                 response.
 
                 It can be used as a top-level request field, which is
@@ -760,8 +760,8 @@ class GatewayServiceAsyncClient:
                 that can't be represented as JSON, such as raw binary or
                 an HTML page.
 
-                This message can be used both in streaming and non-
-                streaming API methods in the request as well as the
+                This message can be used both in streaming and
+                non-streaming API methods in the request as well as the
                 response.
 
                 It can be used as a top-level request field, which is
