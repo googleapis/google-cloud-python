@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-eventarc/compare/v1.2.1...v1.3.0) (2022-02-03)
+
+
+### Features
+
+* add api key support ([#68](https://github.com/googleapis/python-eventarc/issues/68)) ([96e07bb](https://github.com/googleapis/python-eventarc/commit/96e07bbbfbb75aa16d33ee9e0984144949e5adc3))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([6bffd75](https://github.com/googleapis/python-eventarc/commit/6bffd757478617fe6ffff905f42fc702a0cb1262))
+
 ### [1.2.1](https://www.github.com/googleapis/python-eventarc/compare/v1.2.0...v1.2.1) (2021-11-01)
 
 
