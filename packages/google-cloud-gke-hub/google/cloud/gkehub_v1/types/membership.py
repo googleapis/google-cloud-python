@@ -108,8 +108,7 @@ class Membership(proto.Message):
             Optional. How to identify workloads from this
             Membership. See the documentation on Workload
             Identity for more details:
-            https://cloud.google.com/kubernetes-
-            engine/docs/how-to/workload-identity
+            https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity
     """
 
     endpoint = proto.Field(
@@ -272,8 +271,7 @@ class GkeCluster(proto.Message):
         resource_link (str):
             Immutable. Self-link of the GCP resource for
             the GKE cluster. For example:
-            //container.googleapis.com/projects/my-
-            project/locations/us-west1-a/clusters/my-cluster
+            //container.googleapis.com/projects/my-project/locations/us-west1-a/clusters/my-cluster
             Zonal clusters are also supported.
     """
 
@@ -345,8 +343,8 @@ class MembershipState(proto.Message):
 class Authority(proto.Message):
     r"""Authority encodes how Google will recognize identities from
     this Membership. See the workload identity documentation for
-    more details: https://cloud.google.com/kubernetes-
-    engine/docs/how-to/workload-identity
+    more details:
+    https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity
 
     Attributes:
         issuer (str):

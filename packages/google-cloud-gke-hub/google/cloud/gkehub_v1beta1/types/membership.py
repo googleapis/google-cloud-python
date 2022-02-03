@@ -95,8 +95,7 @@ class Membership(proto.Message):
             Optional. How to identify workloads from this
             Membership. See the documentation on Workload
             Identity for more details:
-            https://cloud.google.com/kubernetes-
-            engine/docs/how-to/workload-identity
+            https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. When the Membership was created.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -136,8 +135,8 @@ class Membership(proto.Message):
 
     class InfrastructureType(proto.Enum):
         r"""Specifies the infrastructure type of a Membership.
-        Infrastructure type is used by Hub to control infrastructure-
-        specific behavior, including pricing.
+        Infrastructure type is used by Hub to control
+        infrastructure-specific behavior, including pricing.
         Each GKE distribution (on-GCP, on-Prem, on-X,...) will set this
         field automatically, but Attached Clusters customers should
         specify a type during registration.
@@ -178,13 +177,13 @@ class MembershipEndpoint(proto.Message):
 
     Attributes:
         gke_cluster (google.cloud.gkehub_v1beta1.types.GkeCluster):
-            Optional. Specific information for a GKE-on-
-            CP cluster.
+            Optional. Specific information for a
+            GKE-on-GCP cluster.
 
             This field is a member of `oneof`_ ``type``.
         on_prem_cluster (google.cloud.gkehub_v1beta1.types.OnPremCluster):
-            Optional. Specific information for a GKE On-
-            rem cluster.
+            Optional. Specific information for a GKE
+            On-Prem cluster.
 
             This field is a member of `oneof`_ ``type``.
         multi_cloud_cluster (google.cloud.gkehub_v1beta1.types.MultiCloudCluster):
@@ -328,8 +327,7 @@ class GkeCluster(proto.Message):
         resource_link (str):
             Immutable. Self-link of the GCP resource for
             the GKE cluster. For example:
-            //container.googleapis.com/projects/my-
-            project/locations/us-west1-a/clusters/my-cluster
+            //container.googleapis.com/projects/my-project/locations/us-west1-a/clusters/my-cluster
             Zonal clusters are also supported.
         cluster_missing (bool):
             Output only. If cluster_missing is set then it denotes that
@@ -348,11 +346,8 @@ class OnPremCluster(proto.Message):
         resource_link (str):
             Immutable. Self-link of the GCP resource for
             the GKE On-Prem cluster. For example:
-            //gkeonprem.googleapis.com/projects/my-
-            project/locations/us-west1-a/vmwareClusters/my-
-            cluster  //gkeonprem.googleapis.com/projects/my-
-            project/locations/us-
-            west1-a/bareMetalClusters/my-cluster
+            //gkeonprem.googleapis.com/projects/my-project/locations/us-west1-a/vmwareClusters/my-cluster
+            //gkeonprem.googleapis.com/projects/my-project/locations/us-west1-a/bareMetalClusters/my-cluster
         cluster_missing (bool):
             Output only. If cluster_missing is set then it denotes that
             API(gkeonprem.googleapis.com) resource for this GKE On-Prem
@@ -368,20 +363,16 @@ class OnPremCluster(proto.Message):
 
 
 class MultiCloudCluster(proto.Message):
-    r"""MultiCloudCluster contains information specific to GKE Multi-
-    loud clusters.
+    r"""MultiCloudCluster contains information specific to GKE
+    Multi-Cloud clusters.
 
     Attributes:
         resource_link (str):
             Immutable. Self-link of the GCP resource for
             the GKE Multi-Cloud cluster. For example:
 
-            //gkemulticloud.googleapis.com/projects/my-
-            project/locations/us-west1-a/awsClusters/my-
-            cluster
-            //gkemulticloud.googleapis.com/projects/my-
-            project/locations/us-west1-a/azureClusters/my-
-            cluster
+            //gkemulticloud.googleapis.com/projects/my-project/locations/us-west1-a/awsClusters/my-cluster
+            //gkemulticloud.googleapis.com/projects/my-project/locations/us-west1-a/azureClusters/my-cluster
         cluster_missing (bool):
             Output only. If cluster_missing is set then it denotes that
             API(gkemulticloud.googleapis.com) resource for this GKE
@@ -436,8 +427,8 @@ class KubernetesMetadata(proto.Message):
 class Authority(proto.Message):
     r"""Authority encodes how Google will recognize identities from
     this Membership. See the workload identity documentation for
-    more details: https://cloud.google.com/kubernetes-
-    engine/docs/how-to/workload-identity
+    more details:
+    https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity
 
     Attributes:
         issuer (str):

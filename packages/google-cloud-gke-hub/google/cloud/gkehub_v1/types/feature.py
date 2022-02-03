@@ -77,8 +77,8 @@ class Feature(proto.Message):
             Output only. The Hub-wide Feature state.
         membership_states (Sequence[google.cloud.gkehub_v1.types.Feature.MembershipStatesEntry]):
             Output only. Membership-specific Feature
-            status. If this Feature does report any per-
-            Membership status, this field may be unused.
+            status. If this Feature does report any
+            per-Membership status, this field may be unused.
             The keys indicate which Membership the state is
             for, in the form:
             `projects/{p}/locations/{l}/memberships/{m}`
@@ -153,8 +153,8 @@ class FeatureState(proto.Message):
             A human-readable description of the current
             status.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            The time this status and any related Feature-
-            pecific details were updated.
+            The time this status and any related
+            Feature-specific details were updated.
     """
 
     class Code(proto.Enum):
