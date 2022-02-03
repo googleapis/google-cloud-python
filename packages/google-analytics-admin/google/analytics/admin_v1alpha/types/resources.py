@@ -1221,8 +1221,8 @@ class CustomDimension(proto.Message):
             Required. Immutable. Tagging parameter name
             for this custom dimension.
             If this is a user-scoped dimension, then this is
-            the user property name. If this is an event-
-            scoped dimension, then this is the event
+            the user property name. If this is an
+            event-scoped dimension, then this is the event
             parameter name.
 
             May only contain alphanumeric and underscore

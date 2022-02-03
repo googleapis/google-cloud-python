@@ -346,7 +346,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -477,7 +477,7 @@ class AnalyticsAdminServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -558,7 +558,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([account, update_mask])
         if request is not None and has_flattened_params:
@@ -728,7 +728,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -859,7 +859,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([property])
         if request is not None and has_flattened_params:
@@ -936,7 +936,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1019,7 +1019,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([property, update_mask])
         if request is not None and has_flattened_params:
@@ -1095,7 +1095,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1219,7 +1219,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -1383,7 +1383,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, user_link])
         if request is not None and has_flattened_params:
@@ -1507,7 +1507,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([user_link])
         if request is not None and has_flattened_params:
@@ -1624,7 +1624,7 @@ class AnalyticsAdminServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1739,7 +1739,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1806,7 +1806,7 @@ class AnalyticsAdminServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1887,7 +1887,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([web_data_stream, update_mask])
         if request is not None and has_flattened_params:
@@ -1970,7 +1970,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, web_data_stream])
         if request is not None and has_flattened_params:
@@ -2052,7 +2052,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -2131,7 +2131,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -2198,7 +2198,7 @@ class AnalyticsAdminServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -2280,7 +2280,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([ios_app_data_stream, update_mask])
         if request is not None and has_flattened_params:
@@ -2364,7 +2364,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -2443,7 +2443,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -2510,7 +2510,7 @@ class AnalyticsAdminServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -2592,7 +2592,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([android_app_data_stream, update_mask])
         if request is not None and has_flattened_params:
@@ -2681,7 +2681,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -2767,7 +2767,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, firebase_link])
         if request is not None and has_flattened_params:
@@ -2835,7 +2835,7 @@ class AnalyticsAdminServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -2909,7 +2909,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -2992,7 +2992,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -3071,7 +3071,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, google_ads_link])
         if request is not None and has_flattened_params:
@@ -3153,7 +3153,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([google_ads_link, update_mask])
         if request is not None and has_flattened_params:
@@ -3222,7 +3222,7 @@ class AnalyticsAdminServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -3295,7 +3295,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -3377,7 +3377,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -3454,7 +3454,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -3535,7 +3535,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -3626,7 +3626,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, measurement_protocol_secret])
         if request is not None and has_flattened_params:
@@ -3700,7 +3700,7 @@ class AnalyticsAdminServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -3780,7 +3780,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([measurement_protocol_secret, update_mask])
         if request is not None and has_flattened_params:
@@ -3975,7 +3975,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -4057,7 +4057,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([google_signals_settings, update_mask])
         if request is not None and has_flattened_params:
@@ -4148,7 +4148,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, conversion_event])
         if request is not None and has_flattened_params:
@@ -4223,7 +4223,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -4290,7 +4290,7 @@ class AnalyticsAdminServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -4366,7 +4366,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -4447,7 +4447,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -4524,7 +4524,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -4616,7 +4616,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, display_video_360_advertiser_link])
         if request is not None and has_flattened_params:
@@ -4690,7 +4690,7 @@ class AnalyticsAdminServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -4773,7 +4773,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([display_video_360_advertiser_link, update_mask])
         if request is not None and has_flattened_params:
@@ -4867,7 +4867,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -4946,7 +4946,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -5043,7 +5043,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, display_video_360_advertiser_link_proposal])
         if request is not None and has_flattened_params:
@@ -5119,7 +5119,7 @@ class AnalyticsAdminServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -5319,7 +5319,7 @@ class AnalyticsAdminServiceAsyncClient:
                 A definition for a CustomDimension.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, custom_dimension])
         if request is not None and has_flattened_params:
@@ -5398,7 +5398,7 @@ class AnalyticsAdminServiceAsyncClient:
                 A definition for a CustomDimension.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([custom_dimension, update_mask])
         if request is not None and has_flattened_params:
@@ -5476,7 +5476,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -5549,7 +5549,7 @@ class AnalyticsAdminServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -5618,7 +5618,7 @@ class AnalyticsAdminServiceAsyncClient:
                 A definition for a CustomDimension.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -5693,7 +5693,7 @@ class AnalyticsAdminServiceAsyncClient:
                 A definition for a custom metric.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, custom_metric])
         if request is not None and has_flattened_params:
@@ -5772,7 +5772,7 @@ class AnalyticsAdminServiceAsyncClient:
                 A definition for a custom metric.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([custom_metric, update_mask])
         if request is not None and has_flattened_params:
@@ -5850,7 +5850,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -5922,7 +5922,7 @@ class AnalyticsAdminServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -5991,7 +5991,7 @@ class AnalyticsAdminServiceAsyncClient:
                 A definition for a custom metric.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -6066,7 +6066,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -6149,7 +6149,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([data_retention_settings, update_mask])
         if request is not None and has_flattened_params:
@@ -6235,7 +6235,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, data_stream])
         if request is not None and has_flattened_params:
@@ -6303,7 +6303,7 @@ class AnalyticsAdminServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -6381,7 +6381,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([data_stream, update_mask])
         if request is not None and has_flattened_params:
@@ -6459,7 +6459,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -6537,7 +6537,7 @@ class AnalyticsAdminServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:

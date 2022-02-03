@@ -202,8 +202,8 @@ class DeleteAccountRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Account to soft-
-            elete. Format: accounts/{account}
+            Required. The name of the Account to
+            soft-delete. Format: accounts/{account}
             Example: "accounts/100".
     """
 
