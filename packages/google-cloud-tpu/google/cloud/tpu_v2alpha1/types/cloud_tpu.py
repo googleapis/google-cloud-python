@@ -113,8 +113,8 @@ class AttachedDisk(proto.Message):
     Attributes:
         source_disk (str):
             Specifies the full path to an existing disk.
-            For example: "projects/my-project/zones/us-
-            central1-c/disks/my-disk".
+            For example:
+            "projects/my-project/zones/us-central1-c/disks/my-disk".
         mode (google.cloud.tpu_v2alpha1.types.AttachedDisk.DiskMode):
             The mode in which to attach this disk. If not specified, the
             default is READ_WRITE mode. Only applicable to data_disks.
