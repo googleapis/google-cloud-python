@@ -462,7 +462,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
                 A single table.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -586,7 +586,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
                 A single workspace.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -710,7 +710,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
                 A single row in a table.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -785,7 +785,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -867,7 +867,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
                 A single row in a table.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, row])
         if request is not None and has_flattened_params:
@@ -992,7 +992,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
                 A single row in a table.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([row, update_mask])
         if request is not None and has_flattened_params:
@@ -1110,7 +1110,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
