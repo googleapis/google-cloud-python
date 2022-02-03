@@ -437,8 +437,7 @@ class VirtualMachine(proto.Message):
             a significant impact.
             For more information about the effect of this
             parameter, see
-            https://cloud.google.com/compute/docs/instances/specify-
-            min-cpu-platform.
+            https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform.
         boot_image (str):
             The host operating system image to use.
 
@@ -512,8 +511,8 @@ class ServiceAccount(proto.Message):
             account for the project will be used.
         scopes (Sequence[str]):
             List of scopes to be enabled for this service
-            account on the VM, in addition to the cloud-
-            platform API scope that will be added by
+            account on the VM, in addition to the
+            cloud-platform API scope that will be added by
             default.
     """
 
@@ -562,8 +561,9 @@ class Network(proto.Message):
             address, additional configuration is required to
             allow the VM to access Google services.
 
-            See https://cloud.google.com/vpc/docs/configure-
-            private-google-access for more information.
+            See
+            https://cloud.google.com/vpc/docs/configure-private-google-access
+            for more information.
         subnetwork (str):
             If the specified network is configured for custom subnet
             creation, the name of the subnetwork to attach the instance
