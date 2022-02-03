@@ -451,7 +451,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
                 Response for the SearchDomains method.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([location, query])
         if request is not None and has_flattened_params:
@@ -533,7 +533,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
                 Response for the RetrieveRegisterParameters method.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([location, domain_name])
         if request is not None and has_flattened_params:
@@ -662,7 +662,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, registration, yearly_price])
         if request is not None and has_flattened_params:
@@ -756,7 +756,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
                 Response for the RetrieveTransferParameters method.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([location, domain_name])
         if request is not None and has_flattened_params:
@@ -910,7 +910,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [parent, registration, yearly_price, authorization_code]
@@ -1000,7 +1000,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -1097,7 +1097,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1206,7 +1206,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([registration, update_mask])
         if request is not None and has_flattened_params:
@@ -1328,7 +1328,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([registration, management_settings, update_mask])
         if request is not None and has_flattened_params:
@@ -1461,7 +1461,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([registration, dns_settings, update_mask])
         if request is not None and has_flattened_params:
@@ -1586,7 +1586,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([registration, contact_settings, update_mask])
         if request is not None and has_flattened_params:
@@ -1704,7 +1704,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1817,7 +1817,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1899,7 +1899,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
                 Defines an authorization code.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([registration])
         if request is not None and has_flattened_params:
@@ -1977,7 +1977,7 @@ class DomainsClient(metaclass=DomainsClientMeta):
                 Defines an authorization code.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([registration])
         if request is not None and has_flattened_params:
