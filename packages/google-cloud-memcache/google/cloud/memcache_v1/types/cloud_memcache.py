@@ -66,8 +66,7 @@ class Instance(proto.Message):
             Resource labels to represent user-provided
             metadata. Refer to cloud documentation on labels
             for more details.
-            https://cloud.google.com/compute/docs/labeling-
-            resources
+            https://cloud.google.com/compute/docs/labeling-resources
         authorized_network (str):
             The full name of the Google Compute Engine
             `network </compute/docs/networks-and-firewalls#networks>`__
@@ -188,8 +187,8 @@ class Instance(proto.Message):
 
         Attributes:
             code (google.cloud.memcache_v1.types.Instance.InstanceMessage.Code):
-                A code that correspond to one type of user-
-                acing message.
+                A code that correspond to one type of
+                user-facing message.
             message (str):
                 Message on memcached instance which will be
                 exposed to users.
@@ -382,8 +381,8 @@ class ApplyParametersRequest(proto.Message):
             instance for which parameter group updates
             should be applied.
         node_ids (Sequence[str]):
-            Nodes to which we should apply the instance-
-            evel parameter group.
+            Nodes to which we should apply the
+            instance-level parameter group.
         apply_all (bool):
             Whether to apply instance-level parameter
             group to all nodes. If set to true, will

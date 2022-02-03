@@ -71,8 +71,7 @@ class Instance(proto.Message):
             Resource labels to represent user-provided
             metadata. Refer to cloud documentation on labels
             for more details.
-            https://cloud.google.com/compute/docs/labeling-
-            resources
+            https://cloud.google.com/compute/docs/labeling-resources
         authorized_network (str):
             The full name of the Google Compute Engine
             `network <https://cloud.google.com/vpc/docs/vpc>`__ to which
@@ -201,8 +200,8 @@ class Instance(proto.Message):
 
         Attributes:
             code (google.cloud.memcache_v1beta2.types.Instance.InstanceMessage.Code):
-                A code that correspond to one type of user-
-                acing message.
+                A code that correspond to one type of
+                user-facing message.
             message (str):
                 Message on memcached instance which will be
                 exposed to users.
