@@ -480,9 +480,8 @@ class Key(proto.Message):
             This field is a member of `oneof`_ ``platform_settings``.
         labels (Sequence[google.cloud.recaptchaenterprise_v1.types.Key.LabelsEntry]):
             See <a
-            href="https://cloud.google.com/recaptcha-
-            enterprise/docs/labels"> Creating and managing
-            labels</a>.
+            href="https://cloud.google.com/recaptcha-enterprise/docs/labels">
+            Creating and managing labels</a>.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             The timestamp corresponding to the creation
             of this Key.
