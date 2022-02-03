@@ -73,8 +73,7 @@ class UpdateIapSettingsRequest(proto.Message):
             The field mask specifying which IAP settings
             should be updated. If omitted, the all of the
             settings are updated. See
-            https://developers.google.com/protocol-
-            buffers/docs/reference/google.protobuf#fieldmask
+            https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
     """
 
     iap_settings = proto.Field(proto.MESSAGE, number=1, message="IapSettings",)
@@ -176,10 +175,10 @@ class OAuthSettings(proto.Message):
             Domain hint to send as hd=? parameter in
             OAuth request flow. Enables redirect to primary
             IDP by skipping Google's login screen.
-            https://developers.google.com/identity/protocols/OpenIDConnect#hd-
-            param Note: IAP does not verify that the id
-            token's hd claim matches this value since access
-            behavior is managed by IAM policies.
+            https://developers.google.com/identity/protocols/OpenIDConnect#hd-param
+            Note: IAP does not verify that the id token's hd
+            claim matches this value since access behavior
+            is managed by IAM policies.
     """
 
     login_hint = proto.Field(proto.MESSAGE, number=2, message=wrappers_pb2.StringValue,)
