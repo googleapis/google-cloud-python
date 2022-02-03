@@ -130,9 +130,8 @@ class FragTester:
             return "".join(outputs)
 
 
-# TODO(dovs): ads templates
 @nox.session(python=ALL_PYTHON)
-def fragment(session):
+def fragment(session, use_ads_templates=False):
     session.install(
         "coverage",
         "pytest",
@@ -144,47 +143,25 @@ def fragment(session):
     )
     session.install("-e", ".")
 
+    frag_files = [Path(f) for f in session.posargs] if session.posargs else FRAGMENT_FILES
+
     if os.environ.get("PARALLEL_FRAGMENT_TESTS", "false").lower() == "true":
         with ThreadPoolExecutor() as p:
-            all_outs = p.map(FragTester(session, False), FRAGMENT_FILES)
+            all_outs = p.map(FragTester(session, use_ads_templates), frag_files)
 
         output = "".join(all_outs)
         session.log(output)
     else:
-        tester = FragTester(session, False)
-        for frag in FRAGMENT_FILES:
+        tester = FragTester(session, use_ads_templates)
+        for frag in frag_files:
             session.log(tester(frag))
 
 
 @nox.session(python=ALL_PYTHON[1:])
 def fragment_alternative_templates(session):
-    session.install(
-        "coverage",
-        "pytest",
-        "pytest-cov",
-        "pytest-xdist",
-        "asyncmock",
-        "pytest-asyncio",
-        "grpcio-tools",
-    )
-    session.install("-e", ".")
-
-    if os.environ.get("PARALLEL_FRAGMENT_TESTS", "false").lower() == "true":
-        with ThreadPoolExecutor() as p:
-            all_outs = p.map(FragTester(session, True), FRAGMENT_FILES)
-
-        output = "".join(all_outs)
-        session.log(output)
-    else:
-        tester = FragTester(session, True)
-        for frag in FRAGMENT_FILES:
-            session.log(tester(frag))
+    fragment(session, use_ads_templates=True)
 
 
-# TODO(yon-mg): -add compute context manager that includes rest transport
-#               -add compute unit tests
-#               (to test against temporarily while rest transport is incomplete)
-#               (to be removed once all features are complete)
 @contextmanager
 def showcase_library(
     session, templates="DEFAULT", other_opts: typing.Iterable[str] = ()

@@ -477,7 +477,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.{{ method.name|snake_case}}]
+        rpc = self._transport._wrapped_methods[self._transport.{{ method.transport_safe_name|snake_case}}]
 
         {% if method.explicit_routing %}
         header_params = {}

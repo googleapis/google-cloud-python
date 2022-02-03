@@ -250,7 +250,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
     {% for method in service.methods.values() %}
 
     @property
-    def {{ method.name|snake_case }}(self) -> Callable[
+    def {{ method.transport_safe_name|snake_case }}(self) -> Callable[
             [{{ method.input.ident }}],
             Awaitable[{{ method.output.ident }}]]:
         r"""Return a callable for the{{ ' ' }}
@@ -270,13 +270,13 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if '{{ method.name|snake_case }}' not in self._stubs:
-            self._stubs['{{ method.name|snake_case }}'] = self.grpc_channel.{{ method.grpc_stub_type }}(
+        if '{{ method.transport_safe_name|snake_case }}' not in self._stubs:
+            self._stubs['{{ method.transport_safe_name|snake_case }}'] = self.grpc_channel.{{ method.grpc_stub_type }}(
                 '/{{ '.'.join(method.meta.address.package) }}.{{ service.name }}/{{ method.name }}',
                 request_serializer={{ method.input.ident }}.{% if method.input.ident.python_import.module.endswith('_pb2') %}SerializeToString{% else %}serialize{% endif %},
                 response_deserializer={{ method.output.ident }}.{% if method.output.ident.python_import.module.endswith('_pb2') %}FromString{% else %}deserialize{% endif %},
             )
-        return self._stubs['{{ method.name|snake_case }}']
+        return self._stubs['{{ method.transport_safe_name|snake_case }}']
     {% endfor %}
 
     {% if opts.add_iam_methods %}

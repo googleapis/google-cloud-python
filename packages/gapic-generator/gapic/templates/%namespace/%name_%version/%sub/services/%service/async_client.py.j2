@@ -92,7 +92,7 @@ class {{ service.async_client_name }}:
 
     @classmethod
     def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
-        """Return the API endpoint and client cert source for mutual TLS. 
+        """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
         (1) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not "true", the
@@ -100,7 +100,7 @@ class {{ service.async_client_name }}:
         (2) if `client_options.client_cert_source` is provided, use the provided one; if the
         default client cert source exists, use the default one; otherwise the client cert
         source is None.
- 
+
         The API endpoint is determined in the following order:
         (1) if `client_options.api_endpoint` if provided, use the provided one.
         (2) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is "always", use the
@@ -118,7 +118,7 @@ class {{ service.async_client_name }}:
         Returns:
             Tuple[str, Callable[[], Tuple[bytes, bytes]]]: returns the API endpoint and the
                 client cert source to use.
-        
+
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
@@ -302,7 +302,7 @@ class {{ service.async_client_name }}:
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.{{ method.name|snake_case }},
+            self._client._transport.{{ method.transport_safe_name|snake_case }},
             {% if method.retry %}
             default_retry=retries.Retry(
                 {% if method.retry.initial_backoff %}initial={{ method.retry.initial_backoff }},{% endif %}

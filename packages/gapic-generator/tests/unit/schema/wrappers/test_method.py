@@ -862,3 +862,21 @@ def test_is_operation_polling_method():
     )
 
     assert not invalid_method.is_operation_polling_method
+
+
+def test_transport_safe_name():
+    unsafe_methods = {
+        name: make_method(name=name)
+        for name in ["CreateChannel", "GrpcChannel", "OperationsClient"]
+    }
+
+    safe_methods = {
+        name: make_method(name=name)
+        for name in ["Call", "Put", "Hold", "Raise"]
+    }
+
+    for name, method in safe_methods.items():
+        assert method.transport_safe_name == name
+
+    for name, method in unsafe_methods.items():
+        assert method.transport_safe_name == f"{name}_"

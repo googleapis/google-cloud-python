@@ -396,12 +396,12 @@ class {{service.name}}RestTransport({{service.name}}Transport):
     {% for method in service.methods.values()|sort(attribute="name") %}
 
     @property
-    def {{method.name | snake_case}}(self) -> Callable[
+    def {{method.transport_safe_name | snake_case}}(self) -> Callable[
             [{{method.input.ident}}],
             {{method.output.ident}}]:
-        stub = self._STUBS.get("{{method.name | snake_case}}")
+        stub = self._STUBS.get("{{method.transport_safe_name | snake_case}}")
         if not stub:
-            stub = self._STUBS["{{method.name | snake_case}}"] = self._{{method.name}}(self._session, self._host, self._interceptor)
+            stub = self._STUBS["{{method.transport_safe_name | snake_case}}"] = self._{{method.name}}(self._session, self._host, self._interceptor)
 
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast

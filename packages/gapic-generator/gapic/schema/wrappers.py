@@ -949,6 +949,21 @@ class Method:
         return getattr(self.method_pb, name)
 
     @property
+    def transport_safe_name(self) -> str:
+        # These names conflict with other methods in the transport.
+        # We don't want to disambiguate the names at the client level
+        # because the disambiguated name is less convenient and user friendly.
+        #
+        # Note: this should really be a class variable,
+        # but python 3.6 can't handle that.
+        TRANSPORT_UNSAFE_NAMES = {
+            "CreateChannel",
+            "GrpcChannel",
+            "OperationsClient",
+        }
+        return f"{self.name}_" if self.name in TRANSPORT_UNSAFE_NAMES else self.name
+
+    @property
     def is_operation_polling_method(self):
         return self.output.is_extended_operation and self.options.Extensions[ex_ops_pb2.operation_polling_method]
 
