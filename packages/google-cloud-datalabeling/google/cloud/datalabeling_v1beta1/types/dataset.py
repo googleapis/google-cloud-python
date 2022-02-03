@@ -171,8 +171,8 @@ class ClassificationMetadata(proto.Message):
 
     Attributes:
         is_multi_label (bool):
-            Whether the classification task is multi-
-            abel or not.
+            Whether the classification task is
+            multi-label or not.
     """
 
     is_multi_label = proto.Field(proto.BOOL, number=1,)
