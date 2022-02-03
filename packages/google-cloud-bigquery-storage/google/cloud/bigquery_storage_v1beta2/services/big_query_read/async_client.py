@@ -233,8 +233,8 @@ class BigQueryReadAsyncClient:
         the contents of a BigQuery table into one or more
         streams, which can then be used to read data from the
         table. The read session also specifies properties of the
-        data to be read, such as a list of columns or a push-
-        down filter describing the rows to be returned.
+        data to be read, such as a list of columns or a
+        push-down filter describing the rows to be returned.
 
         A particular row can be read by at most one stream. When
         the caller has reached the end of each stream in the
@@ -273,9 +273,9 @@ class BigQueryReadAsyncClient:
                 Max initial number of streams. If
                 unset or zero, the server will provide a
                 value of streams so as to produce
-                reasonable throughput. Must be non-
-                negative. The number of streams may be
-                lower than the requested number,
+                reasonable throughput. Must be
+                non-negative. The number of streams may
+                be lower than the requested number,
                 depending on the amount parallelism that
                 is reasonable for the table. Error will
                 be returned if the max count is greater
@@ -299,7 +299,7 @@ class BigQueryReadAsyncClient:
                 Information about the ReadSession.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, read_session, max_stream_count])
         if request is not None and has_flattened_params:
@@ -401,7 +401,7 @@ class BigQueryReadAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([read_stream, offset])
         if request is not None and has_flattened_params:

@@ -34,8 +34,7 @@ class ProtoSchema(proto.Message):
             has to be self contained, including all the
             nested types, excepted for proto buffer well
             known types
-            (https://developers.google.com/protocol-
-            buffers/docs/reference/google.protobuf).
+            (https://developers.google.com/protocol-buffers/docs/reference/google.protobuf).
     """
 
     proto_descriptor = proto.Field(
@@ -50,9 +49,10 @@ class ProtoRows(proto.Message):
         serialized_rows (Sequence[bytes]):
             A sequence of rows serialized as a Protocol
             Buffer.
-            See https://developers.google.com/protocol-
-            buffers/docs/overview for more information on
-            deserializing this field.
+            See
+            https://developers.google.com/protocol-buffers/docs/overview
+            for more information on deserializing this
+            field.
     """
 
     serialized_rows = proto.RepeatedField(proto.BYTES, number=1,)

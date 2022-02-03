@@ -54,9 +54,10 @@ class ProtoRows(proto.Message):
         serialized_rows (Sequence[bytes]):
             A sequence of rows serialized as a Protocol
             Buffer.
-            See https://developers.google.com/protocol-
-            buffers/docs/overview for more information on
-            deserializing this field.
+            See
+            https://developers.google.com/protocol-buffers/docs/overview
+            for more information on deserializing this
+            field.
     """
 
     serialized_rows = proto.RepeatedField(proto.BYTES, number=1,)

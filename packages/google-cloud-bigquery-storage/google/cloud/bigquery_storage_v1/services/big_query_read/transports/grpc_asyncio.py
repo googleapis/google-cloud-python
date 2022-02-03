@@ -205,8 +205,11 @@ class BigQueryReadGrpcAsyncIOTransport(BigQueryReadTransport):
         if not self._grpc_channel:
             self._grpc_channel = type(self).create_channel(
                 self._host,
+                # use the credentials which are saved
                 credentials=self._credentials,
-                credentials_file=credentials_file,
+                # Set ``credentials_file`` to ``None`` here as
+                # the credentials that we saved earlier should be used.
+                credentials_file=None,
                 scopes=self._scopes,
                 ssl_credentials=self._ssl_channel_credentials,
                 quota_project_id=quota_project_id,
@@ -239,8 +242,8 @@ class BigQueryReadGrpcAsyncIOTransport(BigQueryReadTransport):
         the contents of a BigQuery table into one or more
         streams, which can then be used to read data from the
         table. The read session also specifies properties of the
-        data to be read, such as a list of columns or a push-
-        down filter describing the rows to be returned.
+        data to be read, such as a list of columns or a
+        push-down filter describing the rows to be returned.
 
         A particular row can be read by at most one stream. When
         the caller has reached the end of each stream in the

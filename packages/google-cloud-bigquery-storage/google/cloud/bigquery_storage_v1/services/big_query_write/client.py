@@ -469,7 +469,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, write_stream])
         if request is not None and has_flattened_params:
@@ -618,7 +618,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -688,7 +688,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
                 Response message for FinalizeWriteStream.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -763,7 +763,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
                 Response message for BatchCommitWriteStreams.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -842,7 +842,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
                 Respond message for FlushRows.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([write_stream])
         if request is not None and has_flattened_params:
