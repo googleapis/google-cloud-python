@@ -160,8 +160,8 @@ class ProductCatalogItem(proto.Message):
                sum(costs)
         currency_code (str):
             Optional. Only required if the price is set.
-            Currency code for price/costs. Use three-
-            character ISO-4217 code.
+            Currency code for price/costs. Use
+            three-character ISO-4217 code.
         stock_state (google.cloud.recommendationengine_v1beta1.types.ProductCatalogItem.StockState):
             Optional. Online stock state of the catalog item. Default is
             ``IN_STOCK``.

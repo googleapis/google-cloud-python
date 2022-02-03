@@ -457,7 +457,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, user_event])
         if request is not None and has_flattened_params:
@@ -533,8 +533,8 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             uri (str):
-                Optional. The url including cgi-
-                arameters but excluding the hash
+                Optional. The url including
+                cgi-parameters but excluding the hash
                 fragment. The URL must be truncated to
                 1.5K bytes to conservatively be under
                 the 2K bytes. This is often more useful
@@ -612,7 +612,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, user_event, uri, ets])
         if request is not None and has_flattened_params:
@@ -735,7 +735,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter])
         if request is not None and has_flattened_params:
@@ -858,7 +858,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter, force])
         if request is not None and has_flattened_params:
@@ -981,7 +981,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, request_id, input_config, errors_config])
         if request is not None and has_flattened_params:
