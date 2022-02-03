@@ -239,8 +239,8 @@ class EnrolledService(proto.Message):
     Attributes:
         cloud_product (str):
             The product for which Access Approval will be
-            enrolled. Allowed values are listed below (case-
-            sensitive):
+            enrolled. Allowed values are listed below
+            (case-sensitive):
             - all
             - appengine.googleapis.com
             - bigquery.googleapis.com
