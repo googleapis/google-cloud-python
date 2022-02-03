@@ -476,7 +476,7 @@ class QuestionServiceClient(metaclass=QuestionServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -557,7 +557,7 @@ class QuestionServiceClient(metaclass=QuestionServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, question])
         if request is not None and has_flattened_params:
@@ -641,7 +641,7 @@ class QuestionServiceClient(metaclass=QuestionServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, interpretation_index])
         if request is not None and has_flattened_params:
@@ -713,7 +713,7 @@ class QuestionServiceClient(metaclass=QuestionServiceClientMeta):
                 Feedback provided by a user.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -792,7 +792,7 @@ class QuestionServiceClient(metaclass=QuestionServiceClientMeta):
                 Feedback provided by a user.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([user_feedback, update_mask])
         if request is not None and has_flattened_params:
