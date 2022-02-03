@@ -569,8 +569,9 @@ class DistributionCut(proto.Message):
             ``ValueType = DISTRIBUTION`` and ``MetricKind = DELTA`` or
             ``MetricKind = CUMULATIVE``.
         range_ (google.cloud.monitoring_v3.types.Range):
-            Range of values considered "good." For a one-
-            ided range, set one bound to an infinite value.
+            Range of values considered "good." For a
+            one-sided range, set one bound to an infinite
+            value.
     """
 
     distribution_filter = proto.Field(proto.STRING, number=4,)
@@ -664,8 +665,9 @@ class WindowsBasedSli(proto.Message):
                 specifying the ``TimeSeries`` to use for evaluating window
                 quality.
             range_ (google.cloud.monitoring_v3.types.Range):
-                Range of values considered "good." For a one-
-                ided range, set one bound to an infinite value.
+                Range of values considered "good." For a
+                one-sided range, set one bound to an infinite
+                value.
         """
 
         time_series = proto.Field(proto.STRING, number=1,)

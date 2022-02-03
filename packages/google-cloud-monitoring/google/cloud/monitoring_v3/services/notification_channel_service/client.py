@@ -483,7 +483,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -577,7 +577,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -671,7 +671,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -767,7 +767,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -867,7 +867,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, notification_channel])
         if request is not None and has_flattened_params:
@@ -961,7 +961,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([update_mask, notification_channel])
         if request is not None and has_flattened_params:
@@ -1054,7 +1054,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, force])
         if request is not None and has_flattened_params:
@@ -1128,7 +1128,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1235,7 +1235,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
                 The GetNotificationChannelVerificationCode request.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1336,7 +1336,7 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, code])
         if request is not None and has_flattened_params:
