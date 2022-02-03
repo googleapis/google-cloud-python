@@ -450,7 +450,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([table_name, app_profile_id])
         if request is not None and has_flattened_params:
@@ -540,7 +540,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([table_name, app_profile_id])
         if request is not None and has_flattened_params:
@@ -647,7 +647,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([table_name, row_key, mutations, app_profile_id])
         if request is not None and has_flattened_params:
@@ -754,7 +754,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([table_name, entries, app_profile_id])
         if request is not None and has_flattened_params:
@@ -888,7 +888,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [
@@ -959,10 +959,10 @@ class BigtableClient(metaclass=BigtableClientMeta):
     ) -> bigtable.ReadModifyWriteRowResponse:
         r"""Modifies a row atomically on the server. The method
         reads the latest existing timestamp and value from the
-        specified columns and writes a new entry based on pre-
-        defined read/modify/write rules. The new value for the
-        timestamp is the greater of the existing timestamp or
-        the current server time. The method returns the new
+        specified columns and writes a new entry based on
+        pre-defined read/modify/write rules. The new value for
+        the timestamp is the greater of the existing timestamp
+        or the current server time. The method returns the new
         contents of all modified cells.
 
         Args:
@@ -1019,7 +1019,7 @@ class BigtableClient(metaclass=BigtableClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([table_name, row_key, rules, app_profile_id])
         if request is not None and has_flattened_params:

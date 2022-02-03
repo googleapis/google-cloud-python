@@ -626,9 +626,9 @@ class SnapshotTableMetadata(proto.Message):
     r"""The metadata for the Operation returned by SnapshotTable.
     Note: This is a private alpha release of Cloud Bigtable
     snapshots. This feature is not currently available to most Cloud
-    Bigtable customers. This feature might be changed in backward-
-    incompatible ways and is not recommended for production use. It
-    is not subject to any SLA or deprecation policy.
+    Bigtable customers. This feature might be changed in
+    backward-incompatible ways and is not recommended for production
+    use. It is not subject to any SLA or deprecation policy.
 
     Attributes:
         original_request (google.cloud.bigtable_admin_v2.types.SnapshotTableRequest):
@@ -656,9 +656,9 @@ class CreateTableFromSnapshotMetadata(proto.Message):
     CreateTableFromSnapshot.
     Note: This is a private alpha release of Cloud Bigtable
     snapshots. This feature is not currently available to most Cloud
-    Bigtable customers. This feature might be changed in backward-
-    incompatible ways and is not recommended for production use. It
-    is not subject to any SLA or deprecation policy.
+    Bigtable customers. This feature might be changed in
+    backward-incompatible ways and is not recommended for production
+    use. It is not subject to any SLA or deprecation policy.
 
     Attributes:
         original_request (google.cloud.bigtable_admin_v2.types.CreateTableFromSnapshotRequest):

@@ -204,8 +204,11 @@ class BigtableGrpcAsyncIOTransport(BigtableTransport):
         if not self._grpc_channel:
             self._grpc_channel = type(self).create_channel(
                 self._host,
+                # use the credentials which are saved
                 credentials=self._credentials,
-                credentials_file=credentials_file,
+                # Set ``credentials_file`` to ``None`` here as
+                # the credentials that we saved earlier should be used.
+                credentials_file=None,
                 scopes=self._scopes,
                 ssl_credentials=self._ssl_channel_credentials,
                 quota_project_id=quota_project_id,
@@ -387,10 +390,10 @@ class BigtableGrpcAsyncIOTransport(BigtableTransport):
 
         Modifies a row atomically on the server. The method
         reads the latest existing timestamp and value from the
-        specified columns and writes a new entry based on pre-
-        defined read/modify/write rules. The new value for the
-        timestamp is the greater of the existing timestamp or
-        the current server time. The method returns the new
+        specified columns and writes a new entry based on
+        pre-defined read/modify/write rules. The new value for
+        the timestamp is the greater of the existing timestamp
+        or the current server time. The method returns the new
         contents of all modified cells.
 
         Returns:

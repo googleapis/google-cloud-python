@@ -557,7 +557,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, table_id, table])
         if request is not None and has_flattened_params:
@@ -671,7 +671,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, table_id, source_snapshot])
         if request is not None and has_flattened_params:
@@ -760,7 +760,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -840,7 +840,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -907,7 +907,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -999,7 +999,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, modifications])
         if request is not None and has_flattened_params:
@@ -1125,7 +1125,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1212,7 +1212,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, consistency_token])
         if request is not None and has_flattened_params:
@@ -1336,7 +1336,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, cluster, snapshot_id, description])
         if request is not None and has_flattened_params:
@@ -1445,7 +1445,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1543,7 +1543,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -1627,7 +1627,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1729,7 +1729,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, backup_id, backup])
         if request is not None and has_flattened_params:
@@ -1811,7 +1811,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 A backup of a Cloud Bigtable table.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1897,7 +1897,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 A backup of a Cloud Bigtable table.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([backup, update_mask])
         if request is not None and has_flattened_params:
@@ -1967,7 +1967,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -2045,7 +2045,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -2248,7 +2248,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource])
         if request is not None and has_flattened_params:
@@ -2374,7 +2374,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource])
         if request is not None and has_flattened_params:
@@ -2455,7 +2455,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 Response message for TestIamPermissions method.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource, permissions])
         if request is not None and has_flattened_params:

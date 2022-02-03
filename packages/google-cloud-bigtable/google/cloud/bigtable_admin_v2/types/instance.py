@@ -201,8 +201,8 @@ class Cluster(proto.Message):
         )
 
     class EncryptionConfig(proto.Message):
-        r"""Cloud Key Management Service (Cloud KMS) settings for a CMEK-
-        rotected cluster.
+        r"""Cloud Key Management Service (Cloud KMS) settings for a
+        CMEK-protected cluster.
 
         Attributes:
             kms_key_name (str):
