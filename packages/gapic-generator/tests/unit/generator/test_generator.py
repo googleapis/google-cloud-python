@@ -255,7 +255,10 @@ def test_get_response_enumerates_proto():
 
 
 def test_get_response_divides_subpackages():
-    g = make_generator()
+    # NOTE: autogen-snippets is intentionally disabled for this test
+    # The API schema below is incomplete and will result in errors when the
+    # snippetgen logic tries to parse it.
+    g = make_generator("autogen-snippets=false")
     api_schema = api.API.build(
         [
             descriptor_pb2.FileDescriptorProto(
@@ -290,7 +293,7 @@ def test_get_response_divides_subpackages():
             """.strip()
             )
             cgr = g.get_response(api_schema=api_schema,
-                                 opts=Options.build(""))
+                                 opts=Options.build("autogen-snippets=false"))
             assert len(cgr.file) == 6
             assert {i.name for i in cgr.file} == {
                 "foo/types/top.py",
@@ -466,7 +469,7 @@ def test_samplegen_config_to_output_files(mock_gmtime, fs):
 
     with mock.patch("gapic.samplegen.samplegen.generate_sample", side_effect=mock_generate_sample):
         actual_response = g.get_response(
-            api_schema, opts=Options.build(""))
+            api_schema, opts=Options.build("autogen-snippets=False"))
 
     expected_snippet_index_json = {
         "snippets": [
@@ -606,7 +609,7 @@ def test_samplegen_id_disambiguation(mock_gmtime, fs):
     )
     with mock.patch("gapic.samplegen.samplegen.generate_sample", side_effect=mock_generate_sample):
         actual_response = g.get_response(api_schema,
-                                     opts=Options.build(""))
+                                     opts=Options.build("autogen-snippets=False"))
 
     expected_snippet_metadata_json = {
         "snippets": [

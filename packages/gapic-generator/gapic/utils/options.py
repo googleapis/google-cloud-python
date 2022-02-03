@@ -38,7 +38,7 @@ class Options:
     warehouse_package_name: str = ''
     retry: Optional[Dict[str, Any]] = None
     sample_configs: Tuple[str, ...] = dataclasses.field(default=())
-    autogen_snippets: bool = False
+    autogen_snippets: bool = True
     templates: Tuple[str, ...] = dataclasses.field(default=('DEFAULT',))
     lazy_import: bool = False
     old_naming: bool = False
@@ -146,6 +146,18 @@ class Options:
         # Build the options instance.
         sample_paths = opts.pop('samples', [])
 
+        # autogen-snippets is True by default, so make sure users can disable
+        # by passing `autogen-snippets=false`
+        autogen_snippets = opts.pop(
+            "autogen-snippets", ["True"])[0] in ("True", "true", "T", "t", "TRUE")
+
+        # NOTE: Snippets are not currently correct for the alternative (Ads) templates
+        # so always disable snippetgen in that case
+        # https://github.com/googleapis/gapic-generator-python/issues/1052
+        old_naming = bool(opts.pop('old-naming', False))
+        if old_naming:
+            autogen_snippets = False
+
         answer = Options(
             name=opts.pop('name', ['']).pop(),
             namespace=tuple(opts.pop('namespace', [])),
@@ -157,10 +169,10 @@ class Options:
                 for s in sample_paths
                 for cfg_path in samplegen_utils.generate_all_sample_fpaths(s)
             ),
-            autogen_snippets=bool(opts.pop("autogen-snippets", False)),
+            autogen_snippets=autogen_snippets,
             templates=tuple(path.expanduser(i) for i in templates),
             lazy_import=bool(opts.pop('lazy-import', False)),
-            old_naming=bool(opts.pop('old-naming', False)),
+            old_naming=old_naming,
             add_iam_methods=bool(opts.pop('add-iam-methods', False)),
             metadata=bool(opts.pop('metadata', False)),
             # transport should include desired transports delimited by '+', e.g. transport='grpc+rest'
