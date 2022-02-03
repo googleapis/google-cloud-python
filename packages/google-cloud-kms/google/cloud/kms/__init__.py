@@ -14,6 +14,8 @@
 # limitations under the License.
 #
 
+from google.cloud.kms_v1.services.ekm_service.client import EkmServiceClient
+from google.cloud.kms_v1.services.ekm_service.async_client import EkmServiceAsyncClient
 from google.cloud.kms_v1.services.key_management_service.client import (
     KeyManagementServiceClient,
 )
@@ -21,6 +23,13 @@ from google.cloud.kms_v1.services.key_management_service.async_client import (
     KeyManagementServiceAsyncClient,
 )
 
+from google.cloud.kms_v1.types.ekm_service import Certificate
+from google.cloud.kms_v1.types.ekm_service import CreateEkmConnectionRequest
+from google.cloud.kms_v1.types.ekm_service import EkmConnection
+from google.cloud.kms_v1.types.ekm_service import GetEkmConnectionRequest
+from google.cloud.kms_v1.types.ekm_service import ListEkmConnectionsRequest
+from google.cloud.kms_v1.types.ekm_service import ListEkmConnectionsResponse
+from google.cloud.kms_v1.types.ekm_service import UpdateEkmConnectionRequest
 from google.cloud.kms_v1.types.resources import CryptoKey
 from google.cloud.kms_v1.types.resources import CryptoKeyVersion
 from google.cloud.kms_v1.types.resources import CryptoKeyVersionTemplate
@@ -71,8 +80,17 @@ from google.cloud.kms_v1.types.service import UpdateCryptoKeyRequest
 from google.cloud.kms_v1.types.service import UpdateCryptoKeyVersionRequest
 
 __all__ = (
+    "EkmServiceClient",
+    "EkmServiceAsyncClient",
     "KeyManagementServiceClient",
     "KeyManagementServiceAsyncClient",
+    "Certificate",
+    "CreateEkmConnectionRequest",
+    "EkmConnection",
+    "GetEkmConnectionRequest",
+    "ListEkmConnectionsRequest",
+    "ListEkmConnectionsResponse",
+    "UpdateEkmConnectionRequest",
     "CryptoKey",
     "CryptoKeyVersion",
     "CryptoKeyVersionTemplate",

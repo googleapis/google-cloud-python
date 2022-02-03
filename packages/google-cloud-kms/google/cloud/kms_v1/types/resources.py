@@ -46,6 +46,7 @@ class ProtectionLevel(proto.Enum):
     SOFTWARE = 1
     HSM = 2
     EXTERNAL = 3
+    EXTERNAL_VPC = 4
 
 
 class KeyRing(proto.Message):
@@ -166,6 +167,23 @@ class CryptoKey(proto.Message):
             [DESTROYED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROYED].
             If not specified at creation time, the default duration is
             24 hours.
+        crypto_key_backend (str):
+            Immutable. The resource name of the backend environment
+            where the key material for all
+            [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]
+            associated with this
+            [CryptoKey][google.cloud.kms.v1.CryptoKey] reside and where
+            all related cryptographic operations are performed. Only
+            applicable if
+            [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]
+            have a
+            [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel] of
+            [EXTERNAL_VPC][CryptoKeyVersion.ProtectionLevel.EXTERNAL_VPC],
+            with the resource name in the format
+            ``projects/*/locations/*/ekmConnections/*``. Note, this list
+            is non-exhaustive and may apply to additional
+            [ProtectionLevels][google.cloud.kms.v1.ProtectionLevel] in
+            the future.
     """
 
     class CryptoKeyPurpose(proto.Enum):
@@ -203,6 +221,7 @@ class CryptoKey(proto.Message):
     destroy_scheduled_duration = proto.Field(
         proto.MESSAGE, number=14, message=duration_pb2.Duration,
     )
+    crypto_key_backend = proto.Field(proto.STRING, number=15,)
 
 
 class CryptoKeyVersionTemplate(proto.Message):
@@ -253,6 +272,9 @@ class KeyOperationAttestation(proto.Message):
         content (bytes):
             Output only. The attestation data provided by
             the HSM when the key operation was performed.
+        cert_chains (google.cloud.kms_v1.types.KeyOperationAttestation.CertificateChains):
+            Output only. The certificate chains needed to
+            validate the attestation
     """
 
     class AttestationFormat(proto.Enum):
@@ -261,8 +283,30 @@ class KeyOperationAttestation(proto.Message):
         CAVIUM_V1_COMPRESSED = 3
         CAVIUM_V2_COMPRESSED = 4
 
+    class CertificateChains(proto.Message):
+        r"""Certificate chains needed to verify the attestation.
+        Certificates in chains are PEM-encoded and are ordered based on
+        https://tools.ietf.org/html/rfc5246#section-7.4.2.
+
+        Attributes:
+            cavium_certs (Sequence[str]):
+                Cavium certificate chain corresponding to the
+                attestation.
+            google_card_certs (Sequence[str]):
+                Google card certificate chain corresponding
+                to the attestation.
+            google_partition_certs (Sequence[str]):
+                Google partition certificate chain
+                corresponding to the attestation.
+        """
+
+        cavium_certs = proto.RepeatedField(proto.STRING, number=1,)
+        google_card_certs = proto.RepeatedField(proto.STRING, number=2,)
+        google_partition_certs = proto.RepeatedField(proto.STRING, number=3,)
+
     format = proto.Field(proto.ENUM, number=4, enum=AttestationFormat,)
     content = proto.Field(proto.BYTES, number=5,)
+    cert_chains = proto.Field(proto.MESSAGE, number=6, message=CertificateChains,)
 
 
 class CryptoKeyVersion(proto.Message):
@@ -347,7 +391,9 @@ class CryptoKeyVersion(proto.Message):
             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
             that are specific to the
             [EXTERNAL][google.cloud.kms.v1.ProtectionLevel.EXTERNAL]
-            protection level.
+            protection level and
+            [EXTERNAL_VPC][google.cloud.kms.v1.ProtectionLevel.EXTERNAL_VPC]
+            protection levels.
         reimport_eligible (bool):
             Output only. Whether or not this key version is eligible for
             reimport, by being specified as a target in
@@ -689,16 +735,24 @@ class ExternalProtectionLevelOptions(proto.Message):
     [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] that are
     specific to the
     [EXTERNAL][google.cloud.kms.v1.ProtectionLevel.EXTERNAL] protection
-    level.
+    level and
+    [EXTERNAL_VPC][google.cloud.kms.v1.ProtectionLevel.EXTERNAL_VPC]
+    protection levels.
 
     Attributes:
         external_key_uri (str):
             The URI for an external resource that this
             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
             represents.
+        ekm_connection_key_path (str):
+            The path to the external key material on the EKM when using
+            [EkmConnection][google.cloud.kms.v1.EkmConnection] e.g.,
+            "v0/my/key". Set this field instead of external_key_uri when
+            using an [EkmConnection][google.cloud.kms.v1.EkmConnection].
     """
 
     external_key_uri = proto.Field(proto.STRING, number=1,)
+    ekm_connection_key_path = proto.Field(proto.STRING, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

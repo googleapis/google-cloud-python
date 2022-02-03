@@ -2367,6 +2367,7 @@ def test_get_crypto_key(request_type, transport: str = "grpc"):
             name="name_value",
             purpose=resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT,
             import_only=True,
+            crypto_key_backend="crypto_key_backend_value",
             rotation_period=duration_pb2.Duration(seconds=751),
         )
         response = client.get_crypto_key(request)
@@ -2381,6 +2382,7 @@ def test_get_crypto_key(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.purpose == resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT
     assert response.import_only is True
+    assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
 def test_get_crypto_key_empty_call():
@@ -2418,6 +2420,7 @@ async def test_get_crypto_key_async(
                 name="name_value",
                 purpose=resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT,
                 import_only=True,
+                crypto_key_backend="crypto_key_backend_value",
             )
         )
         response = await client.get_crypto_key(request)
@@ -2432,6 +2435,7 @@ async def test_get_crypto_key_async(
     assert response.name == "name_value"
     assert response.purpose == resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT
     assert response.import_only is True
+    assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
 @pytest.mark.asyncio
@@ -3525,6 +3529,7 @@ def test_create_crypto_key(request_type, transport: str = "grpc"):
             name="name_value",
             purpose=resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT,
             import_only=True,
+            crypto_key_backend="crypto_key_backend_value",
             rotation_period=duration_pb2.Duration(seconds=751),
         )
         response = client.create_crypto_key(request)
@@ -3539,6 +3544,7 @@ def test_create_crypto_key(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.purpose == resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT
     assert response.import_only is True
+    assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
 def test_create_crypto_key_empty_call():
@@ -3580,6 +3586,7 @@ async def test_create_crypto_key_async(
                 name="name_value",
                 purpose=resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT,
                 import_only=True,
+                crypto_key_backend="crypto_key_backend_value",
             )
         )
         response = await client.create_crypto_key(request)
@@ -3594,6 +3601,7 @@ async def test_create_crypto_key_async(
     assert response.name == "name_value"
     assert response.purpose == resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT
     assert response.import_only is True
+    assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
 @pytest.mark.asyncio
@@ -4504,6 +4512,7 @@ def test_update_crypto_key(request_type, transport: str = "grpc"):
             name="name_value",
             purpose=resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT,
             import_only=True,
+            crypto_key_backend="crypto_key_backend_value",
             rotation_period=duration_pb2.Duration(seconds=751),
         )
         response = client.update_crypto_key(request)
@@ -4518,6 +4527,7 @@ def test_update_crypto_key(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.purpose == resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT
     assert response.import_only is True
+    assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
 def test_update_crypto_key_empty_call():
@@ -4559,6 +4569,7 @@ async def test_update_crypto_key_async(
                 name="name_value",
                 purpose=resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT,
                 import_only=True,
+                crypto_key_backend="crypto_key_backend_value",
             )
         )
         response = await client.update_crypto_key(request)
@@ -4573,6 +4584,7 @@ async def test_update_crypto_key_async(
     assert response.name == "name_value"
     assert response.purpose == resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT
     assert response.import_only is True
+    assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
 @pytest.mark.asyncio
@@ -5039,6 +5051,7 @@ def test_update_crypto_key_primary_version(request_type, transport: str = "grpc"
             name="name_value",
             purpose=resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT,
             import_only=True,
+            crypto_key_backend="crypto_key_backend_value",
             rotation_period=duration_pb2.Duration(seconds=751),
         )
         response = client.update_crypto_key_primary_version(request)
@@ -5053,6 +5066,7 @@ def test_update_crypto_key_primary_version(request_type, transport: str = "grpc"
     assert response.name == "name_value"
     assert response.purpose == resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT
     assert response.import_only is True
+    assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
 def test_update_crypto_key_primary_version_empty_call():
@@ -5095,6 +5109,7 @@ async def test_update_crypto_key_primary_version_async(
                 name="name_value",
                 purpose=resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT,
                 import_only=True,
+                crypto_key_backend="crypto_key_backend_value",
             )
         )
         response = await client.update_crypto_key_primary_version(request)
@@ -5109,6 +5124,7 @@ async def test_update_crypto_key_primary_version_async(
     assert response.name == "name_value"
     assert response.purpose == resources.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT
     assert response.import_only is True
+    assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
 @pytest.mark.asyncio

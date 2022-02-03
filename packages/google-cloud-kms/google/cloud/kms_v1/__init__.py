@@ -14,9 +14,18 @@
 # limitations under the License.
 #
 
+from .services.ekm_service import EkmServiceClient
+from .services.ekm_service import EkmServiceAsyncClient
 from .services.key_management_service import KeyManagementServiceClient
 from .services.key_management_service import KeyManagementServiceAsyncClient
 
+from .types.ekm_service import Certificate
+from .types.ekm_service import CreateEkmConnectionRequest
+from .types.ekm_service import EkmConnection
+from .types.ekm_service import GetEkmConnectionRequest
+from .types.ekm_service import ListEkmConnectionsRequest
+from .types.ekm_service import ListEkmConnectionsResponse
+from .types.ekm_service import UpdateEkmConnectionRequest
 from .types.resources import CryptoKey
 from .types.resources import CryptoKeyVersion
 from .types.resources import CryptoKeyVersionTemplate
@@ -67,13 +76,16 @@ from .types.service import UpdateCryptoKeyRequest
 from .types.service import UpdateCryptoKeyVersionRequest
 
 __all__ = (
+    "EkmServiceAsyncClient",
     "KeyManagementServiceAsyncClient",
     "AsymmetricDecryptRequest",
     "AsymmetricDecryptResponse",
     "AsymmetricSignRequest",
     "AsymmetricSignResponse",
+    "Certificate",
     "CreateCryptoKeyRequest",
     "CreateCryptoKeyVersionRequest",
+    "CreateEkmConnectionRequest",
     "CreateImportJobRequest",
     "CreateKeyRingRequest",
     "CryptoKey",
@@ -83,6 +95,8 @@ __all__ = (
     "DecryptResponse",
     "DestroyCryptoKeyVersionRequest",
     "Digest",
+    "EkmConnection",
+    "EkmServiceClient",
     "EncryptRequest",
     "EncryptResponse",
     "ExternalProtectionLevelOptions",
@@ -90,6 +104,7 @@ __all__ = (
     "GenerateRandomBytesResponse",
     "GetCryptoKeyRequest",
     "GetCryptoKeyVersionRequest",
+    "GetEkmConnectionRequest",
     "GetImportJobRequest",
     "GetKeyRingRequest",
     "GetPublicKeyRequest",
@@ -102,6 +117,8 @@ __all__ = (
     "ListCryptoKeyVersionsResponse",
     "ListCryptoKeysRequest",
     "ListCryptoKeysResponse",
+    "ListEkmConnectionsRequest",
+    "ListEkmConnectionsResponse",
     "ListImportJobsRequest",
     "ListImportJobsResponse",
     "ListKeyRingsRequest",
@@ -117,4 +134,5 @@ __all__ = (
     "UpdateCryptoKeyPrimaryVersionRequest",
     "UpdateCryptoKeyRequest",
     "UpdateCryptoKeyVersionRequest",
+    "UpdateEkmConnectionRequest",
 )

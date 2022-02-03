@@ -13,6 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .ekm_service import (
+    Certificate,
+    CreateEkmConnectionRequest,
+    EkmConnection,
+    GetEkmConnectionRequest,
+    ListEkmConnectionsRequest,
+    ListEkmConnectionsResponse,
+    UpdateEkmConnectionRequest,
+)
 from .resources import (
     CryptoKey,
     CryptoKeyVersion,
@@ -67,6 +76,13 @@ from .service import (
 )
 
 __all__ = (
+    "Certificate",
+    "CreateEkmConnectionRequest",
+    "EkmConnection",
+    "GetEkmConnectionRequest",
+    "ListEkmConnectionsRequest",
+    "ListEkmConnectionsResponse",
+    "UpdateEkmConnectionRequest",
     "CryptoKey",
     "CryptoKeyVersion",
     "CryptoKeyVersionTemplate",

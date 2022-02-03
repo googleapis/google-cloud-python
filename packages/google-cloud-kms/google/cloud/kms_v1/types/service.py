@@ -560,8 +560,9 @@ class ImportCryptoKeyVersionRequest(proto.Message):
 
                 <ol>
                   <li>An ephemeral AES-256 wrapping key wrapped with the
-                      [public_key][google.cloud.kms.v1.ImportJob.public_key] using RSAES-OAEP with SHA-1,
-                      MGF1 with SHA-1, and an empty label.
+                      [public_key][google.cloud.kms.v1.ImportJob.public_key] using
+                      RSAES-OAEP with SHA-1/SHA-256, MGF1 with SHA-1/SHA-256, and an
+                      empty label.
                   </li>
                   <li>The key to be imported, wrapped with the ephemeral AES-256 key
                       using AES-KWP (RFC 5649).
@@ -878,6 +879,10 @@ class AsymmetricSignRequest(proto.Message):
             produced with the same digest algorithm as specified by the
             key version's
             [algorithm][google.cloud.kms.v1.CryptoKeyVersion.algorithm].
+
+            This field may not be supplied if
+            [AsymmetricSignRequest.data][google.cloud.kms.v1.AsymmetricSignRequest.data]
+            is supplied.
         digest_crc32c (google.protobuf.wrappers_pb2.Int64Value):
             Optional. An optional CRC32C checksum of the
             [AsymmetricSignRequest.digest][google.cloud.kms.v1.AsymmetricSignRequest.digest].
@@ -900,10 +905,9 @@ class AsymmetricSignRequest(proto.Message):
             exceed 2^32-1, and can be safely downconverted to uint32 in
             languages that support this type.
         data (bytes):
-            Optional. This field will only be honored for RAW_PKCS1
-            keys. The data to sign. A digest is computed over the data
-            that will be signed, PKCS #1 padding is applied to the
-            digest directly and then encrypted.
+            Optional. The data to sign. It can't be supplied if
+            [AsymmetricSignRequest.digest][google.cloud.kms.v1.AsymmetricSignRequest.digest]
+            is supplied.
         data_crc32c (google.protobuf.wrappers_pb2.Int64Value):
             Optional. An optional CRC32C checksum of the
             [AsymmetricSignRequest.data][google.cloud.kms.v1.AsymmetricSignRequest.data].
@@ -1100,8 +1104,9 @@ class GenerateRandomBytesRequest(proto.Message):
             maximum 1024 bytes.
         protection_level (google.cloud.kms_v1.types.ProtectionLevel):
             The [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel]
-            to use when generating the random data. Defaults to
-            [SOFTWARE][google.cloud.kms.v1.ProtectionLevel.SOFTWARE].
+            to use when generating the random data. Currently, only
+            [HSM][google.cloud.kms.v1.ProtectionLevel.HSM] protection
+            level is supported.
     """
 
     location = proto.Field(proto.STRING, number=1,)

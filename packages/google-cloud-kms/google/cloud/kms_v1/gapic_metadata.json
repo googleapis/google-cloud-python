@@ -5,6 +5,60 @@
   "protoPackage": "google.cloud.kms.v1",
   "schema": "1.0",
   "services": {
+    "EkmService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "EkmServiceClient",
+          "rpcs": {
+            "CreateEkmConnection": {
+              "methods": [
+                "create_ekm_connection"
+              ]
+            },
+            "GetEkmConnection": {
+              "methods": [
+                "get_ekm_connection"
+              ]
+            },
+            "ListEkmConnections": {
+              "methods": [
+                "list_ekm_connections"
+              ]
+            },
+            "UpdateEkmConnection": {
+              "methods": [
+                "update_ekm_connection"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "EkmServiceAsyncClient",
+          "rpcs": {
+            "CreateEkmConnection": {
+              "methods": [
+                "create_ekm_connection"
+              ]
+            },
+            "GetEkmConnection": {
+              "methods": [
+                "get_ekm_connection"
+              ]
+            },
+            "ListEkmConnections": {
+              "methods": [
+                "list_ekm_connections"
+              ]
+            },
+            "UpdateEkmConnection": {
+              "methods": [
+                "update_ekm_connection"
+              ]
+            }
+          }
+        }
+      }
+    },
     "KeyManagementService": {
       "clients": {
         "grpc": {
