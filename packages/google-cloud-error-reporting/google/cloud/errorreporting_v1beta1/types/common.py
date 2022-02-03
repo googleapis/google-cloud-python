@@ -48,8 +48,8 @@ class ErrorGroup(proto.Message):
     Attributes:
         name (str):
             The group resource name.
-            Example: <code>projects/my-
-            project-123/groups/CNSgkpnppqKCUw</code>
+            Example:
+            <code>projects/my-project-123/groups/CNSgkpnppqKCUw</code>
         group_id (str):
             Group IDs are unique for a given project. If
             the same kind of error occurs in different
