@@ -105,8 +105,8 @@ class MigrationTask(proto.Message):
             This field is a member of `oneof`_ ``task_details``.
         id (str):
             Output only. Immutable. The unique identifier
-            for the migration task. The ID is server-
-            generated.
+            for the migration task. The ID is
+            server-generated.
         type_ (str):
             The type of the task. This must be a
             supported task type.
