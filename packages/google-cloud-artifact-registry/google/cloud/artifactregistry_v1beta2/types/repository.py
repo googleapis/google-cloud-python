@@ -47,8 +47,7 @@ class Repository(proto.Message):
             This field is a member of `oneof`_ ``format_config``.
         name (str):
             The name of the repository, for example:
-            "projects/p1/locations/us-
-            central1/repositories/repo1".
+            "projects/p1/locations/us-central1/repositories/repo1".
         format_ (google.cloud.artifactregistry_v1beta2.types.Repository.Format):
             The format of packages that are stored in the
             repository.

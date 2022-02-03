@@ -48,8 +48,7 @@ class DockerImage(proto.Message):
         uri (str):
             Required. URL to access the image.
             Example:
-            us-west4-docker.pkg.dev/test-project/test-
-            repo/nginx@sha256:e9954c1fc875017be1c3e36eca16be2d9e9bccc4bf072163515467d6a823c7cf
+            us-west4-docker.pkg.dev/test-project/test-repo/nginx@sha256:e9954c1fc875017be1c3e36eca16be2d9e9bccc4bf072163515467d6a823c7cf
         tags (Sequence[str]):
             Tags attached to this image.
         image_size_bytes (int):
