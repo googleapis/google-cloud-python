@@ -331,7 +331,7 @@ class FileIODetails(proto.Message):
 
 
 class BigTableIODetails(proto.Message):
-    r"""Metadata for a Cloud BigTable connector used by the job.
+    r"""Metadata for a Cloud Bigtable connector used by the job.
 
     Attributes:
         project_id (str):
@@ -424,11 +424,11 @@ class JobMetadata(proto.Message):
             Identification of a BigQuery source used in
             the Dataflow job.
         big_table_details (Sequence[google.cloud.dataflow_v1beta3.types.BigTableIODetails]):
-            Identification of a Cloud BigTable source
+            Identification of a Cloud Bigtable source
             used in the Dataflow job.
         pubsub_details (Sequence[google.cloud.dataflow_v1beta3.types.PubSubIODetails]):
-            Identification of a PubSub source used in the
-            Dataflow job.
+            Identification of a Pub/Sub source used in
+            the Dataflow job.
         file_details (Sequence[google.cloud.dataflow_v1beta3.types.FileIODetails]):
             Identification of a File source used in the
             Dataflow job.

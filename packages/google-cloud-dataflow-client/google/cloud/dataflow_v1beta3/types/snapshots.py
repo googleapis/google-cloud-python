@@ -79,7 +79,7 @@ class Snapshot(proto.Message):
         state (google.cloud.dataflow_v1beta3.types.SnapshotState):
             State of the snapshot.
         pubsub_metadata (Sequence[google.cloud.dataflow_v1beta3.types.PubsubSnapshotMetadata]):
-            PubSub snapshot metadata.
+            Pub/Sub snapshot metadata.
         description (str):
             User specified description of the snapshot.
             Maybe empty.

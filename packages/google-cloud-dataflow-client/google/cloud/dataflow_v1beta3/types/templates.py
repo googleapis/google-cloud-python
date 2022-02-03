@@ -239,6 +239,24 @@ class FlexTemplateRuntimeEnvironment(proto.Message):
             to use for the 'worker harness. Default is the
             container for the version of the SDK. Note this
             field is only valid for portable pipelines.
+        disk_size_gb (int):
+            Worker disk size, in gigabytes.
+        autoscaling_algorithm (google.cloud.dataflow_v1beta3.types.AutoscalingAlgorithm):
+            The algorithm to use for autoscaling
+        dump_heap_on_oom (bool):
+            If true, save a heap dump before killing a
+            thread or process which is GC thrashing or out
+            of memory. The location of the heap file will
+            either be echoed back to the user, or the user
+            will be given the opportunity to download the
+            heap file.
+        save_heap_dumps_to_gcs_path (str):
+            Cloud Storage bucket (directory) to upload heap dumps to the
+            given location. Enabling this implies that heap dumps should
+            be generated on OOM (dump_heap_on_oom is set to true).
+        launcher_machine_type (str):
+            The machine type to use for launching the
+            job. The default is n1-standard-1.
     """
 
     num_workers = proto.Field(proto.INT32, number=1,)
@@ -263,6 +281,13 @@ class FlexTemplateRuntimeEnvironment(proto.Message):
     )
     staging_location = proto.Field(proto.STRING, number=17,)
     sdk_container_image = proto.Field(proto.STRING, number=18,)
+    disk_size_gb = proto.Field(proto.INT32, number=20,)
+    autoscaling_algorithm = proto.Field(
+        proto.ENUM, number=21, enum=gd_environment.AutoscalingAlgorithm,
+    )
+    dump_heap_on_oom = proto.Field(proto.BOOL, number=22,)
+    save_heap_dumps_to_gcs_path = proto.Field(proto.STRING, number=23,)
+    launcher_machine_type = proto.Field(proto.STRING, number=24,)
 
 
 class LaunchFlexTemplateRequest(proto.Message):
@@ -321,7 +346,8 @@ class RuntimeEnvironment(proto.Message):
             The machine type to use for the job. Defaults
             to the value from the template if not specified.
         additional_experiments (Sequence[str]):
-            Additional experiment flags for the job.
+            Additional experiment flags for the job, specified with the
+            ``--experiments`` option.
         network (str):
             Network to which VMs will be assigned.  If
             empty or unspecified, the service will use the

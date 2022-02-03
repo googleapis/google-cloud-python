@@ -118,9 +118,8 @@ class AutoscalingEvent(proto.Message):
             The time this event was emitted to indicate a new target or
             current num_workers value.
         worker_pool (str):
-            A short and friendly name for the worker pool this event
-            refers to, populated from the value of
-            PoolStageRelation::user_pool_name.
+            A short and friendly name for the worker pool
+            this event refers to.
     """
 
     class AutoscalingEventType(proto.Enum):

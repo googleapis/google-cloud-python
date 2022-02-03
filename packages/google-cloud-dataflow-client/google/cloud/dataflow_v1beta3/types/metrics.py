@@ -86,8 +86,8 @@ class MetricUpdate(proto.Message):
             Metric aggregation kind.  The possible metric
             aggregation kinds are "Sum", "Max", "Min",
             "Mean", "Set", "And", "Or", and "Distribution".
-            The specified aggregation kind is case-
-            insensitive.
+            The specified aggregation kind is
+            case-insensitive.
             If omitted, this is not an aggregated value but
             instead a single metric sample value.
         cumulative (bool):
@@ -177,8 +177,8 @@ class GetJobMetricsRequest(proto.Message):
 
 class JobMetrics(proto.Message):
     r"""JobMetrics contains a collection of metrics describing the
-    detailed progress of a Dataflow job. Metrics correspond to user-
-    defined and system-defined metrics in the job.
+    detailed progress of a Dataflow job. Metrics correspond to
+    user-defined and system-defined metrics in the job.
 
     This resource captures only the most recent values of each
     metric; time-series data can be queried for them (under the same

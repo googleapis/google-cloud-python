@@ -78,12 +78,10 @@ class PubsubLocation(proto.Message):
     Attributes:
         topic (str):
             A pubsub topic, in the form of
-            "pubsub.googleapis.com/topics/<project-
-            id>/<topic-name>".
+            "pubsub.googleapis.com/topics/<project-id>/<topic-name>".
         subscription (str):
             A pubsub subscription, in the form of
-            "pubsub.googleapis.com/subscriptions/<project-
-            id>/<subscription-name>".
+            "pubsub.googleapis.com/subscriptions/<project-id>/<subscription-name>".
         timestamp_label (str):
             If set, contains a pubsub label from which to
             extract record timestamps. If left empty, record
@@ -93,8 +91,8 @@ class PubsubLocation(proto.Message):
             extract record ids. If left empty, record
             deduplication will be strictly best effort.
         drop_late_data (bool):
-            Indicates whether the pipeline allows late-
-            rriving data.
+            Indicates whether the pipeline allows
+            late-arriving data.
         tracking_subscription (str):
             If set, specifies the pubsub subscription
             that will be used for tracking custom time

@@ -280,8 +280,8 @@ class Disk(proto.Message):
             default.
 
             For example, the standard persistent disk type
-            is a resource name typically ending in "pd-
-            standard".  If SSD persistent disks are
+            is a resource name typically ending in
+            "pd-standard".  If SSD persistent disks are
             available, the resource name typically ends with
             "pd-ssd".  The actual valid values are defined
             the Google Compute Engine API, not by the Cloud
@@ -294,8 +294,7 @@ class Disk(proto.Message):
             the resource name will typically look something
             like this:
 
-            compute.googleapis.com/projects/project-
-            id/zones/zone/diskTypes/pd-standard
+            compute.googleapis.com/projects/project-id/zones/zone/diskTypes/pd-standard
         mount_point (str):
             Directory in a VM where disk is mounted.
     """

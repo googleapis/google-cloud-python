@@ -422,8 +422,8 @@ class MetricsV1Beta3Client(metaclass=MetricsV1Beta3ClientMeta):
                 in the job.
 
                 This resource captures only the most
-                recent values of each metric; time-
-                series data can be queried for them
+                recent values of each metric;
+                time-series data can be queried for them
                 (under the same metric names) from Cloud
                 Monitoring.
 
