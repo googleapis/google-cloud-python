@@ -287,7 +287,7 @@ class ServiceManagerAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([producer_project_id, consumer_id])
         if request is not None and has_flattened_params:
@@ -363,7 +363,7 @@ class ServiceManagerAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([service_name])
         if request is not None and has_flattened_params:
@@ -433,7 +433,7 @@ class ServiceManagerAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([service])
         if request is not None and has_flattened_params:
@@ -528,7 +528,7 @@ class ServiceManagerAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([service_name])
         if request is not None and has_flattened_params:
@@ -612,7 +612,7 @@ class ServiceManagerAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([service_name])
         if request is not None and has_flattened_params:
@@ -691,7 +691,7 @@ class ServiceManagerAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([service_name])
         if request is not None and has_flattened_params:
@@ -801,7 +801,7 @@ class ServiceManagerAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([service_name, config_id, view])
         if request is not None and has_flattened_params:
@@ -905,7 +905,7 @@ class ServiceManagerAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([service_name, service_config])
         if request is not None and has_flattened_params:
@@ -1007,7 +1007,7 @@ class ServiceManagerAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([service_name, config_source, validate_only])
         if request is not None and has_flattened_params:
@@ -1106,7 +1106,7 @@ class ServiceManagerAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([service_name, filter])
         if request is not None and has_flattened_params:
@@ -1194,7 +1194,7 @@ class ServiceManagerAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([service_name, rollout_id])
         if request is not None and has_flattened_params:
@@ -1291,7 +1291,7 @@ class ServiceManagerAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([service_name, rollout])
         if request is not None and has_flattened_params:
@@ -1393,7 +1393,7 @@ class ServiceManagerAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([new_config, old_config])
         if request is not None and has_flattened_params:
@@ -1490,7 +1490,7 @@ class ServiceManagerAsyncClient:
         )
 
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([service_name, consumer_id])
         if request is not None and has_flattened_params:
@@ -1596,7 +1596,7 @@ class ServiceManagerAsyncClient:
         )
 
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([service_name, consumer_id])
         if request is not None and has_flattened_params:
