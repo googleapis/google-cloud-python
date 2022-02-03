@@ -280,9 +280,10 @@ class Instance(proto.Message):
 
         Attributes:
             auto_delete (bool):
-                Indicates whether the disk will be auto-
-                eleted when the instance is deleted (but not
-                when the disk is detached from the instance).
+                Indicates whether the disk will be
+                auto-deleted when the instance is deleted (but
+                not when the disk is detached from the
+                instance).
             boot (bool):
                 Indicates that this is a boot disk. The
                 virtual machine will use the first partition of
@@ -437,8 +438,8 @@ class Instance(proto.Message):
                 The time that this instance upgrade history
                 entry is created.
             target_image (str):
-                Target VM Image. Format: ainotebooks-
-                m/project/image-name/name.
+                Target VM Image. Format:
+                ainotebooks-vm/project/image-name/name.
             action (google.cloud.notebooks_v1.types.Instance.UpgradeHistoryEntry.Action):
                 Action. Rolloback or Upgrade.
             target_version (str):

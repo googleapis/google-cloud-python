@@ -355,8 +355,7 @@ class ReportInstanceInfoRequest(proto.Message):
         vm_id (str):
             Required. The VM hardware token for
             authenticating the VM.
-            https://cloud.google.com/compute/docs/instances/verifying-
-            instance-identity
+            https://cloud.google.com/compute/docs/instances/verifying-instance-identity
         metadata (Sequence[google.cloud.notebooks_v1.types.ReportInstanceInfoRequest.MetadataEntry]):
             The metadata reported to Notebooks API. This
             will be merged to the instance metadata store
@@ -463,8 +462,8 @@ class RollbackInstanceRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
         target_snapshot (str):
             Required. The snapshot for rollback.
-            Example: "projects/test-
-            project/global/snapshots/krwlzipynril".
+            Example:
+            "projects/test-project/global/snapshots/krwlzipynril".
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -481,8 +480,7 @@ class UpgradeInstanceInternalRequest(proto.Message):
         vm_id (str):
             Required. The VM hardware token for
             authenticating the VM.
-            https://cloud.google.com/compute/docs/instances/verifying-
-            instance-identity
+            https://cloud.google.com/compute/docs/instances/verifying-instance-identity
     """
 
     name = proto.Field(proto.STRING, number=1,)

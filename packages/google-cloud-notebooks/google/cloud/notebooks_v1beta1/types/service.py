@@ -300,8 +300,7 @@ class ReportInstanceInfoRequest(proto.Message):
         vm_id (str):
             Required. The VM hardware token for
             authenticating the VM.
-            https://cloud.google.com/compute/docs/instances/verifying-
-            instance-identity
+            https://cloud.google.com/compute/docs/instances/verifying-instance-identity
         metadata (Sequence[google.cloud.notebooks_v1beta1.types.ReportInstanceInfoRequest.MetadataEntry]):
             The metadata reported to Notebooks API. This
             will be merged to the instance metadata store
@@ -365,8 +364,7 @@ class UpgradeInstanceInternalRequest(proto.Message):
         vm_id (str):
             Required. The VM hardware token for
             authenticating the VM.
-            https://cloud.google.com/compute/docs/instances/verifying-
-            instance-identity
+            https://cloud.google.com/compute/docs/instances/verifying-instance-identity
     """
 
     name = proto.Field(proto.STRING, number=1,)

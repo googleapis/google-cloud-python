@@ -191,8 +191,7 @@ class ReportRuntimeEventRequest(proto.Message):
         vm_id (str):
             Required. The VM hardware token for
             authenticating the VM.
-            https://cloud.google.com/compute/docs/instances/verifying-
-            instance-identity
+            https://cloud.google.com/compute/docs/instances/verifying-instance-identity
         event (google.cloud.notebooks_v1.types.Event):
             Required. The Event to be reported.
     """

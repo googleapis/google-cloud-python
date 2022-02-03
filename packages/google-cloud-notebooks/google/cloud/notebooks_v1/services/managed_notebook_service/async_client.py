@@ -250,7 +250,7 @@ class ManagedNotebookServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -328,7 +328,7 @@ class ManagedNotebookServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -417,7 +417,7 @@ class ManagedNotebookServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, runtime_id, runtime])
         if request is not None and has_flattened_params:
@@ -513,7 +513,7 @@ class ManagedNotebookServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -569,10 +569,8 @@ class ManagedNotebookServiceAsyncClient:
         r"""Starts a Managed Notebook Runtime.
         Perform "Start" on GPU instances; "Resume" on CPU
         instances See:
-        https://cloud.google.com/compute/docs/instances/stop-
-        start-instance
-        https://cloud.google.com/compute/docs/instances/suspend-
-        resume-instance
+        https://cloud.google.com/compute/docs/instances/stop-start-instance
+        https://cloud.google.com/compute/docs/instances/suspend-resume-instance
 
         Args:
             request (Union[google.cloud.notebooks_v1.types.StartRuntimeRequest, dict]):
@@ -601,7 +599,7 @@ class ManagedNotebookServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -657,10 +655,8 @@ class ManagedNotebookServiceAsyncClient:
         r"""Stops a Managed Notebook Runtime.
         Perform "Stop" on GPU instances; "Suspend" on CPU
         instances See:
-        https://cloud.google.com/compute/docs/instances/stop-
-        start-instance
-        https://cloud.google.com/compute/docs/instances/suspend-
-        resume-instance
+        https://cloud.google.com/compute/docs/instances/stop-start-instance
+        https://cloud.google.com/compute/docs/instances/suspend-resume-instance
 
         Args:
             request (Union[google.cloud.notebooks_v1.types.StopRuntimeRequest, dict]):
@@ -689,7 +685,7 @@ class ManagedNotebookServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -771,7 +767,7 @@ class ManagedNotebookServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -853,7 +849,7 @@ class ManagedNotebookServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -935,7 +931,7 @@ class ManagedNotebookServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
