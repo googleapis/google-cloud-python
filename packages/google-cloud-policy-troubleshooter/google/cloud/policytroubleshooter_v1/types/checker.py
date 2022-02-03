@@ -61,8 +61,7 @@ class TroubleshootIamPolicyResponse(proto.Message):
             of the resource hierarchy, including the
             organization, the folder, and the project.
             To learn more about the resource hierarchy, see
-            https://cloud.google.com/iam/help/resource-
-            hierarchy.
+            https://cloud.google.com/iam/help/resource-hierarchy.
     """
 
     access = proto.Field(proto.ENUM, number=1, enum=explanations.AccessState,)
