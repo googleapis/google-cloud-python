@@ -997,9 +997,9 @@ class BuildArtifact(proto.Message):
             Image name in Skaffold configuration.
         tag (str):
             Image tag to use. This will generally be the
-            full path to an image, such as "gcr.io/my-
-            project/busybox:1.2.3" or "gcr.io/my-
-            project/busybox@sha256:abc123".
+            full path to an image, such as
+            "gcr.io/my-project/busybox:1.2.3" or
+            "gcr.io/my-project/busybox@sha256:abc123".
     """
 
     image = proto.Field(proto.STRING, number=3,)
