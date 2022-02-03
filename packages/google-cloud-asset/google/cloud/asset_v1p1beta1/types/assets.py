@@ -52,8 +52,8 @@ class StandardResourceMetadata(proto.Message):
             attributes is subject to change. For example:
             project id, DNS name etc.
         location (str):
-            Location can be "global", regional like "us-
-            ast1", or zonal like "us-west1-b".
+            Location can be "global", regional like
+            "us-east1", or zonal like "us-west1-b".
         labels (Sequence[google.cloud.asset_v1p1beta1.types.StandardResourceMetadata.LabelsEntry]):
             Labels associated with this resource. See `Labelling and
             grouping GCP
