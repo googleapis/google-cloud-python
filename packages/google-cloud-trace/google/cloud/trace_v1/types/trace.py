@@ -88,9 +88,9 @@ class TraceSpan(proto.Message):
             bytes. The span name is sanitized and displayed
             in the Stackdriver Trace tool in the Google
             Cloud Platform Console.
-            The name may be a method name or some other per-
-            call site name. For the same executable and the
-            same call point, a best practice is to use a
+            The name may be a method name or some other
+            per-call site name. For the same executable and
+            the same call point, a best practice is to use a
             consistent name, which makes it easier to
             correlate cross-trace spans.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
