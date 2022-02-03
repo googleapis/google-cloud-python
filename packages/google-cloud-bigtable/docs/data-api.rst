@@ -337,8 +337,8 @@ Just as with reading, the stream can be canceled:
 
     keys_iterator.cancel()
 
-.. _ReadRows: https://github.com/googleapis/python-bigtable/blob/main/google/cloud/bigtable_v2/proto/bigtable.proto#L54-L61
-.. _SampleRowKeys: https://github.com/googleapis/python-bigtable/blob/main/google/cloud/bigtable_v2/proto/bigtable.proto#L67-L73
-.. _MutateRow: https://github.com/googleapis/python-bigtable/blob/main/google/cloud/bigtable_v2/proto/bigtable.proto#L77-L84
-.. _CheckAndMutateRow: https://github.com/googleapis/python-bigtable/blob/main/google/cloud/bigtable_v2/proto/bigtable.proto#L99-L106
-.. _ReadModifyWriteRow: https://github.com/googleapis/python-bigtable/blob/main/google/cloud/bigtable_v2/proto/bigtable.proto#L113-L121
+.. _ReadRows: https://github.com/googleapis/python-bigtable/blob/d6bff70654b41e31d2ac83d307bdc6bbd111201e/google/cloud/bigtable_v2/types/bigtable.py#L42-L72
+.. _SampleRowKeys: https://github.com/googleapis/python-bigtable/blob/d6bff70654b41e31d2ac83d307bdc6bbd111201e/google/cloud/bigtable_v2/types/bigtable.py#L184-L199
+.. _MutateRow: https://github.com/googleapis/python-bigtable/blob/d6bff70654b41e31d2ac83d307bdc6bbd111201e/google/cloud/bigtable_v2/types/bigtable.py#L230-L256
+.. _CheckAndMutateRow: https://github.com/googleapis/python-bigtable/blob/d6bff70654b41e31d2ac83d307bdc6bbd111201e/google/cloud/bigtable_v2/types/bigtable.py#L339-L386
+.. _ReadModifyWriteRow: https://github.com/googleapis/python-bigtable/blob/d6bff70654b41e31d2ac83d307bdc6bbd111201e/google/cloud/bigtable_v2/types/bigtable.py#L401-L430
