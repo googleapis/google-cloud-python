@@ -36,9 +36,9 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.datastream_v1alpha1.services.datastream import pagers
-from google.cloud.datastream_v1alpha1.types import datastream
-from google.cloud.datastream_v1alpha1.types import datastream_resources
+from google.cloud.datastream_v1.services.datastream import pagers
+from google.cloud.datastream_v1.types import datastream
+from google.cloud.datastream_v1.types import datastream_resources
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -182,6 +182,21 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def networks_path(project: str, network: str,) -> str:
+        """Returns a fully-qualified networks string."""
+        return "projects/{project}/global/networks/{network}".format(
+            project=project, network=network,
+        )
+
+    @staticmethod
+    def parse_networks_path(path: str) -> Dict[str, str]:
+        """Parses a networks path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/global/networks/(?P<network>.+?)$", path
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def private_connection_path(
         project: str, location: str, private_connection: str,
     ) -> str:
@@ -232,6 +247,24 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         """Parses a stream path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/streams/(?P<stream>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def stream_object_path(
+        project: str, location: str, stream: str, object: str,
+    ) -> str:
+        """Returns a fully-qualified stream_object string."""
+        return "projects/{project}/locations/{location}/streams/{stream}/objects/{object}".format(
+            project=project, location=location, stream=stream, object=object,
+        )
+
+    @staticmethod
+    def parse_stream_object_path(path: str) -> Dict[str, str]:
+        """Parses a stream_object path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/streams/(?P<stream>.+?)/objects/(?P<object>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -473,8 +506,9 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         in a project and location.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.ListConnectionProfilesRequest, dict]):
-                The request object.
+            request (Union[google.cloud.datastream_v1.types.ListConnectionProfilesRequest, dict]):
+                The request object. Request message for listing
+                connection profiles.
             parent (str):
                 Required. The parent that owns the
                 collection of connection profiles.
@@ -489,7 +523,9 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datastream_v1alpha1.services.datastream.pagers.ListConnectionProfilesPager:
+            google.cloud.datastream_v1.services.datastream.pagers.ListConnectionProfilesPager:
+                Response message for listing
+                connection profiles.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -551,8 +587,9 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         profile.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.GetConnectionProfileRequest, dict]):
-                The request object.
+            request (Union[google.cloud.datastream_v1.types.GetConnectionProfileRequest, dict]):
+                The request object. Request message for getting a
+                connection profile.
             name (str):
                 Required. The name of the connection
                 profile resource to get.
@@ -567,7 +604,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datastream_v1alpha1.types.ConnectionProfile:
+            google.cloud.datastream_v1.types.ConnectionProfile:
+                A set of reusable connection
+                configurations to be used as a source or
+                destination for a stream.
 
         """
         # Create or coerce a protobuf request object.
@@ -622,8 +662,9 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         project and location.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.CreateConnectionProfileRequest, dict]):
-                The request object.
+            request (Union[google.cloud.datastream_v1.types.CreateConnectionProfileRequest, dict]):
+                The request object. Request message for creating a
+                connection profile.
             parent (str):
                 Required. The parent that owns the
                 collection of ConnectionProfiles.
@@ -631,7 +672,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            connection_profile (google.cloud.datastream_v1alpha1.types.ConnectionProfile):
+            connection_profile (google.cloud.datastream_v1.types.ConnectionProfile):
                 Required. The connection profile
                 resource to create.
 
@@ -655,8 +696,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.datastream_v1alpha1.types.ConnectionProfile`
+                The result type for the operation will be :class:`google.cloud.datastream_v1.types.ConnectionProfile` A set of reusable connection configurations to be used as a source or
+                   destination for a stream.
 
         """
         # Create or coerce a protobuf request object.
@@ -724,10 +765,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         connection profile.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.UpdateConnectionProfileRequest, dict]):
-                The request object.
-            connection_profile (google.cloud.datastream_v1alpha1.types.ConnectionProfile):
-                Required. The ConnectionProfile to
+            request (Union[google.cloud.datastream_v1.types.UpdateConnectionProfileRequest, dict]):
+                The request object. Connection profile update message.
+            connection_profile (google.cloud.datastream_v1.types.ConnectionProfile):
+                Required. The connection profile to
                 update.
 
                 This corresponds to the ``connection_profile`` field
@@ -755,8 +796,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.datastream_v1alpha1.types.ConnectionProfile`
+                The result type for the operation will be :class:`google.cloud.datastream_v1.types.ConnectionProfile` A set of reusable connection configurations to be used as a source or
+                   destination for a stream.
 
         """
         # Create or coerce a protobuf request object.
@@ -819,11 +860,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Use this method to delete a connection profile..
+        r"""Use this method to delete a connection profile.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.DeleteConnectionProfileRequest, dict]):
-                The request object.
+            request (Union[google.cloud.datastream_v1.types.DeleteConnectionProfileRequest, dict]):
+                The request object. Request message for deleting a
+                connection profile.
             name (str):
                 Required. The name of the connection
                 profile resource to delete.
@@ -914,11 +956,11 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         r"""Use this method to discover a connection profile.
         The discover API call exposes the data objects and
         metadata belonging to the profile. Typically, a request
-        returns children data objects under a parent data object
+        returns children data objects of a parent data object
         that's optionally supplied in the request.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.DiscoverConnectionProfileRequest, dict]):
+            request (Union[google.cloud.datastream_v1.types.DiscoverConnectionProfileRequest, dict]):
                 The request object. Request message for 'discover'
                 ConnectionProfile request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -928,8 +970,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datastream_v1alpha1.types.DiscoverConnectionProfileResponse:
-
+            google.cloud.datastream_v1.types.DiscoverConnectionProfileResponse:
+                Response from a discover request.
         """
         # Create or coerce a protobuf request object.
         # Minor optimization to avoid making a copy if the user passes
@@ -970,8 +1012,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         location.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.ListStreamsRequest, dict]):
-                The request object.
+            request (Union[google.cloud.datastream_v1.types.ListStreamsRequest, dict]):
+                The request object. Request message for listing streams.
             parent (str):
                 Required. The parent that owns the
                 collection of streams.
@@ -986,7 +1028,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datastream_v1alpha1.services.datastream.pagers.ListStreamsPager:
+            google.cloud.datastream_v1.services.datastream.pagers.ListStreamsPager:
+                Response message for listing streams.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1047,8 +1090,9 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         r"""Use this method to get details about a stream.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.GetStreamRequest, dict]):
-                The request object.
+            request (Union[google.cloud.datastream_v1.types.GetStreamRequest, dict]):
+                The request object. Request message for getting a
+                stream.
             name (str):
                 Required. The name of the stream
                 resource to get.
@@ -1063,7 +1107,9 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datastream_v1alpha1.types.Stream:
+            google.cloud.datastream_v1.types.Stream:
+                A resource representing streaming
+                data from a source to a destination.
 
         """
         # Create or coerce a protobuf request object.
@@ -1117,8 +1163,9 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         r"""Use this method to create a stream.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.CreateStreamRequest, dict]):
-                The request object.
+            request (Union[google.cloud.datastream_v1.types.CreateStreamRequest, dict]):
+                The request object. Request message for creating a
+                stream.
             parent (str):
                 Required. The parent that owns the
                 collection of streams.
@@ -1126,7 +1173,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            stream (google.cloud.datastream_v1alpha1.types.Stream):
+            stream (google.cloud.datastream_v1.types.Stream):
                 Required. The stream resource to
                 create.
 
@@ -1149,7 +1196,9 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.datastream_v1alpha1.types.Stream`
+                :class:`google.cloud.datastream_v1.types.Stream` A
+                resource representing streaming data from a source to a
+                destination.
 
         """
         # Create or coerce a protobuf request object.
@@ -1215,9 +1264,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         stream.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.UpdateStreamRequest, dict]):
-                The request object.
-            stream (google.cloud.datastream_v1alpha1.types.Stream):
+            request (Union[google.cloud.datastream_v1.types.UpdateStreamRequest, dict]):
+                The request object. Request message for updating a
+                stream.
+            stream (google.cloud.datastream_v1.types.Stream):
                 Required. The stream resource to
                 update.
 
@@ -1246,7 +1296,9 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.datastream_v1alpha1.types.Stream`
+                :class:`google.cloud.datastream_v1.types.Stream` A
+                resource representing streaming data from a source to a
+                destination.
 
         """
         # Create or coerce a protobuf request object.
@@ -1310,8 +1362,9 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         r"""Use this method to delete a stream.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.DeleteStreamRequest, dict]):
-                The request object.
+            request (Union[google.cloud.datastream_v1.types.DeleteStreamRequest, dict]):
+                The request object. Request message for deleting a
+                stream.
             name (str):
                 Required. The name of the stream
                 resource to delete.
@@ -1389,21 +1442,28 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         # Done; return the response.
         return response
 
-    def fetch_errors(
+    def get_stream_object(
         self,
-        request: Union[datastream.FetchErrorsRequest, dict] = None,
+        request: Union[datastream.GetStreamObjectRequest, dict] = None,
         *,
+        name: str = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
-        r"""Use this method to fetch any errors associated with a
-        stream.
+    ) -> datastream_resources.StreamObject:
+        r"""Use this method to get details about a stream object.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.FetchErrorsRequest, dict]):
-                The request object. Request message for 'FetchErrors'
-                request.
+            request (Union[google.cloud.datastream_v1.types.GetStreamObjectRequest, dict]):
+                The request object. Request for fetching a specific
+                stream object.
+            name (str):
+                Required. The name of the stream
+                object resource to get.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1411,42 +1471,323 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.datastream_v1alpha1.types.FetchErrorsResponse`
-                Response message for a 'FetchErrors' response.
+            google.cloud.datastream_v1.types.StreamObject:
+                A specific stream object (e.g a
+                specific DB table).
 
         """
         # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.FetchErrorsRequest.
+        # in a datastream.GetStreamObjectRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, datastream.FetchErrorsRequest):
-            request = datastream.FetchErrorsRequest(request)
+        if not isinstance(request, datastream.GetStreamObjectRequest):
+            request = datastream.GetStreamObjectRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.fetch_errors]
+        rpc = self._transport._wrapped_methods[self._transport.get_stream_object]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("stream", request.stream),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            datastream.FetchErrorsResponse,
-            metadata_type=datastream.OperationMetadata,
+        # Done; return the response.
+        return response
+
+    def lookup_stream_object(
+        self,
+        request: Union[datastream.LookupStreamObjectRequest, dict] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> datastream_resources.StreamObject:
+        r"""Use this method to look up a stream object by its
+        source object identifier.
+
+        Args:
+            request (Union[google.cloud.datastream_v1.types.LookupStreamObjectRequest, dict]):
+                The request object. Request for looking up a specific
+                stream object by its source object identifier.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.datastream_v1.types.StreamObject:
+                A specific stream object (e.g a
+                specific DB table).
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a datastream.LookupStreamObjectRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, datastream.LookupStreamObjectRequest):
+            request = datastream.LookupStreamObjectRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.lookup_stream_object]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def list_stream_objects(
+        self,
+        request: Union[datastream.ListStreamObjectsRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListStreamObjectsPager:
+        r"""Use this method to list the objects of a specific
+        stream.
+
+        Args:
+            request (Union[google.cloud.datastream_v1.types.ListStreamObjectsRequest, dict]):
+                The request object. Request for listing all objects for
+                a specific stream.
+            parent (str):
+                Required. The parent stream that owns
+                the collection of objects.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.datastream_v1.services.datastream.pagers.ListStreamObjectsPager:
+                Response containing the objects for a
+                stream.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a datastream.ListStreamObjectsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, datastream.ListStreamObjectsRequest):
+            request = datastream.ListStreamObjectsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_stream_objects]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListStreamObjectsPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def start_backfill_job(
+        self,
+        request: Union[datastream.StartBackfillJobRequest, dict] = None,
+        *,
+        object_: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> datastream.StartBackfillJobResponse:
+        r"""Use this method to start a backfill job for the
+        specified stream object.
+
+        Args:
+            request (Union[google.cloud.datastream_v1.types.StartBackfillJobRequest, dict]):
+                The request object. Request for manually initiating a
+                backfill job for a specific stream object.
+            object_ (str):
+                Required. The name of the stream
+                object resource to start a backfill job
+                for.
+
+                This corresponds to the ``object_`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.datastream_v1.types.StartBackfillJobResponse:
+                Response for manually initiating a
+                backfill job for a specific stream
+                object.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([object_])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a datastream.StartBackfillJobRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, datastream.StartBackfillJobRequest):
+            request = datastream.StartBackfillJobRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if object_ is not None:
+                request.object_ = object_
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.start_backfill_job]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("object", request.object_),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def stop_backfill_job(
+        self,
+        request: Union[datastream.StopBackfillJobRequest, dict] = None,
+        *,
+        object_: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> datastream.StopBackfillJobResponse:
+        r"""Use this method to stop a backfill job for the
+        specified stream object.
+
+        Args:
+            request (Union[google.cloud.datastream_v1.types.StopBackfillJobRequest, dict]):
+                The request object. Request for manually stopping a
+                running backfill job for a specific stream object.
+            object_ (str):
+                Required. The name of the stream
+                object resource to stop the backfill job
+                for.
+
+                This corresponds to the ``object_`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.datastream_v1.types.StopBackfillJobResponse:
+                Response for manually stop a backfill
+                job for a specific stream object.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([object_])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a datastream.StopBackfillJobRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, datastream.StopBackfillJobRequest):
+            request = datastream.StopBackfillJobRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if object_ is not None:
+                request.object_ = object_
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.stop_backfill_job]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("object", request.object_),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -1460,18 +1801,17 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.FetchStaticIpsPager:
-        r"""The FetchStaticIps API call exposes the static ips
-        used by Datastream. Typically, a request returns
-        children data objects under a parent data object that's
-        optionally supplied in the request.
+        r"""The FetchStaticIps API call exposes the static IP
+        addresses used by Datastream.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.FetchStaticIpsRequest, dict]):
+            request (Union[google.cloud.datastream_v1.types.FetchStaticIpsRequest, dict]):
                 The request object. Request message for 'FetchStaticIps'
                 request.
             name (str):
-                Required. The name resource of the Response type. Must
-                be in the format ``projects/*/locations/*``.
+                Required. The resource name for the location for which
+                static IPs should be returned. Must be in the format
+                ``projects/*/locations/*``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1483,7 +1823,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datastream_v1alpha1.services.datastream.pagers.FetchStaticIpsPager:
+            google.cloud.datastream_v1.services.datastream.pagers.FetchStaticIpsPager:
                 Response message for a
                 'FetchStaticIps' response.
                 Iterating over this object will yield
@@ -1549,8 +1889,9 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         configuration.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.CreatePrivateConnectionRequest, dict]):
-                The request object.
+            request (Union[google.cloud.datastream_v1.types.CreatePrivateConnectionRequest, dict]):
+                The request object. Request for creating a private
+                connection.
             parent (str):
                 Required. The parent that owns the
                 collection of PrivateConnections.
@@ -1558,7 +1899,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            private_connection (google.cloud.datastream_v1alpha1.types.PrivateConnection):
+            private_connection (google.cloud.datastream_v1.types.PrivateConnection):
                 Required. The Private Connectivity
                 resource to create.
 
@@ -1582,7 +1923,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.datastream_v1alpha1.types.PrivateConnection` The PrivateConnection resource is used to establish private connectivity
+                The result type for the operation will be :class:`google.cloud.datastream_v1.types.PrivateConnection` The PrivateConnection resource is used to establish private connectivity
                    between Datastream and a customer's network.
 
         """
@@ -1650,8 +1991,9 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         connectivity configuration.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.GetPrivateConnectionRequest, dict]):
-                The request object.
+            request (Union[google.cloud.datastream_v1.types.GetPrivateConnectionRequest, dict]):
+                The request object. Request to get a private connection
+                configuration.
             name (str):
                 Required. The name of the  private
                 connectivity configuration to get.
@@ -1666,7 +2008,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datastream_v1alpha1.types.PrivateConnection:
+            google.cloud.datastream_v1.types.PrivateConnection:
                 The PrivateConnection resource is
                 used to establish private connectivity
                 between Datastream and a customer's
@@ -1723,8 +2065,9 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         configurations in a project and location.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.ListPrivateConnectionsRequest, dict]):
-                The request object.
+            request (Union[google.cloud.datastream_v1.types.ListPrivateConnectionsRequest, dict]):
+                The request object. Request for listing private
+                connections.
             parent (str):
                 Required. The parent that owns the
                 collection of private connectivity
@@ -1740,7 +2083,9 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datastream_v1alpha1.services.datastream.pagers.ListPrivateConnectionsPager:
+            google.cloud.datastream_v1.services.datastream.pagers.ListPrivateConnectionsPager:
+                Response containing a list of private
+                connection configurations.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1802,8 +2147,9 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         configuration.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.DeletePrivateConnectionRequest, dict]):
-                The request object.
+            request (Union[google.cloud.datastream_v1.types.DeletePrivateConnectionRequest, dict]):
+                The request object. Request to delete a private
+                connection.
             name (str):
                 Required. The name of the private
                 connectivity configuration to delete.
@@ -1895,11 +2241,11 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Use this method to create a route for a private
-        connectivity in a project and location.
+        connectivity configuration in a project and location.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.CreateRouteRequest, dict]):
-                The request object. route creation request
+            request (Union[google.cloud.datastream_v1.types.CreateRouteRequest, dict]):
+                The request object. Route creation request.
             parent (str):
                 Required. The parent that owns the
                 collection of Routes.
@@ -1907,7 +2253,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            route (google.cloud.datastream_v1alpha1.types.Route):
+            route (google.cloud.datastream_v1.types.Route):
                 Required. The Route resource to
                 create.
 
@@ -1929,9 +2275,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.datastream_v1alpha1.types.Route` The Route resource is the child of the PrivateConnection resource.
-                   It used to define a route for a PrivateConnection
-                   setup.
+                The result type for the operation will be :class:`google.cloud.datastream_v1.types.Route` The route resource is the child of the private connection resource,
+                   used for defining a route for a private connection.
 
         """
         # Create or coerce a protobuf request object.
@@ -1995,8 +2340,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         r"""Use this method to get details about a route.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.GetRouteRequest, dict]):
-                The request object. route get request
+            request (Union[google.cloud.datastream_v1.types.GetRouteRequest, dict]):
+                The request object. Route get request.
             name (str):
                 Required. The name of the Route
                 resource to get.
@@ -2011,11 +2356,11 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datastream_v1alpha1.types.Route:
-                The Route resource is the child of
-                the PrivateConnection resource. It used
-                to define a route for a
-                PrivateConnection setup.
+            google.cloud.datastream_v1.types.Route:
+                The route resource is the child of
+                the private connection resource, used
+                for defining a route for a private
+                connection.
 
         """
         # Create or coerce a protobuf request object.
@@ -2065,11 +2410,11 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRoutesPager:
         r"""Use this method to list routes created for a private
-        connectivity in a project and location.
+        connectivity configuration in a project and location.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.ListRoutesRequest, dict]):
-                The request object. route list request
+            request (Union[google.cloud.datastream_v1.types.ListRoutesRequest, dict]):
+                The request object. Route list request.
             parent (str):
                 Required. The parent that owns the
                 collection of Routess.
@@ -2084,8 +2429,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datastream_v1alpha1.services.datastream.pagers.ListRoutesPager:
-                route list response
+            google.cloud.datastream_v1.services.datastream.pagers.ListRoutesPager:
+                Route list response.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -2146,8 +2491,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         r"""Use this method to delete a route.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.DeleteRouteRequest, dict]):
-                The request object. route deletion request
+            request (Union[google.cloud.datastream_v1.types.DeleteRouteRequest, dict]):
+                The request object. Route deletion request.
             name (str):
                 Required. The name of the Route
                 resource to delete.

@@ -14,25 +14,26 @@
 # limitations under the License.
 #
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import grpc_helpers
-from google.api_core import operations_v1
 from google.api_core import gapic_v1
-import google.auth  # type: ignore
+from google.api_core import grpc_helpers_async
+from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
+from grpc.experimental import aio  # type: ignore
 
-from google.cloud.datastream_v1alpha1.types import datastream
-from google.cloud.datastream_v1alpha1.types import datastream_resources
+from google.cloud.datastream_v1.types import datastream
+from google.cloud.datastream_v1.types import datastream_resources
 from google.longrunning import operations_pb2  # type: ignore
 from .base import DatastreamTransport, DEFAULT_CLIENT_INFO
+from .grpc import DatastreamGrpcTransport
 
 
-class DatastreamGrpcTransport(DatastreamTransport):
-    """gRPC backend transport for Datastream.
+class DatastreamGrpcAsyncIOTransport(DatastreamTransport):
+    """gRPC AsyncIO backend transport for Datastream.
 
     Datastream service
 
@@ -44,21 +45,65 @@ class DatastreamGrpcTransport(DatastreamTransport):
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
 
-    _stubs: Dict[str, Callable]
+    _grpc_channel: aio.Channel
+    _stubs: Dict[str, Callable] = {}
+
+    @classmethod
+    def create_channel(
+        cls,
+        host: str = "datastream.googleapis.com",
+        credentials: ga_credentials.Credentials = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> aio.Channel:
+        """Create and return a gRPC AsyncIO channel object.
+        Args:
+            host (Optional[str]): The host for the channel to use.
+            credentials (Optional[~.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If
+                none are specified, the client will attempt to ascertain
+                the credentials from the environment.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is ignored if ``channel`` is provided.
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            kwargs (Optional[dict]): Keyword arguments, which are passed to the
+                channel creation.
+        Returns:
+            aio.Channel: A gRPC AsyncIO channel object.
+        """
+
+        return grpc_helpers_async.create_channel(
+            host,
+            credentials=credentials,
+            credentials_file=credentials_file,
+            quota_project_id=quota_project_id,
+            default_scopes=cls.AUTH_SCOPES,
+            scopes=scopes,
+            default_host=cls.DEFAULT_HOST,
+            **kwargs,
+        )
 
     def __init__(
         self,
         *,
         host: str = "datastream.googleapis.com",
         credentials: ga_credentials.Credentials = None,
-        credentials_file: str = None,
-        scopes: Sequence[str] = None,
-        channel: grpc.Channel = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        channel: aio.Channel = None,
         api_mtls_endpoint: str = None,
         client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
         ssl_channel_credentials: grpc.ChannelCredentials = None,
         client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
-        quota_project_id: Optional[str] = None,
+        quota_project_id=None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
     ) -> None:
@@ -76,9 +121,10 @@ class DatastreamGrpcTransport(DatastreamTransport):
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
                 This argument is ignored if ``channel`` is provided.
-            scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                ignored if ``channel`` is provided.
-            channel (Optional[grpc.Channel]): A ``Channel`` instance through
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            channel (Optional[aio.Channel]): A ``Channel`` instance through
                 which to make calls.
             api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
                 If provided, it overrides the ``host`` argument and tries to create
@@ -105,7 +151,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
                 be used for service account credentials.
 
         Raises:
-          google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
+            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
               creation failed for any reason.
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
@@ -113,7 +159,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
-        self._operations_client: Optional[operations_v1.OperationsClient] = None
+        self._operations_client: Optional[operations_v1.OperationsAsyncClient] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -126,7 +172,6 @@ class DatastreamGrpcTransport(DatastreamTransport):
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
-
         else:
             if api_mtls_endpoint:
                 host = api_mtls_endpoint
@@ -179,61 +224,18 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # Wrap messages. This must be done after self._grpc_channel exists
         self._prep_wrapped_messages(client_info)
 
-    @classmethod
-    def create_channel(
-        cls,
-        host: str = "datastream.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
-        credentials_file: str = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        **kwargs,
-    ) -> grpc.Channel:
-        """Create and return a gRPC channel object.
-        Args:
-            host (Optional[str]): The host for the channel to use.
-            credentials (Optional[~.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify this application to the service. If
-                none are specified, the client will attempt to ascertain
-                the credentials from the environment.
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is mutually exclusive with credentials.
-            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
-                service. These are only used when credentials are not specified and
-                are passed to :func:`google.auth.default`.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            kwargs (Optional[dict]): Keyword arguments, which are passed to the
-                channel creation.
-        Returns:
-            grpc.Channel: A gRPC channel object.
-
-        Raises:
-            google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
-              and ``credentials_file`` are passed.
-        """
-
-        return grpc_helpers.create_channel(
-            host,
-            credentials=credentials,
-            credentials_file=credentials_file,
-            quota_project_id=quota_project_id,
-            default_scopes=cls.AUTH_SCOPES,
-            scopes=scopes,
-            default_host=cls.DEFAULT_HOST,
-            **kwargs,
-        )
-
     @property
-    def grpc_channel(self) -> grpc.Channel:
-        """Return the channel designed to connect to this service.
+    def grpc_channel(self) -> aio.Channel:
+        """Create the channel designed to connect to this service.
+
+        This property caches on the instance; repeated calls return
+        the same channel.
         """
+        # Return the channel from cache.
         return self._grpc_channel
 
     @property
-    def operations_client(self) -> operations_v1.OperationsClient:
+    def operations_client(self) -> operations_v1.OperationsAsyncClient:
         """Create the client designed to process long-running operations.
 
         This property caches on the instance; repeated calls return the same
@@ -241,7 +243,9 @@ class DatastreamGrpcTransport(DatastreamTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+            self._operations_client = operations_v1.OperationsAsyncClient(
+                self.grpc_channel
+            )
 
         # Return the client from cache.
         return self._operations_client
@@ -251,7 +255,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         self,
     ) -> Callable[
         [datastream.ListConnectionProfilesRequest],
-        datastream.ListConnectionProfilesResponse,
+        Awaitable[datastream.ListConnectionProfilesResponse],
     ]:
         r"""Return a callable for the list connection profiles method over gRPC.
 
@@ -260,7 +264,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
 
         Returns:
             Callable[[~.ListConnectionProfilesRequest],
-                    ~.ListConnectionProfilesResponse]:
+                    Awaitable[~.ListConnectionProfilesResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -270,7 +274,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # to pass in the functions for each.
         if "list_connection_profiles" not in self._stubs:
             self._stubs["list_connection_profiles"] = self.grpc_channel.unary_unary(
-                "/google.cloud.datastream.v1alpha1.Datastream/ListConnectionProfiles",
+                "/google.cloud.datastream.v1.Datastream/ListConnectionProfiles",
                 request_serializer=datastream.ListConnectionProfilesRequest.serialize,
                 response_deserializer=datastream.ListConnectionProfilesResponse.deserialize,
             )
@@ -280,7 +284,8 @@ class DatastreamGrpcTransport(DatastreamTransport):
     def get_connection_profile(
         self,
     ) -> Callable[
-        [datastream.GetConnectionProfileRequest], datastream_resources.ConnectionProfile
+        [datastream.GetConnectionProfileRequest],
+        Awaitable[datastream_resources.ConnectionProfile],
     ]:
         r"""Return a callable for the get connection profile method over gRPC.
 
@@ -289,7 +294,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
 
         Returns:
             Callable[[~.GetConnectionProfileRequest],
-                    ~.ConnectionProfile]:
+                    Awaitable[~.ConnectionProfile]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -299,7 +304,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # to pass in the functions for each.
         if "get_connection_profile" not in self._stubs:
             self._stubs["get_connection_profile"] = self.grpc_channel.unary_unary(
-                "/google.cloud.datastream.v1alpha1.Datastream/GetConnectionProfile",
+                "/google.cloud.datastream.v1.Datastream/GetConnectionProfile",
                 request_serializer=datastream.GetConnectionProfileRequest.serialize,
                 response_deserializer=datastream_resources.ConnectionProfile.deserialize,
             )
@@ -309,7 +314,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
     def create_connection_profile(
         self,
     ) -> Callable[
-        [datastream.CreateConnectionProfileRequest], operations_pb2.Operation
+        [datastream.CreateConnectionProfileRequest], Awaitable[operations_pb2.Operation]
     ]:
         r"""Return a callable for the create connection profile method over gRPC.
 
@@ -318,7 +323,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
 
         Returns:
             Callable[[~.CreateConnectionProfileRequest],
-                    ~.Operation]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -328,7 +333,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # to pass in the functions for each.
         if "create_connection_profile" not in self._stubs:
             self._stubs["create_connection_profile"] = self.grpc_channel.unary_unary(
-                "/google.cloud.datastream.v1alpha1.Datastream/CreateConnectionProfile",
+                "/google.cloud.datastream.v1.Datastream/CreateConnectionProfile",
                 request_serializer=datastream.CreateConnectionProfileRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -338,7 +343,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
     def update_connection_profile(
         self,
     ) -> Callable[
-        [datastream.UpdateConnectionProfileRequest], operations_pb2.Operation
+        [datastream.UpdateConnectionProfileRequest], Awaitable[operations_pb2.Operation]
     ]:
         r"""Return a callable for the update connection profile method over gRPC.
 
@@ -347,7 +352,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
 
         Returns:
             Callable[[~.UpdateConnectionProfileRequest],
-                    ~.Operation]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -357,7 +362,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # to pass in the functions for each.
         if "update_connection_profile" not in self._stubs:
             self._stubs["update_connection_profile"] = self.grpc_channel.unary_unary(
-                "/google.cloud.datastream.v1alpha1.Datastream/UpdateConnectionProfile",
+                "/google.cloud.datastream.v1.Datastream/UpdateConnectionProfile",
                 request_serializer=datastream.UpdateConnectionProfileRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -367,15 +372,15 @@ class DatastreamGrpcTransport(DatastreamTransport):
     def delete_connection_profile(
         self,
     ) -> Callable[
-        [datastream.DeleteConnectionProfileRequest], operations_pb2.Operation
+        [datastream.DeleteConnectionProfileRequest], Awaitable[operations_pb2.Operation]
     ]:
         r"""Return a callable for the delete connection profile method over gRPC.
 
-        Use this method to delete a connection profile..
+        Use this method to delete a connection profile.
 
         Returns:
             Callable[[~.DeleteConnectionProfileRequest],
-                    ~.Operation]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -385,7 +390,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # to pass in the functions for each.
         if "delete_connection_profile" not in self._stubs:
             self._stubs["delete_connection_profile"] = self.grpc_channel.unary_unary(
-                "/google.cloud.datastream.v1alpha1.Datastream/DeleteConnectionProfile",
+                "/google.cloud.datastream.v1.Datastream/DeleteConnectionProfile",
                 request_serializer=datastream.DeleteConnectionProfileRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -396,19 +401,19 @@ class DatastreamGrpcTransport(DatastreamTransport):
         self,
     ) -> Callable[
         [datastream.DiscoverConnectionProfileRequest],
-        datastream.DiscoverConnectionProfileResponse,
+        Awaitable[datastream.DiscoverConnectionProfileResponse],
     ]:
         r"""Return a callable for the discover connection profile method over gRPC.
 
         Use this method to discover a connection profile.
         The discover API call exposes the data objects and
         metadata belonging to the profile. Typically, a request
-        returns children data objects under a parent data object
+        returns children data objects of a parent data object
         that's optionally supplied in the request.
 
         Returns:
             Callable[[~.DiscoverConnectionProfileRequest],
-                    ~.DiscoverConnectionProfileResponse]:
+                    Awaitable[~.DiscoverConnectionProfileResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -418,7 +423,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # to pass in the functions for each.
         if "discover_connection_profile" not in self._stubs:
             self._stubs["discover_connection_profile"] = self.grpc_channel.unary_unary(
-                "/google.cloud.datastream.v1alpha1.Datastream/DiscoverConnectionProfile",
+                "/google.cloud.datastream.v1.Datastream/DiscoverConnectionProfile",
                 request_serializer=datastream.DiscoverConnectionProfileRequest.serialize,
                 response_deserializer=datastream.DiscoverConnectionProfileResponse.deserialize,
             )
@@ -427,7 +432,9 @@ class DatastreamGrpcTransport(DatastreamTransport):
     @property
     def list_streams(
         self,
-    ) -> Callable[[datastream.ListStreamsRequest], datastream.ListStreamsResponse]:
+    ) -> Callable[
+        [datastream.ListStreamsRequest], Awaitable[datastream.ListStreamsResponse]
+    ]:
         r"""Return a callable for the list streams method over gRPC.
 
         Use this method to list streams in a project and
@@ -435,7 +442,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
 
         Returns:
             Callable[[~.ListStreamsRequest],
-                    ~.ListStreamsResponse]:
+                    Awaitable[~.ListStreamsResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -445,7 +452,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # to pass in the functions for each.
         if "list_streams" not in self._stubs:
             self._stubs["list_streams"] = self.grpc_channel.unary_unary(
-                "/google.cloud.datastream.v1alpha1.Datastream/ListStreams",
+                "/google.cloud.datastream.v1.Datastream/ListStreams",
                 request_serializer=datastream.ListStreamsRequest.serialize,
                 response_deserializer=datastream.ListStreamsResponse.deserialize,
             )
@@ -454,14 +461,16 @@ class DatastreamGrpcTransport(DatastreamTransport):
     @property
     def get_stream(
         self,
-    ) -> Callable[[datastream.GetStreamRequest], datastream_resources.Stream]:
+    ) -> Callable[
+        [datastream.GetStreamRequest], Awaitable[datastream_resources.Stream]
+    ]:
         r"""Return a callable for the get stream method over gRPC.
 
         Use this method to get details about a stream.
 
         Returns:
             Callable[[~.GetStreamRequest],
-                    ~.Stream]:
+                    Awaitable[~.Stream]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -471,7 +480,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # to pass in the functions for each.
         if "get_stream" not in self._stubs:
             self._stubs["get_stream"] = self.grpc_channel.unary_unary(
-                "/google.cloud.datastream.v1alpha1.Datastream/GetStream",
+                "/google.cloud.datastream.v1.Datastream/GetStream",
                 request_serializer=datastream.GetStreamRequest.serialize,
                 response_deserializer=datastream_resources.Stream.deserialize,
             )
@@ -480,14 +489,16 @@ class DatastreamGrpcTransport(DatastreamTransport):
     @property
     def create_stream(
         self,
-    ) -> Callable[[datastream.CreateStreamRequest], operations_pb2.Operation]:
+    ) -> Callable[
+        [datastream.CreateStreamRequest], Awaitable[operations_pb2.Operation]
+    ]:
         r"""Return a callable for the create stream method over gRPC.
 
         Use this method to create a stream.
 
         Returns:
             Callable[[~.CreateStreamRequest],
-                    ~.Operation]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -497,7 +508,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # to pass in the functions for each.
         if "create_stream" not in self._stubs:
             self._stubs["create_stream"] = self.grpc_channel.unary_unary(
-                "/google.cloud.datastream.v1alpha1.Datastream/CreateStream",
+                "/google.cloud.datastream.v1.Datastream/CreateStream",
                 request_serializer=datastream.CreateStreamRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -506,7 +517,9 @@ class DatastreamGrpcTransport(DatastreamTransport):
     @property
     def update_stream(
         self,
-    ) -> Callable[[datastream.UpdateStreamRequest], operations_pb2.Operation]:
+    ) -> Callable[
+        [datastream.UpdateStreamRequest], Awaitable[operations_pb2.Operation]
+    ]:
         r"""Return a callable for the update stream method over gRPC.
 
         Use this method to update the configuration of a
@@ -514,7 +527,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
 
         Returns:
             Callable[[~.UpdateStreamRequest],
-                    ~.Operation]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -524,7 +537,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # to pass in the functions for each.
         if "update_stream" not in self._stubs:
             self._stubs["update_stream"] = self.grpc_channel.unary_unary(
-                "/google.cloud.datastream.v1alpha1.Datastream/UpdateStream",
+                "/google.cloud.datastream.v1.Datastream/UpdateStream",
                 request_serializer=datastream.UpdateStreamRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -533,14 +546,16 @@ class DatastreamGrpcTransport(DatastreamTransport):
     @property
     def delete_stream(
         self,
-    ) -> Callable[[datastream.DeleteStreamRequest], operations_pb2.Operation]:
+    ) -> Callable[
+        [datastream.DeleteStreamRequest], Awaitable[operations_pb2.Operation]
+    ]:
         r"""Return a callable for the delete stream method over gRPC.
 
         Use this method to delete a stream.
 
         Returns:
             Callable[[~.DeleteStreamRequest],
-                    ~.Operation]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -550,24 +565,26 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # to pass in the functions for each.
         if "delete_stream" not in self._stubs:
             self._stubs["delete_stream"] = self.grpc_channel.unary_unary(
-                "/google.cloud.datastream.v1alpha1.Datastream/DeleteStream",
+                "/google.cloud.datastream.v1.Datastream/DeleteStream",
                 request_serializer=datastream.DeleteStreamRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_stream"]
 
     @property
-    def fetch_errors(
+    def get_stream_object(
         self,
-    ) -> Callable[[datastream.FetchErrorsRequest], operations_pb2.Operation]:
-        r"""Return a callable for the fetch errors method over gRPC.
+    ) -> Callable[
+        [datastream.GetStreamObjectRequest],
+        Awaitable[datastream_resources.StreamObject],
+    ]:
+        r"""Return a callable for the get stream object method over gRPC.
 
-        Use this method to fetch any errors associated with a
-        stream.
+        Use this method to get details about a stream object.
 
         Returns:
-            Callable[[~.FetchErrorsRequest],
-                    ~.Operation]:
+            Callable[[~.GetStreamObjectRequest],
+                    Awaitable[~.StreamObject]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -575,30 +592,148 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "fetch_errors" not in self._stubs:
-            self._stubs["fetch_errors"] = self.grpc_channel.unary_unary(
-                "/google.cloud.datastream.v1alpha1.Datastream/FetchErrors",
-                request_serializer=datastream.FetchErrorsRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+        if "get_stream_object" not in self._stubs:
+            self._stubs["get_stream_object"] = self.grpc_channel.unary_unary(
+                "/google.cloud.datastream.v1.Datastream/GetStreamObject",
+                request_serializer=datastream.GetStreamObjectRequest.serialize,
+                response_deserializer=datastream_resources.StreamObject.deserialize,
             )
-        return self._stubs["fetch_errors"]
+        return self._stubs["get_stream_object"]
+
+    @property
+    def lookup_stream_object(
+        self,
+    ) -> Callable[
+        [datastream.LookupStreamObjectRequest],
+        Awaitable[datastream_resources.StreamObject],
+    ]:
+        r"""Return a callable for the lookup stream object method over gRPC.
+
+        Use this method to look up a stream object by its
+        source object identifier.
+
+        Returns:
+            Callable[[~.LookupStreamObjectRequest],
+                    Awaitable[~.StreamObject]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "lookup_stream_object" not in self._stubs:
+            self._stubs["lookup_stream_object"] = self.grpc_channel.unary_unary(
+                "/google.cloud.datastream.v1.Datastream/LookupStreamObject",
+                request_serializer=datastream.LookupStreamObjectRequest.serialize,
+                response_deserializer=datastream_resources.StreamObject.deserialize,
+            )
+        return self._stubs["lookup_stream_object"]
+
+    @property
+    def list_stream_objects(
+        self,
+    ) -> Callable[
+        [datastream.ListStreamObjectsRequest],
+        Awaitable[datastream.ListStreamObjectsResponse],
+    ]:
+        r"""Return a callable for the list stream objects method over gRPC.
+
+        Use this method to list the objects of a specific
+        stream.
+
+        Returns:
+            Callable[[~.ListStreamObjectsRequest],
+                    Awaitable[~.ListStreamObjectsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_stream_objects" not in self._stubs:
+            self._stubs["list_stream_objects"] = self.grpc_channel.unary_unary(
+                "/google.cloud.datastream.v1.Datastream/ListStreamObjects",
+                request_serializer=datastream.ListStreamObjectsRequest.serialize,
+                response_deserializer=datastream.ListStreamObjectsResponse.deserialize,
+            )
+        return self._stubs["list_stream_objects"]
+
+    @property
+    def start_backfill_job(
+        self,
+    ) -> Callable[
+        [datastream.StartBackfillJobRequest],
+        Awaitable[datastream.StartBackfillJobResponse],
+    ]:
+        r"""Return a callable for the start backfill job method over gRPC.
+
+        Use this method to start a backfill job for the
+        specified stream object.
+
+        Returns:
+            Callable[[~.StartBackfillJobRequest],
+                    Awaitable[~.StartBackfillJobResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "start_backfill_job" not in self._stubs:
+            self._stubs["start_backfill_job"] = self.grpc_channel.unary_unary(
+                "/google.cloud.datastream.v1.Datastream/StartBackfillJob",
+                request_serializer=datastream.StartBackfillJobRequest.serialize,
+                response_deserializer=datastream.StartBackfillJobResponse.deserialize,
+            )
+        return self._stubs["start_backfill_job"]
+
+    @property
+    def stop_backfill_job(
+        self,
+    ) -> Callable[
+        [datastream.StopBackfillJobRequest],
+        Awaitable[datastream.StopBackfillJobResponse],
+    ]:
+        r"""Return a callable for the stop backfill job method over gRPC.
+
+        Use this method to stop a backfill job for the
+        specified stream object.
+
+        Returns:
+            Callable[[~.StopBackfillJobRequest],
+                    Awaitable[~.StopBackfillJobResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "stop_backfill_job" not in self._stubs:
+            self._stubs["stop_backfill_job"] = self.grpc_channel.unary_unary(
+                "/google.cloud.datastream.v1.Datastream/StopBackfillJob",
+                request_serializer=datastream.StopBackfillJobRequest.serialize,
+                response_deserializer=datastream.StopBackfillJobResponse.deserialize,
+            )
+        return self._stubs["stop_backfill_job"]
 
     @property
     def fetch_static_ips(
         self,
     ) -> Callable[
-        [datastream.FetchStaticIpsRequest], datastream.FetchStaticIpsResponse
+        [datastream.FetchStaticIpsRequest], Awaitable[datastream.FetchStaticIpsResponse]
     ]:
         r"""Return a callable for the fetch static ips method over gRPC.
 
-        The FetchStaticIps API call exposes the static ips
-        used by Datastream. Typically, a request returns
-        children data objects under a parent data object that's
-        optionally supplied in the request.
+        The FetchStaticIps API call exposes the static IP
+        addresses used by Datastream.
 
         Returns:
             Callable[[~.FetchStaticIpsRequest],
-                    ~.FetchStaticIpsResponse]:
+                    Awaitable[~.FetchStaticIpsResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -608,7 +743,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # to pass in the functions for each.
         if "fetch_static_ips" not in self._stubs:
             self._stubs["fetch_static_ips"] = self.grpc_channel.unary_unary(
-                "/google.cloud.datastream.v1alpha1.Datastream/FetchStaticIps",
+                "/google.cloud.datastream.v1.Datastream/FetchStaticIps",
                 request_serializer=datastream.FetchStaticIpsRequest.serialize,
                 response_deserializer=datastream.FetchStaticIpsResponse.deserialize,
             )
@@ -618,7 +753,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
     def create_private_connection(
         self,
     ) -> Callable[
-        [datastream.CreatePrivateConnectionRequest], operations_pb2.Operation
+        [datastream.CreatePrivateConnectionRequest], Awaitable[operations_pb2.Operation]
     ]:
         r"""Return a callable for the create private connection method over gRPC.
 
@@ -627,7 +762,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
 
         Returns:
             Callable[[~.CreatePrivateConnectionRequest],
-                    ~.Operation]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -637,7 +772,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # to pass in the functions for each.
         if "create_private_connection" not in self._stubs:
             self._stubs["create_private_connection"] = self.grpc_channel.unary_unary(
-                "/google.cloud.datastream.v1alpha1.Datastream/CreatePrivateConnection",
+                "/google.cloud.datastream.v1.Datastream/CreatePrivateConnection",
                 request_serializer=datastream.CreatePrivateConnectionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -647,7 +782,8 @@ class DatastreamGrpcTransport(DatastreamTransport):
     def get_private_connection(
         self,
     ) -> Callable[
-        [datastream.GetPrivateConnectionRequest], datastream_resources.PrivateConnection
+        [datastream.GetPrivateConnectionRequest],
+        Awaitable[datastream_resources.PrivateConnection],
     ]:
         r"""Return a callable for the get private connection method over gRPC.
 
@@ -656,7 +792,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
 
         Returns:
             Callable[[~.GetPrivateConnectionRequest],
-                    ~.PrivateConnection]:
+                    Awaitable[~.PrivateConnection]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -666,7 +802,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # to pass in the functions for each.
         if "get_private_connection" not in self._stubs:
             self._stubs["get_private_connection"] = self.grpc_channel.unary_unary(
-                "/google.cloud.datastream.v1alpha1.Datastream/GetPrivateConnection",
+                "/google.cloud.datastream.v1.Datastream/GetPrivateConnection",
                 request_serializer=datastream.GetPrivateConnectionRequest.serialize,
                 response_deserializer=datastream_resources.PrivateConnection.deserialize,
             )
@@ -677,7 +813,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         self,
     ) -> Callable[
         [datastream.ListPrivateConnectionsRequest],
-        datastream.ListPrivateConnectionsResponse,
+        Awaitable[datastream.ListPrivateConnectionsResponse],
     ]:
         r"""Return a callable for the list private connections method over gRPC.
 
@@ -686,7 +822,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
 
         Returns:
             Callable[[~.ListPrivateConnectionsRequest],
-                    ~.ListPrivateConnectionsResponse]:
+                    Awaitable[~.ListPrivateConnectionsResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -696,7 +832,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # to pass in the functions for each.
         if "list_private_connections" not in self._stubs:
             self._stubs["list_private_connections"] = self.grpc_channel.unary_unary(
-                "/google.cloud.datastream.v1alpha1.Datastream/ListPrivateConnections",
+                "/google.cloud.datastream.v1.Datastream/ListPrivateConnections",
                 request_serializer=datastream.ListPrivateConnectionsRequest.serialize,
                 response_deserializer=datastream.ListPrivateConnectionsResponse.deserialize,
             )
@@ -706,7 +842,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
     def delete_private_connection(
         self,
     ) -> Callable[
-        [datastream.DeletePrivateConnectionRequest], operations_pb2.Operation
+        [datastream.DeletePrivateConnectionRequest], Awaitable[operations_pb2.Operation]
     ]:
         r"""Return a callable for the delete private connection method over gRPC.
 
@@ -715,7 +851,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
 
         Returns:
             Callable[[~.DeletePrivateConnectionRequest],
-                    ~.Operation]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -725,7 +861,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # to pass in the functions for each.
         if "delete_private_connection" not in self._stubs:
             self._stubs["delete_private_connection"] = self.grpc_channel.unary_unary(
-                "/google.cloud.datastream.v1alpha1.Datastream/DeletePrivateConnection",
+                "/google.cloud.datastream.v1.Datastream/DeletePrivateConnection",
                 request_serializer=datastream.DeletePrivateConnectionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -734,15 +870,15 @@ class DatastreamGrpcTransport(DatastreamTransport):
     @property
     def create_route(
         self,
-    ) -> Callable[[datastream.CreateRouteRequest], operations_pb2.Operation]:
+    ) -> Callable[[datastream.CreateRouteRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create route method over gRPC.
 
         Use this method to create a route for a private
-        connectivity in a project and location.
+        connectivity configuration in a project and location.
 
         Returns:
             Callable[[~.CreateRouteRequest],
-                    ~.Operation]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -752,7 +888,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # to pass in the functions for each.
         if "create_route" not in self._stubs:
             self._stubs["create_route"] = self.grpc_channel.unary_unary(
-                "/google.cloud.datastream.v1alpha1.Datastream/CreateRoute",
+                "/google.cloud.datastream.v1.Datastream/CreateRoute",
                 request_serializer=datastream.CreateRouteRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -761,14 +897,14 @@ class DatastreamGrpcTransport(DatastreamTransport):
     @property
     def get_route(
         self,
-    ) -> Callable[[datastream.GetRouteRequest], datastream_resources.Route]:
+    ) -> Callable[[datastream.GetRouteRequest], Awaitable[datastream_resources.Route]]:
         r"""Return a callable for the get route method over gRPC.
 
         Use this method to get details about a route.
 
         Returns:
             Callable[[~.GetRouteRequest],
-                    ~.Route]:
+                    Awaitable[~.Route]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -778,7 +914,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # to pass in the functions for each.
         if "get_route" not in self._stubs:
             self._stubs["get_route"] = self.grpc_channel.unary_unary(
-                "/google.cloud.datastream.v1alpha1.Datastream/GetRoute",
+                "/google.cloud.datastream.v1.Datastream/GetRoute",
                 request_serializer=datastream.GetRouteRequest.serialize,
                 response_deserializer=datastream_resources.Route.deserialize,
             )
@@ -787,15 +923,17 @@ class DatastreamGrpcTransport(DatastreamTransport):
     @property
     def list_routes(
         self,
-    ) -> Callable[[datastream.ListRoutesRequest], datastream.ListRoutesResponse]:
+    ) -> Callable[
+        [datastream.ListRoutesRequest], Awaitable[datastream.ListRoutesResponse]
+    ]:
         r"""Return a callable for the list routes method over gRPC.
 
         Use this method to list routes created for a private
-        connectivity in a project and location.
+        connectivity configuration in a project and location.
 
         Returns:
             Callable[[~.ListRoutesRequest],
-                    ~.ListRoutesResponse]:
+                    Awaitable[~.ListRoutesResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -805,7 +943,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # to pass in the functions for each.
         if "list_routes" not in self._stubs:
             self._stubs["list_routes"] = self.grpc_channel.unary_unary(
-                "/google.cloud.datastream.v1alpha1.Datastream/ListRoutes",
+                "/google.cloud.datastream.v1.Datastream/ListRoutes",
                 request_serializer=datastream.ListRoutesRequest.serialize,
                 response_deserializer=datastream.ListRoutesResponse.deserialize,
             )
@@ -814,14 +952,14 @@ class DatastreamGrpcTransport(DatastreamTransport):
     @property
     def delete_route(
         self,
-    ) -> Callable[[datastream.DeleteRouteRequest], operations_pb2.Operation]:
+    ) -> Callable[[datastream.DeleteRouteRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete route method over gRPC.
 
         Use this method to delete a route.
 
         Returns:
             Callable[[~.DeleteRouteRequest],
-                    ~.Operation]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -831,14 +969,14 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # to pass in the functions for each.
         if "delete_route" not in self._stubs:
             self._stubs["delete_route"] = self.grpc_channel.unary_unary(
-                "/google.cloud.datastream.v1alpha1.Datastream/DeleteRoute",
+                "/google.cloud.datastream.v1.Datastream/DeleteRoute",
                 request_serializer=datastream.DeleteRouteRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_route"]
 
     def close(self):
-        self.grpc_channel.close()
+        return self.grpc_channel.close()
 
 
-__all__ = ("DatastreamGrpcTransport",)
+__all__ = ("DatastreamGrpcAsyncIOTransport",)

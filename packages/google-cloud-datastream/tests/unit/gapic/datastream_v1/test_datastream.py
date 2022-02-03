@@ -35,12 +35,12 @@ from google.api_core import operations_v1
 from google.api_core import path_template
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.datastream_v1alpha1.services.datastream import DatastreamAsyncClient
-from google.cloud.datastream_v1alpha1.services.datastream import DatastreamClient
-from google.cloud.datastream_v1alpha1.services.datastream import pagers
-from google.cloud.datastream_v1alpha1.services.datastream import transports
-from google.cloud.datastream_v1alpha1.types import datastream
-from google.cloud.datastream_v1alpha1.types import datastream_resources
+from google.cloud.datastream_v1.services.datastream import DatastreamAsyncClient
+from google.cloud.datastream_v1.services.datastream import DatastreamClient
+from google.cloud.datastream_v1.services.datastream import pagers
+from google.cloud.datastream_v1.services.datastream import transports
+from google.cloud.datastream_v1.types import datastream
+from google.cloud.datastream_v1.types import datastream_resources
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
@@ -536,7 +536,7 @@ def test_datastream_client_client_options_credentials_file(
 
 def test_datastream_client_client_options_from_dict():
     with mock.patch(
-        "google.cloud.datastream_v1alpha1.services.datastream.transports.DatastreamGrpcTransport.__init__"
+        "google.cloud.datastream_v1.services.datastream.transports.DatastreamGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
         client = DatastreamClient(client_options={"api_endpoint": "squid.clam.whelk"})
@@ -1033,7 +1033,7 @@ def test_get_connection_profile(request_type, transport: str = "grpc"):
             oracle_profile=datastream_resources.OracleProfile(
                 hostname="hostname_value"
             ),
-            no_connectivity=None,
+            static_service_ip_connectivity=None,
         )
         response = client.get_connection_profile(request)
 
@@ -1946,7 +1946,7 @@ def test_discover_connection_profile(request_type, transport: str = "grpc"):
         call.return_value = datastream.DiscoverConnectionProfileResponse(
             oracle_rdbms=datastream_resources.OracleRdbms(
                 oracle_schemas=[
-                    datastream_resources.OracleSchema(schema_name="schema_name_value")
+                    datastream_resources.OracleSchema(schema="schema_value")
                 ]
             ),
         )
@@ -2430,13 +2430,12 @@ def test_get_stream(request_type, transport: str = "grpc"):
         call.return_value = datastream_resources.Stream(
             name="name_value",
             display_name="display_name_value",
-            state=datastream_resources.Stream.State.CREATED,
+            state=datastream_resources.Stream.State.NOT_STARTED,
+            customer_managed_encryption_key="customer_managed_encryption_key_value",
             backfill_all=datastream_resources.Stream.BackfillAllStrategy(
                 oracle_excluded_objects=datastream_resources.OracleRdbms(
                     oracle_schemas=[
-                        datastream_resources.OracleSchema(
-                            schema_name="schema_name_value"
-                        )
+                        datastream_resources.OracleSchema(schema="schema_value")
                     ]
                 )
             ),
@@ -2452,7 +2451,11 @@ def test_get_stream(request_type, transport: str = "grpc"):
     assert isinstance(response, datastream_resources.Stream)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-    assert response.state == datastream_resources.Stream.State.CREATED
+    assert response.state == datastream_resources.Stream.State.NOT_STARTED
+    assert (
+        response.customer_managed_encryption_key
+        == "customer_managed_encryption_key_value"
+    )
 
 
 def test_get_stream_empty_call():
@@ -2489,7 +2492,8 @@ async def test_get_stream_async(
             datastream_resources.Stream(
                 name="name_value",
                 display_name="display_name_value",
-                state=datastream_resources.Stream.State.CREATED,
+                state=datastream_resources.Stream.State.NOT_STARTED,
+                customer_managed_encryption_key="customer_managed_encryption_key_value",
             )
         )
         response = await client.get_stream(request)
@@ -2503,7 +2507,11 @@ async def test_get_stream_async(
     assert isinstance(response, datastream_resources.Stream)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-    assert response.state == datastream_resources.Stream.State.CREATED
+    assert response.state == datastream_resources.Stream.State.NOT_STARTED
+    assert (
+        response.customer_managed_encryption_key
+        == "customer_managed_encryption_key_value"
+    )
 
 
 @pytest.mark.asyncio
@@ -3251,8 +3259,8 @@ async def test_delete_stream_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [datastream.FetchErrorsRequest, dict,])
-def test_fetch_errors(request_type, transport: str = "grpc"):
+@pytest.mark.parametrize("request_type", [datastream.GetStreamObjectRequest, dict,])
+def test_get_stream_object(request_type, transport: str = "grpc"):
     client = DatastreamClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
@@ -3262,21 +3270,27 @@ def test_fetch_errors(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.fetch_errors), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.get_stream_object), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = operations_pb2.Operation(name="operations/spam")
-        response = client.fetch_errors(request)
+        call.return_value = datastream_resources.StreamObject(
+            name="name_value", display_name="display_name_value",
+        )
+        response = client.get_stream_object(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.FetchErrorsRequest()
+        assert args[0] == datastream.GetStreamObjectRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, future.Future)
+    assert isinstance(response, datastream_resources.StreamObject)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
 
 
-def test_fetch_errors_empty_call():
+def test_get_stream_object_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DatastreamClient(
@@ -3284,16 +3298,18 @@ def test_fetch_errors_empty_call():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.fetch_errors), "__call__") as call:
-        client.fetch_errors()
+    with mock.patch.object(
+        type(client.transport.get_stream_object), "__call__"
+    ) as call:
+        client.get_stream_object()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.FetchErrorsRequest()
+        assert args[0] == datastream.GetStreamObjectRequest()
 
 
 @pytest.mark.asyncio
-async def test_fetch_errors_async(
-    transport: str = "grpc_asyncio", request_type=datastream.FetchErrorsRequest
+async def test_get_stream_object_async(
+    transport: str = "grpc_asyncio", request_type=datastream.GetStreamObjectRequest
 ):
     client = DatastreamAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
@@ -3304,40 +3320,48 @@ async def test_fetch_errors_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.fetch_errors), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.get_stream_object), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
+            datastream_resources.StreamObject(
+                name="name_value", display_name="display_name_value",
+            )
         )
-        response = await client.fetch_errors(request)
+        response = await client.get_stream_object(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == datastream.FetchErrorsRequest()
+        assert args[0] == datastream.GetStreamObjectRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, future.Future)
+    assert isinstance(response, datastream_resources.StreamObject)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
 
 
 @pytest.mark.asyncio
-async def test_fetch_errors_async_from_dict():
-    await test_fetch_errors_async(request_type=dict)
+async def test_get_stream_object_async_from_dict():
+    await test_get_stream_object_async(request_type=dict)
 
 
-def test_fetch_errors_field_headers():
+def test_get_stream_object_field_headers():
     client = DatastreamClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = datastream.FetchErrorsRequest()
+    request = datastream.GetStreamObjectRequest()
 
-    request.stream = "stream/value"
+    request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.fetch_errors), "__call__") as call:
-        call.return_value = operations_pb2.Operation(name="operations/op")
-        client.fetch_errors(request)
+    with mock.patch.object(
+        type(client.transport.get_stream_object), "__call__"
+    ) as call:
+        call.return_value = datastream_resources.StreamObject()
+        client.get_stream_object(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -3346,25 +3370,27 @@ def test_fetch_errors_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "stream=stream/value",) in kw["metadata"]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
 @pytest.mark.asyncio
-async def test_fetch_errors_field_headers_async():
+async def test_get_stream_object_field_headers_async():
     client = DatastreamAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = datastream.FetchErrorsRequest()
+    request = datastream.GetStreamObjectRequest()
 
-    request.stream = "stream/value"
+    request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.fetch_errors), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.get_stream_object), "__call__"
+    ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
+            datastream_resources.StreamObject()
         )
-        await client.fetch_errors(request)
+        await client.get_stream_object(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -3373,7 +3399,1023 @@ async def test_fetch_errors_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "stream=stream/value",) in kw["metadata"]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_get_stream_object_flattened():
+    client = DatastreamClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_stream_object), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = datastream_resources.StreamObject()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_stream_object(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_stream_object_flattened_error():
+    client = DatastreamClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_stream_object(
+            datastream.GetStreamObjectRequest(), name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_stream_object_flattened_async():
+    client = DatastreamAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_stream_object), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = datastream_resources.StreamObject()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastream_resources.StreamObject()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_stream_object(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_stream_object_flattened_error_async():
+    client = DatastreamAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_stream_object(
+            datastream.GetStreamObjectRequest(), name="name_value",
+        )
+
+
+@pytest.mark.parametrize("request_type", [datastream.LookupStreamObjectRequest, dict,])
+def test_lookup_stream_object(request_type, transport: str = "grpc"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.lookup_stream_object), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = datastream_resources.StreamObject(
+            name="name_value", display_name="display_name_value",
+        )
+        response = client.lookup_stream_object(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.LookupStreamObjectRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datastream_resources.StreamObject)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+
+
+def test_lookup_stream_object_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.lookup_stream_object), "__call__"
+    ) as call:
+        client.lookup_stream_object()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.LookupStreamObjectRequest()
+
+
+@pytest.mark.asyncio
+async def test_lookup_stream_object_async(
+    transport: str = "grpc_asyncio", request_type=datastream.LookupStreamObjectRequest
+):
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.lookup_stream_object), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastream_resources.StreamObject(
+                name="name_value", display_name="display_name_value",
+            )
+        )
+        response = await client.lookup_stream_object(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.LookupStreamObjectRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datastream_resources.StreamObject)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+
+
+@pytest.mark.asyncio
+async def test_lookup_stream_object_async_from_dict():
+    await test_lookup_stream_object_async(request_type=dict)
+
+
+def test_lookup_stream_object_field_headers():
+    client = DatastreamClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = datastream.LookupStreamObjectRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.lookup_stream_object), "__call__"
+    ) as call:
+        call.return_value = datastream_resources.StreamObject()
+        client.lookup_stream_object(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_lookup_stream_object_field_headers_async():
+    client = DatastreamAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = datastream.LookupStreamObjectRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.lookup_stream_object), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastream_resources.StreamObject()
+        )
+        await client.lookup_stream_object(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.parametrize("request_type", [datastream.ListStreamObjectsRequest, dict,])
+def test_list_stream_objects(request_type, transport: str = "grpc"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_stream_objects), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = datastream.ListStreamObjectsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_stream_objects(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.ListStreamObjectsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListStreamObjectsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_stream_objects_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_stream_objects), "__call__"
+    ) as call:
+        client.list_stream_objects()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.ListStreamObjectsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_stream_objects_async(
+    transport: str = "grpc_asyncio", request_type=datastream.ListStreamObjectsRequest
+):
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_stream_objects), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastream.ListStreamObjectsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_stream_objects(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.ListStreamObjectsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListStreamObjectsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_stream_objects_async_from_dict():
+    await test_list_stream_objects_async(request_type=dict)
+
+
+def test_list_stream_objects_field_headers():
+    client = DatastreamClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = datastream.ListStreamObjectsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_stream_objects), "__call__"
+    ) as call:
+        call.return_value = datastream.ListStreamObjectsResponse()
+        client.list_stream_objects(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_stream_objects_field_headers_async():
+    client = DatastreamAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = datastream.ListStreamObjectsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_stream_objects), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastream.ListStreamObjectsResponse()
+        )
+        await client.list_stream_objects(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+def test_list_stream_objects_flattened():
+    client = DatastreamClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_stream_objects), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = datastream.ListStreamObjectsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_stream_objects(parent="parent_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_stream_objects_flattened_error():
+    client = DatastreamClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_stream_objects(
+            datastream.ListStreamObjectsRequest(), parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_stream_objects_flattened_async():
+    client = DatastreamAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_stream_objects), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = datastream.ListStreamObjectsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastream.ListStreamObjectsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_stream_objects(parent="parent_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_stream_objects_flattened_error_async():
+    client = DatastreamAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_stream_objects(
+            datastream.ListStreamObjectsRequest(), parent="parent_value",
+        )
+
+
+def test_list_stream_objects_pager(transport_name: str = "grpc"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_stream_objects), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            datastream.ListStreamObjectsResponse(
+                stream_objects=[
+                    datastream_resources.StreamObject(),
+                    datastream_resources.StreamObject(),
+                    datastream_resources.StreamObject(),
+                ],
+                next_page_token="abc",
+            ),
+            datastream.ListStreamObjectsResponse(
+                stream_objects=[], next_page_token="def",
+            ),
+            datastream.ListStreamObjectsResponse(
+                stream_objects=[datastream_resources.StreamObject(),],
+                next_page_token="ghi",
+            ),
+            datastream.ListStreamObjectsResponse(
+                stream_objects=[
+                    datastream_resources.StreamObject(),
+                    datastream_resources.StreamObject(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_stream_objects(request={})
+
+        assert pager._metadata == metadata
+
+        results = [i for i in pager]
+        assert len(results) == 6
+        assert all(isinstance(i, datastream_resources.StreamObject) for i in results)
+
+
+def test_list_stream_objects_pages(transport_name: str = "grpc"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_stream_objects), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            datastream.ListStreamObjectsResponse(
+                stream_objects=[
+                    datastream_resources.StreamObject(),
+                    datastream_resources.StreamObject(),
+                    datastream_resources.StreamObject(),
+                ],
+                next_page_token="abc",
+            ),
+            datastream.ListStreamObjectsResponse(
+                stream_objects=[], next_page_token="def",
+            ),
+            datastream.ListStreamObjectsResponse(
+                stream_objects=[datastream_resources.StreamObject(),],
+                next_page_token="ghi",
+            ),
+            datastream.ListStreamObjectsResponse(
+                stream_objects=[
+                    datastream_resources.StreamObject(),
+                    datastream_resources.StreamObject(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_stream_objects(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_stream_objects_async_pager():
+    client = DatastreamAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_stream_objects),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            datastream.ListStreamObjectsResponse(
+                stream_objects=[
+                    datastream_resources.StreamObject(),
+                    datastream_resources.StreamObject(),
+                    datastream_resources.StreamObject(),
+                ],
+                next_page_token="abc",
+            ),
+            datastream.ListStreamObjectsResponse(
+                stream_objects=[], next_page_token="def",
+            ),
+            datastream.ListStreamObjectsResponse(
+                stream_objects=[datastream_resources.StreamObject(),],
+                next_page_token="ghi",
+            ),
+            datastream.ListStreamObjectsResponse(
+                stream_objects=[
+                    datastream_resources.StreamObject(),
+                    datastream_resources.StreamObject(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_stream_objects(request={},)
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, datastream_resources.StreamObject) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_stream_objects_async_pages():
+    client = DatastreamAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_stream_objects),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            datastream.ListStreamObjectsResponse(
+                stream_objects=[
+                    datastream_resources.StreamObject(),
+                    datastream_resources.StreamObject(),
+                    datastream_resources.StreamObject(),
+                ],
+                next_page_token="abc",
+            ),
+            datastream.ListStreamObjectsResponse(
+                stream_objects=[], next_page_token="def",
+            ),
+            datastream.ListStreamObjectsResponse(
+                stream_objects=[datastream_resources.StreamObject(),],
+                next_page_token="ghi",
+            ),
+            datastream.ListStreamObjectsResponse(
+                stream_objects=[
+                    datastream_resources.StreamObject(),
+                    datastream_resources.StreamObject(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (await client.list_stream_objects(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize("request_type", [datastream.StartBackfillJobRequest, dict,])
+def test_start_backfill_job(request_type, transport: str = "grpc"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.start_backfill_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = datastream.StartBackfillJobResponse()
+        response = client.start_backfill_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.StartBackfillJobRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datastream.StartBackfillJobResponse)
+
+
+def test_start_backfill_job_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.start_backfill_job), "__call__"
+    ) as call:
+        client.start_backfill_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.StartBackfillJobRequest()
+
+
+@pytest.mark.asyncio
+async def test_start_backfill_job_async(
+    transport: str = "grpc_asyncio", request_type=datastream.StartBackfillJobRequest
+):
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.start_backfill_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastream.StartBackfillJobResponse()
+        )
+        response = await client.start_backfill_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.StartBackfillJobRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datastream.StartBackfillJobResponse)
+
+
+@pytest.mark.asyncio
+async def test_start_backfill_job_async_from_dict():
+    await test_start_backfill_job_async(request_type=dict)
+
+
+def test_start_backfill_job_field_headers():
+    client = DatastreamClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = datastream.StartBackfillJobRequest()
+
+    request.object_ = "object/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.start_backfill_job), "__call__"
+    ) as call:
+        call.return_value = datastream.StartBackfillJobResponse()
+        client.start_backfill_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "object=object/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_start_backfill_job_field_headers_async():
+    client = DatastreamAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = datastream.StartBackfillJobRequest()
+
+    request.object_ = "object/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.start_backfill_job), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastream.StartBackfillJobResponse()
+        )
+        await client.start_backfill_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "object=object/value",) in kw["metadata"]
+
+
+def test_start_backfill_job_flattened():
+    client = DatastreamClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.start_backfill_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = datastream.StartBackfillJobResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.start_backfill_job(object_="object__value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].object_
+        mock_val = "object__value"
+        assert arg == mock_val
+
+
+def test_start_backfill_job_flattened_error():
+    client = DatastreamClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.start_backfill_job(
+            datastream.StartBackfillJobRequest(), object_="object__value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_start_backfill_job_flattened_async():
+    client = DatastreamAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.start_backfill_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = datastream.StartBackfillJobResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastream.StartBackfillJobResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.start_backfill_job(object_="object__value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].object_
+        mock_val = "object__value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_start_backfill_job_flattened_error_async():
+    client = DatastreamAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.start_backfill_job(
+            datastream.StartBackfillJobRequest(), object_="object__value",
+        )
+
+
+@pytest.mark.parametrize("request_type", [datastream.StopBackfillJobRequest, dict,])
+def test_stop_backfill_job(request_type, transport: str = "grpc"):
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stop_backfill_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = datastream.StopBackfillJobResponse()
+        response = client.stop_backfill_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.StopBackfillJobRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datastream.StopBackfillJobResponse)
+
+
+def test_stop_backfill_job_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatastreamClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stop_backfill_job), "__call__"
+    ) as call:
+        client.stop_backfill_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.StopBackfillJobRequest()
+
+
+@pytest.mark.asyncio
+async def test_stop_backfill_job_async(
+    transport: str = "grpc_asyncio", request_type=datastream.StopBackfillJobRequest
+):
+    client = DatastreamAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stop_backfill_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastream.StopBackfillJobResponse()
+        )
+        response = await client.stop_backfill_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datastream.StopBackfillJobRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datastream.StopBackfillJobResponse)
+
+
+@pytest.mark.asyncio
+async def test_stop_backfill_job_async_from_dict():
+    await test_stop_backfill_job_async(request_type=dict)
+
+
+def test_stop_backfill_job_field_headers():
+    client = DatastreamClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = datastream.StopBackfillJobRequest()
+
+    request.object_ = "object/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stop_backfill_job), "__call__"
+    ) as call:
+        call.return_value = datastream.StopBackfillJobResponse()
+        client.stop_backfill_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "object=object/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_stop_backfill_job_field_headers_async():
+    client = DatastreamAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = datastream.StopBackfillJobRequest()
+
+    request.object_ = "object/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stop_backfill_job), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastream.StopBackfillJobResponse()
+        )
+        await client.stop_backfill_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "object=object/value",) in kw["metadata"]
+
+
+def test_stop_backfill_job_flattened():
+    client = DatastreamClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stop_backfill_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = datastream.StopBackfillJobResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.stop_backfill_job(object_="object__value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].object_
+        mock_val = "object__value"
+        assert arg == mock_val
+
+
+def test_stop_backfill_job_flattened_error():
+    client = DatastreamClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.stop_backfill_job(
+            datastream.StopBackfillJobRequest(), object_="object__value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_stop_backfill_job_flattened_async():
+    client = DatastreamAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stop_backfill_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = datastream.StopBackfillJobResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datastream.StopBackfillJobResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.stop_backfill_job(object_="object__value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].object_
+        mock_val = "object__value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_stop_backfill_job_flattened_error_async():
+    client = DatastreamAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.stop_backfill_job(
+            datastream.StopBackfillJobRequest(), object_="object__value",
+        )
 
 
 @pytest.mark.parametrize("request_type", [datastream.FetchStaticIpsRequest, dict,])
@@ -5834,7 +6876,7 @@ def test_datastream_base_transport_error():
 def test_datastream_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.cloud.datastream_v1alpha1.services.datastream.transports.DatastreamTransport.__init__"
+        "google.cloud.datastream_v1.services.datastream.transports.DatastreamTransport.__init__"
     ) as Transport:
         Transport.return_value = None
         transport = transports.DatastreamTransport(
@@ -5855,7 +6897,11 @@ def test_datastream_base_transport():
         "create_stream",
         "update_stream",
         "delete_stream",
-        "fetch_errors",
+        "get_stream_object",
+        "lookup_stream_object",
+        "list_stream_objects",
+        "start_backfill_job",
+        "stop_backfill_job",
         "fetch_static_ips",
         "create_private_connection",
         "get_private_connection",
@@ -5884,7 +6930,7 @@ def test_datastream_base_transport_with_credentials_file():
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.cloud.datastream_v1alpha1.services.datastream.transports.DatastreamTransport._prep_wrapped_messages"
+        "google.cloud.datastream_v1.services.datastream.transports.DatastreamTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
@@ -5902,7 +6948,7 @@ def test_datastream_base_transport_with_credentials_file():
 def test_datastream_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.datastream_v1alpha1.services.datastream.transports.DatastreamTransport._prep_wrapped_messages"
+        "google.cloud.datastream_v1.services.datastream.transports.DatastreamTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
@@ -6204,10 +7250,32 @@ def test_parse_connection_profile_path():
     assert expected == actual
 
 
-def test_private_connection_path():
+def test_networks_path():
     project = "cuttlefish"
-    location = "mussel"
-    private_connection = "winkle"
+    network = "mussel"
+    expected = "projects/{project}/global/networks/{network}".format(
+        project=project, network=network,
+    )
+    actual = DatastreamClient.networks_path(project, network)
+    assert expected == actual
+
+
+def test_parse_networks_path():
+    expected = {
+        "project": "winkle",
+        "network": "nautilus",
+    }
+    path = DatastreamClient.networks_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DatastreamClient.parse_networks_path(path)
+    assert expected == actual
+
+
+def test_private_connection_path():
+    project = "scallop"
+    location = "abalone"
+    private_connection = "squid"
     expected = "projects/{project}/locations/{location}/privateConnections/{private_connection}".format(
         project=project, location=location, private_connection=private_connection,
     )
@@ -6219,9 +7287,9 @@ def test_private_connection_path():
 
 def test_parse_private_connection_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "private_connection": "abalone",
+        "project": "clam",
+        "location": "whelk",
+        "private_connection": "octopus",
     }
     path = DatastreamClient.private_connection_path(**expected)
 
@@ -6231,10 +7299,10 @@ def test_parse_private_connection_path():
 
 
 def test_route_path():
-    project = "squid"
-    location = "clam"
-    private_connection = "whelk"
-    route = "octopus"
+    project = "oyster"
+    location = "nudibranch"
+    private_connection = "cuttlefish"
+    route = "mussel"
     expected = "projects/{project}/locations/{location}/privateConnections/{private_connection}/routes/{route}".format(
         project=project,
         location=location,
@@ -6247,10 +7315,10 @@ def test_route_path():
 
 def test_parse_route_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "private_connection": "cuttlefish",
-        "route": "mussel",
+        "project": "winkle",
+        "location": "nautilus",
+        "private_connection": "scallop",
+        "route": "abalone",
     }
     path = DatastreamClient.route_path(**expected)
 
@@ -6260,9 +7328,9 @@ def test_parse_route_path():
 
 
 def test_stream_path():
-    project = "winkle"
-    location = "nautilus"
-    stream = "scallop"
+    project = "squid"
+    location = "clam"
+    stream = "whelk"
     expected = "projects/{project}/locations/{location}/streams/{stream}".format(
         project=project, location=location, stream=stream,
     )
@@ -6272,14 +7340,40 @@ def test_stream_path():
 
 def test_parse_stream_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "stream": "clam",
+        "project": "octopus",
+        "location": "oyster",
+        "stream": "nudibranch",
     }
     path = DatastreamClient.stream_path(**expected)
 
     # Check that the path construction is reversible.
     actual = DatastreamClient.parse_stream_path(path)
+    assert expected == actual
+
+
+def test_stream_object_path():
+    project = "cuttlefish"
+    location = "mussel"
+    stream = "winkle"
+    object = "nautilus"
+    expected = "projects/{project}/locations/{location}/streams/{stream}/objects/{object}".format(
+        project=project, location=location, stream=stream, object=object,
+    )
+    actual = DatastreamClient.stream_object_path(project, location, stream, object)
+    assert expected == actual
+
+
+def test_parse_stream_object_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+        "stream": "squid",
+        "object": "clam",
+    }
+    path = DatastreamClient.stream_object_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DatastreamClient.parse_stream_object_path(path)
     assert expected == actual
 
 

@@ -14,19 +14,16 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import os
+import functools
 import re
 from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib
+from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport import mtls  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 try:
@@ -36,84 +33,58 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.datastream_v1alpha1.services.datastream import pagers
-from google.cloud.datastream_v1alpha1.types import datastream
-from google.cloud.datastream_v1alpha1.types import datastream_resources
+from google.cloud.datastream_v1.services.datastream import pagers
+from google.cloud.datastream_v1.types import datastream
+from google.cloud.datastream_v1.types import datastream_resources
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import DatastreamTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc import DatastreamGrpcTransport
 from .transports.grpc_asyncio import DatastreamGrpcAsyncIOTransport
+from .client import DatastreamClient
 
 
-class DatastreamClientMeta(type):
-    """Metaclass for the Datastream client.
-
-    This provides class-level methods for building and retrieving
-    support objects (e.g. transport) without polluting the client instance
-    objects.
-    """
-
-    _transport_registry = OrderedDict()  # type: Dict[str, Type[DatastreamTransport]]
-    _transport_registry["grpc"] = DatastreamGrpcTransport
-    _transport_registry["grpc_asyncio"] = DatastreamGrpcAsyncIOTransport
-
-    def get_transport_class(cls, label: str = None,) -> Type[DatastreamTransport]:
-        """Returns an appropriate transport class.
-
-        Args:
-            label: The name of the desired transport. If none is
-                provided, then the first transport in the registry is used.
-
-        Returns:
-            The transport class to use.
-        """
-        # If a specific transport is requested, return that one.
-        if label:
-            return cls._transport_registry[label]
-
-        # No transport is requested; return the default (that is, the first one
-        # in the dictionary).
-        return next(iter(cls._transport_registry.values()))
-
-
-class DatastreamClient(metaclass=DatastreamClientMeta):
+class DatastreamAsyncClient:
     """Datastream service"""
 
-    @staticmethod
-    def _get_default_mtls_endpoint(api_endpoint):
-        """Converts api endpoint to mTLS endpoint.
+    _client: DatastreamClient
 
-        Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
-        "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
-        Args:
-            api_endpoint (Optional[str]): the api endpoint to convert.
-        Returns:
-            str: converted mTLS api endpoint.
-        """
-        if not api_endpoint:
-            return api_endpoint
+    DEFAULT_ENDPOINT = DatastreamClient.DEFAULT_ENDPOINT
+    DEFAULT_MTLS_ENDPOINT = DatastreamClient.DEFAULT_MTLS_ENDPOINT
 
-        mtls_endpoint_re = re.compile(
-            r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
-        )
-
-        m = mtls_endpoint_re.match(api_endpoint)
-        name, mtls, sandbox, googledomain = m.groups()
-        if mtls or not googledomain:
-            return api_endpoint
-
-        if sandbox:
-            return api_endpoint.replace(
-                "sandbox.googleapis.com", "mtls.sandbox.googleapis.com"
-            )
-
-        return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
-
-    DEFAULT_ENDPOINT = "datastream.googleapis.com"
-    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
-        DEFAULT_ENDPOINT
+    connection_profile_path = staticmethod(DatastreamClient.connection_profile_path)
+    parse_connection_profile_path = staticmethod(
+        DatastreamClient.parse_connection_profile_path
+    )
+    networks_path = staticmethod(DatastreamClient.networks_path)
+    parse_networks_path = staticmethod(DatastreamClient.parse_networks_path)
+    private_connection_path = staticmethod(DatastreamClient.private_connection_path)
+    parse_private_connection_path = staticmethod(
+        DatastreamClient.parse_private_connection_path
+    )
+    route_path = staticmethod(DatastreamClient.route_path)
+    parse_route_path = staticmethod(DatastreamClient.parse_route_path)
+    stream_path = staticmethod(DatastreamClient.stream_path)
+    parse_stream_path = staticmethod(DatastreamClient.parse_stream_path)
+    stream_object_path = staticmethod(DatastreamClient.stream_object_path)
+    parse_stream_object_path = staticmethod(DatastreamClient.parse_stream_object_path)
+    common_billing_account_path = staticmethod(
+        DatastreamClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        DatastreamClient.parse_common_billing_account_path
+    )
+    common_folder_path = staticmethod(DatastreamClient.common_folder_path)
+    parse_common_folder_path = staticmethod(DatastreamClient.parse_common_folder_path)
+    common_organization_path = staticmethod(DatastreamClient.common_organization_path)
+    parse_common_organization_path = staticmethod(
+        DatastreamClient.parse_common_organization_path
+    )
+    common_project_path = staticmethod(DatastreamClient.common_project_path)
+    parse_common_project_path = staticmethod(DatastreamClient.parse_common_project_path)
+    common_location_path = staticmethod(DatastreamClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        DatastreamClient.parse_common_location_path
     )
 
     @classmethod
@@ -127,11 +98,9 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            DatastreamClient: The constructed client.
+            DatastreamAsyncClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_info(info)
-        kwargs["credentials"] = credentials
-        return cls(*args, **kwargs)
+        return DatastreamClient.from_service_account_info.__func__(DatastreamAsyncClient, info, *args, **kwargs)  # type: ignore
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -145,159 +114,15 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            DatastreamClient: The constructed client.
+            DatastreamAsyncClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(filename)
-        kwargs["credentials"] = credentials
-        return cls(*args, **kwargs)
+        return DatastreamClient.from_service_account_file.__func__(DatastreamAsyncClient, filename, *args, **kwargs)  # type: ignore
 
     from_service_account_json = from_service_account_file
 
-    @property
-    def transport(self) -> DatastreamTransport:
-        """Returns the transport used by the client instance.
-
-        Returns:
-            DatastreamTransport: The transport used by the client
-                instance.
-        """
-        return self._transport
-
-    @staticmethod
-    def connection_profile_path(
-        project: str, location: str, connection_profile: str,
-    ) -> str:
-        """Returns a fully-qualified connection_profile string."""
-        return "projects/{project}/locations/{location}/connectionProfiles/{connection_profile}".format(
-            project=project, location=location, connection_profile=connection_profile,
-        )
-
-    @staticmethod
-    def parse_connection_profile_path(path: str) -> Dict[str, str]:
-        """Parses a connection_profile path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/connectionProfiles/(?P<connection_profile>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def private_connection_path(
-        project: str, location: str, private_connection: str,
-    ) -> str:
-        """Returns a fully-qualified private_connection string."""
-        return "projects/{project}/locations/{location}/privateConnections/{private_connection}".format(
-            project=project, location=location, private_connection=private_connection,
-        )
-
-    @staticmethod
-    def parse_private_connection_path(path: str) -> Dict[str, str]:
-        """Parses a private_connection path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/privateConnections/(?P<private_connection>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def route_path(
-        project: str, location: str, private_connection: str, route: str,
-    ) -> str:
-        """Returns a fully-qualified route string."""
-        return "projects/{project}/locations/{location}/privateConnections/{private_connection}/routes/{route}".format(
-            project=project,
-            location=location,
-            private_connection=private_connection,
-            route=route,
-        )
-
-    @staticmethod
-    def parse_route_path(path: str) -> Dict[str, str]:
-        """Parses a route path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/privateConnections/(?P<private_connection>.+?)/routes/(?P<route>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def stream_path(project: str, location: str, stream: str,) -> str:
-        """Returns a fully-qualified stream string."""
-        return "projects/{project}/locations/{location}/streams/{stream}".format(
-            project=project, location=location, stream=stream,
-        )
-
-    @staticmethod
-    def parse_stream_path(path: str) -> Dict[str, str]:
-        """Parses a stream path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/streams/(?P<stream>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
-        """Returns a fully-qualified billing_account string."""
-        return "billingAccounts/{billing_account}".format(
-            billing_account=billing_account,
-        )
-
-    @staticmethod
-    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
-        """Parse a billing_account path into its component segments."""
-        m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_folder_path(folder: str,) -> str:
-        """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
-
-    @staticmethod
-    def parse_common_folder_path(path: str) -> Dict[str, str]:
-        """Parse a folder path into its component segments."""
-        m = re.match(r"^folders/(?P<folder>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_organization_path(organization: str,) -> str:
-        """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
-
-    @staticmethod
-    def parse_common_organization_path(path: str) -> Dict[str, str]:
-        """Parse a organization path into its component segments."""
-        m = re.match(r"^organizations/(?P<organization>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_project_path(project: str,) -> str:
-        """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
-
-    @staticmethod
-    def parse_common_project_path(path: str) -> Dict[str, str]:
-        """Parse a project path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
-        """Returns a fully-qualified location string."""
-        return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
-        )
-
-    @staticmethod
-    def parse_common_location_path(path: str) -> Dict[str, str]:
-        """Parse a location path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
-        return m.groupdict() if m else {}
-
     @classmethod
     def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[client_options_lib.ClientOptions] = None
+        cls, client_options: Optional[ClientOptions] = None
     ):
         """Return the API endpoint and client cert source for mutual TLS.
 
@@ -329,45 +154,27 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        if client_options is None:
-            client_options = client_options_lib.ClientOptions()
-        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
-        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
-        if use_client_cert not in ("true", "false"):
-            raise ValueError(
-                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
-        if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError(
-                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-            )
+        return DatastreamClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
-        # Figure out the client cert source to use.
-        client_cert_source = None
-        if use_client_cert == "true":
-            if client_options.client_cert_source:
-                client_cert_source = client_options.client_cert_source
-            elif mtls.has_default_client_cert_source():
-                client_cert_source = mtls.default_client_cert_source()
+    @property
+    def transport(self) -> DatastreamTransport:
+        """Returns the transport used by the client instance.
 
-        # Figure out which api endpoint to use.
-        if client_options.api_endpoint is not None:
-            api_endpoint = client_options.api_endpoint
-        elif use_mtls_endpoint == "always" or (
-            use_mtls_endpoint == "auto" and client_cert_source
-        ):
-            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
-        else:
-            api_endpoint = cls.DEFAULT_ENDPOINT
+        Returns:
+            DatastreamTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
-        return api_endpoint, client_cert_source
+    get_transport_class = functools.partial(
+        type(DatastreamClient).get_transport_class, type(DatastreamClient)
+    )
 
     def __init__(
         self,
         *,
-        credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DatastreamTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        credentials: ga_credentials.Credentials = None,
+        transport: Union[str, DatastreamTransport] = "grpc_asyncio",
+        client_options: ClientOptions = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the datastream client.
@@ -378,11 +185,11 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, DatastreamTransport]): The
+            transport (Union[str, ~.DatastreamTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
-                client. It won't take effect if a ``transport`` instance is provided.
+            client_options (ClientOptions): Custom options for the client. It
+                won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
                 environment variable can also be used to override the endpoint:
@@ -397,70 +204,19 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 not provided, the default SSL client certificate will be used if
                 present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
                 set, no client certificate will be used.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
-                The client info used to send a user-agent string along with
-                API requests. If ``None``, then default info will be used.
-                Generally, you only need to set this if you're developing
-                your own client library.
 
         Raises:
-            google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
+            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        if isinstance(client_options, dict):
-            client_options = client_options_lib.from_dict(client_options)
-        if client_options is None:
-            client_options = client_options_lib.ClientOptions()
-
-        api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
-            client_options
+        self._client = DatastreamClient(
+            credentials=credentials,
+            transport=transport,
+            client_options=client_options,
+            client_info=client_info,
         )
 
-        api_key_value = getattr(client_options, "api_key", None)
-        if api_key_value and credentials:
-            raise ValueError(
-                "client_options.api_key and credentials are mutually exclusive"
-            )
-
-        # Save or instantiate the transport.
-        # Ordinarily, we provide the transport, but allowing a custom transport
-        # instance provides an extensibility point for unusual situations.
-        if isinstance(transport, DatastreamTransport):
-            # transport is a DatastreamTransport instance.
-            if credentials or client_options.credentials_file or api_key_value:
-                raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its credentials directly."
-                )
-            if client_options.scopes:
-                raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
-                )
-            self._transport = transport
-        else:
-            import google.auth._default  # type: ignore
-
-            if api_key_value and hasattr(
-                google.auth._default, "get_api_key_credentials"
-            ):
-                credentials = google.auth._default.get_api_key_credentials(
-                    api_key_value
-                )
-
-            Transport = type(self).get_transport_class(transport)
-            self._transport = Transport(
-                credentials=credentials,
-                credentials_file=client_options.credentials_file,
-                host=api_endpoint,
-                scopes=client_options.scopes,
-                client_cert_source_for_mtls=client_cert_source_func,
-                quota_project_id=client_options.quota_project_id,
-                client_info=client_info,
-                always_use_jwt_access=True,
-            )
-
-    def list_connection_profiles(
+    async def list_connection_profiles(
         self,
         request: Union[datastream.ListConnectionProfilesRequest, dict] = None,
         *,
@@ -468,14 +224,15 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListConnectionProfilesPager:
+    ) -> pagers.ListConnectionProfilesAsyncPager:
         r"""Use this method to list connection profiles created
         in a project and location.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.ListConnectionProfilesRequest, dict]):
-                The request object.
-            parent (str):
+            request (Union[google.cloud.datastream_v1.types.ListConnectionProfilesRequest, dict]):
+                The request object. Request message for listing
+                connection profiles.
+            parent (:class:`str`):
                 Required. The parent that owns the
                 collection of connection profiles.
 
@@ -489,7 +246,9 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datastream_v1alpha1.services.datastream.pagers.ListConnectionProfilesPager:
+            google.cloud.datastream_v1.services.datastream.pagers.ListConnectionProfilesAsyncPager:
+                Response message for listing
+                connection profiles.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -505,20 +264,20 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.ListConnectionProfilesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, datastream.ListConnectionProfilesRequest):
-            request = datastream.ListConnectionProfilesRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
+        request = datastream.ListConnectionProfilesRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_connection_profiles]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_connection_profiles,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -527,18 +286,18 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListConnectionProfilesPager(
+        # an `__aiter__` convenience method.
+        response = pagers.ListConnectionProfilesAsyncPager(
             method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    def get_connection_profile(
+    async def get_connection_profile(
         self,
         request: Union[datastream.GetConnectionProfileRequest, dict] = None,
         *,
@@ -551,9 +310,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         profile.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.GetConnectionProfileRequest, dict]):
-                The request object.
-            name (str):
+            request (Union[google.cloud.datastream_v1.types.GetConnectionProfileRequest, dict]):
+                The request object. Request message for getting a
+                connection profile.
+            name (:class:`str`):
                 Required. The name of the connection
                 profile resource to get.
 
@@ -567,7 +327,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datastream_v1alpha1.types.ConnectionProfile:
+            google.cloud.datastream_v1.types.ConnectionProfile:
+                A set of reusable connection
+                configurations to be used as a source or
+                destination for a stream.
 
         """
         # Create or coerce a protobuf request object.
@@ -580,20 +343,20 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.GetConnectionProfileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, datastream.GetConnectionProfileRequest):
-            request = datastream.GetConnectionProfileRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+        request = datastream.GetConnectionProfileRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_connection_profile]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_connection_profile,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -602,12 +365,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    def create_connection_profile(
+    async def create_connection_profile(
         self,
         request: Union[datastream.CreateConnectionProfileRequest, dict] = None,
         *,
@@ -617,28 +380,29 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
+    ) -> operation_async.AsyncOperation:
         r"""Use this method to create a connection profile in a
         project and location.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.CreateConnectionProfileRequest, dict]):
-                The request object.
-            parent (str):
+            request (Union[google.cloud.datastream_v1.types.CreateConnectionProfileRequest, dict]):
+                The request object. Request message for creating a
+                connection profile.
+            parent (:class:`str`):
                 Required. The parent that owns the
                 collection of ConnectionProfiles.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            connection_profile (google.cloud.datastream_v1alpha1.types.ConnectionProfile):
+            connection_profile (:class:`google.cloud.datastream_v1.types.ConnectionProfile`):
                 Required. The connection profile
                 resource to create.
 
                 This corresponds to the ``connection_profile`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            connection_profile_id (str):
+            connection_profile_id (:class:`str`):
                 Required. The connection profile
                 identifier.
 
@@ -652,11 +416,11 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.api_core.operation.Operation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.datastream_v1alpha1.types.ConnectionProfile`
+                The result type for the operation will be :class:`google.cloud.datastream_v1.types.ConnectionProfile` A set of reusable connection configurations to be used as a source or
+                   destination for a stream.
 
         """
         # Create or coerce a protobuf request object.
@@ -669,26 +433,24 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.CreateConnectionProfileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, datastream.CreateConnectionProfileRequest):
-            request = datastream.CreateConnectionProfileRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-            if connection_profile is not None:
-                request.connection_profile = connection_profile
-            if connection_profile_id is not None:
-                request.connection_profile_id = connection_profile_id
+        request = datastream.CreateConnectionProfileRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if connection_profile is not None:
+            request.connection_profile = connection_profile
+        if connection_profile_id is not None:
+            request.connection_profile_id = connection_profile_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.create_connection_profile
-        ]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_connection_profile,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -697,12 +459,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
-        response = operation.from_gapic(
+        response = operation_async.from_gapic(
             response,
-            self._transport.operations_client,
+            self._client._transport.operations_client,
             datastream_resources.ConnectionProfile,
             metadata_type=datastream.OperationMetadata,
         )
@@ -710,7 +472,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         # Done; return the response.
         return response
 
-    def update_connection_profile(
+    async def update_connection_profile(
         self,
         request: Union[datastream.UpdateConnectionProfileRequest, dict] = None,
         *,
@@ -719,21 +481,21 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
+    ) -> operation_async.AsyncOperation:
         r"""Use this method to update the parameters of a
         connection profile.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.UpdateConnectionProfileRequest, dict]):
-                The request object.
-            connection_profile (google.cloud.datastream_v1alpha1.types.ConnectionProfile):
-                Required. The ConnectionProfile to
+            request (Union[google.cloud.datastream_v1.types.UpdateConnectionProfileRequest, dict]):
+                The request object. Connection profile update message.
+            connection_profile (:class:`google.cloud.datastream_v1.types.ConnectionProfile`):
+                Required. The connection profile to
                 update.
 
                 This corresponds to the ``connection_profile`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Optional. Field mask is used to specify the fields to be
                 overwritten in the ConnectionProfile resource by the
                 update. The fields specified in the update_mask are
@@ -752,11 +514,11 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.api_core.operation.Operation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.datastream_v1alpha1.types.ConnectionProfile`
+                The result type for the operation will be :class:`google.cloud.datastream_v1.types.ConnectionProfile` A set of reusable connection configurations to be used as a source or
+                   destination for a stream.
 
         """
         # Create or coerce a protobuf request object.
@@ -769,24 +531,22 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.UpdateConnectionProfileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, datastream.UpdateConnectionProfileRequest):
-            request = datastream.UpdateConnectionProfileRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if connection_profile is not None:
-                request.connection_profile = connection_profile
-            if update_mask is not None:
-                request.update_mask = update_mask
+        request = datastream.UpdateConnectionProfileRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if connection_profile is not None:
+            request.connection_profile = connection_profile
+        if update_mask is not None:
+            request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.update_connection_profile
-        ]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_connection_profile,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -797,12 +557,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
-        response = operation.from_gapic(
+        response = operation_async.from_gapic(
             response,
-            self._transport.operations_client,
+            self._client._transport.operations_client,
             datastream_resources.ConnectionProfile,
             metadata_type=datastream.OperationMetadata,
         )
@@ -810,7 +570,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         # Done; return the response.
         return response
 
-    def delete_connection_profile(
+    async def delete_connection_profile(
         self,
         request: Union[datastream.DeleteConnectionProfileRequest, dict] = None,
         *,
@@ -818,13 +578,14 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
-        r"""Use this method to delete a connection profile..
+    ) -> operation_async.AsyncOperation:
+        r"""Use this method to delete a connection profile.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.DeleteConnectionProfileRequest, dict]):
-                The request object.
-            name (str):
+            request (Union[google.cloud.datastream_v1.types.DeleteConnectionProfileRequest, dict]):
+                The request object. Request message for deleting a
+                connection profile.
+            name (:class:`str`):
                 Required. The name of the connection
                 profile resource to delete.
 
@@ -838,7 +599,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.api_core.operation.Operation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
@@ -866,22 +627,20 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.DeleteConnectionProfileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, datastream.DeleteConnectionProfileRequest):
-            request = datastream.DeleteConnectionProfileRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+        request = datastream.DeleteConnectionProfileRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.delete_connection_profile
-        ]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_connection_profile,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -890,12 +649,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
-        response = operation.from_gapic(
+        response = operation_async.from_gapic(
             response,
-            self._transport.operations_client,
+            self._client._transport.operations_client,
             empty_pb2.Empty,
             metadata_type=datastream.OperationMetadata,
         )
@@ -903,7 +662,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         # Done; return the response.
         return response
 
-    def discover_connection_profile(
+    async def discover_connection_profile(
         self,
         request: Union[datastream.DiscoverConnectionProfileRequest, dict] = None,
         *,
@@ -914,11 +673,11 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         r"""Use this method to discover a connection profile.
         The discover API call exposes the data objects and
         metadata belonging to the profile. Typically, a request
-        returns children data objects under a parent data object
+        returns children data objects of a parent data object
         that's optionally supplied in the request.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.DiscoverConnectionProfileRequest, dict]):
+            request (Union[google.cloud.datastream_v1.types.DiscoverConnectionProfileRequest, dict]):
                 The request object. Request message for 'discover'
                 ConnectionProfile request.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -928,22 +687,19 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datastream_v1alpha1.types.DiscoverConnectionProfileResponse:
-
+            google.cloud.datastream_v1.types.DiscoverConnectionProfileResponse:
+                Response from a discover request.
         """
         # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.DiscoverConnectionProfileRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, datastream.DiscoverConnectionProfileRequest):
-            request = datastream.DiscoverConnectionProfileRequest(request)
+        request = datastream.DiscoverConnectionProfileRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.discover_connection_profile
-        ]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.discover_connection_profile,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -952,12 +708,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    def list_streams(
+    async def list_streams(
         self,
         request: Union[datastream.ListStreamsRequest, dict] = None,
         *,
@@ -965,14 +721,14 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListStreamsPager:
+    ) -> pagers.ListStreamsAsyncPager:
         r"""Use this method to list streams in a project and
         location.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.ListStreamsRequest, dict]):
-                The request object.
-            parent (str):
+            request (Union[google.cloud.datastream_v1.types.ListStreamsRequest, dict]):
+                The request object. Request message for listing streams.
+            parent (:class:`str`):
                 Required. The parent that owns the
                 collection of streams.
 
@@ -986,7 +742,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datastream_v1alpha1.services.datastream.pagers.ListStreamsPager:
+            google.cloud.datastream_v1.services.datastream.pagers.ListStreamsAsyncPager:
+                Response message for listing streams.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1002,20 +759,20 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.ListStreamsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, datastream.ListStreamsRequest):
-            request = datastream.ListStreamsRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
+        request = datastream.ListStreamsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_streams]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_streams,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1024,18 +781,18 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListStreamsPager(
+        # an `__aiter__` convenience method.
+        response = pagers.ListStreamsAsyncPager(
             method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    def get_stream(
+    async def get_stream(
         self,
         request: Union[datastream.GetStreamRequest, dict] = None,
         *,
@@ -1047,9 +804,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         r"""Use this method to get details about a stream.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.GetStreamRequest, dict]):
-                The request object.
-            name (str):
+            request (Union[google.cloud.datastream_v1.types.GetStreamRequest, dict]):
+                The request object. Request message for getting a
+                stream.
+            name (:class:`str`):
                 Required. The name of the stream
                 resource to get.
 
@@ -1063,7 +821,9 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datastream_v1alpha1.types.Stream:
+            google.cloud.datastream_v1.types.Stream:
+                A resource representing streaming
+                data from a source to a destination.
 
         """
         # Create or coerce a protobuf request object.
@@ -1076,20 +836,20 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.GetStreamRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, datastream.GetStreamRequest):
-            request = datastream.GetStreamRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+        request = datastream.GetStreamRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_stream]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_stream,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1098,12 +858,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    def create_stream(
+    async def create_stream(
         self,
         request: Union[datastream.CreateStreamRequest, dict] = None,
         *,
@@ -1113,27 +873,28 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
+    ) -> operation_async.AsyncOperation:
         r"""Use this method to create a stream.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.CreateStreamRequest, dict]):
-                The request object.
-            parent (str):
+            request (Union[google.cloud.datastream_v1.types.CreateStreamRequest, dict]):
+                The request object. Request message for creating a
+                stream.
+            parent (:class:`str`):
                 Required. The parent that owns the
                 collection of streams.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            stream (google.cloud.datastream_v1alpha1.types.Stream):
+            stream (:class:`google.cloud.datastream_v1.types.Stream`):
                 Required. The stream resource to
                 create.
 
                 This corresponds to the ``stream`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            stream_id (str):
+            stream_id (:class:`str`):
                 Required. The stream identifier.
                 This corresponds to the ``stream_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1145,11 +906,13 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.api_core.operation.Operation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.datastream_v1alpha1.types.Stream`
+                :class:`google.cloud.datastream_v1.types.Stream` A
+                resource representing streaming data from a source to a
+                destination.
 
         """
         # Create or coerce a protobuf request object.
@@ -1162,24 +925,24 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.CreateStreamRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, datastream.CreateStreamRequest):
-            request = datastream.CreateStreamRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-            if stream is not None:
-                request.stream = stream
-            if stream_id is not None:
-                request.stream_id = stream_id
+        request = datastream.CreateStreamRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if stream is not None:
+            request.stream = stream
+        if stream_id is not None:
+            request.stream_id = stream_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_stream]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_stream,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1188,12 +951,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
-        response = operation.from_gapic(
+        response = operation_async.from_gapic(
             response,
-            self._transport.operations_client,
+            self._client._transport.operations_client,
             datastream_resources.Stream,
             metadata_type=datastream.OperationMetadata,
         )
@@ -1201,7 +964,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         # Done; return the response.
         return response
 
-    def update_stream(
+    async def update_stream(
         self,
         request: Union[datastream.UpdateStreamRequest, dict] = None,
         *,
@@ -1210,21 +973,22 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
+    ) -> operation_async.AsyncOperation:
         r"""Use this method to update the configuration of a
         stream.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.UpdateStreamRequest, dict]):
-                The request object.
-            stream (google.cloud.datastream_v1alpha1.types.Stream):
+            request (Union[google.cloud.datastream_v1.types.UpdateStreamRequest, dict]):
+                The request object. Request message for updating a
+                stream.
+            stream (:class:`google.cloud.datastream_v1.types.Stream`):
                 Required. The stream resource to
                 update.
 
                 This corresponds to the ``stream`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Optional. Field mask is used to specify the fields to be
                 overwritten in the stream resource by the update. The
                 fields specified in the update_mask are relative to the
@@ -1242,11 +1006,13 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.api_core.operation.Operation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.datastream_v1alpha1.types.Stream`
+                :class:`google.cloud.datastream_v1.types.Stream` A
+                resource representing streaming data from a source to a
+                destination.
 
         """
         # Create or coerce a protobuf request object.
@@ -1259,22 +1025,22 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.UpdateStreamRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, datastream.UpdateStreamRequest):
-            request = datastream.UpdateStreamRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if stream is not None:
-                request.stream = stream
-            if update_mask is not None:
-                request.update_mask = update_mask
+        request = datastream.UpdateStreamRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if stream is not None:
+            request.stream = stream
+        if update_mask is not None:
+            request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_stream]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_stream,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1285,12 +1051,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
-        response = operation.from_gapic(
+        response = operation_async.from_gapic(
             response,
-            self._transport.operations_client,
+            self._client._transport.operations_client,
             datastream_resources.Stream,
             metadata_type=datastream.OperationMetadata,
         )
@@ -1298,7 +1064,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         # Done; return the response.
         return response
 
-    def delete_stream(
+    async def delete_stream(
         self,
         request: Union[datastream.DeleteStreamRequest, dict] = None,
         *,
@@ -1306,13 +1072,14 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
+    ) -> operation_async.AsyncOperation:
         r"""Use this method to delete a stream.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.DeleteStreamRequest, dict]):
-                The request object.
-            name (str):
+            request (Union[google.cloud.datastream_v1.types.DeleteStreamRequest, dict]):
+                The request object. Request message for deleting a
+                stream.
+            name (:class:`str`):
                 Required. The name of the stream
                 resource to delete.
 
@@ -1326,7 +1093,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.api_core.operation.Operation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
@@ -1354,20 +1121,20 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.DeleteStreamRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, datastream.DeleteStreamRequest):
-            request = datastream.DeleteStreamRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+        request = datastream.DeleteStreamRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_stream]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_stream,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1376,12 +1143,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
-        response = operation.from_gapic(
+        response = operation_async.from_gapic(
             response,
-            self._transport.operations_client,
+            self._client._transport.operations_client,
             empty_pb2.Empty,
             metadata_type=datastream.OperationMetadata,
         )
@@ -1389,89 +1156,24 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         # Done; return the response.
         return response
 
-    def fetch_errors(
+    async def get_stream_object(
         self,
-        request: Union[datastream.FetchErrorsRequest, dict] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
-        r"""Use this method to fetch any errors associated with a
-        stream.
-
-        Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.FetchErrorsRequest, dict]):
-                The request object. Request message for 'FetchErrors'
-                request.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.datastream_v1alpha1.types.FetchErrorsResponse`
-                Response message for a 'FetchErrors' response.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.FetchErrorsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, datastream.FetchErrorsRequest):
-            request = datastream.FetchErrorsRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.fetch_errors]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("stream", request.stream),)),
-        )
-
-        # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            datastream.FetchErrorsResponse,
-            metadata_type=datastream.OperationMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def fetch_static_ips(
-        self,
-        request: Union[datastream.FetchStaticIpsRequest, dict] = None,
+        request: Union[datastream.GetStreamObjectRequest, dict] = None,
         *,
         name: str = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.FetchStaticIpsPager:
-        r"""The FetchStaticIps API call exposes the static ips
-        used by Datastream. Typically, a request returns
-        children data objects under a parent data object that's
-        optionally supplied in the request.
+    ) -> datastream_resources.StreamObject:
+        r"""Use this method to get details about a stream object.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.FetchStaticIpsRequest, dict]):
-                The request object. Request message for 'FetchStaticIps'
-                request.
-            name (str):
-                Required. The name resource of the Response type. Must
-                be in the format ``projects/*/locations/*``.
+            request (Union[google.cloud.datastream_v1.types.GetStreamObjectRequest, dict]):
+                The request object. Request for fetching a specific
+                stream object.
+            name (:class:`str`):
+                Required. The name of the stream
+                object resource to get.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1483,7 +1185,358 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datastream_v1alpha1.services.datastream.pagers.FetchStaticIpsPager:
+            google.cloud.datastream_v1.types.StreamObject:
+                A specific stream object (e.g a
+                specific DB table).
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = datastream.GetStreamObjectRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_stream_object,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def lookup_stream_object(
+        self,
+        request: Union[datastream.LookupStreamObjectRequest, dict] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> datastream_resources.StreamObject:
+        r"""Use this method to look up a stream object by its
+        source object identifier.
+
+        Args:
+            request (Union[google.cloud.datastream_v1.types.LookupStreamObjectRequest, dict]):
+                The request object. Request for looking up a specific
+                stream object by its source object identifier.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.datastream_v1.types.StreamObject:
+                A specific stream object (e.g a
+                specific DB table).
+
+        """
+        # Create or coerce a protobuf request object.
+        request = datastream.LookupStreamObjectRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.lookup_stream_object,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def list_stream_objects(
+        self,
+        request: Union[datastream.ListStreamObjectsRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListStreamObjectsAsyncPager:
+        r"""Use this method to list the objects of a specific
+        stream.
+
+        Args:
+            request (Union[google.cloud.datastream_v1.types.ListStreamObjectsRequest, dict]):
+                The request object. Request for listing all objects for
+                a specific stream.
+            parent (:class:`str`):
+                Required. The parent stream that owns
+                the collection of objects.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.datastream_v1.services.datastream.pagers.ListStreamObjectsAsyncPager:
+                Response containing the objects for a
+                stream.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = datastream.ListStreamObjectsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_stream_objects,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListStreamObjectsAsyncPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def start_backfill_job(
+        self,
+        request: Union[datastream.StartBackfillJobRequest, dict] = None,
+        *,
+        object_: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> datastream.StartBackfillJobResponse:
+        r"""Use this method to start a backfill job for the
+        specified stream object.
+
+        Args:
+            request (Union[google.cloud.datastream_v1.types.StartBackfillJobRequest, dict]):
+                The request object. Request for manually initiating a
+                backfill job for a specific stream object.
+            object_ (:class:`str`):
+                Required. The name of the stream
+                object resource to start a backfill job
+                for.
+
+                This corresponds to the ``object_`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.datastream_v1.types.StartBackfillJobResponse:
+                Response for manually initiating a
+                backfill job for a specific stream
+                object.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([object_])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = datastream.StartBackfillJobRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if object_ is not None:
+            request.object_ = object_
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.start_backfill_job,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("object", request.object_),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def stop_backfill_job(
+        self,
+        request: Union[datastream.StopBackfillJobRequest, dict] = None,
+        *,
+        object_: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> datastream.StopBackfillJobResponse:
+        r"""Use this method to stop a backfill job for the
+        specified stream object.
+
+        Args:
+            request (Union[google.cloud.datastream_v1.types.StopBackfillJobRequest, dict]):
+                The request object. Request for manually stopping a
+                running backfill job for a specific stream object.
+            object_ (:class:`str`):
+                Required. The name of the stream
+                object resource to stop the backfill job
+                for.
+
+                This corresponds to the ``object_`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.datastream_v1.types.StopBackfillJobResponse:
+                Response for manually stop a backfill
+                job for a specific stream object.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([object_])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = datastream.StopBackfillJobRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if object_ is not None:
+            request.object_ = object_
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.stop_backfill_job,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("object", request.object_),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def fetch_static_ips(
+        self,
+        request: Union[datastream.FetchStaticIpsRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.FetchStaticIpsAsyncPager:
+        r"""The FetchStaticIps API call exposes the static IP
+        addresses used by Datastream.
+
+        Args:
+            request (Union[google.cloud.datastream_v1.types.FetchStaticIpsRequest, dict]):
+                The request object. Request message for 'FetchStaticIps'
+                request.
+            name (:class:`str`):
+                Required. The resource name for the location for which
+                static IPs should be returned. Must be in the format
+                ``projects/*/locations/*``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.datastream_v1.services.datastream.pagers.FetchStaticIpsAsyncPager:
                 Response message for a
                 'FetchStaticIps' response.
                 Iterating over this object will yield
@@ -1501,20 +1554,20 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.FetchStaticIpsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, datastream.FetchStaticIpsRequest):
-            request = datastream.FetchStaticIpsRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+        request = datastream.FetchStaticIpsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.fetch_static_ips]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.fetch_static_ips,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1523,18 +1576,18 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.FetchStaticIpsPager(
+        # an `__aiter__` convenience method.
+        response = pagers.FetchStaticIpsAsyncPager(
             method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    def create_private_connection(
+    async def create_private_connection(
         self,
         request: Union[datastream.CreatePrivateConnectionRequest, dict] = None,
         *,
@@ -1544,28 +1597,29 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
+    ) -> operation_async.AsyncOperation:
         r"""Use this method to create a private connectivity
         configuration.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.CreatePrivateConnectionRequest, dict]):
-                The request object.
-            parent (str):
+            request (Union[google.cloud.datastream_v1.types.CreatePrivateConnectionRequest, dict]):
+                The request object. Request for creating a private
+                connection.
+            parent (:class:`str`):
                 Required. The parent that owns the
                 collection of PrivateConnections.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            private_connection (google.cloud.datastream_v1alpha1.types.PrivateConnection):
+            private_connection (:class:`google.cloud.datastream_v1.types.PrivateConnection`):
                 Required. The Private Connectivity
                 resource to create.
 
                 This corresponds to the ``private_connection`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            private_connection_id (str):
+            private_connection_id (:class:`str`):
                 Required. The private connectivity
                 identifier.
 
@@ -1579,10 +1633,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.api_core.operation.Operation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.datastream_v1alpha1.types.PrivateConnection` The PrivateConnection resource is used to establish private connectivity
+                The result type for the operation will be :class:`google.cloud.datastream_v1.types.PrivateConnection` The PrivateConnection resource is used to establish private connectivity
                    between Datastream and a customer's network.
 
         """
@@ -1596,26 +1650,24 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.CreatePrivateConnectionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, datastream.CreatePrivateConnectionRequest):
-            request = datastream.CreatePrivateConnectionRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-            if private_connection is not None:
-                request.private_connection = private_connection
-            if private_connection_id is not None:
-                request.private_connection_id = private_connection_id
+        request = datastream.CreatePrivateConnectionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if private_connection is not None:
+            request.private_connection = private_connection
+        if private_connection_id is not None:
+            request.private_connection_id = private_connection_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.create_private_connection
-        ]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_private_connection,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1624,12 +1676,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
-        response = operation.from_gapic(
+        response = operation_async.from_gapic(
             response,
-            self._transport.operations_client,
+            self._client._transport.operations_client,
             datastream_resources.PrivateConnection,
             metadata_type=datastream.OperationMetadata,
         )
@@ -1637,7 +1689,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         # Done; return the response.
         return response
 
-    def get_private_connection(
+    async def get_private_connection(
         self,
         request: Union[datastream.GetPrivateConnectionRequest, dict] = None,
         *,
@@ -1650,9 +1702,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         connectivity configuration.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.GetPrivateConnectionRequest, dict]):
-                The request object.
-            name (str):
+            request (Union[google.cloud.datastream_v1.types.GetPrivateConnectionRequest, dict]):
+                The request object. Request to get a private connection
+                configuration.
+            name (:class:`str`):
                 Required. The name of the  private
                 connectivity configuration to get.
 
@@ -1666,7 +1719,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datastream_v1alpha1.types.PrivateConnection:
+            google.cloud.datastream_v1.types.PrivateConnection:
                 The PrivateConnection resource is
                 used to establish private connectivity
                 between Datastream and a customer's
@@ -1683,20 +1736,20 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.GetPrivateConnectionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, datastream.GetPrivateConnectionRequest):
-            request = datastream.GetPrivateConnectionRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+        request = datastream.GetPrivateConnectionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_private_connection]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_private_connection,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1705,12 +1758,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    def list_private_connections(
+    async def list_private_connections(
         self,
         request: Union[datastream.ListPrivateConnectionsRequest, dict] = None,
         *,
@@ -1718,14 +1771,15 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListPrivateConnectionsPager:
+    ) -> pagers.ListPrivateConnectionsAsyncPager:
         r"""Use this method to list private connectivity
         configurations in a project and location.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.ListPrivateConnectionsRequest, dict]):
-                The request object.
-            parent (str):
+            request (Union[google.cloud.datastream_v1.types.ListPrivateConnectionsRequest, dict]):
+                The request object. Request for listing private
+                connections.
+            parent (:class:`str`):
                 Required. The parent that owns the
                 collection of private connectivity
                 configurations.
@@ -1740,7 +1794,9 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datastream_v1alpha1.services.datastream.pagers.ListPrivateConnectionsPager:
+            google.cloud.datastream_v1.services.datastream.pagers.ListPrivateConnectionsAsyncPager:
+                Response containing a list of private
+                connection configurations.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1756,20 +1812,20 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.ListPrivateConnectionsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, datastream.ListPrivateConnectionsRequest):
-            request = datastream.ListPrivateConnectionsRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
+        request = datastream.ListPrivateConnectionsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_private_connections]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_private_connections,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1778,18 +1834,18 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListPrivateConnectionsPager(
+        # an `__aiter__` convenience method.
+        response = pagers.ListPrivateConnectionsAsyncPager(
             method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    def delete_private_connection(
+    async def delete_private_connection(
         self,
         request: Union[datastream.DeletePrivateConnectionRequest, dict] = None,
         *,
@@ -1797,14 +1853,15 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
+    ) -> operation_async.AsyncOperation:
         r"""Use this method to delete a private connectivity
         configuration.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.DeletePrivateConnectionRequest, dict]):
-                The request object.
-            name (str):
+            request (Union[google.cloud.datastream_v1.types.DeletePrivateConnectionRequest, dict]):
+                The request object. Request to delete a private
+                connection.
+            name (:class:`str`):
                 Required. The name of the private
                 connectivity configuration to delete.
 
@@ -1818,7 +1875,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.api_core.operation.Operation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
@@ -1846,22 +1903,20 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.DeletePrivateConnectionRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, datastream.DeletePrivateConnectionRequest):
-            request = datastream.DeletePrivateConnectionRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+        request = datastream.DeletePrivateConnectionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.delete_private_connection
-        ]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_private_connection,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1870,12 +1925,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
-        response = operation.from_gapic(
+        response = operation_async.from_gapic(
             response,
-            self._transport.operations_client,
+            self._client._transport.operations_client,
             empty_pb2.Empty,
             metadata_type=datastream.OperationMetadata,
         )
@@ -1883,7 +1938,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         # Done; return the response.
         return response
 
-    def create_route(
+    async def create_route(
         self,
         request: Union[datastream.CreateRouteRequest, dict] = None,
         *,
@@ -1893,28 +1948,28 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
+    ) -> operation_async.AsyncOperation:
         r"""Use this method to create a route for a private
-        connectivity in a project and location.
+        connectivity configuration in a project and location.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.CreateRouteRequest, dict]):
-                The request object. route creation request
-            parent (str):
+            request (Union[google.cloud.datastream_v1.types.CreateRouteRequest, dict]):
+                The request object. Route creation request.
+            parent (:class:`str`):
                 Required. The parent that owns the
                 collection of Routes.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            route (google.cloud.datastream_v1alpha1.types.Route):
+            route (:class:`google.cloud.datastream_v1.types.Route`):
                 Required. The Route resource to
                 create.
 
                 This corresponds to the ``route`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            route_id (str):
+            route_id (:class:`str`):
                 Required. The Route identifier.
                 This corresponds to the ``route_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1926,12 +1981,11 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.api_core.operation.Operation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.datastream_v1alpha1.types.Route` The Route resource is the child of the PrivateConnection resource.
-                   It used to define a route for a PrivateConnection
-                   setup.
+                The result type for the operation will be :class:`google.cloud.datastream_v1.types.Route` The route resource is the child of the private connection resource,
+                   used for defining a route for a private connection.
 
         """
         # Create or coerce a protobuf request object.
@@ -1944,24 +1998,24 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.CreateRouteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, datastream.CreateRouteRequest):
-            request = datastream.CreateRouteRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-            if route is not None:
-                request.route = route
-            if route_id is not None:
-                request.route_id = route_id
+        request = datastream.CreateRouteRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if route is not None:
+            request.route = route
+        if route_id is not None:
+            request.route_id = route_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_route]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_route,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1970,12 +2024,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
-        response = operation.from_gapic(
+        response = operation_async.from_gapic(
             response,
-            self._transport.operations_client,
+            self._client._transport.operations_client,
             datastream_resources.Route,
             metadata_type=datastream.OperationMetadata,
         )
@@ -1983,7 +2037,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         # Done; return the response.
         return response
 
-    def get_route(
+    async def get_route(
         self,
         request: Union[datastream.GetRouteRequest, dict] = None,
         *,
@@ -1995,9 +2049,9 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         r"""Use this method to get details about a route.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.GetRouteRequest, dict]):
-                The request object. route get request
-            name (str):
+            request (Union[google.cloud.datastream_v1.types.GetRouteRequest, dict]):
+                The request object. Route get request.
+            name (:class:`str`):
                 Required. The name of the Route
                 resource to get.
 
@@ -2011,11 +2065,11 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datastream_v1alpha1.types.Route:
-                The Route resource is the child of
-                the PrivateConnection resource. It used
-                to define a route for a
-                PrivateConnection setup.
+            google.cloud.datastream_v1.types.Route:
+                The route resource is the child of
+                the private connection resource, used
+                for defining a route for a private
+                connection.
 
         """
         # Create or coerce a protobuf request object.
@@ -2028,20 +2082,20 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.GetRouteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, datastream.GetRouteRequest):
-            request = datastream.GetRouteRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+        request = datastream.GetRouteRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_route]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_route,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2050,12 +2104,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    def list_routes(
+    async def list_routes(
         self,
         request: Union[datastream.ListRoutesRequest, dict] = None,
         *,
@@ -2063,14 +2117,14 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListRoutesPager:
+    ) -> pagers.ListRoutesAsyncPager:
         r"""Use this method to list routes created for a private
-        connectivity in a project and location.
+        connectivity configuration in a project and location.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.ListRoutesRequest, dict]):
-                The request object. route list request
-            parent (str):
+            request (Union[google.cloud.datastream_v1.types.ListRoutesRequest, dict]):
+                The request object. Route list request.
+            parent (:class:`str`):
                 Required. The parent that owns the
                 collection of Routess.
 
@@ -2084,8 +2138,8 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.datastream_v1alpha1.services.datastream.pagers.ListRoutesPager:
-                route list response
+            google.cloud.datastream_v1.services.datastream.pagers.ListRoutesAsyncPager:
+                Route list response.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -2101,20 +2155,20 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.ListRoutesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, datastream.ListRoutesRequest):
-            request = datastream.ListRoutesRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
+        request = datastream.ListRoutesRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_routes]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_routes,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2123,18 +2177,18 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListRoutesPager(
+        # an `__aiter__` convenience method.
+        response = pagers.ListRoutesAsyncPager(
             method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    def delete_route(
+    async def delete_route(
         self,
         request: Union[datastream.DeleteRouteRequest, dict] = None,
         *,
@@ -2142,13 +2196,13 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
+    ) -> operation_async.AsyncOperation:
         r"""Use this method to delete a route.
 
         Args:
-            request (Union[google.cloud.datastream_v1alpha1.types.DeleteRouteRequest, dict]):
-                The request object. route deletion request
-            name (str):
+            request (Union[google.cloud.datastream_v1.types.DeleteRouteRequest, dict]):
+                The request object. Route deletion request.
+            name (:class:`str`):
                 Required. The name of the Route
                 resource to delete.
 
@@ -2162,7 +2216,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.api_core.operation.Operation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
@@ -2190,20 +2244,20 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a datastream.DeleteRouteRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, datastream.DeleteRouteRequest):
-            request = datastream.DeleteRouteRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+        request = datastream.DeleteRouteRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_route]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_route,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2212,12 +2266,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Wrap the response in an operation future.
-        response = operation.from_gapic(
+        response = operation_async.from_gapic(
             response,
-            self._transport.operations_client,
+            self._client._transport.operations_client,
             empty_pb2.Empty,
             metadata_type=datastream.OperationMetadata,
         )
@@ -2225,18 +2279,11 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    async def __aenter__(self):
         return self
 
-    def __exit__(self, type, value, traceback):
-        """Releases underlying transport's resources.
-
-        .. warning::
-            ONLY use as a context manager if the transport is NOT shared
-            with other clients! Exiting the with block will CLOSE the transport
-            and may cause errors in other clients!
-        """
-        self.transport.close()
+    async def __aexit__(self, exc_type, exc, tb):
+        await self.transport.close()
 
 
 try:
@@ -2249,4 +2296,4 @@ except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
-__all__ = ("DatastreamClient",)
+__all__ = ("DatastreamAsyncClient",)

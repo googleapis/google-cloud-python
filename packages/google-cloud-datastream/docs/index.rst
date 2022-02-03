@@ -2,6 +2,17 @@
 
 .. include:: multiprocessing.rst
 
+This package includes clients for multiple versions of Datastream.
+By default, you will get version ``datastream_v1``.
+
+
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    datastream_v1/services
+    datastream_v1/types
 
 API Reference
 -------------
