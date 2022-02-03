@@ -37,9 +37,8 @@ class Database(proto.Message):
         type_ (google.cloud.firestore_admin_v1.types.Database.DatabaseType):
             The type of the database.
             See
-            https://cloud.google.com/datastore/docs/firestore-
-            or-datastore for information about how to
-            choose.
+            https://cloud.google.com/datastore/docs/firestore-or-datastore
+            for information about how to choose.
         concurrency_mode (google.cloud.firestore_admin_v1.types.Database.ConcurrencyMode):
             The concurrency control mode to use for this
             database.
@@ -52,8 +51,9 @@ class Database(proto.Message):
 
     class DatabaseType(proto.Enum):
         r"""The type of the database.
-        See https://cloud.google.com/datastore/docs/firestore-or-
-        datastore for information about how to choose.
+        See
+        https://cloud.google.com/datastore/docs/firestore-or-datastore
+        for information about how to choose.
         """
         DATABASE_TYPE_UNSPECIFIED = 0
         FIRESTORE_NATIVE = 1

@@ -912,8 +912,8 @@ class Target(proto.Message):
             This field is a member of `oneof`_ ``resume_type``.
         target_id (int):
             The target ID that identifies the target on
-            the stream. Must be a positive number and non-
-            zero.
+            the stream. Must be a positive number and
+            non-zero.
         once (bool):
             If the target should be removed once it is
             current and consistent.

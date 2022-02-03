@@ -81,13 +81,13 @@ class FirestoreClientMeta(type):
 
 class FirestoreClient(metaclass=FirestoreClientMeta):
     """The Cloud Firestore service.
-    Cloud Firestore is a fast, fully managed, serverless, cloud-
-    native NoSQL document database that simplifies storing, syncing,
-    and querying data for your mobile, web, and IoT apps at global
-    scale. Its client libraries provide live synchronization and
-    offline support, while its security features and integrations
-    with Firebase and Google Cloud Platform (GCP) accelerate
-    building truly serverless apps.
+    Cloud Firestore is a fast, fully managed, serverless,
+    cloud-native NoSQL document database that simplifies storing,
+    syncing, and querying data for your mobile, web, and IoT apps at
+    global scale. Its client libraries provide live synchronization
+    and offline support, while its security features and
+    integrations with Firebase and Google Cloud Platform (GCP)
+    accelerate building truly serverless apps.
     """
 
     @staticmethod
@@ -556,7 +556,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([document, update_mask])
         if request is not None and has_flattened_params:
@@ -626,7 +626,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -748,7 +748,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([database])
         if request is not None and has_flattened_params:
@@ -828,7 +828,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([database, writes])
         if request is not None and has_flattened_params:
@@ -903,7 +903,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([database, transaction])
         if request is not None and has_flattened_params:
@@ -1186,7 +1186,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:

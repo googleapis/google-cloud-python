@@ -535,7 +535,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, index])
         if request is not None and has_flattened_params:
@@ -619,7 +619,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -697,7 +697,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -762,7 +762,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -835,7 +835,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -926,7 +926,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([field])
         if request is not None and has_flattened_params:
@@ -1018,7 +1018,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -1082,8 +1082,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
 
         For more details on export behavior and output format,
         refer to:
-        https://cloud.google.com/firestore/docs/manage-
-        data/export-import
+        https://cloud.google.com/firestore/docs/manage-data/export-import
 
         Args:
             request (Union[google.cloud.firestore_admin_v1.types.ExportDocumentsRequest, dict]):
@@ -1114,7 +1113,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1212,7 +1211,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1293,7 +1292,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1362,7 +1361,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
                 The list of databases for a project.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -1441,7 +1440,7 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([database, update_mask])
         if request is not None and has_flattened_params:
