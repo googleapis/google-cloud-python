@@ -79,9 +79,9 @@ class Policy(proto.Message):
             ``spiffe://example.com/ns/test-ns/sa/default``
         default_admission_rule (google.cloud.binaryauthorization_v1beta1.types.AdmissionRule):
             Required. Default admission rule for a
-            cluster without a per-cluster, per- kubernetes-
-            service-account, or per-istio-service-identity
-            admission rule.
+            cluster without a per-cluster, per-
+            kubernetes-service-account, or
+            per-istio-service-identity admission rule.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when the policy was last
             updated.
