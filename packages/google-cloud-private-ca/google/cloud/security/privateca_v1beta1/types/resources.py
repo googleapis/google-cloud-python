@@ -1224,13 +1224,13 @@ class KeyUsage(proto.Message):
             server_auth (bool):
                 Corresponds to OID 1.3.6.1.5.5.7.3.1.
                 Officially described as "TLS WWW server
-                authentication", though regularly used for non-
-                WWW TLS.
+                authentication", though regularly used for
+                non-WWW TLS.
             client_auth (bool):
                 Corresponds to OID 1.3.6.1.5.5.7.3.2.
                 Officially described as "TLS WWW client
-                authentication", though regularly used for non-
-                WWW TLS.
+                authentication", though regularly used for
+                non-WWW TLS.
             code_signing (bool):
                 Corresponds to OID 1.3.6.1.5.5.7.3.3.
                 Officially described as "Signing of downloadable

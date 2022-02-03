@@ -1316,13 +1316,13 @@ class KeyUsage(proto.Message):
             server_auth (bool):
                 Corresponds to OID 1.3.6.1.5.5.7.3.1.
                 Officially described as "TLS WWW server
-                authentication", though regularly used for non-
-                WWW TLS.
+                authentication", though regularly used for
+                non-WWW TLS.
             client_auth (bool):
                 Corresponds to OID 1.3.6.1.5.5.7.3.2.
                 Officially described as "TLS WWW client
-                authentication", though regularly used for non-
-                WWW TLS.
+                authentication", though regularly used for
+                non-WWW TLS.
             code_signing (bool):
                 Corresponds to OID 1.3.6.1.5.5.7.3.3.
                 Officially described as "Signing of downloadable
@@ -1434,8 +1434,7 @@ class CertificateIdentityConstraints(proto.Message):
             Subject Alternative Name before a certificate is
             signed. To see the full allowed syntax and some
             examples, see
-            https://cloud.google.com/certificate-authority-
-            service/docs/using-cel
+            https://cloud.google.com/certificate-authority-service/docs/using-cel
         allow_subject_passthrough (bool):
             Required. If this is true, the
             [Subject][google.cloud.security.privateca.v1.Subject] field
