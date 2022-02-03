@@ -51,8 +51,8 @@ class ConnectivityTest(proto.Message):
             the VPC network. Otherwise, specify the VM
             instance, which already contains its internal IP
             address and VPC network information.
-            If the source of the test is within an on-
-            premises network, then you must provide the
+            If the source of the test is within an
+            on-premises network, then you must provide the
             destination VPC network.
 
             If the source endpoint is a Compute Engine VM
