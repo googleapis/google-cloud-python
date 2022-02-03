@@ -539,25 +539,28 @@ def test_secret_manager_service_client_client_options_scopes(
 
 
 @pytest.mark.parametrize(
-    "client_class,transport_class,transport_name",
+    "client_class,transport_class,transport_name,grpc_helpers",
     [
         (
             SecretManagerServiceClient,
             transports.SecretManagerServiceGrpcTransport,
             "grpc",
+            grpc_helpers,
         ),
         (
             SecretManagerServiceAsyncClient,
             transports.SecretManagerServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
+            grpc_helpers_async,
         ),
     ],
 )
 def test_secret_manager_service_client_client_options_credentials_file(
-    client_class, transport_class, transport_name
+    client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
+
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -590,6 +593,72 @@ def test_secret_manager_service_client_client_options_from_dict():
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
+        )
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_class,transport_name,grpc_helpers",
+    [
+        (
+            SecretManagerServiceClient,
+            transports.SecretManagerServiceGrpcTransport,
+            "grpc",
+            grpc_helpers,
+        ),
+        (
+            SecretManagerServiceAsyncClient,
+            transports.SecretManagerServiceGrpcAsyncIOTransport,
+            "grpc_asyncio",
+            grpc_helpers_async,
+        ),
+    ],
+)
+def test_secret_manager_service_client_create_channel_credentials_file(
+    client_class, transport_class, transport_name, grpc_helpers
+):
+    # Check the case credentials file is provided.
+    options = client_options.ClientOptions(credentials_file="credentials.json")
+
+    with mock.patch.object(transport_class, "__init__") as patched:
+        patched.return_value = None
+        client = client_class(client_options=options, transport=transport_name)
+        patched.assert_called_once_with(
+            credentials=None,
+            credentials_file="credentials.json",
+            host=client.DEFAULT_ENDPOINT,
+            scopes=None,
+            client_cert_source_for_mtls=None,
+            quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
+            always_use_jwt_access=True,
+        )
+
+    # test that the credentials from file are saved and used as the credentials.
+    with mock.patch.object(
+        google.auth, "load_credentials_from_file", autospec=True
+    ) as load_creds, mock.patch.object(
+        google.auth, "default", autospec=True
+    ) as adc, mock.patch.object(
+        grpc_helpers, "create_channel"
+    ) as create_channel:
+        creds = ga_credentials.AnonymousCredentials()
+        file_creds = ga_credentials.AnonymousCredentials()
+        load_creds.return_value = (file_creds, None)
+        adc.return_value = (creds, None)
+        client = client_class(client_options=options, transport=transport_name)
+        create_channel.assert_called_with(
+            "secretmanager.googleapis.com:443",
+            credentials=file_creds,
+            credentials_file=None,
+            quota_project_id=None,
+            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            scopes=None,
+            default_host="secretmanager.googleapis.com",
+            ssl_credentials=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
         )
 
 
@@ -1190,6 +1259,7 @@ def test_add_secret_version(request_type, transport: str = "grpc"):
             name="name_value",
             state=resources.SecretVersion.State.ENABLED,
             etag="etag_value",
+            client_specified_payload_checksum=True,
         )
         response = client.add_secret_version(request)
 
@@ -1203,6 +1273,7 @@ def test_add_secret_version(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.state == resources.SecretVersion.State.ENABLED
     assert response.etag == "etag_value"
+    assert response.client_specified_payload_checksum is True
 
 
 def test_add_secret_version_empty_call():
@@ -1244,6 +1315,7 @@ async def test_add_secret_version_async(
                 name="name_value",
                 state=resources.SecretVersion.State.ENABLED,
                 etag="etag_value",
+                client_specified_payload_checksum=True,
             )
         )
         response = await client.add_secret_version(request)
@@ -1258,6 +1330,7 @@ async def test_add_secret_version_async(
     assert response.name == "name_value"
     assert response.state == resources.SecretVersion.State.ENABLED
     assert response.etag == "etag_value"
+    assert response.client_specified_payload_checksum is True
 
 
 @pytest.mark.asyncio
@@ -2451,6 +2524,7 @@ def test_get_secret_version(request_type, transport: str = "grpc"):
             name="name_value",
             state=resources.SecretVersion.State.ENABLED,
             etag="etag_value",
+            client_specified_payload_checksum=True,
         )
         response = client.get_secret_version(request)
 
@@ -2464,6 +2538,7 @@ def test_get_secret_version(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.state == resources.SecretVersion.State.ENABLED
     assert response.etag == "etag_value"
+    assert response.client_specified_payload_checksum is True
 
 
 def test_get_secret_version_empty_call():
@@ -2505,6 +2580,7 @@ async def test_get_secret_version_async(
                 name="name_value",
                 state=resources.SecretVersion.State.ENABLED,
                 etag="etag_value",
+                client_specified_payload_checksum=True,
             )
         )
         response = await client.get_secret_version(request)
@@ -2519,6 +2595,7 @@ async def test_get_secret_version_async(
     assert response.name == "name_value"
     assert response.state == resources.SecretVersion.State.ENABLED
     assert response.etag == "etag_value"
+    assert response.client_specified_payload_checksum is True
 
 
 @pytest.mark.asyncio
@@ -2905,6 +2982,7 @@ def test_disable_secret_version(request_type, transport: str = "grpc"):
             name="name_value",
             state=resources.SecretVersion.State.ENABLED,
             etag="etag_value",
+            client_specified_payload_checksum=True,
         )
         response = client.disable_secret_version(request)
 
@@ -2918,6 +2996,7 @@ def test_disable_secret_version(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.state == resources.SecretVersion.State.ENABLED
     assert response.etag == "etag_value"
+    assert response.client_specified_payload_checksum is True
 
 
 def test_disable_secret_version_empty_call():
@@ -2959,6 +3038,7 @@ async def test_disable_secret_version_async(
                 name="name_value",
                 state=resources.SecretVersion.State.ENABLED,
                 etag="etag_value",
+                client_specified_payload_checksum=True,
             )
         )
         response = await client.disable_secret_version(request)
@@ -2973,6 +3053,7 @@ async def test_disable_secret_version_async(
     assert response.name == "name_value"
     assert response.state == resources.SecretVersion.State.ENABLED
     assert response.etag == "etag_value"
+    assert response.client_specified_payload_checksum is True
 
 
 @pytest.mark.asyncio
@@ -3138,6 +3219,7 @@ def test_enable_secret_version(request_type, transport: str = "grpc"):
             name="name_value",
             state=resources.SecretVersion.State.ENABLED,
             etag="etag_value",
+            client_specified_payload_checksum=True,
         )
         response = client.enable_secret_version(request)
 
@@ -3151,6 +3233,7 @@ def test_enable_secret_version(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.state == resources.SecretVersion.State.ENABLED
     assert response.etag == "etag_value"
+    assert response.client_specified_payload_checksum is True
 
 
 def test_enable_secret_version_empty_call():
@@ -3192,6 +3275,7 @@ async def test_enable_secret_version_async(
                 name="name_value",
                 state=resources.SecretVersion.State.ENABLED,
                 etag="etag_value",
+                client_specified_payload_checksum=True,
             )
         )
         response = await client.enable_secret_version(request)
@@ -3206,6 +3290,7 @@ async def test_enable_secret_version_async(
     assert response.name == "name_value"
     assert response.state == resources.SecretVersion.State.ENABLED
     assert response.etag == "etag_value"
+    assert response.client_specified_payload_checksum is True
 
 
 @pytest.mark.asyncio
@@ -3371,6 +3456,7 @@ def test_destroy_secret_version(request_type, transport: str = "grpc"):
             name="name_value",
             state=resources.SecretVersion.State.ENABLED,
             etag="etag_value",
+            client_specified_payload_checksum=True,
         )
         response = client.destroy_secret_version(request)
 
@@ -3384,6 +3470,7 @@ def test_destroy_secret_version(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.state == resources.SecretVersion.State.ENABLED
     assert response.etag == "etag_value"
+    assert response.client_specified_payload_checksum is True
 
 
 def test_destroy_secret_version_empty_call():
@@ -3425,6 +3512,7 @@ async def test_destroy_secret_version_async(
                 name="name_value",
                 state=resources.SecretVersion.State.ENABLED,
                 etag="etag_value",
+                client_specified_payload_checksum=True,
             )
         )
         response = await client.destroy_secret_version(request)
@@ -3439,6 +3527,7 @@ async def test_destroy_secret_version_async(
     assert response.name == "name_value"
     assert response.state == resources.SecretVersion.State.ENABLED
     assert response.etag == "etag_value"
+    assert response.client_specified_payload_checksum is True
 
 
 @pytest.mark.asyncio

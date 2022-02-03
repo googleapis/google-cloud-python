@@ -154,6 +154,13 @@ class SecretVersion(proto.Message):
         etag (str):
             Output only. Etag of the currently stored
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
+        client_specified_payload_checksum (bool):
+            Output only. True if payload checksum specified in
+            [SecretPayload][google.cloud.secretmanager.v1.SecretPayload]
+            object has been received by
+            [SecretManagerService][google.cloud.secretmanager.v1.SecretManagerService]
+            on
+            [SecretManagerService.AddSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AddSecretVersion].
     """
 
     class State(proto.Enum):
@@ -176,6 +183,7 @@ class SecretVersion(proto.Message):
         proto.MESSAGE, number=5, message="ReplicationStatus",
     )
     etag = proto.Field(proto.STRING, number=6,)
+    client_specified_payload_checksum = proto.Field(proto.BOOL, number=7,)
 
 
 class Replication(proto.Message):
@@ -281,8 +289,8 @@ class Replication(proto.Message):
 
 
 class CustomerManagedEncryption(proto.Message):
-    r"""Configuration for encrypting secret payloads using customer-
-    anaged encryption keys (CMEK).
+    r"""Configuration for encrypting secret payloads using
+    customer-managed encryption keys (CMEK).
 
     Attributes:
         kms_key_name (str):
@@ -490,9 +498,31 @@ class SecretPayload(proto.Message):
         data (bytes):
             The secret data. Must be no larger than
             64KiB.
+        data_crc32c (int):
+            Optional. If specified,
+            [SecretManagerService][google.cloud.secretmanager.v1.SecretManagerService]
+            will verify the integrity of the received
+            [data][google.cloud.secretmanager.v1.SecretPayload.data] on
+            [SecretManagerService.AddSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AddSecretVersion]
+            calls using the crc32c checksum and store it to include in
+            future
+            [SecretManagerService.AccessSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AccessSecretVersion]
+            responses. If a checksum is not provided in the
+            [SecretManagerService.AddSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AddSecretVersion]
+            request, the
+            [SecretManagerService][google.cloud.secretmanager.v1.SecretManagerService]
+            will generate and store one for you.
+
+            The CRC32C value is encoded as a Int64 for compatibility,
+            and can be safely downconverted to uint32 in languages that
+            support this type.
+            https://cloud.google.com/apis/design/design_patterns#integer_types
+
+            This field is a member of `oneof`_ ``_data_crc32c``.
     """
 
     data = proto.Field(proto.BYTES, number=1,)
+    data_crc32c = proto.Field(proto.INT64, number=2, optional=True,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
