@@ -19,6 +19,7 @@ from typing import Sequence
 
 from google.api import field_behavior_pb2
 from google.api import http_pb2
+from google.api import routing_pb2
 from google.cloud import extended_operations_pb2 as ex_ops_pb2
 from google.protobuf import descriptor_pb2
 
@@ -287,6 +288,29 @@ def test_method_field_headers_present():
         rule = http_pb2.HttpRule(**{v: '/v1/{parent=projects/*}/topics'})
         method = make_method('DoSomething', http_rule=rule)
         assert method.field_headers == ('parent',)
+
+
+def test_method_routing_rule():
+    routing_rule = routing_pb2.RoutingRule()
+    param = routing_rule.routing_parameters.add()
+    param.field = 'table_name'
+    param.path_template = 'projects/*/{table_location=instances/*}/tables/*'
+    method = make_method('DoSomething', routing_rule=routing_rule)
+    assert method.explicit_routing
+    assert method.routing_rule.routing_parameters == [wrappers.RoutingParameter(
+        x.field, x.path_template) for x in routing_rule.routing_parameters]
+    assert method.routing_rule.routing_parameters[0].sample_request is not None
+
+
+def test_method_routing_rule_empty_routing_parameters():
+    routing_rule = routing_pb2.RoutingRule()
+    method = make_method('DoSomething', routing_rule=routing_rule)
+    assert method.routing_rule is None
+
+
+def test_method_routing_rule_not_set():
+    method = make_method('DoSomething')
+    assert method.routing_rule is None
 
 
 def test_method_http_opt():

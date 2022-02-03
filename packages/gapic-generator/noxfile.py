@@ -46,12 +46,10 @@ NEWEST_PYTHON = ALL_PYTHON[-1]
 @nox.session(python=ALL_PYTHON)
 def unit(session):
     """Run the unit test suite."""
-
     session.install(
-        "coverage", "pytest-cov", "pytest", "pytest-xdist", "pyfakefs", "grpcio-status",
+        "coverage", "pytest-cov", "pytest", "pytest-xdist", "pyfakefs", "grpcio-status", "proto-plus",
     )
     session.install("-e", ".")
-
     session.run(
         "py.test",
         *(

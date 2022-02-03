@@ -510,7 +510,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.generate_access_token]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -652,7 +652,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.generate_id_token]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -780,7 +780,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.sign_blob]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -911,7 +911,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.sign_jwt]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((

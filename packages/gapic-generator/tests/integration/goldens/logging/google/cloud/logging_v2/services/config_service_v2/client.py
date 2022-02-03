@@ -503,7 +503,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_buckets]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -585,7 +585,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_bucket]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -662,7 +662,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_bucket]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -746,7 +746,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_bucket]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -815,7 +815,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_bucket]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -880,7 +880,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.undelete_bucket]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -975,7 +975,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_views]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1059,7 +1059,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_view]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1137,7 +1137,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_view]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1214,7 +1214,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_view]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1280,7 +1280,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_view]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1379,7 +1379,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_sinks]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1497,7 +1497,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_sink]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1627,7 +1627,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_sink]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1781,7 +1781,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_sink]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1877,7 +1877,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_sink]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -1976,7 +1976,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_exclusions]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -2097,7 +2097,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_exclusion]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -2230,7 +2230,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_exclusion]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -2377,7 +2377,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_exclusion]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -2472,7 +2472,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.delete_exclusion]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -2567,7 +2567,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_cmek_settings]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
@@ -2671,7 +2671,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_cmek_settings]
 
-        # Certain fields should be provided within the metadata header;
+         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((

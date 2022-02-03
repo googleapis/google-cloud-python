@@ -18,7 +18,7 @@ import typing
 from gapic.schema import metadata
 from gapic.schema import naming
 from gapic.schema import wrappers
-from google.api import annotations_pb2
+from google.api import annotations_pb2, routing_pb2
 from google.api import client_pb2
 from google.api import http_pb2
 from google.protobuf import descriptor_pb2 as desc
@@ -163,6 +163,7 @@ def make_method(
         http_rule: http_pb2.HttpRule = None,
         signatures: typing.Sequence[str] = (),
         is_deprecated: bool = False,
+        routing_rule: routing_pb2.RoutingRule = None,
         **kwargs
 ) -> wrappers.Method:
     # Use default input and output messages if they are not provided.
@@ -176,6 +177,10 @@ def make_method(
         output_type=str(output_message.meta.address),
         **kwargs
     )
+
+    if routing_rule:
+        ext_key = routing_pb2.routing
+        method_pb.options.Extensions[ext_key].MergeFrom(routing_rule)
 
     # If there is an HTTP rule, process it.
     if http_rule:

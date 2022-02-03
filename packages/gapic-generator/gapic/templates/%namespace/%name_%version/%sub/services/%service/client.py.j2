@@ -478,8 +478,31 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.{{ method.name|snake_case}}]
-        {% if method.field_headers %}
 
+        {% if method.explicit_routing %}
+        header_params = {}
+        {% for routing_param in method.routing_rule.routing_parameters %}
+        {% if routing_param.path_template %} {# Need to match. #}
+
+        routing_param_regex = {{ routing_param.to_regex() }}
+        regex_match = routing_param_regex.match(request.{{ routing_param.field }})
+        if regex_match and regex_match.group("{{ routing_param.key }}"):
+            header_params["{{ routing_param.key }}"] = regex_match.group("{{ routing_param.key }}")
+
+        {% else %}
+
+        if request.{{ routing_param.field }}:
+            header_params["{{ routing_param.key }}"] = request.{{ routing_param.field }}
+
+        {% endif %}
+        {% endfor %} {# method.routing_rule.routing_parameters #}
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
+
+        {% elif method.field_headers %} {# implicit routing #}
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
@@ -491,7 +514,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 {% endfor %}
             )),
         )
-        {% endif %}
+        {% endif %} {# method.explicit_routing #}
 
         # Send the request.
         {%+ if not method.void %}response = {% endif %}rpc(
