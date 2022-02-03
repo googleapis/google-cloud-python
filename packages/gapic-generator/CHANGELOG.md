@@ -1,6 +1,13 @@
 # Changelog
 
 
+### [0.63.1](https://github.com/googleapis/gapic-generator-python/compare/v0.63.0...v0.63.1) (2022-02-03)
+
+
+### Bug Fixes
+
+* disambiguate method names that are reserved in transport classes ([#1187](https://github.com/googleapis/gapic-generator-python/issues/1187)) ([78626d8](https://github.com/googleapis/gapic-generator-python/commit/78626d89665128ef7d078ee12b49480475cce9e2))
+
 ## [0.63.0](https://github.com/googleapis/gapic-generator-python/compare/v0.62.1...v0.63.0) (2022-02-03)
 
 
