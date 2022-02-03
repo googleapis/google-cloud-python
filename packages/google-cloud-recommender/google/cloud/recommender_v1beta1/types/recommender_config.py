@@ -56,8 +56,9 @@ class RecommenderConfig(proto.Message):
             alphanumerics, with dashes (``-``), underscores (``_``),
             dots (``.``), and alphanumerics between.
         display_name (str):
-            A user-settable field to provide a human-
-            eadable name to be used in user interfaces.
+            A user-settable field to provide a
+            human-readable name to be used in user
+            interfaces.
     """
 
     name = proto.Field(proto.STRING, number=1,)

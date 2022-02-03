@@ -562,7 +562,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -639,7 +639,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -735,7 +735,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, state_metadata, etag])
         if request is not None and has_flattened_params:
@@ -856,7 +856,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, filter])
         if request is not None and has_flattened_params:
@@ -936,7 +936,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1040,7 +1040,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, state_metadata, etag])
         if request is not None and has_flattened_params:
@@ -1152,7 +1152,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, state_metadata, etag])
         if request is not None and has_flattened_params:
@@ -1264,7 +1264,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, state_metadata, etag])
         if request is not None and has_flattened_params:
@@ -1347,7 +1347,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
                 Configuration for a Recommender.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1423,7 +1423,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
                 Configuration for a Recommender.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([recommender_config, update_mask])
         if request is not None and has_flattened_params:
@@ -1506,7 +1506,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
                 Configuration for an InsightType.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1582,7 +1582,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
                 Configuration for an InsightType.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([insight_type_config, update_mask])
         if request is not None and has_flattened_params:
