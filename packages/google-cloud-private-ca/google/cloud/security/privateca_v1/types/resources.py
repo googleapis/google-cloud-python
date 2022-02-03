@@ -103,9 +103,9 @@ class CertificateAuthority(proto.Message):
             Required. Immutable. The config used to
             create a self-signed X.509 certificate or CSR.
         lifetime (google.protobuf.duration_pb2.Duration):
-            Required. The desired lifetime of the CA certificate. Used
-            to create the "not_before_time" and "not_after_time" fields
-            inside an X.509 certificate.
+            Required. Immutable. The desired lifetime of the CA
+            certificate. Used to create the "not_before_time" and
+            "not_after_time" fields inside an X.509 certificate.
         key_spec (google.cloud.security.privateca_v1.types.CertificateAuthority.KeyVersionSpec):
             Required. Immutable. Used when issuing certificates for this
             [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority].
@@ -212,7 +212,7 @@ class CertificateAuthority(proto.Message):
         [CryptoKeyVersionAlgorithm][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm]
         values. For RSA signing algorithms, the PSS algorithms should be
         preferred, use PKCS1 algorithms if required for compatibility. For
-        further recommandations, see
+        further recommendations, see
         https://cloud.google.com/kms/docs/algorithms#algorithm_recommendations.
         """
         SIGN_HASH_ALGORITHM_UNSPECIFIED = 0
@@ -502,14 +502,14 @@ class CaPool(proto.Message):
                 Attributes:
                     min_modulus_size (int):
                         Optional. The minimum allowed RSA modulus
-                        size, in bits. If this is not set, or if set to
-                        zero, the service-level min RSA modulus size
-                        will continue to apply.
+                        size (inclusive), in bits. If this is not set,
+                        or if set to zero, the service-level min RSA
+                        modulus size will continue to apply.
                     max_modulus_size (int):
                         Optional. The maximum allowed RSA modulus
-                        size, in bits. If this is not set, or if set to
-                        zero, the service will not enforce an explicit
-                        upper bound on RSA modulus sizes.
+                        size (inclusive), in bits. If this is not set,
+                        or if set to zero, the service will not enforce
+                        an explicit upper bound on RSA modulus sizes.
                 """
 
                 min_modulus_size = proto.Field(proto.INT64, number=1,)
@@ -987,7 +987,7 @@ class SubordinateConfig(proto.Message):
         certificate_authority (str):
             Required. This can refer to a
             [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
-            in the same project that was used to create a subordinate
+            that was used to create a subordinate
             [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority].
             This field is used for information and usability purposes
             only. The resource name is in the format
@@ -1410,8 +1410,9 @@ class SubjectAltNames(proto.Message):
             Contains only valid 32-bit IPv4 addresses or
             RFC 4291 IPv6 addresses.
         custom_sans (Sequence[google.cloud.security.privateca_v1.types.X509Extension]):
-            Contains additional subject alternative name
-            values.
+            Contains additional subject alternative name values. For
+            each custom_san, the ``value`` field must contain an ASN.1
+            encoded UTF8String.
     """
 
     dns_names = proto.RepeatedField(proto.STRING, number=1,)
