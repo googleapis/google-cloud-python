@@ -45,15 +45,11 @@ for library in s.get_staging_dirs(default_version):
 
 s.remove_staging_dirs()
 
-# work around gapic generator bug
-# https://github.com/googleapis/gapic-generator-python/pull/1071
-s.replace(
-    "google/cloud/**/types/*.py",
-    """\.
-            This field is a member of `oneof`_""",
-    """.
-
-            This field is a member of `oneof`_"""
+s.replace(".coveragerc",
+    """google/cloud/translate/__init__.py""",
+    """google/__init__.py
+    google/cloud/__init__.py
+    google/cloud/translate/__init__.py""",
 )
 
 # ----------------------------------------------------------------------------
@@ -65,9 +61,6 @@ templated_files = common.py_library(
     cov_level=99,
 )
 s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
-
-# Work around bug in templates https://github.com/googleapis/synthtool/pull/1335
-s.replace(".github/workflows/unittest.yml", "--fail-under=100", "--fail-under=99")
 
 # ----------------------------------------------------------------------------
 # Samples templates
