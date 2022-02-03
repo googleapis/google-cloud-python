@@ -443,7 +443,7 @@ class FulfillmentsClient(metaclass=FulfillmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -531,7 +531,7 @@ class FulfillmentsClient(metaclass=FulfillmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([fulfillment, update_mask])
         if request is not None and has_flattened_params:

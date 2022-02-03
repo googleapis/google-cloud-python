@@ -44,8 +44,8 @@ class GcsDestination(proto.Message):
             A URI is of the form:
               gs://bucket/object-prefix-or-name
             Whether a prefix or name is used depends on the
-            use case. The requesting user must have "write-
-            permission" to the bucket.
+            use case. The requesting user must have
+            "write-permission" to the bucket.
     """
 
     uri = proto.Field(proto.STRING, number=1,)

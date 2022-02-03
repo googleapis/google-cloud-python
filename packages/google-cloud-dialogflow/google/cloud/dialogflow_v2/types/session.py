@@ -202,8 +202,9 @@ class QueryParameters(proto.Message):
             Header names are case-insensitive. Google's
             specified headers are not allowed. Including:
             "Host", "Content-Length", "Connection", "From",
-            "User-Agent", "Accept-Encoding", "If-Modified-
-            Since", "If-None-Match", "X-Forwarded-For", etc.
+            "User-Agent", "Accept-Encoding",
+            "If-Modified-Since", "If-None-Match",
+            "X-Forwarded-For", etc.
     """
 
     time_zone = proto.Field(proto.STRING, number=1,)

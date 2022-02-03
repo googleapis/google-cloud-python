@@ -453,7 +453,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, language_code])
         if request is not None and has_flattened_params:
@@ -556,7 +556,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, language_code])
         if request is not None and has_flattened_params:
@@ -663,7 +663,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, entity_type, language_code])
         if request is not None and has_flattened_params:
@@ -764,7 +764,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([entity_type, language_code])
         if request is not None and has_flattened_params:
@@ -837,7 +837,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1020,7 +1020,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, entity_type_names])
         if request is not None and has_flattened_params:
@@ -1148,7 +1148,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, entities, language_code])
         if request is not None and has_flattened_params:
@@ -1280,7 +1280,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, entities, language_code])
         if request is not None and has_flattened_params:
@@ -1411,7 +1411,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, entity_values, language_code])
         if request is not None and has_flattened_params:

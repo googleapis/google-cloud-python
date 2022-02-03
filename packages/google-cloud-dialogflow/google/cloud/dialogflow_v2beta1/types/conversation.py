@@ -95,8 +95,7 @@ class Conversation(proto.Message):
     class ConversationStage(proto.Enum):
         r"""Enumeration of the different conversation stages a
         conversation can be in. Reference:
-        https://cloud.google.com/dialogflow/priv/docs/contact-
-        center/basics#stages
+        https://cloud.google.com/dialogflow/priv/docs/contact-center/basics#stages
         """
         CONVERSATION_STAGE_UNSPECIFIED = 0
         VIRTUAL_AGENT_STAGE = 1
