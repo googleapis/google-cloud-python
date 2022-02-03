@@ -426,7 +426,7 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([document, encoding_type])
         if request is not None and has_flattened_params:
@@ -499,7 +499,7 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
                 The entity analysis response message.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([document, encoding_type])
         if request is not None and has_flattened_params:
@@ -575,7 +575,7 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([document, encoding_type])
         if request is not None and has_flattened_params:
@@ -647,7 +647,7 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
                 The syntax analysis response message.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([document, encoding_type])
         if request is not None and has_flattened_params:
@@ -712,7 +712,7 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([document])
         if request is not None and has_flattened_params:
@@ -792,7 +792,7 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([document, features, encoding_type])
         if request is not None and has_flattened_params:
