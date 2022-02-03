@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-tpu/compare/v1.2.1...v1.3.0) (2022-02-03)
+
+
+### Features
+
+* add api key support ([#74](https://github.com/googleapis/python-tpu/issues/74)) ([c6b1bfa](https://github.com/googleapis/python-tpu/commit/c6b1bfaecdf02c53d972f6d4181d3eb49d7f460a))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([776dbea](https://github.com/googleapis/python-tpu/commit/776dbea03b1bc19e930b62708ec68bce49f4d06d))
+
 ### [1.2.1](https://www.github.com/googleapis/python-tpu/compare/v1.2.0...v1.2.1) (2021-11-01)
 
 
