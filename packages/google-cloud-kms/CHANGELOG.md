@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [2.11.0](https://github.com/googleapis/python-kms/compare/v2.10.1...v2.11.0) (2022-02-03)
+
+
+### Features
+
+* add a new EkmService API ([#233](https://github.com/googleapis/python-kms/issues/233)) ([eb532f5](https://github.com/googleapis/python-kms/commit/eb532f5c84907c12356e549c694c0210e5ad585b))
+* add api key support ([#230](https://github.com/googleapis/python-kms/issues/230)) ([fdf62ae](https://github.com/googleapis/python-kms/commit/fdf62ae3b3209a1215e0f2f2440add1f01d40907))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([97f7ea5](https://github.com/googleapis/python-kms/commit/97f7ea50a30d1dc1133d7703e6bd90ad209f75a1))
+
+
+### Documentation
+
+* **samples:** fix typo in verify_asymmetric_ec.py ([#227](https://github.com/googleapis/python-kms/issues/227)) ([3817d73](https://github.com/googleapis/python-kms/commit/3817d7390fddebd137c99865455f0ae145dbcf63))
+
 ### [2.10.1](https://www.github.com/googleapis/python-kms/compare/v2.10.0...v2.10.1) (2021-11-01)
 
 
