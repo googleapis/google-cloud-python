@@ -47,8 +47,8 @@ class DSSEAttestationNote(proto.Message):
         Attributes:
             human_readable_name (str):
                 Required. The human readable name of this
-                attestation authority, for example "cloudbuild-
-                prod".
+                attestation authority, for example
+                "cloudbuild-prod".
         """
 
         human_readable_name = proto.Field(proto.STRING, number=1,)

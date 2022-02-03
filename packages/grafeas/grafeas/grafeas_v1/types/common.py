@@ -120,9 +120,8 @@ class Signature(proto.Message):
 
 class Envelope(proto.Message):
     r"""MUST match
-    https://github.com/secure-systems-
-    lab/dsse/blob/master/envelope.proto. An authenticated message of
-    arbitrary type.
+    https://github.com/secure-systems-lab/dsse/blob/master/envelope.proto.
+    An authenticated message of arbitrary type.
 
     Attributes:
         payload (bytes):

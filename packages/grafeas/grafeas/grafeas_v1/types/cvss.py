@@ -21,8 +21,8 @@ __protobuf__ = proto.module(package="grafeas.v1", manifest={"CVSSv3", "CVSS",},)
 
 class CVSSv3(proto.Message):
     r"""Common Vulnerability Scoring System version 3.
-    For details, see https://www.first.org/cvss/specification-
-    document
+    For details, see
+    https://www.first.org/cvss/specification-document
 
     Attributes:
         base_score (float):
@@ -108,11 +108,12 @@ class CVSSv3(proto.Message):
 
 class CVSS(proto.Message):
     r"""Common Vulnerability Scoring System.
-    For details, see https://www.first.org/cvss/specification-
-    document This is a message we will try to use for storing
-    multiple versions of CVSS. The intention is that as new versions
-    of CVSS scores get added, we will be able to modify this message
-    rather than adding new protos for each new version of the score.
+    For details, see
+    https://www.first.org/cvss/specification-document This is a
+    message we will try to use for storing multiple versions of
+    CVSS. The intention is that as new versions of CVSS scores get
+    added, we will be able to modify this message rather than adding
+    new protos for each new version of the score.
 
     Attributes:
         base_score (float):
