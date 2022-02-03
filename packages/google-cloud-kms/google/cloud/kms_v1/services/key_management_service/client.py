@@ -560,7 +560,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -642,7 +642,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -725,7 +725,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -807,7 +807,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -887,7 +887,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -969,7 +969,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1055,7 +1055,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1135,7 +1135,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1252,7 +1252,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1343,7 +1343,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, key_ring_id, key_ring])
         if request is not None and has_flattened_params:
@@ -1447,7 +1447,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, crypto_key_id, crypto_key])
         if request is not None and has_flattened_params:
@@ -1552,7 +1552,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, crypto_key_version])
         if request is not None and has_flattened_params:
@@ -1765,7 +1765,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, import_job_id, import_job])
         if request is not None and has_flattened_params:
@@ -1855,7 +1855,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([crypto_key, update_mask])
         if request is not None and has_flattened_params:
@@ -1964,7 +1964,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([crypto_key_version, update_mask])
         if request is not None and has_flattened_params:
@@ -2062,7 +2062,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, crypto_key_version_id])
         if request is not None and has_flattened_params:
@@ -2172,7 +2172,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -2269,7 +2269,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -2371,7 +2371,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, plaintext])
         if request is not None and has_flattened_params:
@@ -2459,7 +2459,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, ciphertext])
         if request is not None and has_flattened_params:
@@ -2549,7 +2549,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, digest])
         if request is not None and has_flattened_params:
@@ -2639,7 +2639,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, ciphertext])
         if request is not None and has_flattened_params:
@@ -2727,7 +2727,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, data])
         if request is not None and has_flattened_params:
@@ -2821,7 +2821,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, data, mac])
         if request is not None and has_flattened_params:
@@ -2883,8 +2883,8 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
             location (str):
                 The project-specific location in
                 which to generate random bytes. For
-                example, "projects/my-
-                project/locations/us-central1".
+                example,
+                "projects/my-project/locations/us-central1".
 
                 This corresponds to the ``location`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2919,7 +2919,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([location, length_bytes, protection_level])
         if request is not None and has_flattened_params:
