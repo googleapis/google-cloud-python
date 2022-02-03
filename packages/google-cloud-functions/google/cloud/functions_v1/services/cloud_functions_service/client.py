@@ -546,7 +546,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -629,7 +629,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([location, function])
         if request is not None and has_flattened_params:
@@ -713,7 +713,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([function])
         if request is not None and has_flattened_params:
@@ -810,7 +810,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -898,7 +898,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 Response of CallFunction method.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, data])
         if request is not None and has_flattened_params:
@@ -1024,8 +1024,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         limited period and should be used within minutes after
         generation.
         For more information about the signed URL usage see:
-        https://cloud.google.com/storage/docs/access-
-        control/signed-urls
+        https://cloud.google.com/storage/docs/access-control/signed-urls
 
         Args:
             request (Union[google.cloud.functions_v1.types.GenerateDownloadUrlRequest, dict]):
