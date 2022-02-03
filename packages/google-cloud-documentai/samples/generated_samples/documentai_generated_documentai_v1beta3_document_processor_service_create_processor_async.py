@@ -32,13 +32,8 @@ async def sample_create_processor():
     client = documentai_v1beta3.DocumentProcessorServiceAsyncClient()
 
     # Initialize request argument(s)
-    project = "my-project-id"
-    location = "us-central1"
-    processor = "processor_value"
-    parent = f"projects/{project}/locations/{location}/processors/{processor}"
-
     request = documentai_v1beta3.CreateProcessorRequest(
-        parent=parent,
+        parent="parent_value",
     )
 
     # Make the request

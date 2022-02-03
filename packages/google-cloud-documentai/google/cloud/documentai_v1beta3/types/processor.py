@@ -48,8 +48,7 @@ class Processor(proto.Message):
         kms_key_name (str):
             The KMS key used for encryption/decryption in
             CMEK scenarios. See
-            https://cloud.google.com/security-key-
-            management.
+            https://cloud.google.com/security-key-management.
     """
 
     class State(proto.Enum):

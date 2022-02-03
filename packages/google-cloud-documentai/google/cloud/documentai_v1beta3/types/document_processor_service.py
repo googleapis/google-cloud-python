@@ -543,6 +543,8 @@ class ReviewDocumentOperationMetadata(proto.Message):
         common_metadata (google.cloud.documentai_v1beta3.types.CommonOperationMetadata):
             The basic metadata of the long running
             operation.
+        question_id (str):
+            The question ID.
     """
 
     class State(proto.Enum):
@@ -561,6 +563,7 @@ class ReviewDocumentOperationMetadata(proto.Message):
     common_metadata = proto.Field(
         proto.MESSAGE, number=5, message=operation_metadata.CommonOperationMetadata,
     )
+    question_id = proto.Field(proto.STRING, number=6,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

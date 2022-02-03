@@ -32,13 +32,8 @@ def sample_list_processors():
     client = documentai_v1beta3.DocumentProcessorServiceClient()
 
     # Initialize request argument(s)
-    project = "my-project-id"
-    location = "us-central1"
-    processor = "processor_value"
-    parent = f"projects/{project}/locations/{location}/processors/{processor}"
-
     request = documentai_v1beta3.ListProcessorsRequest(
-        parent=parent,
+        parent="parent_value",
     )
 
     # Make the request

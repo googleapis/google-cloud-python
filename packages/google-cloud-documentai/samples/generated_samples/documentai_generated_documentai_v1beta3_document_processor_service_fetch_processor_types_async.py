@@ -32,13 +32,8 @@ async def sample_fetch_processor_types():
     client = documentai_v1beta3.DocumentProcessorServiceAsyncClient()
 
     # Initialize request argument(s)
-    project = "my-project-id"
-    location = "us-central1"
-    processor_type = "processor_type_value"
-    parent = f"projects/{project}/locations/{location}/processorTypes/{processor_type}"
-
     request = documentai_v1beta3.FetchProcessorTypesRequest(
-        parent=parent,
+        parent="parent_value",
     )
 
     # Make the request

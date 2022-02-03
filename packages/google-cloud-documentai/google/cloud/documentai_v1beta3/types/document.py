@@ -63,8 +63,7 @@ class Document(proto.Message):
         mime_type (str):
             An IANA published MIME type (also referred to
             as media type). For more information, see
-            https://www.iana.org/assignments/media-
-            types/media-types.xhtml.
+            https://www.iana.org/assignments/media-types/media-types.xhtml.
         text (str):
             Optional. UTF-8 encoded text in reading order
             from the document.

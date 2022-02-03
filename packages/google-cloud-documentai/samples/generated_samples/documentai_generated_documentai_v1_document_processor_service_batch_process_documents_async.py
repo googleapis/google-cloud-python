@@ -32,13 +32,8 @@ async def sample_batch_process_documents():
     client = documentai_v1.DocumentProcessorServiceAsyncClient()
 
     # Initialize request argument(s)
-    project = "my-project-id"
-    location = "us-central1"
-    processor = "processor_value"
-    name = f"projects/{project}/locations/{location}/processors/{processor}"
-
     request = documentai_v1.BatchProcessRequest(
-        name=name,
+        name="name_value",
     )
 
     # Make the request
