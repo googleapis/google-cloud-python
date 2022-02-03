@@ -48,8 +48,8 @@ class IAMCredentialsAsyncClient:
 
     Service account credentials are used to temporarily assume the
     identity of the service account. Supported credential types
-    include OAuth 2.0 access tokens, OpenID Connect ID tokens, self-
-    signed JSON Web Tokens (JWTs), and more.
+    include OAuth 2.0 access tokens, OpenID Connect ID tokens,
+    self-signed JSON Web Tokens (JWTs), and more.
     """
 
     _client: IAMCredentialsClient
@@ -295,7 +295,7 @@ class IAMCredentialsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, delegates, scope, lifetime])
         if request is not None and has_flattened_params:
@@ -421,7 +421,7 @@ class IAMCredentialsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, delegates, audience, include_email])
         if request is not None and has_flattened_params:
@@ -535,7 +535,7 @@ class IAMCredentialsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, delegates, payload])
         if request is not None and has_flattened_params:
@@ -650,7 +650,7 @@ class IAMCredentialsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, delegates, payload])
         if request is not None and has_flattened_params:
