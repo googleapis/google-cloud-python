@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.10.0](https://github.com/googleapis/python-texttospeech/compare/v2.9.1...v2.10.0) (2022-02-03)
+
+
+### Features
+
+* add api key support ([#242](https://github.com/googleapis/python-texttospeech/issues/242)) ([3b4f0d0](https://github.com/googleapis/python-texttospeech/commit/3b4f0d0749529b04ed7fedec3c4b06b6d42c12cd))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([4c11b12](https://github.com/googleapis/python-texttospeech/commit/4c11b127ece0009082fe91062f3f36c8f18e8ffc))
+
+
+### Documentation
+
+* update comments for ListVoicesRequest ([#244](https://github.com/googleapis/python-texttospeech/issues/244)) ([bc5b73f](https://github.com/googleapis/python-texttospeech/commit/bc5b73fbc62900f89a01486c6e8d42d459c34fd6))
+
 ### [2.9.1](https://www.github.com/googleapis/python-texttospeech/compare/v2.9.0...v2.9.1) (2022-01-08)
 
 
