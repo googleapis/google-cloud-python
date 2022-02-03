@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/python-datastream/compare/v0.3.1...v0.4.0) (2022-02-03)
+
+
+### Features
+
+* add api key support ([#58](https://github.com/googleapis/python-datastream/issues/58)) ([88cf10a](https://github.com/googleapis/python-datastream/commit/88cf10a130116cbc199d6279b00959ad40946671))
+* add datastream v1 ([#61](https://github.com/googleapis/python-datastream/issues/61)) ([28dab85](https://github.com/googleapis/python-datastream/commit/28dab85bf3b4ad937760d5219623793936e39731))
+
+
+### Bug Fixes
+
+* remove `FetchErrorsRequest` and `FetchErrorsResponse` ([28dab85](https://github.com/googleapis/python-datastream/commit/28dab85bf3b4ad937760d5219623793936e39731))
+* remove `GcsFileFormat` and `SchemaFileFormat` ([28dab85](https://github.com/googleapis/python-datastream/commit/28dab85bf3b4ad937760d5219623793936e39731))
+* remove `NoConnectivitySettings` ([28dab85](https://github.com/googleapis/python-datastream/commit/28dab85bf3b4ad937760d5219623793936e39731))
+
 ### [0.3.1](https://www.github.com/googleapis/python-datastream/compare/v0.3.0...v0.3.1) (2021-11-01)
 
 
