@@ -58,8 +58,7 @@ class NetworkConfig(proto.Message):
             executing pipelines. In case of shared VPC where
             the network resides in another host project the
             network should specified in the form of
-            projects/{host-project-
-            id}/global/networks/{network}
+            projects/{host-project-id}/global/networks/{network}
         ip_allocation (str):
             The IP range in CIDR notation to use for the
             managed Data Fusion instance nodes. This range
