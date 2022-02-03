@@ -61,20 +61,19 @@ class Api(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Updated time.
         labels (Sequence[google.cloud.apigateway_v1.types.Api.LabelsEntry]):
-            Optional. Resource labels to represent user-
-            rovided metadata. Refer to cloud documentation
-            on labels for more details.
-            https://cloud.google.com/compute/docs/labeling-
-            resources
+            Optional. Resource labels to represent
+            user-provided metadata. Refer to cloud
+            documentation on labels for more details.
+            https://cloud.google.com/compute/docs/labeling-resources
         display_name (str):
             Optional. Display name.
         managed_service (str):
             Optional. Immutable. The name of a Google
             Managed Service (
-            https://cloud.google.com/service-
-            infrastructure/docs/glossary#managed). If not
-            specified, a new Service will automatically be
-            created in the same project as this API.
+            https://cloud.google.com/service-infrastructure/docs/glossary#managed).
+            If not specified, a new Service will
+            automatically be created in the same project as
+            this API.
         state (google.cloud.apigateway_v1.types.Api.State):
             Output only. State of the API.
     """
@@ -110,11 +109,10 @@ class ApiConfig(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Updated time.
         labels (Sequence[google.cloud.apigateway_v1.types.ApiConfig.LabelsEntry]):
-            Optional. Resource labels to represent user-
-            rovided metadata. Refer to cloud documentation
-            on labels for more details.
-            https://cloud.google.com/compute/docs/labeling-
-            resources
+            Optional. Resource labels to represent
+            user-provided metadata. Refer to cloud
+            documentation on labels for more details.
+            https://cloud.google.com/compute/docs/labeling-resources
         display_name (str):
             Optional. Display name.
         gateway_service_account (str):
@@ -128,8 +126,8 @@ class ApiConfig(proto.Message):
             Cloud Run Service or an IAP-secured service.
         service_config_id (str):
             Output only. The ID of the associated Service
-            Config ( https://cloud.google.com/service-
-            infrastructure/docs/glossary#config).
+            Config (
+            https://cloud.google.com/service-infrastructure/docs/glossary#config).
         state (google.cloud.apigateway_v1.types.ApiConfig.State):
             Output only. State of the API Config.
         openapi_documents (Sequence[google.cloud.apigateway_v1.types.ApiConfig.OpenApiDocument]):
@@ -249,11 +247,10 @@ class Gateway(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Updated time.
         labels (Sequence[google.cloud.apigateway_v1.types.Gateway.LabelsEntry]):
-            Optional. Resource labels to represent user-
-            rovided metadata. Refer to cloud documentation
-            on labels for more details.
-            https://cloud.google.com/compute/docs/labeling-
-            resources
+            Optional. Resource labels to represent
+            user-provided metadata. Refer to cloud
+            documentation on labels for more details.
+            https://cloud.google.com/compute/docs/labeling-resources
         display_name (str):
             Optional. Display name.
         api_config (str):

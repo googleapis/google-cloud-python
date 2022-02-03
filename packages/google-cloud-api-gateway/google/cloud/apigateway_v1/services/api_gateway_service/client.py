@@ -517,7 +517,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -590,15 +590,15 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         Returns:
             google.cloud.apigateway_v1.types.Gateway:
                 A Gateway is an API-aware HTTP proxy.
-                It performs API-Method and/or API-
-                Consumer specific actions based on an
-                API Config such as authentication,
+                It performs API-Method and/or
+                API-Consumer specific actions based on
+                an API Config such as authentication,
                 policy enforcement, and backend
                 selection.
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -689,7 +689,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, gateway, gateway_id])
         if request is not None and has_flattened_params:
@@ -786,7 +786,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([gateway, update_mask])
         if request is not None and has_flattened_params:
@@ -882,7 +882,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -964,7 +964,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -1041,7 +1041,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1130,7 +1130,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, api, api_id])
         if request is not None and has_flattened_params:
@@ -1226,7 +1226,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([api, update_mask])
         if request is not None and has_flattened_params:
@@ -1320,7 +1320,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1402,7 +1402,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -1480,7 +1480,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1569,7 +1569,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, api_config, api_config_id])
         if request is not None and has_flattened_params:
@@ -1664,7 +1664,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([api_config, update_mask])
         if request is not None and has_flattened_params:
@@ -1760,7 +1760,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
