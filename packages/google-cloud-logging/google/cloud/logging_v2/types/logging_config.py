@@ -120,8 +120,7 @@ class LogView(proto.Message):
         name (str):
             The resource name of the view.
             For example
-            "projects/my-project-id/locations/my-
-            location/buckets/my-bucket-id/views/my-view
+            "projects/my-project-id/locations/my-location/buckets/my-bucket-id/views/my-view
         description (str):
             Describes this view.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
