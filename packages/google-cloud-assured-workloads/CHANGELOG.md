@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/googleapis/python-assured-workloads/compare/v1.1.0...v1.2.0) (2022-02-04)
+
+
+### Features
+
+* add api key support ([#120](https://github.com/googleapis/python-assured-workloads/issues/120)) ([4826ab9](https://github.com/googleapis/python-assured-workloads/commit/4826ab9bc46c4eff4be6faf03c276f4506d154b7))
+
 ## [1.1.0](https://github.com/googleapis/python-assured-workloads/compare/v1.0.0...v1.1.0) (2022-01-13)
 
 
