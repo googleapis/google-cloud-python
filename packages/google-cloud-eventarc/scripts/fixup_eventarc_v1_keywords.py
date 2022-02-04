@@ -39,10 +39,19 @@ def partition(
 class eventarcCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'create_channel': ('parent', 'channel', 'channel_id', 'validate_only', ),
+        'create_channel_connection': ('parent', 'channel_connection', 'channel_connection_id', ),
         'create_trigger': ('parent', 'trigger', 'trigger_id', 'validate_only', ),
+        'delete_channel': ('name', 'validate_only', ),
+        'delete_channel_connection': ('name', ),
         'delete_trigger': ('name', 'validate_only', 'etag', 'allow_missing', ),
+        'get_channel': ('name', ),
+        'get_channel_connection': ('name', ),
         'get_trigger': ('name', ),
+        'list_channel_connections': ('parent', 'page_size', 'page_token', ),
+        'list_channels': ('parent', 'page_size', 'page_token', 'order_by', ),
         'list_triggers': ('parent', 'page_size', 'page_token', 'order_by', ),
+        'update_channel': ('validate_only', 'channel', 'update_mask', ),
         'update_trigger': ('validate_only', 'trigger', 'update_mask', 'allow_missing', ),
     }
 

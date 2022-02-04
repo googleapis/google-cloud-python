@@ -13,35 +13,63 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .channel import Channel
+from .channel_connection import ChannelConnection
 from .eventarc import (
+    CreateChannelConnectionRequest,
+    CreateChannelRequest,
     CreateTriggerRequest,
+    DeleteChannelConnectionRequest,
+    DeleteChannelRequest,
     DeleteTriggerRequest,
+    GetChannelConnectionRequest,
+    GetChannelRequest,
     GetTriggerRequest,
+    ListChannelConnectionsRequest,
+    ListChannelConnectionsResponse,
+    ListChannelsRequest,
+    ListChannelsResponse,
     ListTriggersRequest,
     ListTriggersResponse,
     OperationMetadata,
+    UpdateChannelRequest,
     UpdateTriggerRequest,
 )
 from .trigger import (
     CloudRun,
     Destination,
     EventFilter,
+    GKE,
     Pubsub,
     Transport,
     Trigger,
 )
 
 __all__ = (
+    "Channel",
+    "ChannelConnection",
+    "CreateChannelConnectionRequest",
+    "CreateChannelRequest",
     "CreateTriggerRequest",
+    "DeleteChannelConnectionRequest",
+    "DeleteChannelRequest",
     "DeleteTriggerRequest",
+    "GetChannelConnectionRequest",
+    "GetChannelRequest",
     "GetTriggerRequest",
+    "ListChannelConnectionsRequest",
+    "ListChannelConnectionsResponse",
+    "ListChannelsRequest",
+    "ListChannelsResponse",
     "ListTriggersRequest",
     "ListTriggersResponse",
     "OperationMetadata",
+    "UpdateChannelRequest",
     "UpdateTriggerRequest",
     "CloudRun",
     "Destination",
     "EventFilter",
+    "GKE",
     "Pubsub",
     "Transport",
     "Trigger",

@@ -10,9 +10,29 @@
         "grpc": {
           "libraryClient": "EventarcClient",
           "rpcs": {
+            "CreateChannel": {
+              "methods": [
+                "create_channel"
+              ]
+            },
+            "CreateChannelConnection": {
+              "methods": [
+                "create_channel_connection"
+              ]
+            },
             "CreateTrigger": {
               "methods": [
                 "create_trigger"
+              ]
+            },
+            "DeleteChannel": {
+              "methods": [
+                "delete_channel"
+              ]
+            },
+            "DeleteChannelConnection": {
+              "methods": [
+                "delete_channel_connection"
               ]
             },
             "DeleteTrigger": {
@@ -20,14 +40,39 @@
                 "delete_trigger"
               ]
             },
+            "GetChannel": {
+              "methods": [
+                "get_channel"
+              ]
+            },
+            "GetChannelConnection": {
+              "methods": [
+                "get_channel_connection"
+              ]
+            },
             "GetTrigger": {
               "methods": [
                 "get_trigger"
               ]
             },
+            "ListChannelConnections": {
+              "methods": [
+                "list_channel_connections"
+              ]
+            },
+            "ListChannels": {
+              "methods": [
+                "list_channels"
+              ]
+            },
             "ListTriggers": {
               "methods": [
                 "list_triggers"
+              ]
+            },
+            "UpdateChannel": {
+              "methods": [
+                "update_channel"
               ]
             },
             "UpdateTrigger": {
@@ -40,9 +85,29 @@
         "grpc-async": {
           "libraryClient": "EventarcAsyncClient",
           "rpcs": {
+            "CreateChannel": {
+              "methods": [
+                "create_channel"
+              ]
+            },
+            "CreateChannelConnection": {
+              "methods": [
+                "create_channel_connection"
+              ]
+            },
             "CreateTrigger": {
               "methods": [
                 "create_trigger"
+              ]
+            },
+            "DeleteChannel": {
+              "methods": [
+                "delete_channel"
+              ]
+            },
+            "DeleteChannelConnection": {
+              "methods": [
+                "delete_channel_connection"
               ]
             },
             "DeleteTrigger": {
@@ -50,14 +115,39 @@
                 "delete_trigger"
               ]
             },
+            "GetChannel": {
+              "methods": [
+                "get_channel"
+              ]
+            },
+            "GetChannelConnection": {
+              "methods": [
+                "get_channel_connection"
+              ]
+            },
             "GetTrigger": {
               "methods": [
                 "get_trigger"
               ]
             },
+            "ListChannelConnections": {
+              "methods": [
+                "list_channel_connections"
+              ]
+            },
+            "ListChannels": {
+              "methods": [
+                "list_channels"
+              ]
+            },
             "ListTriggers": {
               "methods": [
                 "list_triggers"
+              ]
+            },
+            "UpdateChannel": {
+              "methods": [
+                "update_channel"
               ]
             },
             "UpdateTrigger": {

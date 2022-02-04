@@ -26,6 +26,8 @@ from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.eventarc_v1.types import channel
+from google.cloud.eventarc_v1.types import channel_connection
 from google.cloud.eventarc_v1.types import eventarc
 from google.cloud.eventarc_v1.types import trigger
 from google.longrunning import operations_pb2  # type: ignore
@@ -136,6 +138,41 @@ class EventarcTransport(abc.ABC):
             self.delete_trigger: gapic_v1.method.wrap_method(
                 self.delete_trigger, default_timeout=None, client_info=client_info,
             ),
+            self.get_channel: gapic_v1.method.wrap_method(
+                self.get_channel, default_timeout=None, client_info=client_info,
+            ),
+            self.list_channels: gapic_v1.method.wrap_method(
+                self.list_channels, default_timeout=None, client_info=client_info,
+            ),
+            self.create_channel_: gapic_v1.method.wrap_method(
+                self.create_channel_, default_timeout=None, client_info=client_info,
+            ),
+            self.update_channel: gapic_v1.method.wrap_method(
+                self.update_channel, default_timeout=None, client_info=client_info,
+            ),
+            self.delete_channel: gapic_v1.method.wrap_method(
+                self.delete_channel, default_timeout=None, client_info=client_info,
+            ),
+            self.get_channel_connection: gapic_v1.method.wrap_method(
+                self.get_channel_connection,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_channel_connections: gapic_v1.method.wrap_method(
+                self.list_channel_connections,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_channel_connection: gapic_v1.method.wrap_method(
+                self.create_channel_connection,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_channel_connection: gapic_v1.method.wrap_method(
+                self.delete_channel_connection,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -192,6 +229,92 @@ class EventarcTransport(abc.ABC):
         self,
     ) -> Callable[
         [eventarc.DeleteTriggerRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_channel(
+        self,
+    ) -> Callable[
+        [eventarc.GetChannelRequest], Union[channel.Channel, Awaitable[channel.Channel]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_channels(
+        self,
+    ) -> Callable[
+        [eventarc.ListChannelsRequest],
+        Union[eventarc.ListChannelsResponse, Awaitable[eventarc.ListChannelsResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_channel_(
+        self,
+    ) -> Callable[
+        [eventarc.CreateChannelRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_channel(
+        self,
+    ) -> Callable[
+        [eventarc.UpdateChannelRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_channel(
+        self,
+    ) -> Callable[
+        [eventarc.DeleteChannelRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_channel_connection(
+        self,
+    ) -> Callable[
+        [eventarc.GetChannelConnectionRequest],
+        Union[
+            channel_connection.ChannelConnection,
+            Awaitable[channel_connection.ChannelConnection],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_channel_connections(
+        self,
+    ) -> Callable[
+        [eventarc.ListChannelConnectionsRequest],
+        Union[
+            eventarc.ListChannelConnectionsResponse,
+            Awaitable[eventarc.ListChannelConnectionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_channel_connection(
+        self,
+    ) -> Callable[
+        [eventarc.CreateChannelConnectionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_channel_connection(
+        self,
+    ) -> Callable[
+        [eventarc.DeleteChannelConnectionRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

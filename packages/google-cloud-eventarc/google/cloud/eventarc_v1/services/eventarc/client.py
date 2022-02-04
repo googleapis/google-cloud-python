@@ -37,6 +37,10 @@ except AttributeError:  # pragma: NO COVER
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.eventarc_v1.services.eventarc import pagers
+from google.cloud.eventarc_v1.types import channel
+from google.cloud.eventarc_v1.types import channel as gce_channel
+from google.cloud.eventarc_v1.types import channel_connection
+from google.cloud.eventarc_v1.types import channel_connection as gce_channel_connection
 from google.cloud.eventarc_v1.types import eventarc
 from google.cloud.eventarc_v1.types import trigger
 from google.cloud.eventarc_v1.types import trigger as gce_trigger
@@ -165,6 +169,56 @@ class EventarcClient(metaclass=EventarcClientMeta):
                 instance.
         """
         return self._transport
+
+    @staticmethod
+    def channel_path(project: str, location: str, channel: str,) -> str:
+        """Returns a fully-qualified channel string."""
+        return "projects/{project}/locations/{location}/channels/{channel}".format(
+            project=project, location=location, channel=channel,
+        )
+
+    @staticmethod
+    def parse_channel_path(path: str) -> Dict[str, str]:
+        """Parses a channel path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/channels/(?P<channel>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def channel_connection_path(
+        project: str, location: str, channel_connection: str,
+    ) -> str:
+        """Returns a fully-qualified channel_connection string."""
+        return "projects/{project}/locations/{location}/channelConnections/{channel_connection}".format(
+            project=project, location=location, channel_connection=channel_connection,
+        )
+
+    @staticmethod
+    def parse_channel_connection_path(path: str) -> Dict[str, str]:
+        """Parses a channel_connection path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/channelConnections/(?P<channel_connection>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def cloud_function_path(project: str, location: str, function: str,) -> str:
+        """Returns a fully-qualified cloud_function string."""
+        return "projects/{project}/locations/{location}/functions/{function}".format(
+            project=project, location=location, function=function,
+        )
+
+    @staticmethod
+    def parse_cloud_function_path(path: str) -> Dict[str, str]:
+        """Parses a cloud_function path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/functions/(?P<function>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
 
     @staticmethod
     def service_path() -> str:
@@ -528,11 +582,10 @@ class EventarcClient(metaclass=EventarcClientMeta):
 
         Returns:
             google.cloud.eventarc_v1.services.eventarc.pagers.ListTriggersPager:
-                The response message for the
-                ListTriggers method.
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
+                The response message for the ListTriggers method.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -703,9 +756,9 @@ class EventarcClient(metaclass=EventarcClientMeta):
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 The fields to be updated; only fields explicitly
-                provided will be updated. If no field mask is provided,
-                all provided fields in the request will be updated. To
-                update all fields, provide a field mask of "*".
+                provided are updated. If no field mask is provided, all
+                provided fields in the request are updated. To update
+                all fields, provide a field mask of "*".
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -871,6 +924,797 @@ class EventarcClient(metaclass=EventarcClientMeta):
             response,
             self._transport.operations_client,
             trigger.Trigger,
+            metadata_type=eventarc.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_channel(
+        self,
+        request: Union[eventarc.GetChannelRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> channel.Channel:
+        r"""Get a single Channel.
+
+        Args:
+            request (Union[google.cloud.eventarc_v1.types.GetChannelRequest, dict]):
+                The request object. The request message for the
+                GetChannel method.
+            name (str):
+                Required. The name of the channel to
+                get.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.eventarc_v1.types.Channel:
+                A representation of the Channel
+                resource. A Channel is a resource on
+                which event providers publish their
+                events. The published events are
+                delivered through the transport
+                associated with the channel. Note that a
+                channel is associated with exactly one
+                event provider.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a eventarc.GetChannelRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, eventarc.GetChannelRequest):
+            request = eventarc.GetChannelRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_channel]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def list_channels(
+        self,
+        request: Union[eventarc.ListChannelsRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListChannelsPager:
+        r"""List channels.
+
+        Args:
+            request (Union[google.cloud.eventarc_v1.types.ListChannelsRequest, dict]):
+                The request object. The request message for the
+                ListChannels method.
+            parent (str):
+                Required. The parent collection to
+                list channels on.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.eventarc_v1.services.eventarc.pagers.ListChannelsPager:
+                The response message for the ListChannels method.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a eventarc.ListChannelsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, eventarc.ListChannelsRequest):
+            request = eventarc.ListChannelsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_channels]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListChannelsPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_channel(
+        self,
+        request: Union[eventarc.CreateChannelRequest, dict] = None,
+        *,
+        parent: str = None,
+        channel: gce_channel.Channel = None,
+        channel_id: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Create a new channel in a particular project and
+        location.
+
+        Args:
+            request (Union[google.cloud.eventarc_v1.types.CreateChannelRequest, dict]):
+                The request object. The request message for the
+                CreateChannel method.
+            parent (str):
+                Required. The parent collection in
+                which to add this channel.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            channel (google.cloud.eventarc_v1.types.Channel):
+                Required. The channel to create.
+                This corresponds to the ``channel`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            channel_id (str):
+                Required. The user-provided ID to be
+                assigned to the channel.
+
+                This corresponds to the ``channel_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.eventarc_v1.types.Channel` A representation of the Channel resource.
+                   A Channel is a resource on which event providers
+                   publish their events. The published events are
+                   delivered through the transport associated with the
+                   channel. Note that a channel is associated with
+                   exactly one event provider.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, channel, channel_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a eventarc.CreateChannelRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, eventarc.CreateChannelRequest):
+            request = eventarc.CreateChannelRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if channel is not None:
+                request.channel = channel
+            if channel_id is not None:
+                request.channel_id = channel_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_channel_]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            gce_channel.Channel,
+            metadata_type=eventarc.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_channel(
+        self,
+        request: Union[eventarc.UpdateChannelRequest, dict] = None,
+        *,
+        channel: gce_channel.Channel = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Update a single channel.
+
+        Args:
+            request (Union[google.cloud.eventarc_v1.types.UpdateChannelRequest, dict]):
+                The request object. The request message for the
+                UpdateChannel method.
+            channel (google.cloud.eventarc_v1.types.Channel):
+                The channel to be updated.
+                This corresponds to the ``channel`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                The fields to be updated; only fields explicitly
+                provided are updated. If no field mask is provided, all
+                provided fields in the request are updated. To update
+                all fields, provide a field mask of "*".
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.eventarc_v1.types.Channel` A representation of the Channel resource.
+                   A Channel is a resource on which event providers
+                   publish their events. The published events are
+                   delivered through the transport associated with the
+                   channel. Note that a channel is associated with
+                   exactly one event provider.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([channel, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a eventarc.UpdateChannelRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, eventarc.UpdateChannelRequest):
+            request = eventarc.UpdateChannelRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if channel is not None:
+                request.channel = channel
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_channel]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("channel.name", request.channel.name),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            gce_channel.Channel,
+            metadata_type=eventarc.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_channel(
+        self,
+        request: Union[eventarc.DeleteChannelRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Delete a single channel.
+
+        Args:
+            request (Union[google.cloud.eventarc_v1.types.DeleteChannelRequest, dict]):
+                The request object. The request message for the
+                DeleteChannel method.
+            name (str):
+                Required. The name of the channel to
+                be deleted.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.eventarc_v1.types.Channel` A representation of the Channel resource.
+                   A Channel is a resource on which event providers
+                   publish their events. The published events are
+                   delivered through the transport associated with the
+                   channel. Note that a channel is associated with
+                   exactly one event provider.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a eventarc.DeleteChannelRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, eventarc.DeleteChannelRequest):
+            request = eventarc.DeleteChannelRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_channel]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            channel.Channel,
+            metadata_type=eventarc.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_channel_connection(
+        self,
+        request: Union[eventarc.GetChannelConnectionRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> channel_connection.ChannelConnection:
+        r"""Get a single ChannelConnection.
+
+        Args:
+            request (Union[google.cloud.eventarc_v1.types.GetChannelConnectionRequest, dict]):
+                The request object. The request message for the
+                GetChannelConnection method.
+            name (str):
+                Required. The name of the channel
+                connection to get.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.eventarc_v1.types.ChannelConnection:
+                A representation of the
+                ChannelConnection resource. A
+                ChannelConnection is a resource which
+                event providers create during the
+                activation process to establish a
+                connection between the provider and the
+                subscriber channel.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a eventarc.GetChannelConnectionRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, eventarc.GetChannelConnectionRequest):
+            request = eventarc.GetChannelConnectionRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_channel_connection]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def list_channel_connections(
+        self,
+        request: Union[eventarc.ListChannelConnectionsRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListChannelConnectionsPager:
+        r"""List channel connections.
+
+        Args:
+            request (Union[google.cloud.eventarc_v1.types.ListChannelConnectionsRequest, dict]):
+                The request object. The request message for the
+                ListChannelConnections method.
+            parent (str):
+                Required. The parent collection from
+                which to list channel connections.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.eventarc_v1.services.eventarc.pagers.ListChannelConnectionsPager:
+                The response message for the ListChannelConnections
+                method.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a eventarc.ListChannelConnectionsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, eventarc.ListChannelConnectionsRequest):
+            request = eventarc.ListChannelConnectionsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_channel_connections]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListChannelConnectionsPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_channel_connection(
+        self,
+        request: Union[eventarc.CreateChannelConnectionRequest, dict] = None,
+        *,
+        parent: str = None,
+        channel_connection: gce_channel_connection.ChannelConnection = None,
+        channel_connection_id: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Create a new ChannelConnection in a particular
+        project and location.
+
+        Args:
+            request (Union[google.cloud.eventarc_v1.types.CreateChannelConnectionRequest, dict]):
+                The request object. The request message for the
+                CreateChannelConnection method.
+            parent (str):
+                Required. The parent collection in
+                which to add this channel connection.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            channel_connection (google.cloud.eventarc_v1.types.ChannelConnection):
+                Required. Channel connection to
+                create.
+
+                This corresponds to the ``channel_connection`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            channel_connection_id (str):
+                Required. The user-provided ID to be
+                assigned to the channel connection.
+
+                This corresponds to the ``channel_connection_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.eventarc_v1.types.ChannelConnection` A representation of the ChannelConnection resource.
+                   A ChannelConnection is a resource which event
+                   providers create during the activation process to
+                   establish a connection between the provider and the
+                   subscriber channel.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, channel_connection, channel_connection_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a eventarc.CreateChannelConnectionRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, eventarc.CreateChannelConnectionRequest):
+            request = eventarc.CreateChannelConnectionRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if channel_connection is not None:
+                request.channel_connection = channel_connection
+            if channel_connection_id is not None:
+                request.channel_connection_id = channel_connection_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.create_channel_connection
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            gce_channel_connection.ChannelConnection,
+            metadata_type=eventarc.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_channel_connection(
+        self,
+        request: Union[eventarc.DeleteChannelConnectionRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Delete a single ChannelConnection.
+
+        Args:
+            request (Union[google.cloud.eventarc_v1.types.DeleteChannelConnectionRequest, dict]):
+                The request object. The request message for the
+                DeleteChannelConnection method.
+            name (str):
+                Required. The name of the channel
+                connection to delete.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.eventarc_v1.types.ChannelConnection` A representation of the ChannelConnection resource.
+                   A ChannelConnection is a resource which event
+                   providers create during the activation process to
+                   establish a connection between the provider and the
+                   subscriber channel.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a eventarc.DeleteChannelConnectionRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, eventarc.DeleteChannelConnectionRequest):
+            request = eventarc.DeleteChannelConnectionRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.delete_channel_connection
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            channel_connection.ChannelConnection,
             metadata_type=eventarc.OperationMetadata,
         )
 

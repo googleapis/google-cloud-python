@@ -25,6 +25,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
+from google.cloud.eventarc_v1.types import channel
+from google.cloud.eventarc_v1.types import channel_connection
 from google.cloud.eventarc_v1.types import eventarc
 from google.cloud.eventarc_v1.types import trigger
 from google.longrunning import operations_pb2  # type: ignore
@@ -384,6 +386,254 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_trigger"]
+
+    @property
+    def get_channel(
+        self,
+    ) -> Callable[[eventarc.GetChannelRequest], Awaitable[channel.Channel]]:
+        r"""Return a callable for the get channel method over gRPC.
+
+        Get a single Channel.
+
+        Returns:
+            Callable[[~.GetChannelRequest],
+                    Awaitable[~.Channel]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_channel" not in self._stubs:
+            self._stubs["get_channel"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/GetChannel",
+                request_serializer=eventarc.GetChannelRequest.serialize,
+                response_deserializer=channel.Channel.deserialize,
+            )
+        return self._stubs["get_channel"]
+
+    @property
+    def list_channels(
+        self,
+    ) -> Callable[
+        [eventarc.ListChannelsRequest], Awaitable[eventarc.ListChannelsResponse]
+    ]:
+        r"""Return a callable for the list channels method over gRPC.
+
+        List channels.
+
+        Returns:
+            Callable[[~.ListChannelsRequest],
+                    Awaitable[~.ListChannelsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_channels" not in self._stubs:
+            self._stubs["list_channels"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/ListChannels",
+                request_serializer=eventarc.ListChannelsRequest.serialize,
+                response_deserializer=eventarc.ListChannelsResponse.deserialize,
+            )
+        return self._stubs["list_channels"]
+
+    @property
+    def create_channel_(
+        self,
+    ) -> Callable[[eventarc.CreateChannelRequest], Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the create channel method over gRPC.
+
+        Create a new channel in a particular project and
+        location.
+
+        Returns:
+            Callable[[~.CreateChannelRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_channel_" not in self._stubs:
+            self._stubs["create_channel_"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/CreateChannel",
+                request_serializer=eventarc.CreateChannelRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_channel_"]
+
+    @property
+    def update_channel(
+        self,
+    ) -> Callable[[eventarc.UpdateChannelRequest], Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the update channel method over gRPC.
+
+        Update a single channel.
+
+        Returns:
+            Callable[[~.UpdateChannelRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_channel" not in self._stubs:
+            self._stubs["update_channel"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/UpdateChannel",
+                request_serializer=eventarc.UpdateChannelRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_channel"]
+
+    @property
+    def delete_channel(
+        self,
+    ) -> Callable[[eventarc.DeleteChannelRequest], Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the delete channel method over gRPC.
+
+        Delete a single channel.
+
+        Returns:
+            Callable[[~.DeleteChannelRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_channel" not in self._stubs:
+            self._stubs["delete_channel"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/DeleteChannel",
+                request_serializer=eventarc.DeleteChannelRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_channel"]
+
+    @property
+    def get_channel_connection(
+        self,
+    ) -> Callable[
+        [eventarc.GetChannelConnectionRequest],
+        Awaitable[channel_connection.ChannelConnection],
+    ]:
+        r"""Return a callable for the get channel connection method over gRPC.
+
+        Get a single ChannelConnection.
+
+        Returns:
+            Callable[[~.GetChannelConnectionRequest],
+                    Awaitable[~.ChannelConnection]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_channel_connection" not in self._stubs:
+            self._stubs["get_channel_connection"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/GetChannelConnection",
+                request_serializer=eventarc.GetChannelConnectionRequest.serialize,
+                response_deserializer=channel_connection.ChannelConnection.deserialize,
+            )
+        return self._stubs["get_channel_connection"]
+
+    @property
+    def list_channel_connections(
+        self,
+    ) -> Callable[
+        [eventarc.ListChannelConnectionsRequest],
+        Awaitable[eventarc.ListChannelConnectionsResponse],
+    ]:
+        r"""Return a callable for the list channel connections method over gRPC.
+
+        List channel connections.
+
+        Returns:
+            Callable[[~.ListChannelConnectionsRequest],
+                    Awaitable[~.ListChannelConnectionsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_channel_connections" not in self._stubs:
+            self._stubs["list_channel_connections"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/ListChannelConnections",
+                request_serializer=eventarc.ListChannelConnectionsRequest.serialize,
+                response_deserializer=eventarc.ListChannelConnectionsResponse.deserialize,
+            )
+        return self._stubs["list_channel_connections"]
+
+    @property
+    def create_channel_connection(
+        self,
+    ) -> Callable[
+        [eventarc.CreateChannelConnectionRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the create channel connection method over gRPC.
+
+        Create a new ChannelConnection in a particular
+        project and location.
+
+        Returns:
+            Callable[[~.CreateChannelConnectionRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_channel_connection" not in self._stubs:
+            self._stubs["create_channel_connection"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/CreateChannelConnection",
+                request_serializer=eventarc.CreateChannelConnectionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_channel_connection"]
+
+    @property
+    def delete_channel_connection(
+        self,
+    ) -> Callable[
+        [eventarc.DeleteChannelConnectionRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the delete channel connection method over gRPC.
+
+        Delete a single ChannelConnection.
+
+        Returns:
+            Callable[[~.DeleteChannelConnectionRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_channel_connection" not in self._stubs:
+            self._stubs["delete_channel_connection"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.v1.Eventarc/DeleteChannelConnection",
+                request_serializer=eventarc.DeleteChannelConnectionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_channel_connection"]
 
     def close(self):
         return self.grpc_channel.close()

@@ -39,6 +39,10 @@ from google.cloud.eventarc_v1.services.eventarc import EventarcAsyncClient
 from google.cloud.eventarc_v1.services.eventarc import EventarcClient
 from google.cloud.eventarc_v1.services.eventarc import pagers
 from google.cloud.eventarc_v1.services.eventarc import transports
+from google.cloud.eventarc_v1.types import channel
+from google.cloud.eventarc_v1.types import channel as gce_channel
+from google.cloud.eventarc_v1.types import channel_connection
+from google.cloud.eventarc_v1.types import channel_connection as gce_channel_connection
 from google.cloud.eventarc_v1.types import eventarc
 from google.cloud.eventarc_v1.types import trigger
 from google.cloud.eventarc_v1.types import trigger as gce_trigger
@@ -618,6 +622,7 @@ def test_get_trigger(request_type, transport: str = "grpc"):
             name="name_value",
             uid="uid_value",
             service_account="service_account_value",
+            channel="channel_value",
             etag="etag_value",
         )
         response = client.get_trigger(request)
@@ -632,6 +637,7 @@ def test_get_trigger(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.uid == "uid_value"
     assert response.service_account == "service_account_value"
+    assert response.channel == "channel_value"
     assert response.etag == "etag_value"
 
 
@@ -670,6 +676,7 @@ async def test_get_trigger_async(
                 name="name_value",
                 uid="uid_value",
                 service_account="service_account_value",
+                channel="channel_value",
                 etag="etag_value",
             )
         )
@@ -685,6 +692,7 @@ async def test_get_trigger_async(
     assert response.name == "name_value"
     assert response.uid == "uid_value"
     assert response.service_account == "service_account_value"
+    assert response.channel == "channel_value"
     assert response.etag == "etag_value"
 
 
@@ -1779,6 +1787,2244 @@ async def test_delete_trigger_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize("request_type", [eventarc.GetChannelRequest, dict,])
+def test_get_channel(request_type, transport: str = "grpc"):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_channel), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = channel.Channel(
+            name="name_value",
+            uid="uid_value",
+            provider="provider_value",
+            state=channel.Channel.State.PENDING,
+            activation_token="activation_token_value",
+            pubsub_topic="pubsub_topic_value",
+        )
+        response = client.get_channel(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.GetChannelRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, channel.Channel)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.provider == "provider_value"
+    assert response.state == channel.Channel.State.PENDING
+    assert response.activation_token == "activation_token_value"
+
+
+def test_get_channel_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_channel), "__call__") as call:
+        client.get_channel()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.GetChannelRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_channel_async(
+    transport: str = "grpc_asyncio", request_type=eventarc.GetChannelRequest
+):
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_channel), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            channel.Channel(
+                name="name_value",
+                uid="uid_value",
+                provider="provider_value",
+                state=channel.Channel.State.PENDING,
+                activation_token="activation_token_value",
+            )
+        )
+        response = await client.get_channel(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.GetChannelRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, channel.Channel)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.provider == "provider_value"
+    assert response.state == channel.Channel.State.PENDING
+    assert response.activation_token == "activation_token_value"
+
+
+@pytest.mark.asyncio
+async def test_get_channel_async_from_dict():
+    await test_get_channel_async(request_type=dict)
+
+
+def test_get_channel_field_headers():
+    client = EventarcClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.GetChannelRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_channel), "__call__") as call:
+        call.return_value = channel.Channel()
+        client.get_channel(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_channel_field_headers_async():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.GetChannelRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_channel), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(channel.Channel())
+        await client.get_channel(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_get_channel_flattened():
+    client = EventarcClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_channel), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = channel.Channel()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_channel(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_channel_flattened_error():
+    client = EventarcClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_channel(
+            eventarc.GetChannelRequest(), name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_channel_flattened_async():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_channel), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = channel.Channel()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(channel.Channel())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_channel(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_channel_flattened_error_async():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_channel(
+            eventarc.GetChannelRequest(), name="name_value",
+        )
+
+
+@pytest.mark.parametrize("request_type", [eventarc.ListChannelsRequest, dict,])
+def test_list_channels(request_type, transport: str = "grpc"):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_channels), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = eventarc.ListChannelsResponse(
+            next_page_token="next_page_token_value", unreachable=["unreachable_value"],
+        )
+        response = client.list_channels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.ListChannelsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListChannelsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_channels_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_channels), "__call__") as call:
+        client.list_channels()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.ListChannelsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_channels_async(
+    transport: str = "grpc_asyncio", request_type=eventarc.ListChannelsRequest
+):
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_channels), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            eventarc.ListChannelsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_channels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.ListChannelsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListChannelsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.asyncio
+async def test_list_channels_async_from_dict():
+    await test_list_channels_async(request_type=dict)
+
+
+def test_list_channels_field_headers():
+    client = EventarcClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.ListChannelsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_channels), "__call__") as call:
+        call.return_value = eventarc.ListChannelsResponse()
+        client.list_channels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_channels_field_headers_async():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.ListChannelsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_channels), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            eventarc.ListChannelsResponse()
+        )
+        await client.list_channels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+def test_list_channels_flattened():
+    client = EventarcClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_channels), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = eventarc.ListChannelsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_channels(parent="parent_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_channels_flattened_error():
+    client = EventarcClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_channels(
+            eventarc.ListChannelsRequest(), parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_channels_flattened_async():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_channels), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = eventarc.ListChannelsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            eventarc.ListChannelsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_channels(parent="parent_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_channels_flattened_error_async():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_channels(
+            eventarc.ListChannelsRequest(), parent="parent_value",
+        )
+
+
+def test_list_channels_pager(transport_name: str = "grpc"):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_channels), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            eventarc.ListChannelsResponse(
+                channels=[channel.Channel(), channel.Channel(), channel.Channel(),],
+                next_page_token="abc",
+            ),
+            eventarc.ListChannelsResponse(channels=[], next_page_token="def",),
+            eventarc.ListChannelsResponse(
+                channels=[channel.Channel(),], next_page_token="ghi",
+            ),
+            eventarc.ListChannelsResponse(
+                channels=[channel.Channel(), channel.Channel(),],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_channels(request={})
+
+        assert pager._metadata == metadata
+
+        results = [i for i in pager]
+        assert len(results) == 6
+        assert all(isinstance(i, channel.Channel) for i in results)
+
+
+def test_list_channels_pages(transport_name: str = "grpc"):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_channels), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            eventarc.ListChannelsResponse(
+                channels=[channel.Channel(), channel.Channel(), channel.Channel(),],
+                next_page_token="abc",
+            ),
+            eventarc.ListChannelsResponse(channels=[], next_page_token="def",),
+            eventarc.ListChannelsResponse(
+                channels=[channel.Channel(),], next_page_token="ghi",
+            ),
+            eventarc.ListChannelsResponse(
+                channels=[channel.Channel(), channel.Channel(),],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_channels(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_channels_async_pager():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channels), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            eventarc.ListChannelsResponse(
+                channels=[channel.Channel(), channel.Channel(), channel.Channel(),],
+                next_page_token="abc",
+            ),
+            eventarc.ListChannelsResponse(channels=[], next_page_token="def",),
+            eventarc.ListChannelsResponse(
+                channels=[channel.Channel(),], next_page_token="ghi",
+            ),
+            eventarc.ListChannelsResponse(
+                channels=[channel.Channel(), channel.Channel(),],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_channels(request={},)
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, channel.Channel) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_channels_async_pages():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channels), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            eventarc.ListChannelsResponse(
+                channels=[channel.Channel(), channel.Channel(), channel.Channel(),],
+                next_page_token="abc",
+            ),
+            eventarc.ListChannelsResponse(channels=[], next_page_token="def",),
+            eventarc.ListChannelsResponse(
+                channels=[channel.Channel(),], next_page_token="ghi",
+            ),
+            eventarc.ListChannelsResponse(
+                channels=[channel.Channel(), channel.Channel(),],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (await client.list_channels(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize("request_type", [eventarc.CreateChannelRequest, dict,])
+def test_create_channel(request_type, transport: str = "grpc"):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_channel_), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.create_channel(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.CreateChannelRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_create_channel_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_channel_), "__call__") as call:
+        client.create_channel()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.CreateChannelRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_channel_async(
+    transport: str = "grpc_asyncio", request_type=eventarc.CreateChannelRequest
+):
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_channel_), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_channel(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.CreateChannelRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_create_channel_async_from_dict():
+    await test_create_channel_async(request_type=dict)
+
+
+def test_create_channel_field_headers():
+    client = EventarcClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.CreateChannelRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_channel_), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_channel(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_channel_field_headers_async():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.CreateChannelRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_channel_), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.create_channel(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+def test_create_channel_flattened():
+    client = EventarcClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_channel_), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_channel(
+            parent="parent_value",
+            channel=gce_channel.Channel(name="name_value"),
+            channel_id="channel_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].channel
+        mock_val = gce_channel.Channel(name="name_value")
+        assert arg == mock_val
+        arg = args[0].channel_id
+        mock_val = "channel_id_value"
+        assert arg == mock_val
+
+
+def test_create_channel_flattened_error():
+    client = EventarcClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_channel(
+            eventarc.CreateChannelRequest(),
+            parent="parent_value",
+            channel=gce_channel.Channel(name="name_value"),
+            channel_id="channel_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_channel_flattened_async():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_channel_), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_channel(
+            parent="parent_value",
+            channel=gce_channel.Channel(name="name_value"),
+            channel_id="channel_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].channel
+        mock_val = gce_channel.Channel(name="name_value")
+        assert arg == mock_val
+        arg = args[0].channel_id
+        mock_val = "channel_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_channel_flattened_error_async():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_channel(
+            eventarc.CreateChannelRequest(),
+            parent="parent_value",
+            channel=gce_channel.Channel(name="name_value"),
+            channel_id="channel_id_value",
+        )
+
+
+@pytest.mark.parametrize("request_type", [eventarc.UpdateChannelRequest, dict,])
+def test_update_channel(request_type, transport: str = "grpc"):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_channel), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.update_channel(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.UpdateChannelRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_update_channel_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_channel), "__call__") as call:
+        client.update_channel()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.UpdateChannelRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_channel_async(
+    transport: str = "grpc_asyncio", request_type=eventarc.UpdateChannelRequest
+):
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_channel), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_channel(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.UpdateChannelRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_update_channel_async_from_dict():
+    await test_update_channel_async(request_type=dict)
+
+
+def test_update_channel_field_headers():
+    client = EventarcClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.UpdateChannelRequest()
+
+    request.channel.name = "channel.name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_channel), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_channel(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "channel.name=channel.name/value",) in kw[
+        "metadata"
+    ]
+
+
+@pytest.mark.asyncio
+async def test_update_channel_field_headers_async():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.UpdateChannelRequest()
+
+    request.channel.name = "channel.name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_channel), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.update_channel(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "channel.name=channel.name/value",) in kw[
+        "metadata"
+    ]
+
+
+def test_update_channel_flattened():
+    client = EventarcClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_channel), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_channel(
+            channel=gce_channel.Channel(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].channel
+        mock_val = gce_channel.Channel(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_channel_flattened_error():
+    client = EventarcClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_channel(
+            eventarc.UpdateChannelRequest(),
+            channel=gce_channel.Channel(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_channel_flattened_async():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_channel), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_channel(
+            channel=gce_channel.Channel(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].channel
+        mock_val = gce_channel.Channel(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_channel_flattened_error_async():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_channel(
+            eventarc.UpdateChannelRequest(),
+            channel=gce_channel.Channel(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize("request_type", [eventarc.DeleteChannelRequest, dict,])
+def test_delete_channel(request_type, transport: str = "grpc"):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_channel), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.delete_channel(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.DeleteChannelRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_delete_channel_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_channel), "__call__") as call:
+        client.delete_channel()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.DeleteChannelRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_channel_async(
+    transport: str = "grpc_asyncio", request_type=eventarc.DeleteChannelRequest
+):
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_channel), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_channel(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.DeleteChannelRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_channel_async_from_dict():
+    await test_delete_channel_async(request_type=dict)
+
+
+def test_delete_channel_field_headers():
+    client = EventarcClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.DeleteChannelRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_channel), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_channel(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_channel_field_headers_async():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.DeleteChannelRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_channel), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.delete_channel(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_delete_channel_flattened():
+    client = EventarcClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_channel), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_channel(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_channel_flattened_error():
+    client = EventarcClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_channel(
+            eventarc.DeleteChannelRequest(), name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_channel_flattened_async():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_channel), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_channel(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_channel_flattened_error_async():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_channel(
+            eventarc.DeleteChannelRequest(), name="name_value",
+        )
+
+
+@pytest.mark.parametrize("request_type", [eventarc.GetChannelConnectionRequest, dict,])
+def test_get_channel_connection(request_type, transport: str = "grpc"):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_channel_connection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = channel_connection.ChannelConnection(
+            name="name_value",
+            uid="uid_value",
+            channel="channel_value",
+            activation_token="activation_token_value",
+        )
+        response = client.get_channel_connection(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.GetChannelConnectionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, channel_connection.ChannelConnection)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.channel == "channel_value"
+    assert response.activation_token == "activation_token_value"
+
+
+def test_get_channel_connection_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_channel_connection), "__call__"
+    ) as call:
+        client.get_channel_connection()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.GetChannelConnectionRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_channel_connection_async(
+    transport: str = "grpc_asyncio", request_type=eventarc.GetChannelConnectionRequest
+):
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_channel_connection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            channel_connection.ChannelConnection(
+                name="name_value",
+                uid="uid_value",
+                channel="channel_value",
+                activation_token="activation_token_value",
+            )
+        )
+        response = await client.get_channel_connection(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.GetChannelConnectionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, channel_connection.ChannelConnection)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.channel == "channel_value"
+    assert response.activation_token == "activation_token_value"
+
+
+@pytest.mark.asyncio
+async def test_get_channel_connection_async_from_dict():
+    await test_get_channel_connection_async(request_type=dict)
+
+
+def test_get_channel_connection_field_headers():
+    client = EventarcClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.GetChannelConnectionRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_channel_connection), "__call__"
+    ) as call:
+        call.return_value = channel_connection.ChannelConnection()
+        client.get_channel_connection(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_channel_connection_field_headers_async():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.GetChannelConnectionRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_channel_connection), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            channel_connection.ChannelConnection()
+        )
+        await client.get_channel_connection(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_get_channel_connection_flattened():
+    client = EventarcClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_channel_connection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = channel_connection.ChannelConnection()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_channel_connection(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_channel_connection_flattened_error():
+    client = EventarcClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_channel_connection(
+            eventarc.GetChannelConnectionRequest(), name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_channel_connection_flattened_async():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_channel_connection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = channel_connection.ChannelConnection()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            channel_connection.ChannelConnection()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_channel_connection(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_channel_connection_flattened_error_async():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_channel_connection(
+            eventarc.GetChannelConnectionRequest(), name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type", [eventarc.ListChannelConnectionsRequest, dict,]
+)
+def test_list_channel_connections(request_type, transport: str = "grpc"):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_connections), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = eventarc.ListChannelConnectionsResponse(
+            next_page_token="next_page_token_value", unreachable=["unreachable_value"],
+        )
+        response = client.list_channel_connections(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.ListChannelConnectionsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListChannelConnectionsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_channel_connections_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_connections), "__call__"
+    ) as call:
+        client.list_channel_connections()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.ListChannelConnectionsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_channel_connections_async(
+    transport: str = "grpc_asyncio", request_type=eventarc.ListChannelConnectionsRequest
+):
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_connections), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            eventarc.ListChannelConnectionsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_channel_connections(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.ListChannelConnectionsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListChannelConnectionsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.asyncio
+async def test_list_channel_connections_async_from_dict():
+    await test_list_channel_connections_async(request_type=dict)
+
+
+def test_list_channel_connections_field_headers():
+    client = EventarcClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.ListChannelConnectionsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_connections), "__call__"
+    ) as call:
+        call.return_value = eventarc.ListChannelConnectionsResponse()
+        client.list_channel_connections(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_channel_connections_field_headers_async():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.ListChannelConnectionsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_connections), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            eventarc.ListChannelConnectionsResponse()
+        )
+        await client.list_channel_connections(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+def test_list_channel_connections_flattened():
+    client = EventarcClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_connections), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = eventarc.ListChannelConnectionsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_channel_connections(parent="parent_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_channel_connections_flattened_error():
+    client = EventarcClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_channel_connections(
+            eventarc.ListChannelConnectionsRequest(), parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_channel_connections_flattened_async():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_connections), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = eventarc.ListChannelConnectionsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            eventarc.ListChannelConnectionsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_channel_connections(parent="parent_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_channel_connections_flattened_error_async():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_channel_connections(
+            eventarc.ListChannelConnectionsRequest(), parent="parent_value",
+        )
+
+
+def test_list_channel_connections_pager(transport_name: str = "grpc"):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_connections), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            eventarc.ListChannelConnectionsResponse(
+                channel_connections=[
+                    channel_connection.ChannelConnection(),
+                    channel_connection.ChannelConnection(),
+                    channel_connection.ChannelConnection(),
+                ],
+                next_page_token="abc",
+            ),
+            eventarc.ListChannelConnectionsResponse(
+                channel_connections=[], next_page_token="def",
+            ),
+            eventarc.ListChannelConnectionsResponse(
+                channel_connections=[channel_connection.ChannelConnection(),],
+                next_page_token="ghi",
+            ),
+            eventarc.ListChannelConnectionsResponse(
+                channel_connections=[
+                    channel_connection.ChannelConnection(),
+                    channel_connection.ChannelConnection(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_channel_connections(request={})
+
+        assert pager._metadata == metadata
+
+        results = [i for i in pager]
+        assert len(results) == 6
+        assert all(isinstance(i, channel_connection.ChannelConnection) for i in results)
+
+
+def test_list_channel_connections_pages(transport_name: str = "grpc"):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_connections), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            eventarc.ListChannelConnectionsResponse(
+                channel_connections=[
+                    channel_connection.ChannelConnection(),
+                    channel_connection.ChannelConnection(),
+                    channel_connection.ChannelConnection(),
+                ],
+                next_page_token="abc",
+            ),
+            eventarc.ListChannelConnectionsResponse(
+                channel_connections=[], next_page_token="def",
+            ),
+            eventarc.ListChannelConnectionsResponse(
+                channel_connections=[channel_connection.ChannelConnection(),],
+                next_page_token="ghi",
+            ),
+            eventarc.ListChannelConnectionsResponse(
+                channel_connections=[
+                    channel_connection.ChannelConnection(),
+                    channel_connection.ChannelConnection(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_channel_connections(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_channel_connections_async_pager():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_connections),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            eventarc.ListChannelConnectionsResponse(
+                channel_connections=[
+                    channel_connection.ChannelConnection(),
+                    channel_connection.ChannelConnection(),
+                    channel_connection.ChannelConnection(),
+                ],
+                next_page_token="abc",
+            ),
+            eventarc.ListChannelConnectionsResponse(
+                channel_connections=[], next_page_token="def",
+            ),
+            eventarc.ListChannelConnectionsResponse(
+                channel_connections=[channel_connection.ChannelConnection(),],
+                next_page_token="ghi",
+            ),
+            eventarc.ListChannelConnectionsResponse(
+                channel_connections=[
+                    channel_connection.ChannelConnection(),
+                    channel_connection.ChannelConnection(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_channel_connections(request={},)
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(i, channel_connection.ChannelConnection) for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_channel_connections_async_pages():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_connections),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            eventarc.ListChannelConnectionsResponse(
+                channel_connections=[
+                    channel_connection.ChannelConnection(),
+                    channel_connection.ChannelConnection(),
+                    channel_connection.ChannelConnection(),
+                ],
+                next_page_token="abc",
+            ),
+            eventarc.ListChannelConnectionsResponse(
+                channel_connections=[], next_page_token="def",
+            ),
+            eventarc.ListChannelConnectionsResponse(
+                channel_connections=[channel_connection.ChannelConnection(),],
+                next_page_token="ghi",
+            ),
+            eventarc.ListChannelConnectionsResponse(
+                channel_connections=[
+                    channel_connection.ChannelConnection(),
+                    channel_connection.ChannelConnection(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (await client.list_channel_connections(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type", [eventarc.CreateChannelConnectionRequest, dict,]
+)
+def test_create_channel_connection(request_type, transport: str = "grpc"):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_channel_connection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.create_channel_connection(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.CreateChannelConnectionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_create_channel_connection_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_channel_connection), "__call__"
+    ) as call:
+        client.create_channel_connection()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.CreateChannelConnectionRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_channel_connection_async(
+    transport: str = "grpc_asyncio",
+    request_type=eventarc.CreateChannelConnectionRequest,
+):
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_channel_connection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_channel_connection(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.CreateChannelConnectionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_create_channel_connection_async_from_dict():
+    await test_create_channel_connection_async(request_type=dict)
+
+
+def test_create_channel_connection_field_headers():
+    client = EventarcClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.CreateChannelConnectionRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_channel_connection), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_channel_connection(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_channel_connection_field_headers_async():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.CreateChannelConnectionRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_channel_connection), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.create_channel_connection(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+def test_create_channel_connection_flattened():
+    client = EventarcClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_channel_connection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_channel_connection(
+            parent="parent_value",
+            channel_connection=gce_channel_connection.ChannelConnection(
+                name="name_value"
+            ),
+            channel_connection_id="channel_connection_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].channel_connection
+        mock_val = gce_channel_connection.ChannelConnection(name="name_value")
+        assert arg == mock_val
+        arg = args[0].channel_connection_id
+        mock_val = "channel_connection_id_value"
+        assert arg == mock_val
+
+
+def test_create_channel_connection_flattened_error():
+    client = EventarcClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_channel_connection(
+            eventarc.CreateChannelConnectionRequest(),
+            parent="parent_value",
+            channel_connection=gce_channel_connection.ChannelConnection(
+                name="name_value"
+            ),
+            channel_connection_id="channel_connection_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_channel_connection_flattened_async():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_channel_connection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_channel_connection(
+            parent="parent_value",
+            channel_connection=gce_channel_connection.ChannelConnection(
+                name="name_value"
+            ),
+            channel_connection_id="channel_connection_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].channel_connection
+        mock_val = gce_channel_connection.ChannelConnection(name="name_value")
+        assert arg == mock_val
+        arg = args[0].channel_connection_id
+        mock_val = "channel_connection_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_channel_connection_flattened_error_async():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_channel_connection(
+            eventarc.CreateChannelConnectionRequest(),
+            parent="parent_value",
+            channel_connection=gce_channel_connection.ChannelConnection(
+                name="name_value"
+            ),
+            channel_connection_id="channel_connection_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type", [eventarc.DeleteChannelConnectionRequest, dict,]
+)
+def test_delete_channel_connection(request_type, transport: str = "grpc"):
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_channel_connection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.delete_channel_connection(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.DeleteChannelConnectionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_delete_channel_connection_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EventarcClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_channel_connection), "__call__"
+    ) as call:
+        client.delete_channel_connection()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.DeleteChannelConnectionRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_channel_connection_async(
+    transport: str = "grpc_asyncio",
+    request_type=eventarc.DeleteChannelConnectionRequest,
+):
+    client = EventarcAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_channel_connection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_channel_connection(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == eventarc.DeleteChannelConnectionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_channel_connection_async_from_dict():
+    await test_delete_channel_connection_async(request_type=dict)
+
+
+def test_delete_channel_connection_field_headers():
+    client = EventarcClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.DeleteChannelConnectionRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_channel_connection), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_channel_connection(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_channel_connection_field_headers_async():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = eventarc.DeleteChannelConnectionRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_channel_connection), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.delete_channel_connection(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_delete_channel_connection_flattened():
+    client = EventarcClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_channel_connection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_channel_connection(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_channel_connection_flattened_error():
+    client = EventarcClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_channel_connection(
+            eventarc.DeleteChannelConnectionRequest(), name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_channel_connection_flattened_async():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_channel_connection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_channel_connection(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_channel_connection_flattened_error_async():
+    client = EventarcAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_channel_connection(
+            eventarc.DeleteChannelConnectionRequest(), name="name_value",
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.EventarcGrpcTransport(
@@ -1895,6 +4141,15 @@ def test_eventarc_base_transport():
         "create_trigger",
         "update_trigger",
         "delete_trigger",
+        "get_channel",
+        "list_channels",
+        "create_channel_",
+        "update_channel",
+        "delete_channel",
+        "get_channel_connection",
+        "list_channel_connections",
+        "create_channel_connection",
+        "delete_channel_connection",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -2208,6 +4463,80 @@ def test_eventarc_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
+def test_channel_path():
+    project = "squid"
+    location = "clam"
+    channel = "whelk"
+    expected = "projects/{project}/locations/{location}/channels/{channel}".format(
+        project=project, location=location, channel=channel,
+    )
+    actual = EventarcClient.channel_path(project, location, channel)
+    assert expected == actual
+
+
+def test_parse_channel_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "channel": "nudibranch",
+    }
+    path = EventarcClient.channel_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = EventarcClient.parse_channel_path(path)
+    assert expected == actual
+
+
+def test_channel_connection_path():
+    project = "cuttlefish"
+    location = "mussel"
+    channel_connection = "winkle"
+    expected = "projects/{project}/locations/{location}/channelConnections/{channel_connection}".format(
+        project=project, location=location, channel_connection=channel_connection,
+    )
+    actual = EventarcClient.channel_connection_path(
+        project, location, channel_connection
+    )
+    assert expected == actual
+
+
+def test_parse_channel_connection_path():
+    expected = {
+        "project": "nautilus",
+        "location": "scallop",
+        "channel_connection": "abalone",
+    }
+    path = EventarcClient.channel_connection_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = EventarcClient.parse_channel_connection_path(path)
+    assert expected == actual
+
+
+def test_cloud_function_path():
+    project = "squid"
+    location = "clam"
+    function = "whelk"
+    expected = "projects/{project}/locations/{location}/functions/{function}".format(
+        project=project, location=location, function=function,
+    )
+    actual = EventarcClient.cloud_function_path(project, location, function)
+    assert expected == actual
+
+
+def test_parse_cloud_function_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "function": "nudibranch",
+    }
+    path = EventarcClient.cloud_function_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = EventarcClient.parse_cloud_function_path(path)
+    assert expected == actual
+
+
 def test_service_path():
     expected = "*".format()
     actual = EventarcClient.service_path()
@@ -2215,8 +4544,8 @@ def test_service_path():
 
 
 def test_service_account_path():
-    project = "squid"
-    service_account = "clam"
+    project = "cuttlefish"
+    service_account = "mussel"
     expected = "projects/{project}/serviceAccounts/{service_account}".format(
         project=project, service_account=service_account,
     )
@@ -2226,8 +4555,8 @@ def test_service_account_path():
 
 def test_parse_service_account_path():
     expected = {
-        "project": "whelk",
-        "service_account": "octopus",
+        "project": "winkle",
+        "service_account": "nautilus",
     }
     path = EventarcClient.service_account_path(**expected)
 
@@ -2237,9 +4566,9 @@ def test_parse_service_account_path():
 
 
 def test_trigger_path():
-    project = "oyster"
-    location = "nudibranch"
-    trigger = "cuttlefish"
+    project = "scallop"
+    location = "abalone"
+    trigger = "squid"
     expected = "projects/{project}/locations/{location}/triggers/{trigger}".format(
         project=project, location=location, trigger=trigger,
     )
@@ -2249,9 +4578,9 @@ def test_trigger_path():
 
 def test_parse_trigger_path():
     expected = {
-        "project": "mussel",
-        "location": "winkle",
-        "trigger": "nautilus",
+        "project": "clam",
+        "location": "whelk",
+        "trigger": "octopus",
     }
     path = EventarcClient.trigger_path(**expected)
 
@@ -2261,7 +4590,7 @@ def test_parse_trigger_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "scallop"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -2271,7 +4600,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "abalone",
+        "billing_account": "nudibranch",
     }
     path = EventarcClient.common_billing_account_path(**expected)
 
@@ -2281,7 +4610,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "squid"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(folder=folder,)
     actual = EventarcClient.common_folder_path(folder)
     assert expected == actual
@@ -2289,7 +4618,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "clam",
+        "folder": "mussel",
     }
     path = EventarcClient.common_folder_path(**expected)
 
@@ -2299,7 +4628,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "whelk"
+    organization = "winkle"
     expected = "organizations/{organization}".format(organization=organization,)
     actual = EventarcClient.common_organization_path(organization)
     assert expected == actual
@@ -2307,7 +4636,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "octopus",
+        "organization": "nautilus",
     }
     path = EventarcClient.common_organization_path(**expected)
 
@@ -2317,7 +4646,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "oyster"
+    project = "scallop"
     expected = "projects/{project}".format(project=project,)
     actual = EventarcClient.common_project_path(project)
     assert expected == actual
@@ -2325,7 +4654,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nudibranch",
+        "project": "abalone",
     }
     path = EventarcClient.common_project_path(**expected)
 
@@ -2335,8 +4664,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "cuttlefish"
-    location = "mussel"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -2346,8 +4675,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = EventarcClient.common_location_path(**expected)
 
