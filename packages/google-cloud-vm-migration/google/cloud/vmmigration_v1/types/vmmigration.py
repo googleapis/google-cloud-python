@@ -870,8 +870,7 @@ class VmwareVmDetails(proto.Message):
             the VM in MB.
         guest_description (str):
             The VM's OS. See for example
-            https://pubs.vmware.com/vi-
-            sdk/visdk250/ReferenceGuide/vim.vm.GuestOsDescriptor.GuestOsIdentifier.html
+            https://pubs.vmware.com/vi-sdk/visdk250/ReferenceGuide/vim.vm.GuestOsDescriptor.GuestOsIdentifier.html
             for types of strings this might hold.
         boot_option (google.cloud.vmmigration_v1.types.VmwareVmDetails.BootOption):
             Output only. The VM Boot Option.
@@ -1049,9 +1048,9 @@ class VmUtilizationMetrics(proto.Message):
             Average disk IO rate, in kilobytes per
             second.
         network_throughput_max_kbps (int):
-            Max network throughput (combined transmit-
-            ates and receive-rates), in kilobytes per
-            second.
+            Max network throughput (combined
+            transmit-rates and receive-rates), in kilobytes
+            per second.
         network_throughput_average_kbps (int):
             Average network throughput (combined
             transmit-rates and receive-rates), in kilobytes

@@ -161,8 +161,11 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         if not self._grpc_channel:
             self._grpc_channel = type(self).create_channel(
                 self._host,
+                # use the credentials which are saved
                 credentials=self._credentials,
-                credentials_file=credentials_file,
+                # Set ``credentials_file`` to ``None`` here as
+                # the credentials that we saved earlier should be used.
+                credentials_file=None,
                 scopes=self._scopes,
                 ssl_credentials=self._ssl_channel_credentials,
                 quota_project_id=quota_project_id,
@@ -235,7 +238,7 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         This property caches on the instance; repeated calls return the same
         client.
         """
-        # Sanity check: Only create a new client if we do not already have one.
+        # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
             self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
 
