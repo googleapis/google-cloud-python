@@ -440,6 +440,26 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
     ) -> tables.Table:
         r"""Gets a table. Returns NOT_FOUND if the table does not exist.
 
+
+        .. code-block::
+
+            from google.area120 import tables_v1alpha1
+
+            def sample_get_table():
+                # Create a client
+                client = tables_v1alpha1.TablesServiceClient()
+
+                # Initialize request argument(s)
+                request = tables_v1alpha1.GetTableRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_table(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.area120.tables_v1alpha1.types.GetTableRequest, dict]):
                 The request object. Request message for
@@ -508,6 +528,24 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
     ) -> pagers.ListTablesPager:
         r"""Lists tables for the user.
 
+
+        .. code-block::
+
+            from google.area120 import tables_v1alpha1
+
+            def sample_list_tables():
+                # Create a client
+                client = tables_v1alpha1.TablesServiceClient()
+
+                # Initialize request argument(s)
+                request = tables_v1alpha1.ListTablesRequest(
+                )
+
+                # Make the request
+                page_result = client.list_tables(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.area120.tables_v1alpha1.types.ListTablesRequest, dict]):
                 The request object. Request message for
@@ -562,6 +600,27 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
     ) -> tables.Workspace:
         r"""Gets a workspace. Returns NOT_FOUND if the workspace does not
         exist.
+
+
+
+        .. code-block::
+
+            from google.area120 import tables_v1alpha1
+
+            def sample_get_workspace():
+                # Create a client
+                client = tables_v1alpha1.TablesServiceClient()
+
+                # Initialize request argument(s)
+                request = tables_v1alpha1.GetWorkspaceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_workspace(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.area120.tables_v1alpha1.types.GetWorkspaceRequest, dict]):
@@ -632,6 +691,24 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
     ) -> pagers.ListWorkspacesPager:
         r"""Lists workspaces for the user.
 
+
+        .. code-block::
+
+            from google.area120 import tables_v1alpha1
+
+            def sample_list_workspaces():
+                # Create a client
+                client = tables_v1alpha1.TablesServiceClient()
+
+                # Initialize request argument(s)
+                request = tables_v1alpha1.ListWorkspacesRequest(
+                )
+
+                # Make the request
+                page_result = client.list_workspaces(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.area120.tables_v1alpha1.types.ListWorkspacesRequest, dict]):
                 The request object. Request message for
@@ -686,6 +763,27 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
     ) -> tables.Row:
         r"""Gets a row. Returns NOT_FOUND if the row does not exist in the
         table.
+
+
+
+        .. code-block::
+
+            from google.area120 import tables_v1alpha1
+
+            def sample_get_row():
+                # Create a client
+                client = tables_v1alpha1.TablesServiceClient()
+
+                # Initialize request argument(s)
+                request = tables_v1alpha1.GetRowRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_row(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.area120.tables_v1alpha1.types.GetRowRequest, dict]):
@@ -757,6 +855,26 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
     ) -> pagers.ListRowsPager:
         r"""Lists rows in a table. Returns NOT_FOUND if the table does not
         exist.
+
+
+
+        .. code-block::
+
+            from google.area120 import tables_v1alpha1
+
+            def sample_list_rows():
+                # Create a client
+                client = tables_v1alpha1.TablesServiceClient()
+
+                # Initialize request argument(s)
+                request = tables_v1alpha1.ListRowsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_rows(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.area120.tables_v1alpha1.types.ListRowsRequest, dict]):
@@ -839,6 +957,26 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
     ) -> tables.Row:
         r"""Creates a row.
 
+
+        .. code-block::
+
+            from google.area120 import tables_v1alpha1
+
+            def sample_create_row():
+                # Create a client
+                client = tables_v1alpha1.TablesServiceClient()
+
+                # Initialize request argument(s)
+                request = tables_v1alpha1.CreateRowRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_row(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.area120.tables_v1alpha1.types.CreateRowRequest, dict]):
                 The request object. Request message for
@@ -915,6 +1053,30 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
     ) -> tables.BatchCreateRowsResponse:
         r"""Creates multiple rows.
 
+
+        .. code-block::
+
+            from google.area120 import tables_v1alpha1
+
+            def sample_batch_create_rows():
+                # Create a client
+                client = tables_v1alpha1.TablesServiceClient()
+
+                # Initialize request argument(s)
+                requests = tables_v1alpha1.CreateRowRequest()
+                requests.parent = "parent_value"
+
+                request = tables_v1alpha1.BatchCreateRowsRequest(
+                    parent="parent_value",
+                    requests=requests,
+                )
+
+                # Make the request
+                response = client.batch_create_rows(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.area120.tables_v1alpha1.types.BatchCreateRowsRequest, dict]):
                 The request object. Request message for
@@ -966,6 +1128,25 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tables.Row:
         r"""Updates a row.
+
+
+        .. code-block::
+
+            from google.area120 import tables_v1alpha1
+
+            def sample_update_row():
+                # Create a client
+                client = tables_v1alpha1.TablesServiceClient()
+
+                # Initialize request argument(s)
+                request = tables_v1alpha1.UpdateRowRequest(
+                )
+
+                # Make the request
+                response = client.update_row(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.area120.tables_v1alpha1.types.UpdateRowRequest, dict]):
@@ -1040,6 +1221,26 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
     ) -> tables.BatchUpdateRowsResponse:
         r"""Updates multiple rows.
 
+
+        .. code-block::
+
+            from google.area120 import tables_v1alpha1
+
+            def sample_batch_update_rows():
+                # Create a client
+                client = tables_v1alpha1.TablesServiceClient()
+
+                # Initialize request argument(s)
+                request = tables_v1alpha1.BatchUpdateRowsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.batch_update_rows(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.area120.tables_v1alpha1.types.BatchUpdateRowsRequest, dict]):
                 The request object. Request message for
@@ -1090,6 +1291,23 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a row.
+
+
+        .. code-block::
+
+            from google.area120 import tables_v1alpha1
+
+            def sample_delete_row():
+                # Create a client
+                client = tables_v1alpha1.TablesServiceClient()
+
+                # Initialize request argument(s)
+                request = tables_v1alpha1.DeleteRowRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_row(request=request)
 
         Args:
             request (Union[google.area120.tables_v1alpha1.types.DeleteRowRequest, dict]):
@@ -1154,6 +1372,24 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes multiple rows.
+
+
+        .. code-block::
+
+            from google.area120 import tables_v1alpha1
+
+            def sample_batch_delete_rows():
+                # Create a client
+                client = tables_v1alpha1.TablesServiceClient()
+
+                # Initialize request argument(s)
+                request = tables_v1alpha1.BatchDeleteRowsRequest(
+                    parent="parent_value",
+                    names=['names_value_1', 'names_value_2'],
+                )
+
+                # Make the request
+                response = client.batch_delete_rows(request=request)
 
         Args:
             request (Union[google.area120.tables_v1alpha1.types.BatchDeleteRowsRequest, dict]):
