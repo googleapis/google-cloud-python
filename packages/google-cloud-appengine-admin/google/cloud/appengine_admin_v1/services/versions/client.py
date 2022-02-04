@@ -400,6 +400,24 @@ class VersionsClient(metaclass=VersionsClientMeta):
     ) -> pagers.ListVersionsPager:
         r"""Lists the versions of a service.
 
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_list_versions():
+                # Create a client
+                client = appengine_admin_v1.VersionsClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.ListVersionsRequest(
+                )
+
+                # Make the request
+                page_result = client.list_versions(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.ListVersionsRequest, dict]):
                 The request object. Request message for
@@ -460,6 +478,26 @@ class VersionsClient(metaclass=VersionsClientMeta):
         ``BASIC_VIEW`` will be returned. Specify the ``FULL_VIEW``
         parameter to get the full resource.
 
+
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_get_version():
+                # Create a client
+                client = appengine_admin_v1.VersionsClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.GetVersionRequest(
+                )
+
+                # Make the request
+                response = client.get_version(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.GetVersionRequest, dict]):
                 The request object. Request message for
@@ -510,6 +548,27 @@ class VersionsClient(metaclass=VersionsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gac_operation.Operation:
         r"""Deploys code and resource files to a new version.
+
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_create_version():
+                # Create a client
+                client = appengine_admin_v1.VersionsClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.CreateVersionRequest(
+                )
+
+                # Make the request
+                operation = client.create_version(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.CreateVersionRequest, dict]):
@@ -606,6 +665,28 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
         -  ```manual_scaling.instances`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#manualscaling>`__
 
+
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_update_version():
+                # Create a client
+                client = appengine_admin_v1.VersionsClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.UpdateVersionRequest(
+                )
+
+                # Make the request
+                operation = client.update_version(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.UpdateVersionRequest, dict]):
                 The request object. Request message for
@@ -665,6 +746,27 @@ class VersionsClient(metaclass=VersionsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gac_operation.Operation:
         r"""Deletes an existing Version resource.
+
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_delete_version():
+                # Create a client
+                client = appengine_admin_v1.VersionsClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.DeleteVersionRequest(
+                )
+
+                # Make the request
+                operation = client.delete_version(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.DeleteVersionRequest, dict]):

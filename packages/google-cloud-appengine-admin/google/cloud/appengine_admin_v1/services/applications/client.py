@@ -395,6 +395,25 @@ class ApplicationsClient(metaclass=ApplicationsClientMeta):
     ) -> application.Application:
         r"""Gets information about an application.
 
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_get_application():
+                # Create a client
+                client = appengine_admin_v1.ApplicationsClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.GetApplicationRequest(
+                )
+
+                # Make the request
+                response = client.get_application(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.GetApplicationRequest, dict]):
                 The request object. Request message for
@@ -456,6 +475,28 @@ class ApplicationsClient(metaclass=ApplicationsClientMeta):
         `Managing Projects, Applications, and
         Billing <https://cloud.google.com/appengine/docs/standard/python/console/>`__.
 
+
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_create_application():
+                # Create a client
+                client = appengine_admin_v1.ApplicationsClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.CreateApplicationRequest(
+                )
+
+                # Make the request
+                operation = client.create_application(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.CreateApplicationRequest, dict]):
                 The request object. Request message for
@@ -515,6 +556,28 @@ class ApplicationsClient(metaclass=ApplicationsClientMeta):
            controlling user access to the application.
         -  ``default_cookie_expiration`` - Cookie expiration policy for
            the application.
+
+
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_update_application():
+                # Create a client
+                client = appengine_admin_v1.ApplicationsClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.UpdateApplicationRequest(
+                )
+
+                # Make the request
+                operation = client.update_application(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.UpdateApplicationRequest, dict]):
@@ -585,6 +648,28 @@ class ApplicationsClient(metaclass=ApplicationsClientMeta):
         https://cloud.google.com/iam/reference/rest/v1/projects.serviceAccounts/undelete?apix_params=%7B"name"%3A"projects%2F-%2FserviceAccounts%2Funique_id"%2C"resource"%3A%7B%7D%7D
         . If the deletion was recent, the numeric ID can be found in the
         Cloud Console Activity Log.
+
+
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_repair_application():
+                # Create a client
+                client = appengine_admin_v1.ApplicationsClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.RepairApplicationRequest(
+                )
+
+                # Make the request
+                operation = client.repair_application(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.RepairApplicationRequest, dict]):

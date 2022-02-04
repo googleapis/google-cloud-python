@@ -215,6 +215,24 @@ class AuthorizedDomainsAsyncClient:
         r"""Lists all domains the user is authorized to
         administer.
 
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_list_authorized_domains():
+                # Create a client
+                client = appengine_admin_v1.AuthorizedDomainsClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.ListAuthorizedDomainsRequest(
+                )
+
+                # Make the request
+                page_result = client.list_authorized_domains(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.ListAuthorizedDomainsRequest, dict]):
                 The request object. Request message for

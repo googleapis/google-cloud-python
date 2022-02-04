@@ -403,6 +403,24 @@ class FirewallClient(metaclass=FirewallClientMeta):
     ) -> pagers.ListIngressRulesPager:
         r"""Lists the firewall rules of an application.
 
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_list_ingress_rules():
+                # Create a client
+                client = appengine_admin_v1.FirewallClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.ListIngressRulesRequest(
+                )
+
+                # Make the request
+                page_result = client.list_ingress_rules(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.ListIngressRulesRequest, dict]):
                 The request object. Request message for
@@ -467,6 +485,26 @@ class FirewallClient(metaclass=FirewallClientMeta):
         IP range, then an "allow all" rule is explicitly added to the
         end of the list.
 
+
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_batch_update_ingress_rules():
+                # Create a client
+                client = appengine_admin_v1.FirewallClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.BatchUpdateIngressRulesRequest(
+                )
+
+                # Make the request
+                response = client.batch_update_ingress_rules(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.BatchUpdateIngressRulesRequest, dict]):
                 The request object. Request message for
@@ -516,6 +554,25 @@ class FirewallClient(metaclass=FirewallClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> firewall.FirewallRule:
         r"""Creates a firewall rule for the application.
+
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_create_ingress_rule():
+                # Create a client
+                client = appengine_admin_v1.FirewallClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.CreateIngressRuleRequest(
+                )
+
+                # Make the request
+                response = client.create_ingress_rule(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.CreateIngressRuleRequest, dict]):
@@ -569,6 +626,25 @@ class FirewallClient(metaclass=FirewallClientMeta):
     ) -> firewall.FirewallRule:
         r"""Gets the specified firewall rule.
 
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_get_ingress_rule():
+                # Create a client
+                client = appengine_admin_v1.FirewallClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.GetIngressRuleRequest(
+                )
+
+                # Make the request
+                response = client.get_ingress_rule(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.GetIngressRuleRequest, dict]):
                 The request object. Request message for
@@ -621,6 +697,25 @@ class FirewallClient(metaclass=FirewallClientMeta):
     ) -> firewall.FirewallRule:
         r"""Updates the specified firewall rule.
 
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_update_ingress_rule():
+                # Create a client
+                client = appengine_admin_v1.FirewallClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.UpdateIngressRuleRequest(
+                )
+
+                # Make the request
+                response = client.update_ingress_rule(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.UpdateIngressRuleRequest, dict]):
                 The request object. Request message for
@@ -672,6 +767,22 @@ class FirewallClient(metaclass=FirewallClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified firewall rule.
+
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_delete_ingress_rule():
+                # Create a client
+                client = appengine_admin_v1.FirewallClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.DeleteIngressRuleRequest(
+                )
+
+                # Make the request
+                response = client.delete_ingress_rule(request=request)
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.DeleteIngressRuleRequest, dict]):

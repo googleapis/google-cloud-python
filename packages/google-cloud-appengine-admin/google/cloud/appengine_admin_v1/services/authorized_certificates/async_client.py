@@ -219,6 +219,24 @@ class AuthorizedCertificatesAsyncClient:
         r"""Lists all SSL certificates the user is authorized to
         administer.
 
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_list_authorized_certificates():
+                # Create a client
+                client = appengine_admin_v1.AuthorizedCertificatesClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.ListAuthorizedCertificatesRequest(
+                )
+
+                # Make the request
+                page_result = client.list_authorized_certificates(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.ListAuthorizedCertificatesRequest, dict]):
                 The request object. Request message for
@@ -277,6 +295,24 @@ class AuthorizedCertificatesAsyncClient:
     ) -> certificate.AuthorizedCertificate:
         r"""Gets the specified SSL certificate.
 
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_get_authorized_certificate():
+                # Create a client
+                client = appengine_admin_v1.AuthorizedCertificatesClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.GetAuthorizedCertificateRequest(
+                )
+
+                # Make the request
+                response = client.get_authorized_certificate(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.GetAuthorizedCertificateRequest, dict]):
                 The request object. Request message for
@@ -328,6 +364,24 @@ class AuthorizedCertificatesAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> certificate.AuthorizedCertificate:
         r"""Uploads the specified SSL certificate.
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_create_authorized_certificate():
+                # Create a client
+                client = appengine_admin_v1.AuthorizedCertificatesClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.CreateAuthorizedCertificateRequest(
+                )
+
+                # Make the request
+                response = client.create_authorized_certificate(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.CreateAuthorizedCertificateRequest, dict]):
@@ -386,6 +440,25 @@ class AuthorizedCertificatesAsyncClient:
         certificate. The certificate ``display_name`` may also be
         updated.
 
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_update_authorized_certificate():
+                # Create a client
+                client = appengine_admin_v1.AuthorizedCertificatesClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.UpdateAuthorizedCertificateRequest(
+                )
+
+                # Make the request
+                response = client.update_authorized_certificate(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.UpdateAuthorizedCertificateRequest, dict]):
                 The request object. Request message for
@@ -437,6 +510,21 @@ class AuthorizedCertificatesAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified SSL certificate.
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_delete_authorized_certificate():
+                # Create a client
+                client = appengine_admin_v1.AuthorizedCertificatesClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.DeleteAuthorizedCertificateRequest(
+                )
+
+                # Make the request
+                response = client.delete_authorized_certificate(request=request)
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.DeleteAuthorizedCertificateRequest, dict]):

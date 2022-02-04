@@ -397,6 +397,24 @@ class ServicesClient(metaclass=ServicesClientMeta):
     ) -> pagers.ListServicesPager:
         r"""Lists all the services in the application.
 
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_list_services():
+                # Create a client
+                client = appengine_admin_v1.ServicesClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.ListServicesRequest(
+                )
+
+                # Make the request
+                page_result = client.list_services(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.ListServicesRequest, dict]):
                 The request object. Request message for
@@ -455,6 +473,26 @@ class ServicesClient(metaclass=ServicesClientMeta):
     ) -> service.Service:
         r"""Gets the current configuration of the specified
         service.
+
+
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_get_service():
+                # Create a client
+                client = appengine_admin_v1.ServicesClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.GetServiceRequest(
+                )
+
+                # Make the request
+                response = client.get_service(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.GetServiceRequest, dict]):
@@ -515,6 +553,27 @@ class ServicesClient(metaclass=ServicesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gac_operation.Operation:
         r"""Updates the configuration of the specified service.
+
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_update_service():
+                # Create a client
+                client = appengine_admin_v1.ServicesClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.UpdateServiceRequest(
+                )
+
+                # Make the request
+                operation = client.update_service(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.UpdateServiceRequest, dict]):
@@ -583,6 +642,28 @@ class ServicesClient(metaclass=ServicesClientMeta):
     ) -> gac_operation.Operation:
         r"""Deletes the specified service and all enclosed
         versions.
+
+
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_delete_service():
+                # Create a client
+                client = appengine_admin_v1.ServicesClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.DeleteServiceRequest(
+                )
+
+                # Make the request
+                operation = client.delete_service(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.DeleteServiceRequest, dict]):

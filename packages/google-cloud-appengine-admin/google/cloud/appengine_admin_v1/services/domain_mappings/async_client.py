@@ -215,6 +215,23 @@ class DomainMappingsAsyncClient:
     ) -> pagers.ListDomainMappingsAsyncPager:
         r"""Lists the domain mappings on an application.
 
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_list_domain_mappings():
+                # Create a client
+                client = appengine_admin_v1.DomainMappingsClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.ListDomainMappingsRequest(
+                )
+
+                # Make the request
+                page_result = client.list_domain_mappings(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.ListDomainMappingsRequest, dict]):
                 The request object. Request message for
@@ -272,6 +289,24 @@ class DomainMappingsAsyncClient:
     ) -> domain_mapping.DomainMapping:
         r"""Gets the specified domain mapping.
 
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_get_domain_mapping():
+                # Create a client
+                client = appengine_admin_v1.DomainMappingsClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.GetDomainMappingRequest(
+                )
+
+                # Make the request
+                response = client.get_domain_mapping(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.GetDomainMappingRequest, dict]):
                 The request object. Request message for
@@ -323,6 +358,27 @@ class DomainMappingsAsyncClient:
         administer a domain in order to map it to an application. For a
         list of available authorized domains, see
         ```AuthorizedDomains.ListAuthorizedDomains`` <>`__.
+
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_create_domain_mapping():
+                # Create a client
+                client = appengine_admin_v1.DomainMappingsClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.CreateDomainMappingRequest(
+                )
+
+                # Make the request
+                operation = client.create_domain_mapping(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.CreateDomainMappingRequest, dict]):
@@ -388,6 +444,27 @@ class DomainMappingsAsyncClient:
         administer the associated domain in order to update a
         ``DomainMapping`` resource.
 
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_update_domain_mapping():
+                # Create a client
+                client = appengine_admin_v1.DomainMappingsClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.UpdateDomainMappingRequest(
+                )
+
+                # Make the request
+                operation = client.update_domain_mapping(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.UpdateDomainMappingRequest, dict]):
                 The request object. Request message for
@@ -449,6 +526,27 @@ class DomainMappingsAsyncClient:
         r"""Deletes the specified domain mapping. A user must be authorized
         to administer the associated domain in order to delete a
         ``DomainMapping`` resource.
+
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_delete_domain_mapping():
+                # Create a client
+                client = appengine_admin_v1.DomainMappingsClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.DeleteDomainMappingRequest(
+                )
+
+                # Make the request
+                operation = client.delete_domain_mapping(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.DeleteDomainMappingRequest, dict]):

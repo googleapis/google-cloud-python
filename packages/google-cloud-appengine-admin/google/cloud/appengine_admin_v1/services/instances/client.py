@@ -417,6 +417,25 @@ class InstancesClient(metaclass=InstancesClientMeta):
         `Stackdriver Monitoring
         API <https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list>`__.
 
+
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_list_instances():
+                # Create a client
+                client = appengine_admin_v1.InstancesClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.ListInstancesRequest(
+                )
+
+                # Make the request
+                page_result = client.list_instances(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.ListInstancesRequest, dict]):
                 The request object. Request message for
@@ -474,6 +493,25 @@ class InstancesClient(metaclass=InstancesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> instance.Instance:
         r"""Gets instance information.
+
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_get_instance():
+                # Create a client
+                client = appengine_admin_v1.InstancesClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.GetInstanceRequest(
+                )
+
+                # Make the request
+                response = client.get_instance(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.GetInstanceRequest, dict]):
@@ -539,6 +577,28 @@ class InstancesClient(metaclass=InstancesClientMeta):
         the
         ```apps.services.versions.patch`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions/patch>`__
         method.
+
+
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_delete_instance():
+                # Create a client
+                client = appengine_admin_v1.InstancesClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.DeleteInstanceRequest(
+                )
+
+                # Make the request
+                operation = client.delete_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.DeleteInstanceRequest, dict]):
@@ -619,6 +679,28 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         Only applicable for instances in App Engine flexible
         environment.
+
+
+
+        .. code-block::
+
+            from google.cloud import appengine_admin_v1
+
+            def sample_debug_instance():
+                # Create a client
+                client = appengine_admin_v1.InstancesClient()
+
+                # Initialize request argument(s)
+                request = appengine_admin_v1.DebugInstanceRequest(
+                )
+
+                # Make the request
+                operation = client.debug_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.DebugInstanceRequest, dict]):
