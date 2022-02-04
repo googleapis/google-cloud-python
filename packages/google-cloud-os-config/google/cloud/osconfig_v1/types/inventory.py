@@ -224,8 +224,7 @@ class Inventory(proto.Message):
             qfe_package (google.cloud.osconfig_v1.types.Inventory.WindowsQuickFixEngineeringPackage):
                 Details of a Windows Quick Fix engineering
                 package. See
-                https://docs.microsoft.com/en-
-                us/windows/win32/cimwin32prov/win32-quickfixengineering
+                https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-quickfixengineering
                 for info in Windows Quick Fix Engineering.
 
                 This field is a member of `oneof`_ ``details``.
@@ -400,8 +399,7 @@ class Inventory(proto.Message):
         r"""Information related to a Quick Fix Engineering package.
         Fields are taken from Windows QuickFixEngineering Interface and
         match the source names:
-        https://docs.microsoft.com/en-
-        us/windows/win32/cimwin32prov/win32-quickfixengineering
+        https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-quickfixengineering
 
         Attributes:
             caption (str):

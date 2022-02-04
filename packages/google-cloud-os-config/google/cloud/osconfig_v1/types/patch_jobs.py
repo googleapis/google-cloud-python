@@ -330,8 +330,8 @@ class PatchJob(proto.Message):
                 Number of instances that exceeded the time
                 out while applying the patch.
             pre_patch_step_instance_count (int):
-                Number of instances that are running the pre-
-                atch step.
+                Number of instances that are running the
+                pre-patch step.
             post_patch_step_instance_count (int):
                 Number of instances that are running the
                 post-patch step.
