@@ -303,10 +303,10 @@ class ExecuteSqlRequest(proto.Message):
             concurrency.
 
             Standard DML statements require a read-write
-            transaction. To protect against replays, single-
-            use transactions are not supported.  The caller
-            must either supply an existing transaction ID or
-            begin a new transaction.
+            transaction. To protect against replays,
+            single-use transactions are not supported.  The
+            caller must either supply an existing
+            transaction ID or begin a new transaction.
             Partitioned DML requires an existing Partitioned
             DML transaction ID.
         sql (str):
