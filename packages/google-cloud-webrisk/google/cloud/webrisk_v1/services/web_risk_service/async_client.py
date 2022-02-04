@@ -265,7 +265,7 @@ class WebRiskServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([threat_type, version_token, constraints])
         if request is not None and has_flattened_params:
@@ -356,7 +356,7 @@ class WebRiskServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([uri, threat_types])
         if request is not None and has_flattened_params:
@@ -447,7 +447,7 @@ class WebRiskServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([hash_prefix, threat_types])
         if request is not None and has_flattened_params:
@@ -541,7 +541,7 @@ class WebRiskServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, submission])
         if request is not None and has_flattened_params:
