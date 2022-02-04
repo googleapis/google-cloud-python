@@ -4,6 +4,12 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+### [2.10.2](https://github.com/googleapis/python-container/compare/v2.10.1...v2.10.2) (2022-02-04)
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([07fbf3c](https://github.com/googleapis/python-container/commit/07fbf3cb1e140abf020e7cfbd083ed79aae701bf))
+
 ### [2.10.1](https://www.github.com/googleapis/python-container/compare/v2.10.0...v2.10.1) (2021-11-01)
 
 
