@@ -161,25 +161,25 @@ class ScanConfig(proto.Message):
             login_url = proto.Field(proto.STRING, number=3,)
 
         class IapCredential(proto.Message):
-            r"""Describes authentication configuration for Identity-Aware-
-            roxy (IAP).
+            r"""Describes authentication configuration for
+            Identity-Aware-Proxy (IAP).
 
 
             .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
             Attributes:
                 iap_test_service_account_info (google.cloud.websecurityscanner_v1.types.ScanConfig.Authentication.IapCredential.IapTestServiceAccountInfo):
-                    Authentication configuration when Web-
-                    ecurity-Scanner service account is added in
+                    Authentication configuration when
+                    Web-Security-Scanner service account is added in
                     Identity-Aware-Proxy (IAP) access policies.
 
                     This field is a member of `oneof`_ ``iap_credentials``.
             """
 
             class IapTestServiceAccountInfo(proto.Message):
-                r"""Describes authentication configuration when Web-Security-
-                canner service account is added in Identity-Aware-Proxy (IAP)
-                access policies.
+                r"""Describes authentication configuration when
+                Web-Security-Scanner service account is added in
+                Identity-Aware-Proxy (IAP) access policies.
 
                 Attributes:
                     target_audience_client_id (str):

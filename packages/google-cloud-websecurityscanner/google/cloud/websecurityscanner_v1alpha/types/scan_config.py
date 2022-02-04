@@ -53,8 +53,7 @@ class ScanConfig(proto.Message):
             The user agent used during scanning.
         blacklist_patterns (Sequence[str]):
             The blacklist URL patterns as described in
-            https://cloud.google.com/security-
-            scanner/docs/excluded-urls
+            https://cloud.google.com/security-scanner/docs/excluded-urls
         schedule (google.cloud.websecurityscanner_v1alpha.types.ScanConfig.Schedule):
             The schedule of the ScanConfig.
         target_platforms (Sequence[google.cloud.websecurityscanner_v1alpha.types.ScanConfig.TargetPlatform]):

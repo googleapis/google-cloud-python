@@ -37,9 +37,7 @@ class Finding(proto.Message):
             Output only. The type of the Finding.
             Detailed and up-to-date information on findings
             can be found here:
-            https://cloud.google.com/security-command-
-            center/docs/how-to-remediate-web-security-
-            scanner-findings
+            https://cloud.google.com/security-command-center/docs/how-to-remediate-web-security-scanner-findings
         severity (google.cloud.websecurityscanner_v1.types.Finding.Severity):
             Output only. The severity level of the
             reported vulnerability.
@@ -47,8 +45,8 @@ class Finding(proto.Message):
             Output only. The http method of the request
             that triggered the vulnerability, in uppercase.
         fuzzed_url (str):
-            Output only. The URL produced by the server-
-            ide fuzzer and used in the request that
+            Output only. The URL produced by the
+            server-side fuzzer and used in the request that
             triggered the vulnerability.
         body (str):
             Output only. The body of the request that
@@ -57,8 +55,8 @@ class Finding(proto.Message):
             Output only. The description of the
             vulnerability.
         reproduction_url (str):
-            Output only. The URL containing human-
-            eadable payload that user can leverage to
+            Output only. The URL containing
+            human-readable payload that user can leverage to
             reproduce the vulnerability.
         frame_url (str):
             Output only. If the vulnerability was
