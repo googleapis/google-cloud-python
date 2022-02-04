@@ -220,10 +220,9 @@ class NodeKubeletConfig(proto.Message):
             containers that specify CPU limits.
             This option is enabled by default which makes
             kubelet use CFS quota
-            (https://www.kernel.org/doc/Documentation/scheduler/sched-
-            bwc.txt) to enforce container CPU limits.
-            Otherwise, CPU limits will not be enforced at
-            all.
+            (https://www.kernel.org/doc/Documentation/scheduler/sched-bwc.txt)
+            to enforce container CPU limits. Otherwise, CPU
+            limits will not be enforced at all.
 
             Disable this option to mitigate CPU throttling
             problems while still having your pods to be in
@@ -335,16 +334,15 @@ class NodeConfig(proto.Message):
             undefined and conflicts should be avoided.
             For more information, including usage and the
             valid values, see:
-            https://kubernetes.io/docs/concepts/overview/working-
-            with-objects/labels/
+            https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
         local_ssd_count (int):
             The number of local SSD disks to be attached
             to the node.
             The limit for this value is dependent upon the
             maximum number of disks available on a machine
             per zone. See:
-            https://cloud.google.com/compute/docs/disks/local-
-            ssd for more information.
+            https://cloud.google.com/compute/docs/disks/local-ssd
+            for more information.
         tags (Sequence[str]):
             The list of instance tags applied to all
             nodes. Tags are used to identify valid sources
@@ -367,8 +365,8 @@ class NodeConfig(proto.Message):
             Type of the disk attached to each node (e.g.
             'pd-standard', 'pd-ssd' or 'pd-balanced')
 
-            If unspecified, the default disk type is 'pd-
-            standard'
+            If unspecified, the default disk type is
+            'pd-standard'
         min_cpu_platform (str):
             Minimum CPU platform to be used by this instance. The
             instance may be scheduled on the specified or newer CPU
@@ -385,8 +383,7 @@ class NodeConfig(proto.Message):
             each node.
             For more information, including usage and the
             valid values, see:
-            https://kubernetes.io/docs/concepts/configuration/taint-
-            and-toleration/
+            https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
         sandbox_config (google.cloud.container_v1.types.SandboxConfig):
             Sandbox configuration for this node.
         node_group (str):
@@ -670,8 +667,7 @@ class MasterAuth(proto.Message):
             will be removed in GKE control plane versions
             1.19 and newer. For a list of recommended
             authentication methods, see:
-            https://cloud.google.com/kubernetes-
-            engine/docs/how-to/api-server-authentication
+            https://cloud.google.com/kubernetes-engine/docs/how-to/api-server-authentication
         password (str):
             The password to use for HTTP basic
             authentication to the master endpoint. Because
@@ -684,8 +680,7 @@ class MasterAuth(proto.Message):
             will be removed in GKE control plane versions
             1.19 and newer. For a list of recommended
             authentication methods, see:
-            https://cloud.google.com/kubernetes-
-            engine/docs/how-to/api-server-authentication
+            https://cloud.google.com/kubernetes-engine/docs/how-to/api-server-authentication
         client_certificate_config (google.cloud.container_v1.types.ClientCertificateConfig):
             Configuration for client certificate
             authentication on the cluster. For clusters
@@ -746,8 +741,7 @@ class AddonsConfig(proto.Message):
             Console to manage and monitor your Kubernetes
             clusters, workloads and applications. For more
             information, see:
-            https://cloud.google.com/kubernetes-
-            engine/docs/concepts/dashboards
+            https://cloud.google.com/kubernetes-engine/docs/concepts/dashboards
         network_policy_config (google.cloud.container_v1.types.NetworkPolicyConfig):
             Configuration for NetworkPolicy. This only
             tracks whether the addon is enabled or not on
@@ -1052,8 +1046,7 @@ class LegacyAbac(proto.Message):
 
 class NetworkPolicy(proto.Message):
     r"""Configuration options for the NetworkPolicy feature.
-    https://kubernetes.io/docs/concepts/services-
-    networking/networkpolicies/
+    https://kubernetes.io/docs/concepts/services-networking/networkpolicies/
 
     Attributes:
         provider (google.cloud.container_v1.types.NetworkPolicy.Provider):
@@ -3061,17 +3054,18 @@ class NodeManagement(proto.Message):
 
     Attributes:
         auto_upgrade (bool):
-            A flag that specifies whether node auto-
-            pgrade is enabled for the node pool. If enabled,
-            node auto-upgrade helps keep the nodes in your
-            node pool up to date with the latest release
-            version of Kubernetes.
+            A flag that specifies whether node
+            auto-upgrade is enabled for the node pool. If
+            enabled, node auto-upgrade helps keep the nodes
+            in your node pool up to date with the latest
+            release version of Kubernetes.
         auto_repair (bool):
-            A flag that specifies whether the node auto-
-            epair is enabled for the node pool. If enabled,
-            the nodes in this node pool will be monitored
-            and, if they fail health checks too many times,
-            an automatic repair action will be triggered.
+            A flag that specifies whether the node
+            auto-repair is enabled for the node pool. If
+            enabled, the nodes in this node pool will be
+            monitored and, if they fail health checks too
+            many times, an automatic repair action will be
+            triggered.
         upgrade_options (google.cloud.container_v1.types.AutoUpgradeOptions):
             Specifies the Auto Upgrade knobs for the node
             pool.
@@ -3151,9 +3145,9 @@ class MaintenanceWindow(proto.Message):
 
             This field is a member of `oneof`_ ``policy``.
         maintenance_exclusions (Sequence[google.cloud.container_v1.types.MaintenanceWindow.MaintenanceExclusionsEntry]):
-            Exceptions to maintenance window. Non-
-            mergency maintenance should not occur in these
-            windows.
+            Exceptions to maintenance window.
+            Non-emergency maintenance should not occur in
+            these windows.
     """
 
     daily_maintenance_window = proto.Field(
@@ -3489,8 +3483,8 @@ class AutoprovisioningNodePoolDefaults(proto.Message):
             Type of the disk attached to each node (e.g.
             'pd-standard', 'pd-ssd' or 'pd-balanced')
 
-            If unspecified, the default disk type is 'pd-
-            standard'
+            If unspecified, the default disk type is
+            'pd-standard'
         shielded_instance_config (google.cloud.container_v1.types.ShieldedInstanceConfig):
             Shielded Instance options.
         boot_disk_kms_key (str):
@@ -4184,9 +4178,8 @@ class DatabaseEncryption(proto.Message):
             Denotes the state of etcd encryption.
         key_name (str):
             Name of CloudKMS key to use for the
-            encryption of secrets in etcd. Ex. projects/my-
-            project/locations/global/keyRings/my-
-            ring/cryptoKeys/my-key
+            encryption of secrets in etcd. Ex.
+            projects/my-project/locations/global/keyRings/my-ring/cryptoKeys/my-key
     """
 
     class State(proto.Enum):
@@ -4294,12 +4287,12 @@ class UsableSubnetwork(proto.Message):
     Attributes:
         subnetwork (str):
             Subnetwork Name.
-            Example: projects/my-project/regions/us-
-            central1/subnetworks/my-subnet
+            Example:
+            projects/my-project/regions/us-central1/subnetworks/my-subnet
         network (str):
             Network Name.
-            Example: projects/my-project/global/networks/my-
-            network
+            Example:
+            projects/my-project/global/networks/my-network
         ip_cidr_range (str):
             The range of internal addresses that are
             owned by this subnetwork.

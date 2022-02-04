@@ -446,7 +446,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone])
         if request is not None and has_flattened_params:
@@ -541,7 +541,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 A Google Kubernetes Engine cluster.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id])
         if request is not None and has_flattened_params:
@@ -652,7 +652,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster])
         if request is not None and has_flattened_params:
@@ -761,7 +761,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id, update])
         if request is not None and has_flattened_params:
@@ -992,7 +992,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id, logging_service])
         if request is not None and has_flattened_params:
@@ -1117,7 +1117,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id, monitoring_service])
         if request is not None and has_flattened_params:
@@ -1229,7 +1229,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id, addons_config])
         if request is not None and has_flattened_params:
@@ -1353,7 +1353,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         )
 
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id, locations])
         if request is not None and has_flattened_params:
@@ -1476,7 +1476,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id, master_version])
         if request is not None and has_flattened_params:
@@ -1643,7 +1643,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id])
         if request is not None and has_flattened_params:
@@ -1734,7 +1734,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone])
         if request is not None and has_flattened_params:
@@ -1832,7 +1832,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, operation_id])
         if request is not None and has_flattened_params:
@@ -1924,7 +1924,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, operation_id])
         if request is not None and has_flattened_params:
@@ -2013,7 +2013,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone])
         if request is not None and has_flattened_params:
@@ -2109,7 +2109,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id])
         if request is not None and has_flattened_params:
@@ -2315,7 +2315,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id, node_pool_id])
         if request is not None and has_flattened_params:
@@ -2423,7 +2423,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id, node_pool])
         if request is not None and has_flattened_params:
@@ -2535,7 +2535,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id, node_pool_id])
         if request is not None and has_flattened_params:
@@ -2652,7 +2652,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id, node_pool_id])
         if request is not None and has_flattened_params:
@@ -2775,7 +2775,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project_id, zone, cluster_id, node_pool_id, management]
@@ -2907,7 +2907,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
             [project_id, zone, cluster_id, resource_labels, label_fingerprint]
@@ -3023,7 +3023,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id, enabled])
         if request is not None and has_flattened_params:
@@ -3126,7 +3126,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id])
         if request is not None and has_flattened_params:
@@ -3226,7 +3226,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id])
         if request is not None and has_flattened_params:
@@ -3389,7 +3389,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id, network_policy])
         if request is not None and has_flattened_params:
@@ -3495,7 +3495,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, zone, cluster_id, maintenance_policy])
         if request is not None and has_flattened_params:
@@ -3579,7 +3579,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -3658,7 +3658,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
