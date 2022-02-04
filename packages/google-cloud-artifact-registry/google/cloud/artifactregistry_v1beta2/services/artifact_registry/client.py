@@ -557,6 +557,28 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         imported artifacts. Imported artifacts that conflict
         with existing resources are ignored.
 
+
+
+        .. code-block::
+
+            from google.cloud import artifactregistry_v1beta2
+
+            def sample_import_apt_artifacts():
+                # Create a client
+                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+
+                # Initialize request argument(s)
+                request = artifactregistry_v1beta2.ImportAptArtifactsRequest(
+                )
+
+                # Make the request
+                operation = client.import_apt_artifacts(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.artifactregistry_v1beta2.types.ImportAptArtifactsRequest, dict]):
                 The request object. The request to import new apt
@@ -622,6 +644,28 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         imported artifacts. Imported artifacts that conflict
         with existing resources are ignored.
 
+
+
+        .. code-block::
+
+            from google.cloud import artifactregistry_v1beta2
+
+            def sample_import_yum_artifacts():
+                # Create a client
+                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+
+                # Initialize request argument(s)
+                request = artifactregistry_v1beta2.ImportYumArtifactsRequest(
+                )
+
+                # Make the request
+                operation = client.import_yum_artifacts(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.artifactregistry_v1beta2.types.ImportYumArtifactsRequest, dict]):
                 The request object. The request to import new yum
@@ -683,6 +727,25 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRepositoriesPager:
         r"""Lists repositories.
+
+
+        .. code-block::
+
+            from google.cloud import artifactregistry_v1beta2
+
+            def sample_list_repositories():
+                # Create a client
+                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+
+                # Initialize request argument(s)
+                request = artifactregistry_v1beta2.ListRepositoriesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_repositories(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.artifactregistry_v1beta2.types.ListRepositoriesRequest, dict]):
@@ -764,6 +827,26 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> repository.Repository:
         r"""Gets a repository.
 
+
+        .. code-block::
+
+            from google.cloud import artifactregistry_v1beta2
+
+            def sample_get_repository():
+                # Create a client
+                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+
+                # Initialize request argument(s)
+                request = artifactregistry_v1beta2.GetRepositoryRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_repository(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.artifactregistry_v1beta2.types.GetRepositoryRequest, dict]):
                 The request object. The request to retrieve a
@@ -838,6 +921,29 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         r"""Creates a repository. The returned Operation will
         finish once the repository has been created. Its
         response will be the created Repository.
+
+
+
+        .. code-block::
+
+            from google.cloud import artifactregistry_v1beta2
+
+            def sample_create_repository():
+                # Create a client
+                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+
+                # Initialize request argument(s)
+                request = artifactregistry_v1beta2.CreateRepositoryRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.create_repository(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.artifactregistry_v1beta2.types.CreateRepositoryRequest, dict]):
@@ -940,6 +1046,25 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> gda_repository.Repository:
         r"""Updates a repository.
 
+
+        .. code-block::
+
+            from google.cloud import artifactregistry_v1beta2
+
+            def sample_update_repository():
+                # Create a client
+                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+
+                # Initialize request argument(s)
+                request = artifactregistry_v1beta2.UpdateRepositoryRequest(
+                )
+
+                # Make the request
+                response = client.update_repository(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.artifactregistry_v1beta2.types.UpdateRepositoryRequest, dict]):
                 The request object. The request to update a repository.
@@ -1024,6 +1149,29 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         returned Operation will finish once the repository has
         been deleted. It will not have any Operation metadata
         and will return a google.protobuf.Empty response.
+
+
+
+        .. code-block::
+
+            from google.cloud import artifactregistry_v1beta2
+
+            def sample_delete_repository():
+                # Create a client
+                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+
+                # Initialize request argument(s)
+                request = artifactregistry_v1beta2.DeleteRepositoryRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_repository(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.artifactregistry_v1beta2.types.DeleteRepositoryRequest, dict]):
@@ -1116,6 +1264,24 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> pagers.ListPackagesPager:
         r"""Lists packages.
 
+
+        .. code-block::
+
+            from google.cloud import artifactregistry_v1beta2
+
+            def sample_list_packages():
+                # Create a client
+                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+
+                # Initialize request argument(s)
+                request = artifactregistry_v1beta2.ListPackagesRequest(
+                )
+
+                # Make the request
+                page_result = client.list_packages(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.artifactregistry_v1beta2.types.ListPackagesRequest, dict]):
                 The request object. The request to list packages.
@@ -1194,6 +1360,25 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> package.Package:
         r"""Gets a package.
 
+
+        .. code-block::
+
+            from google.cloud import artifactregistry_v1beta2
+
+            def sample_get_package():
+                # Create a client
+                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+
+                # Initialize request argument(s)
+                request = artifactregistry_v1beta2.GetPackageRequest(
+                )
+
+                # Make the request
+                response = client.get_package(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.artifactregistry_v1beta2.types.GetPackageRequest, dict]):
                 The request object. The request to retrieve a package.
@@ -1263,6 +1448,28 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         r"""Deletes a package and all of its versions and tags.
         The returned operation will complete once the package
         has been deleted.
+
+
+
+        .. code-block::
+
+            from google.cloud import artifactregistry_v1beta2
+
+            def sample_delete_package():
+                # Create a client
+                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+
+                # Initialize request argument(s)
+                request = artifactregistry_v1beta2.DeletePackageRequest(
+                )
+
+                # Make the request
+                operation = client.delete_package(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.artifactregistry_v1beta2.types.DeletePackageRequest, dict]):
@@ -1353,6 +1560,24 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> pagers.ListVersionsPager:
         r"""Lists versions.
 
+
+        .. code-block::
+
+            from google.cloud import artifactregistry_v1beta2
+
+            def sample_list_versions():
+                # Create a client
+                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+
+                # Initialize request argument(s)
+                request = artifactregistry_v1beta2.ListVersionsRequest(
+                )
+
+                # Make the request
+                page_result = client.list_versions(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.artifactregistry_v1beta2.types.ListVersionsRequest, dict]):
                 The request object. The request to list versions.
@@ -1431,6 +1656,25 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> version.Version:
         r"""Gets a version
 
+
+        .. code-block::
+
+            from google.cloud import artifactregistry_v1beta2
+
+            def sample_get_version():
+                # Create a client
+                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+
+                # Initialize request argument(s)
+                request = artifactregistry_v1beta2.GetVersionRequest(
+                )
+
+                # Make the request
+                response = client.get_version(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.artifactregistry_v1beta2.types.GetVersionRequest, dict]):
                 The request object. The request to retrieve a version.
@@ -1503,6 +1747,28 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         r"""Deletes a version and all of its content. The
         returned operation will complete once the version has
         been deleted.
+
+
+
+        .. code-block::
+
+            from google.cloud import artifactregistry_v1beta2
+
+            def sample_delete_version():
+                # Create a client
+                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+
+                # Initialize request argument(s)
+                request = artifactregistry_v1beta2.DeleteVersionRequest(
+                )
+
+                # Make the request
+                operation = client.delete_version(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.artifactregistry_v1beta2.types.DeleteVersionRequest, dict]):
@@ -1593,6 +1859,24 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> pagers.ListFilesPager:
         r"""Lists files.
 
+
+        .. code-block::
+
+            from google.cloud import artifactregistry_v1beta2
+
+            def sample_list_files():
+                # Create a client
+                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+
+                # Initialize request argument(s)
+                request = artifactregistry_v1beta2.ListFilesRequest(
+                )
+
+                # Make the request
+                page_result = client.list_files(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.artifactregistry_v1beta2.types.ListFilesRequest, dict]):
                 The request object. The request to list files.
@@ -1671,6 +1955,25 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> file.File:
         r"""Gets a file.
 
+
+        .. code-block::
+
+            from google.cloud import artifactregistry_v1beta2
+
+            def sample_get_file():
+                # Create a client
+                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+
+                # Initialize request argument(s)
+                request = artifactregistry_v1beta2.GetFileRequest(
+                )
+
+                # Make the request
+                response = client.get_file(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.artifactregistry_v1beta2.types.GetFileRequest, dict]):
                 The request object. The request to retrieve a file.
@@ -1739,6 +2042,24 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTagsPager:
         r"""Lists tags.
+
+
+        .. code-block::
+
+            from google.cloud import artifactregistry_v1beta2
+
+            def sample_list_tags():
+                # Create a client
+                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+
+                # Initialize request argument(s)
+                request = artifactregistry_v1beta2.ListTagsRequest(
+                )
+
+                # Make the request
+                page_result = client.list_tags(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.artifactregistry_v1beta2.types.ListTagsRequest, dict]):
@@ -1818,6 +2139,25 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> tag.Tag:
         r"""Gets a tag.
 
+
+        .. code-block::
+
+            from google.cloud import artifactregistry_v1beta2
+
+            def sample_get_tag():
+                # Create a client
+                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+
+                # Initialize request argument(s)
+                request = artifactregistry_v1beta2.GetTagRequest(
+                )
+
+                # Make the request
+                response = client.get_tag(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.artifactregistry_v1beta2.types.GetTagRequest, dict]):
                 The request object. The request to retrieve a tag.
@@ -1888,6 +2228,25 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gda_tag.Tag:
         r"""Creates a tag.
+
+
+        .. code-block::
+
+            from google.cloud import artifactregistry_v1beta2
+
+            def sample_create_tag():
+                # Create a client
+                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+
+                # Initialize request argument(s)
+                request = artifactregistry_v1beta2.CreateTagRequest(
+                )
+
+                # Make the request
+                response = client.create_tag(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.artifactregistry_v1beta2.types.CreateTagRequest, dict]):
@@ -1977,6 +2336,25 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> gda_tag.Tag:
         r"""Updates a tag.
 
+
+        .. code-block::
+
+            from google.cloud import artifactregistry_v1beta2
+
+            def sample_update_tag():
+                # Create a client
+                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+
+                # Initialize request argument(s)
+                request = artifactregistry_v1beta2.UpdateTagRequest(
+                )
+
+                # Make the request
+                response = client.update_tag(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.artifactregistry_v1beta2.types.UpdateTagRequest, dict]):
                 The request object. The request to create or update a
@@ -2059,6 +2437,22 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> None:
         r"""Deletes a tag.
 
+
+        .. code-block::
+
+            from google.cloud import artifactregistry_v1beta2
+
+            def sample_delete_tag():
+                # Create a client
+                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+
+                # Initialize request argument(s)
+                request = artifactregistry_v1beta2.DeleteTagRequest(
+                )
+
+                # Make the request
+                response = client.delete_tag(request=request)
+
         Args:
             request (Union[google.cloud.artifactregistry_v1beta2.types.DeleteTagRequest, dict]):
                 The request object. The request to delete a tag.
@@ -2118,6 +2512,26 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Updates the IAM policy for a given resource.
+
+
+        .. code-block::
+
+            from google.cloud import artifactregistry_v1beta2
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+
+                # Initialize request argument(s)
+                request = artifactregistry_v1beta2.SetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
@@ -2222,6 +2636,26 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the IAM policy for a given resource.
+
+
+        .. code-block::
+
+            from google.cloud import artifactregistry_v1beta2
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+
+                # Initialize request argument(s)
+                request = artifactregistry_v1beta2.GetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
@@ -2328,6 +2762,28 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         r"""Tests if the caller has a list of permissions on a
         resource.
 
+
+
+        .. code-block::
+
+            from google.cloud import artifactregistry_v1beta2
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+
+                # Initialize request argument(s)
+                request = artifactregistry_v1beta2.TestIamPermissionsRequest(
+                    resource="resource_value",
+                    permissions=['permissions_value_1', 'permissions_value_2'],
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
                 The request object. Request message for
@@ -2377,6 +2833,26 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> settings.ProjectSettings:
         r"""Retrieves the Settings for the Project.
+
+
+        .. code-block::
+
+            from google.cloud import artifactregistry_v1beta2
+
+            def sample_get_project_settings():
+                # Create a client
+                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+
+                # Initialize request argument(s)
+                request = artifactregistry_v1beta2.GetProjectSettingsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_project_settings(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.artifactregistry_v1beta2.types.GetProjectSettingsRequest, dict]):
@@ -2449,6 +2925,25 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> settings.ProjectSettings:
         r"""Updates the Settings for the Project.
+
+
+        .. code-block::
+
+            from google.cloud import artifactregistry_v1beta2
+
+            def sample_update_project_settings():
+                # Create a client
+                client = artifactregistry_v1beta2.ArtifactRegistryClient()
+
+                # Initialize request argument(s)
+                request = artifactregistry_v1beta2.UpdateProjectSettingsRequest(
+                )
+
+                # Make the request
+                response = client.update_project_settings(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.artifactregistry_v1beta2.types.UpdateProjectSettingsRequest, dict]):

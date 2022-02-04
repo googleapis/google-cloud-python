@@ -446,6 +446,25 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> pagers.ListDockerImagesPager:
         r"""Lists docker images.
 
+
+        .. code-block::
+
+            from google.cloud import artifactregistry_v1
+
+            def sample_list_docker_images():
+                # Create a client
+                client = artifactregistry_v1.ArtifactRegistryClient()
+
+                # Initialize request argument(s)
+                request = artifactregistry_v1.ListDockerImagesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_docker_images(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.artifactregistry_v1.types.ListDockerImagesRequest, dict]):
                 The request object. The request to list docker images.
@@ -526,6 +545,25 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> pagers.ListRepositoriesPager:
         r"""Lists repositories.
 
+
+        .. code-block::
+
+            from google.cloud import artifactregistry_v1
+
+            def sample_list_repositories():
+                # Create a client
+                client = artifactregistry_v1.ArtifactRegistryClient()
+
+                # Initialize request argument(s)
+                request = artifactregistry_v1.ListRepositoriesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_repositories(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.artifactregistry_v1.types.ListRepositoriesRequest, dict]):
                 The request object. The request to list repositories.
@@ -605,6 +643,26 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> repository.Repository:
         r"""Gets a repository.
+
+
+        .. code-block::
+
+            from google.cloud import artifactregistry_v1
+
+            def sample_get_repository():
+                # Create a client
+                client = artifactregistry_v1.ArtifactRegistryClient()
+
+                # Initialize request argument(s)
+                request = artifactregistry_v1.GetRepositoryRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_repository(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.artifactregistry_v1.types.GetRepositoryRequest, dict]):
