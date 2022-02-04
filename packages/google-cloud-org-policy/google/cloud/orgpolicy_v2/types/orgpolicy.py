@@ -67,8 +67,8 @@ class Policy(proto.Message):
             be used instead of the baseline policy
             configurations as determined by the launch.
             Currently the only way the launch can trigger
-            the alternate configuration is via dry-
-            run/darklaunch.
+            the alternate configuration is via
+            dry-run/darklaunch.
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -78,8 +78,8 @@ class Policy(proto.Message):
 
 class AlternatePolicySpec(proto.Message):
     r"""Similar to PolicySpec but with an extra 'launch' field for
-    launch reference. The PolicySpec here is specific for dry-
-    run/darklaunch.
+    launch reference. The PolicySpec here is specific for
+    dry-run/darklaunch.
 
     Attributes:
         launch (str):
