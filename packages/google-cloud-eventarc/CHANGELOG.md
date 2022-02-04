@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/python-eventarc/compare/v1.3.0...v1.4.0) (2022-02-04)
+
+
+### Features
+
+* Add Channel and ChannelConnection resources ([#72](https://github.com/googleapis/python-eventarc/issues/72)) ([4d89018](https://github.com/googleapis/python-eventarc/commit/4d8901835ea498cf9ba3fd289f5c078f1eafe7a7))
+
 ## [1.3.0](https://github.com/googleapis/python-eventarc/compare/v1.2.1...v1.3.0) (2022-02-03)
 
 
