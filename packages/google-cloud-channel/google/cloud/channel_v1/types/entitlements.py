@@ -175,7 +175,9 @@ class ProvisionedService(proto.Message):
         provisioning_id (str):
             Output only. Provisioning ID of the
             entitlement. For Google Workspace, this would be
-            the underlying Subscription ID.
+            the underlying Subscription ID. For Google Cloud
+            Platform, this would be the Billing Account ID
+            of the billing subaccount.".
         product_id (str):
             Output only. The product pertaining to the
             provisioning resource as specified in the Offer.
