@@ -940,8 +940,7 @@ class PhraseMatcher(proto.Message):
             whenever the matcher is changed, except when it
             is activated or deactivated. A server generated
             random ID will be used. Example:
-            locations/global/phraseMatchers/my-first-
-            matcher@1234567
+            locations/global/phraseMatchers/my-first-matcher@1234567
         version_tag (str):
             The customized version tag to use for the phrase matcher. If
             not specified, it will default to ``revision_id``.

@@ -582,7 +582,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The conversation resource.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, conversation, conversation_id])
         if request is not None and has_flattened_params:
@@ -661,7 +661,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The conversation resource.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([conversation, update_mask])
         if request is not None and has_flattened_params:
@@ -733,7 +733,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The conversation resource.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -806,7 +806,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -877,7 +877,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -956,7 +956,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, analysis])
         if request is not None and has_flattened_params:
@@ -1034,7 +1034,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The analysis resource.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1106,7 +1106,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -1176,7 +1176,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1249,7 +1249,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -1337,7 +1337,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, issue_model])
         if request is not None and has_flattened_params:
@@ -1422,7 +1422,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The issue model resource.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([issue_model, update_mask])
         if request is not None and has_flattened_params:
@@ -1494,7 +1494,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The issue model resource.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1562,7 +1562,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The response of listing issue models.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -1646,7 +1646,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1728,7 +1728,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1812,7 +1812,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1888,7 +1888,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The issue resource.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1956,7 +1956,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The response of listing issues.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -2030,7 +2030,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The issue resource.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([issue, update_mask])
         if request is not None and has_flattened_params:
@@ -2107,7 +2107,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([issue_model])
         if request is not None and has_flattened_params:
@@ -2192,7 +2192,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The phrase matcher resource.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, phrase_matcher])
         if request is not None and has_flattened_params:
@@ -2263,7 +2263,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The phrase matcher resource.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -2336,7 +2336,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -2407,7 +2407,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -2481,7 +2481,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The phrase matcher resource.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([phrase_matcher, update_mask])
         if request is not None and has_flattened_params:
@@ -2556,7 +2556,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([location])
         if request is not None and has_flattened_params:
@@ -2625,7 +2625,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The settings resource.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -2700,7 +2700,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The settings resource.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([settings, update_mask])
         if request is not None and has_flattened_params:
@@ -2782,7 +2782,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The View resource.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, view])
         if request is not None and has_flattened_params:
@@ -2852,7 +2852,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The View resource.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -2924,7 +2924,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -3002,7 +3002,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 The View resource.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([view, update_mask])
         if request is not None and has_flattened_params:
@@ -3070,7 +3070,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
