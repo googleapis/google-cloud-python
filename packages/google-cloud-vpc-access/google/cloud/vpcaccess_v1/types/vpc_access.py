@@ -197,8 +197,8 @@ class OperationMetadata(proto.Message):
             completed.
         target (str):
             Output only. Name of the resource that this
-            operation is acting on e.g. projects/my-
-            project/locations/us-central1/connectors/v1.
+            operation is acting on e.g.
+            projects/my-project/locations/us-central1/connectors/v1.
     """
 
     method = proto.Field(proto.STRING, number=1,)
