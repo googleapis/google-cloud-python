@@ -251,6 +251,24 @@ class AccessApprovalAsyncClient:
         filtered by state (pending, active, dismissed). The
         order is reverse chronological.
 
+
+        .. code-block::
+
+            from google.cloud import accessapproval_v1
+
+            def sample_list_approval_requests():
+                # Create a client
+                client = accessapproval_v1.AccessApprovalClient()
+
+                # Initialize request argument(s)
+                request = accessapproval_v1.ListApprovalRequestsMessage(
+                )
+
+                # Make the request
+                page_result = client.list_approval_requests(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.accessapproval_v1.types.ListApprovalRequestsMessage, dict]):
                 The request object. Request to list approval requests.
@@ -341,6 +359,25 @@ class AccessApprovalAsyncClient:
         r"""Gets an approval request. Returns NOT_FOUND if the request does
         not exist.
 
+
+        .. code-block::
+
+            from google.cloud import accessapproval_v1
+
+            def sample_get_approval_request():
+                # Create a client
+                client = accessapproval_v1.AccessApprovalClient()
+
+                # Initialize request argument(s)
+                request = accessapproval_v1.GetApprovalRequestMessage(
+                )
+
+                # Make the request
+                response = client.get_approval_request(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.accessapproval_v1.types.GetApprovalRequestMessage, dict]):
                 The request object. Request to get an approval request.
@@ -423,6 +460,25 @@ class AccessApprovalAsyncClient:
         FAILED_PRECONDITION if the request exists but is not in a
         pending state.
 
+
+        .. code-block::
+
+            from google.cloud import accessapproval_v1
+
+            def sample_approve_approval_request():
+                # Create a client
+                client = accessapproval_v1.AccessApprovalClient()
+
+                # Initialize request argument(s)
+                request = accessapproval_v1.ApproveApprovalRequestMessage(
+                )
+
+                # Make the request
+                response = client.approve_approval_request(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.accessapproval_v1.types.ApproveApprovalRequestMessage, dict]):
                 The request object. Request to approve an
@@ -481,6 +537,25 @@ class AccessApprovalAsyncClient:
         Returns FAILED_PRECONDITION if the request exists but is not in
         a pending state.
 
+
+        .. code-block::
+
+            from google.cloud import accessapproval_v1
+
+            def sample_dismiss_approval_request():
+                # Create a client
+                client = accessapproval_v1.AccessApprovalClient()
+
+                # Initialize request argument(s)
+                request = accessapproval_v1.DismissApprovalRequestMessage(
+                )
+
+                # Make the request
+                response = client.dismiss_approval_request(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.accessapproval_v1.types.DismissApprovalRequestMessage, dict]):
                 The request object. Request to dismiss an approval
@@ -531,6 +606,25 @@ class AccessApprovalAsyncClient:
     ) -> accessapproval.AccessApprovalSettings:
         r"""Gets the settings associated with a project, folder,
         or organization.
+
+
+        .. code-block::
+
+            from google.cloud import accessapproval_v1
+
+            def sample_get_access_approval_settings():
+                # Create a client
+                client = accessapproval_v1.AccessApprovalClient()
+
+                # Initialize request argument(s)
+                request = accessapproval_v1.GetAccessApprovalSettingsMessage(
+                )
+
+                # Make the request
+                response = client.get_access_approval_settings(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.accessapproval_v1.types.GetAccessApprovalSettingsMessage, dict]):
@@ -615,6 +709,25 @@ class AccessApprovalAsyncClient:
         r"""Updates the settings associated with a project, folder, or
         organization. Settings to update are determined by the value of
         field_mask.
+
+
+        .. code-block::
+
+            from google.cloud import accessapproval_v1
+
+            def sample_update_access_approval_settings():
+                # Create a client
+                client = accessapproval_v1.AccessApprovalClient()
+
+                # Initialize request argument(s)
+                request = accessapproval_v1.UpdateAccessApprovalSettingsMessage(
+                )
+
+                # Make the request
+                response = client.update_access_approval_settings(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.accessapproval_v1.types.UpdateAccessApprovalSettingsMessage, dict]):
@@ -712,6 +825,22 @@ class AccessApprovalAsyncClient:
         higher level of the hierarchy, then Access Approval will
         still be enabled at this level as the settings are
         inherited.
+
+
+        .. code-block::
+
+            from google.cloud import accessapproval_v1
+
+            def sample_delete_access_approval_settings():
+                # Create a client
+                client = accessapproval_v1.AccessApprovalClient()
+
+                # Initialize request argument(s)
+                request = accessapproval_v1.DeleteAccessApprovalSettingsMessage(
+                )
+
+                # Make the request
+                response = client.delete_access_approval_settings(request=request)
 
         Args:
             request (Union[google.cloud.accessapproval_v1.types.DeleteAccessApprovalSettingsMessage, dict]):

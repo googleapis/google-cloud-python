@@ -1,0 +1,619 @@
+{
+  "snippets": [
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AccessApproval"
+          },
+          "shortName": "ApproveApprovalRequest"
+        }
+      },
+      "file": "accessapproval_generated_accessapproval_v1_access_approval_approve_approval_request_async.py",
+      "regionTag": "accessapproval_generated_accessapproval_v1_AccessApproval_ApproveApprovalRequest_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AccessApproval"
+          },
+          "shortName": "ApproveApprovalRequest"
+        }
+      },
+      "file": "accessapproval_generated_accessapproval_v1_access_approval_approve_approval_request_sync.py",
+      "regionTag": "accessapproval_generated_accessapproval_v1_AccessApproval_ApproveApprovalRequest_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AccessApproval"
+          },
+          "shortName": "DeleteAccessApprovalSettings"
+        }
+      },
+      "file": "accessapproval_generated_accessapproval_v1_access_approval_delete_access_approval_settings_async.py",
+      "regionTag": "accessapproval_generated_accessapproval_v1_AccessApproval_DeleteAccessApprovalSettings_async",
+      "segments": [
+        {
+          "end": 41,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 41,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AccessApproval"
+          },
+          "shortName": "DeleteAccessApprovalSettings"
+        }
+      },
+      "file": "accessapproval_generated_accessapproval_v1_access_approval_delete_access_approval_settings_sync.py",
+      "regionTag": "accessapproval_generated_accessapproval_v1_AccessApproval_DeleteAccessApprovalSettings_sync",
+      "segments": [
+        {
+          "end": 41,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 41,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AccessApproval"
+          },
+          "shortName": "DismissApprovalRequest"
+        }
+      },
+      "file": "accessapproval_generated_accessapproval_v1_access_approval_dismiss_approval_request_async.py",
+      "regionTag": "accessapproval_generated_accessapproval_v1_AccessApproval_DismissApprovalRequest_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AccessApproval"
+          },
+          "shortName": "DismissApprovalRequest"
+        }
+      },
+      "file": "accessapproval_generated_accessapproval_v1_access_approval_dismiss_approval_request_sync.py",
+      "regionTag": "accessapproval_generated_accessapproval_v1_AccessApproval_DismissApprovalRequest_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AccessApproval"
+          },
+          "shortName": "GetAccessApprovalSettings"
+        }
+      },
+      "file": "accessapproval_generated_accessapproval_v1_access_approval_get_access_approval_settings_async.py",
+      "regionTag": "accessapproval_generated_accessapproval_v1_AccessApproval_GetAccessApprovalSettings_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AccessApproval"
+          },
+          "shortName": "GetAccessApprovalSettings"
+        }
+      },
+      "file": "accessapproval_generated_accessapproval_v1_access_approval_get_access_approval_settings_sync.py",
+      "regionTag": "accessapproval_generated_accessapproval_v1_AccessApproval_GetAccessApprovalSettings_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AccessApproval"
+          },
+          "shortName": "GetApprovalRequest"
+        }
+      },
+      "file": "accessapproval_generated_accessapproval_v1_access_approval_get_approval_request_async.py",
+      "regionTag": "accessapproval_generated_accessapproval_v1_AccessApproval_GetApprovalRequest_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AccessApproval"
+          },
+          "shortName": "GetApprovalRequest"
+        }
+      },
+      "file": "accessapproval_generated_accessapproval_v1_access_approval_get_approval_request_sync.py",
+      "regionTag": "accessapproval_generated_accessapproval_v1_AccessApproval_GetApprovalRequest_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AccessApproval"
+          },
+          "shortName": "ListApprovalRequests"
+        }
+      },
+      "file": "accessapproval_generated_accessapproval_v1_access_approval_list_approval_requests_async.py",
+      "regionTag": "accessapproval_generated_accessapproval_v1_AccessApproval_ListApprovalRequests_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AccessApproval"
+          },
+          "shortName": "ListApprovalRequests"
+        }
+      },
+      "file": "accessapproval_generated_accessapproval_v1_access_approval_list_approval_requests_sync.py",
+      "regionTag": "accessapproval_generated_accessapproval_v1_AccessApproval_ListApprovalRequests_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AccessApproval"
+          },
+          "shortName": "UpdateAccessApprovalSettings"
+        }
+      },
+      "file": "accessapproval_generated_accessapproval_v1_access_approval_update_access_approval_settings_async.py",
+      "regionTag": "accessapproval_generated_accessapproval_v1_AccessApproval_UpdateAccessApprovalSettings_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AccessApproval"
+          },
+          "shortName": "UpdateAccessApprovalSettings"
+        }
+      },
+      "file": "accessapproval_generated_accessapproval_v1_access_approval_update_access_approval_settings_sync.py",
+      "regionTag": "accessapproval_generated_accessapproval_v1_AccessApproval_UpdateAccessApprovalSettings_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    }
+  ]
+}
