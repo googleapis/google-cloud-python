@@ -341,8 +341,8 @@ class Model(proto.Message):
                 threshold.
             f1_score (google.protobuf.wrappers_pb2.DoubleValue):
                 The F1 score is an average of recall and
-                precision. For multiclass this is a macro-
-                averaged metric.
+                precision. For multiclass this is a
+                macro-averaged metric.
             log_loss (google.protobuf.wrappers_pb2.DoubleValue):
                 Logarithmic Loss. For multiclass this is a
                 macro-averaged metric.
