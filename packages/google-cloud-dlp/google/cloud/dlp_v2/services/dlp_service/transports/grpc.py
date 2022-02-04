@@ -34,8 +34,9 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
 
     The Cloud Data Loss Prevention (DLP) API is a service that
     allows clients to detect the presence of Personally Identifiable
-    Information (PII) and other privacy-sensitive data in user-
-    supplied, unstructured data streams, like text blocks or images.
+    Information (PII) and other privacy-sensitive data in
+    user-supplied, unstructured data streams, like text blocks or
+    images.
     The service also includes methods for sensitive data redaction
     and scheduling of data scans on Google Cloud Platform based data
     sets.
@@ -167,8 +168,11 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         if not self._grpc_channel:
             self._grpc_channel = type(self).create_channel(
                 self._host,
+                # use the credentials which are saved
                 credentials=self._credentials,
-                credentials_file=credentials_file,
+                # Set ``credentials_file`` to ``None`` here as
+                # the credentials that we saved earlier should be used.
+                credentials_file=None,
                 scopes=self._scopes,
                 ssl_credentials=self._ssl_channel_credentials,
                 quota_project_id=quota_project_id,
@@ -278,8 +282,8 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         Redacts potentially sensitive info from an image.
         This method has limits on input size, processing time,
         and output size. See
-        https://cloud.google.com/dlp/docs/redacting-sensitive-
-        data-images to learn more.
+        https://cloud.google.com/dlp/docs/redacting-sensitive-data-images
+        to learn more.
 
         When no InfoTypes or CustomInfoTypes are specified in
         this request, the system will automatically choose what
@@ -313,8 +317,8 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         De-identifies potentially sensitive info from a
         ContentItem. This method has limits on input size and
         output size. See
-        https://cloud.google.com/dlp/docs/deidentify-sensitive-
-        data to learn more.
+        https://cloud.google.com/dlp/docs/deidentify-sensitive-data
+        to learn more.
 
         When no InfoTypes or CustomInfoTypes are specified in
         this request, the system will automatically choose what
@@ -404,8 +408,9 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
 
         Creates an InspectTemplate for re-using frequently
         used configuration for inspecting content, images, and
-        storage. See https://cloud.google.com/dlp/docs/creating-
-        templates to learn more.
+        storage. See
+        https://cloud.google.com/dlp/docs/creating-templates to
+        learn more.
 
         Returns:
             Callable[[~.CreateInspectTemplateRequest],
@@ -546,8 +551,8 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         Creates a DeidentifyTemplate for re-using frequently
         used configuration for de-identifying content, images,
         and storage. See
-        https://cloud.google.com/dlp/docs/creating-templates-
-        deid to learn more.
+        https://cloud.google.com/dlp/docs/creating-templates-deid
+        to learn more.
 
         Returns:
             Callable[[~.CreateDeidentifyTemplateRequest],
@@ -574,8 +579,9 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         r"""Return a callable for the update deidentify template method over gRPC.
 
         Updates the DeidentifyTemplate.
-        See https://cloud.google.com/dlp/docs/creating-
-        templates-deid to learn more.
+        See
+        https://cloud.google.com/dlp/docs/creating-templates-deid
+        to learn more.
 
         Returns:
             Callable[[~.UpdateDeidentifyTemplateRequest],
@@ -602,8 +608,9 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         r"""Return a callable for the get deidentify template method over gRPC.
 
         Gets a DeidentifyTemplate.
-        See https://cloud.google.com/dlp/docs/creating-
-        templates-deid to learn more.
+        See
+        https://cloud.google.com/dlp/docs/creating-templates-deid
+        to learn more.
 
         Returns:
             Callable[[~.GetDeidentifyTemplateRequest],
@@ -632,8 +639,9 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         r"""Return a callable for the list deidentify templates method over gRPC.
 
         Lists DeidentifyTemplates.
-        See https://cloud.google.com/dlp/docs/creating-
-        templates-deid to learn more.
+        See
+        https://cloud.google.com/dlp/docs/creating-templates-deid
+        to learn more.
 
         Returns:
             Callable[[~.ListDeidentifyTemplatesRequest],
@@ -660,8 +668,9 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         r"""Return a callable for the delete deidentify template method over gRPC.
 
         Deletes a DeidentifyTemplate.
-        See https://cloud.google.com/dlp/docs/creating-
-        templates-deid to learn more.
+        See
+        https://cloud.google.com/dlp/docs/creating-templates-deid
+        to learn more.
 
         Returns:
             Callable[[~.DeleteDeidentifyTemplateRequest],
@@ -718,8 +727,9 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         r"""Return a callable for the update job trigger method over gRPC.
 
         Updates a job trigger.
-        See https://cloud.google.com/dlp/docs/creating-job-
-        triggers to learn more.
+        See
+        https://cloud.google.com/dlp/docs/creating-job-triggers
+        to learn more.
 
         Returns:
             Callable[[~.UpdateJobTriggerRequest],
@@ -773,8 +783,9 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         r"""Return a callable for the get job trigger method over gRPC.
 
         Gets a job trigger.
-        See https://cloud.google.com/dlp/docs/creating-job-
-        triggers to learn more.
+        See
+        https://cloud.google.com/dlp/docs/creating-job-triggers
+        to learn more.
 
         Returns:
             Callable[[~.GetJobTriggerRequest],
@@ -801,8 +812,9 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         r"""Return a callable for the list job triggers method over gRPC.
 
         Lists job triggers.
-        See https://cloud.google.com/dlp/docs/creating-job-
-        triggers to learn more.
+        See
+        https://cloud.google.com/dlp/docs/creating-job-triggers
+        to learn more.
 
         Returns:
             Callable[[~.ListJobTriggersRequest],
@@ -829,8 +841,9 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         r"""Return a callable for the delete job trigger method over gRPC.
 
         Deletes a job trigger.
-        See https://cloud.google.com/dlp/docs/creating-job-
-        triggers to learn more.
+        See
+        https://cloud.google.com/dlp/docs/creating-job-triggers
+        to learn more.
 
         Returns:
             Callable[[~.DeleteJobTriggerRequest],
@@ -946,8 +959,9 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
 
         Gets the latest state of a long-running DlpJob.
         See https://cloud.google.com/dlp/docs/inspecting-storage
-        and https://cloud.google.com/dlp/docs/compute-risk-
-        analysis to learn more.
+        and
+        https://cloud.google.com/dlp/docs/compute-risk-analysis
+        to learn more.
 
         Returns:
             Callable[[~.GetDlpJobRequest],
@@ -975,8 +989,9 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         that the client is no longer interested in the DlpJob
         result. The job will be cancelled if possible.
         See https://cloud.google.com/dlp/docs/inspecting-storage
-        and https://cloud.google.com/dlp/docs/compute-risk-
-        analysis to learn more.
+        and
+        https://cloud.google.com/dlp/docs/compute-risk-analysis
+        to learn more.
 
         Returns:
             Callable[[~.DeleteDlpJobRequest],
@@ -1004,8 +1019,9 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         DlpJob. The server makes a best effort to cancel the
         DlpJob, but success is not guaranteed.
         See https://cloud.google.com/dlp/docs/inspecting-storage
-        and https://cloud.google.com/dlp/docs/compute-risk-
-        analysis to learn more.
+        and
+        https://cloud.google.com/dlp/docs/compute-risk-analysis
+        to learn more.
 
         Returns:
             Callable[[~.CancelDlpJobRequest],
@@ -1033,8 +1049,8 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
 
         Creates a pre-built stored infoType to be used for
         inspection. See
-        https://cloud.google.com/dlp/docs/creating-stored-
-        infotypes to learn more.
+        https://cloud.google.com/dlp/docs/creating-stored-infotypes
+        to learn more.
 
         Returns:
             Callable[[~.CreateStoredInfoTypeRequest],
@@ -1063,8 +1079,8 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         Updates the stored infoType by creating a new
         version. The existing version will continue to be used
         until the new version is ready. See
-        https://cloud.google.com/dlp/docs/creating-stored-
-        infotypes to learn more.
+        https://cloud.google.com/dlp/docs/creating-stored-infotypes
+        to learn more.
 
         Returns:
             Callable[[~.UpdateStoredInfoTypeRequest],
@@ -1091,8 +1107,9 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         r"""Return a callable for the get stored info type method over gRPC.
 
         Gets a stored infoType.
-        See https://cloud.google.com/dlp/docs/creating-stored-
-        infotypes to learn more.
+        See
+        https://cloud.google.com/dlp/docs/creating-stored-infotypes
+        to learn more.
 
         Returns:
             Callable[[~.GetStoredInfoTypeRequest],
@@ -1119,8 +1136,9 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         r"""Return a callable for the list stored info types method over gRPC.
 
         Lists stored infoTypes.
-        See https://cloud.google.com/dlp/docs/creating-stored-
-        infotypes to learn more.
+        See
+        https://cloud.google.com/dlp/docs/creating-stored-infotypes
+        to learn more.
 
         Returns:
             Callable[[~.ListStoredInfoTypesRequest],
@@ -1147,8 +1165,9 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         r"""Return a callable for the delete stored info type method over gRPC.
 
         Deletes a stored infoType.
-        See https://cloud.google.com/dlp/docs/creating-stored-
-        infotypes to learn more.
+        See
+        https://cloud.google.com/dlp/docs/creating-stored-infotypes
+        to learn more.
 
         Returns:
             Callable[[~.DeleteStoredInfoTypeRequest],

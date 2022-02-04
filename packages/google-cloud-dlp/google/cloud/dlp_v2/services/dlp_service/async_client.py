@@ -43,8 +43,9 @@ from .client import DlpServiceClient
 class DlpServiceAsyncClient:
     """The Cloud Data Loss Prevention (DLP) API is a service that
     allows clients to detect the presence of Personally Identifiable
-    Information (PII) and other privacy-sensitive data in user-
-    supplied, unstructured data streams, like text blocks or images.
+    Information (PII) and other privacy-sensitive data in
+    user-supplied, unstructured data streams, like text blocks or
+    images.
     The service also includes methods for sensitive data redaction
     and scheduling of data scans on Google Cloud Platform based data
     sets.
@@ -302,8 +303,8 @@ class DlpServiceAsyncClient:
         r"""Redacts potentially sensitive info from an image.
         This method has limits on input size, processing time,
         and output size. See
-        https://cloud.google.com/dlp/docs/redacting-sensitive-
-        data-images to learn more.
+        https://cloud.google.com/dlp/docs/redacting-sensitive-data-images
+        to learn more.
 
         When no InfoTypes or CustomInfoTypes are specified in
         this request, the system will automatically choose what
@@ -369,8 +370,8 @@ class DlpServiceAsyncClient:
         r"""De-identifies potentially sensitive info from a
         ContentItem. This method has limits on input size and
         output size. See
-        https://cloud.google.com/dlp/docs/deidentify-sensitive-
-        data to learn more.
+        https://cloud.google.com/dlp/docs/deidentify-sensitive-data
+        to learn more.
 
         When no InfoTypes or CustomInfoTypes are specified in
         this request, the system will automatically choose what
@@ -526,7 +527,7 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -578,8 +579,9 @@ class DlpServiceAsyncClient:
     ) -> dlp.InspectTemplate:
         r"""Creates an InspectTemplate for re-using frequently
         used configuration for inspecting content, images, and
-        storage. See https://cloud.google.com/dlp/docs/creating-
-        templates to learn more.
+        storage. See
+        https://cloud.google.com/dlp/docs/creating-templates to
+        learn more.
 
         Args:
             request (Union[google.cloud.dlp_v2.types.CreateInspectTemplateRequest, dict]):
@@ -634,12 +636,12 @@ class DlpServiceAsyncClient:
                 data to be detected) to be used anywhere
                 you otherwise would normally specify
                 InspectConfig. See
-                https://cloud.google.com/dlp/docs/concepts-
-                templates to learn more.
+                https://cloud.google.com/dlp/docs/concepts-templates
+                to learn more.
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, inspect_template])
         if request is not None and has_flattened_params:
@@ -730,12 +732,12 @@ class DlpServiceAsyncClient:
                 data to be detected) to be used anywhere
                 you otherwise would normally specify
                 InspectConfig. See
-                https://cloud.google.com/dlp/docs/concepts-
-                templates to learn more.
+                https://cloud.google.com/dlp/docs/concepts-templates
+                to learn more.
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, inspect_template, update_mask])
         if request is not None and has_flattened_params:
@@ -814,12 +816,12 @@ class DlpServiceAsyncClient:
                 data to be detected) to be used anywhere
                 you otherwise would normally specify
                 InspectConfig. See
-                https://cloud.google.com/dlp/docs/concepts-
-                templates to learn more.
+                https://cloud.google.com/dlp/docs/concepts-templates
+                to learn more.
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -927,7 +929,7 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -1012,7 +1014,7 @@ class DlpServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1070,8 +1072,8 @@ class DlpServiceAsyncClient:
         r"""Creates a DeidentifyTemplate for re-using frequently
         used configuration for de-identifying content, images,
         and storage. See
-        https://cloud.google.com/dlp/docs/creating-templates-
-        deid to learn more.
+        https://cloud.google.com/dlp/docs/creating-templates-deid
+        to learn more.
 
         Args:
             request (Union[google.cloud.dlp_v2.types.CreateDeidentifyTemplateRequest, dict]):
@@ -1124,12 +1126,12 @@ class DlpServiceAsyncClient:
                 DeidentifyTemplates contains
                 instructions on how to de-identify
                 content. See
-                https://cloud.google.com/dlp/docs/concepts-
-                templates to learn more.
+                https://cloud.google.com/dlp/docs/concepts-templates
+                to learn more.
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, deidentify_template])
         if request is not None and has_flattened_params:
@@ -1179,8 +1181,9 @@ class DlpServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.DeidentifyTemplate:
         r"""Updates the DeidentifyTemplate.
-        See https://cloud.google.com/dlp/docs/creating-
-        templates-deid to learn more.
+        See
+        https://cloud.google.com/dlp/docs/creating-templates-deid
+        to learn more.
 
         Args:
             request (Union[google.cloud.dlp_v2.types.UpdateDeidentifyTemplateRequest, dict]):
@@ -1218,12 +1221,12 @@ class DlpServiceAsyncClient:
                 DeidentifyTemplates contains
                 instructions on how to de-identify
                 content. See
-                https://cloud.google.com/dlp/docs/concepts-
-                templates to learn more.
+                https://cloud.google.com/dlp/docs/concepts-templates
+                to learn more.
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, deidentify_template, update_mask])
         if request is not None and has_flattened_params:
@@ -1273,8 +1276,9 @@ class DlpServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.DeidentifyTemplate:
         r"""Gets a DeidentifyTemplate.
-        See https://cloud.google.com/dlp/docs/creating-
-        templates-deid to learn more.
+        See
+        https://cloud.google.com/dlp/docs/creating-templates-deid
+        to learn more.
 
         Args:
             request (Union[google.cloud.dlp_v2.types.GetDeidentifyTemplateRequest, dict]):
@@ -1300,12 +1304,12 @@ class DlpServiceAsyncClient:
                 DeidentifyTemplates contains
                 instructions on how to de-identify
                 content. See
-                https://cloud.google.com/dlp/docs/concepts-
-                templates to learn more.
+                https://cloud.google.com/dlp/docs/concepts-templates
+                to learn more.
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1361,8 +1365,9 @@ class DlpServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDeidentifyTemplatesAsyncPager:
         r"""Lists DeidentifyTemplates.
-        See https://cloud.google.com/dlp/docs/creating-
-        templates-deid to learn more.
+        See
+        https://cloud.google.com/dlp/docs/creating-templates-deid
+        to learn more.
 
         Args:
             request (Union[google.cloud.dlp_v2.types.ListDeidentifyTemplatesRequest, dict]):
@@ -1413,7 +1418,7 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -1475,8 +1480,9 @@ class DlpServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a DeidentifyTemplate.
-        See https://cloud.google.com/dlp/docs/creating-
-        templates-deid to learn more.
+        See
+        https://cloud.google.com/dlp/docs/creating-templates-deid
+        to learn more.
 
         Args:
             request (Union[google.cloud.dlp_v2.types.DeleteDeidentifyTemplateRequest, dict]):
@@ -1498,7 +1504,7 @@ class DlpServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1602,12 +1608,12 @@ class DlpServiceAsyncClient:
             google.cloud.dlp_v2.types.JobTrigger:
                 Contains a configuration to make dlp
                 api calls on a repeating basis. See
-                https://cloud.google.com/dlp/docs/concepts-
-                job-triggers to learn more.
+                https://cloud.google.com/dlp/docs/concepts-job-triggers
+                to learn more.
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, job_trigger])
         if request is not None and has_flattened_params:
@@ -1657,8 +1663,9 @@ class DlpServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.JobTrigger:
         r"""Updates a job trigger.
-        See https://cloud.google.com/dlp/docs/creating-job-
-        triggers to learn more.
+        See
+        https://cloud.google.com/dlp/docs/creating-job-triggers
+        to learn more.
 
         Args:
             request (Union[google.cloud.dlp_v2.types.UpdateJobTriggerRequest, dict]):
@@ -1694,12 +1701,12 @@ class DlpServiceAsyncClient:
             google.cloud.dlp_v2.types.JobTrigger:
                 Contains a configuration to make dlp
                 api calls on a repeating basis. See
-                https://cloud.google.com/dlp/docs/concepts-
-                job-triggers to learn more.
+                https://cloud.google.com/dlp/docs/concepts-job-triggers
+                to learn more.
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, job_trigger, update_mask])
         if request is not None and has_flattened_params:
@@ -1778,7 +1785,7 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1824,8 +1831,9 @@ class DlpServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.JobTrigger:
         r"""Gets a job trigger.
-        See https://cloud.google.com/dlp/docs/creating-job-
-        triggers to learn more.
+        See
+        https://cloud.google.com/dlp/docs/creating-job-triggers
+        to learn more.
 
         Args:
             request (Union[google.cloud.dlp_v2.types.GetJobTriggerRequest, dict]):
@@ -1848,12 +1856,12 @@ class DlpServiceAsyncClient:
             google.cloud.dlp_v2.types.JobTrigger:
                 Contains a configuration to make dlp
                 api calls on a repeating basis. See
-                https://cloud.google.com/dlp/docs/concepts-
-                job-triggers to learn more.
+                https://cloud.google.com/dlp/docs/concepts-job-triggers
+                to learn more.
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1909,8 +1917,9 @@ class DlpServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListJobTriggersAsyncPager:
         r"""Lists job triggers.
-        See https://cloud.google.com/dlp/docs/creating-job-
-        triggers to learn more.
+        See
+        https://cloud.google.com/dlp/docs/creating-job-triggers
+        to learn more.
 
         Args:
             request (Union[google.cloud.dlp_v2.types.ListJobTriggersRequest, dict]):
@@ -1954,7 +1963,7 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -2016,8 +2025,9 @@ class DlpServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a job trigger.
-        See https://cloud.google.com/dlp/docs/creating-job-
-        triggers to learn more.
+        See
+        https://cloud.google.com/dlp/docs/creating-job-triggers
+        to learn more.
 
         Args:
             request (Union[google.cloud.dlp_v2.types.DeleteJobTriggerRequest, dict]):
@@ -2038,7 +2048,7 @@ class DlpServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -2193,8 +2203,8 @@ class DlpServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             risk_job (:class:`google.cloud.dlp_v2.types.RiskAnalysisJobConfig`):
-                A risk analysis job calculates re-
-                dentification risk metrics for a
+                A risk analysis job calculates
+                re-identification risk metrics for a
                 BigQuery table.
 
                 This corresponds to the ``risk_job`` field
@@ -2213,7 +2223,7 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, inspect_job, risk_job])
         if request is not None and has_flattened_params:
@@ -2312,7 +2322,7 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -2375,8 +2385,9 @@ class DlpServiceAsyncClient:
     ) -> dlp.DlpJob:
         r"""Gets the latest state of a long-running DlpJob.
         See https://cloud.google.com/dlp/docs/inspecting-storage
-        and https://cloud.google.com/dlp/docs/compute-risk-
-        analysis to learn more.
+        and
+        https://cloud.google.com/dlp/docs/compute-risk-analysis
+        to learn more.
 
         Args:
             request (Union[google.cloud.dlp_v2.types.GetDlpJobRequest, dict]):
@@ -2402,7 +2413,7 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -2461,8 +2472,9 @@ class DlpServiceAsyncClient:
         that the client is no longer interested in the DlpJob
         result. The job will be cancelled if possible.
         See https://cloud.google.com/dlp/docs/inspecting-storage
-        and https://cloud.google.com/dlp/docs/compute-risk-
-        analysis to learn more.
+        and
+        https://cloud.google.com/dlp/docs/compute-risk-analysis
+        to learn more.
 
         Args:
             request (Union[google.cloud.dlp_v2.types.DeleteDlpJobRequest, dict]):
@@ -2482,7 +2494,7 @@ class DlpServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -2539,8 +2551,9 @@ class DlpServiceAsyncClient:
         DlpJob. The server makes a best effort to cancel the
         DlpJob, but success is not guaranteed.
         See https://cloud.google.com/dlp/docs/inspecting-storage
-        and https://cloud.google.com/dlp/docs/compute-risk-
-        analysis to learn more.
+        and
+        https://cloud.google.com/dlp/docs/compute-risk-analysis
+        to learn more.
 
         Args:
             request (Union[google.cloud.dlp_v2.types.CancelDlpJobRequest, dict]):
@@ -2586,8 +2599,8 @@ class DlpServiceAsyncClient:
     ) -> dlp.StoredInfoType:
         r"""Creates a pre-built stored infoType to be used for
         inspection. See
-        https://cloud.google.com/dlp/docs/creating-stored-
-        infotypes to learn more.
+        https://cloud.google.com/dlp/docs/creating-stored-infotypes
+        to learn more.
 
         Args:
             request (Union[google.cloud.dlp_v2.types.CreateStoredInfoTypeRequest, dict]):
@@ -2643,7 +2656,7 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, config])
         if request is not None and has_flattened_params:
@@ -2695,8 +2708,8 @@ class DlpServiceAsyncClient:
         r"""Updates the stored infoType by creating a new
         version. The existing version will continue to be used
         until the new version is ready. See
-        https://cloud.google.com/dlp/docs/creating-stored-
-        infotypes to learn more.
+        https://cloud.google.com/dlp/docs/creating-stored-infotypes
+        to learn more.
 
         Args:
             request (Union[google.cloud.dlp_v2.types.UpdateStoredInfoTypeRequest, dict]):
@@ -2741,7 +2754,7 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, config, update_mask])
         if request is not None and has_flattened_params:
@@ -2791,8 +2804,9 @@ class DlpServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.StoredInfoType:
         r"""Gets a stored infoType.
-        See https://cloud.google.com/dlp/docs/creating-stored-
-        infotypes to learn more.
+        See
+        https://cloud.google.com/dlp/docs/creating-stored-infotypes
+        to learn more.
 
         Args:
             request (Union[google.cloud.dlp_v2.types.GetStoredInfoTypeRequest, dict]):
@@ -2821,7 +2835,7 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -2877,8 +2891,9 @@ class DlpServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListStoredInfoTypesAsyncPager:
         r"""Lists stored infoTypes.
-        See https://cloud.google.com/dlp/docs/creating-stored-
-        infotypes to learn more.
+        See
+        https://cloud.google.com/dlp/docs/creating-stored-infotypes
+        to learn more.
 
         Args:
             request (Union[google.cloud.dlp_v2.types.ListStoredInfoTypesRequest, dict]):
@@ -2929,7 +2944,7 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -2991,8 +3006,9 @@ class DlpServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a stored infoType.
-        See https://cloud.google.com/dlp/docs/creating-stored-
-        infotypes to learn more.
+        See
+        https://cloud.google.com/dlp/docs/creating-stored-infotypes
+        to learn more.
 
         Args:
             request (Union[google.cloud.dlp_v2.types.DeleteStoredInfoTypeRequest, dict]):
@@ -3014,7 +3030,7 @@ class DlpServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -3097,7 +3113,7 @@ class DlpServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:

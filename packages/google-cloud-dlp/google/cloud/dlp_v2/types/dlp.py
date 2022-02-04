@@ -378,8 +378,8 @@ class InspectConfig(proto.Message):
             findings.
         custom_info_types (Sequence[google.cloud.dlp_v2.types.CustomInfoType]):
             CustomInfoTypes provided by the user. See
-            https://cloud.google.com/dlp/docs/creating-
-            custom-infotypes to learn more.
+            https://cloud.google.com/dlp/docs/creating-custom-infotypes
+            to learn more.
         content_options (Sequence[google.cloud.dlp_v2.types.ContentOption]):
             List of options defining data content to
             scan. If empty, text, images, and other content
@@ -1746,9 +1746,9 @@ class PrivacyMetric(proto.Message):
 
         Attributes:
             quasi_ids (Sequence[google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.TaggedField]):
-                Required. Fields considered to be quasi-
-                dentifiers. No two columns can have the same
-                tag.
+                Required. Fields considered to be
+                quasi-identifiers. No two columns can have the
+                same tag.
             region_code (str):
                 ISO 3166-1 alpha-2 region code to use in the statistical
                 modeling. Set if no column is tagged with a region-specific
@@ -1871,8 +1871,9 @@ class PrivacyMetric(proto.Message):
 
         Attributes:
             quasi_ids (Sequence[google.cloud.dlp_v2.types.QuasiId]):
-                Required. Fields considered to be quasi-
-                dentifiers. No two fields can have the same tag.
+                Required. Fields considered to be
+                quasi-identifiers. No two fields can have the
+                same tag.
             region_code (str):
                 ISO 3166-1 alpha-2 region code to use in the statistical
                 modeling. Set if no column is tagged with a region-specific
@@ -2179,8 +2180,8 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
                 quasi_ids_values (Sequence[google.cloud.dlp_v2.types.Value]):
                     The quasi-identifier values.
                 estimated_anonymity (int):
-                    The estimated anonymity for these quasi-
-                    dentifier values.
+                    The estimated anonymity for these
+                    quasi-identifier values.
             """
 
             quasi_ids_values = proto.RepeatedField(
@@ -3008,8 +3009,8 @@ class BucketingConfig(proto.Message):
 
     Attributes:
         buckets (Sequence[google.cloud.dlp_v2.types.BucketingConfig.Bucket]):
-            Set of buckets. Ranges must be non-
-            verlapping.
+            Set of buckets. Ranges must be
+            non-overlapping.
     """
 
     class Bucket(proto.Message):
@@ -3680,9 +3681,10 @@ class InspectTemplate(proto.Message):
 
 
 class DeidentifyTemplate(proto.Message):
-    r"""DeidentifyTemplates contains instructions on how to de-
-    dentify content. See https://cloud.google.com/dlp/docs/concepts-
-    templates to learn more.
+    r"""DeidentifyTemplates contains instructions on how to
+    de-identify content. See
+    https://cloud.google.com/dlp/docs/concepts-templates to learn
+    more.
 
     Attributes:
         name (str):
@@ -3735,8 +3737,9 @@ class Error(proto.Message):
 
 class JobTrigger(proto.Message):
     r"""Contains a configuration to make dlp api calls on a repeating
-    basis. See https://cloud.google.com/dlp/docs/concepts-job-
-    triggers to learn more.
+    basis. See
+    https://cloud.google.com/dlp/docs/concepts-job-triggers to learn
+    more.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -4287,8 +4290,9 @@ class CreateDlpJobRequest(proto.Message):
 
             This field is a member of `oneof`_ ``job``.
         risk_job (google.cloud.dlp_v2.types.RiskAnalysisJobConfig):
-            A risk analysis job calculates re-
-            dentification risk metrics for a BigQuery table.
+            A risk analysis job calculates
+            re-identification risk metrics for a BigQuery
+            table.
 
             This field is a member of `oneof`_ ``job``.
         job_id (str):
