@@ -81,5 +81,5 @@ Next Steps
    APIs that we cover.
 
 .. _Samples: https://github.com/googleapis/python-video-transcoder/blob/main/samples/snippets/README.md
-.. _Transcoder API Product documentation:  https://cloud.google.com/transcoder/docs
+.. _Transcoder API Product documentation: https://cloud.google.com/transcoder/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
