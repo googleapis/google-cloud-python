@@ -164,8 +164,11 @@ class SubscriberGrpcTransport(SubscriberTransport):
         if not self._grpc_channel:
             self._grpc_channel = type(self).create_channel(
                 self._host,
+                # use the credentials which are saved
                 credentials=self._credentials,
-                credentials_file=credentials_file,
+                # Set ``credentials_file`` to ``None`` here as
+                # the credentials that we saved earlier should be used.
+                credentials_file=None,
                 scopes=self._scopes,
                 ssl_credentials=self._ssl_channel_credentials,
                 quota_project_id=quota_project_id,
@@ -540,10 +543,10 @@ class SubscriberGrpcTransport(SubscriberTransport):
 
         Gets the configuration details of a snapshot.
         Snapshots are used in <a
-        href="https://cloud.google.com/pubsub/docs/replay-
-        overview">Seek</a> operations, which allow you to manage
-        message acknowledgments in bulk. That is, you can set
-        the acknowledgment state of messages in an existing
+        href="https://cloud.google.com/pubsub/docs/replay-overview">Seek</a>
+        operations, which allow you to manage message
+        acknowledgments in bulk. That is, you can set the
+        acknowledgment state of messages in an existing
         subscription to the state captured by a snapshot.
 
         Returns:
@@ -645,8 +648,9 @@ class SubscriberGrpcTransport(SubscriberTransport):
         r"""Return a callable for the update snapshot method over gRPC.
 
         Updates an existing snapshot. Snapshots are used in
-        <a href="https://cloud.google.com/pubsub/docs/replay-
-        overview">Seek</a> operations, which allow
+        <a
+        href="https://cloud.google.com/pubsub/docs/replay-overview">Seek</a>
+        operations, which allow
         you to manage message acknowledgments in bulk. That is,
         you can set the acknowledgment state of messages in an
         existing subscription to the state captured by a

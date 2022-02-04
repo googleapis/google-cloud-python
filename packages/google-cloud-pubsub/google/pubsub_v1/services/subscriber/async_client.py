@@ -321,7 +321,7 @@ class SubscriberAsyncClient:
                 A subscription resource.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, topic, push_config, ack_deadline_seconds])
         if request is not None and has_flattened_params:
@@ -407,7 +407,7 @@ class SubscriberAsyncClient:
                 A subscription resource.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([subscription])
         if request is not None and has_flattened_params:
@@ -553,7 +553,7 @@ class SubscriberAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
@@ -640,7 +640,7 @@ class SubscriberAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([subscription])
         if request is not None and has_flattened_params:
@@ -743,7 +743,7 @@ class SubscriberAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([subscription, ack_ids, ack_deadline_seconds])
         if request is not None and has_flattened_params:
@@ -838,7 +838,7 @@ class SubscriberAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([subscription, ack_ids])
         if request is not None and has_flattened_params:
@@ -947,7 +947,7 @@ class SubscriberAsyncClient:
                 Response for the Pull method.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([subscription, return_immediately, max_messages])
         if request is not None and has_flattened_params:
@@ -1118,7 +1118,7 @@ class SubscriberAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([subscription, push_config])
         if request is not None and has_flattened_params:
@@ -1177,10 +1177,10 @@ class SubscriberAsyncClient:
     ) -> pubsub.Snapshot:
         r"""Gets the configuration details of a snapshot.
         Snapshots are used in <a
-        href="https://cloud.google.com/pubsub/docs/replay-
-        overview">Seek</a> operations, which allow you to manage
-        message acknowledgments in bulk. That is, you can set
-        the acknowledgment state of messages in an existing
+        href="https://cloud.google.com/pubsub/docs/replay-overview">Seek</a>
+        operations, which allow you to manage message
+        acknowledgments in bulk. That is, you can set the
+        acknowledgment state of messages in an existing
         subscription to the state captured by a snapshot.
 
         Args:
@@ -1210,7 +1210,7 @@ class SubscriberAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([snapshot])
         if request is not None and has_flattened_params:
@@ -1298,7 +1298,7 @@ class SubscriberAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project])
         if request is not None and has_flattened_params:
@@ -1429,7 +1429,7 @@ class SubscriberAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, subscription])
         if request is not None and has_flattened_params:
@@ -1485,8 +1485,9 @@ class SubscriberAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pubsub.Snapshot:
         r"""Updates an existing snapshot. Snapshots are used in
-        <a href="https://cloud.google.com/pubsub/docs/replay-
-        overview">Seek</a> operations, which allow
+        <a
+        href="https://cloud.google.com/pubsub/docs/replay-overview">Seek</a>
+        operations, which allow
         you to manage message acknowledgments in bulk. That is,
         you can set the acknowledgment state of messages in an
         existing subscription to the state captured by a
@@ -1584,7 +1585,7 @@ class SubscriberAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([snapshot])
         if request is not None and has_flattened_params:
