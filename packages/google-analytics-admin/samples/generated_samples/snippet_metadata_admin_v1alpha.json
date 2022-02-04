@@ -1,0 +1,7348 @@
+{
+  "snippets": [
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "AcknowledgeUserDataCollection"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_acknowledge_user_data_collection_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_AcknowledgeUserDataCollection_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "AcknowledgeUserDataCollection"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_acknowledge_user_data_collection_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_AcknowledgeUserDataCollection_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ApproveDisplayVideo360AdvertiserLinkProposal"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_approve_display_video360_advertiser_link_proposal_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ApproveDisplayVideo360AdvertiserLinkProposal_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ApproveDisplayVideo360AdvertiserLinkProposal"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_approve_display_video360_advertiser_link_proposal_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ApproveDisplayVideo360AdvertiserLinkProposal_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ArchiveCustomDimension"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_archive_custom_dimension_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ArchiveCustomDimension_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ArchiveCustomDimension"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_archive_custom_dimension_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ArchiveCustomDimension_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ArchiveCustomMetric"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_archive_custom_metric_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ArchiveCustomMetric_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ArchiveCustomMetric"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_archive_custom_metric_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ArchiveCustomMetric_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "AuditUserLinks"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_audit_user_links_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_AuditUserLinks_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "AuditUserLinks"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_audit_user_links_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_AuditUserLinks_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "BatchCreateUserLinks"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_batch_create_user_links_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_BatchCreateUserLinks_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "BatchCreateUserLinks"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_batch_create_user_links_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_BatchCreateUserLinks_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "BatchDeleteUserLinks"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_batch_delete_user_links_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_BatchDeleteUserLinks_async",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "BatchDeleteUserLinks"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_batch_delete_user_links_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_BatchDeleteUserLinks_sync",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "BatchGetUserLinks"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_batch_get_user_links_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_BatchGetUserLinks_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "BatchGetUserLinks"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_batch_get_user_links_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_BatchGetUserLinks_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "BatchUpdateUserLinks"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_batch_update_user_links_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_BatchUpdateUserLinks_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "BatchUpdateUserLinks"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_batch_update_user_links_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_BatchUpdateUserLinks_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CancelDisplayVideo360AdvertiserLinkProposal"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_cancel_display_video360_advertiser_link_proposal_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CancelDisplayVideo360AdvertiserLinkProposal_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CancelDisplayVideo360AdvertiserLinkProposal"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_cancel_display_video360_advertiser_link_proposal_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CancelDisplayVideo360AdvertiserLinkProposal_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CreateConversionEvent"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_conversion_event_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateConversionEvent_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CreateConversionEvent"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_conversion_event_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateConversionEvent_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CreateCustomDimension"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_custom_dimension_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateCustomDimension_async",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CreateCustomDimension"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_custom_dimension_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateCustomDimension_sync",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CreateCustomMetric"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_custom_metric_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateCustomMetric_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CreateCustomMetric"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_custom_metric_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateCustomMetric_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CreateDataStream"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_data_stream_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateDataStream_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CreateDataStream"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_data_stream_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateDataStream_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CreateDisplayVideo360AdvertiserLinkProposal"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_display_video360_advertiser_link_proposal_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateDisplayVideo360AdvertiserLinkProposal_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CreateDisplayVideo360AdvertiserLinkProposal"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_display_video360_advertiser_link_proposal_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateDisplayVideo360AdvertiserLinkProposal_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CreateDisplayVideo360AdvertiserLink"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_display_video360_advertiser_link_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateDisplayVideo360AdvertiserLink_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CreateDisplayVideo360AdvertiserLink"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_display_video360_advertiser_link_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateDisplayVideo360AdvertiserLink_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CreateFirebaseLink"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_firebase_link_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateFirebaseLink_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CreateFirebaseLink"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_firebase_link_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateFirebaseLink_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CreateGoogleAdsLink"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_google_ads_link_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateGoogleAdsLink_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CreateGoogleAdsLink"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_google_ads_link_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateGoogleAdsLink_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CreateMeasurementProtocolSecret"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_measurement_protocol_secret_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateMeasurementProtocolSecret_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CreateMeasurementProtocolSecret"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_measurement_protocol_secret_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateMeasurementProtocolSecret_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CreateProperty"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_property_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateProperty_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CreateProperty"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_property_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateProperty_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CreateUserLink"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_user_link_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateUserLink_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CreateUserLink"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_user_link_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateUserLink_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CreateWebDataStream"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_web_data_stream_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateWebDataStream_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "CreateWebDataStream"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_create_web_data_stream_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateWebDataStream_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteAccount"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_account_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteAccount_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteAccount"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_account_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteAccount_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteAndroidAppDataStream"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_android_app_data_stream_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteAndroidAppDataStream_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteAndroidAppDataStream"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_android_app_data_stream_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteAndroidAppDataStream_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteConversionEvent"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_conversion_event_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteConversionEvent_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteConversionEvent"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_conversion_event_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteConversionEvent_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteDataStream"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_data_stream_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteDataStream_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteDataStream"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_data_stream_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteDataStream_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteDisplayVideo360AdvertiserLinkProposal"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_display_video360_advertiser_link_proposal_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteDisplayVideo360AdvertiserLinkProposal_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteDisplayVideo360AdvertiserLinkProposal"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_display_video360_advertiser_link_proposal_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteDisplayVideo360AdvertiserLinkProposal_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteDisplayVideo360AdvertiserLink"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_display_video360_advertiser_link_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteDisplayVideo360AdvertiserLink_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteDisplayVideo360AdvertiserLink"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_display_video360_advertiser_link_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteDisplayVideo360AdvertiserLink_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteFirebaseLink"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_firebase_link_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteFirebaseLink_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteFirebaseLink"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_firebase_link_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteFirebaseLink_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteGoogleAdsLink"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_google_ads_link_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteGoogleAdsLink_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteGoogleAdsLink"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_google_ads_link_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteGoogleAdsLink_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteIosAppDataStream"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_ios_app_data_stream_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteIosAppDataStream_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteIosAppDataStream"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_ios_app_data_stream_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteIosAppDataStream_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteMeasurementProtocolSecret"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_measurement_protocol_secret_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteMeasurementProtocolSecret_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteMeasurementProtocolSecret"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_measurement_protocol_secret_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteMeasurementProtocolSecret_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteProperty"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_property_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteProperty_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteProperty"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_property_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteProperty_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteUserLink"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_user_link_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteUserLink_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteUserLink"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_user_link_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteUserLink_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteWebDataStream"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_web_data_stream_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteWebDataStream_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "DeleteWebDataStream"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_delete_web_data_stream_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteWebDataStream_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetAccount"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_account_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetAccount_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetAccount"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_account_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetAccount_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetAndroidAppDataStream"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_android_app_data_stream_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetAndroidAppDataStream_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetAndroidAppDataStream"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_android_app_data_stream_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetAndroidAppDataStream_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetConversionEvent"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_conversion_event_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetConversionEvent_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetConversionEvent"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_conversion_event_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetConversionEvent_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetCustomDimension"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_custom_dimension_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetCustomDimension_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetCustomDimension"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_custom_dimension_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetCustomDimension_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetCustomMetric"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_custom_metric_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetCustomMetric_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetCustomMetric"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_custom_metric_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetCustomMetric_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetDataRetentionSettings"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_data_retention_settings_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetDataRetentionSettings_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetDataRetentionSettings"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_data_retention_settings_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetDataRetentionSettings_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetDataSharingSettings"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_data_sharing_settings_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetDataSharingSettings_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetDataSharingSettings"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_data_sharing_settings_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetDataSharingSettings_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetDataStream"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_data_stream_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetDataStream_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetDataStream"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_data_stream_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetDataStream_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetDisplayVideo360AdvertiserLinkProposal"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_display_video360_advertiser_link_proposal_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetDisplayVideo360AdvertiserLinkProposal_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetDisplayVideo360AdvertiserLinkProposal"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_display_video360_advertiser_link_proposal_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetDisplayVideo360AdvertiserLinkProposal_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetDisplayVideo360AdvertiserLink"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_display_video360_advertiser_link_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetDisplayVideo360AdvertiserLink_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetDisplayVideo360AdvertiserLink"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_display_video360_advertiser_link_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetDisplayVideo360AdvertiserLink_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetGlobalSiteTag"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_global_site_tag_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetGlobalSiteTag_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetGlobalSiteTag"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_global_site_tag_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetGlobalSiteTag_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetGoogleSignalsSettings"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_google_signals_settings_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetGoogleSignalsSettings_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetGoogleSignalsSettings"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_google_signals_settings_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetGoogleSignalsSettings_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetIosAppDataStream"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_ios_app_data_stream_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetIosAppDataStream_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetIosAppDataStream"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_ios_app_data_stream_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetIosAppDataStream_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetMeasurementProtocolSecret"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_measurement_protocol_secret_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetMeasurementProtocolSecret_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetMeasurementProtocolSecret"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_measurement_protocol_secret_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetMeasurementProtocolSecret_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetProperty"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_property_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetProperty_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetProperty"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_property_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetProperty_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetUserLink"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_user_link_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetUserLink_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetUserLink"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_user_link_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetUserLink_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetWebDataStream"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_web_data_stream_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetWebDataStream_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "GetWebDataStream"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_get_web_data_stream_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetWebDataStream_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListAccountSummaries"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_account_summaries_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListAccountSummaries_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListAccountSummaries"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_account_summaries_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListAccountSummaries_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListAccounts"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_accounts_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListAccounts_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListAccounts"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_accounts_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListAccounts_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListAndroidAppDataStreams"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_android_app_data_streams_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListAndroidAppDataStreams_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListAndroidAppDataStreams"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_android_app_data_streams_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListAndroidAppDataStreams_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListConversionEvents"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_conversion_events_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListConversionEvents_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListConversionEvents"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_conversion_events_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListConversionEvents_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListCustomDimensions"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_custom_dimensions_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListCustomDimensions_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListCustomDimensions"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_custom_dimensions_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListCustomDimensions_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListCustomMetrics"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_custom_metrics_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListCustomMetrics_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListCustomMetrics"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_custom_metrics_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListCustomMetrics_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListDataStreams"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_data_streams_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListDataStreams_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListDataStreams"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_data_streams_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListDataStreams_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListDisplayVideo360AdvertiserLinkProposals"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_display_video360_advertiser_link_proposals_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinkProposals_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListDisplayVideo360AdvertiserLinkProposals"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_display_video360_advertiser_link_proposals_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinkProposals_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListDisplayVideo360AdvertiserLinks"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_display_video360_advertiser_links_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinks_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListDisplayVideo360AdvertiserLinks"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_display_video360_advertiser_links_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinks_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListFirebaseLinks"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_firebase_links_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListFirebaseLinks_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListFirebaseLinks"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_firebase_links_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListFirebaseLinks_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListGoogleAdsLinks"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_google_ads_links_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListGoogleAdsLinks_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListGoogleAdsLinks"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_google_ads_links_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListGoogleAdsLinks_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListIosAppDataStreams"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_ios_app_data_streams_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListIosAppDataStreams_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListIosAppDataStreams"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_ios_app_data_streams_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListIosAppDataStreams_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListMeasurementProtocolSecrets"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_measurement_protocol_secrets_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListMeasurementProtocolSecrets_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListMeasurementProtocolSecrets"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_measurement_protocol_secrets_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListMeasurementProtocolSecrets_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListProperties"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_properties_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListProperties_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListProperties"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_properties_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListProperties_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListUserLinks"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_user_links_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListUserLinks_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListUserLinks"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_user_links_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListUserLinks_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListWebDataStreams"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_web_data_streams_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListWebDataStreams_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ListWebDataStreams"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_list_web_data_streams_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListWebDataStreams_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ProvisionAccountTicket"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_provision_account_ticket_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ProvisionAccountTicket_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "ProvisionAccountTicket"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_provision_account_ticket_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ProvisionAccountTicket_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "SearchChangeHistoryEvents"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_search_change_history_events_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_SearchChangeHistoryEvents_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "SearchChangeHistoryEvents"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_search_change_history_events_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_SearchChangeHistoryEvents_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateAccount"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_account_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateAccount_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateAccount"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_account_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateAccount_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateAndroidAppDataStream"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_android_app_data_stream_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateAndroidAppDataStream_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateAndroidAppDataStream"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_android_app_data_stream_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateAndroidAppDataStream_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateCustomDimension"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_custom_dimension_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateCustomDimension_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateCustomDimension"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_custom_dimension_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateCustomDimension_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateCustomMetric"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_custom_metric_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateCustomMetric_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateCustomMetric"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_custom_metric_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateCustomMetric_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateDataRetentionSettings"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_data_retention_settings_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateDataRetentionSettings_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateDataRetentionSettings"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_data_retention_settings_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateDataRetentionSettings_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateDataStream"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_data_stream_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateDataStream_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateDataStream"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_data_stream_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateDataStream_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateDisplayVideo360AdvertiserLink"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_display_video360_advertiser_link_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateDisplayVideo360AdvertiserLink_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateDisplayVideo360AdvertiserLink"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_display_video360_advertiser_link_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateDisplayVideo360AdvertiserLink_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateGoogleAdsLink"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_google_ads_link_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateGoogleAdsLink_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateGoogleAdsLink"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_google_ads_link_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateGoogleAdsLink_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateGoogleSignalsSettings"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_google_signals_settings_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateGoogleSignalsSettings_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateGoogleSignalsSettings"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_google_signals_settings_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateGoogleSignalsSettings_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateIosAppDataStream"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_ios_app_data_stream_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateIosAppDataStream_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateIosAppDataStream"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_ios_app_data_stream_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateIosAppDataStream_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateMeasurementProtocolSecret"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_measurement_protocol_secret_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateMeasurementProtocolSecret_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateMeasurementProtocolSecret"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_measurement_protocol_secret_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateMeasurementProtocolSecret_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateProperty"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_property_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateProperty_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateProperty"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_property_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateProperty_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateUserLink"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_user_link_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateUserLink_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateUserLink"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_user_link_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateUserLink_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateWebDataStream"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_web_data_stream_async.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateWebDataStream_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AnalyticsAdminService"
+          },
+          "shortName": "UpdateWebDataStream"
+        }
+      },
+      "file": "analyticsadmin_generated_admin_v1alpha_analytics_admin_service_update_web_data_stream_sync.py",
+      "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateWebDataStream_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    }
+  ]
+}

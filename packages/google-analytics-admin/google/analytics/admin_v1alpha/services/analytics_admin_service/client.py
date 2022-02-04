@@ -686,6 +686,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.Account:
         r"""Lookup for a single Account.
 
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_get_account():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.GetAccountRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_account(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetAccountRequest, dict]):
                 The request object. Request message for GetAccount RPC.
@@ -760,6 +780,25 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         excluded by default. Returns an empty list if no
         relevant accounts are found.
 
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_list_accounts():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ListAccountsRequest(
+                )
+
+                # Make the request
+                page_result = client.list_accounts(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListAccountsRequest, dict]):
                 The request object. Request message for ListAccounts
@@ -822,6 +861,24 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         permanently purged.
         https://support.google.com/analytics/answer/6154772
         Returns an error if the target is not found.
+
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_delete_account():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.DeleteAccountRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_account(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteAccountRequest, dict]):
@@ -888,6 +945,29 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Account:
         r"""Updates an account.
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_update_account():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                account = admin_v1alpha.Account()
+                account.display_name = "display_name_value"
+
+                request = admin_v1alpha.UpdateAccountRequest(
+                    account=account,
+                )
+
+                # Make the request
+                response = client.update_account(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateAccountRequest, dict]):
@@ -973,6 +1053,25 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> analytics_admin.ProvisionAccountTicketResponse:
         r"""Requests a ticket for creating an account.
 
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_provision_account_ticket():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ProvisionAccountTicketRequest(
+                )
+
+                # Make the request
+                response = client.provision_account_ticket(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ProvisionAccountTicketRequest, dict]):
                 The request object. Request message for
@@ -1017,6 +1116,25 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> pagers.ListAccountSummariesPager:
         r"""Returns summaries of all accounts accessible by the
         caller.
+
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_list_account_summaries():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ListAccountSummariesRequest(
+                )
+
+                # Make the request
+                page_result = client.list_account_summaries(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListAccountSummariesRequest, dict]):
@@ -1071,6 +1189,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Property:
         r"""Lookup for a single "GA4" Property.
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_get_property():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.GetPropertyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_property(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetPropertyRequest, dict]):
@@ -1147,6 +1285,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         excluded by default. Returns an empty list if no
         relevant properties are found.
 
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_list_properties():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ListPropertiesRequest(
+                    filter="filter_value",
+                )
+
+                # Make the request
+                page_result = client.list_properties(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListPropertiesRequest, dict]):
                 The request object. Request message for ListProperties
@@ -1201,6 +1359,31 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.Property:
         r"""Creates an "GA4" property with the specified location
         and attributes.
+
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_create_property():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                property = admin_v1alpha.Property()
+                property.display_name = "display_name_value"
+                property.time_zone = "time_zone_value"
+
+                request = admin_v1alpha.CreatePropertyRequest(
+                    property=property,
+                )
+
+                # Make the request
+                response = client.create_property(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreatePropertyRequest, dict]):
@@ -1279,6 +1462,27 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         Returns an error if the target is not found, or is not
         an GA4 Property.
 
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_delete_property():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.DeletePropertyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_property(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeletePropertyRequest, dict]):
                 The request object. Request message for DeleteProperty
@@ -1351,6 +1555,30 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Property:
         r"""Updates a property.
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_update_property():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                property = admin_v1alpha.Property()
+                property.display_name = "display_name_value"
+                property.time_zone = "time_zone_value"
+
+                request = admin_v1alpha.UpdatePropertyRequest(
+                    property=property,
+                )
+
+                # Make the request
+                response = client.update_property(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdatePropertyRequest, dict]):
@@ -1439,6 +1667,27 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Gets information about a user's link to an account or
         property.
 
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_get_user_link():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.GetUserLinkRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_user_link(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetUserLinkRequest, dict]):
                 The request object. Request message for GetUserLink RPC.
@@ -1510,6 +1759,28 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Gets information about multiple users' links to an
         account or property.
 
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_batch_get_user_links():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.BatchGetUserLinksRequest(
+                    parent="parent_value",
+                    names=['names_value_1', 'names_value_2'],
+                )
+
+                # Make the request
+                response = client.batch_get_user_links(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.BatchGetUserLinksRequest, dict]):
                 The request object. Request message for
@@ -1560,6 +1831,25 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListUserLinksPager:
         r"""Lists all user links on an account or property.
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_list_user_links():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ListUserLinksRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_user_links(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListUserLinksRequest, dict]):
@@ -1650,6 +1940,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         permissions, which is currently only usable/discoverable
         in the GA or GMP UIs.
 
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_audit_user_links():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.AuditUserLinksRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.audit_user_links(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.AuditUserLinksRequest, dict]):
                 The request object. Request message for AuditUserLinks
@@ -1714,6 +2024,27 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         permissions on the account or property, then the user's
         existing permissions will be unioned with the
         permissions specified in the new UserLink.
+
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_create_user_link():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.CreateUserLinkRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_user_link(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateUserLinkRequest, dict]):
@@ -1804,6 +2135,31 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         This method is transactional. If any UserLink cannot be
         created, none of the UserLinks will be created.
 
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_batch_create_user_links():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                requests = admin_v1alpha.CreateUserLinkRequest()
+                requests.parent = "parent_value"
+
+                request = admin_v1alpha.BatchCreateUserLinksRequest(
+                    parent="parent_value",
+                    requests=requests,
+                )
+
+                # Make the request
+                response = client.batch_create_user_links(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.BatchCreateUserLinksRequest, dict]):
                 The request object. Request message for
@@ -1854,6 +2210,25 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.UserLink:
         r"""Updates a user link on an account or property.
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_update_user_link():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.UpdateUserLinkRequest(
+                )
+
+                # Make the request
+                response = client.update_user_link(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateUserLinkRequest, dict]):
@@ -1927,6 +2302,27 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Updates information about multiple users' links to an
         account or property.
 
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_batch_update_user_links():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.BatchUpdateUserLinksRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.batch_update_user_links(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.BatchUpdateUserLinksRequest, dict]):
                 The request object. Request message for
@@ -1977,6 +2373,23 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a user link on an account or property.
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_delete_user_link():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.DeleteUserLinkRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_user_link(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteUserLinkRequest, dict]):
@@ -2042,6 +2455,28 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Deletes information about multiple users' links to an
         account or property.
 
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_batch_delete_user_links():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                requests = admin_v1alpha.DeleteUserLinkRequest()
+                requests.name = "name_value"
+
+                request = admin_v1alpha.BatchDeleteUserLinksRequest(
+                    parent="parent_value",
+                    requests=requests,
+                )
+
+                # Make the request
+                response = client.batch_delete_user_links(request=request)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.BatchDeleteUserLinksRequest, dict]):
                 The request object. Request message for
@@ -2085,6 +2520,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.WebDataStream:
         r"""Lookup for a single WebDataStream
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_get_web_data_stream():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.GetWebDataStreamRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_web_data_stream(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetWebDataStreamRequest, dict]):
@@ -2159,6 +2614,23 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes a web stream on a property.
 
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_delete_web_data_stream():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.DeleteWebDataStreamRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_web_data_stream(request=request)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteWebDataStreamRequest, dict]):
                 The request object. Request message for
@@ -2225,6 +2697,29 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.WebDataStream:
         r"""Updates a web stream on a property.
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_update_web_data_stream():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                web_data_stream = admin_v1alpha.WebDataStream()
+                web_data_stream.display_name = "display_name_value"
+
+                request = admin_v1alpha.UpdateWebDataStreamRequest(
+                    web_data_stream=web_data_stream,
+                )
+
+                # Make the request
+                response = client.update_web_data_stream(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateWebDataStreamRequest, dict]):
@@ -2313,6 +2808,31 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Creates a web stream with the specified location and
         attributes.
 
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_create_web_data_stream():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                web_data_stream = admin_v1alpha.WebDataStream()
+                web_data_stream.display_name = "display_name_value"
+
+                request = admin_v1alpha.CreateWebDataStreamRequest(
+                    web_data_stream=web_data_stream,
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_web_data_stream(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateWebDataStreamRequest, dict]):
                 The request object. Request message for
@@ -2396,6 +2916,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         have access. Returns an empty list if no relevant web
         data streams are found.
 
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_list_web_data_streams():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ListWebDataStreamsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_web_data_streams(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListWebDataStreamsRequest, dict]):
                 The request object. Request message for
@@ -2478,6 +3018,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.IosAppDataStream:
         r"""Lookup for a single IosAppDataStream
 
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_get_ios_app_data_stream():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.GetIosAppDataStreamRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_ios_app_data_stream(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetIosAppDataStreamRequest, dict]):
                 The request object. Request message for
@@ -2551,6 +3111,23 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes an iOS app stream on a property.
 
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_delete_ios_app_data_stream():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.DeleteIosAppDataStreamRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_ios_app_data_stream(request=request)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteIosAppDataStreamRequest, dict]):
                 The request object. Request message for
@@ -2619,6 +3196,29 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.IosAppDataStream:
         r"""Updates an iOS app stream on a property.
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_update_ios_app_data_stream():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                ios_app_data_stream = admin_v1alpha.IosAppDataStream()
+                ios_app_data_stream.bundle_id = "bundle_id_value"
+
+                request = admin_v1alpha.UpdateIosAppDataStreamRequest(
+                    ios_app_data_stream=ios_app_data_stream,
+                )
+
+                # Make the request
+                response = client.update_ios_app_data_stream(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateIosAppDataStreamRequest, dict]):
@@ -2712,6 +3312,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         not have access. Returns an empty list if no relevant
         iOS app data streams are found.
 
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_list_ios_app_data_streams():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ListIosAppDataStreamsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_ios_app_data_streams(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListIosAppDataStreamsRequest, dict]):
                 The request object. Request message for
@@ -2796,6 +3416,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.AndroidAppDataStream:
         r"""Lookup for a single AndroidAppDataStream
 
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_get_android_app_data_stream():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.GetAndroidAppDataStreamRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_android_app_data_stream(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetAndroidAppDataStreamRequest, dict]):
                 The request object. Request message for
@@ -2871,6 +3511,23 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes an android app stream on a property.
 
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_delete_android_app_data_stream():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.DeleteAndroidAppDataStreamRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_android_app_data_stream(request=request)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteAndroidAppDataStreamRequest, dict]):
                 The request object. Request message for
@@ -2939,6 +3596,25 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.AndroidAppDataStream:
         r"""Updates an android app stream on a property.
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_update_android_app_data_stream():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.UpdateAndroidAppDataStreamRequest(
+                )
+
+                # Make the request
+                response = client.update_android_app_data_stream(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateAndroidAppDataStreamRequest, dict]):
@@ -3037,6 +3713,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         not have access. Returns an empty list if no relevant
         android app streams are found.
 
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_list_android_app_data_streams():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ListAndroidAppDataStreamsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_android_app_data_streams(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListAndroidAppDataStreamsRequest, dict]):
                 The request object. Request message for
@@ -3123,6 +3819,27 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Creates a FirebaseLink.
         Properties can have at most one FirebaseLink.
 
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_create_firebase_link():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.CreateFirebaseLinkRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_firebase_link(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateFirebaseLinkRequest, dict]):
                 The request object. Request message for
@@ -3203,6 +3920,23 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes a FirebaseLink on a property
 
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_delete_firebase_link():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.DeleteFirebaseLinkRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_firebase_link(request=request)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteFirebaseLinkRequest, dict]):
                 The request object. Request message for
@@ -3268,6 +4002,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> pagers.ListFirebaseLinksPager:
         r"""Lists FirebaseLinks on a property.
         Properties can have at most one FirebaseLink.
+
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_list_firebase_links():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ListFirebaseLinksRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_firebase_links(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListFirebaseLinksRequest, dict]):
@@ -3350,6 +4104,27 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Returns the Site Tag for the specified web stream.
         Site Tags are immutable singletons.
 
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_get_global_site_tag():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.GetGlobalSiteTagRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_global_site_tag(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetGlobalSiteTagRequest, dict]):
                 The request object. Request message for GetGlobalSiteTag
@@ -3426,6 +4201,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.GoogleAdsLink:
         r"""Creates a GoogleAdsLink.
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_create_google_ads_link():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.CreateGoogleAdsLinkRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_google_ads_link(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateGoogleAdsLinkRequest, dict]):
@@ -3507,6 +4302,25 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.GoogleAdsLink:
         r"""Updates a GoogleAdsLink on a property
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_update_google_ads_link():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.UpdateGoogleAdsLinkRequest(
+                )
+
+                # Make the request
+                response = client.update_google_ads_link(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateGoogleAdsLinkRequest, dict]):
@@ -3591,6 +4405,23 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes a GoogleAdsLink on a property
 
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_delete_google_ads_link():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.DeleteGoogleAdsLinkRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_google_ads_link(request=request)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteGoogleAdsLinkRequest, dict]):
                 The request object. Request message for
@@ -3654,6 +4485,25 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListGoogleAdsLinksPager:
         r"""Lists GoogleAdsLinks on a property.
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_list_google_ads_links():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ListGoogleAdsLinksRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_google_ads_links(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListGoogleAdsLinksRequest, dict]):
@@ -3736,6 +4586,27 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Get data sharing settings on an account.
         Data sharing settings are singletons.
 
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_get_data_sharing_settings():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.GetDataSharingSettingsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_data_sharing_settings(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetDataSharingSettingsRequest, dict]):
                 The request object. Request message for
@@ -3814,6 +4685,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.MeasurementProtocolSecret:
         r"""Lookup for a single "GA4" MeasurementProtocolSecret.
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_get_measurement_protocol_secret():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.GetMeasurementProtocolSecretRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_measurement_protocol_secret(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetMeasurementProtocolSecretRequest, dict]):
@@ -3894,6 +4785,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> pagers.ListMeasurementProtocolSecretsPager:
         r"""Returns child MeasurementProtocolSecrets under the
         specified parent Property.
+
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_list_measurement_protocol_secrets():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ListMeasurementProtocolSecretsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_measurement_protocol_secrets(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListMeasurementProtocolSecretsRequest, dict]):
@@ -3986,6 +4897,30 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.MeasurementProtocolSecret:
         r"""Creates a measurement protocol secret.
 
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_create_measurement_protocol_secret():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                measurement_protocol_secret = admin_v1alpha.MeasurementProtocolSecret()
+                measurement_protocol_secret.display_name = "display_name_value"
+
+                request = admin_v1alpha.CreateMeasurementProtocolSecretRequest(
+                    parent="parent_value",
+                    measurement_protocol_secret=measurement_protocol_secret,
+                )
+
+                # Make the request
+                response = client.create_measurement_protocol_secret(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateMeasurementProtocolSecretRequest, dict]):
                 The request object. Request message for
@@ -4076,6 +5011,23 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes target MeasurementProtocolSecret.
 
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_delete_measurement_protocol_secret():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.DeleteMeasurementProtocolSecretRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_measurement_protocol_secret(request=request)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteMeasurementProtocolSecretRequest, dict]):
                 The request object. Request message for
@@ -4151,6 +5103,29 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.MeasurementProtocolSecret:
         r"""Updates a measurement protocol secret.
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_update_measurement_protocol_secret():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                measurement_protocol_secret = admin_v1alpha.MeasurementProtocolSecret()
+                measurement_protocol_secret.display_name = "display_name_value"
+
+                request = admin_v1alpha.UpdateMeasurementProtocolSecretRequest(
+                    measurement_protocol_secret=measurement_protocol_secret,
+                )
+
+                # Make the request
+                response = client.update_measurement_protocol_secret(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateMeasurementProtocolSecretRequest, dict]):
@@ -4248,6 +5223,28 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         Google Analytics UI or via this API) before
         MeasurementProtocolSecret resources may be created.
 
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_acknowledge_user_data_collection():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.AcknowledgeUserDataCollectionRequest(
+                    property="property_value",
+                    acknowledgement="acknowledgement_value",
+                )
+
+                # Make the request
+                response = client.acknowledge_user_data_collection(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.AcknowledgeUserDataCollectionRequest, dict]):
                 The request object. Request message for
@@ -4302,6 +5299,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> pagers.SearchChangeHistoryEventsPager:
         r"""Searches through all changes to an account or its
         children given the specified set of filters.
+
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_search_change_history_events():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.SearchChangeHistoryEventsRequest(
+                    account="account_value",
+                )
+
+                # Make the request
+                page_result = client.search_change_history_events(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.SearchChangeHistoryEventsRequest, dict]):
@@ -4364,6 +5381,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.GoogleSignalsSettings:
         r"""Lookup for Google Signals settings for a property.
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_get_google_signals_settings():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.GetGoogleSignalsSettingsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_google_signals_settings(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetGoogleSignalsSettingsRequest, dict]):
@@ -4439,6 +5476,25 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.GoogleSignalsSettings:
         r"""Updates Google Signals settings for a property.
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_update_google_signals_settings():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.UpdateGoogleSignalsSettingsRequest(
+                )
+
+                # Make the request
+                response = client.update_google_signals_settings(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateGoogleSignalsSettingsRequest, dict]):
@@ -4534,6 +5590,27 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Creates a conversion event with the specified
         attributes.
 
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_create_conversion_event():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.CreateConversionEventRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_conversion_event(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateConversionEventRequest, dict]):
                 The request object. Request message for
@@ -4616,6 +5693,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.ConversionEvent:
         r"""Retrieve a single conversion event.
 
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_get_conversion_event():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.GetConversionEventRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_conversion_event(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetConversionEventRequest, dict]):
                 The request object. Request message for
@@ -4689,6 +5786,23 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes a conversion event in a property.
 
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_delete_conversion_event():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.DeleteConversionEventRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_conversion_event(request=request)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteConversionEventRequest, dict]):
                 The request object. Request message for
@@ -4756,6 +5870,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Returns a list of conversion events in the specified
         parent property.
         Returns an empty list if no conversion events are found.
+
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_list_conversion_events():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ListConversionEventsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_conversion_events(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListConversionEventsRequest, dict]):
@@ -4840,6 +5974,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.DisplayVideo360AdvertiserLink:
         r"""Look up a single DisplayVideo360AdvertiserLink
 
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_get_display_video360_advertiser_link():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.GetDisplayVideo360AdvertiserLinkRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_display_video360_advertiser_link(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetDisplayVideo360AdvertiserLinkRequest, dict]):
                 The request object. Request message for
@@ -4919,6 +6073,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> pagers.ListDisplayVideo360AdvertiserLinksPager:
         r"""Lists all DisplayVideo360AdvertiserLinks on a
         property.
+
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_list_display_video360_advertiser_links():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ListDisplayVideo360AdvertiserLinksRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_display_video360_advertiser_links(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListDisplayVideo360AdvertiserLinksRequest, dict]):
@@ -5012,6 +6186,27 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         have access to the Display & Video 360 advertiser should
         instead seek to create a DisplayVideo360LinkProposal.
 
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_create_display_video360_advertiser_link():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.CreateDisplayVideo360AdvertiserLinkRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_display_video360_advertiser_link(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateDisplayVideo360AdvertiserLinkRequest, dict]):
                 The request object. Request message for
@@ -5103,6 +6298,24 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Deletes a DisplayVideo360AdvertiserLink on a
         property.
 
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_delete_display_video360_advertiser_link():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.DeleteDisplayVideo360AdvertiserLinkRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_display_video360_advertiser_link(request=request)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteDisplayVideo360AdvertiserLinkRequest, dict]):
                 The request object. Request message for
@@ -5178,6 +6391,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.DisplayVideo360AdvertiserLink:
         r"""Updates a DisplayVideo360AdvertiserLink on a
         property.
+
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_update_display_video360_advertiser_link():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.UpdateDisplayVideo360AdvertiserLinkRequest(
+                )
+
+                # Make the request
+                response = client.update_display_video360_advertiser_link(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateDisplayVideo360AdvertiserLinkRequest, dict]):
@@ -5279,6 +6512,27 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Lookup for a single
         DisplayVideo360AdvertiserLinkProposal.
 
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_get_display_video360_advertiser_link_proposal():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.GetDisplayVideo360AdvertiserLinkProposalRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_display_video360_advertiser_link_proposal(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetDisplayVideo360AdvertiserLinkProposalRequest, dict]):
                 The request object. Request message for
@@ -5368,6 +6622,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Lists DisplayVideo360AdvertiserLinkProposals on a
         property.
 
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_list_display_video360_advertiser_link_proposals():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ListDisplayVideo360AdvertiserLinkProposalsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_display_video360_advertiser_link_proposals(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListDisplayVideo360AdvertiserLinkProposalsRequest, dict]):
                 The request object. Request message for
@@ -5456,6 +6730,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.DisplayVideo360AdvertiserLinkProposal:
         r"""Creates a DisplayVideo360AdvertiserLinkProposal.
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_create_display_video360_advertiser_link_proposal():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.CreateDisplayVideo360AdvertiserLinkProposalRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_display_video360_advertiser_link_proposal(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateDisplayVideo360AdvertiserLinkProposalRequest, dict]):
@@ -5556,6 +6850,24 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         r"""Deletes a DisplayVideo360AdvertiserLinkProposal on a
         property. This can only be used on cancelled proposals.
 
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_delete_display_video360_advertiser_link_proposal():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.DeleteDisplayVideo360AdvertiserLinkProposalRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_display_video360_advertiser_link_proposal(request=request)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteDisplayVideo360AdvertiserLinkProposalRequest, dict]):
                 The request object. Request message for
@@ -5632,6 +6944,27 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         deleted and a new DisplayVideo360AdvertiserLink will be
         created.
 
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_approve_display_video360_advertiser_link_proposal():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ApproveDisplayVideo360AdvertiserLinkProposalRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.approve_display_video360_advertiser_link_proposal(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ApproveDisplayVideo360AdvertiserLinkProposalRequest, dict]):
                 The request object. Request message for
@@ -5695,6 +7028,27 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         360 - Withdrawing a proposal initiated from Google
         Analytics After being cancelled, a proposal will
         eventually be deleted automatically.
+
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_cancel_display_video360_advertiser_link_proposal():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.CancelDisplayVideo360AdvertiserLinkProposalRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.cancel_display_video360_advertiser_link_proposal(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CancelDisplayVideo360AdvertiserLinkProposalRequest, dict]):
@@ -5760,6 +7114,32 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.CustomDimension:
         r"""Creates a CustomDimension.
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_create_custom_dimension():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                custom_dimension = admin_v1alpha.CustomDimension()
+                custom_dimension.parameter_name = "parameter_name_value"
+                custom_dimension.display_name = "display_name_value"
+                custom_dimension.scope = "USER"
+
+                request = admin_v1alpha.CreateCustomDimensionRequest(
+                    parent="parent_value",
+                    custom_dimension=custom_dimension,
+                )
+
+                # Make the request
+                response = client.create_custom_dimension(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateCustomDimensionRequest, dict]):
@@ -5839,6 +7219,25 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.CustomDimension:
         r"""Updates a CustomDimension on a property.
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_update_custom_dimension():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.UpdateCustomDimensionRequest(
+                )
+
+                # Make the request
+                response = client.update_custom_dimension(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateCustomDimensionRequest, dict]):
@@ -5920,6 +7319,25 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> pagers.ListCustomDimensionsPager:
         r"""Lists CustomDimensions on a property.
 
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_list_custom_dimensions():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ListCustomDimensionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_custom_dimensions(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListCustomDimensionsRequest, dict]):
                 The request object. Request message for
@@ -6000,6 +7418,23 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Archives a CustomDimension on a property.
 
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_archive_custom_dimension():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ArchiveCustomDimensionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.archive_custom_dimension(request=request)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ArchiveCustomDimensionRequest, dict]):
                 The request object. Request message for
@@ -6065,6 +7500,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.CustomDimension:
         r"""Lookup for a single CustomDimension.
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_get_custom_dimension():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.GetCustomDimensionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_custom_dimension(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetCustomDimensionRequest, dict]):
@@ -6136,6 +7591,33 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.CustomMetric:
         r"""Creates a CustomMetric.
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_create_custom_metric():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                custom_metric = admin_v1alpha.CustomMetric()
+                custom_metric.parameter_name = "parameter_name_value"
+                custom_metric.display_name = "display_name_value"
+                custom_metric.measurement_unit = "HOURS"
+                custom_metric.scope = "EVENT"
+
+                request = admin_v1alpha.CreateCustomMetricRequest(
+                    parent="parent_value",
+                    custom_metric=custom_metric,
+                )
+
+                # Make the request
+                response = client.create_custom_metric(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateCustomMetricRequest, dict]):
@@ -6213,6 +7695,25 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.CustomMetric:
         r"""Updates a CustomMetric on a property.
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_update_custom_metric():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.UpdateCustomMetricRequest(
+                )
+
+                # Make the request
+                response = client.update_custom_metric(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateCustomMetricRequest, dict]):
@@ -6294,6 +7795,25 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> pagers.ListCustomMetricsPager:
         r"""Lists CustomMetrics on a property.
 
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_list_custom_metrics():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ListCustomMetricsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_custom_metrics(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListCustomMetricsRequest, dict]):
                 The request object. Request message for
@@ -6374,6 +7894,23 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Archives a CustomMetric on a property.
 
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_archive_custom_metric():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ArchiveCustomMetricRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.archive_custom_metric(request=request)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ArchiveCustomMetricRequest, dict]):
                 The request object. Request message for
@@ -6438,6 +7975,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.CustomMetric:
         r"""Lookup for a single CustomMetric.
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_get_custom_metric():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.GetCustomMetricRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_custom_metric(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetCustomMetricRequest, dict]):
@@ -6509,6 +8066,27 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.DataRetentionSettings:
         r"""Returns the singleton data retention settings for
         this property.
+
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_get_data_retention_settings():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.GetDataRetentionSettingsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_data_retention_settings(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetDataRetentionSettingsRequest, dict]):
@@ -6587,6 +8165,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.DataRetentionSettings:
         r"""Updates the singleton data retention settings for
         this property.
+
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_update_data_retention_settings():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.UpdateDataRetentionSettingsRequest(
+                )
+
+                # Make the request
+                response = client.update_data_retention_settings(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateDataRetentionSettingsRequest, dict]):
@@ -6681,6 +8279,30 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.DataStream:
         r"""Creates a DataStream.
 
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_create_data_stream():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                data_stream = admin_v1alpha.DataStream()
+                data_stream.type_ = "IOS_APP_DATA_STREAM"
+
+                request = admin_v1alpha.CreateDataStreamRequest(
+                    parent="parent_value",
+                    data_stream=data_stream,
+                )
+
+                # Make the request
+                response = client.create_data_stream(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.CreateDataStreamRequest, dict]):
                 The request object. Request message for CreateDataStream
@@ -6759,6 +8381,23 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Deletes a DataStream on a property.
 
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_delete_data_stream():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.DeleteDataStreamRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_data_stream(request=request)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteDataStreamRequest, dict]):
                 The request object. Request message for DeleteDataStream
@@ -6824,6 +8463,25 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.DataStream:
         r"""Updates a DataStream on a property.
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_update_data_stream():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.UpdateDataStreamRequest(
+                )
+
+                # Make the request
+                response = client.update_data_stream(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.UpdateDataStreamRequest, dict]):
@@ -6907,6 +8565,25 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> pagers.ListDataStreamsPager:
         r"""Lists DataStreams on a property.
 
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_list_data_streams():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.ListDataStreamsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_data_streams(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ListDataStreamsRequest, dict]):
                 The request object. Request message for ListDataStreams
@@ -6986,6 +8663,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.DataStream:
         r"""Lookup for a single DataStream.
+
+
+        .. code-block::
+
+            from google.analytics import admin_v1alpha
+
+            def sample_get_data_stream():
+                # Create a client
+                client = admin_v1alpha.AnalyticsAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = admin_v1alpha.GetDataStreamRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_data_stream(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.GetDataStreamRequest, dict]):
