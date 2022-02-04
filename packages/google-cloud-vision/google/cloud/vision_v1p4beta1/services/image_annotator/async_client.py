@@ -245,7 +245,7 @@ class ImageAnnotatorAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([requests])
         if request is not None and has_flattened_params:
@@ -324,7 +324,7 @@ class ImageAnnotatorAsyncClient:
                 A list of file annotation responses.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([requests])
         if request is not None and has_flattened_params:
@@ -418,7 +418,7 @@ class ImageAnnotatorAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([requests, output_config])
         if request is not None and has_flattened_params:
@@ -509,7 +509,7 @@ class ImageAnnotatorAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([requests])
         if request is not None and has_flattened_params:

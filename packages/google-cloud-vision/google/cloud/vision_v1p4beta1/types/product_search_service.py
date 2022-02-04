@@ -190,8 +190,8 @@ class ReferenceImage(proto.Message):
             field is empty, the system will try to detect
             regions of interest. At most 10 bounding
             polygons will be used.
-            The provided shape is converted into a non-
-            rotated rectangle. Once converted, the small
+            The provided shape is converted into a
+            non-rotated rectangle. Once converted, the small
             edge of the rectangle must be greater than or
             equal to 300 pixels. The aspect ratio must be
             1:4 or less (i.e. 1:3 is ok; 1:5 is not).
