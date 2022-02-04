@@ -43,6 +43,7 @@ class bigquery_datatransferCallTransformer(cst.CSTTransformer):
         'create_transfer_config': ('parent', 'transfer_config', 'authorization_code', 'version_info', 'service_account_name', ),
         'delete_transfer_config': ('name', ),
         'delete_transfer_run': ('name', ),
+        'enroll_data_sources': ('name', 'data_source_ids', ),
         'get_data_source': ('name', ),
         'get_transfer_config': ('name', ),
         'get_transfer_run': ('name', ),

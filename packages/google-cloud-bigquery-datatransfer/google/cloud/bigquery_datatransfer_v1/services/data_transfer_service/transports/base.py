@@ -292,6 +292,9 @@ class DataTransferServiceTransport(abc.ABC):
                 default_timeout=20.0,
                 client_info=client_info,
             ),
+            self.enroll_data_sources: gapic_v1.method.wrap_method(
+                self.enroll_data_sources, default_timeout=None, client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -447,6 +450,15 @@ class DataTransferServiceTransport(abc.ABC):
             datatransfer.CheckValidCredsResponse,
             Awaitable[datatransfer.CheckValidCredsResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def enroll_data_sources(
+        self,
+    ) -> Callable[
+        [datatransfer.EnrollDataSourcesRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 

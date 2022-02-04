@@ -48,17 +48,14 @@ __protobuf__ = proto.module(
         "ScheduleTransferRunsResponse",
         "StartManualTransferRunsRequest",
         "StartManualTransferRunsResponse",
+        "EnrollDataSourcesRequest",
     },
 )
 
 
 class DataSourceParameter(proto.Message):
-    r"""Represents a data source parameter with validation rules, so
-    that parameters can be rendered in the UI. These parameters are
-    given to us by supported data sources, and include all needed
-    information for rendering and validation.
-    Thus, whoever uses this api can decide to generate either
-    generic ui, or custom data source specific forms.
+    r"""A parameter used to define custom fields in a data source
+    definition.
 
     Attributes:
         param_id (str):
@@ -134,8 +131,8 @@ class DataSourceParameter(proto.Message):
 
 
 class DataSource(proto.Message):
-    r"""Represents data source metadata. Metadata is sufficient to
-    render UI and request proper OAuth tokens.
+    r"""Defines the properties and custom parameters for a data
+    source.
 
     Attributes:
         name (str):
@@ -532,9 +529,7 @@ class ListTransferConfigsResponse(proto.Message):
 
 
 class ListTransferRunsRequest(proto.Message):
-    r"""A request to list data transfer runs. UI can use this method
-    to show/filter specific data transfer runs. The data source can
-    use this method to request all scheduled transfer runs.
+    r"""A request to list data transfer runs.
 
     Attributes:
         parent (str):
@@ -788,6 +783,23 @@ class StartManualTransferRunsResponse(proto.Message):
     """
 
     runs = proto.RepeatedField(proto.MESSAGE, number=1, message=transfer.TransferRun,)
+
+
+class EnrollDataSourcesRequest(proto.Message):
+    r"""A request to enroll a set of data sources so they are visible in the
+    BigQuery UI's ``Transfer`` tab.
+
+    Attributes:
+        name (str):
+            The name of the project resource in the form:
+            ``projects/{project_id}``
+        data_source_ids (Sequence[str]):
+            Data sources that are enrolled. It is
+            required to provide at least one data source id.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+    data_source_ids = proto.RepeatedField(proto.STRING, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

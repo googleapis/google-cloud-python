@@ -39,6 +39,9 @@ from google.cloud.bigquery_datatransfer_v1.types.datatransfer import (
     DeleteTransferRunRequest,
 )
 from google.cloud.bigquery_datatransfer_v1.types.datatransfer import (
+    EnrollDataSourcesRequest,
+)
+from google.cloud.bigquery_datatransfer_v1.types.datatransfer import (
     GetDataSourceRequest,
 )
 from google.cloud.bigquery_datatransfer_v1.types.datatransfer import (
@@ -91,6 +94,7 @@ from google.cloud.bigquery_datatransfer_v1.types.transfer import ScheduleOptions
 from google.cloud.bigquery_datatransfer_v1.types.transfer import TransferConfig
 from google.cloud.bigquery_datatransfer_v1.types.transfer import TransferMessage
 from google.cloud.bigquery_datatransfer_v1.types.transfer import TransferRun
+from google.cloud.bigquery_datatransfer_v1.types.transfer import UserInfo
 from google.cloud.bigquery_datatransfer_v1.types.transfer import TransferState
 from google.cloud.bigquery_datatransfer_v1.types.transfer import TransferType
 
@@ -104,6 +108,7 @@ __all__ = (
     "DataSourceParameter",
     "DeleteTransferConfigRequest",
     "DeleteTransferRunRequest",
+    "EnrollDataSourcesRequest",
     "GetDataSourceRequest",
     "GetTransferConfigRequest",
     "GetTransferRunRequest",
@@ -125,6 +130,7 @@ __all__ = (
     "TransferConfig",
     "TransferMessage",
     "TransferRun",
+    "UserInfo",
     "TransferState",
     "TransferType",
 )

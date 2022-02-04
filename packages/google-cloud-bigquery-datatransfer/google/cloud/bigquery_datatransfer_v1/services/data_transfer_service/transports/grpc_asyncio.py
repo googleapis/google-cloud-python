@@ -34,10 +34,8 @@ from .grpc import DataTransferServiceGrpcTransport
 class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
     """gRPC AsyncIO backend transport for DataTransferService.
 
-    The Google BigQuery Data Transfer Service API enables
-    BigQuery users to configure the transfer of their data from
-    other Google Products into BigQuery. This service contains
-    methods that are end user exposed. It backs up the frontend.
+    This API allows users to manage their data transfers into
+    BigQuery.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -208,8 +206,11 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
         if not self._grpc_channel:
             self._grpc_channel = type(self).create_channel(
                 self._host,
+                # use the credentials which are saved
                 credentials=self._credentials,
-                credentials_file=credentials_file,
+                # Set ``credentials_file`` to ``None`` here as
+                # the credentials that we saved earlier should be used.
+                credentials_file=None,
                 scopes=self._scopes,
                 ssl_credentials=self._ssl_channel_credentials,
                 quota_project_id=quota_project_id,
@@ -241,7 +242,7 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
         r"""Return a callable for the get data source method over gRPC.
 
         Retrieves a supported data source and returns its
-        settings, which can be used for UI rendering.
+        settings.
 
         Returns:
             Callable[[~.GetDataSourceRequest],
@@ -271,7 +272,7 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
         r"""Return a callable for the list data sources method over gRPC.
 
         Lists supported data sources and returns their
-        settings, which can be used for UI rendering.
+        settings.
 
         Returns:
             Callable[[~.ListDataSourcesRequest],
@@ -356,8 +357,8 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
     ]:
         r"""Return a callable for the delete transfer config method over gRPC.
 
-        Deletes a data transfer configuration,
-        including any associated transfer runs and logs.
+        Deletes a data transfer configuration, including any
+        associated transfer runs and logs.
 
         Returns:
             Callable[[~.DeleteTransferConfigRequest],
@@ -564,7 +565,8 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
     ]:
         r"""Return a callable for the list transfer runs method over gRPC.
 
-        Returns information about running and completed jobs.
+        Returns information about running and completed
+        transfer runs.
 
         Returns:
             Callable[[~.ListTransferRunsRequest],
@@ -593,8 +595,7 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
     ]:
         r"""Return a callable for the list transfer logs method over gRPC.
 
-        Returns user facing log messages for the data
-        transfer run.
+        Returns log messages for the transfer run.
 
         Returns:
             Callable[[~.ListTransferLogsRequest],
@@ -625,11 +626,6 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
 
         Returns true if valid credentials exist for the given
         data source and requesting user.
-        Some data sources doesn't support service account, so we
-        need to talk to them on behalf of the end user. This API
-        just checks whether we have OAuth token for the
-        particular user, which is a pre-requisite before user
-        can create a transfer config.
 
         Returns:
             Callable[[~.CheckValidCredsRequest],
@@ -648,6 +644,39 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
                 response_deserializer=datatransfer.CheckValidCredsResponse.deserialize,
             )
         return self._stubs["check_valid_creds"]
+
+    @property
+    def enroll_data_sources(
+        self,
+    ) -> Callable[[datatransfer.EnrollDataSourcesRequest], Awaitable[empty_pb2.Empty]]:
+        r"""Return a callable for the enroll data sources method over gRPC.
+
+        Enroll data sources in a user project. This allows
+        users to create transfer configurations for these data
+        sources. They will also appear in the ListDataSources
+        RPC and as such, will appear in the BigQuery UI
+        'https://bigquery.cloud.google.com' (and the documents
+        can be found at
+        https://cloud.google.com/bigquery/bigquery-web-ui and
+        https://cloud.google.com/bigquery/docs/working-with-transfers).
+
+        Returns:
+            Callable[[~.EnrollDataSourcesRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "enroll_data_sources" not in self._stubs:
+            self._stubs["enroll_data_sources"] = self.grpc_channel.unary_unary(
+                "/google.cloud.bigquery.datatransfer.v1.DataTransferService/EnrollDataSources",
+                request_serializer=datatransfer.EnrollDataSourcesRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["enroll_data_sources"]
 
     def close(self):
         return self.grpc_channel.close()

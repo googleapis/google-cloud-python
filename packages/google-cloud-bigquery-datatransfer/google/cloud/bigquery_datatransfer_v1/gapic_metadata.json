@@ -30,6 +30,11 @@
                 "delete_transfer_run"
               ]
             },
+            "EnrollDataSources": {
+              "methods": [
+                "enroll_data_sources"
+              ]
+            },
             "GetDataSource": {
               "methods": [
                 "get_data_source"
@@ -103,6 +108,11 @@
             "DeleteTransferRun": {
               "methods": [
                 "delete_transfer_run"
+              ]
+            },
+            "EnrollDataSources": {
+              "methods": [
+                "enroll_data_sources"
               ]
             },
             "GetDataSource": {

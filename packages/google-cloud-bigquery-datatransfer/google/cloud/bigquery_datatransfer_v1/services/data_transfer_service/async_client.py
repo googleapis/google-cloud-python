@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 import warnings
 
@@ -46,10 +46,8 @@ from .client import DataTransferServiceClient
 
 
 class DataTransferServiceAsyncClient:
-    """The Google BigQuery Data Transfer Service API enables
-    BigQuery users to configure the transfer of their data from
-    other Google Products into BigQuery. This service contains
-    methods that are end user exposed. It backs up the frontend.
+    """This API allows users to manage their data transfers into
+    BigQuery.
     """
 
     _client: DataTransferServiceClient
@@ -125,6 +123,42 @@ class DataTransferServiceAsyncClient:
 
     from_service_account_json = from_service_account_file
 
+    @classmethod
+    def get_mtls_endpoint_and_cert_source(
+        cls, client_options: Optional[ClientOptions] = None
+    ):
+        """Return the API endpoint and client cert source for mutual TLS.
+
+        The client cert source is determined in the following order:
+        (1) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not "true", the
+        client cert source is None.
+        (2) if `client_options.client_cert_source` is provided, use the provided one; if the
+        default client cert source exists, use the default one; otherwise the client cert
+        source is None.
+
+        The API endpoint is determined in the following order:
+        (1) if `client_options.api_endpoint` if provided, use the provided one.
+        (2) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is "always", use the
+        default mTLS endpoint; if the environment variabel is "never", use the default API
+        endpoint; otherwise if client cert source exists, use the default mTLS endpoint, otherwise
+        use the default API endpoint.
+
+        More details can be found at https://google.aip.dev/auth/4114.
+
+        Args:
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+                client. Only the `api_endpoint` and `client_cert_source` properties may be used
+                in this method.
+
+        Returns:
+            Tuple[str, Callable[[], Tuple[bytes, bytes]]]: returns the API endpoint and the
+                client cert source to use.
+
+        Raises:
+            google.auth.exceptions.MutualTLSChannelError: If any errors happen.
+        """
+        return DataTransferServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+
     @property
     def transport(self) -> DataTransferServiceTransport:
         """Returns the transport used by the client instance.
@@ -196,7 +230,7 @@ class DataTransferServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datatransfer.DataSource:
         r"""Retrieves a supported data source and returns its
-        settings, which can be used for UI rendering.
+        settings.
 
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.GetDataSourceRequest, dict]):
@@ -219,13 +253,12 @@ class DataTransferServiceAsyncClient:
 
         Returns:
             google.cloud.bigquery_datatransfer_v1.types.DataSource:
-                Represents data source metadata.
-                Metadata is sufficient to render UI and
-                request proper OAuth tokens.
+                Defines the properties and custom
+                parameters for a data source.
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -281,7 +314,7 @@ class DataTransferServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDataSourcesAsyncPager:
         r"""Lists supported data sources and returns their
-        settings, which can be used for UI rendering.
+        settings.
 
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesRequest, dict]):
@@ -312,7 +345,7 @@ class DataTransferServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -423,7 +456,7 @@ class DataTransferServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, transfer_config])
         if request is not None and has_flattened_params:
@@ -513,7 +546,7 @@ class DataTransferServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([transfer_config, update_mask])
         if request is not None and has_flattened_params:
@@ -562,8 +595,8 @@ class DataTransferServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""Deletes a data transfer configuration,
-        including any associated transfer runs and logs.
+        r"""Deletes a data transfer configuration, including any
+        associated transfer runs and logs.
 
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.DeleteTransferConfigRequest, dict]):
@@ -586,7 +619,7 @@ class DataTransferServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -674,7 +707,7 @@ class DataTransferServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -760,7 +793,7 @@ class DataTransferServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -873,7 +906,7 @@ class DataTransferServiceAsyncClient:
         )
 
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, start_time, end_time])
         if request is not None and has_flattened_params:
@@ -1002,7 +1035,7 @@ class DataTransferServiceAsyncClient:
                 Represents a data transfer run.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1080,7 +1113,7 @@ class DataTransferServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1134,14 +1167,13 @@ class DataTransferServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTransferRunsAsyncPager:
-        r"""Returns information about running and completed jobs.
+        r"""Returns information about running and completed
+        transfer runs.
 
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsRequest, dict]):
                 The request object. A request to list data transfer
-                runs. UI can use this method to show/filter specific
-                data transfer runs. The data source can use this method
-                to request all scheduled transfer runs.
+                runs.
             parent (:class:`str`):
                 Required. Name of transfer configuration for which
                 transfer runs should be retrieved. Format of transfer
@@ -1168,7 +1200,7 @@ class DataTransferServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -1229,8 +1261,7 @@ class DataTransferServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTransferLogsAsyncPager:
-        r"""Returns user facing log messages for the data
-        transfer run.
+        r"""Returns log messages for the transfer run.
 
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsRequest, dict]):
@@ -1261,7 +1292,7 @@ class DataTransferServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -1324,11 +1355,6 @@ class DataTransferServiceAsyncClient:
     ) -> datatransfer.CheckValidCredsResponse:
         r"""Returns true if valid credentials exist for the given
         data source and requesting user.
-        Some data sources doesn't support service account, so we
-        need to talk to them on behalf of the end user. This API
-        just checks whether we have OAuth token for the
-        particular user, which is a pre-requisite before user
-        can create a transfer config.
 
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.CheckValidCredsRequest, dict]):
@@ -1362,7 +1388,7 @@ class DataTransferServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1407,6 +1433,56 @@ class DataTransferServiceAsyncClient:
 
         # Done; return the response.
         return response
+
+    async def enroll_data_sources(
+        self,
+        request: Union[datatransfer.EnrollDataSourcesRequest, dict] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Enroll data sources in a user project. This allows
+        users to create transfer configurations for these data
+        sources. They will also appear in the ListDataSources
+        RPC and as such, will appear in the BigQuery UI
+        'https://bigquery.cloud.google.com' (and the documents
+        can be found at
+        https://cloud.google.com/bigquery/bigquery-web-ui and
+        https://cloud.google.com/bigquery/docs/working-with-transfers).
+
+        Args:
+            request (Union[google.cloud.bigquery_datatransfer_v1.types.EnrollDataSourcesRequest, dict]):
+                The request object. A request to enroll a set of data
+                sources so they are visible in the BigQuery UI's
+                `Transfer` tab.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        request = datatransfer.EnrollDataSourcesRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.enroll_data_sources,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request, retry=retry, timeout=timeout, metadata=metadata,
+        )
 
     async def __aenter__(self):
         return self

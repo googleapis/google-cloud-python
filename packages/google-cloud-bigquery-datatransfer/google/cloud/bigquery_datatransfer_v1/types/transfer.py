@@ -27,6 +27,7 @@ __protobuf__ = proto.module(
         "TransferState",
         "EmailPreferences",
         "ScheduleOptions",
+        "UserInfo",
         "TransferConfig",
         "TransferRun",
         "TransferMessage",
@@ -98,6 +99,19 @@ class ScheduleOptions(proto.Message):
     end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
 
 
+class UserInfo(proto.Message):
+    r"""Information about a user.
+
+    Attributes:
+        email (str):
+            E-mail address of the user.
+
+            This field is a member of `oneof`_ ``_email``.
+    """
+
+    email = proto.Field(proto.STRING, number=1, optional=True,)
+
+
 class TransferConfig(proto.Message):
     r"""Represents a data transfer configuration. A transfer configuration
     contains all metadata needed to perform a data transfer. For
@@ -144,8 +158,10 @@ class TransferConfig(proto.Message):
             ``first sunday of quarter 00:00``. See more explanation
             about the format here:
             https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format
-            NOTE: the granularity should be at least 8 hours, or less
-            frequent.
+
+            NOTE: The minimum interval time between recurring transfers
+            depends on the data source; refer to the documentation for
+            your data source.
         schedule_options (google.cloud.bigquery_datatransfer_v1.types.ScheduleOptions):
             Options customizing the data transfer
             schedule.
@@ -184,6 +200,14 @@ class TransferConfig(proto.Message):
             Email notifications will be sent according to
             these preferences to the email address of the
             user who owns this transfer config.
+        owner_info (google.cloud.bigquery_datatransfer_v1.types.UserInfo):
+            Output only. Information about the user whose credentials
+            are used to transfer data. Populated only for
+            ``transferConfigs.get`` requests. In case the user
+            information is not available, this field will not be
+            populated.
+
+            This field is a member of `oneof`_ ``_owner_info``.
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -205,6 +229,9 @@ class TransferConfig(proto.Message):
     notification_pubsub_topic = proto.Field(proto.STRING, number=15,)
     email_preferences = proto.Field(
         proto.MESSAGE, number=18, message="EmailPreferences",
+    )
+    owner_info = proto.Field(
+        proto.MESSAGE, number=27, optional=True, message="UserInfo",
     )
 
 
@@ -243,8 +270,7 @@ class TransferRun(proto.Message):
             the 'Setting up a data transfer' section for
             each data source. For example the parameters for
             Cloud Storage transfers are listed here:
-            https://cloud.google.com/bigquery-
-            transfer/docs/cloud-storage-transfer#bq
+            https://cloud.google.com/bigquery-transfer/docs/cloud-storage-transfer#bq
         destination_dataset_id (str):
             Output only. The BigQuery target dataset id.
 

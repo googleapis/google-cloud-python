@@ -24,6 +24,7 @@ from .types.datatransfer import DataSource
 from .types.datatransfer import DataSourceParameter
 from .types.datatransfer import DeleteTransferConfigRequest
 from .types.datatransfer import DeleteTransferRunRequest
+from .types.datatransfer import EnrollDataSourcesRequest
 from .types.datatransfer import GetDataSourceRequest
 from .types.datatransfer import GetTransferConfigRequest
 from .types.datatransfer import GetTransferRunRequest
@@ -45,6 +46,7 @@ from .types.transfer import ScheduleOptions
 from .types.transfer import TransferConfig
 from .types.transfer import TransferMessage
 from .types.transfer import TransferRun
+from .types.transfer import UserInfo
 from .types.transfer import TransferState
 from .types.transfer import TransferType
 
@@ -59,6 +61,7 @@ __all__ = (
     "DeleteTransferConfigRequest",
     "DeleteTransferRunRequest",
     "EmailPreferences",
+    "EnrollDataSourcesRequest",
     "GetDataSourceRequest",
     "GetTransferConfigRequest",
     "GetTransferRunRequest",
@@ -81,4 +84,5 @@ __all__ = (
     "TransferState",
     "TransferType",
     "UpdateTransferConfigRequest",
+    "UserInfo",
 )

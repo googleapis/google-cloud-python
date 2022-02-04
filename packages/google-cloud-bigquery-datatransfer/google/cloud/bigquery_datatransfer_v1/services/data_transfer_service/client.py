@@ -84,10 +84,8 @@ class DataTransferServiceClientMeta(type):
 
 
 class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
-    """The Google BigQuery Data Transfer Service API enables
-    BigQuery users to configure the transfer of their data from
-    other Google Products into BigQuery. This service contains
-    methods that are end user exposed. It backs up the frontend.
+    """This API allows users to manage their data transfers into
+    BigQuery.
     """
 
     @staticmethod
@@ -278,6 +276,73 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
         return m.groupdict() if m else {}
 
+    @classmethod
+    def get_mtls_endpoint_and_cert_source(
+        cls, client_options: Optional[client_options_lib.ClientOptions] = None
+    ):
+        """Return the API endpoint and client cert source for mutual TLS.
+
+        The client cert source is determined in the following order:
+        (1) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not "true", the
+        client cert source is None.
+        (2) if `client_options.client_cert_source` is provided, use the provided one; if the
+        default client cert source exists, use the default one; otherwise the client cert
+        source is None.
+
+        The API endpoint is determined in the following order:
+        (1) if `client_options.api_endpoint` if provided, use the provided one.
+        (2) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is "always", use the
+        default mTLS endpoint; if the environment variabel is "never", use the default API
+        endpoint; otherwise if client cert source exists, use the default mTLS endpoint, otherwise
+        use the default API endpoint.
+
+        More details can be found at https://google.aip.dev/auth/4114.
+
+        Args:
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+                client. Only the `api_endpoint` and `client_cert_source` properties may be used
+                in this method.
+
+        Returns:
+            Tuple[str, Callable[[], Tuple[bytes, bytes]]]: returns the API endpoint and the
+                client cert source to use.
+
+        Raises:
+            google.auth.exceptions.MutualTLSChannelError: If any errors happen.
+        """
+        if client_options is None:
+            client_options = client_options_lib.ClientOptions()
+        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
+        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
+        if use_client_cert not in ("true", "false"):
+            raise ValueError(
+                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+            )
+        if use_mtls_endpoint not in ("auto", "never", "always"):
+            raise MutualTLSChannelError(
+                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+            )
+
+        # Figure out the client cert source to use.
+        client_cert_source = None
+        if use_client_cert == "true":
+            if client_options.client_cert_source:
+                client_cert_source = client_options.client_cert_source
+            elif mtls.has_default_client_cert_source():
+                client_cert_source = mtls.default_client_cert_source()
+
+        # Figure out which api endpoint to use.
+        if client_options.api_endpoint is not None:
+            api_endpoint = client_options.api_endpoint
+        elif use_mtls_endpoint == "always" or (
+            use_mtls_endpoint == "auto" and client_cert_source
+        ):
+            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
+        else:
+            api_endpoint = cls.DEFAULT_ENDPOINT
+
+        return api_endpoint, client_cert_source
+
     def __init__(
         self,
         *,
@@ -328,57 +393,22 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
 
-        # Create SSL credentials for mutual TLS if needed.
-        if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") not in (
-            "true",
-            "false",
-        ):
-            raise ValueError(
-                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
-        use_client_cert = (
-            os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true"
+        api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
+            client_options
         )
 
-        client_cert_source_func = None
-        is_mtls = False
-        if use_client_cert:
-            if client_options.client_cert_source:
-                is_mtls = True
-                client_cert_source_func = client_options.client_cert_source
-            else:
-                is_mtls = mtls.has_default_client_cert_source()
-                if is_mtls:
-                    client_cert_source_func = mtls.default_client_cert_source()
-                else:
-                    client_cert_source_func = None
-
-        # Figure out which api endpoint to use.
-        if client_options.api_endpoint is not None:
-            api_endpoint = client_options.api_endpoint
-        else:
-            use_mtls_env = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
-            if use_mtls_env == "never":
-                api_endpoint = self.DEFAULT_ENDPOINT
-            elif use_mtls_env == "always":
-                api_endpoint = self.DEFAULT_MTLS_ENDPOINT
-            elif use_mtls_env == "auto":
-                if is_mtls:
-                    api_endpoint = self.DEFAULT_MTLS_ENDPOINT
-                else:
-                    api_endpoint = self.DEFAULT_ENDPOINT
-            else:
-                raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted "
-                    "values: never, auto, always"
-                )
+        api_key_value = getattr(client_options, "api_key", None)
+        if api_key_value and credentials:
+            raise ValueError(
+                "client_options.api_key and credentials are mutually exclusive"
+            )
 
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
         if isinstance(transport, DataTransferServiceTransport):
             # transport is a DataTransferServiceTransport instance.
-            if credentials or client_options.credentials_file:
+            if credentials or client_options.credentials_file or api_key_value:
                 raise ValueError(
                     "When providing a transport instance, "
                     "provide its credentials directly."
@@ -390,6 +420,15 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 )
             self._transport = transport
         else:
+            import google.auth._default  # type: ignore
+
+            if api_key_value and hasattr(
+                google.auth._default, "get_api_key_credentials"
+            ):
+                credentials = google.auth._default.get_api_key_credentials(
+                    api_key_value
+                )
+
             Transport = type(self).get_transport_class(transport)
             self._transport = Transport(
                 credentials=credentials,
@@ -412,7 +451,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datatransfer.DataSource:
         r"""Retrieves a supported data source and returns its
-        settings, which can be used for UI rendering.
+        settings.
 
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.GetDataSourceRequest, dict]):
@@ -435,13 +474,12 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
         Returns:
             google.cloud.bigquery_datatransfer_v1.types.DataSource:
-                Represents data source metadata.
-                Metadata is sufficient to render UI and
-                request proper OAuth tokens.
+                Defines the properties and custom
+                parameters for a data source.
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -487,7 +525,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDataSourcesPager:
         r"""Lists supported data sources and returns their
-        settings, which can be used for UI rendering.
+        settings.
 
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesRequest, dict]):
@@ -518,7 +556,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -619,7 +657,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, transfer_config])
         if request is not None and has_flattened_params:
@@ -709,7 +747,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([transfer_config, update_mask])
         if request is not None and has_flattened_params:
@@ -758,8 +796,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""Deletes a data transfer configuration,
-        including any associated transfer runs and logs.
+        r"""Deletes a data transfer configuration, including any
+        associated transfer runs and logs.
 
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.DeleteTransferConfigRequest, dict]):
@@ -782,7 +820,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -860,7 +898,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -936,7 +974,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -1039,7 +1077,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         )
 
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, start_time, end_time])
         if request is not None and has_flattened_params:
@@ -1171,7 +1209,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 Represents a data transfer run.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1239,7 +1277,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1283,14 +1321,13 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTransferRunsPager:
-        r"""Returns information about running and completed jobs.
+        r"""Returns information about running and completed
+        transfer runs.
 
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsRequest, dict]):
                 The request object. A request to list data transfer
-                runs. UI can use this method to show/filter specific
-                data transfer runs. The data source can use this method
-                to request all scheduled transfer runs.
+                runs.
             parent (str):
                 Required. Name of transfer configuration for which
                 transfer runs should be retrieved. Format of transfer
@@ -1317,7 +1354,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -1368,8 +1405,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTransferLogsPager:
-        r"""Returns user facing log messages for the data
-        transfer run.
+        r"""Returns log messages for the transfer run.
 
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsRequest, dict]):
@@ -1400,7 +1436,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
@@ -1453,11 +1489,6 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
     ) -> datatransfer.CheckValidCredsResponse:
         r"""Returns true if valid credentials exist for the given
         data source and requesting user.
-        Some data sources doesn't support service account, so we
-        need to talk to them on behalf of the end user. This API
-        just checks whether we have OAuth token for the
-        particular user, which is a pre-requisite before user
-        can create a transfer config.
 
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.CheckValidCredsRequest, dict]):
@@ -1491,7 +1522,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
@@ -1526,6 +1557,57 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
         # Done; return the response.
         return response
+
+    def enroll_data_sources(
+        self,
+        request: Union[datatransfer.EnrollDataSourcesRequest, dict] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Enroll data sources in a user project. This allows
+        users to create transfer configurations for these data
+        sources. They will also appear in the ListDataSources
+        RPC and as such, will appear in the BigQuery UI
+        'https://bigquery.cloud.google.com' (and the documents
+        can be found at
+        https://cloud.google.com/bigquery/bigquery-web-ui and
+        https://cloud.google.com/bigquery/docs/working-with-transfers).
+
+        Args:
+            request (Union[google.cloud.bigquery_datatransfer_v1.types.EnrollDataSourcesRequest, dict]):
+                The request object. A request to enroll a set of data
+                sources so they are visible in the BigQuery UI's
+                `Transfer` tab.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a datatransfer.EnrollDataSourcesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, datatransfer.EnrollDataSourcesRequest):
+            request = datatransfer.EnrollDataSourcesRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.enroll_data_sources]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(
+            request, retry=retry, timeout=timeout, metadata=metadata,
+        )
 
     def __enter__(self):
         return self

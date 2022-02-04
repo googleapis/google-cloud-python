@@ -21,6 +21,7 @@ from .datatransfer import (
     DataSourceParameter,
     DeleteTransferConfigRequest,
     DeleteTransferRunRequest,
+    EnrollDataSourcesRequest,
     GetDataSourceRequest,
     GetTransferConfigRequest,
     GetTransferRunRequest,
@@ -44,6 +45,7 @@ from .transfer import (
     TransferConfig,
     TransferMessage,
     TransferRun,
+    UserInfo,
     TransferState,
     TransferType,
 )
@@ -56,6 +58,7 @@ __all__ = (
     "DataSourceParameter",
     "DeleteTransferConfigRequest",
     "DeleteTransferRunRequest",
+    "EnrollDataSourcesRequest",
     "GetDataSourceRequest",
     "GetTransferConfigRequest",
     "GetTransferRunRequest",
@@ -77,6 +80,7 @@ __all__ = (
     "TransferConfig",
     "TransferMessage",
     "TransferRun",
+    "UserInfo",
     "TransferState",
     "TransferType",
 )
