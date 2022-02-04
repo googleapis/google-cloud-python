@@ -37,11 +37,13 @@ class TestCursor(unittest.TestCase):
 
         return Connection(*args, **kwargs)
 
-    def _transaction_mock(self):
+    def _transaction_mock(self, mock_response=[]):
         from google.rpc.code_pb2 import OK
 
         transaction = mock.Mock(committed=False, rolled_back=False)
-        transaction.batch_update = mock.Mock(return_value=[mock.Mock(code=OK), []])
+        transaction.batch_update = mock.Mock(
+            return_value=[mock.Mock(code=OK), mock_response]
+        )
         return transaction
 
     def test_property_connection(self):
@@ -62,10 +64,12 @@ class TestCursor(unittest.TestCase):
         self.assertIsInstance(cursor.description[0], ColumnInfo)
 
     def test_property_rowcount(self):
+        from google.cloud.spanner_dbapi.cursor import _UNSET_COUNT
+
         connection = self._make_connection(self.INSTANCE, self.DATABASE)
         cursor = self._make_one(connection)
 
-        assert cursor.rowcount == -1
+        self.assertEqual(cursor.rowcount, _UNSET_COUNT)
 
     def test_callproc(self):
         from google.cloud.spanner_dbapi.exceptions import InterfaceError
@@ -93,25 +97,58 @@ class TestCursor(unittest.TestCase):
             cursor.execute("SELECT * FROM database")
 
     def test_do_execute_update(self):
-        from google.cloud.spanner_dbapi.checksum import ResultsChecksum
+        from google.cloud.spanner_dbapi.cursor import _UNSET_COUNT
 
         connection = self._make_connection(self.INSTANCE, self.DATABASE)
         cursor = self._make_one(connection)
-        cursor._checksum = ResultsChecksum()
         transaction = mock.MagicMock()
 
         def run_helper(ret_value):
             transaction.execute_update.return_value = ret_value
-            cursor._do_execute_update(
+            res = cursor._do_execute_update(
                 transaction=transaction, sql="SELECT * WHERE true", params={},
             )
-            return cursor.fetchall()
+            return res
 
         expected = "good"
-        self.assertEqual(run_helper(expected), [expected])
+        self.assertEqual(run_helper(expected), expected)
+        self.assertEqual(cursor._row_count, _UNSET_COUNT)
 
         expected = 1234
-        self.assertEqual(run_helper(expected), [expected])
+        self.assertEqual(run_helper(expected), expected)
+        self.assertEqual(cursor._row_count, expected)
+
+    def test_do_batch_update(self):
+        from google.cloud.spanner_dbapi import connect
+        from google.cloud.spanner_v1.param_types import INT64
+        from google.cloud.spanner_v1.types.spanner import Session
+
+        sql = "DELETE FROM table WHERE col1 = %s"
+
+        connection = connect("test-instance", "test-database")
+
+        connection.autocommit = True
+        transaction = self._transaction_mock(mock_response=[1, 1, 1])
+        cursor = connection.cursor()
+
+        with mock.patch(
+            "google.cloud.spanner_v1.services.spanner.client.SpannerClient.create_session",
+            return_value=Session(),
+        ):
+            with mock.patch(
+                "google.cloud.spanner_v1.session.Session.transaction",
+                return_value=transaction,
+            ):
+                cursor.executemany(sql, [(1,), (2,), (3,)])
+
+        transaction.batch_update.assert_called_once_with(
+            [
+                ("DELETE FROM table WHERE col1 = @a0", {"a0": 1}, {"a0": INT64}),
+                ("DELETE FROM table WHERE col1 = @a0", {"a0": 2}, {"a0": INT64}),
+                ("DELETE FROM table WHERE col1 = @a0", {"a0": 3}, {"a0": INT64}),
+            ]
+        )
+        self.assertEqual(cursor._row_count, 3)
 
     def test_execute_programming_error(self):
         from google.cloud.spanner_dbapi.exceptions import ProgrammingError
@@ -704,6 +741,7 @@ class TestCursor(unittest.TestCase):
 
     def test_handle_dql(self):
         from google.cloud.spanner_dbapi import utils
+        from google.cloud.spanner_dbapi.cursor import _UNSET_COUNT
 
         connection = self._make_connection(self.INSTANCE, mock.MagicMock())
         connection.database.snapshot.return_value.__enter__.return_value = (
@@ -715,6 +753,7 @@ class TestCursor(unittest.TestCase):
         cursor._handle_DQL("sql", params=None)
         self.assertEqual(cursor._result_set, ["0"])
         self.assertIsInstance(cursor._itr, utils.PeekIterator)
+        self.assertEqual(cursor._row_count, _UNSET_COUNT)
 
     def test_context(self):
         connection = self._make_connection(self.INSTANCE, self.DATABASE)
