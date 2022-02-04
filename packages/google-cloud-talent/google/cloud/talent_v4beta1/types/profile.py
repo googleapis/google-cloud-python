@@ -814,8 +814,8 @@ class Degree(proto.Message):
 
 class Activity(proto.Message):
     r"""Resource that represents an individual or collaborative
-    activity participated in by a candidate, for example, an open-
-    source project, a class assignment, and so on.
+    activity participated in by a candidate, for example, an
+    open-source project, a class assignment, and so on.
 
     Attributes:
         display_name (str):

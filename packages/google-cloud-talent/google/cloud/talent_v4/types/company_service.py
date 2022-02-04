@@ -124,8 +124,8 @@ class ListCompaniesRequest(proto.Message):
             results.
         page_size (int):
             The maximum number of companies to be
-            returned, at most 100. Default is 100 if a non-
-            positive number is provided.
+            returned, at most 100. Default is 100 if a
+            non-positive number is provided.
         require_open_jobs (bool):
             Set to true if the companies requested must have open jobs.
 

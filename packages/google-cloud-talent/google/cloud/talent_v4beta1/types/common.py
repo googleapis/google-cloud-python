@@ -441,8 +441,8 @@ class DeviceInfo(proto.Message):
 
 
 class CustomAttribute(proto.Message):
-    r"""Custom attribute values that are either filterable or non-
-    ilterable.
+    r"""Custom attribute values that are either filterable or
+    non-filterable.
 
     Attributes:
         string_values (Sequence[str]):

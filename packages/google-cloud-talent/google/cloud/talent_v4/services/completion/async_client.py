@@ -207,8 +207,8 @@ class CompletionAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> completion_service.CompleteQueryResponse:
         r"""Completes the specified prefix with keyword
-        suggestions. Intended for use by a job search auto-
-        complete search box.
+        suggestions. Intended for use by a job search
+        auto-complete search box.
 
         Args:
             request (Union[google.cloud.talent_v4.types.CompleteQueryRequest, dict]):

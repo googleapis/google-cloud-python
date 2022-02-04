@@ -134,8 +134,8 @@ class ListApplicationsRequest(proto.Message):
             results.
         page_size (int):
             The maximum number of applications to be
-            returned, at most 100. Default is 100 if a non-
-            positive number is provided.
+            returned, at most 100. Default is 100 if a
+            non-positive number is provided.
     """
 
     parent = proto.Field(proto.STRING, number=1,)
