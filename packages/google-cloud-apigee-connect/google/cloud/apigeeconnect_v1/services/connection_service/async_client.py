@@ -216,6 +216,25 @@ class ConnectionServiceAsyncClient:
         r"""Lists connections that are currently active for the
         given Apigee Connect endpoint.
 
+
+        .. code-block::
+
+            from google.cloud import apigeeconnect_v1
+
+            def sample_list_connections():
+                # Create a client
+                client = apigeeconnect_v1.ConnectionServiceClient()
+
+                # Initialize request argument(s)
+                request = apigeeconnect_v1.ListConnectionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_connections(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.apigeeconnect_v1.types.ListConnectionsRequest, dict]):
                 The request object. The request for

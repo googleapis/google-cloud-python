@@ -403,6 +403,34 @@ class TetherClient(metaclass=TetherClientMeta):
         The listener streams http requests and the dialer
         streams http responses.
 
+
+
+        .. code-block::
+
+            from google.cloud import apigeeconnect_v1
+
+            def sample_egress():
+                # Create a client
+                client = apigeeconnect_v1.TetherClient()
+
+                # Initialize request argument(s)
+                request = apigeeconnect_v1.EgressResponse(
+                )
+
+                # This method expects an iterator which contains
+                # 'apigeeconnect_v1.EgressResponse' objects
+                # Here we create a generator that yields a single `request` for
+                # demonstrative purposes.
+                requests = [request]
+                def request_generator():
+                    for request in requests:
+                        yield request
+
+                # Make the request
+                stream = client.egress(requests=request_generator())
+                for response in stream:
+                    print(response)
+
         Args:
             requests (Iterator[google.cloud.apigeeconnect_v1.types.EgressResponse]):
                 The request object iterator. gRPC response payload for tether.
