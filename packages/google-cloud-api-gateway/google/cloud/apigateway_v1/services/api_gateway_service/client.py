@@ -490,6 +490,25 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     ) -> pagers.ListGatewaysPager:
         r"""Lists Gateways in a given project and location.
 
+
+        .. code-block::
+
+            from google.cloud import apigateway_v1
+
+            def sample_list_gateways():
+                # Create a client
+                client = apigateway_v1.ApiGatewayServiceClient()
+
+                # Initialize request argument(s)
+                request = apigateway_v1.ListGatewaysRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_gateways(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.apigateway_v1.types.ListGatewaysRequest, dict]):
                 The request object. Request message for
@@ -570,6 +589,26 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     ) -> apigateway.Gateway:
         r"""Gets details of a single Gateway.
 
+
+        .. code-block::
+
+            from google.cloud import apigateway_v1
+
+            def sample_get_gateway():
+                # Create a client
+                client = apigateway_v1.ApiGatewayServiceClient()
+
+                # Initialize request argument(s)
+                request = apigateway_v1.GetGatewayRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_gateway(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.apigateway_v1.types.GetGatewayRequest, dict]):
                 The request object. Request message for
@@ -647,6 +686,34 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     ) -> operation.Operation:
         r"""Creates a new Gateway in a given project and
         location.
+
+
+
+        .. code-block::
+
+            from google.cloud import apigateway_v1
+
+            def sample_create_gateway():
+                # Create a client
+                client = apigateway_v1.ApiGatewayServiceClient()
+
+                # Initialize request argument(s)
+                gateway = apigateway_v1.Gateway()
+                gateway.api_config = "api_config_value"
+
+                request = apigateway_v1.CreateGatewayRequest(
+                    parent="parent_value",
+                    gateway_id="gateway_id_value",
+                    gateway=gateway,
+                )
+
+                # Make the request
+                operation = client.create_gateway(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.apigateway_v1.types.CreateGatewayRequest, dict]):
@@ -749,6 +816,31 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     ) -> operation.Operation:
         r"""Updates the parameters of a single Gateway.
 
+
+        .. code-block::
+
+            from google.cloud import apigateway_v1
+
+            def sample_update_gateway():
+                # Create a client
+                client = apigateway_v1.ApiGatewayServiceClient()
+
+                # Initialize request argument(s)
+                gateway = apigateway_v1.Gateway()
+                gateway.api_config = "api_config_value"
+
+                request = apigateway_v1.UpdateGatewayRequest(
+                    gateway=gateway,
+                )
+
+                # Make the request
+                operation = client.update_gateway(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.apigateway_v1.types.UpdateGatewayRequest, dict]):
                 The request object. Request message for
@@ -845,6 +937,28 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single Gateway.
 
+
+        .. code-block::
+
+            from google.cloud import apigateway_v1
+
+            def sample_delete_gateway():
+                # Create a client
+                client = apigateway_v1.ApiGatewayServiceClient()
+
+                # Initialize request argument(s)
+                request = apigateway_v1.DeleteGatewayRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_gateway(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.apigateway_v1.types.DeleteGatewayRequest, dict]):
                 The request object. Request message for
@@ -937,6 +1051,25 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     ) -> pagers.ListApisPager:
         r"""Lists Apis in a given project and location.
 
+
+        .. code-block::
+
+            from google.cloud import apigateway_v1
+
+            def sample_list_apis():
+                # Create a client
+                client = apigateway_v1.ApiGatewayServiceClient()
+
+                # Initialize request argument(s)
+                request = apigateway_v1.ListApisRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_apis(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.apigateway_v1.types.ListApisRequest, dict]):
                 The request object. Request message for
@@ -1017,6 +1150,26 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     ) -> apigateway.Api:
         r"""Gets details of a single Api.
 
+
+        .. code-block::
+
+            from google.cloud import apigateway_v1
+
+            def sample_get_api():
+                # Create a client
+                client = apigateway_v1.ApiGatewayServiceClient()
+
+                # Initialize request argument(s)
+                request = apigateway_v1.GetApiRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_api(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.apigateway_v1.types.GetApiRequest, dict]):
                 The request object. Request message for
@@ -1089,6 +1242,29 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new Api in a given project and location.
+
+
+        .. code-block::
+
+            from google.cloud import apigateway_v1
+
+            def sample_create_api():
+                # Create a client
+                client = apigateway_v1.ApiGatewayServiceClient()
+
+                # Initialize request argument(s)
+                request = apigateway_v1.CreateApiRequest(
+                    parent="parent_value",
+                    api_id="api_id_value",
+                )
+
+                # Make the request
+                operation = client.create_api(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.apigateway_v1.types.CreateApiRequest, dict]):
@@ -1190,6 +1366,27 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     ) -> operation.Operation:
         r"""Updates the parameters of a single Api.
 
+
+        .. code-block::
+
+            from google.cloud import apigateway_v1
+
+            def sample_update_api():
+                # Create a client
+                client = apigateway_v1.ApiGatewayServiceClient()
+
+                # Initialize request argument(s)
+                request = apigateway_v1.UpdateApiRequest(
+                )
+
+                # Make the request
+                operation = client.update_api(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.apigateway_v1.types.UpdateApiRequest, dict]):
                 The request object. Request message for
@@ -1283,6 +1480,28 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single Api.
 
+
+        .. code-block::
+
+            from google.cloud import apigateway_v1
+
+            def sample_delete_api():
+                # Create a client
+                client = apigateway_v1.ApiGatewayServiceClient()
+
+                # Initialize request argument(s)
+                request = apigateway_v1.DeleteApiRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_api(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.apigateway_v1.types.DeleteApiRequest, dict]):
                 The request object. Request message for
@@ -1375,6 +1594,25 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     ) -> pagers.ListApiConfigsPager:
         r"""Lists ApiConfigs in a given project and location.
 
+
+        .. code-block::
+
+            from google.cloud import apigateway_v1
+
+            def sample_list_api_configs():
+                # Create a client
+                client = apigateway_v1.ApiGatewayServiceClient()
+
+                # Initialize request argument(s)
+                request = apigateway_v1.ListApiConfigsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_api_configs(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.apigateway_v1.types.ListApiConfigsRequest, dict]):
                 The request object. Request message for
@@ -1455,6 +1693,26 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     ) -> apigateway.ApiConfig:
         r"""Gets details of a single ApiConfig.
 
+
+        .. code-block::
+
+            from google.cloud import apigateway_v1
+
+            def sample_get_api_config():
+                # Create a client
+                client = apigateway_v1.ApiGatewayServiceClient()
+
+                # Initialize request argument(s)
+                request = apigateway_v1.GetApiConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_api_config(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.apigateway_v1.types.GetApiConfigRequest, dict]):
                 The request object. Request message for
@@ -1529,6 +1787,30 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     ) -> operation.Operation:
         r"""Creates a new ApiConfig in a given project and
         location.
+
+
+
+        .. code-block::
+
+            from google.cloud import apigateway_v1
+
+            def sample_create_api_config():
+                # Create a client
+                client = apigateway_v1.ApiGatewayServiceClient()
+
+                # Initialize request argument(s)
+                request = apigateway_v1.CreateApiConfigRequest(
+                    parent="parent_value",
+                    api_config_id="api_config_id_value",
+                )
+
+                # Make the request
+                operation = client.create_api_config(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.apigateway_v1.types.CreateApiConfigRequest, dict]):
@@ -1629,6 +1911,27 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     ) -> operation.Operation:
         r"""Updates the parameters of a single ApiConfig.
 
+
+        .. code-block::
+
+            from google.cloud import apigateway_v1
+
+            def sample_update_api_config():
+                # Create a client
+                client = apigateway_v1.ApiGatewayServiceClient()
+
+                # Initialize request argument(s)
+                request = apigateway_v1.UpdateApiConfigRequest(
+                )
+
+                # Make the request
+                operation = client.update_api_config(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.apigateway_v1.types.UpdateApiConfigRequest, dict]):
                 The request object. Request message for
@@ -1722,6 +2025,28 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single ApiConfig.
+
+
+        .. code-block::
+
+            from google.cloud import apigateway_v1
+
+            def sample_delete_api_config():
+                # Create a client
+                client = apigateway_v1.ApiGatewayServiceClient()
+
+                # Initialize request argument(s)
+                request = apigateway_v1.DeleteApiConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_api_config(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.apigateway_v1.types.DeleteApiConfigRequest, dict]):
