@@ -632,8 +632,8 @@ class TransferJob(proto.Message):
             [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT] error.
         description (str):
             A description provided by the user for the
-            job. Its max length is 1024 bytes when Unicode-
-            encoded.
+            job. Its max length is 1024 bytes when
+            Unicode-encoded.
         project_id (str):
             The ID of the Google Cloud Platform Project
             that owns the job.
