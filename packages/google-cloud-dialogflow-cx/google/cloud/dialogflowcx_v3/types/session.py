@@ -479,10 +479,11 @@ class QueryParameters(proto.Message):
             the headers configured through Dialogflow
             console if there is a conflict. Header names are
             case-insensitive. Google's specified headers are
-            not allowed. Including: "Host", "Content-
-            Length", "Connection", "From", "User-Agent",
-            "Accept-Encoding", "If-Modified-Since", "If-
-            None-Match", "X-Forwarded-For", etc.
+            not allowed. Including: "Host",
+            "Content-Length", "Connection", "From",
+            "User-Agent", "Accept-Encoding",
+            "If-Modified-Since", "If-None-Match",
+            "X-Forwarded-For", etc.
         flow_versions (Sequence[str]):
             A list of flow versions to override for the request. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>``.

@@ -107,8 +107,8 @@ class ResponseMessage(proto.Message):
             This field is a member of `oneof`_ ``message``.
         telephony_transfer_call (google.cloud.dialogflowcx_v3.types.ResponseMessage.TelephonyTransferCall):
             A signal that the client should transfer the
-            phone call connected to this agent to a third-
-            party endpoint.
+            phone call connected to this agent to a
+            third-party endpoint.
 
             This field is a member of `oneof`_ ``message``.
     """
