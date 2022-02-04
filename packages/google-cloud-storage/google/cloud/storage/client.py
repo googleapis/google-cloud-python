@@ -33,6 +33,7 @@ from google.cloud.client import ClientWithProject
 from google.cloud.exceptions import NotFound
 from google.cloud.storage._helpers import _get_environ_project
 from google.cloud.storage._helpers import _get_storage_host
+from google.cloud.storage._helpers import _BASE_STORAGE_URI
 from google.cloud.storage._helpers import _DEFAULT_STORAGE_HOST
 from google.cloud.storage._helpers import _bucket_bound_hostname_url
 from google.cloud.storage._helpers import _add_etag_match_headers
@@ -146,7 +147,7 @@ class Client(ClientWithProject):
         # STORAGE_EMULATOR_HOST or a non-default api_endpoint is set.
         if (
             kw_args["api_endpoint"] is not None
-            and kw_args["api_endpoint"].find("storage.googleapis.com") < 0
+            and _BASE_STORAGE_URI not in kw_args["api_endpoint"]
         ):
             if credentials is None:
                 credentials = AnonymousCredentials()
@@ -932,12 +933,22 @@ class Client(ClientWithProject):
 
         """
         bucket = self._bucket_arg_to_bucket(bucket_or_name)
+        query_params = {}
 
         if project is None:
             project = self.project
 
-        if project is None:
-            raise ValueError("Client project not set:  pass an explicit project.")
+        # Use no project if STORAGE_EMULATOR_HOST is set
+        if _BASE_STORAGE_URI not in _get_storage_host():
+            if project is None:
+                project = _get_environ_project()
+            if project is None:
+                project = "<none>"
+
+        # Only include the project parameter if a project is set.
+        # If a project is not set, falls back to API validation (BadRequest).
+        if project is not None:
+            query_params = {"project": project}
 
         if requester_pays is not None:
             warnings.warn(
@@ -946,8 +957,6 @@ class Client(ClientWithProject):
                 stacklevel=1,
             )
             bucket.requester_pays = requester_pays
-
-        query_params = {"project": project}
 
         if predefined_acl is not None:
             predefined_acl = BucketACL.validate_predefined(predefined_acl)
@@ -1375,13 +1384,22 @@ class Client(ClientWithProject):
         :returns: Iterator of all :class:`~google.cloud.storage.bucket.Bucket`
                   belonging to this project.
         """
+        extra_params = {}
+
         if project is None:
             project = self.project
 
-        if project is None:
-            raise ValueError("Client project not set:  pass an explicit project.")
+        # Use no project if STORAGE_EMULATOR_HOST is set
+        if _BASE_STORAGE_URI not in _get_storage_host():
+            if project is None:
+                project = _get_environ_project()
+            if project is None:
+                project = "<none>"
 
-        extra_params = {"project": project}
+        # Only include the project parameter if a project is set.
+        # If a project is not set, falls back to API validation (BadRequest).
+        if project is not None:
+            extra_params = {"project": project}
 
         if prefix is not None:
             extra_params["prefix"] = prefix

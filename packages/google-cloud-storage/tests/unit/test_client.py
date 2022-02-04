@@ -23,15 +23,15 @@ import requests
 import unittest
 import urllib
 
-
 from google.api_core import exceptions
-
+from google.auth.credentials import AnonymousCredentials
 from google.oauth2.service_account import Credentials
-from . import _read_local_json
 
+from google.cloud.storage._helpers import STORAGE_EMULATOR_ENV_VAR
 from google.cloud.storage.retry import DEFAULT_RETRY
 from google.cloud.storage.retry import DEFAULT_RETRY_IF_GENERATION_SPECIFIED
 
+from . import _read_local_json
 
 _SERVICE_ACCOUNT_JSON = _read_local_json("url_signer_v4_test_account.json")
 _CONFORMANCE_TESTS = _read_local_json("url_signer_v4_test_data.json")[
@@ -237,9 +237,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client._connection.API_BASE_URL, "http://foo")
 
     def test_ctor_w_emulator_wo_project(self):
-        from google.auth.credentials import AnonymousCredentials
-        from google.cloud.storage._helpers import STORAGE_EMULATOR_ENV_VAR
-
         # avoids authentication if STORAGE_EMULATOR_ENV_VAR is set
         host = "http://localhost:8080"
         environ = {STORAGE_EMULATOR_ENV_VAR: host}
@@ -259,9 +256,6 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(client._connection.credentials, AnonymousCredentials)
 
     def test_ctor_w_emulator_w_environ_project(self):
-        from google.auth.credentials import AnonymousCredentials
-        from google.cloud.storage._helpers import STORAGE_EMULATOR_ENV_VAR
-
         # avoids authentication and infers the project from the environment
         host = "http://localhost:8080"
         environ_project = "environ-project"
@@ -277,9 +271,6 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(client._connection.credentials, AnonymousCredentials)
 
     def test_ctor_w_emulator_w_project_arg(self):
-        from google.auth.credentials import AnonymousCredentials
-        from google.cloud.storage._helpers import STORAGE_EMULATOR_ENV_VAR
-
         # project argument overrides project set in the enviroment
         host = "http://localhost:8080"
         environ_project = "environ-project"
@@ -296,7 +287,6 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(client._connection.credentials, AnonymousCredentials)
 
     def test_create_anonymous_client(self):
-        from google.auth.credentials import AnonymousCredentials
         from google.cloud.storage._http import Connection
 
         klass = self._get_target_class()
@@ -1187,11 +1177,91 @@ class TestClient(unittest.TestCase):
         )
 
     def test_create_bucket_w_missing_client_project(self):
+        from google.cloud.exceptions import BadRequest
+
         credentials = _make_credentials()
         client = self._make_one(project=None, credentials=credentials)
 
-        with self.assertRaises(ValueError):
-            client.create_bucket("bucket")
+        client._post_resource = mock.Mock()
+        client._post_resource.side_effect = BadRequest("Required parameter: project")
+
+        bucket_name = "bucket-name"
+
+        with self.assertRaises(BadRequest):
+            client.create_bucket(bucket_name)
+
+        expected_path = "/b"
+        expected_data = {"name": bucket_name}
+        # no required parameter: project
+        expected_query_params = {}
+        client._post_resource.assert_called_once_with(
+            expected_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+            _target_object=mock.ANY,
+        )
+
+    def test_create_bucket_w_missing_client_project_w_emulator(self):
+        # mock STORAGE_EMULATOR_ENV_VAR is set
+        host = "http://localhost:8080"
+        environ = {STORAGE_EMULATOR_ENV_VAR: host}
+        with mock.patch("os.environ", environ):
+            client = self._make_one()
+
+        bucket_name = "bucket-name"
+        api_response = {"name": bucket_name}
+        client._post_resource = mock.Mock()
+        client._post_resource.return_value = api_response
+
+        # mock STORAGE_EMULATOR_ENV_VAR is set
+        with mock.patch("os.environ", environ):
+            bucket = client.create_bucket(bucket_name)
+
+        expected_path = "/b"
+        expected_data = api_response
+        expected_query_params = {"project": "<none>"}
+        client._post_resource.assert_called_once_with(
+            expected_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+            _target_object=bucket,
+        )
+
+    def test_create_bucket_w_environ_project_w_emulator(self):
+        # mock STORAGE_EMULATOR_ENV_VAR is set
+        host = "http://localhost:8080"
+        environ_project = "environ-project"
+        environ = {
+            STORAGE_EMULATOR_ENV_VAR: host,
+            "GOOGLE_CLOUD_PROJECT": environ_project,
+        }
+        with mock.patch("os.environ", environ):
+            client = self._make_one()
+
+        bucket_name = "bucket-name"
+        api_response = {"name": bucket_name}
+        client._post_resource = mock.Mock()
+        client._post_resource.return_value = api_response
+
+        # mock STORAGE_EMULATOR_ENV_VAR is set
+        with mock.patch("os.environ", environ):
+            bucket = client.create_bucket(bucket_name)
+
+        expected_path = "/b"
+        expected_data = api_response
+        expected_query_params = {"project": environ_project}
+        client._post_resource.assert_called_once_with(
+            expected_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+            _target_object=bucket,
+        )
 
     def test_create_bucket_w_conflict_w_user_project(self):
         from google.cloud.exceptions import Conflict
@@ -1787,11 +1857,111 @@ class TestClient(unittest.TestCase):
         )
 
     def test_list_buckets_wo_project(self):
+        from google.cloud.exceptions import BadRequest
+        from google.cloud.storage.client import _item_to_bucket
+
         credentials = _make_credentials()
         client = self._make_one(project=None, credentials=credentials)
 
-        with self.assertRaises(ValueError):
+        client._list_resource = mock.Mock()
+        client._list_resource.side_effect = BadRequest("Required parameter: project")
+
+        with self.assertRaises(BadRequest):
             client.list_buckets()
+
+        expected_path = "/b"
+        expected_item_to_value = _item_to_bucket
+        expected_page_token = None
+        expected_max_results = None
+        expected_page_size = None
+        # no required parameter: project
+        expected_extra_params = {
+            "projection": "noAcl",
+        }
+        client._list_resource.assert_called_once_with(
+            expected_path,
+            expected_item_to_value,
+            page_token=expected_page_token,
+            max_results=expected_max_results,
+            extra_params=expected_extra_params,
+            page_size=expected_page_size,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+        )
+
+    def test_list_buckets_wo_project_w_emulator(self):
+        from google.cloud.storage.client import _item_to_bucket
+
+        # mock STORAGE_EMULATOR_ENV_VAR is set
+        host = "http://localhost:8080"
+        environ = {STORAGE_EMULATOR_ENV_VAR: host}
+        with mock.patch("os.environ", environ):
+            client = self._make_one()
+
+        client._list_resource = mock.Mock(spec=[])
+
+        # mock STORAGE_EMULATOR_ENV_VAR is set
+        with mock.patch("os.environ", environ):
+            client.list_buckets()
+
+        expected_path = "/b"
+        expected_item_to_value = _item_to_bucket
+        expected_page_token = None
+        expected_max_results = None
+        expected_page_size = None
+        expected_extra_params = {
+            "project": "<none>",
+            "projection": "noAcl",
+        }
+        client._list_resource.assert_called_once_with(
+            expected_path,
+            expected_item_to_value,
+            page_token=expected_page_token,
+            max_results=expected_max_results,
+            extra_params=expected_extra_params,
+            page_size=expected_page_size,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+        )
+
+    def test_list_buckets_w_environ_project_w_emulator(self):
+        from google.cloud.storage.client import _item_to_bucket
+
+        # mock STORAGE_EMULATOR_ENV_VAR is set
+        host = "http://localhost:8080"
+        environ_project = "environ-project"
+        environ = {
+            STORAGE_EMULATOR_ENV_VAR: host,
+            "GOOGLE_CLOUD_PROJECT": environ_project,
+        }
+        with mock.patch("os.environ", environ):
+            client = self._make_one()
+
+        client._list_resource = mock.Mock(spec=[])
+
+        # mock STORAGE_EMULATOR_ENV_VAR is set
+        with mock.patch("os.environ", environ):
+            client.list_buckets()
+
+        expected_path = "/b"
+        expected_item_to_value = _item_to_bucket
+        expected_page_token = None
+        expected_max_results = None
+        expected_page_size = None
+        expected_extra_params = {
+            "project": environ_project,
+            "projection": "noAcl",
+        }
+        client._list_resource.assert_called_once_with(
+            expected_path,
+            expected_item_to_value,
+            page_token=expected_page_token,
+            max_results=expected_max_results,
+            extra_params=expected_extra_params,
+            page_size=expected_page_size,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+        )
 
     def test_list_buckets_w_defaults(self):
         from google.cloud.storage.client import _item_to_bucket
