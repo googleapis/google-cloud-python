@@ -414,6 +414,26 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         Dimensions break down metrics across some common
         criteria, such as country or event name.
 
+
+
+        .. code-block::
+
+            from google.analytics import data_v1beta
+
+            def sample_run_report():
+                # Create a client
+                client = data_v1beta.BetaAnalyticsDataClient()
+
+                # Initialize request argument(s)
+                request = data_v1beta.RunReportRequest(
+                )
+
+                # Make the request
+                response = client.run_report(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.analytics.data_v1beta.types.RunReportRequest, dict]):
                 The request object. The request to generate a report.
@@ -468,6 +488,26 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         in a pivot. Multiple pivots can be specified to further
         dissect your data.
 
+
+
+        .. code-block::
+
+            from google.analytics import data_v1beta
+
+            def sample_run_pivot_report():
+                # Create a client
+                client = data_v1beta.BetaAnalyticsDataClient()
+
+                # Initialize request argument(s)
+                request = data_v1beta.RunPivotReportRequest(
+                )
+
+                # Make the request
+                response = client.run_pivot_report(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.analytics.data_v1beta.types.RunPivotReportRequest, dict]):
                 The request object. The request to generate a pivot
@@ -519,6 +559,26 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         r"""Returns multiple reports in a batch. All reports must
         be for the same GA4 Property.
 
+
+
+        .. code-block::
+
+            from google.analytics import data_v1beta
+
+            def sample_batch_run_reports():
+                # Create a client
+                client = data_v1beta.BetaAnalyticsDataClient()
+
+                # Initialize request argument(s)
+                request = data_v1beta.BatchRunReportsRequest(
+                )
+
+                # Make the request
+                response = client.batch_run_reports(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.analytics.data_v1beta.types.BatchRunReportsRequest, dict]):
                 The request object. The batch request containing
@@ -569,6 +629,26 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
     ) -> analytics_data_api.BatchRunPivotReportsResponse:
         r"""Returns multiple pivot reports in a batch. All
         reports must be for the same GA4 Property.
+
+
+
+        .. code-block::
+
+            from google.analytics import data_v1beta
+
+            def sample_batch_run_pivot_reports():
+                # Create a client
+                client = data_v1beta.BetaAnalyticsDataClient()
+
+                # Initialize request argument(s)
+                request = data_v1beta.BatchRunPivotReportsRequest(
+                )
+
+                # Make the request
+                response = client.batch_run_pivot_reports(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.data_v1beta.types.BatchRunPivotReportsRequest, dict]):
@@ -630,6 +710,27 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         response will contain ``customEvent:levels_unlocked``. Universal
         metadata are dimensions and metrics applicable to any property
         such as ``country`` and ``totalUsers``.
+
+
+
+        .. code-block::
+
+            from google.analytics import data_v1beta
+
+            def sample_get_metadata():
+                # Create a client
+                client = data_v1beta.BetaAnalyticsDataClient()
+
+                # Initialize request argument(s)
+                request = data_v1beta.GetMetadataRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_metadata(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.data_v1beta.types.GetMetadataRequest, dict]):
@@ -714,6 +815,26 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         property. These reports show events and usage from the
         last 30 minutes.
 
+
+
+        .. code-block::
+
+            from google.analytics import data_v1beta
+
+            def sample_run_realtime_report():
+                # Create a client
+                client = data_v1beta.BetaAnalyticsDataClient()
+
+                # Initialize request argument(s)
+                request = data_v1beta.RunRealtimeReportRequest(
+                )
+
+                # Make the request
+                response = client.run_realtime_report(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.analytics.data_v1beta.types.RunRealtimeReportRequest, dict]):
                 The request object. The request to generate a realtime
@@ -773,6 +894,26 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         The Realtime and Core reports have different
         compatibility rules. This method checks compatibility
         for Core reports.
+
+
+
+        .. code-block::
+
+            from google.analytics import data_v1beta
+
+            def sample_check_compatibility():
+                # Create a client
+                client = data_v1beta.BetaAnalyticsDataClient()
+
+                # Initialize request argument(s)
+                request = data_v1beta.CheckCompatibilityRequest(
+                )
+
+                # Make the request
+                response = client.check_compatibility(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.analytics.data_v1beta.types.CheckCompatibilityRequest, dict]):
