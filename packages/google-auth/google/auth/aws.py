@@ -406,6 +406,7 @@ class Credentials(external_account.Credentials):
         self._cred_verification_url = credential_source.get(
             "regional_cred_verification_url"
         )
+        self._aws_session_token_url = credential_source.get("aws_session_token_url")
         self._region = None
         self._request_signer = None
         self._target_resource = audience
@@ -458,15 +459,34 @@ class Credentials(external_account.Credentials):
         Returns:
             str: The retrieved subject token.
         """
+        # Fetch the session token required to make meta data endpoint calls to aws
+        if request is not None and self._aws_session_token_url is not None:
+            headers = {"X-aws-ec2-metadata-token-ttl-seconds": "21600"}
+
+            session_token_response = request(
+                url=self._aws_session_token_url, method="PUT", headers=headers
+            )
+
+            if session_token_response.status != 200:
+                raise exceptions.RefreshError(
+                    "Unable to retrieve AWS Session Token", session_token_response.data
+                )
+
+            session_token = session_token_response.data
+        else:
+            session_token = None
+
         # Initialize the request signer if not yet initialized after determining
         # the current AWS region.
         if self._request_signer is None:
-            self._region = self._get_region(request, self._region_url)
+            self._region = self._get_region(request, self._region_url, session_token)
             self._request_signer = RequestSigner(self._region)
 
         # Retrieve the AWS security credentials needed to generate the signed
         # request.
-        aws_security_credentials = self._get_security_credentials(request)
+        aws_security_credentials = self._get_security_credentials(
+            request, session_token
+        )
         # Generate the signed request to AWS STS GetCallerIdentity API.
         # Use the required regional endpoint. Otherwise, the request will fail.
         request_options = self._request_signer.get_request_options(
@@ -511,7 +531,7 @@ class Credentials(external_account.Credentials):
             json.dumps(aws_signed_req, separators=(",", ":"), sort_keys=True)
         )
 
-    def _get_region(self, request, url):
+    def _get_region(self, request, url, session_token):
         """Retrieves the current AWS region from either the AWS_REGION or
         AWS_DEFAULT_REGION environment variable or from the AWS metadata server.
 
@@ -519,6 +539,8 @@ class Credentials(external_account.Credentials):
             request (google.auth.transport.Request): A callable used to make
                 HTTP requests.
             url (str): The AWS metadata server region URL.
+            session_token (str): The AWS session token to be added as a
+                header in the requests to AWS metadata endpoint.
 
         Returns:
             str: The current AWS region.
@@ -540,7 +562,12 @@ class Credentials(external_account.Credentials):
 
         if not self._region_url:
             raise exceptions.RefreshError("Unable to determine AWS region")
-        response = request(url=self._region_url, method="GET")
+
+        headers = None
+        if session_token is not None:
+            headers = {"X-aws-ec2-metadata-token": session_token}
+
+        response = request(url=self._region_url, method="GET", headers=headers)
 
         # Support both string and bytes type response.data.
         response_body = (
@@ -558,7 +585,7 @@ class Credentials(external_account.Credentials):
         # Only the us-east-2 part should be used.
         return response_body[:-1]
 
-    def _get_security_credentials(self, request):
+    def _get_security_credentials(self, request, session_token):
         """Retrieves the AWS security credentials required for signing AWS
         requests from either the AWS security credentials environment variables
         or from the AWS metadata server.
@@ -566,6 +593,8 @@ class Credentials(external_account.Credentials):
         Args:
             request (google.auth.transport.Request): A callable used to make
                 HTTP requests.
+            session_token (str): The AWS session token to be added as a
+                header in the requests to AWS metadata endpoint.
 
         Returns:
             Mapping[str, str]: The AWS security credentials dictionary object.
@@ -591,10 +620,12 @@ class Credentials(external_account.Credentials):
             }
 
         # Get role name.
-        role_name = self._get_metadata_role_name(request)
+        role_name = self._get_metadata_role_name(request, session_token)
 
         # Get security credentials.
-        credentials = self._get_metadata_security_credentials(request, role_name)
+        credentials = self._get_metadata_security_credentials(
+            request, role_name, session_token
+        )
 
         return {
             "access_key_id": credentials.get("AccessKeyId"),
@@ -602,7 +633,7 @@ class Credentials(external_account.Credentials):
             "security_token": credentials.get("Token"),
         }
 
-    def _get_metadata_security_credentials(self, request, role_name):
+    def _get_metadata_security_credentials(self, request, role_name, session_token):
         """Retrieves the AWS security credentials required for signing AWS
         requests from the AWS metadata server.
 
@@ -612,6 +643,8 @@ class Credentials(external_account.Credentials):
             role_name (str): The AWS role name required by the AWS metadata
                 server security_credentials endpoint in order to return the
                 credentials.
+            session_token (str): The AWS session token to be added as a
+                header in the requests to AWS metadata endpoint.
 
         Returns:
             Mapping[str, str]: The AWS metadata server security credentials
@@ -622,6 +655,9 @@ class Credentials(external_account.Credentials):
                 retrieving the AWS security credentials.
         """
         headers = {"Content-Type": "application/json"}
+        if session_token is not None:
+            headers["X-aws-ec2-metadata-token"] = session_token
+
         response = request(
             url="{}/{}".format(self._security_credentials_url, role_name),
             method="GET",
@@ -644,7 +680,7 @@ class Credentials(external_account.Credentials):
 
         return credentials_response
 
-    def _get_metadata_role_name(self, request):
+    def _get_metadata_role_name(self, request, session_token):
         """Retrieves the AWS role currently attached to the current AWS
         workload by querying the AWS metadata server. This is needed for the
         AWS metadata server security credentials endpoint in order to retrieve
@@ -653,6 +689,8 @@ class Credentials(external_account.Credentials):
         Args:
             request (google.auth.transport.Request): A callable used to make
                 HTTP requests.
+            session_token (str): The AWS session token to be added as a
+                header in the requests to AWS metadata endpoint.
 
         Returns:
             str: The AWS role name.
@@ -665,7 +703,14 @@ class Credentials(external_account.Credentials):
             raise exceptions.RefreshError(
                 "Unable to determine the AWS metadata server security credentials endpoint"
             )
-        response = request(url=self._security_credentials_url, method="GET")
+
+        headers = None
+        if session_token is not None:
+            headers = {"X-aws-ec2-metadata-token": session_token}
+
+        response = request(
+            url=self._security_credentials_url, method="GET", headers=headers
+        )
 
         # support both string and bytes type response.data
         response_body = (
