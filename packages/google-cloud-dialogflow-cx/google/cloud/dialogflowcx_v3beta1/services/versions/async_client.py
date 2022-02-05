@@ -216,6 +216,25 @@ class VersionsAsyncClient:
         r"""Returns the list of all versions in the specified
         [Flow][google.cloud.dialogflow.cx.v3beta1.Flow].
 
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_list_versions():
+                # Create a client
+                client = dialogflowcx_v3beta1.VersionsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.ListVersionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_versions(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.ListVersionsRequest, dict]):
                 The request object. The request message for
@@ -298,6 +317,26 @@ class VersionsAsyncClient:
     ) -> version.Version:
         r"""Retrieves the specified
         [Version][google.cloud.dialogflow.cx.v3beta1.Version].
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_get_version():
+                # Create a client
+                client = dialogflowcx_v3beta1.VersionsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.GetVersionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_version(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.GetVersionRequest, dict]):
@@ -382,6 +421,32 @@ class VersionsAsyncClient:
            [CreateVersionOperationMetadata][google.cloud.dialogflow.cx.v3beta1.CreateVersionOperationMetadata]
         -  ``response``:
            [Version][google.cloud.dialogflow.cx.v3beta1.Version]
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_create_version():
+                # Create a client
+                client = dialogflowcx_v3beta1.VersionsClient()
+
+                # Initialize request argument(s)
+                version = dialogflowcx_v3beta1.Version()
+                version.display_name = "display_name_value"
+
+                request = dialogflowcx_v3beta1.CreateVersionRequest(
+                    parent="parent_value",
+                    version=version,
+                )
+
+                # Make the request
+                operation = client.create_version(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.CreateVersionRequest, dict]):
@@ -478,6 +543,29 @@ class VersionsAsyncClient:
         r"""Updates the specified
         [Version][google.cloud.dialogflow.cx.v3beta1.Version].
 
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_update_version():
+                # Create a client
+                client = dialogflowcx_v3beta1.VersionsClient()
+
+                # Initialize request argument(s)
+                version = dialogflowcx_v3beta1.Version()
+                version.display_name = "display_name_value"
+
+                request = dialogflowcx_v3beta1.UpdateVersionRequest(
+                    version=version,
+                )
+
+                # Make the request
+                response = client.update_version(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.UpdateVersionRequest, dict]):
                 The request object. The request message for
@@ -558,6 +646,23 @@ class VersionsAsyncClient:
         r"""Deletes the specified
         [Version][google.cloud.dialogflow.cx.v3beta1.Version].
 
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_delete_version():
+                # Create a client
+                client = dialogflowcx_v3beta1.VersionsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.DeleteVersionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_version(request=request)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.DeleteVersionRequest, dict]):
                 The request object. The request message for
@@ -633,6 +738,28 @@ class VersionsAsyncClient:
            message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
         -  ``response``: An `Empty
            message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_load_version():
+                # Create a client
+                client = dialogflowcx_v3beta1.VersionsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.LoadVersionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.load_version(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.LoadVersionRequest, dict]):
@@ -728,6 +855,27 @@ class VersionsAsyncClient:
     ) -> version.CompareVersionsResponse:
         r"""Compares the specified base version with target
         version.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_compare_versions():
+                # Create a client
+                client = dialogflowcx_v3beta1.VersionsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.CompareVersionsRequest(
+                    base_version="base_version_value",
+                    target_version="target_version_value",
+                )
+
+                # Make the request
+                response = client.compare_versions(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.CompareVersionsRequest, dict]):

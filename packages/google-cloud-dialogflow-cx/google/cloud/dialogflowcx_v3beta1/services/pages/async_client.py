@@ -220,6 +220,24 @@ class PagesAsyncClient:
     ) -> pagers.ListPagesAsyncPager:
         r"""Returns the list of all pages in the specified flow.
 
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_list_pages():
+                # Create a client
+                client = dialogflowcx_v3beta1.PagesClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.ListPagesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_pages(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.ListPagesRequest, dict]):
                 The request object. The request message for
@@ -299,6 +317,25 @@ class PagesAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> page.Page:
         r"""Retrieves the specified page.
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_get_page():
+                # Create a client
+                client = dialogflowcx_v3beta1.PagesClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.GetPageRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_page(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.GetPageRequest, dict]):
@@ -391,6 +428,29 @@ class PagesAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_page.Page:
         r"""Creates a page in the specified flow.
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_create_page():
+                # Create a client
+                client = dialogflowcx_v3beta1.PagesClient()
+
+                # Initialize request argument(s)
+                page = dialogflowcx_v3beta1.Page()
+                page.display_name = "display_name_value"
+
+                request = dialogflowcx_v3beta1.CreatePageRequest(
+                    parent="parent_value",
+                    page=page,
+                )
+
+                # Make the request
+                response = client.create_page(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.CreatePageRequest, dict]):
@@ -490,6 +550,28 @@ class PagesAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_page.Page:
         r"""Updates the specified page.
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_update_page():
+                # Create a client
+                client = dialogflowcx_v3beta1.PagesClient()
+
+                # Initialize request argument(s)
+                page = dialogflowcx_v3beta1.Page()
+                page.display_name = "display_name_value"
+
+                request = dialogflowcx_v3beta1.UpdatePageRequest(
+                    page=page,
+                )
+
+                # Make the request
+                response = client.update_page(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.UpdatePageRequest, dict]):
@@ -591,6 +673,22 @@ class PagesAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified page.
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_delete_page():
+                # Create a client
+                client = dialogflowcx_v3beta1.PagesClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.DeletePageRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_page(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.DeletePageRequest, dict]):

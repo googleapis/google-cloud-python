@@ -212,6 +212,25 @@ class IntentsAsyncClient:
         r"""Returns the list of all intents in the specified
         agent.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_list_intents():
+                # Create a client
+                client = dialogflowcx_v3beta1.IntentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.ListIntentsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_intents(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.ListIntentsRequest, dict]):
                 The request object. The request message for
@@ -291,6 +310,25 @@ class IntentsAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> intent.Intent:
         r"""Retrieves the specified intent.
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_get_intent():
+                # Create a client
+                client = dialogflowcx_v3beta1.IntentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.GetIntentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_intent(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.GetIntentRequest, dict]):
@@ -372,6 +410,30 @@ class IntentsAsyncClient:
         Note: You should always train a flow prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_create_intent():
+                # Create a client
+                client = dialogflowcx_v3beta1.IntentsClient()
+
+                # Initialize request argument(s)
+                intent = dialogflowcx_v3beta1.Intent()
+                intent.display_name = "display_name_value"
+
+                request = dialogflowcx_v3beta1.CreateIntentRequest(
+                    parent="parent_value",
+                    intent=intent,
+                )
+
+                # Make the request
+                response = client.create_intent(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.CreateIntentRequest, dict]):
@@ -460,6 +522,29 @@ class IntentsAsyncClient:
         Note: You should always train a flow prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_update_intent():
+                # Create a client
+                client = dialogflowcx_v3beta1.IntentsClient()
+
+                # Initialize request argument(s)
+                intent = dialogflowcx_v3beta1.Intent()
+                intent.display_name = "display_name_value"
+
+                request = dialogflowcx_v3beta1.UpdateIntentRequest(
+                    intent=intent,
+                )
+
+                # Make the request
+                response = client.update_intent(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.UpdateIntentRequest, dict]):
@@ -550,6 +635,23 @@ class IntentsAsyncClient:
         Note: You should always train a flow prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_delete_intent():
+                # Create a client
+                client = dialogflowcx_v3beta1.IntentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.DeleteIntentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_intent(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.DeleteIntentRequest, dict]):

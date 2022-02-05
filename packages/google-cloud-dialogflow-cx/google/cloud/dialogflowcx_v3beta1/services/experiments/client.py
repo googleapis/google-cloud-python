@@ -439,6 +439,26 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
         r"""Returns the list of all experiments in the specified
         [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_list_experiments():
+                # Create a client
+                client = dialogflowcx_v3beta1.ExperimentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.ListExperimentsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_experiments(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.ListExperimentsRequest, dict]):
                 The request object. The request message for
@@ -522,6 +542,27 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
         r"""Retrieves the specified
         [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment].
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_get_experiment():
+                # Create a client
+                client = dialogflowcx_v3beta1.ExperimentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.GetExperimentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_experiment(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.GetExperimentRequest, dict]):
                 The request object. The request message for
@@ -598,6 +639,31 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
         [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment] in
         the specified
         [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_create_experiment():
+                # Create a client
+                client = dialogflowcx_v3beta1.ExperimentsClient()
+
+                # Initialize request argument(s)
+                experiment = dialogflowcx_v3beta1.Experiment()
+                experiment.display_name = "display_name_value"
+
+                request = dialogflowcx_v3beta1.CreateExperimentRequest(
+                    parent="parent_value",
+                    experiment=experiment,
+                )
+
+                # Make the request
+                response = client.create_experiment(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.CreateExperimentRequest, dict]):
@@ -683,6 +749,30 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
         r"""Updates the specified
         [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment].
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_update_experiment():
+                # Create a client
+                client = dialogflowcx_v3beta1.ExperimentsClient()
+
+                # Initialize request argument(s)
+                experiment = dialogflowcx_v3beta1.Experiment()
+                experiment.display_name = "display_name_value"
+
+                request = dialogflowcx_v3beta1.UpdateExperimentRequest(
+                    experiment=experiment,
+                )
+
+                # Make the request
+                response = client.update_experiment(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.UpdateExperimentRequest, dict]):
                 The request object. The request message for
@@ -764,6 +854,24 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
         r"""Deletes the specified
         [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment].
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_delete_experiment():
+                # Create a client
+                client = dialogflowcx_v3beta1.ExperimentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.DeleteExperimentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_experiment(request=request)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.DeleteExperimentRequest, dict]):
                 The request object. The request message for
@@ -832,6 +940,27 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
         [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment].
         This rpc only changes the state of experiment from PENDING to
         RUNNING.
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_start_experiment():
+                # Create a client
+                client = dialogflowcx_v3beta1.ExperimentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.StartExperimentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.start_experiment(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.StartExperimentRequest, dict]):
@@ -907,6 +1036,27 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
         [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment].
         This rpc only changes the state of experiment from RUNNING to
         DONE.
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_stop_experiment():
+                # Create a client
+                client = dialogflowcx_v3beta1.ExperimentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.StopExperimentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.stop_experiment(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.StopExperimentRequest, dict]):

@@ -578,6 +578,25 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
     ) -> pagers.ListTestCasesPager:
         r"""Fetches a list of test cases for a given agent.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_list_test_cases():
+                # Create a client
+                client = dialogflowcx_v3.TestCasesClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.ListTestCasesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_test_cases(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.ListTestCasesRequest, dict]):
                 The request object. The request message for
@@ -658,6 +677,24 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
     ) -> None:
         r"""Batch deletes test cases.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_batch_delete_test_cases():
+                # Create a client
+                client = dialogflowcx_v3.TestCasesClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.BatchDeleteTestCasesRequest(
+                    parent="parent_value",
+                    names=['names_value_1', 'names_value_2'],
+                )
+
+                # Make the request
+                response = client.batch_delete_test_cases(request=request)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.BatchDeleteTestCasesRequest, dict]):
                 The request object. The request message for
@@ -721,6 +758,26 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> test_case.TestCase:
         r"""Gets a test case.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_get_test_case():
+                # Create a client
+                client = dialogflowcx_v3.TestCasesClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.GetTestCaseRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_test_case(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.GetTestCaseRequest, dict]):
@@ -791,6 +848,30 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_test_case.TestCase:
         r"""Creates a test case for the given agent.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_create_test_case():
+                # Create a client
+                client = dialogflowcx_v3.TestCasesClient()
+
+                # Initialize request argument(s)
+                test_case = dialogflowcx_v3.TestCase()
+                test_case.display_name = "display_name_value"
+
+                request = dialogflowcx_v3.CreateTestCaseRequest(
+                    parent="parent_value",
+                    test_case=test_case,
+                )
+
+                # Make the request
+                response = client.create_test_case(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.CreateTestCaseRequest, dict]):
@@ -868,6 +949,29 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_test_case.TestCase:
         r"""Updates the specified test case.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_update_test_case():
+                # Create a client
+                client = dialogflowcx_v3.TestCasesClient()
+
+                # Initialize request argument(s)
+                test_case = dialogflowcx_v3.TestCase()
+                test_case.display_name = "display_name_value"
+
+                request = dialogflowcx_v3.UpdateTestCaseRequest(
+                    test_case=test_case,
+                )
+
+                # Make the request
+                response = client.update_test_case(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.UpdateTestCaseRequest, dict]):
@@ -960,6 +1064,29 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         -  ``response``:
            [RunTestCaseResponse][google.cloud.dialogflow.cx.v3.RunTestCaseResponse]
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_run_test_case():
+                # Create a client
+                client = dialogflowcx_v3.TestCasesClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.RunTestCaseRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.run_test_case(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.RunTestCaseRequest, dict]):
                 The request object. The request message for
@@ -1032,6 +1159,30 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         -  ``response``:
            [BatchRunTestCasesResponse][google.cloud.dialogflow.cx.v3.BatchRunTestCasesResponse]
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_batch_run_test_cases():
+                # Create a client
+                client = dialogflowcx_v3.TestCasesClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.BatchRunTestCasesRequest(
+                    parent="parent_value",
+                    test_cases=['test_cases_value_1', 'test_cases_value_2'],
+                )
+
+                # Make the request
+                operation = client.batch_run_test_cases(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.BatchRunTestCasesRequest, dict]):
                 The request object. The request message for
@@ -1093,6 +1244,27 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> test_case.CalculateCoverageResponse:
         r"""Calculates the test coverage for an agent.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_calculate_coverage():
+                # Create a client
+                client = dialogflowcx_v3.TestCasesClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.CalculateCoverageRequest(
+                    agent="agent_value",
+                    type_="TRANSITION_ROUTE_GROUP",
+                )
+
+                # Make the request
+                response = client.calculate_coverage(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.CalculateCoverageRequest, dict]):
@@ -1156,6 +1328,30 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
            [ImportTestCasesMetadata][google.cloud.dialogflow.cx.v3.ImportTestCasesMetadata]
         -  ``response``:
            [ImportTestCasesResponse][google.cloud.dialogflow.cx.v3.ImportTestCasesResponse]
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_import_test_cases():
+                # Create a client
+                client = dialogflowcx_v3.TestCasesClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.ImportTestCasesRequest(
+                    gcs_uri="gcs_uri_value",
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.import_test_cases(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.ImportTestCasesRequest, dict]):
@@ -1231,6 +1427,30 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         -  ``response``:
            [ExportTestCasesResponse][google.cloud.dialogflow.cx.v3.ExportTestCasesResponse]
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_export_test_cases():
+                # Create a client
+                client = dialogflowcx_v3.TestCasesClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.ExportTestCasesRequest(
+                    gcs_uri="gcs_uri_value",
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.export_test_cases(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.ExportTestCasesRequest, dict]):
                 The request object. The request message for
@@ -1293,6 +1513,25 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTestCaseResultsPager:
         r"""Fetches a list of results for a given test case.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_list_test_case_results():
+                # Create a client
+                client = dialogflowcx_v3.TestCasesClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.ListTestCaseResultsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_test_case_results(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.ListTestCaseResultsRequest, dict]):
@@ -1375,6 +1614,26 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> test_case.TestCaseResult:
         r"""Gets a test case result.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_get_test_case_result():
+                # Create a client
+                client = dialogflowcx_v3.TestCasesClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.GetTestCaseResultRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_test_case_result(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.GetTestCaseResultRequest, dict]):

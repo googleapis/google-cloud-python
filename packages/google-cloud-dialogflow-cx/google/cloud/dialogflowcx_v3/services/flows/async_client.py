@@ -231,6 +231,30 @@ class FlowsAsyncClient:
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_create_flow():
+                # Create a client
+                client = dialogflowcx_v3.FlowsClient()
+
+                # Initialize request argument(s)
+                flow = dialogflowcx_v3.Flow()
+                flow.display_name = "display_name_value"
+
+                request = dialogflowcx_v3.CreateFlowRequest(
+                    parent="parent_value",
+                    flow=flow,
+                )
+
+                # Make the request
+                response = client.create_flow(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.CreateFlowRequest, dict]):
                 The request object. The request message for
@@ -330,6 +354,22 @@ class FlowsAsyncClient:
     ) -> None:
         r"""Deletes a specified flow.
 
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_delete_flow():
+                # Create a client
+                client = dialogflowcx_v3.FlowsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.DeleteFlowRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_flow(request=request)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.DeleteFlowRequest, dict]):
                 The request object. The request message for
@@ -393,6 +433,24 @@ class FlowsAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListFlowsAsyncPager:
         r"""Returns the list of all flows in the specified agent.
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_list_flows():
+                # Create a client
+                client = dialogflowcx_v3.FlowsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.ListFlowsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_flows(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.ListFlowsRequest, dict]):
@@ -473,6 +531,25 @@ class FlowsAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> flow.Flow:
         r"""Retrieves the specified flow.
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_get_flow():
+                # Create a client
+                client = dialogflowcx_v3.FlowsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.GetFlowRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_flow(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.GetFlowRequest, dict]):
@@ -570,6 +647,29 @@ class FlowsAsyncClient:
         Note: You should always train a flow prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_update_flow():
+                # Create a client
+                client = dialogflowcx_v3.FlowsClient()
+
+                # Initialize request argument(s)
+                flow = dialogflowcx_v3.Flow()
+                flow.display_name = "display_name_value"
+
+                request = dialogflowcx_v3.UpdateFlowRequest(
+                    flow=flow,
+                )
+
+                # Make the request
+                response = client.update_flow(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.UpdateFlowRequest, dict]):
@@ -688,6 +788,28 @@ class FlowsAsyncClient:
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_train_flow():
+                # Create a client
+                client = dialogflowcx_v3.FlowsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.TrainFlowRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.train_flow(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.TrainFlowRequest, dict]):
                 The request object. The request message for
@@ -782,6 +904,26 @@ class FlowsAsyncClient:
         training is completed to get the complete validation
         results.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_validate_flow():
+                # Create a client
+                client = dialogflowcx_v3.FlowsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.ValidateFlowRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.validate_flow(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.ValidateFlowRequest, dict]):
                 The request object. The request message for
@@ -832,6 +974,26 @@ class FlowsAsyncClient:
     ) -> flow.FlowValidationResult:
         r"""Gets the latest flow validation result. Flow
         validation is performed when ValidateFlow is called.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_get_flow_validation_result():
+                # Create a client
+                client = dialogflowcx_v3.FlowsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.GetFlowValidationResultRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_flow_validation_result(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.GetFlowValidationResultRequest, dict]):
@@ -918,6 +1080,29 @@ class FlowsAsyncClient:
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_import_flow():
+                # Create a client
+                client = dialogflowcx_v3.FlowsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.ImportFlowRequest(
+                    flow_uri="flow_uri_value",
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.import_flow(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.ImportFlowRequest, dict]):
                 The request object. The request message for
@@ -991,6 +1176,28 @@ class FlowsAsyncClient:
 
         Note that resources (e.g. intents, entities, webhooks) that the
         flow references will also be exported.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_export_flow():
+                # Create a client
+                client = dialogflowcx_v3.FlowsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.ExportFlowRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.export_flow(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.ExportFlowRequest, dict]):

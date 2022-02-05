@@ -232,6 +232,25 @@ class EnvironmentsAsyncClient:
         r"""Returns the list of all environments in the specified
         [Agent][google.cloud.dialogflow.cx.v3.Agent].
 
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_list_environments():
+                # Create a client
+                client = dialogflowcx_v3.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.ListEnvironmentsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_environments(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.ListEnvironmentsRequest, dict]):
                 The request object. The request message for
@@ -314,6 +333,26 @@ class EnvironmentsAsyncClient:
     ) -> environment.Environment:
         r"""Retrieves the specified
         [Environment][google.cloud.dialogflow.cx.v3.Environment].
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_get_environment():
+                # Create a client
+                client = dialogflowcx_v3.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.GetEnvironmentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_environment(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.GetEnvironmentRequest, dict]):
@@ -413,6 +452,33 @@ class EnvironmentsAsyncClient:
            message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
         -  ``response``:
            [Environment][google.cloud.dialogflow.cx.v3.Environment]
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_create_environment():
+                # Create a client
+                client = dialogflowcx_v3.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                environment = dialogflowcx_v3.Environment()
+                environment.display_name = "display_name_value"
+                environment.version_configs.version = "version_value"
+
+                request = dialogflowcx_v3.CreateEnvironmentRequest(
+                    parent="parent_value",
+                    environment=environment,
+                )
+
+                # Make the request
+                operation = client.create_environment(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.CreateEnvironmentRequest, dict]):
@@ -527,6 +593,32 @@ class EnvironmentsAsyncClient:
         -  ``response``:
            [Environment][google.cloud.dialogflow.cx.v3.Environment]
 
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_update_environment():
+                # Create a client
+                client = dialogflowcx_v3.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                environment = dialogflowcx_v3.Environment()
+                environment.display_name = "display_name_value"
+                environment.version_configs.version = "version_value"
+
+                request = dialogflowcx_v3.UpdateEnvironmentRequest(
+                    environment=environment,
+                )
+
+                # Make the request
+                operation = client.update_environment(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.UpdateEnvironmentRequest, dict]):
                 The request object. The request message for
@@ -627,6 +719,23 @@ class EnvironmentsAsyncClient:
         r"""Deletes the specified
         [Environment][google.cloud.dialogflow.cx.v3.Environment].
 
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_delete_environment():
+                # Create a client
+                client = dialogflowcx_v3.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.DeleteEnvironmentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_environment(request=request)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.DeleteEnvironmentRequest, dict]):
                 The request object. The request message for
@@ -693,6 +802,25 @@ class EnvironmentsAsyncClient:
     ) -> pagers.LookupEnvironmentHistoryAsyncPager:
         r"""Looks up the history of the specified
         [Environment][google.cloud.dialogflow.cx.v3.Environment].
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_lookup_environment_history():
+                # Create a client
+                client = dialogflowcx_v3.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.LookupEnvironmentHistoryRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                page_result = client.lookup_environment_history(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.LookupEnvironmentHistoryRequest, dict]):
@@ -785,6 +913,28 @@ class EnvironmentsAsyncClient:
         -  ``response``:
            [RunContinuousTestResponse][google.cloud.dialogflow.cx.v3.RunContinuousTestResponse]
 
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_run_continuous_test():
+                # Create a client
+                client = dialogflowcx_v3.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.RunContinuousTestRequest(
+                    environment="environment_value",
+                )
+
+                # Make the request
+                operation = client.run_continuous_test(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.RunContinuousTestRequest, dict]):
                 The request object. The request message for
@@ -849,6 +999,25 @@ class EnvironmentsAsyncClient:
     ) -> pagers.ListContinuousTestResultsAsyncPager:
         r"""Fetches a list of continuous test results for a given
         environment.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_list_continuous_test_results():
+                # Create a client
+                client = dialogflowcx_v3.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.ListContinuousTestResultsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_continuous_test_results(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.ListContinuousTestResultsRequest, dict]):
@@ -939,6 +1108,29 @@ class EnvironmentsAsyncClient:
            [DeployFlowMetadata][google.cloud.dialogflow.cx.v3.DeployFlowMetadata]
         -  ``response``:
            [DeployFlowResponse][google.cloud.dialogflow.cx.v3.DeployFlowResponse]
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_deploy_flow():
+                # Create a client
+                client = dialogflowcx_v3.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.DeployFlowRequest(
+                    environment="environment_value",
+                    flow_version="flow_version_value",
+                )
+
+                # Make the request
+                operation = client.deploy_flow(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.DeployFlowRequest, dict]):

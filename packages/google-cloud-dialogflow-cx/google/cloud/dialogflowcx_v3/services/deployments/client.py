@@ -480,6 +480,26 @@ class DeploymentsClient(metaclass=DeploymentsClientMeta):
         r"""Returns the list of all deployments in the specified
         [Environment][google.cloud.dialogflow.cx.v3.Environment].
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_list_deployments():
+                # Create a client
+                client = dialogflowcx_v3.DeploymentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.ListDeploymentsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_deployments(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.ListDeploymentsRequest, dict]):
                 The request object. The request message for
@@ -562,6 +582,27 @@ class DeploymentsClient(metaclass=DeploymentsClientMeta):
     ) -> deployment.Deployment:
         r"""Retrieves the specified
         [Deployment][google.cloud.dialogflow.cx.v3.Deployment].
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_get_deployment():
+                # Create a client
+                client = dialogflowcx_v3.DeploymentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.GetDeploymentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_deployment(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.GetDeploymentRequest, dict]):

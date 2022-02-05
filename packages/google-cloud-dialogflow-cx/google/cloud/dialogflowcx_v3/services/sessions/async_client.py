@@ -248,6 +248,31 @@ class SessionsAsyncClient:
         `Versions and
         environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_detect_intent():
+                # Create a client
+                client = dialogflowcx_v3.SessionsClient()
+
+                # Initialize request argument(s)
+                query_input = dialogflowcx_v3.QueryInput()
+                query_input.text.text = "text_value"
+                query_input.language_code = "language_code_value"
+
+                request = dialogflowcx_v3.DetectIntentRequest(
+                    session="session_value",
+                    query_input=query_input,
+                )
+
+                # Make the request
+                response = client.detect_intent(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.DetectIntentRequest, dict]):
                 The request object. The request to detect user's intent.
@@ -311,6 +336,38 @@ class SessionsAsyncClient:
         Note: Always use agent versions for production traffic. See
         `Versions and
         environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_streaming_detect_intent():
+                # Create a client
+                client = dialogflowcx_v3.SessionsClient()
+
+                # Initialize request argument(s)
+                query_input = dialogflowcx_v3.QueryInput()
+                query_input.text.text = "text_value"
+                query_input.language_code = "language_code_value"
+
+                request = dialogflowcx_v3.StreamingDetectIntentRequest(
+                    query_input=query_input,
+                )
+
+                # This method expects an iterator which contains
+                # 'dialogflowcx_v3.StreamingDetectIntentRequest' objects
+                # Here we create a generator that yields a single `request` for
+                # demonstrative purposes.
+                requests = [request]
+                def request_generator():
+                    for request in requests:
+                        yield request
+
+                # Make the request
+                stream = client.streaming_detect_intent(requests=request_generator())
+                for response in stream:
+                    print(response)
 
         Args:
             requests (AsyncIterator[`google.cloud.dialogflowcx_v3.types.StreamingDetectIntentRequest`]):
@@ -416,6 +473,31 @@ class SessionsAsyncClient:
         r"""Returns preliminary intent match results, doesn't
         change the session status.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_match_intent():
+                # Create a client
+                client = dialogflowcx_v3.SessionsClient()
+
+                # Initialize request argument(s)
+                query_input = dialogflowcx_v3.QueryInput()
+                query_input.text.text = "text_value"
+                query_input.language_code = "language_code_value"
+
+                request = dialogflowcx_v3.MatchIntentRequest(
+                    session="session_value",
+                    query_input=query_input,
+                )
+
+                # Make the request
+                response = client.match_intent(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.MatchIntentRequest, dict]):
                 The request object. Request of [MatchIntent][].
@@ -467,6 +549,25 @@ class SessionsAsyncClient:
         with input from
         [MatchIntentResponse][google.cloud.dialogflow.cx.v3.MatchIntentResponse].
         Otherwise, the behavior is undefined.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_fulfill_intent():
+                # Create a client
+                client = dialogflowcx_v3.SessionsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.FulfillIntentRequest(
+                )
+
+                # Make the request
+                response = client.fulfill_intent(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.FulfillIntentRequest, dict]):

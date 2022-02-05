@@ -226,6 +226,25 @@ class SessionEntityTypesAsyncClient:
         r"""Returns the list of all session entity types in the
         specified session.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_list_session_entity_types():
+                # Create a client
+                client = dialogflowcx_v3beta1.SessionEntityTypesClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.ListSessionEntityTypesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_session_entity_types(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.ListSessionEntityTypesRequest, dict]):
                 The request object. The request message for
@@ -310,6 +329,25 @@ class SessionEntityTypesAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> session_entity_type.SessionEntityType:
         r"""Retrieves the specified session entity type.
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_get_session_entity_type():
+                # Create a client
+                client = dialogflowcx_v3beta1.SessionEntityTypesClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.GetSessionEntityTypeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_session_entity_type(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.GetSessionEntityTypeRequest, dict]):
@@ -403,6 +441,32 @@ class SessionEntityTypesAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_session_entity_type.SessionEntityType:
         r"""Creates a session entity type.
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_create_session_entity_type():
+                # Create a client
+                client = dialogflowcx_v3beta1.SessionEntityTypesClient()
+
+                # Initialize request argument(s)
+                session_entity_type = dialogflowcx_v3beta1.SessionEntityType()
+                session_entity_type.name = "name_value"
+                session_entity_type.entity_override_mode = "ENTITY_OVERRIDE_MODE_SUPPLEMENT"
+                session_entity_type.entities.value = "value_value"
+                session_entity_type.entities.synonyms = ['synonyms_value_1', 'synonyms_value_2']
+
+                request = dialogflowcx_v3beta1.CreateSessionEntityTypeRequest(
+                    parent="parent_value",
+                    session_entity_type=session_entity_type,
+                )
+
+                # Make the request
+                response = client.create_session_entity_type(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.CreateSessionEntityTypeRequest, dict]):
@@ -507,6 +571,31 @@ class SessionEntityTypesAsyncClient:
     ) -> gcdc_session_entity_type.SessionEntityType:
         r"""Updates the specified session entity type.
 
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_update_session_entity_type():
+                # Create a client
+                client = dialogflowcx_v3beta1.SessionEntityTypesClient()
+
+                # Initialize request argument(s)
+                session_entity_type = dialogflowcx_v3beta1.SessionEntityType()
+                session_entity_type.name = "name_value"
+                session_entity_type.entity_override_mode = "ENTITY_OVERRIDE_MODE_SUPPLEMENT"
+                session_entity_type.entities.value = "value_value"
+                session_entity_type.entities.synonyms = ['synonyms_value_1', 'synonyms_value_2']
+
+                request = dialogflowcx_v3beta1.UpdateSessionEntityTypeRequest(
+                    session_entity_type=session_entity_type,
+                )
+
+                # Make the request
+                response = client.update_session_entity_type(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.UpdateSessionEntityTypeRequest, dict]):
                 The request object. The request message for
@@ -607,6 +696,22 @@ class SessionEntityTypesAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified session entity type.
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_delete_session_entity_type():
+                # Create a client
+                client = dialogflowcx_v3beta1.SessionEntityTypesClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.DeleteSessionEntityTypeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_session_entity_type(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.DeleteSessionEntityTypeRequest, dict]):

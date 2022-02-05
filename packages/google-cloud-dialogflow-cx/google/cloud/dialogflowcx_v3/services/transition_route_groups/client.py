@@ -494,6 +494,26 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         r"""Returns the list of all transition route groups in
         the specified flow.
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_list_transition_route_groups():
+                # Create a client
+                client = dialogflowcx_v3.TransitionRouteGroupsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.ListTransitionRouteGroupsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_transition_route_groups(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.ListTransitionRouteGroupsRequest, dict]):
                 The request object. The request message for
@@ -582,6 +602,27 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         r"""Retrieves the specified
         [TransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroup].
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_get_transition_route_group():
+                # Create a client
+                client = dialogflowcx_v3.TransitionRouteGroupsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.GetTransitionRouteGroupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_transition_route_group(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.GetTransitionRouteGroupRequest, dict]):
                 The request object. The request message for
@@ -669,6 +710,31 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         Note: You should always train a flow prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_create_transition_route_group():
+                # Create a client
+                client = dialogflowcx_v3.TransitionRouteGroupsClient()
+
+                # Initialize request argument(s)
+                transition_route_group = dialogflowcx_v3.TransitionRouteGroup()
+                transition_route_group.display_name = "display_name_value"
+
+                request = dialogflowcx_v3.CreateTransitionRouteGroupRequest(
+                    parent="parent_value",
+                    transition_route_group=transition_route_group,
+                )
+
+                # Make the request
+                response = client.create_transition_route_group(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.CreateTransitionRouteGroupRequest, dict]):
@@ -768,6 +834,30 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_update_transition_route_group():
+                # Create a client
+                client = dialogflowcx_v3.TransitionRouteGroupsClient()
+
+                # Initialize request argument(s)
+                transition_route_group = dialogflowcx_v3.TransitionRouteGroup()
+                transition_route_group.display_name = "display_name_value"
+
+                request = dialogflowcx_v3.UpdateTransitionRouteGroupRequest(
+                    transition_route_group=transition_route_group,
+                )
+
+                # Make the request
+                response = client.update_transition_route_group(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.UpdateTransitionRouteGroupRequest, dict]):
                 The request object. The request message for
@@ -864,6 +954,24 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         Note: You should always train a flow prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_delete_transition_route_group():
+                # Create a client
+                client = dialogflowcx_v3.TransitionRouteGroupsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.DeleteTransitionRouteGroupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_transition_route_group(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.DeleteTransitionRouteGroupRequest, dict]):

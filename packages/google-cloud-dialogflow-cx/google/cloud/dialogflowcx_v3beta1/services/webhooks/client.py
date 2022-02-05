@@ -430,6 +430,26 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
         r"""Returns the list of all webhooks in the specified
         agent.
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_list_webhooks():
+                # Create a client
+                client = dialogflowcx_v3beta1.WebhooksClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.ListWebhooksRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_webhooks(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.ListWebhooksRequest, dict]):
                 The request object. The request message for
@@ -510,6 +530,26 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
     ) -> webhook.Webhook:
         r"""Retrieves the specified webhook.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_get_webhook():
+                # Create a client
+                client = dialogflowcx_v3beta1.WebhooksClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.GetWebhookRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_webhook(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.GetWebhookRequest, dict]):
                 The request object. The request message for
@@ -586,6 +626,31 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_webhook.Webhook:
         r"""Creates a webhook in the specified agent.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_create_webhook():
+                # Create a client
+                client = dialogflowcx_v3beta1.WebhooksClient()
+
+                # Initialize request argument(s)
+                webhook = dialogflowcx_v3beta1.Webhook()
+                webhook.generic_web_service.uri = "uri_value"
+                webhook.display_name = "display_name_value"
+
+                request = dialogflowcx_v3beta1.CreateWebhookRequest(
+                    parent="parent_value",
+                    webhook=webhook,
+                )
+
+                # Make the request
+                response = client.create_webhook(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.CreateWebhookRequest, dict]):
@@ -670,6 +735,30 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_webhook.Webhook:
         r"""Updates the specified webhook.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_update_webhook():
+                # Create a client
+                client = dialogflowcx_v3beta1.WebhooksClient()
+
+                # Initialize request argument(s)
+                webhook = dialogflowcx_v3beta1.Webhook()
+                webhook.generic_web_service.uri = "uri_value"
+                webhook.display_name = "display_name_value"
+
+                request = dialogflowcx_v3beta1.UpdateWebhookRequest(
+                    webhook=webhook,
+                )
+
+                # Make the request
+                response = client.update_webhook(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.UpdateWebhookRequest, dict]):
@@ -756,6 +845,23 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified webhook.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_delete_webhook():
+                # Create a client
+                client = dialogflowcx_v3beta1.WebhooksClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.DeleteWebhookRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_webhook(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.DeleteWebhookRequest, dict]):

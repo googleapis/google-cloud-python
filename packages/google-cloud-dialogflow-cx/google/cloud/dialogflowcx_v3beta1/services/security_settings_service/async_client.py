@@ -241,6 +241,30 @@ class SecuritySettingsServiceAsyncClient:
     ) -> gcdc_security_settings.SecuritySettings:
         r"""Create security settings in the specified location.
 
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_create_security_settings():
+                # Create a client
+                client = dialogflowcx_v3beta1.SecuritySettingsServiceClient()
+
+                # Initialize request argument(s)
+                security_settings = dialogflowcx_v3beta1.SecuritySettings()
+                security_settings.retention_window_days = 2271
+                security_settings.display_name = "display_name_value"
+
+                request = dialogflowcx_v3beta1.CreateSecuritySettingsRequest(
+                    parent="parent_value",
+                    security_settings=security_settings,
+                )
+
+                # Make the request
+                response = client.create_security_settings(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.CreateSecuritySettingsRequest, dict]):
                 The request object. The request message for
@@ -329,6 +353,26 @@ class SecuritySettingsServiceAsyncClient:
         [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings].
         The returned settings may be stale by up to 1 minute.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_get_security_settings():
+                # Create a client
+                client = dialogflowcx_v3beta1.SecuritySettingsServiceClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.GetSecuritySettingsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_security_settings(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.GetSecuritySettingsRequest, dict]):
                 The request object. The request message for
@@ -407,6 +451,30 @@ class SecuritySettingsServiceAsyncClient:
     ) -> gcdc_security_settings.SecuritySettings:
         r"""Updates the specified
         [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings].
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_update_security_settings():
+                # Create a client
+                client = dialogflowcx_v3beta1.SecuritySettingsServiceClient()
+
+                # Initialize request argument(s)
+                security_settings = dialogflowcx_v3beta1.SecuritySettings()
+                security_settings.retention_window_days = 2271
+                security_settings.display_name = "display_name_value"
+
+                request = dialogflowcx_v3beta1.UpdateSecuritySettingsRequest(
+                    security_settings=security_settings,
+                )
+
+                # Make the request
+                response = client.update_security_settings(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.UpdateSecuritySettingsRequest, dict]):
@@ -496,6 +564,25 @@ class SecuritySettingsServiceAsyncClient:
         r"""Returns the list of all security settings in the
         specified location.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_list_security_settings():
+                # Create a client
+                client = dialogflowcx_v3beta1.SecuritySettingsServiceClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.ListSecuritySettingsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_security_settings(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.ListSecuritySettingsRequest, dict]):
                 The request object. The request message for
@@ -577,6 +664,23 @@ class SecuritySettingsServiceAsyncClient:
     ) -> None:
         r"""Deletes the specified
         [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings].
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_delete_security_settings():
+                # Create a client
+                client = dialogflowcx_v3beta1.SecuritySettingsServiceClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.DeleteSecuritySettingsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_security_settings(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.DeleteSecuritySettingsRequest, dict]):

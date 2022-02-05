@@ -505,6 +505,26 @@ class AgentsClient(metaclass=AgentsClientMeta):
         r"""Returns the list of all agents in the specified
         location.
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_list_agents():
+                # Create a client
+                client = dialogflowcx_v3beta1.AgentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.ListAgentsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_agents(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.ListAgentsRequest, dict]):
                 The request object. The request message for
@@ -584,6 +604,26 @@ class AgentsClient(metaclass=AgentsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> agent.Agent:
         r"""Retrieves the specified agent.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_get_agent():
+                # Create a client
+                client = dialogflowcx_v3beta1.AgentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.GetAgentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_agent(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.GetAgentRequest, dict]):
@@ -672,6 +712,33 @@ class AgentsClient(metaclass=AgentsClientMeta):
         Note: You should always train a flow prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_create_agent():
+                # Create a client
+                client = dialogflowcx_v3beta1.AgentsClient()
+
+                # Initialize request argument(s)
+                agent = dialogflowcx_v3beta1.Agent()
+                agent.display_name = "display_name_value"
+                agent.default_language_code = "default_language_code_value"
+                agent.time_zone = "time_zone_value"
+
+                request = dialogflowcx_v3beta1.CreateAgentRequest(
+                    parent="parent_value",
+                    agent=agent,
+                )
+
+                # Make the request
+                response = client.create_agent(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.CreateAgentRequest, dict]):
@@ -768,6 +835,32 @@ class AgentsClient(metaclass=AgentsClientMeta):
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_update_agent():
+                # Create a client
+                client = dialogflowcx_v3beta1.AgentsClient()
+
+                # Initialize request argument(s)
+                agent = dialogflowcx_v3beta1.Agent()
+                agent.display_name = "display_name_value"
+                agent.default_language_code = "default_language_code_value"
+                agent.time_zone = "time_zone_value"
+
+                request = dialogflowcx_v3beta1.UpdateAgentRequest(
+                    agent=agent,
+                )
+
+                # Make the request
+                response = client.update_agent(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.UpdateAgentRequest, dict]):
                 The request object. The request message for
@@ -861,6 +954,23 @@ class AgentsClient(metaclass=AgentsClientMeta):
     ) -> None:
         r"""Deletes the specified agent.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_delete_agent():
+                # Create a client
+                client = dialogflowcx_v3beta1.AgentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.DeleteAgentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_agent(request=request)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.DeleteAgentRequest, dict]):
                 The request object. The request message for
@@ -933,6 +1043,29 @@ class AgentsClient(metaclass=AgentsClientMeta):
            message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
         -  ``response``:
            [ExportAgentResponse][google.cloud.dialogflow.cx.v3beta1.ExportAgentResponse]
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_export_agent():
+                # Create a client
+                client = dialogflowcx_v3beta1.AgentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.ExportAgentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.export_agent(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.ExportAgentRequest, dict]):
@@ -1014,6 +1147,30 @@ class AgentsClient(metaclass=AgentsClientMeta):
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_restore_agent():
+                # Create a client
+                client = dialogflowcx_v3beta1.AgentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.RestoreAgentRequest(
+                    agent_uri="agent_uri_value",
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.restore_agent(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.RestoreAgentRequest, dict]):
                 The request object. The request message for
@@ -1088,6 +1245,27 @@ class AgentsClient(metaclass=AgentsClientMeta):
         validated. Please call this API after the training is
         completed to get the complete validation results.
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_validate_agent():
+                # Create a client
+                client = dialogflowcx_v3beta1.AgentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.ValidateAgentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.validate_agent(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.ValidateAgentRequest, dict]):
                 The request object. The request message for
@@ -1139,6 +1317,27 @@ class AgentsClient(metaclass=AgentsClientMeta):
     ) -> agent.AgentValidationResult:
         r"""Gets the latest agent validation result. Agent
         validation is performed when ValidateAgent is called.
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_get_agent_validation_result():
+                # Create a client
+                client = dialogflowcx_v3beta1.AgentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.GetAgentValidationResultRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_agent_validation_result(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.GetAgentValidationResultRequest, dict]):

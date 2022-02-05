@@ -415,6 +415,26 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         r"""Returns the list of all entity types in the specified
         agent.
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_list_entity_types():
+                # Create a client
+                client = dialogflowcx_v3beta1.EntityTypesClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.ListEntityTypesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_entity_types(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.ListEntityTypesRequest, dict]):
                 The request object. The request message for
@@ -495,6 +515,26 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> entity_type.EntityType:
         r"""Retrieves the specified entity type.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_get_entity_type():
+                # Create a client
+                client = dialogflowcx_v3beta1.EntityTypesClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.GetEntityTypeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_entity_type(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.GetEntityTypeRequest, dict]):
@@ -599,6 +639,31 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_entity_type.EntityType:
         r"""Creates an entity type in the specified agent.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_create_entity_type():
+                # Create a client
+                client = dialogflowcx_v3beta1.EntityTypesClient()
+
+                # Initialize request argument(s)
+                entity_type = dialogflowcx_v3beta1.EntityType()
+                entity_type.display_name = "display_name_value"
+                entity_type.kind = "KIND_REGEXP"
+
+                request = dialogflowcx_v3beta1.CreateEntityTypeRequest(
+                    parent="parent_value",
+                    entity_type=entity_type,
+                )
+
+                # Make the request
+                response = client.create_entity_type(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.CreateEntityTypeRequest, dict]):
@@ -715,6 +780,31 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_update_entity_type():
+                # Create a client
+                client = dialogflowcx_v3beta1.EntityTypesClient()
+
+                # Initialize request argument(s)
+                entity_type = dialogflowcx_v3beta1.EntityType()
+                entity_type.display_name = "display_name_value"
+                entity_type.kind = "KIND_REGEXP"
+
+                request = dialogflowcx_v3beta1.UpdateEntityTypeRequest(
+                    entity_type=entity_type,
+                )
+
+                # Make the request
+                response = client.update_entity_type(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.UpdateEntityTypeRequest, dict]):
                 The request object. The request message for
@@ -830,6 +920,24 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         Note: You should always train a flow prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_delete_entity_type():
+                # Create a client
+                client = dialogflowcx_v3beta1.EntityTypesClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.DeleteEntityTypeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_entity_type(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.DeleteEntityTypeRequest, dict]):

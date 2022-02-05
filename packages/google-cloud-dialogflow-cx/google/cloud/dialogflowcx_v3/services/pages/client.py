@@ -501,6 +501,25 @@ class PagesClient(metaclass=PagesClientMeta):
     ) -> pagers.ListPagesPager:
         r"""Returns the list of all pages in the specified flow.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_list_pages():
+                # Create a client
+                client = dialogflowcx_v3.PagesClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.ListPagesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_pages(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.ListPagesRequest, dict]):
                 The request object. The request message for
@@ -580,6 +599,26 @@ class PagesClient(metaclass=PagesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> page.Page:
         r"""Retrieves the specified page.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_get_page():
+                # Create a client
+                client = dialogflowcx_v3.PagesClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.GetPageRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_page(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.GetPageRequest, dict]):
@@ -676,6 +715,31 @@ class PagesClient(metaclass=PagesClientMeta):
         Note: You should always train a flow prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_create_page():
+                # Create a client
+                client = dialogflowcx_v3.PagesClient()
+
+                # Initialize request argument(s)
+                page = dialogflowcx_v3.Page()
+                page.display_name = "display_name_value"
+
+                request = dialogflowcx_v3.CreatePageRequest(
+                    parent="parent_value",
+                    page=page,
+                )
+
+                # Make the request
+                response = client.create_page(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.CreatePageRequest, dict]):
@@ -779,6 +843,30 @@ class PagesClient(metaclass=PagesClientMeta):
         Note: You should always train a flow prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_update_page():
+                # Create a client
+                client = dialogflowcx_v3.PagesClient()
+
+                # Initialize request argument(s)
+                page = dialogflowcx_v3.Page()
+                page.display_name = "display_name_value"
+
+                request = dialogflowcx_v3.UpdatePageRequest(
+                    page=page,
+                )
+
+                # Make the request
+                response = client.update_page(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.UpdatePageRequest, dict]):
@@ -884,6 +972,24 @@ class PagesClient(metaclass=PagesClientMeta):
         Note: You should always train a flow prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3
+
+            def sample_delete_page():
+                # Create a client
+                client = dialogflowcx_v3.PagesClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.DeletePageRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_page(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.DeletePageRequest, dict]):

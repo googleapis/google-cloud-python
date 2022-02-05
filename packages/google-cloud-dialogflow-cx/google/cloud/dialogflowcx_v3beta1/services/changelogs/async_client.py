@@ -210,6 +210,24 @@ class ChangelogsAsyncClient:
     ) -> pagers.ListChangelogsAsyncPager:
         r"""Returns the list of Changelogs.
 
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_list_changelogs():
+                # Create a client
+                client = dialogflowcx_v3beta1.ChangelogsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.ListChangelogsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_changelogs(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.ListChangelogsRequest, dict]):
                 The request object. The request message for
@@ -289,6 +307,25 @@ class ChangelogsAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> changelog.Changelog:
         r"""Retrieves the specified Changelog.
+
+        .. code-block::
+
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_get_changelog():
+                # Create a client
+                client = dialogflowcx_v3beta1.ChangelogsClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.GetChangelogRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_changelog(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.GetChangelogRequest, dict]):
