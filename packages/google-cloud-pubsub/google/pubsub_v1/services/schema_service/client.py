@@ -410,6 +410,30 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
     ) -> gp_schema.Schema:
         r"""Creates a schema.
 
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_create_schema():
+                # Create a client
+                client = pubsub_v1.SchemaServiceClient()
+
+                # Initialize request argument(s)
+                schema = pubsub_v1.Schema()
+                schema.name = "name_value"
+
+                request = pubsub_v1.CreateSchemaRequest(
+                    parent="parent_value",
+                    schema=schema,
+                )
+
+                # Make the request
+                response = client.create_schema(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.pubsub_v1.types.CreateSchemaRequest, dict]):
                 The request object. Request for the CreateSchema method.
@@ -503,6 +527,26 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
     ) -> schema.Schema:
         r"""Gets a schema.
 
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_get_schema():
+                # Create a client
+                client = pubsub_v1.SchemaServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.GetSchemaRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_schema(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.pubsub_v1.types.GetSchemaRequest, dict]):
                 The request object. Request for the GetSchema method.
@@ -570,6 +614,25 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSchemasPager:
         r"""Lists schemas in a project.
+
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_list_schemas():
+                # Create a client
+                client = pubsub_v1.SchemaServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.ListSchemasRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_schemas(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.pubsub_v1.types.ListSchemasRequest, dict]):
@@ -650,6 +713,23 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
     ) -> None:
         r"""Deletes a schema.
 
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_delete_schema():
+                # Create a client
+                client = pubsub_v1.SchemaServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.DeleteSchemaRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_schema(request=request)
+
         Args:
             request (Union[google.pubsub_v1.types.DeleteSchemaRequest, dict]):
                 The request object. Request for the `DeleteSchema`
@@ -714,6 +794,30 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gp_schema.ValidateSchemaResponse:
         r"""Validates a schema.
+
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_validate_schema():
+                # Create a client
+                client = pubsub_v1.SchemaServiceClient()
+
+                # Initialize request argument(s)
+                schema = pubsub_v1.Schema()
+                schema.name = "name_value"
+
+                request = pubsub_v1.ValidateSchemaRequest(
+                    parent="parent_value",
+                    schema=schema,
+                )
+
+                # Make the request
+                response = client.validate_schema(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.pubsub_v1.types.ValidateSchemaRequest, dict]):
@@ -793,6 +897,27 @@ class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> schema.ValidateMessageResponse:
         r"""Validates a message against a schema.
+
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_validate_message():
+                # Create a client
+                client = pubsub_v1.SchemaServiceClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.ValidateMessageRequest(
+                    name="name_value",
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.validate_message(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.pubsub_v1.types.ValidateMessageRequest, dict]):

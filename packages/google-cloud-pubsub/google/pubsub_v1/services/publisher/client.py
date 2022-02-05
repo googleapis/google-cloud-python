@@ -469,6 +469,27 @@ class PublisherClient(metaclass=PublisherClientMeta):
         (https://cloud.google.com/pubsub/docs/admin#resource_names).
 
 
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_create_topic():
+                # Create a client
+                client = pubsub_v1.PublisherClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.Topic(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.create_topic(request=request)
+
+                # Handle response
+                print(response)
+
+
         Args:
             request (Union[google.pubsub_v1.types.Topic, dict]):
                 The request object. A topic resource.
@@ -545,6 +566,30 @@ class PublisherClient(metaclass=PublisherClientMeta):
         properties of a topic are not modifiable.
 
 
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_update_topic():
+                # Create a client
+                client = pubsub_v1.PublisherClient()
+
+                # Initialize request argument(s)
+                topic = pubsub_v1.Topic()
+                topic.name = "name_value"
+
+                request = pubsub_v1.UpdateTopicRequest(
+                    topic=topic,
+                )
+
+                # Make the request
+                response = client.update_topic(request=request)
+
+                # Handle response
+                print(response)
+
+
         Args:
             request (Union[google.pubsub_v1.types.UpdateTopicRequest, dict]):
                 The request object. Request for the UpdateTopic method.
@@ -597,6 +642,27 @@ class PublisherClient(metaclass=PublisherClientMeta):
     ) -> pubsub.PublishResponse:
         r"""Adds one or more messages to the topic. Returns ``NOT_FOUND`` if
         the topic does not exist.
+
+
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_publish():
+                # Create a client
+                client = pubsub_v1.PublisherClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.PublishRequest(
+                    topic="topic_value",
+                )
+
+                # Make the request
+                response = client.publish(request=request)
+
+                # Handle response
+                print(response)
 
 
         Args:
@@ -677,6 +743,26 @@ class PublisherClient(metaclass=PublisherClientMeta):
         r"""Gets the configuration of a topic.
 
 
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_get_topic():
+                # Create a client
+                client = pubsub_v1.PublisherClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.GetTopicRequest(
+                    topic="topic_value",
+                )
+
+                # Make the request
+                response = client.get_topic(request=request)
+
+                # Handle response
+                print(response)
+
+
         Args:
             request (Union[google.pubsub_v1.types.GetTopicRequest, dict]):
                 The request object. Request for the GetTopic method.
@@ -745,6 +831,25 @@ class PublisherClient(metaclass=PublisherClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTopicsPager:
         r"""Lists matching topics.
+
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_list_topics():
+                # Create a client
+                client = pubsub_v1.PublisherClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.ListTopicsRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.list_topics(request=request)
+                for response in page_result:
+                    print(response)
 
 
         Args:
@@ -826,6 +931,26 @@ class PublisherClient(metaclass=PublisherClientMeta):
     ) -> pagers.ListTopicSubscriptionsPager:
         r"""Lists the names of the attached subscriptions on this
         topic.
+
+
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_list_topic_subscriptions():
+                # Create a client
+                client = pubsub_v1.PublisherClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.ListTopicSubscriptionsRequest(
+                    topic="topic_value",
+                )
+
+                # Make the request
+                page_result = client.list_topic_subscriptions(request=request)
+                for response in page_result:
+                    print(response)
 
 
         Args:
@@ -915,6 +1040,26 @@ class PublisherClient(metaclass=PublisherClientMeta):
         in an existing subscription to the state captured by a snapshot.
 
 
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_list_topic_snapshots():
+                # Create a client
+                client = pubsub_v1.PublisherClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.ListTopicSnapshotsRequest(
+                    topic="topic_value",
+                )
+
+                # Make the request
+                page_result = client.list_topic_snapshots(request=request)
+                for response in page_result:
+                    print(response)
+
+
         Args:
             request (Union[google.pubsub_v1.types.ListTopicSnapshotsRequest, dict]):
                 The request object. Request for the `ListTopicSnapshots`
@@ -1002,6 +1147,24 @@ class PublisherClient(metaclass=PublisherClientMeta):
         field is set to ``_deleted-topic_``.
 
 
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_delete_topic():
+                # Create a client
+                client = pubsub_v1.PublisherClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.DeleteTopicRequest(
+                    topic="topic_value",
+                )
+
+                # Make the request
+                response = client.delete_topic(request=request)
+
+
         Args:
             request (Union[google.pubsub_v1.types.DeleteTopicRequest, dict]):
                 The request object. Request for the `DeleteTopic`
@@ -1069,6 +1232,27 @@ class PublisherClient(metaclass=PublisherClientMeta):
         ``StreamingPull`` requests will return FAILED_PRECONDITION. If
         the subscription is a push subscription, pushes to the endpoint
         will stop.
+
+
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_detach_subscription():
+                # Create a client
+                client = pubsub_v1.PublisherClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.DetachSubscriptionRequest(
+                    subscription="subscription_value",
+                )
+
+                # Make the request
+                response = client.detach_subscription(request=request)
+
+                # Handle response
+                print(response)
 
 
         Args:

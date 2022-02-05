@@ -332,6 +332,14 @@ for library in s.get_staging_dirs(default_version):
     if count < 1:
         raise Exception(".coveragerc replacement failed.")
 
+    # fix the package name in samples/generated_samples to reflect
+    # the package on pypi. https://pypi.org/project/google-cloud-pubsub/
+    s.replace(
+        library / "samples/generated_samples/**/*.py",
+        "pip install google-pubsub",
+        "pip install google-cloud-pubsub",
+    )
+
     s.move(
         library,
         excludes=[

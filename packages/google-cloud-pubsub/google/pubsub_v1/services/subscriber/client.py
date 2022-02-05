@@ -484,6 +484,28 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         request.
 
 
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_create_subscription():
+                # Create a client
+                client = pubsub_v1.SubscriberClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.Subscription(
+                    name="name_value",
+                    topic="topic_value",
+                )
+
+                # Make the request
+                response = client.create_subscription(request=request)
+
+                # Handle response
+                print(response)
+
+
         Args:
             request (Union[google.pubsub_v1.types.Subscription, dict]):
                 The request object. A subscription resource.
@@ -614,6 +636,26 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         r"""Gets the configuration details of a subscription.
 
 
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_get_subscription():
+                # Create a client
+                client = pubsub_v1.SubscriberClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.GetSubscriptionRequest(
+                    subscription="subscription_value",
+                )
+
+                # Make the request
+                response = client.get_subscription(request=request)
+
+                # Handle response
+                print(response)
+
+
         Args:
             request (Union[google.pubsub_v1.types.GetSubscriptionRequest, dict]):
                 The request object. Request for the GetSubscription
@@ -687,6 +729,31 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         modifiable.
 
 
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_update_subscription():
+                # Create a client
+                client = pubsub_v1.SubscriberClient()
+
+                # Initialize request argument(s)
+                subscription = pubsub_v1.Subscription()
+                subscription.name = "name_value"
+                subscription.topic = "topic_value"
+
+                request = pubsub_v1.UpdateSubscriptionRequest(
+                    subscription=subscription,
+                )
+
+                # Make the request
+                response = client.update_subscription(request=request)
+
+                # Handle response
+                print(response)
+
+
         Args:
             request (Union[google.pubsub_v1.types.UpdateSubscriptionRequest, dict]):
                 The request object. Request for the UpdateSubscription
@@ -737,6 +804,25 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSubscriptionsPager:
         r"""Lists matching subscriptions.
+
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_list_subscriptions():
+                # Create a client
+                client = pubsub_v1.SubscriberClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.ListSubscriptionsRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.list_subscriptions(request=request)
+                for response in page_result:
+                    print(response)
 
 
         Args:
@@ -824,6 +910,24 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         topic unless the same topic is specified.
 
 
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_delete_subscription():
+                # Create a client
+                client = pubsub_v1.SubscriberClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.DeleteSubscriptionRequest(
+                    subscription="subscription_value",
+                )
+
+                # Make the request
+                response = client.delete_subscription(request=request)
+
+
         Args:
             request (Union[google.pubsub_v1.types.DeleteSubscriptionRequest, dict]):
                 The request object. Request for the DeleteSubscription
@@ -896,6 +1000,26 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         redelivery if the processing was interrupted. Note that this
         does not modify the subscription-level ``ackDeadlineSeconds``
         used for subsequent messages.
+
+
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_modify_ack_deadline():
+                # Create a client
+                client = pubsub_v1.SubscriberClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.ModifyAckDeadlineRequest(
+                    subscription="subscription_value",
+                    ack_ids=['ack_ids_value_1', 'ack_ids_value_2'],
+                    ack_deadline_seconds=2066,
+                )
+
+                # Make the request
+                response = client.modify_ack_deadline(request=request)
 
 
         Args:
@@ -998,6 +1122,25 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         error.
 
 
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_acknowledge():
+                # Create a client
+                client = pubsub_v1.SubscriberClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.AcknowledgeRequest(
+                    subscription="subscription_value",
+                    ack_ids=['ack_ids_value_1', 'ack_ids_value_2'],
+                )
+
+                # Make the request
+                response = client.acknowledge(request=request)
+
+
         Args:
             request (Union[google.pubsub_v1.types.AcknowledgeRequest, dict]):
                 The request object. Request for the Acknowledge method.
@@ -1077,6 +1220,28 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         r"""Pulls messages from the server. The server may return
         ``UNAVAILABLE`` if there are too many concurrent pull requests
         pending for the given subscription.
+
+
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_pull():
+                # Create a client
+                client = pubsub_v1.SubscriberClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.PullRequest(
+                    subscription="subscription_value",
+                    max_messages=1277,
+                )
+
+                # Make the request
+                response = client.pull(request=request)
+
+                # Handle response
+                print(response)
 
 
         Args:
@@ -1191,6 +1356,36 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         configuring the underlying RPC channel.
 
 
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_streaming_pull():
+                # Create a client
+                client = pubsub_v1.SubscriberClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.StreamingPullRequest(
+                    subscription="subscription_value",
+                    stream_ack_deadline_seconds=2813,
+                )
+
+                # This method expects an iterator which contains
+                # 'pubsub_v1.StreamingPullRequest' objects
+                # Here we create a generator that yields a single `request` for
+                # demonstrative purposes.
+                requests = [request]
+                def request_generator():
+                    for request in requests:
+                        yield request
+
+                # Make the request
+                stream = client.streaming_pull(requests=request_generator())
+                for response in stream:
+                    print(response)
+
+
         Args:
             requests (Iterator[google.pubsub_v1.types.StreamingPullRequest]):
                 The request object iterator. Request for the `StreamingPull`
@@ -1243,6 +1438,24 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         the endpoint URL and other attributes of a push subscription.
         Messages will accumulate for delivery continuously through the
         call regardless of changes to the ``PushConfig``.
+
+
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_modify_push_config():
+                # Create a client
+                client = pubsub_v1.SubscriberClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.ModifyPushConfigRequest(
+                    subscription="subscription_value",
+                )
+
+                # Make the request
+                response = client.modify_push_config(request=request)
 
 
         Args:
@@ -1332,6 +1545,27 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         subscription to the state captured by a snapshot.
 
 
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_get_snapshot():
+                # Create a client
+                client = pubsub_v1.SubscriberClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.GetSnapshotRequest(
+                    snapshot="snapshot_value",
+                )
+
+                # Make the request
+                response = client.get_snapshot(request=request)
+
+                # Handle response
+                print(response)
+
+
         Args:
             request (Union[google.pubsub_v1.types.GetSnapshotRequest, dict]):
                 The request object. Request for the GetSnapshot method.
@@ -1409,6 +1643,26 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         operations, which allow you to manage message acknowledgments in
         bulk. That is, you can set the acknowledgment state of messages
         in an existing subscription to the state captured by a snapshot.
+
+
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_list_snapshots():
+                # Create a client
+                client = pubsub_v1.SubscriberClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.ListSnapshotsRequest(
+                    project="project_value",
+                )
+
+                # Make the request
+                page_result = client.list_snapshots(request=request)
+                for response in page_result:
+                    print(response)
 
 
         Args:
@@ -1508,6 +1762,28 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         generated name is populated in the returned Snapshot object.
         Note that for REST API requests, you must specify a name in the
         request.
+
+
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_create_snapshot():
+                # Create a client
+                client = pubsub_v1.SubscriberClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.CreateSnapshotRequest(
+                    name="name_value",
+                    subscription="subscription_value",
+                )
+
+                # Make the request
+                response = client.create_snapshot(request=request)
+
+                # Handle response
+                print(response)
 
 
         Args:
@@ -1614,6 +1890,26 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         snapshot.
 
 
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_update_snapshot():
+                # Create a client
+                client = pubsub_v1.SubscriberClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.UpdateSnapshotRequest(
+                )
+
+                # Make the request
+                response = client.update_snapshot(request=request)
+
+                # Handle response
+                print(response)
+
+
         Args:
             request (Union[google.pubsub_v1.types.UpdateSnapshotRequest, dict]):
                 The request object. Request for the UpdateSnapshot
@@ -1679,6 +1975,24 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         new one may be created with the same name, but the new one has
         no association with the old snapshot or its subscription, unless
         the same subscription is specified.
+
+
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_delete_snapshot():
+                # Create a client
+                client = pubsub_v1.SubscriberClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.DeleteSnapshotRequest(
+                    snapshot="snapshot_value",
+                )
+
+                # Make the request
+                response = client.delete_snapshot(request=request)
 
 
         Args:
@@ -1751,6 +2065,27 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         in an existing subscription to the state captured by a snapshot.
         Note that both the subscription and the snapshot must be on the
         same topic.
+
+
+
+        .. code-block::
+
+            from google import pubsub_v1
+
+            def sample_seek():
+                # Create a client
+                client = pubsub_v1.SubscriberClient()
+
+                # Initialize request argument(s)
+                request = pubsub_v1.SeekRequest(
+                    subscription="subscription_value",
+                )
+
+                # Make the request
+                response = client.seek(request=request)
+
+                # Handle response
+                print(response)
 
 
         Args:
