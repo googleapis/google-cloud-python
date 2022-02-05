@@ -225,6 +225,33 @@ class AssuredWorkloadsServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates Assured Workload.
 
+        .. code-block::
+
+            from google.cloud import assuredworkloads_v1
+
+            def sample_create_workload():
+                # Create a client
+                client = assuredworkloads_v1.AssuredWorkloadsServiceClient()
+
+                # Initialize request argument(s)
+                workload = assuredworkloads_v1.Workload()
+                workload.display_name = "display_name_value"
+                workload.compliance_regime = "CA_REGIONS_AND_SUPPORT"
+                workload.billing_account = "billing_account_value"
+
+                request = assuredworkloads_v1.CreateWorkloadRequest(
+                    parent="parent_value",
+                    workload=workload,
+                )
+
+                # Make the request
+                operation = client.create_workload(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.assuredworkloads_v1.types.CreateWorkloadRequest, dict]):
                 The request object. Request for creating a workload.
@@ -317,6 +344,31 @@ class AssuredWorkloadsServiceAsyncClient:
         etag field in the Workload. Only one update operation per
         workload can be in progress.
 
+
+        .. code-block::
+
+            from google.cloud import assuredworkloads_v1
+
+            def sample_update_workload():
+                # Create a client
+                client = assuredworkloads_v1.AssuredWorkloadsServiceClient()
+
+                # Initialize request argument(s)
+                workload = assuredworkloads_v1.Workload()
+                workload.display_name = "display_name_value"
+                workload.compliance_regime = "CA_REGIONS_AND_SUPPORT"
+                workload.billing_account = "billing_account_value"
+
+                request = assuredworkloads_v1.UpdateWorkloadRequest(
+                    workload=workload,
+                )
+
+                # Make the request
+                response = client.update_workload(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.assuredworkloads_v1.types.UpdateWorkloadRequest, dict]):
                 The request object. Request for Updating a workload.
@@ -403,6 +455,23 @@ class AssuredWorkloadsServiceAsyncClient:
         are already in a deleted state, otherwise the request will fail
         with a FAILED_PRECONDITION error.
 
+
+        .. code-block::
+
+            from google.cloud import assuredworkloads_v1
+
+            def sample_delete_workload():
+                # Create a client
+                client = assuredworkloads_v1.AssuredWorkloadsServiceClient()
+
+                # Initialize request argument(s)
+                request = assuredworkloads_v1.DeleteWorkloadRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_workload(request=request)
+
         Args:
             request (Union[google.cloud.assuredworkloads_v1.types.DeleteWorkloadRequest, dict]):
                 The request object. Request for deleting a Workload.
@@ -466,6 +535,25 @@ class AssuredWorkloadsServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> assuredworkloads.Workload:
         r"""Gets Assured Workload associated with a CRM Node
+
+        .. code-block::
+
+            from google.cloud import assuredworkloads_v1
+
+            def sample_get_workload():
+                # Create a client
+                client = assuredworkloads_v1.AssuredWorkloadsServiceClient()
+
+                # Initialize request argument(s)
+                request = assuredworkloads_v1.GetWorkloadRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_workload(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.assuredworkloads_v1.types.GetWorkloadRequest, dict]):
@@ -541,6 +629,24 @@ class AssuredWorkloadsServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListWorkloadsAsyncPager:
         r"""Lists Assured Workloads under a CRM Node.
+
+        .. code-block::
+
+            from google.cloud import assuredworkloads_v1
+
+            def sample_list_workloads():
+                # Create a client
+                client = assuredworkloads_v1.AssuredWorkloadsServiceClient()
+
+                # Initialize request argument(s)
+                request = assuredworkloads_v1.ListWorkloadsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_workloads(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.assuredworkloads_v1.types.ListWorkloadsRequest, dict]):

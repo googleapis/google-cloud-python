@@ -1,0 +1,437 @@
+{
+  "snippets": [
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AssuredWorkloadsService"
+          },
+          "shortName": "CreateWorkload"
+        }
+      },
+      "file": "assuredworkloads_generated_assuredworkloads_v1beta1_assured_workloads_service_create_workload_async.py",
+      "regionTag": "assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_CreateWorkload_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AssuredWorkloadsService"
+          },
+          "shortName": "CreateWorkload"
+        }
+      },
+      "file": "assuredworkloads_generated_assuredworkloads_v1beta1_assured_workloads_service_create_workload_sync.py",
+      "regionTag": "assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_CreateWorkload_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AssuredWorkloadsService"
+          },
+          "shortName": "DeleteWorkload"
+        }
+      },
+      "file": "assuredworkloads_generated_assuredworkloads_v1beta1_assured_workloads_service_delete_workload_async.py",
+      "regionTag": "assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_DeleteWorkload_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AssuredWorkloadsService"
+          },
+          "shortName": "DeleteWorkload"
+        }
+      },
+      "file": "assuredworkloads_generated_assuredworkloads_v1beta1_assured_workloads_service_delete_workload_sync.py",
+      "regionTag": "assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_DeleteWorkload_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AssuredWorkloadsService"
+          },
+          "shortName": "GetWorkload"
+        }
+      },
+      "file": "assuredworkloads_generated_assuredworkloads_v1beta1_assured_workloads_service_get_workload_async.py",
+      "regionTag": "assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_GetWorkload_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AssuredWorkloadsService"
+          },
+          "shortName": "GetWorkload"
+        }
+      },
+      "file": "assuredworkloads_generated_assuredworkloads_v1beta1_assured_workloads_service_get_workload_sync.py",
+      "regionTag": "assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_GetWorkload_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AssuredWorkloadsService"
+          },
+          "shortName": "ListWorkloads"
+        }
+      },
+      "file": "assuredworkloads_generated_assuredworkloads_v1beta1_assured_workloads_service_list_workloads_async.py",
+      "regionTag": "assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_ListWorkloads_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AssuredWorkloadsService"
+          },
+          "shortName": "ListWorkloads"
+        }
+      },
+      "file": "assuredworkloads_generated_assuredworkloads_v1beta1_assured_workloads_service_list_workloads_sync.py",
+      "regionTag": "assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_ListWorkloads_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AssuredWorkloadsService"
+          },
+          "shortName": "UpdateWorkload"
+        }
+      },
+      "file": "assuredworkloads_generated_assuredworkloads_v1beta1_assured_workloads_service_update_workload_async.py",
+      "regionTag": "assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_UpdateWorkload_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AssuredWorkloadsService"
+          },
+          "shortName": "UpdateWorkload"
+        }
+      },
+      "file": "assuredworkloads_generated_assuredworkloads_v1beta1_assured_workloads_service_update_workload_sync.py",
+      "regionTag": "assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_UpdateWorkload_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    }
+  ]
+}

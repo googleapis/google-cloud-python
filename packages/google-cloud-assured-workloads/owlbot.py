@@ -23,6 +23,14 @@ from synthtool.languages import python
 default_version = "v1"
 
 for library in s.get_staging_dirs(default_version):
+    # fix the package name in samples/generated_samples to reflect
+    # the package on pypi. https://pypi.org/project/google-cloud-assured-workloads/
+    s.replace(
+        library / "samples/generated_samples/**/*.py",
+        "pip install google-cloud-assuredworkloads",
+        "pip install google-cloud-assured-workloads",
+    )
+
     s.move(library, excludes=["setup.py", "README.rst"])
 s.remove_staging_dirs()
 
