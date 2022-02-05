@@ -638,6 +638,7 @@ def test_create_subscription(request_type, transport: str = "grpc"):
             enable_message_ordering=True,
             filter="filter_value",
             detached=True,
+            enable_exactly_once_delivery=True,
         )
         response = client.create_subscription(request)
 
@@ -655,6 +656,7 @@ def test_create_subscription(request_type, transport: str = "grpc"):
     assert response.enable_message_ordering is True
     assert response.filter == "filter_value"
     assert response.detached is True
+    assert response.enable_exactly_once_delivery is True
 
 
 def test_create_subscription_empty_call():
@@ -700,6 +702,7 @@ async def test_create_subscription_async(
                 enable_message_ordering=True,
                 filter="filter_value",
                 detached=True,
+                enable_exactly_once_delivery=True,
             )
         )
         response = await client.create_subscription(request)
@@ -718,6 +721,7 @@ async def test_create_subscription_async(
     assert response.enable_message_ordering is True
     assert response.filter == "filter_value"
     assert response.detached is True
+    assert response.enable_exactly_once_delivery is True
 
 
 @pytest.mark.asyncio
@@ -905,6 +909,7 @@ def test_get_subscription(request_type, transport: str = "grpc"):
             enable_message_ordering=True,
             filter="filter_value",
             detached=True,
+            enable_exactly_once_delivery=True,
         )
         response = client.get_subscription(request)
 
@@ -922,6 +927,7 @@ def test_get_subscription(request_type, transport: str = "grpc"):
     assert response.enable_message_ordering is True
     assert response.filter == "filter_value"
     assert response.detached is True
+    assert response.enable_exactly_once_delivery is True
 
 
 def test_get_subscription_empty_call():
@@ -963,6 +969,7 @@ async def test_get_subscription_async(
                 enable_message_ordering=True,
                 filter="filter_value",
                 detached=True,
+                enable_exactly_once_delivery=True,
             )
         )
         response = await client.get_subscription(request)
@@ -981,6 +988,7 @@ async def test_get_subscription_async(
     assert response.enable_message_ordering is True
     assert response.filter == "filter_value"
     assert response.detached is True
+    assert response.enable_exactly_once_delivery is True
 
 
 @pytest.mark.asyncio
@@ -1130,6 +1138,7 @@ def test_update_subscription(request_type, transport: str = "grpc"):
             enable_message_ordering=True,
             filter="filter_value",
             detached=True,
+            enable_exactly_once_delivery=True,
         )
         response = client.update_subscription(request)
 
@@ -1147,6 +1156,7 @@ def test_update_subscription(request_type, transport: str = "grpc"):
     assert response.enable_message_ordering is True
     assert response.filter == "filter_value"
     assert response.detached is True
+    assert response.enable_exactly_once_delivery is True
 
 
 def test_update_subscription_empty_call():
@@ -1192,6 +1202,7 @@ async def test_update_subscription_async(
                 enable_message_ordering=True,
                 filter="filter_value",
                 detached=True,
+                enable_exactly_once_delivery=True,
             )
         )
         response = await client.update_subscription(request)
@@ -1210,6 +1221,7 @@ async def test_update_subscription_async(
     assert response.enable_message_ordering is True
     assert response.filter == "filter_value"
     assert response.detached is True
+    assert response.enable_exactly_once_delivery is True
 
 
 @pytest.mark.asyncio

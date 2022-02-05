@@ -42,7 +42,7 @@ class pubsubCallTransformer(cst.CSTTransformer):
         'acknowledge': ('subscription', 'ack_ids', ),
         'create_schema': ('parent', 'schema', 'schema_id', ),
         'create_snapshot': ('name', 'subscription', 'labels', ),
-        'create_subscription': ('name', 'topic', 'push_config', 'ack_deadline_seconds', 'retain_acked_messages', 'message_retention_duration', 'labels', 'enable_message_ordering', 'expiration_policy', 'filter', 'dead_letter_policy', 'retry_policy', 'detached', 'topic_message_retention_duration', ),
+        'create_subscription': ('name', 'topic', 'push_config', 'ack_deadline_seconds', 'retain_acked_messages', 'message_retention_duration', 'labels', 'enable_message_ordering', 'expiration_policy', 'filter', 'dead_letter_policy', 'retry_policy', 'detached', 'enable_exactly_once_delivery', 'topic_message_retention_duration', ),
         'create_topic': ('name', 'labels', 'message_storage_policy', 'kms_key_name', 'schema_settings', 'satisfies_pzs', 'message_retention_duration', ),
         'delete_schema': ('name', ),
         'delete_snapshot': ('snapshot', ),
