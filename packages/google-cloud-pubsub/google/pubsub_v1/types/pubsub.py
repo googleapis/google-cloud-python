@@ -1123,23 +1123,75 @@ class StreamingPullResponse(proto.Message):
         received_messages (Sequence[google.pubsub_v1.types.ReceivedMessage]):
             Received Pub/Sub messages. This will not be
             empty.
+        acknowlege_confirmation (google.pubsub_v1.types.StreamingPullResponse.AcknowledgeConfirmation):
+            This field will only be set if
+            ``enable_exactly_once_delivery`` is set to ``true``.
+        modify_ack_deadline_confirmation (google.pubsub_v1.types.StreamingPullResponse.ModifyAckDeadlineConfirmation):
+            This field will only be set if
+            ``enable_exactly_once_delivery`` is set to ``true``.
         subscription_properties (google.pubsub_v1.types.StreamingPullResponse.SubscriptionProperties):
             Properties associated with this subscription.
     """
+
+    class AcknowledgeConfirmation(proto.Message):
+        r"""Acknowledgement IDs sent in one or more previous requests to
+        acknowledge a previously received message.
+
+        Attributes:
+            ack_ids (Sequence[str]):
+                Successfully processed acknowledgement IDs.
+            invalid_ack_ids (Sequence[str]):
+                List of acknowledgement IDs that were
+                malformed or whose acknowledgement deadline has
+                expired.
+            unordered_ack_ids (Sequence[str]):
+                List of acknowledgement IDs that were out of
+                order.
+        """
+
+        ack_ids = proto.RepeatedField(proto.STRING, number=1,)
+        invalid_ack_ids = proto.RepeatedField(proto.STRING, number=2,)
+        unordered_ack_ids = proto.RepeatedField(proto.STRING, number=3,)
+
+    class ModifyAckDeadlineConfirmation(proto.Message):
+        r"""Acknowledgement IDs sent in one or more previous requests to
+        modify the deadline for a specific message.
+
+        Attributes:
+            ack_ids (Sequence[str]):
+                Successfully processed acknowledgement IDs.
+            invalid_ack_ids (Sequence[str]):
+                List of acknowledgement IDs that were
+                malformed or whose acknowledgement deadline has
+                expired.
+        """
+
+        ack_ids = proto.RepeatedField(proto.STRING, number=1,)
+        invalid_ack_ids = proto.RepeatedField(proto.STRING, number=2,)
 
     class SubscriptionProperties(proto.Message):
         r"""Subscription properties sent as part of the response.
 
         Attributes:
+            exactly_once_delivery_enabled (bool):
+                True iff exactly once delivery is enabled for
+                this subscription.
             message_ordering_enabled (bool):
                 True iff message ordering is enabled for this
                 subscription.
         """
 
+        exactly_once_delivery_enabled = proto.Field(proto.BOOL, number=1,)
         message_ordering_enabled = proto.Field(proto.BOOL, number=2,)
 
     received_messages = proto.RepeatedField(
         proto.MESSAGE, number=1, message="ReceivedMessage",
+    )
+    acknowlege_confirmation = proto.Field(
+        proto.MESSAGE, number=2, message=AcknowledgeConfirmation,
+    )
+    modify_ack_deadline_confirmation = proto.Field(
+        proto.MESSAGE, number=3, message=ModifyAckDeadlineConfirmation,
     )
     subscription_properties = proto.Field(
         proto.MESSAGE, number=4, message=SubscriptionProperties,
