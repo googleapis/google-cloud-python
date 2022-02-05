@@ -83,9 +83,9 @@ class Model(proto.Message):
             model can only serve prediction requests after
             it gets deployed.
         etag (str):
-            Used to perform a consistent read-modify-
-            rite updates. If not set, a blind "overwrite"
-            update happens.
+            Used to perform a consistent
+            read-modify-write updates. If not set, a blind
+            "overwrite" update happens.
         labels (Sequence[google.cloud.automl_v1.types.Model.LabelsEntry]):
             Optional. The labels with user-defined
             metadata to organize your model.

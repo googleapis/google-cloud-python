@@ -116,8 +116,8 @@ class ClassificationEvaluationMetrics(proto.Message):
             the overall evaluation. Deprecated.
         au_roc (float):
             Output only. The Area Under Receiver
-            Operating Characteristic curve metric. Micro-
-            averaged for the overall evaluation.
+            Operating Characteristic curve metric.
+            Micro-averaged for the overall evaluation.
         log_loss (float):
             Output only. The Log Loss metric.
         confidence_metrics_entry (Sequence[google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfidenceMetricsEntry]):
