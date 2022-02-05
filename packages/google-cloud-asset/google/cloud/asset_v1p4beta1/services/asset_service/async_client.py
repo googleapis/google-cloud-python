@@ -211,6 +211,29 @@ class AssetServiceAsyncClient:
         [IamPolicyAnalysisResult][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult]
         matching the request.
 
+
+        .. code-block::
+
+            from google.cloud import asset_v1p4beta1
+
+            def sample_analyze_iam_policy():
+                # Create a client
+                client = asset_v1p4beta1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                analysis_query = asset_v1p4beta1.IamPolicyAnalysisQuery()
+                analysis_query.parent = "parent_value"
+
+                request = asset_v1p4beta1.AnalyzeIamPolicyRequest(
+                    analysis_query=analysis_query,
+                )
+
+                # Make the request
+                response = client.analyze_iam_policy(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.asset_v1p4beta1.types.AnalyzeIamPolicyRequest, dict]):
                 The request object. A request message for
@@ -274,6 +297,35 @@ class AssetServiceAsyncClient:
         [google.longrunning.Operation][google.longrunning.Operation] API
         allowing you to keep track of the export. The metadata contains
         the request to help callers to map responses to requests.
+
+
+        .. code-block::
+
+            from google.cloud import asset_v1p4beta1
+
+            def sample_export_iam_policy_analysis():
+                # Create a client
+                client = asset_v1p4beta1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                analysis_query = asset_v1p4beta1.IamPolicyAnalysisQuery()
+                analysis_query.parent = "parent_value"
+
+                output_config = asset_v1p4beta1.IamPolicyAnalysisOutputConfig()
+                output_config.gcs_destination.uri = "uri_value"
+
+                request = asset_v1p4beta1.ExportIamPolicyAnalysisRequest(
+                    analysis_query=analysis_query,
+                    output_config=output_config,
+                )
+
+                # Make the request
+                operation = client.export_iam_policy_analysis(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.asset_v1p4beta1.types.ExportIamPolicyAnalysisRequest, dict]):

@@ -401,6 +401,26 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         cloud.assets.SearchAllResources permission on the
         requested scope, otherwise it will be rejected.
 
+
+
+        .. code-block::
+
+            from google.cloud import asset_v1p1beta1
+
+            def sample_search_all_resources():
+                # Create a client
+                client = asset_v1p1beta1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                request = asset_v1p1beta1.SearchAllResourcesRequest(
+                    scope="scope_value",
+                )
+
+                # Make the request
+                page_result = client.search_all_resources(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.asset_v1p1beta1.types.SearchAllResourcesRequest, dict]):
                 The request object. Search all resources request.
@@ -510,6 +530,26 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         policies. Callers should have
         cloud.assets.SearchAllIamPolicies permission on the
         requested scope, otherwise it will be rejected.
+
+
+
+        .. code-block::
+
+            from google.cloud import asset_v1p1beta1
+
+            def sample_search_all_iam_policies():
+                # Create a client
+                client = asset_v1p1beta1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                request = asset_v1p1beta1.SearchAllIamPoliciesRequest(
+                    scope="scope_value",
+                )
+
+                # Make the request
+                page_result = client.search_all_iam_policies(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.asset_v1p1beta1.types.SearchAllIamPoliciesRequest, dict]):

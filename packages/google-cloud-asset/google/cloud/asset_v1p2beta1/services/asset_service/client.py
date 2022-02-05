@@ -404,6 +404,32 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         project/folder/organization to listen to its asset
         updates.
 
+
+
+        .. code-block::
+
+            from google.cloud import asset_v1p2beta1
+
+            def sample_create_feed():
+                # Create a client
+                client = asset_v1p2beta1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                feed = asset_v1p2beta1.Feed()
+                feed.name = "name_value"
+
+                request = asset_v1p2beta1.CreateFeedRequest(
+                    parent="parent_value",
+                    feed_id="feed_id_value",
+                    feed=feed,
+                )
+
+                # Make the request
+                response = client.create_feed(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.asset_v1p2beta1.types.CreateFeedRequest, dict]):
                 The request object. Create asset feed request.
@@ -486,6 +512,26 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
     ) -> asset_service.Feed:
         r"""Gets details about an asset feed.
 
+
+        .. code-block::
+
+            from google.cloud import asset_v1p2beta1
+
+            def sample_get_feed():
+                # Create a client
+                client = asset_v1p2beta1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                request = asset_v1p2beta1.GetFeedRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_feed(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.asset_v1p2beta1.types.GetFeedRequest, dict]):
                 The request object. Get asset feed request.
@@ -564,6 +610,27 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         r"""Lists all asset feeds in a parent
         project/folder/organization.
 
+
+
+        .. code-block::
+
+            from google.cloud import asset_v1p2beta1
+
+            def sample_list_feeds():
+                # Create a client
+                client = asset_v1p2beta1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                request = asset_v1p2beta1.ListFeedsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.list_feeds(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.asset_v1p2beta1.types.ListFeedsRequest, dict]):
                 The request object. List asset feeds request.
@@ -635,6 +702,29 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> asset_service.Feed:
         r"""Updates an asset feed configuration.
+
+
+        .. code-block::
+
+            from google.cloud import asset_v1p2beta1
+
+            def sample_update_feed():
+                # Create a client
+                client = asset_v1p2beta1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                feed = asset_v1p2beta1.Feed()
+                feed.name = "name_value"
+
+                request = asset_v1p2beta1.UpdateFeedRequest(
+                    feed=feed,
+                )
+
+                # Make the request
+                response = client.update_feed(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.asset_v1p2beta1.types.UpdateFeedRequest, dict]):
@@ -715,6 +805,23 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an asset feed.
+
+
+        .. code-block::
+
+            from google.cloud import asset_v1p2beta1
+
+            def sample_delete_feed():
+                # Create a client
+                client = asset_v1p2beta1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                request = asset_v1p2beta1.DeleteFeedRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_feed(request=request)
 
         Args:
             request (Union[google.cloud.asset_v1p2beta1.types.DeleteFeedRequest, dict]):

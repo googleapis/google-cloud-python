@@ -441,6 +441,26 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         r"""Lists assets with time and resource types and returns
         paged results in response.
 
+
+
+        .. code-block::
+
+            from google.cloud import asset_v1p5beta1
+
+            def sample_list_assets():
+                # Create a client
+                client = asset_v1p5beta1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                request = asset_v1p5beta1.ListAssetsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_assets(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.asset_v1p5beta1.types.ListAssetsRequest, dict]):
                 The request object. ListAssets request.

@@ -236,6 +236,32 @@ class AssetServiceAsyncClient:
         the export operation result. For regular-size resource parent,
         the export operation usually finishes within 5 minutes.
 
+
+        .. code-block::
+
+            from google.cloud import asset_v1
+
+            def sample_export_assets():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                output_config = asset_v1.OutputConfig()
+                output_config.gcs_destination.uri = "uri_value"
+
+                request = asset_v1.ExportAssetsRequest(
+                    parent="parent_value",
+                    output_config=output_config,
+                )
+
+                # Make the request
+                operation = client.export_assets(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.asset_v1.types.ExportAssetsRequest, dict]):
                 The request object. Export asset request.
@@ -298,6 +324,25 @@ class AssetServiceAsyncClient:
     ) -> pagers.ListAssetsAsyncPager:
         r"""Lists assets with time and resource types and returns
         paged results in response.
+
+
+        .. code-block::
+
+            from google.cloud import asset_v1
+
+            def sample_list_assets():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                request = asset_v1.ListAssetsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_assets(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.asset_v1.types.ListAssetsRequest, dict]):
@@ -395,6 +440,26 @@ class AssetServiceAsyncClient:
         specified asset does not exist, this API returns an
         INVALID_ARGUMENT error.
 
+
+        .. code-block::
+
+            from google.cloud import asset_v1
+
+            def sample_batch_get_assets_history():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                request = asset_v1.BatchGetAssetsHistoryRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.batch_get_assets_history(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.asset_v1.types.BatchGetAssetsHistoryRequest, dict]):
                 The request object. Batch get assets history request.
@@ -453,6 +518,31 @@ class AssetServiceAsyncClient:
         r"""Creates a feed in a parent
         project/folder/organization to listen to its asset
         updates.
+
+
+        .. code-block::
+
+            from google.cloud import asset_v1
+
+            def sample_create_feed():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                feed = asset_v1.Feed()
+                feed.name = "name_value"
+
+                request = asset_v1.CreateFeedRequest(
+                    parent="parent_value",
+                    feed_id="feed_id_value",
+                    feed=feed,
+                )
+
+                # Make the request
+                response = client.create_feed(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.asset_v1.types.CreateFeedRequest, dict]):
@@ -535,6 +625,25 @@ class AssetServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> asset_service.Feed:
         r"""Gets details about an asset feed.
+
+        .. code-block::
+
+            from google.cloud import asset_v1
+
+            def sample_get_feed():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                request = asset_v1.GetFeedRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_feed(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.asset_v1.types.GetFeedRequest, dict]):
@@ -624,6 +733,26 @@ class AssetServiceAsyncClient:
         r"""Lists all asset feeds in a parent
         project/folder/organization.
 
+
+        .. code-block::
+
+            from google.cloud import asset_v1
+
+            def sample_list_feeds():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                request = asset_v1.ListFeedsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.list_feeds(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.asset_v1.types.ListFeedsRequest, dict]):
                 The request object. List asset feeds request.
@@ -706,6 +835,28 @@ class AssetServiceAsyncClient:
     ) -> asset_service.Feed:
         r"""Updates an asset feed configuration.
 
+        .. code-block::
+
+            from google.cloud import asset_v1
+
+            def sample_update_feed():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                feed = asset_v1.Feed()
+                feed.name = "name_value"
+
+                request = asset_v1.UpdateFeedRequest(
+                    feed=feed,
+                )
+
+                # Make the request
+                response = client.update_feed(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.asset_v1.types.UpdateFeedRequest, dict]):
                 The request object. Update asset feed request.
@@ -786,6 +937,22 @@ class AssetServiceAsyncClient:
     ) -> None:
         r"""Deletes an asset feed.
 
+        .. code-block::
+
+            from google.cloud import asset_v1
+
+            def sample_delete_feed():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                request = asset_v1.DeleteFeedRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_feed(request=request)
+
         Args:
             request (Union[google.cloud.asset_v1.types.DeleteFeedRequest, dict]):
                 The request object.
@@ -865,6 +1032,25 @@ class AssetServiceAsyncClient:
         a project, folder, or organization. The caller must be granted
         the ``cloudasset.assets.searchAllResources`` permission on the
         desired scope, otherwise the request will be rejected.
+
+
+        .. code-block::
+
+            from google.cloud import asset_v1
+
+            def sample_search_all_resources():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                request = asset_v1.SearchAllResourcesRequest(
+                    scope="scope_value",
+                )
+
+                # Make the request
+                page_result = client.search_all_resources(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.asset_v1.types.SearchAllResourcesRequest, dict]):
@@ -1047,6 +1233,25 @@ class AssetServiceAsyncClient:
         ``cloudasset.assets.searchAllIamPolicies`` permission on the
         desired scope, otherwise the request will be rejected.
 
+
+        .. code-block::
+
+            from google.cloud import asset_v1
+
+            def sample_search_all_iam_policies():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                request = asset_v1.SearchAllIamPoliciesRequest(
+                    scope="scope_value",
+                )
+
+                # Make the request
+                page_result = client.search_all_iam_policies(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.asset_v1.types.SearchAllIamPoliciesRequest, dict]):
                 The request object. Search all IAM policies request.
@@ -1204,6 +1409,29 @@ class AssetServiceAsyncClient:
         r"""Analyzes IAM policies to answer which identities have
         what accesses on which resources.
 
+
+        .. code-block::
+
+            from google.cloud import asset_v1
+
+            def sample_analyze_iam_policy():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                analysis_query = asset_v1.IamPolicyAnalysisQuery()
+                analysis_query.scope = "scope_value"
+
+                request = asset_v1.AnalyzeIamPolicyRequest(
+                    analysis_query=analysis_query,
+                )
+
+                # Make the request
+                response = client.analyze_iam_policy(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.asset_v1.types.AnalyzeIamPolicyRequest, dict]):
                 The request object. A request message for
@@ -1275,6 +1503,35 @@ class AssetServiceAsyncClient:
         to poll the operation result. The metadata contains the metadata
         for the long-running operation.
 
+
+        .. code-block::
+
+            from google.cloud import asset_v1
+
+            def sample_analyze_iam_policy_longrunning():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                analysis_query = asset_v1.IamPolicyAnalysisQuery()
+                analysis_query.scope = "scope_value"
+
+                output_config = asset_v1.IamPolicyAnalysisOutputConfig()
+                output_config.gcs_destination.uri = "uri_value"
+
+                request = asset_v1.AnalyzeIamPolicyLongrunningRequest(
+                    analysis_query=analysis_query,
+                    output_config=output_config,
+                )
+
+                # Make the request
+                operation = client.analyze_iam_policy_longrunning(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.asset_v1.types.AnalyzeIamPolicyLongrunningRequest, dict]):
                 The request object. A request message for
@@ -1343,6 +1600,27 @@ class AssetServiceAsyncClient:
         configurations. The policies and configuration are
         subject to change before the actual resource migration
         takes place.
+
+
+        .. code-block::
+
+            from google.cloud import asset_v1
+
+            def sample_analyze_move():
+                # Create a client
+                client = asset_v1.AssetServiceClient()
+
+                # Initialize request argument(s)
+                request = asset_v1.AnalyzeMoveRequest(
+                    resource="resource_value",
+                    destination_parent="destination_parent_value",
+                )
+
+                # Make the request
+                response = client.analyze_move(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.asset_v1.types.AnalyzeMoveRequest, dict]):
