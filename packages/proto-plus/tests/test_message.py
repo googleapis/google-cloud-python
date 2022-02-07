@@ -346,3 +346,72 @@ def test_copy_from():
 
     with pytest.raises(TypeError):
         Mollusc.Squid.copy_from(m.squid, (("mass_kg", 20)))
+
+
+def test_dir():
+    class Mollusc(proto.Message):
+        class Class(proto.Enum):
+            UNKNOWN = 0
+            GASTROPOD = 1
+            BIVALVE = 2
+            CEPHALOPOD = 3
+
+        class Arm(proto.Message):
+            length_cm = proto.Field(proto.INT32, number=1)
+
+        mass_kg = proto.Field(proto.INT32, number=1)
+        class_ = proto.Field(Class, number=2)
+        arms = proto.RepeatedField(Arm, number=3)
+
+    expected = (
+        {
+            # Fields and nested message and enum types
+            "arms",
+            "class_",
+            "mass_kg",
+            "Arm",
+            "Class",
+        }
+        | {
+            # Other methods and attributes
+            "__bool__",
+            "__contains__",
+            "__dict__",
+            "__getattr__",
+            "__getstate__",
+            "__module__",
+            "__setstate__",
+            "__weakref__",
+        }
+        | set(dir(object))
+    )  # Gets the long tail of dunder methods and attributes.
+
+    actual = set(dir(Mollusc()))
+
+    # Check instance names
+    assert actual == expected
+
+    # Check type names
+    expected = (
+        set(dir(type))
+        | {
+            # Class methods from the MessageMeta metaclass
+            "copy_from",
+            "deserialize",
+            "from_json",
+            "meta",
+            "pb",
+            "serialize",
+            "to_dict",
+            "to_json",
+            "wrap",
+        }
+        | {
+            # Nested message and enum types
+            "Arm",
+            "Class",
+        }
+    )
+
+    actual = set(dir(Mollusc))
+    assert actual == expected

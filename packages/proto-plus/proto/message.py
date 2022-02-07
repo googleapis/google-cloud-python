@@ -273,6 +273,27 @@ class MessageMeta(type):
     def meta(cls):
         return cls._meta
 
+    def __dir__(self):
+        names = set(dir(type))
+        names.update(
+            (
+                "meta",
+                "pb",
+                "wrap",
+                "serialize",
+                "deserialize",
+                "to_json",
+                "from_json",
+                "to_dict",
+                "copy_from",
+            )
+        )
+        desc = self.pb().DESCRIPTOR
+        names.update(t.name for t in desc.nested_types)
+        names.update(e.name for e in desc.enum_types)
+
+        return names
+
     def pb(cls, obj=None, *, coerce: bool = False):
         """Return the underlying protobuf Message class or instance.
 
@@ -519,6 +540,29 @@ class Message(metaclass=MessageMeta):
 
         # Create the internal protocol buffer.
         super().__setattr__("_pb", self._meta.pb(**params))
+
+    def __dir__(self):
+        desc = type(self).pb().DESCRIPTOR
+        names = {f_name for f_name in self._meta.fields.keys()}
+        names.update(m.name for m in desc.nested_types)
+        names.update(e.name for e in desc.enum_types)
+        names.update(dir(object()))
+        # Can't think of a better way of determining
+        # the special methods than manually listing them.
+        names.update(
+            (
+                "__bool__",
+                "__contains__",
+                "__dict__",
+                "__getattr__",
+                "__getstate__",
+                "__module__",
+                "__setstate__",
+                "__weakref__",
+            )
+        )
+
+        return names
 
     def __bool__(self):
         """Return True if any field is truthy, False otherwise."""
