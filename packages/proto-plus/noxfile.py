@@ -40,7 +40,8 @@ def unit(session, proto="python"):
     )
 
     session.env["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = proto
-    session.install("coverage", "pytest", "pytest-cov", "pytz")
+    # Pytest 7.0.0 is buggy
+    session.install("coverage", "pytest<7.0.0", "pytest-cov", "pytz")
     session.install("-e", ".[testing]", "-c", constraints_path)
 
     session.run(
