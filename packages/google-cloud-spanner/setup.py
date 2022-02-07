@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-spanner"
 description = "Cloud Spanner API client library"
-version = "3.12.1"
+version = "3.13.0"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'

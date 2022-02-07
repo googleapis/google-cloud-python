@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.13.0](https://github.com/googleapis/python-spanner/compare/v3.12.1...v3.13.0) (2022-02-04)
+
+
+### Features
+
+* add api key support ([819be92](https://github.com/googleapis/python-spanner/commit/819be92e46f63133724dd0d3f5e57b20e33e299e))
+* add database dialect ([#671](https://github.com/googleapis/python-spanner/issues/671)) ([819be92](https://github.com/googleapis/python-spanner/commit/819be92e46f63133724dd0d3f5e57b20e33e299e))
+
+
+### Bug Fixes
+
+* add support for row_count in cursor. ([#675](https://github.com/googleapis/python-spanner/issues/675)) ([d431339](https://github.com/googleapis/python-spanner/commit/d431339069874abf345347b777b3811464925e46))
+* resolve DuplicateCredentialArgs error when using credentials_file ([#676](https://github.com/googleapis/python-spanner/issues/676)) ([39ff137](https://github.com/googleapis/python-spanner/commit/39ff13796adc13b6702d003e4d549775f8cef202))
+
 ### [3.12.1](https://www.github.com/googleapis/python-spanner/compare/v3.12.0...v3.12.1) (2022-01-06)
 
 
