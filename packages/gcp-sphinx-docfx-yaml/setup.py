@@ -47,6 +47,7 @@ setuptools.setup(
     package_dir={'': '.'},
     packages=packages,
     install_requires=dependencies,
+    python_requires=">=3.7",
     include_package_data=True,
     zip_safe=False,
     **extra_setup
