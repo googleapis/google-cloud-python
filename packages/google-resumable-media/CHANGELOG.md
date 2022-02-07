@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+## [2.2.0](https://github.com/googleapis/google-resumable-media-python/compare/v2.1.0...v2.2.0) (2022-01-28)
+
+
+### Features
+
+* add 'py.typed' declaration file ([#287](https://github.com/googleapis/google-resumable-media-python/issues/287)) ([cee4164](https://github.com/googleapis/google-resumable-media-python/commit/cee416449701b72e7fd532585a1f739b02b6ab32))
+* add support for signed resumable upload URLs ([#290](https://github.com/googleapis/google-resumable-media-python/issues/290)) ([e1290f5](https://github.com/googleapis/google-resumable-media-python/commit/e1290f523808c7ef5be7dd335a5c94cd1739e6e3))
+
+
+### Bug Fixes
+
+* add user-agent on requests ([#295](https://github.com/googleapis/google-resumable-media-python/issues/295)) ([e107a0c](https://github.com/googleapis/google-resumable-media-python/commit/e107a0cac7ca367015a025a6872a8ad28c7ff15c))
+
 ## [2.1.0](https://www.github.com/googleapis/google-resumable-media-python/compare/v2.0.3...v2.1.0) (2021-10-20)
 
 

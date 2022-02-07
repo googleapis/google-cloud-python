@@ -35,7 +35,7 @@ EXTRAS_REQUIRE = {
 
 setuptools.setup(
     name='google-resumable-media',
-    version = "2.1.0",
+    version = "2.2.0",
     description='Utilities for Google Media Downloads and Resumable Uploads',
     author='Google Cloud Platform',
     author_email='googleapis-publisher@google.com',
