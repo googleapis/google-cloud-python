@@ -1,5 +1,12 @@
 # Changelog
 
+### [3.0.1](https://github.com/googleapis/python-spanner-django/compare/v3.0.0...v3.0.1) (2022-02-07)
+
+
+### Bug Fixes
+
+* downgrade google-cloud-spanner to v 3.11.1 ([#747](https://github.com/googleapis/python-spanner-django/issues/747)) ([a1f1cac](https://github.com/googleapis/python-spanner-django/commit/a1f1cac6a630cf71643b27580bb0f98c8f06d3ef))
+
 ## [3.0.0](https://www.github.com/googleapis/python-spanner-django/compare/v2.2.1-b4...v3.0.0) (2021-10-29)
 
 
