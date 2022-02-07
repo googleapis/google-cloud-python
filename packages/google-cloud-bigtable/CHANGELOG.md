@@ -4,6 +4,32 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.5.0](https://github.com/googleapis/python-bigtable/compare/v2.4.0...v2.5.0) (2022-02-07)
+
+
+### Features
+
+* add 'Instance.create_time' field ([#449](https://github.com/googleapis/python-bigtable/issues/449)) ([b9ecfa9](https://github.com/googleapis/python-bigtable/commit/b9ecfa97281ae21dcf233e60c70cacc701f12c32))
+* add api key support ([#497](https://github.com/googleapis/python-bigtable/issues/497)) ([ee3a6c4](https://github.com/googleapis/python-bigtable/commit/ee3a6c4c5f810fab08671db3407195864ecc1972))
+* add Autoscaling API ([#475](https://github.com/googleapis/python-bigtable/issues/475)) ([97b3cdd](https://github.com/googleapis/python-bigtable/commit/97b3cddb908098e255e7a1209cdb985087b95a26))
+* add context manager support in client ([#440](https://github.com/googleapis/python-bigtable/issues/440)) ([a3d2cf1](https://github.com/googleapis/python-bigtable/commit/a3d2cf18b49cddc91e5e6448c46d6b936d86954d))
+* add support for Python 3.10 ([#437](https://github.com/googleapis/python-bigtable/issues/437)) ([3cf0814](https://github.com/googleapis/python-bigtable/commit/3cf08149411f3f4df41e9b5a9894dbfb101bd86f))
+
+
+### Bug Fixes
+
+* **deps:** drop packaging dependency ([a535f99](https://github.com/googleapis/python-bigtable/commit/a535f99e9f0bb16488a5d372a0a6efc3c4b69186))
+* **deps:** require google-api-core >= 1.28.0 ([a535f99](https://github.com/googleapis/python-bigtable/commit/a535f99e9f0bb16488a5d372a0a6efc3c4b69186))
+* improper types in pagers generation ([f9c7699](https://github.com/googleapis/python-bigtable/commit/f9c7699eb6d4071314abbb0477ba47370059e041))
+* improve type hints, mypy checks ([#448](https://github.com/googleapis/python-bigtable/issues/448)) ([a99bf88](https://github.com/googleapis/python-bigtable/commit/a99bf88417d6aec03923447c70c2752f6bb5c459))
+* resolve DuplicateCredentialArgs error when using credentials_file ([d6bff70](https://github.com/googleapis/python-bigtable/commit/d6bff70654b41e31d2ac83d307bdc6bbd111201e))
+
+
+### Documentation
+
+* clarify comments in ReadRowsRequest and RowFilter ([#494](https://github.com/googleapis/python-bigtable/issues/494)) ([1efd9b5](https://github.com/googleapis/python-bigtable/commit/1efd9b598802f766a3c4c8c78ec7b0ca208d3325))
+* list oneofs in docstring ([a535f99](https://github.com/googleapis/python-bigtable/commit/a535f99e9f0bb16488a5d372a0a6efc3c4b69186))
+
 ## [2.4.0](https://www.github.com/googleapis/python-bigtable/compare/v2.3.3...v2.4.0) (2021-09-24)
 
 
