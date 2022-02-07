@@ -44,7 +44,7 @@ async def sample_update_sink():
     # Make the request
     response = await client.update_sink(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_UpdateSink_async]

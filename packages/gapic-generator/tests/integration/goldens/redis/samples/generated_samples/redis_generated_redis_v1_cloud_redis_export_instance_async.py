@@ -46,6 +46,8 @@ async def sample_export_instance():
     print("Waiting for operation to complete...")
 
     response = await operation.result()
+
+    # Handle the response
     print(response)
 
 # [END redis_generated_redis_v1_CloudRedis_ExportInstance_async]

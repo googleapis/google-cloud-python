@@ -234,6 +234,8 @@ class AssetServiceAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -321,6 +323,8 @@ class AssetServiceAsyncClient:
 
                 # Make the request
                 page_result = client.list_assets(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -434,7 +438,7 @@ class AssetServiceAsyncClient:
                 # Make the request
                 response = client.batch_get_assets_history(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -521,7 +525,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 # Make the request
                 response = client.create_feed(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -626,7 +630,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 # Make the request
                 response = client.get_feed(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -735,7 +739,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 # Make the request
                 response = client.list_feeds(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -840,7 +844,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 # Make the request
                 response = client.update_feed(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1036,6 +1040,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
                 # Make the request
                 page_result = client.search_all_resources(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1241,6 +1247,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
                 # Make the request
                 page_result = client.search_all_iam_policies(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1426,7 +1434,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 # Make the request
                 response = client.analyze_iam_policy(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1528,6 +1536,8 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:

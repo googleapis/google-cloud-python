@@ -50,6 +50,8 @@ async def sample_method_lro_signatures():
     print("Waiting for operation to complete...")
 
     response = await operation.result()
+
+    # Handle the response
     print(response)
 
 # [END mollusca_generated_mollusca_v1_Snippets_MethodLroSignatures_async]

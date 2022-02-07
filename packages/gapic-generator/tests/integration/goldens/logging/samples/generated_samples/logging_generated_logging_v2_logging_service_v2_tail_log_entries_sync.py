@@ -47,6 +47,8 @@ def sample_tail_log_entries():
 
     # Make the request
     stream = client.tail_log_entries(requests=request_generator())
+
+    # Handle the response
     for response in stream:
         print(response)
 

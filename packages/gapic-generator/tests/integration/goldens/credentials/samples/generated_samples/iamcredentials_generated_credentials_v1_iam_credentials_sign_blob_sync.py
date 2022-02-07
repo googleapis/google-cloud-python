@@ -40,7 +40,7 @@ def sample_sign_blob():
     # Make the request
     response = client.sign_blob(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END iamcredentials_generated_credentials_v1_IAMCredentials_SignBlob_sync]

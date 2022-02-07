@@ -44,7 +44,7 @@ async def sample_create_log_metric():
     # Make the request
     response = await client.create_log_metric(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END logging_generated_logging_v2_MetricsServiceV2_CreateLogMetric_async]

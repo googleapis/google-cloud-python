@@ -39,7 +39,7 @@ async def sample_update_bucket():
     # Make the request
     response = await client.update_bucket(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_UpdateBucket_async]

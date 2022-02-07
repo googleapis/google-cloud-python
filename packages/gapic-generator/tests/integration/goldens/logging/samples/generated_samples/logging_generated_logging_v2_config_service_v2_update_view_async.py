@@ -39,7 +39,7 @@ async def sample_update_view():
     # Make the request
     response = await client.update_view(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_UpdateView_async]

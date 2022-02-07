@@ -47,6 +47,8 @@ def sample_method_bidi_streaming():
 
     # Make the request
     stream = client.method_bidi_streaming(requests=request_generator())
+
+    # Handle the response
     for response in stream:
         print(response)
 

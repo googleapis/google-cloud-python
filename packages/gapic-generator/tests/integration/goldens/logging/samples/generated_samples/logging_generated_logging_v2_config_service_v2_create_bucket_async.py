@@ -40,7 +40,7 @@ async def sample_create_bucket():
     # Make the request
     response = await client.create_bucket(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_CreateBucket_async]

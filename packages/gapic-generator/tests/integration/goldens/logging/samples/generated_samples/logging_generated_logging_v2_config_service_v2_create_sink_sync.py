@@ -44,7 +44,7 @@ def sample_create_sink():
     # Make the request
     response = client.create_sink(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_CreateSink_sync]

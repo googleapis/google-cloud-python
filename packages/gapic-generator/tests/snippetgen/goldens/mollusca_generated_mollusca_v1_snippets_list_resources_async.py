@@ -39,6 +39,8 @@ async def sample_list_resources():
 
     # Make the request
     page_result = client.list_resources(request=request)
+
+    # Handle the response
     async for response in page_result:
         print(response)
 

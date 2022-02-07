@@ -40,7 +40,7 @@ def sample_one_of_method_required_field():
     # Make the request
     response = client.one_of_method_required_field(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END mollusca_generated_mollusca_v1_Snippets_OneOfMethodRequiredField_sync]

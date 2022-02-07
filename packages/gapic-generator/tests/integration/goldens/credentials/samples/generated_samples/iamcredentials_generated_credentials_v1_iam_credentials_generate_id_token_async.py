@@ -40,7 +40,7 @@ async def sample_generate_id_token():
     # Make the request
     response = await client.generate_id_token(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END iamcredentials_generated_credentials_v1_IAMCredentials_GenerateIdToken_async]

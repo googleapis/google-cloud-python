@@ -42,7 +42,7 @@ async def sample_write_log_entries():
     # Make the request
     response = await client.write_log_entries(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END logging_generated_logging_v2_LoggingServiceV2_WriteLogEntries_async]

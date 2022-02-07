@@ -38,6 +38,8 @@ def sample_list_log_entries():
 
     # Make the request
     page_result = client.list_log_entries(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

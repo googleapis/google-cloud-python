@@ -47,7 +47,7 @@ async def sample_method_one_signature():
     # Make the request
     response = await client.method_one_signature(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END mollusca_generated_mollusca_v1_Snippets_MethodOneSignature_async]

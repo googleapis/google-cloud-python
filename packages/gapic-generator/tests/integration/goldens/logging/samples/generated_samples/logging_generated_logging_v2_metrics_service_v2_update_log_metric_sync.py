@@ -44,7 +44,7 @@ def sample_update_log_metric():
     # Make the request
     response = client.update_log_metric(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END logging_generated_logging_v2_MetricsServiceV2_UpdateLogMetric_sync]

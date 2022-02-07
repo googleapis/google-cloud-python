@@ -39,7 +39,7 @@ async def sample_get_cmek_settings():
     # Make the request
     response = await client.get_cmek_settings(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_GetCmekSettings_async]

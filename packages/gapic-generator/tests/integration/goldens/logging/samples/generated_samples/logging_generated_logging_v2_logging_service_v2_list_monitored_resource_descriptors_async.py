@@ -37,6 +37,8 @@ async def sample_list_monitored_resource_descriptors():
 
     # Make the request
     page_result = client.list_monitored_resource_descriptors(request=request)
+
+    # Handle the response
     async for response in page_result:
         print(response)
 

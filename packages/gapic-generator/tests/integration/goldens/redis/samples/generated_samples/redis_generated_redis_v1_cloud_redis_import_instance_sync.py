@@ -46,6 +46,8 @@ def sample_import_instance():
     print("Waiting for operation to complete...")
 
     response = operation.result()
+
+    # Handle the response
     print(response)
 
 # [END redis_generated_redis_v1_CloudRedis_ImportInstance_sync]

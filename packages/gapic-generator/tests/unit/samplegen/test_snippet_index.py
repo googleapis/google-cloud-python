@@ -49,7 +49,7 @@ def sample_classify(video, location):
     # Make the request
     response = client.classify(request=request)
 
-    # Handle response
+    # Handle the response
     print(f"Mollusc is a \"{response.taxonomy}\"")
 
 # [END mollusc_classify_sync]"""
@@ -103,7 +103,7 @@ def sample_classify(video, location):
     # Make the request
     response = client.classify(request=request)
 
-    # Handle response
+    # Handle the response
     print(f"Mollusc is a \"{response.taxonomy}\"")
 
 """

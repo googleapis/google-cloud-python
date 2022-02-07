@@ -40,7 +40,7 @@ async def sample_sign_jwt():
     # Make the request
     response = await client.sign_jwt(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END iamcredentials_generated_credentials_v1_IAMCredentials_SignJwt_async]

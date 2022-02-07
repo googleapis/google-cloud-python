@@ -39,7 +39,7 @@ async def sample_get_instance():
     # Make the request
     response = await client.get_instance(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END redis_generated_redis_v1_CloudRedis_GetInstance_async]

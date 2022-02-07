@@ -47,6 +47,8 @@ async def sample_tail_log_entries():
 
     # Make the request
     stream = await client.tail_log_entries(requests=request_generator())
+
+    # Handle the response
     async for response in stream:
         print(response)
 

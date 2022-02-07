@@ -44,7 +44,7 @@ async def sample_create_exclusion():
     # Make the request
     response = await client.create_exclusion(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_CreateExclusion_async]

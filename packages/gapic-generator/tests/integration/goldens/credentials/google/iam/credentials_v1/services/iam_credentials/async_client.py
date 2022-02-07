@@ -226,7 +226,7 @@ class IAMCredentialsAsyncClient:
                 # Make the request
                 response = client.generate_access_token(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -380,7 +380,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 # Make the request
                 response = client.generate_id_token(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -527,7 +527,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 # Make the request
                 response = client.sign_blob(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -661,7 +661,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 # Make the request
                 response = client.sign_jwt(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:

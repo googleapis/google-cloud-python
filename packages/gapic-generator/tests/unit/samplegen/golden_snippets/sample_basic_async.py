@@ -48,7 +48,7 @@ async def sample_classify(video, location):
     # Make the request
     response = await client.classify(request=request)
 
-    # Handle response
+    # Handle the response
     print(f"Mollusc is a \"{response.taxonomy}\"")
 
 # [END mollusc_classify_sync]

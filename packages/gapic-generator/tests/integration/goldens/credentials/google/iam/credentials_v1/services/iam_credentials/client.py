@@ -414,7 +414,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 # Make the request
                 response = client.generate_access_token(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -562,7 +562,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 # Make the request
                 response = client.generate_id_token(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -703,7 +703,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 # Make the request
                 response = client.sign_blob(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -831,7 +831,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 # Make the request
                 response = client.sign_jwt(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:

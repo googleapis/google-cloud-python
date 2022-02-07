@@ -25,7 +25,7 @@ from gapic.samplegen_utils import types
 CLIENT_INIT_RE = re.compile(r"^\s+# Create a client")
 REQUEST_INIT_RE = re.compile(r"^\s+# Initialize request argument\(s\)")
 REQUEST_EXEC_RE = re.compile(r"^\s+# Make the request")
-RESPONSE_HANDLING_RE = re.compile(r"^\s+# Handle response")
+RESPONSE_HANDLING_RE = re.compile(r"^\s+# Handle the response")
 
 
 class Snippet:

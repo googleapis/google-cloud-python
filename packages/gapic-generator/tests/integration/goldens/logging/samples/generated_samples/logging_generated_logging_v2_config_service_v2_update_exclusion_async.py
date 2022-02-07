@@ -44,7 +44,7 @@ async def sample_update_exclusion():
     # Make the request
     response = await client.update_exclusion(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END logging_generated_logging_v2_ConfigServiceV2_UpdateExclusion_async]

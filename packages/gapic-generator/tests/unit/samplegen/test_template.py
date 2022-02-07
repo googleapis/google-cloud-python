@@ -746,7 +746,7 @@ def test_render_calling_form_request():
                    # Make the request
                    response = TEST_INVOCATION_TXT
 
-                   # Handle response
+                   # Handle the response
                    print("Test print statement")
                    ''',
                    calling_form_enum=CallingForm,
@@ -759,6 +759,8 @@ def test_render_calling_form_paged_all():
                    '''
                    # Make the request
                    page_result = TEST_INVOCATION_TXT
+
+                   # Handle the response
                    for response in page_result:
                        print("Test print statement")
                    ''',
@@ -772,6 +774,8 @@ def test_render_calling_form_paged_all_async():
                    '''
                    # Make the request
                    page_result = TEST_INVOCATION_TXT
+
+                   # Handle the response
                    async for response in page_result:
                        print("Test print statement")
                    ''',
@@ -785,6 +789,8 @@ def test_render_calling_form_paged():
                    '''
                     # Make the request
                     page_result = TEST_INVOCATION_TXT
+
+                    # Handle the response
                     for page in page_result.pages():
                         for response in page:
                             print("Test print statement")
@@ -799,6 +805,8 @@ def test_render_calling_form_paged_async():
                    '''
                     # Make the request
                     page_result = TEST_INVOCATION_TXT
+
+                    # Handle the response
                     async for page in page_result.pages():
                         for response in page:
                             print("Test print statement")
@@ -813,6 +821,8 @@ def test_render_calling_form_streaming_server():
                    '''
                    # Make the request
                    stream = TEST_INVOCATION_TXT
+
+                   # Handle the response
                    for response in stream:
                        print("Test print statement")
                    ''',
@@ -826,6 +836,8 @@ def test_render_calling_form_streaming_server_async():
                    '''
                    # Make the request
                    stream = TEST_INVOCATION_TXT
+
+                   # Handle the response
                    async for response in stream:
                        print("Test print statement")
                    ''',
@@ -839,6 +851,8 @@ def test_render_calling_form_streaming_bidi():
                    '''
                    # Make the request
                    stream = TEST_INVOCATION_TXT
+
+                   # Handle the response
                    for response in stream:
                        print("Test print statement")
                    ''',
@@ -852,6 +866,8 @@ def test_render_calling_form_streaming_bidi_async():
                    '''
                    # Make the request
                    stream = TEST_INVOCATION_TXT
+
+                   # Handle the response
                    async for response in stream:
                        print("Test print statement")
                    ''',
@@ -869,6 +885,8 @@ def test_render_calling_form_longrunning():
                    print("Waiting for operation to complete...")
 
                    response = operation.result()
+
+                   # Handle the response
                    print("Test print statement")
                    ''',
                    calling_form_enum=CallingForm,
@@ -885,6 +903,8 @@ def test_render_calling_form_longrunning_async():
                    print("Waiting for operation to complete...")
 
                    response = await operation.result()
+
+                   # Handle the response
                    print("Test print statement")
                    ''',
                    calling_form_enum=CallingForm,
