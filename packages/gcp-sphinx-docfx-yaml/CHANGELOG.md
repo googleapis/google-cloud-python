@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.4.2](https://github.com/googleapis/sphinx-docfx-yaml/compare/v1.4.1...v1.4.2) (2022-02-07)
+
+
+### Bug Fixes
+
+* update markdown header parser ([#177](https://github.com/googleapis/sphinx-docfx-yaml/issues/177)) ([71d50cc](https://github.com/googleapis/sphinx-docfx-yaml/commit/71d50cce1979a8673499f731411798bfb15c7ba6))
+
 ### [1.4.1](https://github.com/googleapis/sphinx-docfx-yaml/compare/v1.4.0...v1.4.1) (2022-01-28)
 
 

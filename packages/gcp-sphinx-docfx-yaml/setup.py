@@ -17,7 +17,7 @@ import setuptools
 
 name = 'gcp-sphinx-docfx-yaml'
 description = 'Sphinx Python Domain to DocFX YAML Generator'
-version = '1.4.1'
+version = '1.4.2'
 dependencies = [
     'black',
     'gcp-docuploader',
