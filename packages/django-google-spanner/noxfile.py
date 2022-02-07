@@ -76,7 +76,7 @@ def default(session, django_version="2.2"):
         "pytest-cov",
         "coverage",
         "sqlparse==0.3.0",
-        "google-cloud-spanner==3.11.1",
+        "google-cloud-spanner>=3.13.0",
         "opentelemetry-api==1.1.0",
         "opentelemetry-sdk==1.1.0",
         "opentelemetry-instrumentation==0.20b0",
@@ -146,7 +146,6 @@ def system_test(session, django_version="2.2"):
         constraints_path,
     )
     session.install("-e", ".[tracing]", "-c", constraints_path)
-
     # Run py.test against the system tests.
     if system_test_exists:
         session.run("py.test", "--quiet", system_test_path, *session.posargs)
