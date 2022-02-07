@@ -1234,7 +1234,7 @@ def parse_markdown_header(header_line, prev_line):
         if not header_line[header_line.index(h1_header_prefix)+2].isspace() and \
             len(header_line) > 2:
 
-            return header_line.strip("#").strip()
+            return header_line[header_line.index(h1_header_prefix):].strip("#").strip()
 
     elif "=" in header_line:
         # Check if we're inspecting an empty or undefined lines.
