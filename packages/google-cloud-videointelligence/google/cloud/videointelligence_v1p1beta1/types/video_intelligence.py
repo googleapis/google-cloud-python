@@ -104,8 +104,8 @@ class AnnotateVideoRequest(proto.Message):
             Required. Requested video annotation
             features.
         video_context (google.cloud.videointelligence_v1p1beta1.types.VideoContext):
-            Additional video context and/or feature-
-            pecific parameters.
+            Additional video context and/or
+            feature-specific parameters.
         output_uri (str):
             Optional. Location where the output (in JSON format) should
             be stored. Currently, only `Google Cloud
