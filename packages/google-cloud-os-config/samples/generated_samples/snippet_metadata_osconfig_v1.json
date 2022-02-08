@@ -1,0 +1,2092 @@
+{
+  "snippets": [
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OsConfigService"
+          },
+          "shortName": "CancelPatchJob"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_service_cancel_patch_job_async.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigService_CancelPatchJob_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OsConfigService"
+          },
+          "shortName": "CancelPatchJob"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_service_cancel_patch_job_sync.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigService_CancelPatchJob_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OsConfigService"
+          },
+          "shortName": "CreatePatchDeployment"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_service_create_patch_deployment_async.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigService_CreatePatchDeployment_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OsConfigService"
+          },
+          "shortName": "CreatePatchDeployment"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_service_create_patch_deployment_sync.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigService_CreatePatchDeployment_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OsConfigService"
+          },
+          "shortName": "DeletePatchDeployment"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_service_delete_patch_deployment_async.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigService_DeletePatchDeployment_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OsConfigService"
+          },
+          "shortName": "DeletePatchDeployment"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_service_delete_patch_deployment_sync.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigService_DeletePatchDeployment_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OsConfigService"
+          },
+          "shortName": "ExecutePatchJob"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_service_execute_patch_job_async.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigService_ExecutePatchJob_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OsConfigService"
+          },
+          "shortName": "ExecutePatchJob"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_service_execute_patch_job_sync.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigService_ExecutePatchJob_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OsConfigService"
+          },
+          "shortName": "GetPatchDeployment"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_service_get_patch_deployment_async.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigService_GetPatchDeployment_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OsConfigService"
+          },
+          "shortName": "GetPatchDeployment"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_service_get_patch_deployment_sync.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigService_GetPatchDeployment_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OsConfigService"
+          },
+          "shortName": "GetPatchJob"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_service_get_patch_job_async.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigService_GetPatchJob_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OsConfigService"
+          },
+          "shortName": "GetPatchJob"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_service_get_patch_job_sync.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigService_GetPatchJob_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OsConfigService"
+          },
+          "shortName": "ListPatchDeployments"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_service_list_patch_deployments_async.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigService_ListPatchDeployments_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OsConfigService"
+          },
+          "shortName": "ListPatchDeployments"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_service_list_patch_deployments_sync.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigService_ListPatchDeployments_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OsConfigService"
+          },
+          "shortName": "ListPatchJobInstanceDetails"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_service_list_patch_job_instance_details_async.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigService_ListPatchJobInstanceDetails_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OsConfigService"
+          },
+          "shortName": "ListPatchJobInstanceDetails"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_service_list_patch_job_instance_details_sync.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigService_ListPatchJobInstanceDetails_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OsConfigService"
+          },
+          "shortName": "ListPatchJobs"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_service_list_patch_jobs_async.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigService_ListPatchJobs_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OsConfigService"
+          },
+          "shortName": "ListPatchJobs"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_service_list_patch_jobs_sync.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigService_ListPatchJobs_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OsConfigService"
+          },
+          "shortName": "PausePatchDeployment"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_service_pause_patch_deployment_async.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigService_PausePatchDeployment_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OsConfigService"
+          },
+          "shortName": "PausePatchDeployment"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_service_pause_patch_deployment_sync.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigService_PausePatchDeployment_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OsConfigService"
+          },
+          "shortName": "ResumePatchDeployment"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_service_resume_patch_deployment_async.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigService_ResumePatchDeployment_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OsConfigService"
+          },
+          "shortName": "ResumePatchDeployment"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_service_resume_patch_deployment_sync.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigService_ResumePatchDeployment_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OsConfigService"
+          },
+          "shortName": "UpdatePatchDeployment"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_service_update_patch_deployment_async.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigService_UpdatePatchDeployment_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OsConfigService"
+          },
+          "shortName": "UpdatePatchDeployment"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_service_update_patch_deployment_sync.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigService_UpdatePatchDeployment_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OsConfigZonalService"
+          },
+          "shortName": "CreateOSPolicyAssignment"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_zonal_service_create_os_policy_assignment_async.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigZonalService_CreateOSPolicyAssignment_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OsConfigZonalService"
+          },
+          "shortName": "CreateOSPolicyAssignment"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_zonal_service_create_os_policy_assignment_sync.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigZonalService_CreateOSPolicyAssignment_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OsConfigZonalService"
+          },
+          "shortName": "DeleteOSPolicyAssignment"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_zonal_service_delete_os_policy_assignment_async.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigZonalService_DeleteOSPolicyAssignment_async",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OsConfigZonalService"
+          },
+          "shortName": "DeleteOSPolicyAssignment"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_zonal_service_delete_os_policy_assignment_sync.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigZonalService_DeleteOSPolicyAssignment_sync",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OsConfigZonalService"
+          },
+          "shortName": "GetInventory"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_zonal_service_get_inventory_async.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigZonalService_GetInventory_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OsConfigZonalService"
+          },
+          "shortName": "GetInventory"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_zonal_service_get_inventory_sync.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigZonalService_GetInventory_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OsConfigZonalService"
+          },
+          "shortName": "GetOSPolicyAssignmentReport"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_zonal_service_get_os_policy_assignment_report_async.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigZonalService_GetOSPolicyAssignmentReport_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OsConfigZonalService"
+          },
+          "shortName": "GetOSPolicyAssignmentReport"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_zonal_service_get_os_policy_assignment_report_sync.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigZonalService_GetOSPolicyAssignmentReport_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OsConfigZonalService"
+          },
+          "shortName": "GetOSPolicyAssignment"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_zonal_service_get_os_policy_assignment_async.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigZonalService_GetOSPolicyAssignment_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OsConfigZonalService"
+          },
+          "shortName": "GetOSPolicyAssignment"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_zonal_service_get_os_policy_assignment_sync.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigZonalService_GetOSPolicyAssignment_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OsConfigZonalService"
+          },
+          "shortName": "GetVulnerabilityReport"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_zonal_service_get_vulnerability_report_async.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigZonalService_GetVulnerabilityReport_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OsConfigZonalService"
+          },
+          "shortName": "GetVulnerabilityReport"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_zonal_service_get_vulnerability_report_sync.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigZonalService_GetVulnerabilityReport_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OsConfigZonalService"
+          },
+          "shortName": "ListInventories"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_zonal_service_list_inventories_async.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigZonalService_ListInventories_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OsConfigZonalService"
+          },
+          "shortName": "ListInventories"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_zonal_service_list_inventories_sync.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigZonalService_ListInventories_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OsConfigZonalService"
+          },
+          "shortName": "ListOSPolicyAssignmentReports"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_zonal_service_list_os_policy_assignment_reports_async.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigZonalService_ListOSPolicyAssignmentReports_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OsConfigZonalService"
+          },
+          "shortName": "ListOSPolicyAssignmentReports"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_zonal_service_list_os_policy_assignment_reports_sync.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigZonalService_ListOSPolicyAssignmentReports_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OsConfigZonalService"
+          },
+          "shortName": "ListOSPolicyAssignmentRevisions"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_zonal_service_list_os_policy_assignment_revisions_async.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigZonalService_ListOSPolicyAssignmentRevisions_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OsConfigZonalService"
+          },
+          "shortName": "ListOSPolicyAssignmentRevisions"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_zonal_service_list_os_policy_assignment_revisions_sync.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigZonalService_ListOSPolicyAssignmentRevisions_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OsConfigZonalService"
+          },
+          "shortName": "ListOSPolicyAssignments"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_zonal_service_list_os_policy_assignments_async.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigZonalService_ListOSPolicyAssignments_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OsConfigZonalService"
+          },
+          "shortName": "ListOSPolicyAssignments"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_zonal_service_list_os_policy_assignments_sync.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigZonalService_ListOSPolicyAssignments_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OsConfigZonalService"
+          },
+          "shortName": "ListVulnerabilityReports"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_zonal_service_list_vulnerability_reports_async.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigZonalService_ListVulnerabilityReports_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OsConfigZonalService"
+          },
+          "shortName": "ListVulnerabilityReports"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_zonal_service_list_vulnerability_reports_sync.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigZonalService_ListVulnerabilityReports_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OsConfigZonalService"
+          },
+          "shortName": "UpdateOSPolicyAssignment"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_zonal_service_update_os_policy_assignment_async.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigZonalService_UpdateOSPolicyAssignment_async",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OsConfigZonalService"
+          },
+          "shortName": "UpdateOSPolicyAssignment"
+        }
+      },
+      "file": "osconfig_generated_osconfig_v1_os_config_zonal_service_update_os_policy_assignment_sync.py",
+      "regionTag": "osconfig_generated_osconfig_v1_OsConfigZonalService_UpdateOSPolicyAssignment_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    }
+  ]
+}

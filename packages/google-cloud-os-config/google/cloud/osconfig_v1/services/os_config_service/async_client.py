@@ -35,6 +35,7 @@ from google.cloud.osconfig_v1.services.os_config_service import pagers
 from google.cloud.osconfig_v1.types import patch_deployments
 from google.cloud.osconfig_v1.types import patch_jobs
 from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import OsConfigServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import OsConfigServiceGrpcAsyncIOTransport
@@ -226,6 +227,26 @@ class OsConfigServiceAsyncClient:
         r"""Patch VM instances by creating and running a patch
         job.
 
+
+        .. code-block::
+
+            from google.cloud import osconfig_v1
+
+            def sample_execute_patch_job():
+                # Create a client
+                client = osconfig_v1.OsConfigServiceClient()
+
+                # Initialize request argument(s)
+                request = osconfig_v1.ExecutePatchJobRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.execute_patch_job(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.osconfig_v1.types.ExecutePatchJobRequest, dict]):
                 The request object. A request message to initiate
@@ -285,6 +306,26 @@ class OsConfigServiceAsyncClient:
         r"""Get the patch job. This can be used to track the
         progress of an ongoing patch job or review the details
         of completed jobs.
+
+
+        .. code-block::
+
+            from google.cloud import osconfig_v1
+
+            def sample_get_patch_job():
+                # Create a client
+                client = osconfig_v1.OsConfigServiceClient()
+
+                # Initialize request argument(s)
+                request = osconfig_v1.GetPatchJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_patch_job(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.osconfig_v1.types.GetPatchJobRequest, dict]):
@@ -365,6 +406,26 @@ class OsConfigServiceAsyncClient:
         r"""Cancel a patch job. The patch job must be active.
         Canceled patch jobs cannot be restarted.
 
+
+        .. code-block::
+
+            from google.cloud import osconfig_v1
+
+            def sample_cancel_patch_job():
+                # Create a client
+                client = osconfig_v1.OsConfigServiceClient()
+
+                # Initialize request argument(s)
+                request = osconfig_v1.CancelPatchJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.cancel_patch_job(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.osconfig_v1.types.CancelPatchJobRequest, dict]):
                 The request object. Message for canceling a patch job.
@@ -421,6 +482,24 @@ class OsConfigServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPatchJobsAsyncPager:
         r"""Get a list of patch jobs.
+
+        .. code-block::
+
+            from google.cloud import osconfig_v1
+
+            def sample_list_patch_jobs():
+                # Create a client
+                client = osconfig_v1.OsConfigServiceClient()
+
+                # Initialize request argument(s)
+                request = osconfig_v1.ListPatchJobsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_patch_jobs(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.osconfig_v1.types.ListPatchJobsRequest, dict]):
@@ -499,6 +578,24 @@ class OsConfigServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPatchJobInstanceDetailsAsyncPager:
         r"""Get a list of instance details for a given patch job.
+
+        .. code-block::
+
+            from google.cloud import osconfig_v1
+
+            def sample_list_patch_job_instance_details():
+                # Create a client
+                client = osconfig_v1.OsConfigServiceClient()
+
+                # Initialize request argument(s)
+                request = osconfig_v1.ListPatchJobInstanceDetailsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_patch_job_instance_details(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.osconfig_v1.types.ListPatchJobInstanceDetailsRequest, dict]):
@@ -581,6 +678,26 @@ class OsConfigServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> patch_deployments.PatchDeployment:
         r"""Create an OS Config patch deployment.
+
+        .. code-block::
+
+            from google.cloud import osconfig_v1
+
+            def sample_create_patch_deployment():
+                # Create a client
+                client = osconfig_v1.OsConfigServiceClient()
+
+                # Initialize request argument(s)
+                request = osconfig_v1.CreatePatchDeploymentRequest(
+                    parent="parent_value",
+                    patch_deployment_id="patch_deployment_id_value",
+                )
+
+                # Make the request
+                response = client.create_patch_deployment(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.osconfig_v1.types.CreatePatchDeploymentRequest, dict]):
@@ -682,6 +799,25 @@ class OsConfigServiceAsyncClient:
     ) -> patch_deployments.PatchDeployment:
         r"""Get an OS Config patch deployment.
 
+        .. code-block::
+
+            from google.cloud import osconfig_v1
+
+            def sample_get_patch_deployment():
+                # Create a client
+                client = osconfig_v1.OsConfigServiceClient()
+
+                # Initialize request argument(s)
+                request = osconfig_v1.GetPatchDeploymentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_patch_deployment(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.osconfig_v1.types.GetPatchDeploymentRequest, dict]):
                 The request object. A request message for retrieving a
@@ -756,6 +892,24 @@ class OsConfigServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPatchDeploymentsAsyncPager:
         r"""Get a page of OS Config patch deployments.
+
+        .. code-block::
+
+            from google.cloud import osconfig_v1
+
+            def sample_list_patch_deployments():
+                # Create a client
+                client = osconfig_v1.OsConfigServiceClient()
+
+                # Initialize request argument(s)
+                request = osconfig_v1.ListPatchDeploymentsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_patch_deployments(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.osconfig_v1.types.ListPatchDeploymentsRequest, dict]):
@@ -837,6 +991,22 @@ class OsConfigServiceAsyncClient:
     ) -> None:
         r"""Delete an OS Config patch deployment.
 
+        .. code-block::
+
+            from google.cloud import osconfig_v1
+
+            def sample_delete_patch_deployment():
+                # Create a client
+                client = osconfig_v1.OsConfigServiceClient()
+
+                # Initialize request argument(s)
+                request = osconfig_v1.DeletePatchDeploymentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_patch_deployment(request=request)
+
         Args:
             request (Union[google.cloud.osconfig_v1.types.DeletePatchDeploymentRequest, dict]):
                 The request object. A request message for deleting a
@@ -889,6 +1059,306 @@ class OsConfigServiceAsyncClient:
         await rpc(
             request, retry=retry, timeout=timeout, metadata=metadata,
         )
+
+    async def update_patch_deployment(
+        self,
+        request: Union[patch_deployments.UpdatePatchDeploymentRequest, dict] = None,
+        *,
+        patch_deployment: patch_deployments.PatchDeployment = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> patch_deployments.PatchDeployment:
+        r"""Update an OS Config patch deployment.
+
+        .. code-block::
+
+            from google.cloud import osconfig_v1
+
+            def sample_update_patch_deployment():
+                # Create a client
+                client = osconfig_v1.OsConfigServiceClient()
+
+                # Initialize request argument(s)
+                request = osconfig_v1.UpdatePatchDeploymentRequest(
+                )
+
+                # Make the request
+                response = client.update_patch_deployment(request=request)
+
+                # Handle response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.osconfig_v1.types.UpdatePatchDeploymentRequest, dict]):
+                The request object. A request message for updating a
+                patch deployment.
+            patch_deployment (:class:`google.cloud.osconfig_v1.types.PatchDeployment`):
+                Required. The patch deployment to
+                Update.
+
+                This corresponds to the ``patch_deployment`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Optional. Field mask that controls
+                which fields of the patch deployment
+                should be updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.osconfig_v1.types.PatchDeployment:
+                Patch deployments are configurations that individual patch jobs use to
+                   complete a patch. These configurations include
+                   instance filter, package repository settings, and a
+                   schedule. For more information about creating and
+                   managing patch deployments, see [Scheduling patch
+                   jobs](\ https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([patch_deployment, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = patch_deployments.UpdatePatchDeploymentRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if patch_deployment is not None:
+            request.patch_deployment = patch_deployment
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_patch_deployment,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("patch_deployment.name", request.patch_deployment.name),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def pause_patch_deployment(
+        self,
+        request: Union[patch_deployments.PausePatchDeploymentRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> patch_deployments.PatchDeployment:
+        r"""Change state of patch deployment to "PAUSED".
+        Patch deployment in paused state doesn't generate patch
+        jobs.
+
+
+        .. code-block::
+
+            from google.cloud import osconfig_v1
+
+            def sample_pause_patch_deployment():
+                # Create a client
+                client = osconfig_v1.OsConfigServiceClient()
+
+                # Initialize request argument(s)
+                request = osconfig_v1.PausePatchDeploymentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.pause_patch_deployment(request=request)
+
+                # Handle response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.osconfig_v1.types.PausePatchDeploymentRequest, dict]):
+                The request object. A request message for pausing a
+                patch deployment.
+            name (:class:`str`):
+                Required. The resource name of the patch deployment in
+                the form ``projects/*/patchDeployments/*``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.osconfig_v1.types.PatchDeployment:
+                Patch deployments are configurations that individual patch jobs use to
+                   complete a patch. These configurations include
+                   instance filter, package repository settings, and a
+                   schedule. For more information about creating and
+                   managing patch deployments, see [Scheduling patch
+                   jobs](\ https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = patch_deployments.PausePatchDeploymentRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.pause_patch_deployment,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def resume_patch_deployment(
+        self,
+        request: Union[patch_deployments.ResumePatchDeploymentRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> patch_deployments.PatchDeployment:
+        r"""Change state of patch deployment back to "ACTIVE".
+        Patch deployment in active state continues to generate
+        patch jobs.
+
+
+        .. code-block::
+
+            from google.cloud import osconfig_v1
+
+            def sample_resume_patch_deployment():
+                # Create a client
+                client = osconfig_v1.OsConfigServiceClient()
+
+                # Initialize request argument(s)
+                request = osconfig_v1.ResumePatchDeploymentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.resume_patch_deployment(request=request)
+
+                # Handle response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.osconfig_v1.types.ResumePatchDeploymentRequest, dict]):
+                The request object. A request message for resuming a
+                patch deployment.
+            name (:class:`str`):
+                Required. The resource name of the patch deployment in
+                the form ``projects/*/patchDeployments/*``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.osconfig_v1.types.PatchDeployment:
+                Patch deployments are configurations that individual patch jobs use to
+                   complete a patch. These configurations include
+                   instance filter, package repository settings, and a
+                   schedule. For more information about creating and
+                   managing patch deployments, see [Scheduling patch
+                   jobs](\ https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = patch_deployments.ResumePatchDeploymentRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.resume_patch_deployment,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
 
     async def __aenter__(self):
         return self

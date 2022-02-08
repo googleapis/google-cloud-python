@@ -262,6 +262,38 @@ class OsConfigZonalServiceAsyncClient:
         For more information, see `Method:
         projects.locations.osPolicyAssignments.operations.cancel <https://cloud.google.com/compute/docs/osconfig/rest/v1alpha/projects.locations.osPolicyAssignments.operations/cancel>`__.
 
+
+        .. code-block::
+
+            from google.cloud import osconfig_v1alpha
+
+            def sample_create_os_policy_assignment():
+                # Create a client
+                client = osconfig_v1alpha.OsConfigZonalServiceClient()
+
+                # Initialize request argument(s)
+                os_policy_assignment = osconfig_v1alpha.OSPolicyAssignment()
+                os_policy_assignment.os_policies.id = "id_value"
+                os_policy_assignment.os_policies.mode = "ENFORCEMENT"
+                os_policy_assignment.os_policies.resource_groups.resources.pkg.apt.name = "name_value"
+                os_policy_assignment.os_policies.resource_groups.resources.pkg.desired_state = "REMOVED"
+                os_policy_assignment.os_policies.resource_groups.resources.id = "id_value"
+                os_policy_assignment.rollout.disruption_budget.fixed = 528
+
+                request = osconfig_v1alpha.CreateOSPolicyAssignmentRequest(
+                    parent="parent_value",
+                    os_policy_assignment=os_policy_assignment,
+                    os_policy_assignment_id="os_policy_assignment_id_value",
+                )
+
+                # Make the request
+                operation = client.create_os_policy_assignment(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.osconfig_v1alpha.types.CreateOSPolicyAssignmentRequest, dict]):
                 The request object. A request message to create an OS
@@ -393,6 +425,36 @@ class OsConfigZonalServiceAsyncClient:
         For more information, see `Method:
         projects.locations.osPolicyAssignments.operations.cancel <https://cloud.google.com/compute/docs/osconfig/rest/v1alpha/projects.locations.osPolicyAssignments.operations/cancel>`__.
 
+
+        .. code-block::
+
+            from google.cloud import osconfig_v1alpha
+
+            def sample_update_os_policy_assignment():
+                # Create a client
+                client = osconfig_v1alpha.OsConfigZonalServiceClient()
+
+                # Initialize request argument(s)
+                os_policy_assignment = osconfig_v1alpha.OSPolicyAssignment()
+                os_policy_assignment.os_policies.id = "id_value"
+                os_policy_assignment.os_policies.mode = "ENFORCEMENT"
+                os_policy_assignment.os_policies.resource_groups.resources.pkg.apt.name = "name_value"
+                os_policy_assignment.os_policies.resource_groups.resources.pkg.desired_state = "REMOVED"
+                os_policy_assignment.os_policies.resource_groups.resources.id = "id_value"
+                os_policy_assignment.rollout.disruption_budget.fixed = 528
+
+                request = osconfig_v1alpha.UpdateOSPolicyAssignmentRequest(
+                    os_policy_assignment=os_policy_assignment,
+                )
+
+                # Make the request
+                operation = client.update_os_policy_assignment(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.osconfig_v1alpha.types.UpdateOSPolicyAssignmentRequest, dict]):
                 The request object. A request message to update an OS
@@ -500,6 +562,26 @@ class OsConfigZonalServiceAsyncClient:
         retrieve a previous revision of the assignment, also provide the
         revision ID in the ``name`` parameter.
 
+
+        .. code-block::
+
+            from google.cloud import osconfig_v1alpha
+
+            def sample_get_os_policy_assignment():
+                # Create a client
+                client = osconfig_v1alpha.OsConfigZonalServiceClient()
+
+                # Initialize request argument(s)
+                request = osconfig_v1alpha.GetOSPolicyAssignmentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_os_policy_assignment(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.osconfig_v1alpha.types.GetOSPolicyAssignmentRequest, dict]):
                 The request object. A request message to get an OS
@@ -588,6 +670,25 @@ class OsConfigZonalServiceAsyncClient:
         For each OS policy assignment, the latest revision is
         returned.
 
+
+        .. code-block::
+
+            from google.cloud import osconfig_v1alpha
+
+            def sample_list_os_policy_assignments():
+                # Create a client
+                client = osconfig_v1alpha.OsConfigZonalServiceClient()
+
+                # Initialize request argument(s)
+                request = osconfig_v1alpha.ListOSPolicyAssignmentsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_os_policy_assignments(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.osconfig_v1alpha.types.ListOSPolicyAssignmentsRequest, dict]):
                 The request object. A request message to list OS policy
@@ -668,6 +769,25 @@ class OsConfigZonalServiceAsyncClient:
     ) -> pagers.ListOSPolicyAssignmentRevisionsAsyncPager:
         r"""List the OS policy assignment revisions for a given
         OS policy assignment.
+
+
+        .. code-block::
+
+            from google.cloud import osconfig_v1alpha
+
+            def sample_list_os_policy_assignment_revisions():
+                # Create a client
+                client = osconfig_v1alpha.OsConfigZonalServiceClient()
+
+                # Initialize request argument(s)
+                request = osconfig_v1alpha.ListOSPolicyAssignmentRevisionsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                page_result = client.list_os_policy_assignment_revisions(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.osconfig_v1alpha.types.ListOSPolicyAssignmentRevisionsRequest, dict]):
@@ -763,6 +883,28 @@ class OsConfigZonalServiceAsyncClient:
         For more information, see `Method:
         projects.locations.osPolicyAssignments.operations.cancel <https://cloud.google.com/compute/docs/osconfig/rest/v1alpha/projects.locations.osPolicyAssignments.operations/cancel>`__.
 
+
+        .. code-block::
+
+            from google.cloud import osconfig_v1alpha
+
+            def sample_delete_os_policy_assignment():
+                # Create a client
+                client = osconfig_v1alpha.OsConfigZonalServiceClient()
+
+                # Initialize request argument(s)
+                request = osconfig_v1alpha.DeleteOSPolicyAssignmentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_os_policy_assignment(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.osconfig_v1alpha.types.DeleteOSPolicyAssignmentRequest, dict]):
                 The request object. A request message for deleting a OS
@@ -857,6 +999,26 @@ class OsConfigZonalServiceAsyncClient:
     ) -> instance_os_policies_compliance.InstanceOSPoliciesCompliance:
         r"""Get OS policies compliance data for the specified
         Compute Engine VM instance.
+
+
+        .. code-block::
+
+            from google.cloud import osconfig_v1alpha
+
+            def sample_get_instance_os_policies_compliance():
+                # Create a client
+                client = osconfig_v1alpha.OsConfigZonalServiceClient()
+
+                # Initialize request argument(s)
+                request = osconfig_v1alpha.GetInstanceOSPoliciesComplianceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_instance_os_policies_compliance(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.osconfig_v1alpha.types.GetInstanceOSPoliciesComplianceRequest, dict]):
@@ -957,6 +1119,25 @@ class OsConfigZonalServiceAsyncClient:
         r"""List OS policies compliance data for all Compute
         Engine VM instances in the specified zone.
 
+
+        .. code-block::
+
+            from google.cloud import osconfig_v1alpha
+
+            def sample_list_instance_os_policies_compliances():
+                # Create a client
+                client = osconfig_v1alpha.OsConfigZonalServiceClient()
+
+                # Initialize request argument(s)
+                request = osconfig_v1alpha.ListInstanceOSPoliciesCompliancesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_instance_os_policies_compliances(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.osconfig_v1alpha.types.ListInstanceOSPoliciesCompliancesRequest, dict]):
                 The request object. A request message for listing OS
@@ -1046,6 +1227,26 @@ class OsConfigZonalServiceAsyncClient:
         r"""Get inventory data for the specified VM instance. If the VM has
         no associated inventory, the message ``NOT_FOUND`` is returned.
 
+
+        .. code-block::
+
+            from google.cloud import osconfig_v1alpha
+
+            def sample_get_inventory():
+                # Create a client
+                client = osconfig_v1alpha.OsConfigZonalServiceClient()
+
+                # Initialize request argument(s)
+                request = osconfig_v1alpha.GetInventoryRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_inventory(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.osconfig_v1alpha.types.GetInventoryRequest, dict]):
                 The request object. A request message for getting
@@ -1132,6 +1333,25 @@ class OsConfigZonalServiceAsyncClient:
     ) -> pagers.ListInventoriesAsyncPager:
         r"""List inventory data for all VM instances in the
         specified zone.
+
+
+        .. code-block::
+
+            from google.cloud import osconfig_v1alpha
+
+            def sample_list_inventories():
+                # Create a client
+                client = osconfig_v1alpha.OsConfigZonalServiceClient()
+
+                # Initialize request argument(s)
+                request = osconfig_v1alpha.ListInventoriesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_inventories(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.osconfig_v1alpha.types.ListInventoriesRequest, dict]):
@@ -1223,6 +1443,26 @@ class OsConfigZonalServiceAsyncClient:
         instance. Only VMs with inventory data have
         vulnerability reports associated with them.
 
+
+        .. code-block::
+
+            from google.cloud import osconfig_v1alpha
+
+            def sample_get_vulnerability_report():
+                # Create a client
+                client = osconfig_v1alpha.OsConfigZonalServiceClient()
+
+                # Initialize request argument(s)
+                request = osconfig_v1alpha.GetVulnerabilityReportRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_vulnerability_report(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.osconfig_v1alpha.types.GetVulnerabilityReportRequest, dict]):
                 The request object. A request message for getting the
@@ -1305,6 +1545,25 @@ class OsConfigZonalServiceAsyncClient:
     ) -> pagers.ListVulnerabilityReportsAsyncPager:
         r"""List vulnerability reports for all VM instances in
         the specified zone.
+
+
+        .. code-block::
+
+            from google.cloud import osconfig_v1alpha
+
+            def sample_list_vulnerability_reports():
+                # Create a client
+                client = osconfig_v1alpha.OsConfigZonalServiceClient()
+
+                # Initialize request argument(s)
+                request = osconfig_v1alpha.ListVulnerabilityReportsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_vulnerability_reports(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.osconfig_v1alpha.types.ListVulnerabilityReportsRequest, dict]):

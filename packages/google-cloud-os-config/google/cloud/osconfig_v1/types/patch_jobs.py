@@ -405,6 +405,9 @@ class PatchConfig(proto.Message):
             The ``ExecStep`` to run before the patch update.
         post_step (google.cloud.osconfig_v1.types.ExecStep):
             The ``ExecStep`` to run after the patch update.
+        mig_instances_allowed (bool):
+            Allows the patch job to run on Managed
+            instance groups (MIGs).
     """
 
     class RebootConfig(proto.Enum):
@@ -424,6 +427,7 @@ class PatchConfig(proto.Message):
     )
     pre_step = proto.Field(proto.MESSAGE, number=8, message="ExecStep",)
     post_step = proto.Field(proto.MESSAGE, number=9, message="ExecStep",)
+    mig_instances_allowed = proto.Field(proto.BOOL, number=10,)
 
 
 class Instance(proto.Message):

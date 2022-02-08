@@ -54,6 +54,21 @@
               "methods": [
                 "list_patch_jobs"
               ]
+            },
+            "PausePatchDeployment": {
+              "methods": [
+                "pause_patch_deployment"
+              ]
+            },
+            "ResumePatchDeployment": {
+              "methods": [
+                "resume_patch_deployment"
+              ]
+            },
+            "UpdatePatchDeployment": {
+              "methods": [
+                "update_patch_deployment"
+              ]
             }
           }
         },
@@ -103,6 +118,21 @@
             "ListPatchJobs": {
               "methods": [
                 "list_patch_jobs"
+              ]
+            },
+            "PausePatchDeployment": {
+              "methods": [
+                "pause_patch_deployment"
+              ]
+            },
+            "ResumePatchDeployment": {
+              "methods": [
+                "resume_patch_deployment"
+              ]
+            },
+            "UpdatePatchDeployment": {
+              "methods": [
+                "update_patch_deployment"
               ]
             }
           }

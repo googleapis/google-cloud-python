@@ -492,6 +492,97 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
             )
         return self._stubs["delete_patch_deployment"]
 
+    @property
+    def update_patch_deployment(
+        self,
+    ) -> Callable[
+        [patch_deployments.UpdatePatchDeploymentRequest],
+        Awaitable[patch_deployments.PatchDeployment],
+    ]:
+        r"""Return a callable for the update patch deployment method over gRPC.
+
+        Update an OS Config patch deployment.
+
+        Returns:
+            Callable[[~.UpdatePatchDeploymentRequest],
+                    Awaitable[~.PatchDeployment]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_patch_deployment" not in self._stubs:
+            self._stubs["update_patch_deployment"] = self.grpc_channel.unary_unary(
+                "/google.cloud.osconfig.v1.OsConfigService/UpdatePatchDeployment",
+                request_serializer=patch_deployments.UpdatePatchDeploymentRequest.serialize,
+                response_deserializer=patch_deployments.PatchDeployment.deserialize,
+            )
+        return self._stubs["update_patch_deployment"]
+
+    @property
+    def pause_patch_deployment(
+        self,
+    ) -> Callable[
+        [patch_deployments.PausePatchDeploymentRequest],
+        Awaitable[patch_deployments.PatchDeployment],
+    ]:
+        r"""Return a callable for the pause patch deployment method over gRPC.
+
+        Change state of patch deployment to "PAUSED".
+        Patch deployment in paused state doesn't generate patch
+        jobs.
+
+        Returns:
+            Callable[[~.PausePatchDeploymentRequest],
+                    Awaitable[~.PatchDeployment]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "pause_patch_deployment" not in self._stubs:
+            self._stubs["pause_patch_deployment"] = self.grpc_channel.unary_unary(
+                "/google.cloud.osconfig.v1.OsConfigService/PausePatchDeployment",
+                request_serializer=patch_deployments.PausePatchDeploymentRequest.serialize,
+                response_deserializer=patch_deployments.PatchDeployment.deserialize,
+            )
+        return self._stubs["pause_patch_deployment"]
+
+    @property
+    def resume_patch_deployment(
+        self,
+    ) -> Callable[
+        [patch_deployments.ResumePatchDeploymentRequest],
+        Awaitable[patch_deployments.PatchDeployment],
+    ]:
+        r"""Return a callable for the resume patch deployment method over gRPC.
+
+        Change state of patch deployment back to "ACTIVE".
+        Patch deployment in active state continues to generate
+        patch jobs.
+
+        Returns:
+            Callable[[~.ResumePatchDeploymentRequest],
+                    Awaitable[~.PatchDeployment]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "resume_patch_deployment" not in self._stubs:
+            self._stubs["resume_patch_deployment"] = self.grpc_channel.unary_unary(
+                "/google.cloud.osconfig.v1.OsConfigService/ResumePatchDeployment",
+                request_serializer=patch_deployments.ResumePatchDeploymentRequest.serialize,
+                response_deserializer=patch_deployments.PatchDeployment.deserialize,
+            )
+        return self._stubs["resume_patch_deployment"]
+
     def close(self):
         return self.grpc_channel.close()
 

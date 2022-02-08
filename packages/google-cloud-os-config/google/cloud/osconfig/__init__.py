@@ -88,7 +88,14 @@ from google.cloud.osconfig_v1.types.patch_deployments import (
 from google.cloud.osconfig_v1.types.patch_deployments import MonthlySchedule
 from google.cloud.osconfig_v1.types.patch_deployments import OneTimeSchedule
 from google.cloud.osconfig_v1.types.patch_deployments import PatchDeployment
+from google.cloud.osconfig_v1.types.patch_deployments import PausePatchDeploymentRequest
 from google.cloud.osconfig_v1.types.patch_deployments import RecurringSchedule
+from google.cloud.osconfig_v1.types.patch_deployments import (
+    ResumePatchDeploymentRequest,
+)
+from google.cloud.osconfig_v1.types.patch_deployments import (
+    UpdatePatchDeploymentRequest,
+)
 from google.cloud.osconfig_v1.types.patch_deployments import WeekDayOfMonth
 from google.cloud.osconfig_v1.types.patch_deployments import WeeklySchedule
 from google.cloud.osconfig_v1.types.patch_jobs import AptSettings
@@ -156,7 +163,10 @@ __all__ = (
     "MonthlySchedule",
     "OneTimeSchedule",
     "PatchDeployment",
+    "PausePatchDeploymentRequest",
     "RecurringSchedule",
+    "ResumePatchDeploymentRequest",
+    "UpdatePatchDeploymentRequest",
     "WeekDayOfMonth",
     "WeeklySchedule",
     "AptSettings",

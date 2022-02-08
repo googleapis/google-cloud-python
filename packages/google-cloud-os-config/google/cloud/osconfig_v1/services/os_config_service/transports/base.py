@@ -157,6 +157,21 @@ class OsConfigServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.update_patch_deployment: gapic_v1.method.wrap_method(
+                self.update_patch_deployment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.pause_patch_deployment: gapic_v1.method.wrap_method(
+                self.pause_patch_deployment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.resume_patch_deployment: gapic_v1.method.wrap_method(
+                self.resume_patch_deployment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -261,6 +276,42 @@ class OsConfigServiceTransport(abc.ABC):
     ) -> Callable[
         [patch_deployments.DeletePatchDeploymentRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_patch_deployment(
+        self,
+    ) -> Callable[
+        [patch_deployments.UpdatePatchDeploymentRequest],
+        Union[
+            patch_deployments.PatchDeployment,
+            Awaitable[patch_deployments.PatchDeployment],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def pause_patch_deployment(
+        self,
+    ) -> Callable[
+        [patch_deployments.PausePatchDeploymentRequest],
+        Union[
+            patch_deployments.PatchDeployment,
+            Awaitable[patch_deployments.PatchDeployment],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def resume_patch_deployment(
+        self,
+    ) -> Callable[
+        [patch_deployments.ResumePatchDeploymentRequest],
+        Union[
+            patch_deployments.PatchDeployment,
+            Awaitable[patch_deployments.PatchDeployment],
+        ],
     ]:
         raise NotImplementedError()
 

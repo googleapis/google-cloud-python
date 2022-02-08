@@ -59,7 +59,10 @@ class osconfigCallTransformer(cst.CSTTransformer):
         'list_patch_job_instance_details': ('parent', 'page_size', 'page_token', 'filter', ),
         'list_patch_jobs': ('parent', 'page_size', 'page_token', 'filter', ),
         'list_vulnerability_reports': ('parent', 'page_size', 'page_token', 'filter', ),
+        'pause_patch_deployment': ('name', ),
+        'resume_patch_deployment': ('name', ),
         'update_os_policy_assignment': ('os_policy_assignment', 'update_mask', ),
+        'update_patch_deployment': ('patch_deployment', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

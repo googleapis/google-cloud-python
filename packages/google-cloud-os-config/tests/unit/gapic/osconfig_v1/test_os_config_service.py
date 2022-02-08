@@ -42,6 +42,7 @@ from google.cloud.osconfig_v1.types import patch_deployments
 from google.cloud.osconfig_v1.types import patch_jobs
 from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import datetime_pb2  # type: ignore
 from google.type import dayofweek_pb2  # type: ignore
@@ -1978,6 +1979,7 @@ def test_create_patch_deployment(request_type, transport: str = "grpc"):
         call.return_value = patch_deployments.PatchDeployment(
             name="name_value",
             description="description_value",
+            state=patch_deployments.PatchDeployment.State.ACTIVE,
             one_time_schedule=patch_deployments.OneTimeSchedule(
                 execute_time=timestamp_pb2.Timestamp(seconds=751)
             ),
@@ -1993,6 +1995,7 @@ def test_create_patch_deployment(request_type, transport: str = "grpc"):
     assert isinstance(response, patch_deployments.PatchDeployment)
     assert response.name == "name_value"
     assert response.description == "description_value"
+    assert response.state == patch_deployments.PatchDeployment.State.ACTIVE
 
 
 def test_create_patch_deployment_empty_call():
@@ -2032,7 +2035,9 @@ async def test_create_patch_deployment_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             patch_deployments.PatchDeployment(
-                name="name_value", description="description_value",
+                name="name_value",
+                description="description_value",
+                state=patch_deployments.PatchDeployment.State.ACTIVE,
             )
         )
         response = await client.create_patch_deployment(request)
@@ -2046,6 +2051,7 @@ async def test_create_patch_deployment_async(
     assert isinstance(response, patch_deployments.PatchDeployment)
     assert response.name == "name_value"
     assert response.description == "description_value"
+    assert response.state == patch_deployments.PatchDeployment.State.ACTIVE
 
 
 @pytest.mark.asyncio
@@ -2232,6 +2238,7 @@ def test_get_patch_deployment(request_type, transport: str = "grpc"):
         call.return_value = patch_deployments.PatchDeployment(
             name="name_value",
             description="description_value",
+            state=patch_deployments.PatchDeployment.State.ACTIVE,
             one_time_schedule=patch_deployments.OneTimeSchedule(
                 execute_time=timestamp_pb2.Timestamp(seconds=751)
             ),
@@ -2247,6 +2254,7 @@ def test_get_patch_deployment(request_type, transport: str = "grpc"):
     assert isinstance(response, patch_deployments.PatchDeployment)
     assert response.name == "name_value"
     assert response.description == "description_value"
+    assert response.state == patch_deployments.PatchDeployment.State.ACTIVE
 
 
 def test_get_patch_deployment_empty_call():
@@ -2286,7 +2294,9 @@ async def test_get_patch_deployment_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             patch_deployments.PatchDeployment(
-                name="name_value", description="description_value",
+                name="name_value",
+                description="description_value",
+                state=patch_deployments.PatchDeployment.State.ACTIVE,
             )
         )
         response = await client.get_patch_deployment(request)
@@ -2300,6 +2310,7 @@ async def test_get_patch_deployment_async(
     assert isinstance(response, patch_deployments.PatchDeployment)
     assert response.name == "name_value"
     assert response.description == "description_value"
+    assert response.state == patch_deployments.PatchDeployment.State.ACTIVE
 
 
 @pytest.mark.asyncio
@@ -3050,6 +3061,727 @@ async def test_delete_patch_deployment_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type", [patch_deployments.UpdatePatchDeploymentRequest, dict,]
+)
+def test_update_patch_deployment(request_type, transport: str = "grpc"):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_patch_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = patch_deployments.PatchDeployment(
+            name="name_value",
+            description="description_value",
+            state=patch_deployments.PatchDeployment.State.ACTIVE,
+            one_time_schedule=patch_deployments.OneTimeSchedule(
+                execute_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
+        )
+        response = client.update_patch_deployment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == patch_deployments.UpdatePatchDeploymentRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, patch_deployments.PatchDeployment)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.state == patch_deployments.PatchDeployment.State.ACTIVE
+
+
+def test_update_patch_deployment_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_patch_deployment), "__call__"
+    ) as call:
+        client.update_patch_deployment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == patch_deployments.UpdatePatchDeploymentRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_patch_deployment_async(
+    transport: str = "grpc_asyncio",
+    request_type=patch_deployments.UpdatePatchDeploymentRequest,
+):
+    client = OsConfigServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_patch_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            patch_deployments.PatchDeployment(
+                name="name_value",
+                description="description_value",
+                state=patch_deployments.PatchDeployment.State.ACTIVE,
+            )
+        )
+        response = await client.update_patch_deployment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == patch_deployments.UpdatePatchDeploymentRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, patch_deployments.PatchDeployment)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.state == patch_deployments.PatchDeployment.State.ACTIVE
+
+
+@pytest.mark.asyncio
+async def test_update_patch_deployment_async_from_dict():
+    await test_update_patch_deployment_async(request_type=dict)
+
+
+def test_update_patch_deployment_field_headers():
+    client = OsConfigServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = patch_deployments.UpdatePatchDeploymentRequest()
+
+    request.patch_deployment.name = "patch_deployment.name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_patch_deployment), "__call__"
+    ) as call:
+        call.return_value = patch_deployments.PatchDeployment()
+        client.update_patch_deployment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "patch_deployment.name=patch_deployment.name/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_patch_deployment_field_headers_async():
+    client = OsConfigServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = patch_deployments.UpdatePatchDeploymentRequest()
+
+    request.patch_deployment.name = "patch_deployment.name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_patch_deployment), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            patch_deployments.PatchDeployment()
+        )
+        await client.update_patch_deployment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "patch_deployment.name=patch_deployment.name/value",
+    ) in kw["metadata"]
+
+
+def test_update_patch_deployment_flattened():
+    client = OsConfigServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_patch_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = patch_deployments.PatchDeployment()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_patch_deployment(
+            patch_deployment=patch_deployments.PatchDeployment(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].patch_deployment
+        mock_val = patch_deployments.PatchDeployment(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_patch_deployment_flattened_error():
+    client = OsConfigServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_patch_deployment(
+            patch_deployments.UpdatePatchDeploymentRequest(),
+            patch_deployment=patch_deployments.PatchDeployment(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_patch_deployment_flattened_async():
+    client = OsConfigServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_patch_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = patch_deployments.PatchDeployment()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            patch_deployments.PatchDeployment()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_patch_deployment(
+            patch_deployment=patch_deployments.PatchDeployment(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].patch_deployment
+        mock_val = patch_deployments.PatchDeployment(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_patch_deployment_flattened_error_async():
+    client = OsConfigServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_patch_deployment(
+            patch_deployments.UpdatePatchDeploymentRequest(),
+            patch_deployment=patch_deployments.PatchDeployment(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type", [patch_deployments.PausePatchDeploymentRequest, dict,]
+)
+def test_pause_patch_deployment(request_type, transport: str = "grpc"):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.pause_patch_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = patch_deployments.PatchDeployment(
+            name="name_value",
+            description="description_value",
+            state=patch_deployments.PatchDeployment.State.ACTIVE,
+            one_time_schedule=patch_deployments.OneTimeSchedule(
+                execute_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
+        )
+        response = client.pause_patch_deployment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == patch_deployments.PausePatchDeploymentRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, patch_deployments.PatchDeployment)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.state == patch_deployments.PatchDeployment.State.ACTIVE
+
+
+def test_pause_patch_deployment_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.pause_patch_deployment), "__call__"
+    ) as call:
+        client.pause_patch_deployment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == patch_deployments.PausePatchDeploymentRequest()
+
+
+@pytest.mark.asyncio
+async def test_pause_patch_deployment_async(
+    transport: str = "grpc_asyncio",
+    request_type=patch_deployments.PausePatchDeploymentRequest,
+):
+    client = OsConfigServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.pause_patch_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            patch_deployments.PatchDeployment(
+                name="name_value",
+                description="description_value",
+                state=patch_deployments.PatchDeployment.State.ACTIVE,
+            )
+        )
+        response = await client.pause_patch_deployment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == patch_deployments.PausePatchDeploymentRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, patch_deployments.PatchDeployment)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.state == patch_deployments.PatchDeployment.State.ACTIVE
+
+
+@pytest.mark.asyncio
+async def test_pause_patch_deployment_async_from_dict():
+    await test_pause_patch_deployment_async(request_type=dict)
+
+
+def test_pause_patch_deployment_field_headers():
+    client = OsConfigServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = patch_deployments.PausePatchDeploymentRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.pause_patch_deployment), "__call__"
+    ) as call:
+        call.return_value = patch_deployments.PatchDeployment()
+        client.pause_patch_deployment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_pause_patch_deployment_field_headers_async():
+    client = OsConfigServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = patch_deployments.PausePatchDeploymentRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.pause_patch_deployment), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            patch_deployments.PatchDeployment()
+        )
+        await client.pause_patch_deployment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_pause_patch_deployment_flattened():
+    client = OsConfigServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.pause_patch_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = patch_deployments.PatchDeployment()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.pause_patch_deployment(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_pause_patch_deployment_flattened_error():
+    client = OsConfigServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.pause_patch_deployment(
+            patch_deployments.PausePatchDeploymentRequest(), name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_pause_patch_deployment_flattened_async():
+    client = OsConfigServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.pause_patch_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = patch_deployments.PatchDeployment()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            patch_deployments.PatchDeployment()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.pause_patch_deployment(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_pause_patch_deployment_flattened_error_async():
+    client = OsConfigServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.pause_patch_deployment(
+            patch_deployments.PausePatchDeploymentRequest(), name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type", [patch_deployments.ResumePatchDeploymentRequest, dict,]
+)
+def test_resume_patch_deployment(request_type, transport: str = "grpc"):
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resume_patch_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = patch_deployments.PatchDeployment(
+            name="name_value",
+            description="description_value",
+            state=patch_deployments.PatchDeployment.State.ACTIVE,
+            one_time_schedule=patch_deployments.OneTimeSchedule(
+                execute_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
+        )
+        response = client.resume_patch_deployment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == patch_deployments.ResumePatchDeploymentRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, patch_deployments.PatchDeployment)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.state == patch_deployments.PatchDeployment.State.ACTIVE
+
+
+def test_resume_patch_deployment_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OsConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resume_patch_deployment), "__call__"
+    ) as call:
+        client.resume_patch_deployment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == patch_deployments.ResumePatchDeploymentRequest()
+
+
+@pytest.mark.asyncio
+async def test_resume_patch_deployment_async(
+    transport: str = "grpc_asyncio",
+    request_type=patch_deployments.ResumePatchDeploymentRequest,
+):
+    client = OsConfigServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resume_patch_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            patch_deployments.PatchDeployment(
+                name="name_value",
+                description="description_value",
+                state=patch_deployments.PatchDeployment.State.ACTIVE,
+            )
+        )
+        response = await client.resume_patch_deployment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == patch_deployments.ResumePatchDeploymentRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, patch_deployments.PatchDeployment)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.state == patch_deployments.PatchDeployment.State.ACTIVE
+
+
+@pytest.mark.asyncio
+async def test_resume_patch_deployment_async_from_dict():
+    await test_resume_patch_deployment_async(request_type=dict)
+
+
+def test_resume_patch_deployment_field_headers():
+    client = OsConfigServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = patch_deployments.ResumePatchDeploymentRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resume_patch_deployment), "__call__"
+    ) as call:
+        call.return_value = patch_deployments.PatchDeployment()
+        client.resume_patch_deployment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_resume_patch_deployment_field_headers_async():
+    client = OsConfigServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = patch_deployments.ResumePatchDeploymentRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resume_patch_deployment), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            patch_deployments.PatchDeployment()
+        )
+        await client.resume_patch_deployment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_resume_patch_deployment_flattened():
+    client = OsConfigServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resume_patch_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = patch_deployments.PatchDeployment()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.resume_patch_deployment(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_resume_patch_deployment_flattened_error():
+    client = OsConfigServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.resume_patch_deployment(
+            patch_deployments.ResumePatchDeploymentRequest(), name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_resume_patch_deployment_flattened_async():
+    client = OsConfigServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resume_patch_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = patch_deployments.PatchDeployment()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            patch_deployments.PatchDeployment()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.resume_patch_deployment(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_resume_patch_deployment_flattened_error_async():
+    client = OsConfigServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.resume_patch_deployment(
+            patch_deployments.ResumePatchDeploymentRequest(), name="name_value",
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.OsConfigServiceGrpcTransport(
@@ -3173,6 +3905,9 @@ def test_os_config_service_base_transport():
         "get_patch_deployment",
         "list_patch_deployments",
         "delete_patch_deployment",
+        "update_patch_deployment",
+        "pause_patch_deployment",
+        "resume_patch_deployment",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):

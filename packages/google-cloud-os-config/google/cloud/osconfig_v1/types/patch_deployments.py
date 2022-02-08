@@ -17,6 +17,7 @@ import proto  # type: ignore
 
 from google.cloud.osconfig_v1.types import patch_jobs
 from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import datetime_pb2  # type: ignore
 from google.type import dayofweek_pb2  # type: ignore
@@ -37,6 +38,9 @@ __protobuf__ = proto.module(
         "ListPatchDeploymentsRequest",
         "ListPatchDeploymentsResponse",
         "DeletePatchDeploymentRequest",
+        "UpdatePatchDeploymentRequest",
+        "PausePatchDeploymentRequest",
+        "ResumePatchDeploymentRequest",
     },
 )
 
@@ -99,7 +103,16 @@ class PatchDeployment(proto.Message):
             format.
         rollout (google.cloud.osconfig_v1.types.PatchRollout):
             Optional. Rollout strategy of the patch job.
+        state (google.cloud.osconfig_v1.types.PatchDeployment.State):
+            Output only. Current state of the patch
+            deployment.
     """
+
+    class State(proto.Enum):
+        r"""Represents state of patch peployment."""
+        STATE_UNSPECIFIED = 0
+        ACTIVE = 1
+        PAUSED = 2
 
     name = proto.Field(proto.STRING, number=1,)
     description = proto.Field(proto.STRING, number=2,)
@@ -120,6 +133,7 @@ class PatchDeployment(proto.Message):
         proto.MESSAGE, number=10, message=timestamp_pb2.Timestamp,
     )
     rollout = proto.Field(proto.MESSAGE, number=11, message=patch_jobs.PatchRollout,)
+    state = proto.Field(proto.ENUM, number=12, enum=State,)
 
 
 class OneTimeSchedule(proto.Message):
@@ -263,10 +277,21 @@ class WeekDayOfMonth(proto.Message):
             indicates the last week of the month.
         day_of_week (google.type.dayofweek_pb2.DayOfWeek):
             Required. A day of the week.
+        day_offset (int):
+            Optional. Represents the number of days before or after the
+            given week day of month that the patch deployment is
+            scheduled for. For example if ``week_ordinal`` and
+            ``day_of_week`` values point to the second day of the month
+            and this ``day_offset`` value is set to ``3``, the patch
+            deployment takes place three days after the second Tuesday
+            of the month. If this value is negative, for example -5, the
+            patches are deployed five days before before the second
+            Tuesday of the month. Allowed values are in range [-30, 30].
     """
 
     week_ordinal = proto.Field(proto.INT32, number=1,)
     day_of_week = proto.Field(proto.ENUM, number=2, enum=dayofweek_pb2.DayOfWeek,)
+    day_offset = proto.Field(proto.INT32, number=3,)
 
 
 class CreatePatchDeploymentRequest(proto.Message):
@@ -352,6 +377,48 @@ class ListPatchDeploymentsResponse(proto.Message):
 
 class DeletePatchDeploymentRequest(proto.Message):
     r"""A request message for deleting a patch deployment.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the patch deployment in the
+            form ``projects/*/patchDeployments/*``.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class UpdatePatchDeploymentRequest(proto.Message):
+    r"""A request message for updating a patch deployment.
+
+    Attributes:
+        patch_deployment (google.cloud.osconfig_v1.types.PatchDeployment):
+            Required. The patch deployment to Update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. Field mask that controls which
+            fields of the patch deployment should be
+            updated.
+    """
+
+    patch_deployment = proto.Field(proto.MESSAGE, number=1, message="PatchDeployment",)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
+
+
+class PausePatchDeploymentRequest(proto.Message):
+    r"""A request message for pausing a patch deployment.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the patch deployment in the
+            form ``projects/*/patchDeployments/*``.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class ResumePatchDeploymentRequest(proto.Message):
+    r"""A request message for resuming a patch deployment.
 
     Attributes:
         name (str):

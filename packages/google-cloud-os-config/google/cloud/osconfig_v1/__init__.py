@@ -48,7 +48,10 @@ from .types.patch_deployments import ListPatchDeploymentsResponse
 from .types.patch_deployments import MonthlySchedule
 from .types.patch_deployments import OneTimeSchedule
 from .types.patch_deployments import PatchDeployment
+from .types.patch_deployments import PausePatchDeploymentRequest
 from .types.patch_deployments import RecurringSchedule
+from .types.patch_deployments import ResumePatchDeploymentRequest
+from .types.patch_deployments import UpdatePatchDeploymentRequest
 from .types.patch_deployments import WeekDayOfMonth
 from .types.patch_deployments import WeeklySchedule
 from .types.patch_jobs import AptSettings
@@ -133,8 +136,11 @@ __all__ = (
     "PatchJob",
     "PatchJobInstanceDetails",
     "PatchRollout",
+    "PausePatchDeploymentRequest",
     "RecurringSchedule",
+    "ResumePatchDeploymentRequest",
     "UpdateOSPolicyAssignmentRequest",
+    "UpdatePatchDeploymentRequest",
     "VulnerabilityReport",
     "WeekDayOfMonth",
     "WeeklySchedule",
