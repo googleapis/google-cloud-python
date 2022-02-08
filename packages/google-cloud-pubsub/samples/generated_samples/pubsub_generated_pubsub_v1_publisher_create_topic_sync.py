@@ -39,7 +39,7 @@ def sample_create_topic():
     # Make the request
     response = client.create_topic(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END pubsub_generated_pubsub_v1_Publisher_CreateTopic_sync]

@@ -38,7 +38,7 @@ async def sample_update_snapshot():
     # Make the request
     response = await client.update_snapshot(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END pubsub_generated_pubsub_v1_Subscriber_UpdateSnapshot_async]

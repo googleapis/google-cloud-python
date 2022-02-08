@@ -37,7 +37,7 @@ def sample_delete_subscription():
     )
 
     # Make the request
-    response = client.delete_subscription(request=request)
+    client.delete_subscription(request=request)
 
 
 # [END pubsub_generated_pubsub_v1_Subscriber_DeleteSubscription_sync]

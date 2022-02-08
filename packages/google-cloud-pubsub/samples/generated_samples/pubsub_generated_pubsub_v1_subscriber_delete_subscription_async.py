@@ -37,7 +37,7 @@ async def sample_delete_subscription():
     )
 
     # Make the request
-    response = await client.delete_subscription(request=request)
+    await client.delete_subscription(request=request)
 
 
 # [END pubsub_generated_pubsub_v1_Subscriber_DeleteSubscription_async]

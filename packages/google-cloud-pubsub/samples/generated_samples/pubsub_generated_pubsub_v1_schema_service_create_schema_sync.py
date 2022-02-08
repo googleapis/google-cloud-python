@@ -43,7 +43,7 @@ def sample_create_schema():
     # Make the request
     response = client.create_schema(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END pubsub_generated_pubsub_v1_SchemaService_CreateSchema_sync]

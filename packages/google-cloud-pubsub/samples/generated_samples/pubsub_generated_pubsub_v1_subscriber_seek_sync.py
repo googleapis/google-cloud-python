@@ -39,7 +39,7 @@ def sample_seek():
     # Make the request
     response = client.seek(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END pubsub_generated_pubsub_v1_Subscriber_Seek_sync]

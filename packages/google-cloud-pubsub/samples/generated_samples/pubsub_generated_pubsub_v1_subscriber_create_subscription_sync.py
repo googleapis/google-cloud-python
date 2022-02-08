@@ -40,7 +40,7 @@ def sample_create_subscription():
     # Make the request
     response = client.create_subscription(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END pubsub_generated_pubsub_v1_Subscriber_CreateSubscription_sync]

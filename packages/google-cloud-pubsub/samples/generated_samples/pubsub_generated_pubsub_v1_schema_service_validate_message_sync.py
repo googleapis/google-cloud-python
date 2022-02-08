@@ -40,7 +40,7 @@ def sample_validate_message():
     # Make the request
     response = client.validate_message(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END pubsub_generated_pubsub_v1_SchemaService_ValidateMessage_sync]

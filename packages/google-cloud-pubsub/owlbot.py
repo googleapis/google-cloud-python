@@ -232,7 +232,7 @@ for library in s.get_staging_dirs(default_version):
             library
             / f"google/pubsub_{library.name}/services/subscriber/transports/base.py",
         ],
-        r"""gapic_version=(pkg_resources\.get_distribution\(\s+)['"]google-pubsub['"]""",
+        r"""gapic_version=(pkg_resources\.get_distribution\(\s+)['"]google-cloud-pubsub['"]""",
         "client_library_version=\g<1>'google-cloud-pubsub'",
     )
 

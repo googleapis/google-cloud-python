@@ -37,7 +37,7 @@ async def sample_delete_schema():
     )
 
     # Make the request
-    response = await client.delete_schema(request=request)
+    await client.delete_schema(request=request)
 
 
 # [END pubsub_generated_pubsub_v1_SchemaService_DeleteSchema_async]

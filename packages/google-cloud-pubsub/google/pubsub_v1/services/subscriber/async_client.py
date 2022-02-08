@@ -263,7 +263,7 @@ class SubscriberAsyncClient:
                 # Make the request
                 response = client.create_subscription(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -422,7 +422,7 @@ class SubscriberAsyncClient:
                 # Make the request
                 response = client.get_subscription(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -529,7 +529,7 @@ class SubscriberAsyncClient:
                 # Make the request
                 response = client.update_subscription(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -606,6 +606,8 @@ class SubscriberAsyncClient:
 
                 # Make the request
                 page_result = client.list_subscriptions(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -719,7 +721,7 @@ class SubscriberAsyncClient:
                 )
 
                 # Make the request
-                response = client.delete_subscription(request=request)
+                client.delete_subscription(request=request)
 
         Args:
             request (Union[google.pubsub_v1.types.DeleteSubscriptionRequest, dict]):
@@ -820,7 +822,7 @@ class SubscriberAsyncClient:
                 )
 
                 # Make the request
-                response = client.modify_ack_deadline(request=request)
+                client.modify_ack_deadline(request=request)
 
         Args:
             request (Union[google.pubsub_v1.types.ModifyAckDeadlineRequest, dict]):
@@ -946,7 +948,7 @@ class SubscriberAsyncClient:
                 )
 
                 # Make the request
-                response = client.acknowledge(request=request)
+                client.acknowledge(request=request)
 
         Args:
             request (Union[google.pubsub_v1.types.AcknowledgeRequest, dict]):
@@ -1055,7 +1057,7 @@ class SubscriberAsyncClient:
                 # Make the request
                 response = client.pull(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1200,12 +1202,15 @@ class SubscriberAsyncClient:
                 # Here we create a generator that yields a single `request` for
                 # demonstrative purposes.
                 requests = [request]
+
                 def request_generator():
                     for request in requests:
                         yield request
 
                 # Make the request
                 stream = client.streaming_pull(requests=request_generator())
+
+                # Handle the response
                 for response in stream:
                     print(response)
 
@@ -1289,7 +1294,7 @@ class SubscriberAsyncClient:
                 )
 
                 # Make the request
-                response = client.modify_push_config(request=request)
+                client.modify_push_config(request=request)
 
         Args:
             request (Union[google.pubsub_v1.types.ModifyPushConfigRequest, dict]):
@@ -1403,7 +1408,7 @@ class SubscriberAsyncClient:
                 # Make the request
                 response = client.get_snapshot(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1511,6 +1516,8 @@ class SubscriberAsyncClient:
 
                 # Make the request
                 page_result = client.list_snapshots(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1641,7 +1648,7 @@ class SubscriberAsyncClient:
                 # Make the request
                 response = client.create_snapshot(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1772,7 +1779,7 @@ class SubscriberAsyncClient:
                 # Make the request
                 response = client.update_snapshot(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1864,7 +1871,7 @@ class SubscriberAsyncClient:
                 )
 
                 # Make the request
-                response = client.delete_snapshot(request=request)
+                client.delete_snapshot(request=request)
 
         Args:
             request (Union[google.pubsub_v1.types.DeleteSnapshotRequest, dict]):
@@ -1963,7 +1970,7 @@ class SubscriberAsyncClient:
                 # Make the request
                 response = client.seek(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:

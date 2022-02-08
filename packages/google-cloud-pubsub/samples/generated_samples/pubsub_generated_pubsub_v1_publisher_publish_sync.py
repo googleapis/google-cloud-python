@@ -39,7 +39,7 @@ def sample_publish():
     # Make the request
     response = client.publish(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END pubsub_generated_pubsub_v1_Publisher_Publish_sync]

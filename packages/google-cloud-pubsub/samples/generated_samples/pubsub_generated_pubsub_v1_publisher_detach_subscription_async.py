@@ -39,7 +39,7 @@ async def sample_detach_subscription():
     # Make the request
     response = await client.detach_subscription(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END pubsub_generated_pubsub_v1_Publisher_DetachSubscription_async]

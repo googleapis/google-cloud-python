@@ -39,7 +39,7 @@ def sample_get_schema():
     # Make the request
     response = client.get_schema(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END pubsub_generated_pubsub_v1_SchemaService_GetSchema_sync]

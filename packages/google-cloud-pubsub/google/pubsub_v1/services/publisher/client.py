@@ -486,7 +486,7 @@ class PublisherClient(metaclass=PublisherClientMeta):
                 # Make the request
                 response = client.create_topic(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
 
@@ -586,7 +586,7 @@ class PublisherClient(metaclass=PublisherClientMeta):
                 # Make the request
                 response = client.update_topic(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
 
@@ -661,7 +661,7 @@ class PublisherClient(metaclass=PublisherClientMeta):
                 # Make the request
                 response = client.publish(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
 
@@ -759,7 +759,7 @@ class PublisherClient(metaclass=PublisherClientMeta):
                 # Make the request
                 response = client.get_topic(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
 
@@ -848,6 +848,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
 
                 # Make the request
                 page_result = client.list_topics(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -949,6 +951,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
 
                 # Make the request
                 page_result = client.list_topic_subscriptions(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1056,6 +1060,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
 
                 # Make the request
                 page_result = client.list_topic_snapshots(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1162,7 +1168,7 @@ class PublisherClient(metaclass=PublisherClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_topic(request=request)
+                client.delete_topic(request=request)
 
 
         Args:
@@ -1251,7 +1257,7 @@ class PublisherClient(metaclass=PublisherClientMeta):
                 # Make the request
                 response = client.detach_subscription(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
 

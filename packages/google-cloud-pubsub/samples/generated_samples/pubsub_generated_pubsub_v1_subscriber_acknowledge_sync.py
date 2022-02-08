@@ -38,7 +38,7 @@ def sample_acknowledge():
     )
 
     # Make the request
-    response = client.acknowledge(request=request)
+    client.acknowledge(request=request)
 
 
 # [END pubsub_generated_pubsub_v1_Subscriber_Acknowledge_sync]

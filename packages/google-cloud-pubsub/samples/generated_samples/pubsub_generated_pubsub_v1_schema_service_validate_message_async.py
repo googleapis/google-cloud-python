@@ -40,7 +40,7 @@ async def sample_validate_message():
     # Make the request
     response = await client.validate_message(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END pubsub_generated_pubsub_v1_SchemaService_ValidateMessage_async]

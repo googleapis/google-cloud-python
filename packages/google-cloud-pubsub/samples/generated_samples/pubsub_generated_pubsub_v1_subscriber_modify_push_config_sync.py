@@ -37,7 +37,7 @@ def sample_modify_push_config():
     )
 
     # Make the request
-    response = client.modify_push_config(request=request)
+    client.modify_push_config(request=request)
 
 
 # [END pubsub_generated_pubsub_v1_Subscriber_ModifyPushConfig_sync]

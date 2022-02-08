@@ -38,7 +38,7 @@ async def sample_acknowledge():
     )
 
     # Make the request
-    response = await client.acknowledge(request=request)
+    await client.acknowledge(request=request)
 
 
 # [END pubsub_generated_pubsub_v1_Subscriber_Acknowledge_async]

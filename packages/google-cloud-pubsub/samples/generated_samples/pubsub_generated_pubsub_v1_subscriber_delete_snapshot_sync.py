@@ -37,7 +37,7 @@ def sample_delete_snapshot():
     )
 
     # Make the request
-    response = client.delete_snapshot(request=request)
+    client.delete_snapshot(request=request)
 
 
 # [END pubsub_generated_pubsub_v1_Subscriber_DeleteSnapshot_sync]

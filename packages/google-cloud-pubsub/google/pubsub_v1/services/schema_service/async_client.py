@@ -238,7 +238,7 @@ class SchemaServiceAsyncClient:
                 # Make the request
                 response = client.create_schema(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -350,7 +350,7 @@ class SchemaServiceAsyncClient:
                 # Make the request
                 response = client.get_schema(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -436,6 +436,8 @@ class SchemaServiceAsyncClient:
 
                 # Make the request
                 page_result = client.list_schemas(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -532,7 +534,7 @@ class SchemaServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.delete_schema(request=request)
+                client.delete_schema(request=request)
 
         Args:
             request (Union[google.pubsub_v1.types.DeleteSchemaRequest, dict]):
@@ -619,7 +621,7 @@ class SchemaServiceAsyncClient:
                 # Make the request
                 response = client.validate_schema(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -718,7 +720,7 @@ class SchemaServiceAsyncClient:
                 # Make the request
                 response = client.validate_message(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:

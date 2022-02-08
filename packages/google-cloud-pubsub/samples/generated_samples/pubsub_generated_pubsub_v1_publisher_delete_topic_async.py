@@ -37,7 +37,7 @@ async def sample_delete_topic():
     )
 
     # Make the request
-    response = await client.delete_topic(request=request)
+    await client.delete_topic(request=request)
 
 
 # [END pubsub_generated_pubsub_v1_Publisher_DeleteTopic_async]

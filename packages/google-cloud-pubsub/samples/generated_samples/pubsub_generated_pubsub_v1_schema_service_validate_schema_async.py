@@ -43,7 +43,7 @@ async def sample_validate_schema():
     # Make the request
     response = await client.validate_schema(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END pubsub_generated_pubsub_v1_SchemaService_ValidateSchema_async]

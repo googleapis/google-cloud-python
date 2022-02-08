@@ -39,7 +39,7 @@ def sample_get_snapshot():
     # Make the request
     response = client.get_snapshot(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END pubsub_generated_pubsub_v1_Subscriber_GetSnapshot_sync]

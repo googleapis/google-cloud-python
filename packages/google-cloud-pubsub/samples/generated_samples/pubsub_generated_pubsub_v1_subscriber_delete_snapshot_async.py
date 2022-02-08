@@ -37,7 +37,7 @@ async def sample_delete_snapshot():
     )
 
     # Make the request
-    response = await client.delete_snapshot(request=request)
+    await client.delete_snapshot(request=request)
 
 
 # [END pubsub_generated_pubsub_v1_Subscriber_DeleteSnapshot_async]

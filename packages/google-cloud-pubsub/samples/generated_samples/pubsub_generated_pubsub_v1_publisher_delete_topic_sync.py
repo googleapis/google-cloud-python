@@ -37,7 +37,7 @@ def sample_delete_topic():
     )
 
     # Make the request
-    response = client.delete_topic(request=request)
+    client.delete_topic(request=request)
 
 
 # [END pubsub_generated_pubsub_v1_Publisher_DeleteTopic_sync]

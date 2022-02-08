@@ -37,7 +37,7 @@ def sample_delete_schema():
     )
 
     # Make the request
-    response = client.delete_schema(request=request)
+    client.delete_schema(request=request)
 
 
 # [END pubsub_generated_pubsub_v1_SchemaService_DeleteSchema_sync]

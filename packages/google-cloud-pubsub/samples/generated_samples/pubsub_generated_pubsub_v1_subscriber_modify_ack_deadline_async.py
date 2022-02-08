@@ -39,7 +39,7 @@ async def sample_modify_ack_deadline():
     )
 
     # Make the request
-    response = await client.modify_ack_deadline(request=request)
+    await client.modify_ack_deadline(request=request)
 
 
 # [END pubsub_generated_pubsub_v1_Subscriber_ModifyAckDeadline_async]

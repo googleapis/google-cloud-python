@@ -37,7 +37,7 @@ async def sample_modify_push_config():
     )
 
     # Make the request
-    response = await client.modify_push_config(request=request)
+    await client.modify_push_config(request=request)
 
 
 # [END pubsub_generated_pubsub_v1_Subscriber_ModifyPushConfig_async]

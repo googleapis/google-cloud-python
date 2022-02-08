@@ -40,7 +40,7 @@ async def sample_pull():
     # Make the request
     response = await client.pull(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END pubsub_generated_pubsub_v1_Subscriber_Pull_async]

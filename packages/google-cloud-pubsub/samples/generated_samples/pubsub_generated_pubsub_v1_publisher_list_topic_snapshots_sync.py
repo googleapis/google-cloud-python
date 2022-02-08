@@ -38,6 +38,8 @@ def sample_list_topic_snapshots():
 
     # Make the request
     page_result = client.list_topic_snapshots(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 
