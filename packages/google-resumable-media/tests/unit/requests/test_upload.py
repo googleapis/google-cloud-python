@@ -19,7 +19,6 @@ import json
 import mock
 
 import google.resumable_media.requests.upload as upload_mod
-from google.resumable_media._helpers import _base_headers
 
 
 URL_PREFIX = "https://www.googleapis.com/upload/storage/v1/b/{BUCKET}/o"
@@ -49,7 +48,7 @@ class TestSimpleUpload(object):
             "POST",
             SIMPLE_URL,
             data=data,
-            headers=_base_headers(upload_headers),
+            headers=upload_headers,
             timeout=EXPECTED_TIMEOUT,
         )
         assert upload.finished
@@ -68,7 +67,7 @@ class TestSimpleUpload(object):
             "POST",
             SIMPLE_URL,
             data=data,
-            headers=_base_headers(expected_headers),
+            headers=expected_headers,
             timeout=12.6,
         )
 
@@ -104,7 +103,7 @@ class TestMultipartUpload(object):
             "POST",
             MULTIPART_URL,
             data=expected_payload,
-            headers=_base_headers(upload_headers),
+            headers=upload_headers,
             timeout=EXPECTED_TIMEOUT,
         )
         assert upload.finished
@@ -142,7 +141,7 @@ class TestMultipartUpload(object):
             "POST",
             MULTIPART_URL,
             data=expected_payload,
-            headers=_base_headers(upload_headers),
+            headers=upload_headers,
             timeout=12.6,
         )
         assert upload.finished
@@ -188,7 +187,7 @@ class TestResumableUpload(object):
             "POST",
             RESUMABLE_URL,
             data=json_bytes,
-            headers=_base_headers(expected_headers),
+            headers=expected_headers,
             timeout=EXPECTED_TIMEOUT,
         )
 
@@ -224,7 +223,7 @@ class TestResumableUpload(object):
             "POST",
             RESUMABLE_URL,
             data=json_bytes,
-            headers=_base_headers(expected_headers),
+            headers=expected_headers,
             timeout=12.6,
         )
 
