@@ -33,7 +33,7 @@ from google.protobuf import empty_pb2  # type: ignore
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution(
-            "google-cloud-assuredworkloads",
+            "google-cloud-assured-workloads",
         ).version,
     )
 except pkg_resources.DistributionNotFound:
