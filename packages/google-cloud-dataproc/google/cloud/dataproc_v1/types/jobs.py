@@ -97,11 +97,9 @@ class HadoopJob(proto.Message):
         main_jar_file_uri (str):
             The HCFS URI of the jar file containing the
             main class. Examples:
-                'gs://foo-bucket/analytics-binaries/extract-
-            useful-metrics-mr.jar'     'hdfs:/tmp/test-
-            samples/custom-wordcount.jar'
-            'file:///home/usr/lib/hadoop-mapreduce/hadoop-
-            mapreduce-examples.jar'
+            'gs://foo-bucket/analytics-binaries/extract-useful-metrics-mr.jar'
+            'hdfs:/tmp/test-samples/custom-wordcount.jar'
+            'file:///home/usr/lib/hadoop-mapreduce/hadoop-mapreduce-examples.jar'
 
             This field is a member of `oneof`_ ``driver``.
         main_class (str):
@@ -654,10 +652,10 @@ class YarnApplication(proto.Message):
         tracking_url (str):
             Optional. The HTTP URL of the
             ApplicationMaster, HistoryServer, or
-            TimelineServer that provides application-
-            specific information. The URL uses the internal
-            hostname, and requires a proxy server for
-            resolution and, possibly, access.
+            TimelineServer that provides
+            application-specific information. The URL uses
+            the internal hostname, and requires a proxy
+            server for resolution and, possibly, access.
     """
 
     class State(proto.Enum):

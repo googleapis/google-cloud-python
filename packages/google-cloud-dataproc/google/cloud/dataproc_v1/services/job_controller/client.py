@@ -430,7 +430,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
                 A Dataproc job resource.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, region, job])
         if request is not None and has_flattened_params:
@@ -516,7 +516,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, region, job])
         if request is not None and has_flattened_params:
@@ -607,7 +607,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
                 A Dataproc job resource.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, region, job_id])
         if request is not None and has_flattened_params:
@@ -709,7 +709,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, region, filter])
         if request is not None and has_flattened_params:
@@ -841,7 +841,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
                 A Dataproc job resource.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, region, job_id])
         if request is not None and has_flattened_params:
@@ -919,7 +919,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
+        # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([project_id, region, job_id])
         if request is not None and has_flattened_params:
