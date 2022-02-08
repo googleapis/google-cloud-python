@@ -100,6 +100,16 @@
                 "lookup_entry"
               ]
             },
+            "ModifyEntryContacts": {
+              "methods": [
+                "modify_entry_contacts"
+              ]
+            },
+            "ModifyEntryOverview": {
+              "methods": [
+                "modify_entry_overview"
+              ]
+            },
             "RenameTagTemplateField": {
               "methods": [
                 "rename_tag_template_field"
@@ -120,9 +130,19 @@
                 "set_iam_policy"
               ]
             },
+            "StarEntry": {
+              "methods": [
+                "star_entry"
+              ]
+            },
             "TestIamPermissions": {
               "methods": [
                 "test_iam_permissions"
+              ]
+            },
+            "UnstarEntry": {
+              "methods": [
+                "unstar_entry"
               ]
             },
             "UpdateEntry": {
@@ -245,6 +265,16 @@
                 "lookup_entry"
               ]
             },
+            "ModifyEntryContacts": {
+              "methods": [
+                "modify_entry_contacts"
+              ]
+            },
+            "ModifyEntryOverview": {
+              "methods": [
+                "modify_entry_overview"
+              ]
+            },
             "RenameTagTemplateField": {
               "methods": [
                 "rename_tag_template_field"
@@ -265,9 +295,19 @@
                 "set_iam_policy"
               ]
             },
+            "StarEntry": {
+              "methods": [
+                "star_entry"
+              ]
+            },
             "TestIamPermissions": {
               "methods": [
                 "test_iam_permissions"
+              ]
+            },
+            "UnstarEntry": {
+              "methods": [
+                "unstar_entry"
               ]
             },
             "UpdateEntry": {

@@ -3550,6 +3550,282 @@ async def test_list_entries_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
+@pytest.mark.parametrize(
+    "request_type", [datacatalog.ModifyEntryOverviewRequest, dict,]
+)
+def test_modify_entry_overview(request_type, transport: str = "grpc"):
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.modify_entry_overview), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = datacatalog.EntryOverview(overview="overview_value",)
+        response = client.modify_entry_overview(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.ModifyEntryOverviewRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datacatalog.EntryOverview)
+    assert response.overview == "overview_value"
+
+
+def test_modify_entry_overview_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.modify_entry_overview), "__call__"
+    ) as call:
+        client.modify_entry_overview()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.ModifyEntryOverviewRequest()
+
+
+@pytest.mark.asyncio
+async def test_modify_entry_overview_async(
+    transport: str = "grpc_asyncio", request_type=datacatalog.ModifyEntryOverviewRequest
+):
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.modify_entry_overview), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.EntryOverview(overview="overview_value",)
+        )
+        response = await client.modify_entry_overview(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.ModifyEntryOverviewRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datacatalog.EntryOverview)
+    assert response.overview == "overview_value"
+
+
+@pytest.mark.asyncio
+async def test_modify_entry_overview_async_from_dict():
+    await test_modify_entry_overview_async(request_type=dict)
+
+
+def test_modify_entry_overview_field_headers():
+    client = DataCatalogClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = datacatalog.ModifyEntryOverviewRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.modify_entry_overview), "__call__"
+    ) as call:
+        call.return_value = datacatalog.EntryOverview()
+        client.modify_entry_overview(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_modify_entry_overview_field_headers_async():
+    client = DataCatalogAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = datacatalog.ModifyEntryOverviewRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.modify_entry_overview), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.EntryOverview()
+        )
+        await client.modify_entry_overview(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type", [datacatalog.ModifyEntryContactsRequest, dict,]
+)
+def test_modify_entry_contacts(request_type, transport: str = "grpc"):
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.modify_entry_contacts), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = datacatalog.Contacts()
+        response = client.modify_entry_contacts(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.ModifyEntryContactsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datacatalog.Contacts)
+
+
+def test_modify_entry_contacts_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.modify_entry_contacts), "__call__"
+    ) as call:
+        client.modify_entry_contacts()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.ModifyEntryContactsRequest()
+
+
+@pytest.mark.asyncio
+async def test_modify_entry_contacts_async(
+    transport: str = "grpc_asyncio", request_type=datacatalog.ModifyEntryContactsRequest
+):
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.modify_entry_contacts), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.Contacts()
+        )
+        response = await client.modify_entry_contacts(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.ModifyEntryContactsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datacatalog.Contacts)
+
+
+@pytest.mark.asyncio
+async def test_modify_entry_contacts_async_from_dict():
+    await test_modify_entry_contacts_async(request_type=dict)
+
+
+def test_modify_entry_contacts_field_headers():
+    client = DataCatalogClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = datacatalog.ModifyEntryContactsRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.modify_entry_contacts), "__call__"
+    ) as call:
+        call.return_value = datacatalog.Contacts()
+        client.modify_entry_contacts(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_modify_entry_contacts_field_headers_async():
+    client = DataCatalogAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = datacatalog.ModifyEntryContactsRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.modify_entry_contacts), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.Contacts()
+        )
+        await client.modify_entry_contacts(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
 @pytest.mark.parametrize("request_type", [datacatalog.CreateTagTemplateRequest, dict,])
 def test_create_tag_template(request_type, transport: str = "grpc"):
     client = DataCatalogClient(
@@ -6598,6 +6874,392 @@ async def test_list_tags_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
+@pytest.mark.parametrize("request_type", [datacatalog.StarEntryRequest, dict,])
+def test_star_entry(request_type, transport: str = "grpc"):
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.star_entry), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = datacatalog.StarEntryResponse()
+        response = client.star_entry(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.StarEntryRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datacatalog.StarEntryResponse)
+
+
+def test_star_entry_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.star_entry), "__call__") as call:
+        client.star_entry()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.StarEntryRequest()
+
+
+@pytest.mark.asyncio
+async def test_star_entry_async(
+    transport: str = "grpc_asyncio", request_type=datacatalog.StarEntryRequest
+):
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.star_entry), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.StarEntryResponse()
+        )
+        response = await client.star_entry(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.StarEntryRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datacatalog.StarEntryResponse)
+
+
+@pytest.mark.asyncio
+async def test_star_entry_async_from_dict():
+    await test_star_entry_async(request_type=dict)
+
+
+def test_star_entry_field_headers():
+    client = DataCatalogClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = datacatalog.StarEntryRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.star_entry), "__call__") as call:
+        call.return_value = datacatalog.StarEntryResponse()
+        client.star_entry(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_star_entry_field_headers_async():
+    client = DataCatalogAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = datacatalog.StarEntryRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.star_entry), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.StarEntryResponse()
+        )
+        await client.star_entry(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_star_entry_flattened():
+    client = DataCatalogClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.star_entry), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = datacatalog.StarEntryResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.star_entry(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_star_entry_flattened_error():
+    client = DataCatalogClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.star_entry(
+            datacatalog.StarEntryRequest(), name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_star_entry_flattened_async():
+    client = DataCatalogAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.star_entry), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = datacatalog.StarEntryResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.StarEntryResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.star_entry(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_star_entry_flattened_error_async():
+    client = DataCatalogAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.star_entry(
+            datacatalog.StarEntryRequest(), name="name_value",
+        )
+
+
+@pytest.mark.parametrize("request_type", [datacatalog.UnstarEntryRequest, dict,])
+def test_unstar_entry(request_type, transport: str = "grpc"):
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.unstar_entry), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = datacatalog.UnstarEntryResponse()
+        response = client.unstar_entry(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.UnstarEntryRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datacatalog.UnstarEntryResponse)
+
+
+def test_unstar_entry_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.unstar_entry), "__call__") as call:
+        client.unstar_entry()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.UnstarEntryRequest()
+
+
+@pytest.mark.asyncio
+async def test_unstar_entry_async(
+    transport: str = "grpc_asyncio", request_type=datacatalog.UnstarEntryRequest
+):
+    client = DataCatalogAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.unstar_entry), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.UnstarEntryResponse()
+        )
+        response = await client.unstar_entry(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datacatalog.UnstarEntryRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datacatalog.UnstarEntryResponse)
+
+
+@pytest.mark.asyncio
+async def test_unstar_entry_async_from_dict():
+    await test_unstar_entry_async(request_type=dict)
+
+
+def test_unstar_entry_field_headers():
+    client = DataCatalogClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = datacatalog.UnstarEntryRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.unstar_entry), "__call__") as call:
+        call.return_value = datacatalog.UnstarEntryResponse()
+        client.unstar_entry(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_unstar_entry_field_headers_async():
+    client = DataCatalogAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = datacatalog.UnstarEntryRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.unstar_entry), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.UnstarEntryResponse()
+        )
+        await client.unstar_entry(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_unstar_entry_flattened():
+    client = DataCatalogClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.unstar_entry), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = datacatalog.UnstarEntryResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.unstar_entry(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_unstar_entry_flattened_error():
+    client = DataCatalogClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.unstar_entry(
+            datacatalog.UnstarEntryRequest(), name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_unstar_entry_flattened_async():
+    client = DataCatalogAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.unstar_entry), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = datacatalog.UnstarEntryResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datacatalog.UnstarEntryResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.unstar_entry(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_unstar_entry_flattened_error_async():
+    client = DataCatalogAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.unstar_entry(
+            datacatalog.UnstarEntryRequest(), name="name_value",
+        )
+
+
 @pytest.mark.parametrize("request_type", [iam_policy_pb2.SetIamPolicyRequest, dict,])
 def test_set_iam_policy(request_type, transport: str = "grpc"):
     client = DataCatalogClient(
@@ -7298,6 +7960,8 @@ def test_data_catalog_base_transport():
         "get_entry",
         "lookup_entry",
         "list_entries",
+        "modify_entry_overview",
+        "modify_entry_contacts",
         "create_tag_template",
         "get_tag_template",
         "update_tag_template",
@@ -7311,6 +7975,8 @@ def test_data_catalog_base_transport():
         "update_tag",
         "delete_tag",
         "list_tags",
+        "star_entry",
+        "unstar_entry",
         "set_iam_policy",
         "get_iam_policy",
         "test_iam_permissions",

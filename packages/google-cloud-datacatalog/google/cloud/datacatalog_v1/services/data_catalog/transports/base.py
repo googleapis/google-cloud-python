@@ -226,6 +226,16 @@ class DataCatalogTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.modify_entry_overview: gapic_v1.method.wrap_method(
+                self.modify_entry_overview,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.modify_entry_contacts: gapic_v1.method.wrap_method(
+                self.modify_entry_contacts,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.create_tag_template: gapic_v1.method.wrap_method(
                 self.create_tag_template, default_timeout=None, client_info=client_info,
             ),
@@ -285,6 +295,12 @@ class DataCatalogTransport(abc.ABC):
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
+            ),
+            self.star_entry: gapic_v1.method.wrap_method(
+                self.star_entry, default_timeout=None, client_info=client_info,
+            ),
+            self.unstar_entry: gapic_v1.method.wrap_method(
+                self.unstar_entry, default_timeout=None, client_info=client_info,
             ),
             self.set_iam_policy: gapic_v1.method.wrap_method(
                 self.set_iam_policy, default_timeout=None, client_info=client_info,
@@ -436,6 +452,24 @@ class DataCatalogTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def modify_entry_overview(
+        self,
+    ) -> Callable[
+        [datacatalog.ModifyEntryOverviewRequest],
+        Union[datacatalog.EntryOverview, Awaitable[datacatalog.EntryOverview]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def modify_entry_contacts(
+        self,
+    ) -> Callable[
+        [datacatalog.ModifyEntryContactsRequest],
+        Union[datacatalog.Contacts, Awaitable[datacatalog.Contacts]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def create_tag_template(
         self,
     ) -> Callable[
@@ -543,6 +577,26 @@ class DataCatalogTransport(abc.ABC):
     ) -> Callable[
         [datacatalog.ListTagsRequest],
         Union[datacatalog.ListTagsResponse, Awaitable[datacatalog.ListTagsResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def star_entry(
+        self,
+    ) -> Callable[
+        [datacatalog.StarEntryRequest],
+        Union[datacatalog.StarEntryResponse, Awaitable[datacatalog.StarEntryResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def unstar_entry(
+        self,
+    ) -> Callable[
+        [datacatalog.UnstarEntryRequest],
+        Union[
+            datacatalog.UnstarEntryResponse, Awaitable[datacatalog.UnstarEntryResponse]
+        ],
     ]:
         raise NotImplementedError()
 

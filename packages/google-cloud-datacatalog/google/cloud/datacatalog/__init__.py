@@ -34,8 +34,11 @@ from google.cloud.datacatalog_v1.services.policy_tag_manager_serialization.async
 from google.cloud.datacatalog_v1.types.bigquery import BigQueryConnectionSpec
 from google.cloud.datacatalog_v1.types.bigquery import BigQueryRoutineSpec
 from google.cloud.datacatalog_v1.types.bigquery import CloudSqlBigQueryConnectionSpec
+from google.cloud.datacatalog_v1.types.common import PersonalDetails
 from google.cloud.datacatalog_v1.types.common import IntegratedSystem
 from google.cloud.datacatalog_v1.types.data_source import DataSource
+from google.cloud.datacatalog_v1.types.datacatalog import BusinessContext
+from google.cloud.datacatalog_v1.types.datacatalog import Contacts
 from google.cloud.datacatalog_v1.types.datacatalog import CreateEntryGroupRequest
 from google.cloud.datacatalog_v1.types.datacatalog import CreateEntryRequest
 from google.cloud.datacatalog_v1.types.datacatalog import CreateTagRequest
@@ -50,6 +53,7 @@ from google.cloud.datacatalog_v1.types.datacatalog import DeleteTagTemplateField
 from google.cloud.datacatalog_v1.types.datacatalog import DeleteTagTemplateRequest
 from google.cloud.datacatalog_v1.types.datacatalog import Entry
 from google.cloud.datacatalog_v1.types.datacatalog import EntryGroup
+from google.cloud.datacatalog_v1.types.datacatalog import EntryOverview
 from google.cloud.datacatalog_v1.types.datacatalog import GetEntryGroupRequest
 from google.cloud.datacatalog_v1.types.datacatalog import GetEntryRequest
 from google.cloud.datacatalog_v1.types.datacatalog import GetTagTemplateRequest
@@ -60,6 +64,8 @@ from google.cloud.datacatalog_v1.types.datacatalog import ListEntryGroupsRespons
 from google.cloud.datacatalog_v1.types.datacatalog import ListTagsRequest
 from google.cloud.datacatalog_v1.types.datacatalog import ListTagsResponse
 from google.cloud.datacatalog_v1.types.datacatalog import LookupEntryRequest
+from google.cloud.datacatalog_v1.types.datacatalog import ModifyEntryContactsRequest
+from google.cloud.datacatalog_v1.types.datacatalog import ModifyEntryOverviewRequest
 from google.cloud.datacatalog_v1.types.datacatalog import (
     RenameTagTemplateFieldEnumValueRequest,
 )
@@ -67,6 +73,10 @@ from google.cloud.datacatalog_v1.types.datacatalog import RenameTagTemplateField
 from google.cloud.datacatalog_v1.types.datacatalog import RoutineSpec
 from google.cloud.datacatalog_v1.types.datacatalog import SearchCatalogRequest
 from google.cloud.datacatalog_v1.types.datacatalog import SearchCatalogResponse
+from google.cloud.datacatalog_v1.types.datacatalog import StarEntryRequest
+from google.cloud.datacatalog_v1.types.datacatalog import StarEntryResponse
+from google.cloud.datacatalog_v1.types.datacatalog import UnstarEntryRequest
+from google.cloud.datacatalog_v1.types.datacatalog import UnstarEntryResponse
 from google.cloud.datacatalog_v1.types.datacatalog import UpdateEntryGroupRequest
 from google.cloud.datacatalog_v1.types.datacatalog import UpdateEntryRequest
 from google.cloud.datacatalog_v1.types.datacatalog import UpdateTagRequest
@@ -142,8 +152,11 @@ __all__ = (
     "BigQueryConnectionSpec",
     "BigQueryRoutineSpec",
     "CloudSqlBigQueryConnectionSpec",
+    "PersonalDetails",
     "IntegratedSystem",
     "DataSource",
+    "BusinessContext",
+    "Contacts",
     "CreateEntryGroupRequest",
     "CreateEntryRequest",
     "CreateTagRequest",
@@ -158,6 +171,7 @@ __all__ = (
     "DeleteTagTemplateRequest",
     "Entry",
     "EntryGroup",
+    "EntryOverview",
     "GetEntryGroupRequest",
     "GetEntryRequest",
     "GetTagTemplateRequest",
@@ -168,11 +182,17 @@ __all__ = (
     "ListTagsRequest",
     "ListTagsResponse",
     "LookupEntryRequest",
+    "ModifyEntryContactsRequest",
+    "ModifyEntryOverviewRequest",
     "RenameTagTemplateFieldEnumValueRequest",
     "RenameTagTemplateFieldRequest",
     "RoutineSpec",
     "SearchCatalogRequest",
     "SearchCatalogResponse",
+    "StarEntryRequest",
+    "StarEntryResponse",
+    "UnstarEntryRequest",
+    "UnstarEntryResponse",
     "UpdateEntryGroupRequest",
     "UpdateEntryRequest",
     "UpdateTagRequest",

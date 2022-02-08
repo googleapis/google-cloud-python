@@ -49,6 +49,9 @@ __protobuf__ = proto.module(
         "DatabaseTableSpec",
         "DataSourceConnectionSpec",
         "RoutineSpec",
+        "BusinessContext",
+        "EntryOverview",
+        "Contacts",
         "EntryGroup",
         "CreateTagTemplateRequest",
         "GetTagTemplateRequest",
@@ -66,6 +69,12 @@ __protobuf__ = proto.module(
         "ListTagsResponse",
         "ListEntriesRequest",
         "ListEntriesResponse",
+        "StarEntryRequest",
+        "StarEntryResponse",
+        "UnstarEntryRequest",
+        "UnstarEntryResponse",
+        "ModifyEntryOverviewRequest",
+        "ModifyEntryContactsRequest",
     },
 )
 
@@ -137,6 +146,7 @@ class SearchCatalogRequest(proto.Message):
             -  ``relevance`` that can only be descending
             -  ``last_modified_timestamp [asc|desc]`` with descending
                (``desc``) as default
+            -  ``default`` that can only be descending
 
             If this parameter is omitted, it defaults to the descending
             ``relevance``.
@@ -178,22 +188,21 @@ class SearchCatalogRequest(proto.Message):
                 additional information on the error, repeat the search
                 request and set the location name as the value of this
                 parameter.
-            include_public_tag_templates (bool):
-                Optional. If ``true``, include [public tag
-                templates][google.cloud.datacatalog.v1.TagTemplate.is_publicly_readable]
-                in the search results. By default, they are included only if
-                you have explicit permissions on them to view them. For
-                example, if you are the owner.
+            starred_only (bool):
+                Optional. If ``true``, search only among starred entries.
 
-                Other scope fields, for example, ``include_org_ids``, still
-                restrict the returned public tag templates and at least one
-                of them is required.
+                By default, all results are returned, starred or not.
+            include_public_tag_templates (bool):
+                Optional. This field is deprecated. The
+                search mechanism for public and private tag
+                templates is the same.
         """
 
         include_org_ids = proto.RepeatedField(proto.STRING, number=2,)
         include_project_ids = proto.RepeatedField(proto.STRING, number=3,)
         include_gcp_public_datasets = proto.Field(proto.BOOL, number=7,)
         restricted_locations = proto.RepeatedField(proto.STRING, number=16,)
+        starred_only = proto.Field(proto.BOOL, number=18,)
         include_public_tag_templates = proto.Field(proto.BOOL, number=19,)
 
     scope = proto.Field(proto.MESSAGE, number=6, message=Scope,)
@@ -689,6 +698,9 @@ class Entry(proto.Message):
             returns (CR), and page breaks (FF).
             The maximum size is 2000 bytes when encoded in
             UTF-8. Default value is an empty string.
+        business_context (google.cloud.datacatalog_v1.types.BusinessContext):
+            Business Context of the entry. Not supported
+            for BigQuery datasets.
         schema (google.cloud.datacatalog_v1.types.Schema):
             Schema of the entry. An entry might not have
             any schema attached to it.
@@ -710,6 +722,9 @@ class Entry(proto.Message):
             the source system.
         data_source (google.cloud.datacatalog_v1.types.DataSource):
             Output only. Physical location of the entry.
+        personal_details (google.cloud.datacatalog_v1.types.PersonalDetails):
+            Output only. Additional information related
+            to the entry. Private to the current user.
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -750,6 +765,7 @@ class Entry(proto.Message):
     )
     display_name = proto.Field(proto.STRING, number=3,)
     description = proto.Field(proto.STRING, number=4,)
+    business_context = proto.Field(proto.MESSAGE, number=37, message="BusinessContext",)
     schema = proto.Field(proto.MESSAGE, number=5, message=gcd_schema.Schema,)
     source_system_timestamps = proto.Field(
         proto.MESSAGE, number=7, message=timestamps.SystemTimestamps,
@@ -758,6 +774,9 @@ class Entry(proto.Message):
     labels = proto.MapField(proto.STRING, proto.STRING, number=14,)
     data_source = proto.Field(
         proto.MESSAGE, number=20, message=gcd_data_source.DataSource,
+    )
+    personal_details = proto.Field(
+        proto.MESSAGE, number=26, message=common.PersonalDetails,
     )
 
 
@@ -868,6 +887,65 @@ class RoutineSpec(proto.Message):
     )
 
 
+class BusinessContext(proto.Message):
+    r"""Business Context of the entry.
+
+    Attributes:
+        entry_overview (google.cloud.datacatalog_v1.types.EntryOverview):
+            Entry overview fields for rich text
+            descriptions of entries.
+        contacts (google.cloud.datacatalog_v1.types.Contacts):
+            Contact people for the entry.
+    """
+
+    entry_overview = proto.Field(proto.MESSAGE, number=1, message="EntryOverview",)
+    contacts = proto.Field(proto.MESSAGE, number=2, message="Contacts",)
+
+
+class EntryOverview(proto.Message):
+    r"""Entry overview fields for rich text descriptions of entries.
+
+    Attributes:
+        overview (str):
+            Entry overview with support for rich text.
+            The overview must only contain Unicode
+            characters, and should be formatted using HTML.
+            The maximum length is 10 MiB as this value holds
+            HTML descriptions including encoded images. The
+            maximum length of the text without images is 100
+            KiB.
+    """
+
+    overview = proto.Field(proto.STRING, number=1,)
+
+
+class Contacts(proto.Message):
+    r"""Contact people for the entry.
+
+    Attributes:
+        people (Sequence[google.cloud.datacatalog_v1.types.Contacts.Person]):
+            The list of contact people for the entry.
+    """
+
+    class Person(proto.Message):
+        r"""A contact person for the entry.
+
+        Attributes:
+            designation (str):
+                Designation of the person, for example, Data
+                Steward.
+            email (str):
+                Email of the person in the format of
+                ``john.doe@example.com``, ``<john.doe@example.com>``, or
+                ``John Doe<john.doe@example.com>``.
+        """
+
+        designation = proto.Field(proto.STRING, number=1,)
+        email = proto.Field(proto.STRING, number=2,)
+
+    people = proto.RepeatedField(proto.MESSAGE, number=1, message=Person,)
+
+
 class EntryGroup(proto.Message):
     r"""Entry group metadata.
 
@@ -960,9 +1038,6 @@ class UpdateTagTemplateRequest(proto.Message):
 
             Note: Updating the ``is_publicly_readable`` field may
             require up to 12 hours to take effect in search results.
-            Additionally, it also requires the
-            ``tagTemplates.getIamPolicy`` and
-            ``tagTemplates.setIamPolicy`` permissions.
     """
 
     tag_template = proto.Field(proto.MESSAGE, number=1, message=gcd_tags.TagTemplate,)
@@ -1262,6 +1337,80 @@ class ListEntriesResponse(proto.Message):
 
     entries = proto.RepeatedField(proto.MESSAGE, number=1, message="Entry",)
     next_page_token = proto.Field(proto.STRING, number=2,)
+
+
+class StarEntryRequest(proto.Message):
+    r"""Request message for
+    [StarEntry][google.cloud.datacatalog.v1.DataCatalog.StarEntry].
+
+    Attributes:
+        name (str):
+            Required. The name of the entry to mark as
+            starred.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class StarEntryResponse(proto.Message):
+    r"""Response message for
+    [StarEntry][google.cloud.datacatalog.v1.DataCatalog.StarEntry].
+    Empty for now
+
+    """
+
+
+class UnstarEntryRequest(proto.Message):
+    r"""Request message for
+    [UnstarEntry][google.cloud.datacatalog.v1.DataCatalog.UnstarEntry].
+
+    Attributes:
+        name (str):
+            Required. The name of the entry to mark as **not** starred.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class UnstarEntryResponse(proto.Message):
+    r"""Response message for
+    [UnstarEntry][google.cloud.datacatalog.v1.DataCatalog.UnstarEntry].
+    Empty for now
+
+    """
+
+
+class ModifyEntryOverviewRequest(proto.Message):
+    r"""Request message for
+    [ModifyEntryOverview][google.cloud.datacatalog.v1.DataCatalog.ModifyEntryOverview].
+
+    Attributes:
+        name (str):
+            Required. The full resource name of the
+            entry.
+        entry_overview (google.cloud.datacatalog_v1.types.EntryOverview):
+            Required. The new value for the Entry
+            Overview.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+    entry_overview = proto.Field(proto.MESSAGE, number=2, message="EntryOverview",)
+
+
+class ModifyEntryContactsRequest(proto.Message):
+    r"""Request message for
+    [ModifyEntryContacts][google.cloud.datacatalog.v1.DataCatalog.ModifyEntryContacts].
+
+    Attributes:
+        name (str):
+            Required. The full resource name of the
+            entry.
+        contacts (google.cloud.datacatalog_v1.types.Contacts):
+            Required. The new value for the Contacts.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+    contacts = proto.Field(proto.MESSAGE, number=2, message="Contacts",)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

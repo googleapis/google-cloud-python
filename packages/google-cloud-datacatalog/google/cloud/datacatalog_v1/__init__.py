@@ -28,8 +28,11 @@ from .services.policy_tag_manager_serialization import (
 from .types.bigquery import BigQueryConnectionSpec
 from .types.bigquery import BigQueryRoutineSpec
 from .types.bigquery import CloudSqlBigQueryConnectionSpec
+from .types.common import PersonalDetails
 from .types.common import IntegratedSystem
 from .types.data_source import DataSource
+from .types.datacatalog import BusinessContext
+from .types.datacatalog import Contacts
 from .types.datacatalog import CreateEntryGroupRequest
 from .types.datacatalog import CreateEntryRequest
 from .types.datacatalog import CreateTagRequest
@@ -44,6 +47,7 @@ from .types.datacatalog import DeleteTagTemplateFieldRequest
 from .types.datacatalog import DeleteTagTemplateRequest
 from .types.datacatalog import Entry
 from .types.datacatalog import EntryGroup
+from .types.datacatalog import EntryOverview
 from .types.datacatalog import GetEntryGroupRequest
 from .types.datacatalog import GetEntryRequest
 from .types.datacatalog import GetTagTemplateRequest
@@ -54,11 +58,17 @@ from .types.datacatalog import ListEntryGroupsResponse
 from .types.datacatalog import ListTagsRequest
 from .types.datacatalog import ListTagsResponse
 from .types.datacatalog import LookupEntryRequest
+from .types.datacatalog import ModifyEntryContactsRequest
+from .types.datacatalog import ModifyEntryOverviewRequest
 from .types.datacatalog import RenameTagTemplateFieldEnumValueRequest
 from .types.datacatalog import RenameTagTemplateFieldRequest
 from .types.datacatalog import RoutineSpec
 from .types.datacatalog import SearchCatalogRequest
 from .types.datacatalog import SearchCatalogResponse
+from .types.datacatalog import StarEntryRequest
+from .types.datacatalog import StarEntryResponse
+from .types.datacatalog import UnstarEntryRequest
+from .types.datacatalog import UnstarEntryResponse
 from .types.datacatalog import UpdateEntryGroupRequest
 from .types.datacatalog import UpdateEntryRequest
 from .types.datacatalog import UpdateTagRequest
@@ -116,8 +126,10 @@ __all__ = (
     "BigQueryDateShardedSpec",
     "BigQueryRoutineSpec",
     "BigQueryTableSpec",
+    "BusinessContext",
     "CloudSqlBigQueryConnectionSpec",
     "ColumnSchema",
+    "Contacts",
     "CreateEntryGroupRequest",
     "CreateEntryRequest",
     "CreatePolicyTagRequest",
@@ -139,6 +151,7 @@ __all__ = (
     "DeleteTaxonomyRequest",
     "Entry",
     "EntryGroup",
+    "EntryOverview",
     "EntryType",
     "ExportTaxonomiesRequest",
     "ExportTaxonomiesResponse",
@@ -165,6 +178,9 @@ __all__ = (
     "ListTaxonomiesRequest",
     "ListTaxonomiesResponse",
     "LookupEntryRequest",
+    "ModifyEntryContactsRequest",
+    "ModifyEntryOverviewRequest",
+    "PersonalDetails",
     "PolicyTag",
     "PolicyTagManagerClient",
     "PolicyTagManagerSerializationClient",
@@ -179,6 +195,8 @@ __all__ = (
     "SearchResultType",
     "SerializedPolicyTag",
     "SerializedTaxonomy",
+    "StarEntryRequest",
+    "StarEntryResponse",
     "SystemTimestamps",
     "TableSourceType",
     "TableSpec",
@@ -187,6 +205,8 @@ __all__ = (
     "TagTemplate",
     "TagTemplateField",
     "Taxonomy",
+    "UnstarEntryRequest",
+    "UnstarEntryResponse",
     "UpdateEntryGroupRequest",
     "UpdateEntryRequest",
     "UpdatePolicyTagRequest",

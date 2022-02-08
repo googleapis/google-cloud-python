@@ -509,6 +509,26 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         Syntax <https://cloud.google.com/data-catalog/docs/how-to/search-reference>`__
         for more information.
 
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_search_catalog():
+                # Create a client
+                client = datacatalog_v1beta1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.SearchCatalogRequest(
+                    query="query_value",
+                )
+
+                # Make the request
+                page_result = client.search_catalog(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.SearchCatalogRequest, dict]):
                 The request object. Request message for
@@ -616,6 +636,28 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
         for more information).
 
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_create_entry_group():
+                # Create a client
+                client = datacatalog_v1beta1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.CreateEntryGroupRequest(
+                    parent="parent_value",
+                    entry_group_id="entry_group_id_value",
+                )
+
+                # Make the request
+                response = client.create_entry_group(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.CreateEntryGroupRequest, dict]):
                 The request object. Request message for
@@ -722,6 +764,26 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
         for more information).
 
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_update_entry_group():
+                # Create a client
+                client = datacatalog_v1beta1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.UpdateEntryGroupRequest(
+                )
+
+                # Make the request
+                response = client.update_entry_group(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.UpdateEntryGroupRequest, dict]):
                 The request object. Request message for
@@ -808,6 +870,26 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datacatalog.EntryGroup:
         r"""Gets an EntryGroup.
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_get_entry_group():
+                # Create a client
+                client = datacatalog_v1beta1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.GetEntryGroupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_entry_group(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.GetEntryGroupRequest, dict]):
@@ -897,6 +979,24 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
         for more information).
 
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_delete_entry_group():
+                # Create a client
+                client = datacatalog_v1beta1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.DeleteEntryGroupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_entry_group(request=request)
+
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.DeleteEntryGroupRequest, dict]):
                 The request object. Request message for
@@ -960,6 +1060,25 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEntryGroupsPager:
         r"""Lists entry groups.
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_list_entry_groups():
+                # Create a client
+                client = datacatalog_v1beta1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.ListEntryGroupsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_entry_groups(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.ListEntryGroupsRequest, dict]):
@@ -1054,6 +1173,34 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         for more information).
 
         A maximum of 100,000 entries may be created per entry group.
+
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_create_entry():
+                # Create a client
+                client = datacatalog_v1beta1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                entry = datacatalog_v1beta1.Entry()
+                entry.type_ = "FILESET"
+                entry.integrated_system = "CLOUD_PUBSUB"
+                entry.gcs_fileset_spec.file_patterns = ['file_patterns_value_1', 'file_patterns_value_2']
+
+                request = datacatalog_v1beta1.CreateEntryRequest(
+                    parent="parent_value",
+                    entry_id="entry_id_value",
+                    entry=entry,
+                )
+
+                # Make the request
+                response = client.create_entry(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.CreateEntryRequest, dict]):
@@ -1161,6 +1308,32 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         (see [Data Catalog Resource Project]
         (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
         for more information).
+
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_update_entry():
+                # Create a client
+                client = datacatalog_v1beta1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                entry = datacatalog_v1beta1.Entry()
+                entry.type_ = "FILESET"
+                entry.integrated_system = "CLOUD_PUBSUB"
+                entry.gcs_fileset_spec.file_patterns = ['file_patterns_value_1', 'file_patterns_value_2']
+
+                request = datacatalog_v1beta1.UpdateEntryRequest(
+                    entry=entry,
+                )
+
+                # Make the request
+                response = client.update_entry(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.UpdateEntryRequest, dict]):
@@ -1284,6 +1457,24 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
         for more information).
 
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_delete_entry():
+                # Create a client
+                client = datacatalog_v1beta1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.DeleteEntryRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_entry(request=request)
+
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.DeleteEntryRequest, dict]):
                 The request object. Request message for
@@ -1348,6 +1539,26 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datacatalog.Entry:
         r"""Gets an entry.
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_get_entry():
+                # Create a client
+                client = datacatalog_v1beta1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.GetEntryRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_entry(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.GetEntryRequest, dict]):
@@ -1433,6 +1644,27 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         Google Cloud Platform service to get the Data Catalog
         Entry.
 
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_lookup_entry():
+                # Create a client
+                client = datacatalog_v1beta1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.LookupEntryRequest(
+                    linked_resource="linked_resource_value",
+                )
+
+                # Make the request
+                response = client.lookup_entry(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.LookupEntryRequest, dict]):
                 The request object. Request message for
@@ -1487,6 +1719,25 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEntriesPager:
         r"""Lists entries.
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_list_entries():
+                # Create a client
+                client = datacatalog_v1beta1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.ListEntriesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_entries(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.ListEntriesRequest, dict]):
@@ -1575,6 +1826,28 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         `Data Catalog Resource
         Project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__
         for more information).
+
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_create_tag_template():
+                # Create a client
+                client = datacatalog_v1beta1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.CreateTagTemplateRequest(
+                    parent="parent_value",
+                    tag_template_id="tag_template_id_value",
+                )
+
+                # Make the request
+                response = client.create_tag_template(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.CreateTagTemplateRequest, dict]):
@@ -1675,6 +1948,26 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
     ) -> tags.TagTemplate:
         r"""Gets a tag template.
 
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_get_tag_template():
+                # Create a client
+                client = datacatalog_v1beta1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.GetTagTemplateRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_tag_template(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.GetTagTemplateRequest, dict]):
                 The request object. Request message for
@@ -1762,6 +2055,26 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         Project]
         (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
         for more information).
+
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_update_tag_template():
+                # Create a client
+                client = datacatalog_v1beta1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.UpdateTagTemplateRequest(
+                )
+
+                # Make the request
+                response = client.update_tag_template(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.UpdateTagTemplateRequest, dict]):
@@ -1864,6 +2177,25 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
         for more information).
 
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_delete_tag_template():
+                # Create a client
+                client = datacatalog_v1beta1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.DeleteTagTemplateRequest(
+                    name="name_value",
+                    force=True,
+                )
+
+                # Make the request
+                response = client.delete_tag_template(request=request)
+
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.DeleteTagTemplateRequest, dict]):
                 The request object. Request message for
@@ -1946,6 +2278,32 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         parameter (see `Data Catalog Resource
         Project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__
         for more information).
+
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_create_tag_template_field():
+                # Create a client
+                client = datacatalog_v1beta1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                tag_template_field = datacatalog_v1beta1.TagTemplateField()
+                tag_template_field.type_.primitive_type = "TIMESTAMP"
+
+                request = datacatalog_v1beta1.CreateTagTemplateFieldRequest(
+                    parent="parent_value",
+                    tag_template_field_id="tag_template_field_id_value",
+                    tag_template_field=tag_template_field,
+                )
+
+                # Make the request
+                response = client.create_tag_template_field(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.CreateTagTemplateFieldRequest, dict]):
@@ -2053,6 +2411,31 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         Catalog Resource Project]
         (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
         for more information).
+
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_update_tag_template_field():
+                # Create a client
+                client = datacatalog_v1beta1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                tag_template_field = datacatalog_v1beta1.TagTemplateField()
+                tag_template_field.type_.primitive_type = "TIMESTAMP"
+
+                request = datacatalog_v1beta1.UpdateTagTemplateFieldRequest(
+                    name="name_value",
+                    tag_template_field=tag_template_field,
+                )
+
+                # Make the request
+                response = client.update_tag_template_field(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.UpdateTagTemplateFieldRequest, dict]):
@@ -2162,6 +2545,28 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         Project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__
         for more information).
 
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_rename_tag_template_field():
+                # Create a client
+                client = datacatalog_v1beta1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.RenameTagTemplateFieldRequest(
+                    name="name_value",
+                    new_tag_template_field_id="new_tag_template_field_id_value",
+                )
+
+                # Make the request
+                response = client.rename_tag_template_field(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.RenameTagTemplateFieldRequest, dict]):
                 The request object. Request message for
@@ -2251,6 +2656,25 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
         for more information).
 
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_delete_tag_template_field():
+                # Create a client
+                client = datacatalog_v1beta1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.DeleteTagTemplateFieldRequest(
+                    name="name_value",
+                    force=True,
+                )
+
+                # Make the request
+                response = client.delete_tag_template_field(request=request)
+
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.DeleteTagTemplateFieldRequest, dict]):
                 The request object. Request message for
@@ -2336,6 +2760,32 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         and the `tag
         template <https://cloud.google.com/data-catalog/docs/reference/rest/v1beta1/projects.locations.tagTemplates/create#path-parameters>`__
         used to create the tag must be from the same organization.
+
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_create_tag():
+                # Create a client
+                client = datacatalog_v1beta1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                tag = datacatalog_v1beta1.Tag()
+                tag.column = "column_value"
+                tag.template = "template_value"
+
+                request = datacatalog_v1beta1.CreateTagRequest(
+                    parent="parent_value",
+                    tag=tag,
+                )
+
+                # Make the request
+                response = client.create_tag(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.CreateTagRequest, dict]):
@@ -2427,6 +2877,30 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
     ) -> tags.Tag:
         r"""Updates an existing tag.
 
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_update_tag():
+                # Create a client
+                client = datacatalog_v1beta1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                tag = datacatalog_v1beta1.Tag()
+                tag.column = "column_value"
+                tag.template = "template_value"
+
+                request = datacatalog_v1beta1.UpdateTagRequest(
+                    tag=tag,
+                )
+
+                # Make the request
+                response = client.update_tag(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.UpdateTagRequest, dict]):
                 The request object. Request message for
@@ -2514,6 +2988,23 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
     ) -> None:
         r"""Deletes a tag.
 
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_delete_tag():
+                # Create a client
+                client = datacatalog_v1beta1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.DeleteTagRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_tag(request=request)
+
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.DeleteTagRequest, dict]):
                 The request object. Request message for
@@ -2579,6 +3070,26 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
     ) -> pagers.ListTagsPager:
         r"""Lists the tags on an
         [Entry][google.cloud.datacatalog.v1beta1.Entry].
+
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_list_tags():
+                # Create a client
+                client = datacatalog_v1beta1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.ListTagsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_tags(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.ListTagsRequest, dict]):
@@ -2682,6 +3193,27 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
            entries.
         -  ``datacatalog.entryGroups.setIamPolicy`` to set policies on
            entry groups.
+
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = datacatalog_v1beta1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.SetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
@@ -2828,6 +3360,27 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         -  ``datacatalog.entryGroups.getIamPolicy`` to get policies on
            entry groups.
 
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = datacatalog_v1beta1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.GetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
                 The request object. Request message for `GetIamPolicy`
@@ -2964,6 +3517,28 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         A caller is not required to have Google IAM permission to make
         this request.
+
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = datacatalog_v1beta1.DataCatalogClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.TestIamPermissionsRequest(
+                    resource="resource_value",
+                    permissions=['permissions_value_1', 'permissions_value_2'],
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):

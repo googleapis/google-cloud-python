@@ -15,9 +15,12 @@
 #
 import proto  # type: ignore
 
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
-    package="google.cloud.datacatalog.v1", manifest={"IntegratedSystem",},
+    package="google.cloud.datacatalog.v1",
+    manifest={"IntegratedSystem", "PersonalDetails",},
 )
 
 
@@ -29,6 +32,21 @@ class IntegratedSystem(proto.Enum):
     BIGQUERY = 1
     CLOUD_PUBSUB = 2
     DATAPROC_METASTORE = 3
+
+
+class PersonalDetails(proto.Message):
+    r"""Entry metadata relevant only to the user and private to them.
+
+    Attributes:
+        starred (bool):
+            True if the entry is starred by the user;
+            false otherwise.
+        star_time (google.protobuf.timestamp_pb2.Timestamp):
+            Set if the entry is starred; unset otherwise.
+    """
+
+    starred = proto.Field(proto.BOOL, number=1,)
+    star_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

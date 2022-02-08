@@ -436,6 +436,26 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
     ) -> policytagmanager.Taxonomy:
         r"""Creates a taxonomy in the specified project.
 
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_create_taxonomy():
+                # Create a client
+                client = datacatalog_v1beta1.PolicyTagManagerClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.CreateTaxonomyRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_taxonomy(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.CreateTaxonomyRequest, dict]):
                 The request object. Request message for
@@ -521,6 +541,24 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         all policy tags in this taxonomy along with their
         associated policies.
 
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_delete_taxonomy():
+                # Create a client
+                client = datacatalog_v1beta1.PolicyTagManagerClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.DeleteTaxonomyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_taxonomy(request=request)
+
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.DeleteTaxonomyRequest, dict]):
                 The request object. Request message for
@@ -585,6 +623,25 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policytagmanager.Taxonomy:
         r"""Updates a taxonomy.
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_update_taxonomy():
+                # Create a client
+                client = datacatalog_v1beta1.PolicyTagManagerClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.UpdateTaxonomyRequest(
+                )
+
+                # Make the request
+                response = client.update_taxonomy(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.UpdateTaxonomyRequest, dict]):
@@ -663,6 +720,26 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
     ) -> pagers.ListTaxonomiesPager:
         r"""Lists all taxonomies in a project in a particular
         location that the caller has permission to view.
+
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_list_taxonomies():
+                # Create a client
+                client = datacatalog_v1beta1.PolicyTagManagerClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.ListTaxonomiesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_taxonomies(request=request)
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.ListTaxonomiesRequest, dict]):
@@ -744,6 +821,26 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
     ) -> policytagmanager.Taxonomy:
         r"""Gets a taxonomy.
 
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_get_taxonomy():
+                # Create a client
+                client = datacatalog_v1beta1.PolicyTagManagerClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.GetTaxonomyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_taxonomy(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.GetTaxonomyRequest, dict]):
                 The request object. Request message for
@@ -819,6 +916,26 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policytagmanager.PolicyTag:
         r"""Creates a policy tag in the specified taxonomy.
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_create_policy_tag():
+                # Create a client
+                client = datacatalog_v1beta1.PolicyTagManagerClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.CreatePolicyTagRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_policy_tag(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.CreatePolicyTagRequest, dict]):
@@ -906,6 +1023,24 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         r"""Deletes a policy tag. Also deletes all of its
         descendant policy tags.
 
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_delete_policy_tag():
+                # Create a client
+                client = datacatalog_v1beta1.PolicyTagManagerClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.DeletePolicyTagRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_policy_tag(request=request)
+
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.DeletePolicyTagRequest, dict]):
                 The request object. Request message for
@@ -970,6 +1105,25 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policytagmanager.PolicyTag:
         r"""Updates a policy tag.
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_update_policy_tag():
+                # Create a client
+                client = datacatalog_v1beta1.PolicyTagManagerClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.UpdatePolicyTagRequest(
+                )
+
+                # Make the request
+                response = client.update_policy_tag(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.UpdatePolicyTagRequest, dict]):
@@ -1051,6 +1205,25 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
     ) -> pagers.ListPolicyTagsPager:
         r"""Lists all policy tags in a taxonomy.
 
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_list_policy_tags():
+                # Create a client
+                client = datacatalog_v1beta1.PolicyTagManagerClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.ListPolicyTagsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_policy_tags(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.ListPolicyTagsRequest, dict]):
                 The request object. Request message for
@@ -1131,6 +1304,26 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
     ) -> policytagmanager.PolicyTag:
         r"""Gets a policy tag.
 
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_get_policy_tag():
+                # Create a client
+                client = datacatalog_v1beta1.PolicyTagManagerClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.GetPolicyTagRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_policy_tag(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.GetPolicyTagRequest, dict]):
                 The request object. Request message for
@@ -1206,6 +1399,26 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the IAM policy for a taxonomy or a policy tag.
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = datacatalog_v1beta1.PolicyTagManagerClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.GetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
@@ -1311,6 +1524,26 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
     ) -> policy_pb2.Policy:
         r"""Sets the IAM policy for a taxonomy or a policy tag.
 
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = datacatalog_v1beta1.PolicyTagManagerClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.SetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
                 The request object. Request message for `SetIamPolicy`
@@ -1415,6 +1648,28 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns the permissions that a caller has on the
         specified taxonomy or policy tag.
+
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1beta1
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = datacatalog_v1beta1.PolicyTagManagerClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1beta1.TestIamPermissionsRequest(
+                    resource="resource_value",
+                    permissions=['permissions_value_1', 'permissions_value_2'],
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):

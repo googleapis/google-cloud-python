@@ -183,38 +183,13 @@ class TagTemplate(proto.Message):
             underscores (_), dashes (-), spaces ( ), and can't start or
             end with spaces. The maximum length is 200 characters.
         is_publicly_readable (bool):
-            Indicates whether this is a public tag template.
+            Indicates whether tags created with this template are
+            public. Public tags do not require tag template access to
+            appear in [ListTags][google.cloud.datacatalog.v1.ListTags]
+            API response.
 
-            Every user has view access to a *public* tag template by
-            default. This means that:
-
-            -  Every user can use this tag template to tag an entry.
-            -  If an entry is tagged using the tag template, the tag is
-               always shown in the response to ``ListTags`` called on
-               the entry.
-            -  To get the template using the GetTagTemplate method, you
-               need view access either on the project or the
-               organization the tag template resides in but no other
-               permission is needed.
-            -  Operations on the tag template other than viewing (for
-               example, editing IAM policies) follow standard IAM
-               structures.
-
-            Tags created with a public tag template are referred to as
-            public tags.
-
-            You can search for a public tag by value with a simple
-            search query instead of using a ``tag:`` predicate.
-
-            Public tag templates may not appear in search results
-            depending on scope, see:
-            [include_public_tag_templates][google.cloud.datacatalog.v1.SearchCatalogRequest.Scope.include_public_tag_templates]
-
-            Note: If an `IAM domain
-            restriction <https://cloud.google.com/resource-manager/docs/organization-policy/restricting-domains>`__
-            is configured in the tag template's location, the public
-            access will not be enabled but the simple search for tag
-            values will still work.
+            Additionally, you can search for a public tag by value with
+            a simple search query instead of using a ``tag:`` predicate.
         fields (Sequence[google.cloud.datacatalog_v1.types.TagTemplate.FieldsEntry]):
             Required. Map of tag template field IDs to the settings for
             the field. This map is an exhaustive list of the allowed

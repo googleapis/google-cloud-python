@@ -240,6 +240,30 @@ class PolicyTagManagerSerializationAsyncClient:
            considered new.
         -  Updates policy tags with valid resources names accordingly.
 
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1
+
+            def sample_replace_taxonomy():
+                # Create a client
+                client = datacatalog_v1.PolicyTagManagerSerializationClient()
+
+                # Initialize request argument(s)
+                serialized_taxonomy = datacatalog_v1.SerializedTaxonomy()
+                serialized_taxonomy.display_name = "display_name_value"
+
+                request = datacatalog_v1.ReplaceTaxonomyRequest(
+                    name="name_value",
+                    serialized_taxonomy=serialized_taxonomy,
+                )
+
+                # Make the request
+                response = client.replace_taxonomy(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.datacatalog_v1.types.ReplaceTaxonomyRequest, dict]):
                 The request object. Request message for
@@ -308,6 +332,30 @@ class PolicyTagManagerSerializationAsyncClient:
         For an inlined source, taxonomies and policy tags are
         created in bulk using nested protocol buffer structures.
 
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1
+
+            def sample_import_taxonomies():
+                # Create a client
+                client = datacatalog_v1.PolicyTagManagerSerializationClient()
+
+                # Initialize request argument(s)
+                inline_source = datacatalog_v1.InlineSource()
+                inline_source.taxonomies.display_name = "display_name_value"
+
+                request = datacatalog_v1.ImportTaxonomiesRequest(
+                    inline_source=inline_source,
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.import_taxonomies(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.datacatalog_v1.types.ImportTaxonomiesRequest, dict]):
                 The request object. Request message for
@@ -364,6 +412,28 @@ class PolicyTagManagerSerializationAsyncClient:
         This method generates ``SerializedTaxonomy`` protocol buffers
         with nested policy tags that can be used as input for
         ``ImportTaxonomies`` calls.
+
+
+        .. code-block::
+
+            from google.cloud import datacatalog_v1
+
+            def sample_export_taxonomies():
+                # Create a client
+                client = datacatalog_v1.PolicyTagManagerSerializationClient()
+
+                # Initialize request argument(s)
+                request = datacatalog_v1.ExportTaxonomiesRequest(
+                    serialized_taxonomies=True,
+                    parent="parent_value",
+                    taxonomies=['taxonomies_value_1', 'taxonomies_value_2'],
+                )
+
+                # Make the request
+                response = client.export_taxonomies(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.datacatalog_v1.types.ExportTaxonomiesRequest, dict]):

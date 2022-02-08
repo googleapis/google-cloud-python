@@ -634,6 +634,68 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         return self._stubs["list_entries"]
 
     @property
+    def modify_entry_overview(
+        self,
+    ) -> Callable[[datacatalog.ModifyEntryOverviewRequest], datacatalog.EntryOverview]:
+        r"""Return a callable for the modify entry overview method over gRPC.
+
+        Modifies entry overview, part of the business context of an
+        [Entry][google.cloud.datacatalog.v1.Entry].
+
+        To call this method, you must have the
+        ``datacatalog.entries.updateOverview`` IAM permission on the
+        corresponding project.
+
+        Returns:
+            Callable[[~.ModifyEntryOverviewRequest],
+                    ~.EntryOverview]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "modify_entry_overview" not in self._stubs:
+            self._stubs["modify_entry_overview"] = self.grpc_channel.unary_unary(
+                "/google.cloud.datacatalog.v1.DataCatalog/ModifyEntryOverview",
+                request_serializer=datacatalog.ModifyEntryOverviewRequest.serialize,
+                response_deserializer=datacatalog.EntryOverview.deserialize,
+            )
+        return self._stubs["modify_entry_overview"]
+
+    @property
+    def modify_entry_contacts(
+        self,
+    ) -> Callable[[datacatalog.ModifyEntryContactsRequest], datacatalog.Contacts]:
+        r"""Return a callable for the modify entry contacts method over gRPC.
+
+        Modifies contacts, part of the business context of an
+        [Entry][google.cloud.datacatalog.v1.Entry].
+
+        To call this method, you must have the
+        ``datacatalog.entries.updateContacts`` IAM permission on the
+        corresponding project.
+
+        Returns:
+            Callable[[~.ModifyEntryContactsRequest],
+                    ~.Contacts]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "modify_entry_contacts" not in self._stubs:
+            self._stubs["modify_entry_contacts"] = self.grpc_channel.unary_unary(
+                "/google.cloud.datacatalog.v1.DataCatalog/ModifyEntryContacts",
+                request_serializer=datacatalog.ModifyEntryContactsRequest.serialize,
+                response_deserializer=datacatalog.Contacts.deserialize,
+            )
+        return self._stubs["modify_entry_contacts"]
+
+    @property
     def create_tag_template(
         self,
     ) -> Callable[[datacatalog.CreateTagTemplateRequest], tags.TagTemplate]:
@@ -1008,7 +1070,9 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         r"""Return a callable for the list tags method over gRPC.
 
         Lists tags assigned to an
-        [Entry][google.cloud.datacatalog.v1.Entry].
+        [Entry][google.cloud.datacatalog.v1.Entry]. The
+        [columns][google.cloud.datacatalog.v1.Tag.column] in the
+        response are lowercased.
 
         Returns:
             Callable[[~.ListTagsRequest],
@@ -1027,6 +1091,62 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
                 response_deserializer=datacatalog.ListTagsResponse.deserialize,
             )
         return self._stubs["list_tags"]
+
+    @property
+    def star_entry(
+        self,
+    ) -> Callable[[datacatalog.StarEntryRequest], datacatalog.StarEntryResponse]:
+        r"""Return a callable for the star entry method over gRPC.
+
+        Marks an [Entry][google.cloud.datacatalog.v1.Entry] as starred
+        by the current user. Starring information is private to each
+        user.
+
+        Returns:
+            Callable[[~.StarEntryRequest],
+                    ~.StarEntryResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "star_entry" not in self._stubs:
+            self._stubs["star_entry"] = self.grpc_channel.unary_unary(
+                "/google.cloud.datacatalog.v1.DataCatalog/StarEntry",
+                request_serializer=datacatalog.StarEntryRequest.serialize,
+                response_deserializer=datacatalog.StarEntryResponse.deserialize,
+            )
+        return self._stubs["star_entry"]
+
+    @property
+    def unstar_entry(
+        self,
+    ) -> Callable[[datacatalog.UnstarEntryRequest], datacatalog.UnstarEntryResponse]:
+        r"""Return a callable for the unstar entry method over gRPC.
+
+        Marks an [Entry][google.cloud.datacatalog.v1.Entry] as NOT
+        starred by the current user. Starring information is private to
+        each user.
+
+        Returns:
+            Callable[[~.UnstarEntryRequest],
+                    ~.UnstarEntryResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "unstar_entry" not in self._stubs:
+            self._stubs["unstar_entry"] = self.grpc_channel.unary_unary(
+                "/google.cloud.datacatalog.v1.DataCatalog/UnstarEntry",
+                request_serializer=datacatalog.UnstarEntryRequest.serialize,
+                response_deserializer=datacatalog.UnstarEntryResponse.deserialize,
+            )
+        return self._stubs["unstar_entry"]
 
     @property
     def set_iam_policy(
