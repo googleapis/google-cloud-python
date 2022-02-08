@@ -484,6 +484,25 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
     ) -> pagers.ListHubsPager:
         r"""Lists Hubs in a given project and location.
 
+
+        .. code-block::
+
+            from google.cloud import networkconnectivity_v1alpha1
+
+            def sample_list_hubs():
+                # Create a client
+                client = networkconnectivity_v1alpha1.HubServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1alpha1.ListHubsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_hubs(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.networkconnectivity_v1alpha1.types.ListHubsRequest, dict]):
                 The request object. Request for
@@ -564,6 +583,26 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
     ) -> hub.Hub:
         r"""Gets details of a single Hub.
 
+
+        .. code-block::
+
+            from google.cloud import networkconnectivity_v1alpha1
+
+            def sample_get_hub():
+                # Create a client
+                client = networkconnectivity_v1alpha1.HubServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1alpha1.GetHubRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_hub(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.networkconnectivity_v1alpha1.types.GetHubRequest, dict]):
                 The request object. Request for
@@ -642,6 +681,28 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new Hub in a given project and location.
+
+
+        .. code-block::
+
+            from google.cloud import networkconnectivity_v1alpha1
+
+            def sample_create_hub():
+                # Create a client
+                client = networkconnectivity_v1alpha1.HubServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1alpha1.CreateHubRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.create_hub(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.networkconnectivity_v1alpha1.types.CreateHubRequest, dict]):
@@ -747,6 +808,27 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
     ) -> operation.Operation:
         r"""Updates the parameters of a single Hub.
 
+
+        .. code-block::
+
+            from google.cloud import networkconnectivity_v1alpha1
+
+            def sample_update_hub():
+                # Create a client
+                client = networkconnectivity_v1alpha1.HubServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1alpha1.UpdateHubRequest(
+                )
+
+                # Make the request
+                operation = client.update_hub(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.networkconnectivity_v1alpha1.types.UpdateHubRequest, dict]):
                 The request object. Request for
@@ -845,6 +927,28 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single Hub.
 
+
+        .. code-block::
+
+            from google.cloud import networkconnectivity_v1alpha1
+
+            def sample_delete_hub():
+                # Create a client
+                client = networkconnectivity_v1alpha1.HubServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1alpha1.DeleteHubRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_hub(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.networkconnectivity_v1alpha1.types.DeleteHubRequest, dict]):
                 The request object. The request for
@@ -937,6 +1041,25 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
     ) -> pagers.ListSpokesPager:
         r"""Lists Spokes in a given project and location.
 
+
+        .. code-block::
+
+            from google.cloud import networkconnectivity_v1alpha1
+
+            def sample_list_spokes():
+                # Create a client
+                client = networkconnectivity_v1alpha1.HubServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1alpha1.ListSpokesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_spokes(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.networkconnectivity_v1alpha1.types.ListSpokesRequest, dict]):
                 The request object. The request for
@@ -1015,6 +1138,26 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
     ) -> hub.Spoke:
         r"""Gets details of a single Spoke.
 
+
+        .. code-block::
+
+            from google.cloud import networkconnectivity_v1alpha1
+
+            def sample_get_spoke():
+                # Create a client
+                client = networkconnectivity_v1alpha1.HubServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1alpha1.GetSpokeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_spoke(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.networkconnectivity_v1alpha1.types.GetSpokeRequest, dict]):
                 The request object. The request for
@@ -1088,6 +1231,28 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new Spoke in a given project and location.
+
+
+        .. code-block::
+
+            from google.cloud import networkconnectivity_v1alpha1
+
+            def sample_create_spoke():
+                # Create a client
+                client = networkconnectivity_v1alpha1.HubServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1alpha1.CreateSpokeRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.create_spoke(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.networkconnectivity_v1alpha1.types.CreateSpokeRequest, dict]):
@@ -1191,6 +1356,27 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
     ) -> operation.Operation:
         r"""Updates the parameters of a single Spoke.
 
+
+        .. code-block::
+
+            from google.cloud import networkconnectivity_v1alpha1
+
+            def sample_update_spoke():
+                # Create a client
+                client = networkconnectivity_v1alpha1.HubServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1alpha1.UpdateSpokeRequest(
+                )
+
+                # Make the request
+                operation = client.update_spoke(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
+
         Args:
             request (Union[google.cloud.networkconnectivity_v1alpha1.types.UpdateSpokeRequest, dict]):
                 The request object. Request for
@@ -1289,6 +1475,28 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single Spoke.
+
+
+        .. code-block::
+
+            from google.cloud import networkconnectivity_v1alpha1
+
+            def sample_delete_spoke():
+                # Create a client
+                client = networkconnectivity_v1alpha1.HubServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1alpha1.DeleteSpokeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_spoke(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+                print(response)
 
         Args:
             request (Union[google.cloud.networkconnectivity_v1alpha1.types.DeleteSpokeRequest, dict]):

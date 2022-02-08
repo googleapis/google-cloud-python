@@ -32,11 +32,13 @@ from .types.hub import ListHubsRequest
 from .types.hub import ListHubsResponse
 from .types.hub import ListSpokesRequest
 from .types.hub import ListSpokesResponse
+from .types.hub import LocationMetadata
 from .types.hub import RouterApplianceInstance
 from .types.hub import RoutingVPC
 from .types.hub import Spoke
 from .types.hub import UpdateHubRequest
 from .types.hub import UpdateSpokeRequest
+from .types.hub import LocationFeature
 from .types.hub import State
 
 __all__ = (
@@ -56,6 +58,8 @@ __all__ = (
     "ListHubsResponse",
     "ListSpokesRequest",
     "ListSpokesResponse",
+    "LocationFeature",
+    "LocationMetadata",
     "OperationMetadata",
     "RouterApplianceInstance",
     "RoutingVPC",

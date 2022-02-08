@@ -23,6 +23,7 @@ __protobuf__ = proto.module(
     package="google.cloud.networkconnectivity.v1",
     manifest={
         "State",
+        "LocationFeature",
         "Hub",
         "RoutingVPC",
         "Spoke",
@@ -42,6 +43,7 @@ __protobuf__ = proto.module(
         "LinkedInterconnectAttachments",
         "LinkedRouterApplianceInstances",
         "RouterApplianceInstance",
+        "LocationMetadata",
     },
 )
 
@@ -56,11 +58,20 @@ class State(proto.Enum):
     DELETING = 3
 
 
+class LocationFeature(proto.Enum):
+    r"""Supported features for a location"""
+    LOCATION_FEATURE_UNSPECIFIED = 0
+    SITE_TO_CLOUD_SPOKES = 1
+    SITE_TO_SITE_SPOKES = 2
+
+
 class Hub(proto.Message):
     r"""A hub is a collection of spokes. A single hub can contain
-    spokes from multiple regions. However, all of a hub's spokes
-    must be associated with resources that reside in the same VPC
-    network.
+    spokes from multiple regions. However, if any of a hub's spokes
+    use the data transfer feature, the resources associated with
+    those spokes must all reside in the same VPC network. Spokes
+    that do not use data transfer can be associated with any VPC
+    network in your project.
 
     Attributes:
         name (str):
@@ -87,12 +98,8 @@ class Hub(proto.Message):
             Output only. The current lifecycle state of
             this hub.
         routing_vpcs (Sequence[google.cloud.networkconnectivity_v1.types.RoutingVPC]):
-            The VPC network associated with this hub's
-            spokes. All of the VPN tunnels, VLAN
-            attachments, and router appliance instances
-            referenced by this hub's spokes must belong to
-            this VPC network.
-
+            The VPC networks associated with this hub's
+            spokes.
             This field is read-only. Network Connectivity
             Center automatically populates it based on the
             set of spokes attached to the hub.
@@ -109,15 +116,25 @@ class Hub(proto.Message):
 
 
 class RoutingVPC(proto.Message):
-    r"""RoutingVPC contains information about the VPC network that is
-    associated with a hub's spokes.
+    r"""RoutingVPC contains information about the VPC networks that
+    are associated with a hub's spokes.
 
     Attributes:
         uri (str):
             The URI of the VPC network.
+        required_for_new_site_to_site_data_transfer_spokes (bool):
+            Output only. If true, indicates that this VPC network is
+            currently associated with spokes that use the data transfer
+            feature (spokes where the site_to_site_data_transfer field
+            is set to true). If you create new spokes that use data
+            transfer, they must be associated with this VPC network. At
+            most, one VPC network will have this field set to true.
     """
 
     uri = proto.Field(proto.STRING, number=1,)
+    required_for_new_site_to_site_data_transfer_spokes = proto.Field(
+        proto.BOOL, number=2,
+    )
 
 
 class Spoke(proto.Message):
@@ -562,11 +579,10 @@ class LinkedVpnTunnels(proto.Message):
         uris (Sequence[str]):
             The URIs of linked VPN tunnel resources.
         site_to_site_data_transfer (bool):
-            A value that controls whether site-to-site
-            data transfer is enabled for these resources.
-            This field is set to false by default, but you
-            must set it to true. Note that data transfer is
-            available only in supported locations.
+            A value that controls whether site-to-site data transfer is
+            enabled for these resources. Data transfer is available only
+            in `supported
+            locations <https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations>`__.
     """
 
     uris = proto.RepeatedField(proto.STRING, number=1,)
@@ -585,11 +601,10 @@ class LinkedInterconnectAttachments(proto.Message):
             The URIs of linked interconnect attachment
             resources
         site_to_site_data_transfer (bool):
-            A value that controls whether site-to-site
-            data transfer is enabled for these resources.
-            This field is set to false by default, but you
-            must set it to true. Note that data transfer is
-            available only in supported locations.
+            A value that controls whether site-to-site data transfer is
+            enabled for these resources. Data transfer is available only
+            in `supported
+            locations <https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations>`__.
     """
 
     uris = proto.RepeatedField(proto.STRING, number=1,)
@@ -597,19 +612,19 @@ class LinkedInterconnectAttachments(proto.Message):
 
 
 class LinkedRouterApplianceInstances(proto.Message):
-    r"""A collection of router appliance instances. If you have
-    multiple router appliance instances connected to the same site,
-    they should all be attached to the same spoke.
+    r"""A collection of router appliance instances. If you configure
+    multiple router appliance instances to receive data from the
+    same set of sites outside of Google Cloud, we recommend that you
+    associate those instances with the same spoke.
 
     Attributes:
         instances (Sequence[google.cloud.networkconnectivity_v1.types.RouterApplianceInstance]):
             The list of router appliance instances.
         site_to_site_data_transfer (bool):
-            A value that controls whether site-to-site
-            data transfer is enabled for these resources.
-            This field is set to false by default, but you
-            must set it to true. Note that data transfer is
-            available only in supported locations.
+            A value that controls whether site-to-site data transfer is
+            enabled for these resources. Data transfer is available only
+            in `supported
+            locations <https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations>`__.
     """
 
     instances = proto.RepeatedField(
@@ -633,6 +648,19 @@ class RouterApplianceInstance(proto.Message):
 
     virtual_machine = proto.Field(proto.STRING, number=1,)
     ip_address = proto.Field(proto.STRING, number=3,)
+
+
+class LocationMetadata(proto.Message):
+    r"""Metadata about locations
+
+    Attributes:
+        location_features (Sequence[google.cloud.networkconnectivity_v1.types.LocationFeature]):
+            List of supported features
+    """
+
+    location_features = proto.RepeatedField(
+        proto.ENUM, number=1, enum="LocationFeature",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

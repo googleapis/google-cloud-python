@@ -29,11 +29,13 @@ from .hub import (
     ListHubsResponse,
     ListSpokesRequest,
     ListSpokesResponse,
+    LocationMetadata,
     RouterApplianceInstance,
     RoutingVPC,
     Spoke,
     UpdateHubRequest,
     UpdateSpokeRequest,
+    LocationFeature,
     State,
 )
 
@@ -53,10 +55,12 @@ __all__ = (
     "ListHubsResponse",
     "ListSpokesRequest",
     "ListSpokesResponse",
+    "LocationMetadata",
     "RouterApplianceInstance",
     "RoutingVPC",
     "Spoke",
     "UpdateHubRequest",
     "UpdateSpokeRequest",
+    "LocationFeature",
     "State",
 )

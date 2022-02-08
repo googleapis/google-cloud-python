@@ -36,11 +36,13 @@ from google.cloud.networkconnectivity_v1.types.hub import ListHubsRequest
 from google.cloud.networkconnectivity_v1.types.hub import ListHubsResponse
 from google.cloud.networkconnectivity_v1.types.hub import ListSpokesRequest
 from google.cloud.networkconnectivity_v1.types.hub import ListSpokesResponse
+from google.cloud.networkconnectivity_v1.types.hub import LocationMetadata
 from google.cloud.networkconnectivity_v1.types.hub import RouterApplianceInstance
 from google.cloud.networkconnectivity_v1.types.hub import RoutingVPC
 from google.cloud.networkconnectivity_v1.types.hub import Spoke
 from google.cloud.networkconnectivity_v1.types.hub import UpdateHubRequest
 from google.cloud.networkconnectivity_v1.types.hub import UpdateSpokeRequest
+from google.cloud.networkconnectivity_v1.types.hub import LocationFeature
 from google.cloud.networkconnectivity_v1.types.hub import State
 
 __all__ = (
@@ -61,10 +63,12 @@ __all__ = (
     "ListHubsResponse",
     "ListSpokesRequest",
     "ListSpokesResponse",
+    "LocationMetadata",
     "RouterApplianceInstance",
     "RoutingVPC",
     "Spoke",
     "UpdateHubRequest",
     "UpdateSpokeRequest",
+    "LocationFeature",
     "State",
 )

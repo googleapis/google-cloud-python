@@ -1,0 +1,862 @@
+{
+  "snippets": [
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "HubService"
+          },
+          "shortName": "CreateHub"
+        }
+      },
+      "file": "networkconnectivity_generated_networkconnectivity_v1alpha1_hub_service_create_hub_async.py",
+      "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_CreateHub_async",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "HubService"
+          },
+          "shortName": "CreateHub"
+        }
+      },
+      "file": "networkconnectivity_generated_networkconnectivity_v1alpha1_hub_service_create_hub_sync.py",
+      "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_CreateHub_sync",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "HubService"
+          },
+          "shortName": "CreateSpoke"
+        }
+      },
+      "file": "networkconnectivity_generated_networkconnectivity_v1alpha1_hub_service_create_spoke_async.py",
+      "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_CreateSpoke_async",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "HubService"
+          },
+          "shortName": "CreateSpoke"
+        }
+      },
+      "file": "networkconnectivity_generated_networkconnectivity_v1alpha1_hub_service_create_spoke_sync.py",
+      "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_CreateSpoke_sync",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "HubService"
+          },
+          "shortName": "DeleteHub"
+        }
+      },
+      "file": "networkconnectivity_generated_networkconnectivity_v1alpha1_hub_service_delete_hub_async.py",
+      "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_DeleteHub_async",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "HubService"
+          },
+          "shortName": "DeleteHub"
+        }
+      },
+      "file": "networkconnectivity_generated_networkconnectivity_v1alpha1_hub_service_delete_hub_sync.py",
+      "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_DeleteHub_sync",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "HubService"
+          },
+          "shortName": "DeleteSpoke"
+        }
+      },
+      "file": "networkconnectivity_generated_networkconnectivity_v1alpha1_hub_service_delete_spoke_async.py",
+      "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_DeleteSpoke_async",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "HubService"
+          },
+          "shortName": "DeleteSpoke"
+        }
+      },
+      "file": "networkconnectivity_generated_networkconnectivity_v1alpha1_hub_service_delete_spoke_sync.py",
+      "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_DeleteSpoke_sync",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "HubService"
+          },
+          "shortName": "GetHub"
+        }
+      },
+      "file": "networkconnectivity_generated_networkconnectivity_v1alpha1_hub_service_get_hub_async.py",
+      "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_GetHub_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "HubService"
+          },
+          "shortName": "GetHub"
+        }
+      },
+      "file": "networkconnectivity_generated_networkconnectivity_v1alpha1_hub_service_get_hub_sync.py",
+      "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_GetHub_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "HubService"
+          },
+          "shortName": "GetSpoke"
+        }
+      },
+      "file": "networkconnectivity_generated_networkconnectivity_v1alpha1_hub_service_get_spoke_async.py",
+      "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_GetSpoke_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "HubService"
+          },
+          "shortName": "GetSpoke"
+        }
+      },
+      "file": "networkconnectivity_generated_networkconnectivity_v1alpha1_hub_service_get_spoke_sync.py",
+      "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_GetSpoke_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "HubService"
+          },
+          "shortName": "ListHubs"
+        }
+      },
+      "file": "networkconnectivity_generated_networkconnectivity_v1alpha1_hub_service_list_hubs_async.py",
+      "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_ListHubs_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "HubService"
+          },
+          "shortName": "ListHubs"
+        }
+      },
+      "file": "networkconnectivity_generated_networkconnectivity_v1alpha1_hub_service_list_hubs_sync.py",
+      "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_ListHubs_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "HubService"
+          },
+          "shortName": "ListSpokes"
+        }
+      },
+      "file": "networkconnectivity_generated_networkconnectivity_v1alpha1_hub_service_list_spokes_async.py",
+      "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_ListSpokes_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "HubService"
+          },
+          "shortName": "ListSpokes"
+        }
+      },
+      "file": "networkconnectivity_generated_networkconnectivity_v1alpha1_hub_service_list_spokes_sync.py",
+      "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_ListSpokes_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "HubService"
+          },
+          "shortName": "UpdateHub"
+        }
+      },
+      "file": "networkconnectivity_generated_networkconnectivity_v1alpha1_hub_service_update_hub_async.py",
+      "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_UpdateHub_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "HubService"
+          },
+          "shortName": "UpdateHub"
+        }
+      },
+      "file": "networkconnectivity_generated_networkconnectivity_v1alpha1_hub_service_update_hub_sync.py",
+      "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_UpdateHub_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "HubService"
+          },
+          "shortName": "UpdateSpoke"
+        }
+      },
+      "file": "networkconnectivity_generated_networkconnectivity_v1alpha1_hub_service_update_spoke_async.py",
+      "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_UpdateSpoke_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "HubService"
+          },
+          "shortName": "UpdateSpoke"
+        }
+      },
+      "file": "networkconnectivity_generated_networkconnectivity_v1alpha1_hub_service_update_spoke_sync.py",
+      "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_UpdateSpoke_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    }
+  ]
+}
