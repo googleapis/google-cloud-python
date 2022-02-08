@@ -17,6 +17,8 @@
 from .services.security_center import SecurityCenterClient
 from .services.security_center import SecurityCenterAsyncClient
 
+from .types.access import Access
+from .types.access import Geolocation
 from .types.asset import Asset
 from .types.external_system import ExternalSystem
 from .types.finding import Finding
@@ -74,6 +76,7 @@ from .types.vulnerability import Vulnerability
 
 __all__ = (
     "SecurityCenterAsyncClient",
+    "Access",
     "Asset",
     "BulkMuteFindingsRequest",
     "BulkMuteFindingsResponse",
@@ -88,6 +91,7 @@ __all__ = (
     "ExternalSystem",
     "Finding",
     "Folder",
+    "Geolocation",
     "GetMuteConfigRequest",
     "GetNotificationConfigRequest",
     "GetOrganizationSettingsRequest",

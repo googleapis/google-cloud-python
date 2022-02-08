@@ -1584,7 +1584,8 @@ class UpdateSecurityMarksRequest(proto.Message):
             take effect. If not set uses current server
             time.  Updates will be applied to the
             SecurityMarks that are active immediately
-            preceding this time.
+            preceding this time. Must be smaller or equal to
+            the server time.
     """
 
     security_marks = proto.Field(

@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .access import (
+    Access,
+    Geolocation,
+)
 from .asset import Asset
 from .external_system import ExternalSystem
 from .finding import Finding
@@ -73,6 +77,8 @@ from .vulnerability import (
 )
 
 __all__ = (
+    "Access",
+    "Geolocation",
     "Asset",
     "ExternalSystem",
     "Finding",

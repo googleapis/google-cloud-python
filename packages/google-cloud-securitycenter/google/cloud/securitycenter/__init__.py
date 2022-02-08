@@ -21,6 +21,8 @@ from google.cloud.securitycenter_v1.services.security_center.async_client import
     SecurityCenterAsyncClient,
 )
 
+from google.cloud.securitycenter_v1.types.access import Access
+from google.cloud.securitycenter_v1.types.access import Geolocation
 from google.cloud.securitycenter_v1.types.asset import Asset
 from google.cloud.securitycenter_v1.types.external_system import ExternalSystem
 from google.cloud.securitycenter_v1.types.finding import Finding
@@ -153,6 +155,8 @@ from google.cloud.securitycenter_v1.types.vulnerability import Vulnerability
 __all__ = (
     "SecurityCenterClient",
     "SecurityCenterAsyncClient",
+    "Access",
+    "Geolocation",
     "Asset",
     "ExternalSystem",
     "Finding",

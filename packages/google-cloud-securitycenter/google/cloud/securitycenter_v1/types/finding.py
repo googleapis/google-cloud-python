@@ -15,6 +15,7 @@
 #
 import proto  # type: ignore
 
+from google.cloud.securitycenter_v1.types import access as gcs_access
 from google.cloud.securitycenter_v1.types import external_system
 from google.cloud.securitycenter_v1.types import indicator as gcs_indicator
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
@@ -79,16 +80,16 @@ class Finding(proto.Message):
             come from the SecurityMarks resource that
             belongs to the finding.
         event_time (google.protobuf.timestamp_pb2.Timestamp):
-            The time at which the event took place, or
-            when an update to the finding occurred. For
-            example, if the finding represents an open
-            firewall it would capture the time the detector
-            believes the firewall became open. The accuracy
-            is determined by the detector. If the finding
-            were to be resolved afterward, this time would
-            reflect when the finding was resolved. Must not
-            be set to a value greater than the current
-            timestamp.
+            The time the finding was first detected. If
+            an existing finding is updated, then this is the
+            time the update occurred. For example, if the
+            finding represents an open firewall, this
+            property captures the time the detector believes
+            the firewall became open. The accuracy is
+            determined by the detector. If the finding is
+            later resolved, then this time reflects when the
+            finding was resolved. This must not be set to a
+            value greater than the current timestamp.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which the finding was created in
             Security Command Center.
@@ -126,6 +127,10 @@ class Finding(proto.Message):
             Output only. Third party SIEM/SOAR fields
             within SCC, contains external system information
             and external system finding fields.
+        access (google.cloud.securitycenter_v1.types.Access):
+            Access details associated to the Finding,
+            such as more information on the caller, which
+            method was accessed, from where, etc.
         mute_initiator (str):
             First known as mute_annotation. Records additional
             information about the mute operation e.g. mute config that
@@ -191,6 +196,7 @@ class Finding(proto.Message):
     external_systems = proto.MapField(
         proto.STRING, proto.MESSAGE, number=22, message=external_system.ExternalSystem,
     )
+    access = proto.Field(proto.MESSAGE, number=26, message=gcs_access.Access,)
     mute_initiator = proto.Field(proto.STRING, number=28,)
 
 
