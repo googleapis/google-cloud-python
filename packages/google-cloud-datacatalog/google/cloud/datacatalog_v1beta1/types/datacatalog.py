@@ -133,8 +133,7 @@ class SearchCatalogRequest(proto.Message):
                 The list of organization IDs to search
                 within. To find your organization ID, follow
                 instructions in
-                https://cloud.google.com/resource-
-                manager/docs/creating-managing-organization.
+                https://cloud.google.com/resource-manager/docs/creating-managing-organization.
             include_project_ids (Sequence[str]):
                 The list of project IDs to search within. To
                 learn more about the distinction between project

@@ -683,9 +683,9 @@ class Entry(proto.Message):
             Entry description that can consist of several
             sentences or paragraphs that describe entry
             contents.
-            The description must not contain Unicode non-
-            characters as well as C0 and C1 control codes
-            except tabs (HT), new lines (LF), carriage
+            The description must not contain Unicode
+            non-characters as well as C0 and C1 control
+            codes except tabs (HT), new lines (LF), carriage
             returns (CR), and page breaks (FF).
             The maximum size is 2000 bytes when encoded in
             UTF-8. Default value is an empty string.

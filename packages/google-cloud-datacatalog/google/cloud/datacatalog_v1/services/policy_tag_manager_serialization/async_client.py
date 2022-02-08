@@ -300,8 +300,8 @@ class PolicyTagManagerSerializationAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policytagmanagerserialization.ImportTaxonomiesResponse:
         r"""Creates new taxonomies (including their policy tags)
-        in a given project by importing from inlined or cross-
-        regional sources.
+        in a given project by importing from inlined or
+        cross-regional sources.
         For a cross-regional source, new taxonomies are created
         by copying from a source in another region.
 
