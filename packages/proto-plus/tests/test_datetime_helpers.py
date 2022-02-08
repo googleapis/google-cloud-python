@@ -173,7 +173,6 @@ def test_from_rfc3339_w_full_precision():
     assert stamp == expected
 
 
-@staticmethod
 @pytest.mark.parametrize(
     "fractional, nanos",
     [
