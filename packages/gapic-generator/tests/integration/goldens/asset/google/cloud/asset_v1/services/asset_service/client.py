@@ -1128,7 +1128,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_feed(request=request)
+                client.delete_feed(request=request)
 
         Args:
             request (Union[google.cloud.asset_v1.types.DeleteFeedRequest, dict]):

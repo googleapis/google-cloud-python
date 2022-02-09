@@ -37,7 +37,7 @@ def sample_delete_log():
     )
 
     # Make the request
-    response = client.delete_log(request=request)
+    client.delete_log(request=request)
 
 
 # [END logging_generated_logging_v2_LoggingServiceV2_DeleteLog_sync]

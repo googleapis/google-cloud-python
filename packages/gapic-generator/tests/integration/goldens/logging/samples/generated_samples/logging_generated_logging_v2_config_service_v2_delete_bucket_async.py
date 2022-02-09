@@ -37,7 +37,7 @@ async def sample_delete_bucket():
     )
 
     # Make the request
-    response = await client.delete_bucket(request=request)
+    await client.delete_bucket(request=request)
 
 
 # [END logging_generated_logging_v2_ConfigServiceV2_DeleteBucket_async]

@@ -190,6 +190,7 @@ configs the client streaming logic should be modified to allow 2+ request object
 # Here we create a generator that yields a single `request` for 
 # demonstrative purposes.
 requests = [request]
+
 def request_generator():
     for request in requests:
         yield request
@@ -245,8 +246,8 @@ client.{{ sample.rpc|snake_case }}({{ render_request_params_unary(sample.request
 {# it's just easier to set up client side streaming and other things from outside this macro. #}
 {% macro render_calling_form(method_invocation_text, calling_form, calling_form_enum, transport, response_statements ) %}
 # Make the request
-{% if calling_form == calling_form_enum.Request %}
-response = {{ method_invocation_text|trim }}
+{% if calling_form in [calling_form_enum.Request, calling_form_enum.RequestStreamingClient] %}
+{% if response_statements %}response = {% endif %}{{ method_invocation_text|trim }}
 
 {% if response_statements %}
 # Handle the response

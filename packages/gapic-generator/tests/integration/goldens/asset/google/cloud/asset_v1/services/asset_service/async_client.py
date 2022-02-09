@@ -943,7 +943,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 )
 
                 # Make the request
-                response = client.delete_feed(request=request)
+                client.delete_feed(request=request)
 
         Args:
             request (Union[google.cloud.asset_v1.types.DeleteFeedRequest, dict]):

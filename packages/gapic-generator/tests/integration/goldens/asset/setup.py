@@ -27,6 +27,9 @@ with io.open(readme_filename, encoding='utf-8') as readme_file:
 
 setuptools.setup(
     name='google-cloud-asset',
+    author="Google LLC",
+    author_email="googleapis-packages@google.com",
+    url="https://github.com/googleapis/python-google-cloud-asset",
     version=version,
     long_description=readme,
     packages=setuptools.PEP420PackageFinder.find(),

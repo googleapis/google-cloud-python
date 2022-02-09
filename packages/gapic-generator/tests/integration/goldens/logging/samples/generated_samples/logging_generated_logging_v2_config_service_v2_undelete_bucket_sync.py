@@ -37,7 +37,7 @@ def sample_undelete_bucket():
     )
 
     # Make the request
-    response = client.undelete_bucket(request=request)
+    client.undelete_bucket(request=request)
 
 
 # [END logging_generated_logging_v2_ConfigServiceV2_UndeleteBucket_sync]

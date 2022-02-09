@@ -863,7 +863,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_log_metric(request=request)
+                client.delete_log_metric(request=request)
 
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteLogMetricRequest, dict]):

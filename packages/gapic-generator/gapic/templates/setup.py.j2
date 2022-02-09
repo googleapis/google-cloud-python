@@ -16,6 +16,9 @@ with io.open(readme_filename, encoding='utf-8') as readme_file:
 
 setuptools.setup(
     name='{{ api.naming.warehouse_package_name }}',
+    author="Google LLC",
+    author_email="googleapis-packages@google.com",
+    url="https://github.com/googleapis/python-{{ api.naming.warehouse_package_name }}",
     version=version,
     long_description=readme,
     {% if api.naming.namespace %}

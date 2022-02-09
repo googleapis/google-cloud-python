@@ -37,7 +37,7 @@ async def sample_delete_sink():
     )
 
     # Make the request
-    response = await client.delete_sink(request=request)
+    await client.delete_sink(request=request)
 
 
 # [END logging_generated_logging_v2_ConfigServiceV2_DeleteSink_async]

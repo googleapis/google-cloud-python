@@ -37,7 +37,7 @@ def sample_delete_exclusion():
     )
 
     # Make the request
-    response = client.delete_exclusion(request=request)
+    client.delete_exclusion(request=request)
 
 
 # [END logging_generated_logging_v2_ConfigServiceV2_DeleteExclusion_sync]

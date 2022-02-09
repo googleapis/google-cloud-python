@@ -27,6 +27,9 @@ CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 LOWER_BOUND_CONSTRAINTS_FILE = CURRENT_DIRECTORY / "constraints.txt"
 PACKAGE_NAME = subprocess.check_output([sys.executable, "setup.py", "--name"], encoding="utf-8")
 
+BLACK_VERSION = "black==19.10b0"
+BLACK_PATHS = ["docs", "google", "tests", "samples", "noxfile.py", "setup.py"]
+DEFAULT_PYTHON_VERSION = "3.9"
 
 nox.sessions = [
     "unit",
@@ -35,6 +38,9 @@ nox.sessions = [
     "check_lower_bounds"
     # exclude update_lower_bounds from default
     "docs",
+    "blacken",
+    "lint",
+    "lint_setup_py",
 ]
 
 @nox.session(python=['3.6', '3.7', '3.8', '3.9', '3.10'])
@@ -55,7 +61,7 @@ def unit(session):
     )
 
 
-@nox.session(python='3.9')
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def cover(session):
     """Run the final coverage report.
     This outputs the coverage report aggregating coverage from the unit
@@ -110,7 +116,7 @@ def check_lower_bounds(session):
         str(LOWER_BOUND_CONSTRAINTS_FILE),
     )
 
-@nox.session(python='3.9')
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def docs(session):
     """Build the docs for this library."""
 
@@ -130,3 +136,36 @@ def docs(session):
         os.path.join("docs", ""),
         os.path.join("docs", "_build", "html", ""),
     )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def lint(session):
+    """Run linters.
+
+    Returns a failure if the linters find linting errors or sufficiently
+    serious code quality issues.
+    """
+    session.install("flake8", BLACK_VERSION)
+    session.run(
+        "black",
+        "--check",
+        *BLACK_PATHS,
+    )
+    session.run("flake8", "google", "tests", "samples")
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def blacken(session):
+    """Run black. Format code to uniform standard."""
+    session.install(BLACK_VERSION)
+    session.run(
+        "black",
+        *BLACK_PATHS,
+    )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def lint_setup_py(session):
+    """Verify that setup.py is valid (including RST check)."""
+    session.install("docutils", "pygments")
+    session.run("python", "setup.py", "check", "--restructuredtext", "--strict")

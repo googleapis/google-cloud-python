@@ -41,6 +41,7 @@ def sample_method_bidi_streaming():
     # Here we create a generator that yields a single `request` for
     # demonstrative purposes.
     requests = [request]
+
     def request_generator():
         for request in requests:
             yield request

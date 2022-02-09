@@ -23,6 +23,7 @@ branchProtectionRules:
     - 'showcase-unit (3.9, _alternative_templates)'
     - 'showcase-unit-add-iam-methods'
     - 'integration'
+    - 'goldens-lint'
     - 'style-check'
     - 'snippetgen'
     - 'unit (3.6)'

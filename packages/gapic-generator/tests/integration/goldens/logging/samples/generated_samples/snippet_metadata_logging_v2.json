@@ -2393,12 +2393,12 @@
       "regionTag": "logging_generated_logging_v2_LoggingServiceV2_TailLogEntries_async",
       "segments": [
         {
-          "end": 54,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
@@ -2408,18 +2408,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 48,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 51,
+          "start": 49,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
-          "start": 51,
+          "end": 56,
+          "start": 52,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -2437,12 +2437,12 @@
       "regionTag": "logging_generated_logging_v2_LoggingServiceV2_TailLogEntries_sync",
       "segments": [
         {
-          "end": 54,
+          "end": 55,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 55,
           "start": 27,
           "type": "SHORT"
         },
@@ -2452,18 +2452,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 48,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 51,
+          "start": 49,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
-          "start": 51,
+          "end": 56,
+          "start": 52,
           "type": "RESPONSE_HANDLING"
         }
       ]

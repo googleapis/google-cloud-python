@@ -37,7 +37,7 @@ def sample_delete_log_metric():
     )
 
     # Make the request
-    response = client.delete_log_metric(request=request)
+    client.delete_log_metric(request=request)
 
 
 # [END logging_generated_logging_v2_MetricsServiceV2_DeleteLogMetric_sync]

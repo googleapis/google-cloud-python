@@ -37,7 +37,7 @@ def sample_delete_sink():
     )
 
     # Make the request
-    response = client.delete_sink(request=request)
+    client.delete_sink(request=request)
 
 
 # [END logging_generated_logging_v2_ConfigServiceV2_DeleteSink_sync]

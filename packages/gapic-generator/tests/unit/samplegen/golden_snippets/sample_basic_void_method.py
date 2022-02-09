@@ -46,7 +46,7 @@ def sample_classify(video, location):
     )
 
     # Make the request
-    response = client.classify(request=request)
+    client.classify(request=request)
 
 
 # [END mollusc_classify_sync]

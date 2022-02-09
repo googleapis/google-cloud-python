@@ -37,7 +37,7 @@ def sample_delete_view():
     )
 
     # Make the request
-    response = client.delete_view(request=request)
+    client.delete_view(request=request)
 
 
 # [END logging_generated_logging_v2_ConfigServiceV2_DeleteView_sync]

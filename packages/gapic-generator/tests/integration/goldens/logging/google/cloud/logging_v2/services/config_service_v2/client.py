@@ -794,7 +794,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_bucket(request=request)
+                client.delete_bucket(request=request)
 
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteBucketRequest, dict]):
@@ -859,7 +859,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 )
 
                 # Make the request
-                response = client.undelete_bucket(request=request)
+                client.undelete_bucket(request=request)
 
         Args:
             request (Union[google.cloud.logging_v2.types.UndeleteBucketRequest, dict]):
@@ -1261,7 +1261,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_view(request=request)
+                client.delete_view(request=request)
 
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteViewRequest, dict]):
@@ -1833,7 +1833,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_sink(request=request)
+                client.delete_sink(request=request)
 
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteSinkRequest, dict]):
@@ -2429,7 +2429,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_exclusion(request=request)
+                client.delete_exclusion(request=request)
 
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteExclusionRequest, dict]):

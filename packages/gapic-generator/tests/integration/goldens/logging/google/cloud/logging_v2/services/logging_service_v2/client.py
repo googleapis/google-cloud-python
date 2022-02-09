@@ -402,7 +402,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_log(request=request)
+                client.delete_log(request=request)
 
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteLogRequest, dict]):
@@ -1034,6 +1034,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 # Here we create a generator that yields a single `request` for
                 # demonstrative purposes.
                 requests = [request]
+
                 def request_generator():
                     for request in requests:
                         yield request
