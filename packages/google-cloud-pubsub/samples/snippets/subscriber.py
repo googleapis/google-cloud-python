@@ -190,7 +190,7 @@ def create_push_subscription(
 def create_subscription_with_ordering(
     project_id: str, topic_id: str, subscription_id: str
 ) -> None:
-    """Create a subscription with dead letter policy."""
+    """Create a subscription with ordering enabled."""
     # [START pubsub_enable_subscription_ordering]
     from google.cloud import pubsub_v1
 
@@ -214,6 +214,32 @@ def create_subscription_with_ordering(
         )
         print(f"Created subscription with ordering: {subscription}")
     # [END pubsub_enable_subscription_ordering]
+
+
+def create_subscription_with_filtering(
+    project_id: str, topic_id: str, subscription_id: str, filter: str,
+) -> None:
+    """Create a subscription with filtering enabled."""
+    # [START pubsub_create_subscription_with_filter]
+    from google.cloud import pubsub_v1
+
+    # TODO(developer): Choose an existing topic.
+    # project_id = "your-project-id"
+    # topic_id = "your-topic-id"
+    # subscription_id = "your-subscription-id"
+    # filter = "attributes.author=\"unknown\""
+
+    publisher = pubsub_v1.PublisherClient()
+    subscriber = pubsub_v1.SubscriberClient()
+    topic_path = publisher.topic_path(project_id, topic_id)
+    subscription_path = subscriber.subscription_path(project_id, subscription_id)
+
+    with subscriber:
+        subscription = subscriber.create_subscription(
+            request={"name": subscription_path, "topic": topic_path, "filter": filter}
+        )
+        print(f"Created subscription with filtering enabled: {subscription}")
+    # [END pubsub_create_subscription_with_filter]
 
 
 def delete_subscription(project_id: str, subscription_id: str) -> None:
@@ -741,7 +767,7 @@ def receive_messages_with_delivery_attempts(
     # [END pubsub_dead_letter_delivery_attempt]
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # noqa
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter,
     )
@@ -784,6 +810,13 @@ if __name__ == "__main__":
     )
     create_subscription_with_ordering_parser.add_argument("topic_id")
     create_subscription_with_ordering_parser.add_argument("subscription_id")
+
+    create_subscription_with_filtering_parser = subparsers.add_parser(
+        "create-with-filtering", help=create_subscription_with_filtering.__doc__
+    )
+    create_subscription_with_filtering_parser.add_argument("topic_id")
+    create_subscription_with_filtering_parser.add_argument("subscription_id")
+    create_subscription_with_filtering_parser.add_argument("filter")
 
     delete_parser = subparsers.add_parser("delete", help=delete_subscription.__doc__)
     delete_parser.add_argument("subscription_id")
@@ -888,17 +921,21 @@ if __name__ == "__main__":
         )
     elif args.command == "create-push":
         create_push_subscription(
-            args.project_id, args.topic_id, args.subscription_id, args.endpoint,
+            args.project_id, args.topic_id, args.subscription_id, args.endpoint
         )
     elif args.command == "create-with-ordering":
         create_subscription_with_ordering(
             args.project_id, args.topic_id, args.subscription_id
         )
+    elif args.command == "create-with-filtering":
+        create_subscription_with_filtering(
+            args.project_id, args.topic_id, args.subscription_id, args.filter
+        )
     elif args.command == "delete":
         delete_subscription(args.project_id, args.subscription_id)
     elif args.command == "update-push":
         update_push_subscription(
-            args.project_id, args.topic_id, args.subscription_id, args.endpoint,
+            args.project_id, args.topic_id, args.subscription_id, args.endpoint
         )
     elif args.command == "update-dead-letter-policy":
         update_subscription_with_dead_letter_policy(

@@ -43,6 +43,7 @@ ENDPOINT = f"https://{PROJECT_ID}.appspot.com/push"
 NEW_ENDPOINT = f"https://{PROJECT_ID}.appspot.com/push2"
 DEFAULT_MAX_DELIVERY_ATTEMPTS = 5
 UPDATED_MAX_DELIVERY_ATTEMPTS = 20
+FILTER = 'attributes.author="unknown"'
 
 C = TypeVar("C", bound=Callable[..., Any])
 
@@ -383,6 +384,31 @@ def test_create_subscription_with_ordering(
     assert "Created subscription with ordering" in out
     assert f"{subscription_admin}" in out
     assert "enable_message_ordering: true" in out
+
+
+def test_create_subscription_with_filtering(
+    subscriber_client: pubsub_v1.SubscriberClient,
+    subscription_admin: str,
+    capsys: CaptureFixture[str],
+) -> None:
+    subscription_path = subscriber_client.subscription_path(
+        PROJECT_ID, SUBSCRIPTION_ADMIN
+    )
+    try:
+        subscriber_client.delete_subscription(
+            request={"subscription": subscription_path}
+        )
+    except NotFound:
+        pass
+
+    subscriber.create_subscription_with_filtering(
+        PROJECT_ID, TOPIC, SUBSCRIPTION_ADMIN, FILTER
+    )
+
+    out, _ = capsys.readouterr()
+    assert "Created subscription with filtering enabled" in out
+    assert f"{subscription_admin}" in out
+    assert '"attributes.author=\\"unknown\\""' in out
 
 
 def test_create_push_subscription(
