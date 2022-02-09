@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+### [2.2.1](https://github.com/googleapis/google-resumable-media-python/compare/v2.2.0...v2.2.1) (2022-02-09)
+
+
+### Bug Fixes
+
+* don't overwrite user-agent on requests ([42b380e](https://github.com/googleapis/google-resumable-media-python/commit/42b380e9ec7aba59aa205f8f354764c9b7e35f19))
+
 ## [2.2.0](https://github.com/googleapis/google-resumable-media-python/compare/v2.1.0...v2.2.0) (2022-01-28)
 
 
