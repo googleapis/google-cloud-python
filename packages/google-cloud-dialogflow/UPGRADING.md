@@ -162,9 +162,9 @@ The `types` submodule is still present in the versioned module.
 E.g.
 
 ```py
-from google.cloud import dialogvlow_v2
+from google.cloud import dialogflow_v2
 
-query_params = dialogvlow_v2.types.QueryParameters(time_zone="Europe/Paris")
+query_params = dialogflow_v2.types.QueryParameters(time_zone="Europe/Paris")
 ```
 
 
