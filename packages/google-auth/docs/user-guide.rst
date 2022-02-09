@@ -259,6 +259,9 @@ following requirements are needed:
   credential files, the generated credential configuration file will only
   contain non-sensitive metadata to instruct the library on how to retrieve
   external subject tokens and exchange them for service account access tokens.
+- If you want to use IDMSv2, then below field needs to be added to credential_source
+  section of credential configuration.
+  "aws_session_token_url": "http://169.254.169.254/latest/api/token"
 
 Follow the detailed instructions on how to
 `Configure Workload Identity Federation from AWS`_.
