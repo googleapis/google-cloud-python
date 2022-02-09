@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [2.6.1](https://github.com/googleapis/google-auth-library-python/compare/v2.6.0...v2.6.1) (2022-02-09)
+
+
+### Bug Fixes
+
+* Add AWS session token to metadata requests ([#958](https://github.com/googleapis/google-auth-library-python/issues/958)) ([5c7f734](https://github.com/googleapis/google-auth-library-python/commit/5c7f7342179d007e9e779ffe8734d540cdf36fde))
+
 ## [2.6.0](https://github.com/googleapis/google-auth-library-python/compare/v2.5.0...v2.6.0) (2022-01-31)
 
 
