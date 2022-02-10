@@ -1,6 +1,13 @@
 # Changelog
 
 
+### [0.63.2](https://github.com/googleapis/gapic-generator-python/compare/v0.63.1...v0.63.2) (2022-02-09)
+
+
+### Bug Fixes
+
+* fix lint sessions on generated samples ([#1192](https://github.com/googleapis/gapic-generator-python/issues/1192)) ([4d0ea18](https://github.com/googleapis/gapic-generator-python/commit/4d0ea182aa5500eee0f5485e88e14043974ae78b))
+
 ### [0.63.1](https://github.com/googleapis/gapic-generator-python/compare/v0.63.0...v0.63.1) (2022-02-03)
 
 
