@@ -448,7 +448,7 @@ def _parse_docstring_summary(summary):
                 keyword = ""
                 if name and description and var_type:
                     attributes.append({
-                        "name": name,
+                        "id": name,
                         "description": description,
                         "var_type": var_type
                     })
@@ -1447,9 +1447,9 @@ def search_cross_references(obj, current_name: str, entry_names: List[str]):
                     entry_names
                 )
 
-            if attribute.get("name"):
-                attribute["name"] = convert_cross_references(
-                    attribute["name"],
+            if attribute.get("id"):
+                attribute["id"] = convert_cross_references(
+                    attribute["id"],
                     current_name,
                     entry_names
                 )

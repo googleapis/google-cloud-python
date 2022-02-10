@@ -815,7 +815,7 @@ And any other documentation that the source code would have could go here.
         # Test parsing docstring with attributes.
         attributes_want = [
             {
-                "name": "simple name",
+                "id": "simple name",
                 "description": "simple description",
                 "var_type": 'str'
             }
@@ -837,12 +837,12 @@ And any other documentation that the source code would have could go here.
         # Check multiple attributes are parsed.
         attributes_want = [
             {
-                "name": "simple name",
+                "id": "simple name",
                 "description": "simple description",
                 "var_type": "str"
             },
             {
-                "name": "table_insert_request",
+                "id": "table_insert_request",
                 "description": "Table insert request.",
                 "var_type": "google.cloud.bigquery_logging_v1.types.TableInsertRequest"
             }
@@ -874,7 +874,7 @@ And any other documentation that the source code would have could go here.
         # Check only attributes in valid format gets parsed.
         attributes_want = [
             {
-                "name": "proper name",
+                "id": "proper name",
                 "description": "proper description.",
                 "var_type": "str"
             }

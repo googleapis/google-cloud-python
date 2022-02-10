@@ -7,10 +7,10 @@ items:
       \ \"date_field = CAST('2014-9-27' as\n   DATE)\" \"nullable_field is not NULL\"\
       \ \"st_equals(geo_field,\n   st_geofromtext(\"POINT(2, 2)\"))\" \"numeric_field\
       \ BETWEEN 1.0\n   AND 5.0\"\n   \n   Restricted to a maximum length for 1 MB."
-    name: google.cloud.bigquery_storage_v1.types.StreamStats
+    id: google.cloud.bigquery_storage_v1.types.StreamStats
     var_type: str
   - description: "Optional. Options specific to the Apache\n   Arrow output format."
-    name: arrow_serialization_options
+    id: arrow_serialization_options
     var_type: <xref uid="google.cloud.bigquery_storage_v1.types.ArrowSerializationOptions">google.cloud.bigquery_storage_v1.types.ArrowSerializationOptions</xref>
   children: []
   class: google.cloud.bigquery_storage_v1.types.ReadSession.TableReadOptions
