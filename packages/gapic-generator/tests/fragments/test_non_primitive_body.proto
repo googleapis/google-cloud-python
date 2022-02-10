@@ -29,6 +29,20 @@ service SmallCompute {
       post: "/computation/v1/first_name/{first_name}/last_name/{last_name}"
     };
   };
+
+  rpc EnumBody(EnumBodyRequest) returns (EnumBodyResponse) {
+    option (google.api.http) = {
+      body: "resource"
+      post: "/enum_body/v1/names/{name}"
+    };
+  }
+
+  rpc RecursiveBody(RecursiveBodyRequest) returns (RecursiveBodyResponse) {
+    option (google.api.http) = {
+      body: "resource"
+      post: "/recursive_body/v1/names/{name}"
+    };
+  }
 }
 
 message SerialNumber {
@@ -50,4 +64,38 @@ message MethodRequest {
 
 message MethodResponse {
   string name = 1;
+}
+
+message EnumBodyRequest {
+  message Resource{
+    enum Ordering {
+      UNKNOWN = 0;
+      CHRONOLOGICAL = 1;
+      ALPHABETICAL = 2;
+      DIFFICULTY = 3;
+    }
+
+    Ordering ordering = 1;
+  }
+
+  string name = 1;
+  Resource resource = 2;
+}
+
+message EnumBodyResponse {
+  string data = 1;
+}
+
+message RecursiveBodyRequest {
+  message Resource {
+    int32 depth = 1;
+    Resource child_resource = 2;
+  }
+
+  string name = 1;
+  Resource resource = 2;
+}
+
+message RecursiveBodyResponse {
+  string data = 1;
 }

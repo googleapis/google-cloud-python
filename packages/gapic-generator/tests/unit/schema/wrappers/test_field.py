@@ -27,6 +27,7 @@ from gapic.schema import wrappers
 from test_utils.test_utils import (
     make_field,
     make_message,
+    make_enum,
 )
 
 
@@ -343,7 +344,41 @@ def test_mock_value_original_type_message():
     assert entry_field.mock_value_original_type == {}
 
 
-def test_mock_value_recursive():
+def test_mock_value_original_type_enum():
+    mollusc_field = make_field(
+        name="class",
+        enum=make_enum(
+            name="Class",
+            values=[
+                ("UNKNOWN", 0),
+                ("GASTROPOD", 1),
+                ("BIVALVE", 2),
+                ("CEPHALOPOD", 3),
+            ],
+        ),
+    )
+
+    assert mollusc_field.mock_value_original_type == 1
+
+    empty_field = make_field(
+        name="empty",
+        enum=make_enum(
+            name="Empty",
+            values=[("UNKNOWN", 0)],
+        ),
+    )
+
+    assert empty_field.mock_value_original_type == 0
+
+
+@pytest.mark.parametrize(
+    "mock_method,expected",
+    [
+        ("mock_value", "ac_turtle.Turtle(turtle=ac_turtle.Turtle(turtle=turtle.Turtle(turtle=None)))"),
+        ("mock_value_original_type", {"turtle": {}}),
+    ],
+)
+def test_mock_value_recursive(mock_method, expected):
     # The elaborate setup is an unfortunate requirement.
     file_pb = descriptor_pb2.FileDescriptorProto(
         name="turtle.proto",
@@ -367,8 +402,7 @@ def test_mock_value_recursive():
     turtle_field = my_api.messages["animalia.chordata.v2.Turtle"].fields["turtle"]
 
     # If not handled properly, this will run forever and eventually OOM.
-    actual = turtle_field.mock_value
-    expected = "ac_turtle.Turtle(turtle=ac_turtle.Turtle(turtle=turtle.Turtle(turtle=None)))"
+    actual = getattr(turtle_field, mock_method)
     assert actual == expected
 
 

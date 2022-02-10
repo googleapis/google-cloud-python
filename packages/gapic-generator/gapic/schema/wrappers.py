@@ -97,29 +97,42 @@ class Field:
 
     @utils.cached_property
     def mock_value_original_type(self) -> Union[bool, str, bytes, int, float, Dict[str, Any], List[Any], None]:
-        # Return messages as dicts and let the message ctor handle the conversion.
-        if self.message:
-            if self.map:
-                # Not worth the hassle, just return an empty map.
-                return {}
+        visited_messages = set()
 
-            msg_dict = {
-                f.name: f.mock_value_original_type
-                for f in self.message.fields.values()
-            }
+        def recursive_mock_original_type(field):
+            if field.message:
+                # Return messages as dicts and let the message ctor handle the conversion.
+                if field.message in visited_messages:
+                    return {}
 
-            return [msg_dict] if self.repeated else msg_dict
+                visited_messages.add(field.message)
+                if field.map:
+                    # Not worth the hassle, just return an empty map.
+                    return {}
 
-        answer = self.primitive_mock() or None
+                msg_dict = {
+                    f.name: recursive_mock_original_type(f)
+                    for f in field.message.fields.values()
+                }
 
-        # If this is a repeated field, then the mock answer should
-        # be a list.
-        if self.repeated:
-            first_item = self.primitive_mock(suffix=1) or None
-            second_item = self.primitive_mock(suffix=2) or None
-            answer = [first_item, second_item]
+                return [msg_dict] if field.repeated else msg_dict
 
-        return answer
+            if field.enum:
+                # First Truthy value, fallback to the first value
+                return next((v for v in field.type.values if v.number), field.type.values[0]).number
+
+            answer = field.primitive_mock() or None
+
+            # If this is a repeated field, then the mock answer should
+            # be a list.
+            if field.repeated:
+                first_item = field.primitive_mock(suffix=1) or None
+                second_item = field.primitive_mock(suffix=2) or None
+                answer = [first_item, second_item]
+
+            return answer
+
+        return recursive_mock_original_type(self)
 
     @utils.cached_property
     def mock_value(self) -> str:
@@ -887,8 +900,12 @@ class HttpRule:
     def path_fields(self, method: "Method") -> List[Tuple[Field, str, str]]:
         """return list of (name, template) tuples extracted from uri."""
         input = method.input
-        return [(input.get_field(*match.group("name").split(".")), match.group("name"), match.group("template"))
-                for match in path_template._VARIABLE_RE.finditer(self.uri)]
+        return [
+            (input.get_field(*match.group("name").split(".")),
+             match.group("name"), match.group("template"))
+            for match in path_template._VARIABLE_RE.finditer(self.uri)
+            if match.group("name")
+        ]
 
     def sample_request(self, method: "Method") -> Dict[str, Any]:
         """return json dict for sample request matching the uri template."""

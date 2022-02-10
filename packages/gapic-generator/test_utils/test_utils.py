@@ -297,7 +297,7 @@ def make_enum(
     name: str,
     package: str = 'foo.bar.v1',
     module: str = 'baz',
-    values: typing.Tuple[str, int] = (),
+    values: typing.Sequence[typing.Tuple[str, int]] = (),
     meta: metadata.Metadata = None,
     options: desc.EnumOptions = None,
 ) -> wrappers.EnumType:
