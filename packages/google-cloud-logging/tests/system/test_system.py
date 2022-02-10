@@ -110,6 +110,8 @@ def setUpModule():
 # Skip the test cases using bigquery, storage and pubsub clients for mTLS testing.
 # Bigquery and storage uses http which doesn't have mTLS support, pubsub doesn't
 # have mTLS fix released yet.
+# We also need to skip HTTP client test cases because mTLS is only available for
+# gRPC clients.
 skip_for_mtls = pytest.mark.skipif(
     Config.use_mtls == "always", reason="Skip the test case for mTLS testing"
 )
@@ -196,7 +198,12 @@ class TestLogging(unittest.TestCase):
 
         gapic_logger = Config.CLIENT.logger(f"audit-proto-{uuid.uuid1()}")
         http_logger = Config.HTTP_CLIENT.logger(f"audit-proto-{uuid.uuid1()}-http")
-        for logger in [gapic_logger, http_logger]:
+        loggers = (
+            [gapic_logger]
+            if Config.use_mtls == "always"
+            else [gapic_logger, http_logger]
+        )
+        for logger in loggers:
             logger.log_proto(audit_struct)
 
             # retrieve log
@@ -249,7 +256,12 @@ class TestLogging(unittest.TestCase):
 
         gapic_logger = Config.CLIENT.logger(f"req-proto-{uuid.uuid1()}")
         http_logger = Config.CLIENT.logger(f"req-proto-{uuid.uuid1()}-http")
-        for logger in [gapic_logger, http_logger]:
+        loggers = (
+            [gapic_logger]
+            if Config.use_mtls == "always"
+            else [gapic_logger, http_logger]
+        )
+        for logger in loggers:
             logger.log_proto(req_struct)
 
             # retrieve log
@@ -301,7 +313,12 @@ class TestLogging(unittest.TestCase):
         TEXT_PAYLOAD = "System test: test_log_text"
         gapic_logger = Config.CLIENT.logger(self._logger_name("log_text"))
         http_logger = Config.HTTP_CLIENT.logger(self._logger_name("log_text_http"))
-        for logger in [gapic_logger, http_logger]:
+        loggers = (
+            [gapic_logger]
+            if Config.use_mtls == "always"
+            else [gapic_logger, http_logger]
+        )
+        for logger in loggers:
             self.to_delete.append(logger)
             logger.log_text(TEXT_PAYLOAD)
             entries = _list_entries(logger)
@@ -314,7 +331,12 @@ class TestLogging(unittest.TestCase):
         gapic_logger = Config.CLIENT.logger(self._logger_name("log_text_ts"))
         http_logger = Config.HTTP_CLIENT.logger(self._logger_name("log_text_ts_http"))
         now = datetime.utcnow()
-        for logger in [gapic_logger, http_logger]:
+        loggers = (
+            [gapic_logger]
+            if Config.use_mtls == "always"
+            else [gapic_logger, http_logger]
+        )
+        for logger in loggers:
             self.to_delete.append(logger)
             logger.log_text(text_payload, timestamp=now)
             entries = _list_entries(logger)
@@ -329,7 +351,12 @@ class TestLogging(unittest.TestCase):
         gapic_logger = Config.CLIENT.logger(self._logger_name("log_text_res"))
         http_logger = Config.HTTP_CLIENT.logger(self._logger_name("log_text_res_http"))
         now = datetime.utcnow()
-        for logger in [gapic_logger, http_logger]:
+        loggers = (
+            [gapic_logger]
+            if Config.use_mtls == "always"
+            else [gapic_logger, http_logger]
+        )
+        for logger in loggers:
             resource = Resource(
                 type="gae_app",
                 labels={"module_id": "default", "version_id": "test", "zone": ""},
@@ -355,7 +382,12 @@ class TestLogging(unittest.TestCase):
         REQUEST = {"requestMethod": METHOD, "requestUrl": URI, "status": STATUS}
         gapic_logger = Config.CLIENT.logger(self._logger_name("log_text_md"))
         http_logger = Config.HTTP_CLIENT.logger(self._logger_name("log_text_md_http"))
-        for logger in [gapic_logger, http_logger]:
+        loggers = (
+            [gapic_logger]
+            if Config.use_mtls == "always"
+            else [gapic_logger, http_logger]
+        )
+        for logger in loggers:
             self.to_delete.append(logger)
 
             logger.log_text(
@@ -381,7 +413,12 @@ class TestLogging(unittest.TestCase):
     def test_log_struct(self):
         gapic_logger = Config.CLIENT.logger(self._logger_name("log_struct"))
         http_logger = Config.HTTP_CLIENT.logger(self._logger_name("log_struct_http"))
-        for logger in [gapic_logger, http_logger]:
+        loggers = (
+            [gapic_logger]
+            if Config.use_mtls == "always"
+            else [gapic_logger, http_logger]
+        )
+        for logger in loggers:
             self.to_delete.append(logger)
 
             logger.log_struct(self.JSON_PAYLOAD)
@@ -399,7 +436,12 @@ class TestLogging(unittest.TestCase):
         REQUEST = {"requestMethod": METHOD, "requestUrl": URI, "status": STATUS}
         gapic_logger = Config.CLIENT.logger(self._logger_name("log_struct_md"))
         http_logger = Config.HTTP_CLIENT.logger(self._logger_name("log_struct_md_http"))
-        for logger in [gapic_logger, http_logger]:
+        loggers = (
+            [gapic_logger]
+            if Config.use_mtls == "always"
+            else [gapic_logger, http_logger]
+        )
+        for logger in loggers:
             self.to_delete.append(logger)
 
             logger.log_struct(
@@ -423,7 +465,12 @@ class TestLogging(unittest.TestCase):
         TEXT_PAYLOAD = "System test: test_log_w_text"
         gapic_logger = Config.CLIENT.logger(self._logger_name("log_w_text"))
         http_logger = Config.HTTP_CLIENT.logger(self._logger_name("log_w_text"))
-        for logger in [gapic_logger, http_logger]:
+        loggers = (
+            [gapic_logger]
+            if Config.use_mtls == "always"
+            else [gapic_logger, http_logger]
+        )
+        for logger in loggers:
             self.to_delete.append(logger)
             logger.log(TEXT_PAYLOAD)
             entries = _list_entries(logger)
@@ -433,7 +480,12 @@ class TestLogging(unittest.TestCase):
     def test_log_w_struct(self):
         gapic_logger = Config.CLIENT.logger(self._logger_name("log_w_struct"))
         http_logger = Config.HTTP_CLIENT.logger(self._logger_name("log_w_struct_http"))
-        for logger in [gapic_logger, http_logger]:
+        loggers = (
+            [gapic_logger]
+            if Config.use_mtls == "always"
+            else [gapic_logger, http_logger]
+        )
+        for logger in loggers:
             self.to_delete.append(logger)
 
             logger.log(self.JSON_PAYLOAD)
@@ -446,7 +498,12 @@ class TestLogging(unittest.TestCase):
         gapic_logger = Config.CLIENT.logger(self._logger_name("log_empty"))
         http_logger = Config.HTTP_CLIENT.logger(self._logger_name("log_empty_http"))
 
-        for logger in [gapic_logger, http_logger]:
+        loggers = (
+            [gapic_logger]
+            if Config.use_mtls == "always"
+            else [gapic_logger, http_logger]
+        )
+        for logger in loggers:
             self.to_delete.append(logger)
 
             logger.log()
@@ -829,6 +886,7 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(sink.filter_, UPDATED_FILTER)
         self.assertEqual(sink.destination, dataset_uri)
 
+    @skip_for_mtls
     def test_api_equality_list_logs(self):
         unique_id = uuid.uuid1()
         gapic_logger = Config.CLIENT.logger(f"api-list-{unique_id}")
