@@ -1,0 +1,93 @@
+{
+  "snippets": [
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "WorkflowsServiceV2Beta"
+          },
+          "shortName": "RunPipeline"
+        }
+      },
+      "file": "lifesciences_generated_lifesciences_v2beta_workflows_service_v2_beta_run_pipeline_async.py",
+      "regionTag": "lifesciences_generated_lifesciences_v2beta_WorkflowsServiceV2Beta_RunPipeline_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "WorkflowsServiceV2Beta"
+          },
+          "shortName": "RunPipeline"
+        }
+      },
+      "file": "lifesciences_generated_lifesciences_v2beta_workflows_service_v2_beta_run_pipeline_sync.py",
+      "regionTag": "lifesciences_generated_lifesciences_v2beta_WorkflowsServiceV2Beta_RunPipeline_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    }
+  ]
+}

@@ -233,6 +233,29 @@ class WorkflowsServiceV2BetaAsyncClient:
 
         -  ``lifesciences.workflows.run``
 
+
+        .. code-block::
+
+            from google.cloud import lifesciences_v2beta
+
+            def sample_run_pipeline():
+                # Create a client
+                client = lifesciences_v2beta.WorkflowsServiceV2BetaClient()
+
+                # Initialize request argument(s)
+                request = lifesciences_v2beta.RunPipelineRequest(
+                )
+
+                # Make the request
+                operation = client.run_pipeline(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.lifesciences_v2beta.types.RunPipelineRequest, dict]):
                 The request object. The arguments to the `RunPipeline`
