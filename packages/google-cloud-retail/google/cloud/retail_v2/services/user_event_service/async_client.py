@@ -224,6 +224,30 @@ class UserEventServiceAsyncClient:
     ) -> user_event.UserEvent:
         r"""Writes a single user event.
 
+        .. code-block::
+
+            from google.cloud import retail_v2
+
+            def sample_write_user_event():
+                # Create a client
+                client = retail_v2.UserEventServiceClient()
+
+                # Initialize request argument(s)
+                user_event = retail_v2.UserEvent()
+                user_event.event_type = "event_type_value"
+                user_event.visitor_id = "visitor_id_value"
+
+                request = retail_v2.WriteUserEventRequest(
+                    parent="parent_value",
+                    user_event=user_event,
+                )
+
+                # Make the request
+                response = client.write_user_event(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.retail_v2.types.WriteUserEventRequest, dict]):
                 The request object. Request message for WriteUserEvent
@@ -279,6 +303,27 @@ class UserEventServiceAsyncClient:
         This method is used only by the Retail API JavaScript
         pixel and Google Tag Manager. Users should not call this
         method directly.
+
+
+        .. code-block::
+
+            from google.cloud import retail_v2
+
+            def sample_collect_user_event():
+                # Create a client
+                client = retail_v2.UserEventServiceClient()
+
+                # Initialize request argument(s)
+                request = retail_v2.CollectUserEventRequest(
+                    parent="parent_value",
+                    user_event="user_event_value",
+                )
+
+                # Make the request
+                response = client.collect_user_event(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.retail_v2.types.CollectUserEventRequest, dict]):
@@ -377,6 +422,31 @@ class UserEventServiceAsyncClient:
         or days to complete. To test a filter, use the list
         command first.
 
+
+        .. code-block::
+
+            from google.cloud import retail_v2
+
+            def sample_purge_user_events():
+                # Create a client
+                client = retail_v2.UserEventServiceClient()
+
+                # Initialize request argument(s)
+                request = retail_v2.PurgeUserEventsRequest(
+                    parent="parent_value",
+                    filter="filter_value",
+                )
+
+                # Make the request
+                operation = client.purge_user_events(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.retail_v2.types.PurgeUserEventsRequest, dict]):
                 The request object. Request message for PurgeUserEvents
@@ -452,6 +522,35 @@ class UserEventServiceAsyncClient:
         it is possible for a subset of the items to be
         successfully inserted. Operation.metadata is of type
         ImportMetadata.
+
+
+        .. code-block::
+
+            from google.cloud import retail_v2
+
+            def sample_import_user_events():
+                # Create a client
+                client = retail_v2.UserEventServiceClient()
+
+                # Initialize request argument(s)
+                input_config = retail_v2.UserEventInputConfig()
+                input_config.user_event_inline_source.user_events.event_type = "event_type_value"
+                input_config.user_event_inline_source.user_events.visitor_id = "visitor_id_value"
+
+                request = retail_v2.ImportUserEventsRequest(
+                    parent="parent_value",
+                    input_config=input_config,
+                )
+
+                # Make the request
+                operation = client.import_user_events(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.retail_v2.types.ImportUserEventsRequest, dict]):
@@ -533,6 +632,30 @@ class UserEventServiceAsyncClient:
         with latest version of product catalog. It can also be
         used to correct events joined with wrong product
         catalog.
+
+
+        .. code-block::
+
+            from google.cloud import retail_v2
+
+            def sample_rejoin_user_events():
+                # Create a client
+                client = retail_v2.UserEventServiceClient()
+
+                # Initialize request argument(s)
+                request = retail_v2.RejoinUserEventsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.rejoin_user_events(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.retail_v2.types.RejoinUserEventsRequest, dict]):

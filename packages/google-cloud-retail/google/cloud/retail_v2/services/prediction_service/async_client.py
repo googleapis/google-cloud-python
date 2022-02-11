@@ -211,6 +211,30 @@ class PredictionServiceAsyncClient:
     ) -> prediction_service.PredictResponse:
         r"""Makes a recommendation prediction.
 
+        .. code-block::
+
+            from google.cloud import retail_v2
+
+            def sample_predict():
+                # Create a client
+                client = retail_v2.PredictionServiceClient()
+
+                # Initialize request argument(s)
+                user_event = retail_v2.UserEvent()
+                user_event.event_type = "event_type_value"
+                user_event.visitor_id = "visitor_id_value"
+
+                request = retail_v2.PredictRequest(
+                    placement="placement_value",
+                    user_event=user_event,
+                )
+
+                # Make the request
+                response = client.predict(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.retail_v2.types.PredictRequest, dict]):
                 The request object. Request message for Predict method.

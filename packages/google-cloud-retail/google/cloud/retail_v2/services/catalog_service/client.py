@@ -431,6 +431,28 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         r"""Lists all the [Catalog][google.cloud.retail.v2.Catalog]s
         associated with the project.
 
+
+
+        .. code-block::
+
+            from google.cloud import retail_v2
+
+            def sample_list_catalogs():
+                # Create a client
+                client = retail_v2.CatalogServiceClient()
+
+                # Initialize request argument(s)
+                request = retail_v2.ListCatalogsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_catalogs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.retail_v2.types.ListCatalogsRequest, dict]):
                 The request object. Request for
@@ -518,6 +540,30 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcr_catalog.Catalog:
         r"""Updates the [Catalog][google.cloud.retail.v2.Catalog]s.
+
+
+        .. code-block::
+
+            from google.cloud import retail_v2
+
+            def sample_update_catalog():
+                # Create a client
+                client = retail_v2.CatalogServiceClient()
+
+                # Initialize request argument(s)
+                catalog = retail_v2.Catalog()
+                catalog.name = "name_value"
+                catalog.display_name = "display_name_value"
+
+                request = retail_v2.UpdateCatalogRequest(
+                    catalog=catalog,
+                )
+
+                # Make the request
+                response = client.update_catalog(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.retail_v2.types.UpdateCatalogRequest, dict]):
@@ -650,6 +696,23 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         `here <https://cloud.google.com/contact>`__ to contact cloud
         sales if you are interested in using Retail Search.
 
+
+
+        .. code-block::
+
+            from google.cloud import retail_v2
+
+            def sample_set_default_branch():
+                # Create a client
+                client = retail_v2.CatalogServiceClient()
+
+                # Initialize request argument(s)
+                request = retail_v2.SetDefaultBranchRequest(
+                )
+
+                # Make the request
+                client.set_default_branch(request=request)
+
         Args:
             request (Union[google.cloud.retail_v2.types.SetDefaultBranchRequest, dict]):
                 The request object. Request message to set a specified
@@ -720,6 +783,26 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         enabled. Please submit a form
         `here <https://cloud.google.com/contact>`__ to contact cloud
         sales if you are interested in using Retail Search.
+
+
+
+        .. code-block::
+
+            from google.cloud import retail_v2
+
+            def sample_get_default_branch():
+                # Create a client
+                client = retail_v2.CatalogServiceClient()
+
+                # Initialize request argument(s)
+                request = retail_v2.GetDefaultBranchRequest(
+                )
+
+                # Make the request
+                response = client.get_default_branch(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.retail_v2.types.GetDefaultBranchRequest, dict]):

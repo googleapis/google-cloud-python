@@ -225,6 +225,27 @@ class CompletionServiceAsyncClient:
         `here <https://cloud.google.com/contact>`__ to contact cloud
         sales if you are interested in using Retail Search.
 
+
+        .. code-block::
+
+            from google.cloud import retail_v2
+
+            def sample_complete_query():
+                # Create a client
+                client = retail_v2.CompletionServiceClient()
+
+                # Initialize request argument(s)
+                request = retail_v2.CompleteQueryRequest(
+                    catalog="catalog_value",
+                    query="query_value",
+                )
+
+                # Make the request
+                response = client.complete_query(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.retail_v2.types.CompleteQueryRequest, dict]):
                 The request object. Auto-complete parameters.
@@ -278,6 +299,35 @@ class CompletionServiceAsyncClient:
         enabled. Please submit a form
         `here <https://cloud.google.com/contact>`__ to contact cloud
         sales if you are interested in using Retail Search.
+
+
+        .. code-block::
+
+            from google.cloud import retail_v2
+
+            def sample_import_completion_data():
+                # Create a client
+                client = retail_v2.CompletionServiceClient()
+
+                # Initialize request argument(s)
+                input_config = retail_v2.CompletionDataInputConfig()
+                input_config.big_query_source.dataset_id = "dataset_id_value"
+                input_config.big_query_source.table_id = "table_id_value"
+
+                request = retail_v2.ImportCompletionDataRequest(
+                    parent="parent_value",
+                    input_config=input_config,
+                )
+
+                # Make the request
+                operation = client.import_completion_data(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.retail_v2.types.ImportCompletionDataRequest, dict]):

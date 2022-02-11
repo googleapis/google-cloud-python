@@ -225,6 +225,28 @@ class SearchServiceAsyncClient:
         `here <https://cloud.google.com/contact>`__ to contact cloud
         sales if you are interested in using Retail Search.
 
+
+        .. code-block::
+
+            from google.cloud import retail_v2
+
+            def sample_search():
+                # Create a client
+                client = retail_v2.SearchServiceClient()
+
+                # Initialize request argument(s)
+                request = retail_v2.SearchRequest(
+                    placement="placement_value",
+                    visitor_id="visitor_id_value",
+                )
+
+                # Make the request
+                page_result = client.search(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.retail_v2.types.SearchRequest, dict]):
                 The request object. Request message for
