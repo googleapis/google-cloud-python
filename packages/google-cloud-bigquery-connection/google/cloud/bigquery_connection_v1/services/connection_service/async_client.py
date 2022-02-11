@@ -219,6 +219,25 @@ class ConnectionServiceAsyncClient:
     ) -> gcbc_connection.Connection:
         r"""Creates a new connection.
 
+        .. code-block::
+
+            from google.cloud import bigquery_connection_v1
+
+            def sample_create_connection():
+                # Create a client
+                client = bigquery_connection_v1.ConnectionServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_connection_v1.CreateConnectionRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_connection(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigquery_connection_v1.types.CreateConnectionRequest, dict]):
                 The request object. The request for
@@ -307,6 +326,25 @@ class ConnectionServiceAsyncClient:
     ) -> connection.Connection:
         r"""Returns specified connection.
 
+        .. code-block::
+
+            from google.cloud import bigquery_connection_v1
+
+            def sample_get_connection():
+                # Create a client
+                client = bigquery_connection_v1.ConnectionServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_connection_v1.GetConnectionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_connection(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigquery_connection_v1.types.GetConnectionRequest, dict]):
                 The request object. The request for
@@ -388,6 +426,27 @@ class ConnectionServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConnectionsAsyncPager:
         r"""Returns a list of connections in the given project.
+
+        .. code-block::
+
+            from google.cloud import bigquery_connection_v1
+
+            def sample_list_connections():
+                # Create a client
+                client = bigquery_connection_v1.ConnectionServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_connection_v1.ListConnectionsRequest(
+                    parent="parent_value",
+                    page_size=951,
+                )
+
+                # Make the request
+                page_result = client.list_connections(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.bigquery_connection_v1.types.ListConnectionsRequest, dict]):
@@ -483,6 +542,26 @@ class ConnectionServiceAsyncClient:
         reasons, also resets credential if connection properties
         are in the update field mask.
 
+
+        .. code-block::
+
+            from google.cloud import bigquery_connection_v1
+
+            def sample_update_connection():
+                # Create a client
+                client = bigquery_connection_v1.ConnectionServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_connection_v1.UpdateConnectionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.update_connection(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigquery_connection_v1.types.UpdateConnectionRequest, dict]):
                 The request object. The request for
@@ -573,6 +652,22 @@ class ConnectionServiceAsyncClient:
     ) -> None:
         r"""Deletes connection and associated credential.
 
+        .. code-block::
+
+            from google.cloud import bigquery_connection_v1
+
+            def sample_delete_connection():
+                # Create a client
+                client = bigquery_connection_v1.ConnectionServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_connection_v1.DeleteConnectionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_connection(request=request)
+
         Args:
             request (Union[google.cloud.bigquery_connection_v1.types.DeleteConnectionRequest, dict]):
                 The request object. The request for
@@ -648,6 +743,26 @@ class ConnectionServiceAsyncClient:
         r"""Gets the access control policy for a resource.
         Returns an empty policy if the resource exists and does
         not have a policy set.
+
+
+        .. code-block::
+
+            from google.cloud import bigquery_connection_v1
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = bigquery_connection_v1.ConnectionServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_connection_v1.GetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
@@ -778,6 +893,26 @@ class ConnectionServiceAsyncClient:
 
         Can return ``NOT_FOUND``, ``INVALID_ARGUMENT``, and
         ``PERMISSION_DENIED`` errors.
+
+
+        .. code-block::
+
+            from google.cloud import bigquery_connection_v1
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = bigquery_connection_v1.ConnectionServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_connection_v1.SetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
@@ -912,6 +1047,27 @@ class ConnectionServiceAsyncClient:
         permission-aware UIs and command-line tools, not for
         authorization checking. This operation may "fail open" without
         warning.
+
+
+        .. code-block::
+
+            from google.cloud import bigquery_connection_v1
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = bigquery_connection_v1.ConnectionServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_connection_v1.TestIamPermissionsRequest(
+                    resource="resource_value",
+                    permissions=['permissions_value_1', 'permissions_value_2'],
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
