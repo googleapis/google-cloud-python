@@ -225,6 +225,26 @@ class CloudShellServiceAsyncClient:
         r"""Gets an environment. Returns NOT_FOUND if the environment does
         not exist.
 
+
+        .. code-block::
+
+            from google.cloud import shell_v1
+
+            def sample_get_environment():
+                # Create a client
+                client = shell_v1.CloudShellServiceClient()
+
+                # Initialize request argument(s)
+                request = shell_v1.GetEnvironmentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_environment(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.shell_v1.types.GetEnvironmentRequest, dict]):
                 The request object. Request message for
@@ -318,6 +338,29 @@ class CloudShellServiceAsyncClient:
         connections, the operation will contain a
         StartEnvironmentResponse in its response field.
 
+
+        .. code-block::
+
+            from google.cloud import shell_v1
+
+            def sample_start_environment():
+                # Create a client
+                client = shell_v1.CloudShellServiceClient()
+
+                # Initialize request argument(s)
+                request = shell_v1.StartEnvironmentRequest(
+                )
+
+                # Make the request
+                operation = client.start_environment(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.shell_v1.types.StartEnvironmentRequest, dict]):
                 The request object. Request message for
@@ -382,6 +425,29 @@ class CloudShellServiceAsyncClient:
         line tools without requiring the user to manually
         authenticate.
 
+
+        .. code-block::
+
+            from google.cloud import shell_v1
+
+            def sample_authorize_environment():
+                # Create a client
+                client = shell_v1.CloudShellServiceClient()
+
+                # Initialize request argument(s)
+                request = shell_v1.AuthorizeEnvironmentRequest(
+                )
+
+                # Make the request
+                operation = client.authorize_environment(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.shell_v1.types.AuthorizeEnvironmentRequest, dict]):
                 The request object. Request message for
@@ -443,6 +509,29 @@ class CloudShellServiceAsyncClient:
         the corresponding private key to connect to that environment via
         SSH. If a key with the same content already exists, this will
         error with ALREADY_EXISTS.
+
+
+        .. code-block::
+
+            from google.cloud import shell_v1
+
+            def sample_add_public_key():
+                # Create a client
+                client = shell_v1.CloudShellServiceClient()
+
+                # Initialize request argument(s)
+                request = shell_v1.AddPublicKeyRequest(
+                )
+
+                # Make the request
+                operation = client.add_public_key(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.shell_v1.types.AddPublicKeyRequest, dict]):
@@ -507,6 +596,29 @@ class CloudShellServiceAsyncClient:
         longer be able to connect to the environment using the
         corresponding private key. If a key with the same content is not
         present, this will error with NOT_FOUND.
+
+
+        .. code-block::
+
+            from google.cloud import shell_v1
+
+            def sample_remove_public_key():
+                # Create a client
+                client = shell_v1.CloudShellServiceClient()
+
+                # Initialize request argument(s)
+                request = shell_v1.RemovePublicKeyRequest(
+                )
+
+                # Make the request
+                operation = client.remove_public_key(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.shell_v1.types.RemovePublicKeyRequest, dict]):

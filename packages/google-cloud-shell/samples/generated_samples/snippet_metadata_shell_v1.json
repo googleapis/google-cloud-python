@@ -1,0 +1,449 @@
+{
+  "snippets": [
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "CloudShellService"
+          },
+          "shortName": "AddPublicKey"
+        }
+      },
+      "file": "cloudshell_generated_shell_v1_cloud_shell_service_add_public_key_async.py",
+      "regionTag": "cloudshell_generated_shell_v1_CloudShellService_AddPublicKey_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "CloudShellService"
+          },
+          "shortName": "AddPublicKey"
+        }
+      },
+      "file": "cloudshell_generated_shell_v1_cloud_shell_service_add_public_key_sync.py",
+      "regionTag": "cloudshell_generated_shell_v1_CloudShellService_AddPublicKey_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "CloudShellService"
+          },
+          "shortName": "AuthorizeEnvironment"
+        }
+      },
+      "file": "cloudshell_generated_shell_v1_cloud_shell_service_authorize_environment_async.py",
+      "regionTag": "cloudshell_generated_shell_v1_CloudShellService_AuthorizeEnvironment_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "CloudShellService"
+          },
+          "shortName": "AuthorizeEnvironment"
+        }
+      },
+      "file": "cloudshell_generated_shell_v1_cloud_shell_service_authorize_environment_sync.py",
+      "regionTag": "cloudshell_generated_shell_v1_CloudShellService_AuthorizeEnvironment_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "CloudShellService"
+          },
+          "shortName": "GetEnvironment"
+        }
+      },
+      "file": "cloudshell_generated_shell_v1_cloud_shell_service_get_environment_async.py",
+      "regionTag": "cloudshell_generated_shell_v1_CloudShellService_GetEnvironment_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "CloudShellService"
+          },
+          "shortName": "GetEnvironment"
+        }
+      },
+      "file": "cloudshell_generated_shell_v1_cloud_shell_service_get_environment_sync.py",
+      "regionTag": "cloudshell_generated_shell_v1_CloudShellService_GetEnvironment_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "CloudShellService"
+          },
+          "shortName": "RemovePublicKey"
+        }
+      },
+      "file": "cloudshell_generated_shell_v1_cloud_shell_service_remove_public_key_async.py",
+      "regionTag": "cloudshell_generated_shell_v1_CloudShellService_RemovePublicKey_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "CloudShellService"
+          },
+          "shortName": "RemovePublicKey"
+        }
+      },
+      "file": "cloudshell_generated_shell_v1_cloud_shell_service_remove_public_key_sync.py",
+      "regionTag": "cloudshell_generated_shell_v1_CloudShellService_RemovePublicKey_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "CloudShellService"
+          },
+          "shortName": "StartEnvironment"
+        }
+      },
+      "file": "cloudshell_generated_shell_v1_cloud_shell_service_start_environment_async.py",
+      "regionTag": "cloudshell_generated_shell_v1_CloudShellService_StartEnvironment_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "CloudShellService"
+          },
+          "shortName": "StartEnvironment"
+        }
+      },
+      "file": "cloudshell_generated_shell_v1_cloud_shell_service_start_environment_sync.py",
+      "regionTag": "cloudshell_generated_shell_v1_CloudShellService_StartEnvironment_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    }
+  ]
+}
