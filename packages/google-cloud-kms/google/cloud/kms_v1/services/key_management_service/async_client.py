@@ -255,6 +255,26 @@ class KeyManagementServiceAsyncClient:
     ) -> pagers.ListKeyRingsAsyncPager:
         r"""Lists [KeyRings][google.cloud.kms.v1.KeyRing].
 
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_list_key_rings():
+                # Create a client
+                client = kms_v1.KeyManagementServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.ListKeyRingsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_key_rings(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
 
         Args:
             request (Union[google.cloud.kms_v1.types.ListKeyRingsRequest, dict]):
@@ -346,6 +366,26 @@ class KeyManagementServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCryptoKeysAsyncPager:
         r"""Lists [CryptoKeys][google.cloud.kms.v1.CryptoKey].
+
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_list_crypto_keys():
+                # Create a client
+                client = kms_v1.KeyManagementServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.ListCryptoKeysRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_crypto_keys(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
 
         Args:
@@ -439,6 +479,26 @@ class KeyManagementServiceAsyncClient:
     ) -> pagers.ListCryptoKeyVersionsAsyncPager:
         r"""Lists [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion].
 
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_list_crypto_key_versions():
+                # Create a client
+                client = kms_v1.KeyManagementServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.ListCryptoKeyVersionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_crypto_key_versions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
 
         Args:
             request (Union[google.cloud.kms_v1.types.ListCryptoKeyVersionsRequest, dict]):
@@ -531,6 +591,26 @@ class KeyManagementServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListImportJobsAsyncPager:
         r"""Lists [ImportJobs][google.cloud.kms.v1.ImportJob].
+
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_list_import_jobs():
+                # Create a client
+                client = kms_v1.KeyManagementServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.ListImportJobsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_import_jobs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
 
         Args:
@@ -626,6 +706,26 @@ class KeyManagementServiceAsyncClient:
         [KeyRing][google.cloud.kms.v1.KeyRing].
 
 
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_get_key_ring():
+                # Create a client
+                client = kms_v1.KeyManagementServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.GetKeyRingRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_key_ring(request=request)
+
+                # Handle the response
+                print(response)
+
+
         Args:
             request (Union[google.cloud.kms_v1.types.GetKeyRingRequest, dict]):
                 The request object. Request message for
@@ -709,6 +809,26 @@ class KeyManagementServiceAsyncClient:
         [CryptoKey][google.cloud.kms.v1.CryptoKey], as well as its
         [primary][google.cloud.kms.v1.CryptoKey.primary]
         [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].
+
+
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_get_crypto_key():
+                # Create a client
+                client = kms_v1.KeyManagementServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.GetCryptoKeyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_crypto_key(request=request)
+
+                # Handle the response
+                print(response)
 
 
         Args:
@@ -799,6 +919,26 @@ class KeyManagementServiceAsyncClient:
     ) -> resources.CryptoKeyVersion:
         r"""Returns metadata for a given
         [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].
+
+
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_get_crypto_key_version():
+                # Create a client
+                client = kms_v1.KeyManagementServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.GetCryptoKeyVersionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_crypto_key_version(request=request)
+
+                # Handle the response
+                print(response)
 
 
         Args:
@@ -903,6 +1043,26 @@ class KeyManagementServiceAsyncClient:
         [ASYMMETRIC_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ASYMMETRIC_DECRYPT].
 
 
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_get_public_key():
+                # Create a client
+                client = kms_v1.KeyManagementServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.GetPublicKeyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_public_key(request=request)
+
+                # Handle the response
+                print(response)
+
+
         Args:
             request (Union[google.cloud.kms_v1.types.GetPublicKeyRequest, dict]):
                 The request object. Request message for
@@ -988,6 +1148,26 @@ class KeyManagementServiceAsyncClient:
     ) -> resources.ImportJob:
         r"""Returns metadata for a given
         [ImportJob][google.cloud.kms.v1.ImportJob].
+
+
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_get_import_job():
+                # Create a client
+                client = kms_v1.KeyManagementServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.GetImportJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_import_job(request=request)
+
+                # Handle the response
+                print(response)
 
 
         Args:
@@ -1120,6 +1300,27 @@ class KeyManagementServiceAsyncClient:
         Project and Location.
 
 
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_create_key_ring():
+                # Create a client
+                client = kms_v1.KeyManagementServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.CreateKeyRingRequest(
+                    parent="parent_value",
+                    key_ring_id="key_ring_id_value",
+                )
+
+                # Make the request
+                response = client.create_key_ring(request=request)
+
+                # Handle the response
+                print(response)
+
+
         Args:
             request (Union[google.cloud.kms_v1.types.CreateKeyRingRequest, dict]):
                 The request object. Request message for
@@ -1226,6 +1427,27 @@ class KeyManagementServiceAsyncClient:
         [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] and
         [CryptoKey.version_template.algorithm][google.cloud.kms.v1.CryptoKeyVersionTemplate.algorithm]
         are required.
+
+
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_create_crypto_key():
+                # Create a client
+                client = kms_v1.KeyManagementServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.CreateCryptoKeyRequest(
+                    parent="parent_value",
+                    crypto_key_id="crypto_key_id_value",
+                )
+
+                # Make the request
+                response = client.create_crypto_key(request=request)
+
+                # Handle the response
+                print(response)
 
 
         Args:
@@ -1343,6 +1565,26 @@ class KeyManagementServiceAsyncClient:
         [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED].
 
 
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_create_crypto_key_version():
+                # Create a client
+                client = kms_v1.KeyManagementServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.CreateCryptoKeyVersionRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_crypto_key_version(request=request)
+
+                # Handle the response
+                print(response)
+
+
         Args:
             request (Union[google.cloud.kms_v1.types.CreateCryptoKeyVersionRequest, dict]):
                 The request object. Request message for
@@ -1447,6 +1689,29 @@ class KeyManagementServiceAsyncClient:
         [CryptoKey][google.cloud.kms.v1.CryptoKey].
 
 
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_import_crypto_key_version():
+                # Create a client
+                client = kms_v1.KeyManagementServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.ImportCryptoKeyVersionRequest(
+                    rsa_aes_wrapped_key=b'rsa_aes_wrapped_key_blob',
+                    parent="parent_value",
+                    algorithm="EXTERNAL_SYMMETRIC_ENCRYPTION",
+                    import_job="import_job_value",
+                )
+
+                # Make the request
+                response = client.import_crypto_key_version(request=request)
+
+                # Handle the response
+                print(response)
+
+
         Args:
             request (Union[google.cloud.kms_v1.types.ImportCryptoKeyVersionRequest, dict]):
                 The request object. Request message for
@@ -1514,6 +1779,32 @@ class KeyManagementServiceAsyncClient:
 
         [ImportJob.import_method][google.cloud.kms.v1.ImportJob.import_method]
         is required.
+
+
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_create_import_job():
+                # Create a client
+                client = kms_v1.KeyManagementServiceClient()
+
+                # Initialize request argument(s)
+                import_job = kms_v1.ImportJob()
+                import_job.import_method = "RSA_OAEP_4096_SHA1_AES_256"
+                import_job.protection_level = "EXTERNAL_VPC"
+
+                request = kms_v1.CreateImportJobRequest(
+                    parent="parent_value",
+                    import_job_id="import_job_id_value",
+                    import_job=import_job,
+                )
+
+                # Make the request
+                response = client.create_import_job(request=request)
+
+                # Handle the response
+                print(response)
 
 
         Args:
@@ -1661,6 +1952,24 @@ class KeyManagementServiceAsyncClient:
     ) -> resources.CryptoKey:
         r"""Update a [CryptoKey][google.cloud.kms.v1.CryptoKey].
 
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_update_crypto_key():
+                # Create a client
+                client = kms_v1.KeyManagementServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.UpdateCryptoKeyRequest(
+                )
+
+                # Make the request
+                response = client.update_crypto_key(request=request)
+
+                # Handle the response
+                print(response)
+
 
         Args:
             request (Union[google.cloud.kms_v1.types.UpdateCryptoKeyRequest, dict]):
@@ -1775,6 +2084,25 @@ class KeyManagementServiceAsyncClient:
         to move between other states.
 
 
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_update_crypto_key_version():
+                # Create a client
+                client = kms_v1.KeyManagementServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.UpdateCryptoKeyVersionRequest(
+                )
+
+                # Make the request
+                response = client.update_crypto_key_version(request=request)
+
+                # Handle the response
+                print(response)
+
+
         Args:
             request (Union[google.cloud.kms_v1.types.UpdateCryptoKeyVersionRequest, dict]):
                 The request object. Request message for
@@ -1885,6 +2213,27 @@ class KeyManagementServiceAsyncClient:
 
         Returns an error if called on a key whose purpose is not
         [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].
+
+
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_update_crypto_key_primary_version():
+                # Create a client
+                client = kms_v1.KeyManagementServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.UpdateCryptoKeyPrimaryVersionRequest(
+                    name="name_value",
+                    crypto_key_version_id="crypto_key_version_id_value",
+                )
+
+                # Make the request
+                response = client.update_crypto_key_primary_version(request=request)
+
+                # Handle the response
+                print(response)
 
 
         Args:
@@ -2007,6 +2356,26 @@ class KeyManagementServiceAsyncClient:
         may be called to reverse the process.
 
 
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_destroy_crypto_key_version():
+                # Create a client
+                client = kms_v1.KeyManagementServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.DestroyCryptoKeyVersionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.destroy_crypto_key_version(request=request)
+
+                # Handle the response
+                print(response)
+
+
         Args:
             request (Union[google.cloud.kms_v1.types.DestroyCryptoKeyVersionRequest, dict]):
                 The request object. Request message for
@@ -2113,6 +2482,26 @@ class KeyManagementServiceAsyncClient:
         will be cleared.
 
 
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_restore_crypto_key_version():
+                # Create a client
+                client = kms_v1.KeyManagementServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.RestoreCryptoKeyVersionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.restore_crypto_key_version(request=request)
+
+                # Handle the response
+                print(response)
+
+
         Args:
             request (Union[google.cloud.kms_v1.types.RestoreCryptoKeyVersionRequest, dict]):
                 The request object. Request message for
@@ -2211,6 +2600,27 @@ class KeyManagementServiceAsyncClient:
         [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] must
         be
         [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].
+
+
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_encrypt():
+                # Create a client
+                client = kms_v1.KeyManagementServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.EncryptRequest(
+                    name="name_value",
+                    plaintext=b'plaintext_blob',
+                )
+
+                # Make the request
+                response = client.encrypt(request=request)
+
+                # Handle the response
+                print(response)
 
 
         Args:
@@ -2325,6 +2735,27 @@ class KeyManagementServiceAsyncClient:
         [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].
 
 
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_decrypt():
+                # Create a client
+                client = kms_v1.KeyManagementServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.DecryptRequest(
+                    name="name_value",
+                    ciphertext=b'ciphertext_blob',
+                )
+
+                # Make the request
+                response = client.decrypt(request=request)
+
+                # Handle the response
+                print(response)
+
+
         Args:
             request (Union[google.cloud.kms_v1.types.DecryptRequest, dict]):
                 The request object. Request message for
@@ -2422,6 +2853,26 @@ class KeyManagementServiceAsyncClient:
         ASYMMETRIC_SIGN, producing a signature that can be verified with
         the public key retrieved from
         [GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey].
+
+
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_asymmetric_sign():
+                # Create a client
+                client = kms_v1.KeyManagementServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.AsymmetricSignRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.asymmetric_sign(request=request)
+
+                # Handle the response
+                print(response)
 
 
         Args:
@@ -2529,6 +2980,27 @@ class KeyManagementServiceAsyncClient:
         ASYMMETRIC_DECRYPT.
 
 
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_asymmetric_decrypt():
+                # Create a client
+                client = kms_v1.KeyManagementServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.AsymmetricDecryptRequest(
+                    name="name_value",
+                    ciphertext=b'ciphertext_blob',
+                )
+
+                # Make the request
+                response = client.asymmetric_decrypt(request=request)
+
+                # Handle the response
+                print(response)
+
+
         Args:
             request (Union[google.cloud.kms_v1.types.AsymmetricDecryptRequest, dict]):
                 The request object. Request message for
@@ -2625,6 +3097,27 @@ class KeyManagementServiceAsyncClient:
         [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] MAC,
         producing a tag that can be verified by another source with the
         same key.
+
+
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_mac_sign():
+                # Create a client
+                client = kms_v1.KeyManagementServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.MacSignRequest(
+                    name="name_value",
+                    data=b'data_blob',
+                )
+
+                # Make the request
+                response = client.mac_sign(request=request)
+
+                # Handle the response
+                print(response)
 
 
         Args:
@@ -2724,6 +3217,28 @@ class KeyManagementServiceAsyncClient:
         [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] MAC,
         and returns a response that indicates whether or not the
         verification was successful.
+
+
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_mac_verify():
+                # Create a client
+                client = kms_v1.KeyManagementServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.MacVerifyRequest(
+                    name="name_value",
+                    data=b'data_blob',
+                    mac=b'mac_blob',
+                )
+
+                # Make the request
+                response = client.mac_verify(request=request)
+
+                # Handle the response
+                print(response)
 
 
         Args:
@@ -2827,6 +3342,25 @@ class KeyManagementServiceAsyncClient:
     ) -> service.GenerateRandomBytesResponse:
         r"""Generate random bytes using the Cloud KMS randomness
         source in the provided location.
+
+
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_generate_random_bytes():
+                # Create a client
+                client = kms_v1.KeyManagementServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.GenerateRandomBytesRequest(
+                )
+
+                # Make the request
+                response = client.generate_random_bytes(request=request)
+
+                # Handle the response
+                print(response)
 
 
         Args:

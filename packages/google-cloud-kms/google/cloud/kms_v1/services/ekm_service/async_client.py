@@ -223,6 +223,26 @@ class EkmServiceAsyncClient:
     ) -> pagers.ListEkmConnectionsAsyncPager:
         r"""Lists [EkmConnections][google.cloud.kms.v1.EkmConnection].
 
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_list_ekm_connections():
+                # Create a client
+                client = kms_v1.EkmServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.ListEkmConnectionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_ekm_connections(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
 
         Args:
             request (Union[google.cloud.kms_v1.types.ListEkmConnectionsRequest, dict]):
@@ -316,6 +336,26 @@ class EkmServiceAsyncClient:
     ) -> ekm_service.EkmConnection:
         r"""Returns metadata for a given
         [EkmConnection][google.cloud.kms.v1.EkmConnection].
+
+
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_get_ekm_connection():
+                # Create a client
+                client = kms_v1.EkmServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.GetEkmConnectionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_ekm_connection(request=request)
+
+                # Handle the response
+                print(response)
 
 
         Args:
@@ -413,6 +453,27 @@ class EkmServiceAsyncClient:
     ) -> ekm_service.EkmConnection:
         r"""Creates a new [EkmConnection][google.cloud.kms.v1.EkmConnection]
         in a given Project and Location.
+
+
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_create_ekm_connection():
+                # Create a client
+                client = kms_v1.EkmServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.CreateEkmConnectionRequest(
+                    parent="parent_value",
+                    ekm_connection_id="ekm_connection_id_value",
+                )
+
+                # Make the request
+                response = client.create_ekm_connection(request=request)
+
+                # Handle the response
+                print(response)
 
 
         Args:
@@ -528,6 +589,25 @@ class EkmServiceAsyncClient:
     ) -> ekm_service.EkmConnection:
         r"""Updates an [EkmConnection][google.cloud.kms.v1.EkmConnection]'s
         metadata.
+
+
+        .. code-block::
+
+            from google.cloud import kms_v1
+
+            def sample_update_ekm_connection():
+                # Create a client
+                client = kms_v1.EkmServiceClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.UpdateEkmConnectionRequest(
+                )
+
+                # Make the request
+                response = client.update_ekm_connection(request=request)
+
+                # Handle the response
+                print(response)
 
 
         Args:
