@@ -14,12 +14,12 @@
       "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_CreateHub_async",
       "segments": [
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "SHORT"
         },
@@ -34,11 +34,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 45,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 49,
+          "start": 46,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -56,12 +58,12 @@
       "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_CreateHub_sync",
       "segments": [
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "SHORT"
         },
@@ -76,11 +78,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 45,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 49,
+          "start": 46,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -99,12 +103,12 @@
       "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_CreateSpoke_async",
       "segments": [
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "SHORT"
         },
@@ -119,11 +123,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 45,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 49,
+          "start": 46,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -141,12 +147,12 @@
       "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_CreateSpoke_sync",
       "segments": [
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "SHORT"
         },
@@ -161,11 +167,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 45,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 49,
+          "start": 46,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -184,12 +192,12 @@
       "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_DeleteHub_async",
       "segments": [
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "SHORT"
         },
@@ -204,11 +212,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 45,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 49,
+          "start": 46,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -226,12 +236,12 @@
       "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_DeleteHub_sync",
       "segments": [
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "SHORT"
         },
@@ -246,11 +256,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 45,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 49,
+          "start": 46,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -269,12 +281,12 @@
       "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_DeleteSpoke_async",
       "segments": [
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "SHORT"
         },
@@ -289,11 +301,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 45,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 49,
+          "start": 46,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -311,12 +325,12 @@
       "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_DeleteSpoke_sync",
       "segments": [
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "SHORT"
         },
@@ -331,11 +345,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 45,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 49,
+          "start": 46,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -532,12 +548,12 @@
       "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_ListHubs_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -552,11 +568,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -574,12 +592,12 @@
       "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_ListHubs_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -594,11 +612,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -617,12 +637,12 @@
       "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_ListSpokes_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -637,11 +657,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -659,12 +681,12 @@
       "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_ListSpokes_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -679,11 +701,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -702,12 +726,12 @@
       "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_UpdateHub_async",
       "segments": [
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "SHORT"
         },
@@ -722,11 +746,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 44,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
+          "end": 48,
+          "start": 45,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -744,12 +770,12 @@
       "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_UpdateHub_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "SHORT"
         },
@@ -764,11 +790,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 44,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
+          "end": 48,
+          "start": 45,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -787,12 +815,12 @@
       "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_UpdateSpoke_async",
       "segments": [
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "SHORT"
         },
@@ -807,11 +835,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 44,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
+          "end": 48,
+          "start": 45,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -829,12 +859,12 @@
       "regionTag": "networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_UpdateSpoke_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "SHORT"
         },
@@ -849,11 +879,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 44,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
+          "end": 48,
+          "start": 45,
           "type": "RESPONSE_HANDLING"
         }
       ]

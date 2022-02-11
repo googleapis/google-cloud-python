@@ -247,6 +247,8 @@ class HubServiceAsyncClient:
 
                 # Make the request
                 page_result = client.list_hubs(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -346,7 +348,7 @@ class HubServiceAsyncClient:
                 # Make the request
                 response = client.get_hub(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -450,6 +452,8 @@ class HubServiceAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -576,6 +580,8 @@ class HubServiceAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -697,6 +703,8 @@ class HubServiceAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -808,6 +816,8 @@ class HubServiceAsyncClient:
 
                 # Make the request
                 page_result = client.list_spokes(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -905,7 +915,7 @@ class HubServiceAsyncClient:
                 # Make the request
                 response = client.get_spoke(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1011,6 +1021,8 @@ class HubServiceAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1137,6 +1149,8 @@ class HubServiceAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1263,6 +1277,8 @@ class HubServiceAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:

@@ -39,7 +39,7 @@ async def sample_get_hub():
     # Make the request
     response = await client.get_hub(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END networkconnectivity_generated_networkconnectivity_v1_HubService_GetHub_async]

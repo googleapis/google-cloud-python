@@ -41,6 +41,8 @@ def sample_update_spoke():
     print("Waiting for operation to complete...")
 
     response = operation.result()
+
+    # Handle the response
     print(response)
 
 # [END networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_UpdateSpoke_sync]

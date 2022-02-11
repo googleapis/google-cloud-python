@@ -38,6 +38,8 @@ def sample_list_spokes():
 
     # Make the request
     page_result = client.list_spokes(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

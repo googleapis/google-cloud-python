@@ -39,7 +39,7 @@ def sample_get_hub():
     # Make the request
     response = client.get_hub(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_GetHub_sync]

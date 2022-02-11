@@ -38,6 +38,8 @@ def sample_list_hubs():
 
     # Make the request
     page_result = client.list_hubs(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

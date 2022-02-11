@@ -41,6 +41,8 @@ async def sample_update_hub():
     print("Waiting for operation to complete...")
 
     response = await operation.result()
+
+    # Handle the response
     print(response)
 
 # [END networkconnectivity_generated_networkconnectivity_v1alpha1_HubService_UpdateHub_async]

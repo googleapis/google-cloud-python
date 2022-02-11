@@ -41,6 +41,8 @@ def sample_update_hub():
     print("Waiting for operation to complete...")
 
     response = operation.result()
+
+    # Handle the response
     print(response)
 
 # [END networkconnectivity_generated_networkconnectivity_v1_HubService_UpdateHub_sync]

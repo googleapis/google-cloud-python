@@ -43,6 +43,8 @@ async def sample_create_spoke():
     print("Waiting for operation to complete...")
 
     response = await operation.result()
+
+    # Handle the response
     print(response)
 
 # [END networkconnectivity_generated_networkconnectivity_v1_HubService_CreateSpoke_async]
