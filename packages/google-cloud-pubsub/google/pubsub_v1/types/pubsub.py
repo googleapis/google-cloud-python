@@ -1123,7 +1123,7 @@ class StreamingPullResponse(proto.Message):
         received_messages (Sequence[google.pubsub_v1.types.ReceivedMessage]):
             Received Pub/Sub messages. This will not be
             empty.
-        acknowlege_confirmation (google.pubsub_v1.types.StreamingPullResponse.AcknowledgeConfirmation):
+        acknowledge_confirmation (google.pubsub_v1.types.StreamingPullResponse.AcknowledgeConfirmation):
             This field will only be set if
             ``enable_exactly_once_delivery`` is set to ``true``.
         modify_ack_deadline_confirmation (google.pubsub_v1.types.StreamingPullResponse.ModifyAckDeadlineConfirmation):
@@ -1187,8 +1187,8 @@ class StreamingPullResponse(proto.Message):
     received_messages = proto.RepeatedField(
         proto.MESSAGE, number=1, message="ReceivedMessage",
     )
-    acknowlege_confirmation = proto.Field(
-        proto.MESSAGE, number=2, message=AcknowledgeConfirmation,
+    acknowledge_confirmation = proto.Field(
+        proto.MESSAGE, number=5, message=AcknowledgeConfirmation,
     )
     modify_ack_deadline_confirmation = proto.Field(
         proto.MESSAGE, number=3, message=ModifyAckDeadlineConfirmation,
