@@ -1,0 +1,1339 @@
+{
+  "snippets": [
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "ConfigureContactSettings"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_configure_contact_settings_async.py",
+      "regionTag": "domains_generated_domains_v1_Domains_ConfigureContactSettings_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "ConfigureContactSettings"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_configure_contact_settings_sync.py",
+      "regionTag": "domains_generated_domains_v1_Domains_ConfigureContactSettings_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "ConfigureDnsSettings"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_configure_dns_settings_async.py",
+      "regionTag": "domains_generated_domains_v1_Domains_ConfigureDnsSettings_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "ConfigureDnsSettings"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_configure_dns_settings_sync.py",
+      "regionTag": "domains_generated_domains_v1_Domains_ConfigureDnsSettings_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "ConfigureManagementSettings"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_configure_management_settings_async.py",
+      "regionTag": "domains_generated_domains_v1_Domains_ConfigureManagementSettings_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "ConfigureManagementSettings"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_configure_management_settings_sync.py",
+      "regionTag": "domains_generated_domains_v1_Domains_ConfigureManagementSettings_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "DeleteRegistration"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_delete_registration_async.py",
+      "regionTag": "domains_generated_domains_v1_Domains_DeleteRegistration_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "DeleteRegistration"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_delete_registration_sync.py",
+      "regionTag": "domains_generated_domains_v1_Domains_DeleteRegistration_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "ExportRegistration"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_export_registration_async.py",
+      "regionTag": "domains_generated_domains_v1_Domains_ExportRegistration_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "ExportRegistration"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_export_registration_sync.py",
+      "regionTag": "domains_generated_domains_v1_Domains_ExportRegistration_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "GetRegistration"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_get_registration_async.py",
+      "regionTag": "domains_generated_domains_v1_Domains_GetRegistration_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "GetRegistration"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_get_registration_sync.py",
+      "regionTag": "domains_generated_domains_v1_Domains_GetRegistration_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "ListRegistrations"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_list_registrations_async.py",
+      "regionTag": "domains_generated_domains_v1_Domains_ListRegistrations_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "ListRegistrations"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_list_registrations_sync.py",
+      "regionTag": "domains_generated_domains_v1_Domains_ListRegistrations_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "RegisterDomain"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_register_domain_async.py",
+      "regionTag": "domains_generated_domains_v1_Domains_RegisterDomain_async",
+      "segments": [
+        {
+          "end": 59,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 59,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 56,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 60,
+          "start": 57,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "RegisterDomain"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_register_domain_sync.py",
+      "regionTag": "domains_generated_domains_v1_Domains_RegisterDomain_sync",
+      "segments": [
+        {
+          "end": 59,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 59,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 56,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 60,
+          "start": 57,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "ResetAuthorizationCode"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_reset_authorization_code_async.py",
+      "regionTag": "domains_generated_domains_v1_Domains_ResetAuthorizationCode_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "ResetAuthorizationCode"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_reset_authorization_code_sync.py",
+      "regionTag": "domains_generated_domains_v1_Domains_ResetAuthorizationCode_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "RetrieveAuthorizationCode"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_retrieve_authorization_code_async.py",
+      "regionTag": "domains_generated_domains_v1_Domains_RetrieveAuthorizationCode_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "RetrieveAuthorizationCode"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_retrieve_authorization_code_sync.py",
+      "regionTag": "domains_generated_domains_v1_Domains_RetrieveAuthorizationCode_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "RetrieveRegisterParameters"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_retrieve_register_parameters_async.py",
+      "regionTag": "domains_generated_domains_v1_Domains_RetrieveRegisterParameters_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "RetrieveRegisterParameters"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_retrieve_register_parameters_sync.py",
+      "regionTag": "domains_generated_domains_v1_Domains_RetrieveRegisterParameters_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "RetrieveTransferParameters"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_retrieve_transfer_parameters_async.py",
+      "regionTag": "domains_generated_domains_v1_Domains_RetrieveTransferParameters_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "RetrieveTransferParameters"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_retrieve_transfer_parameters_sync.py",
+      "regionTag": "domains_generated_domains_v1_Domains_RetrieveTransferParameters_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "SearchDomains"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_search_domains_async.py",
+      "regionTag": "domains_generated_domains_v1_Domains_SearchDomains_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "SearchDomains"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_search_domains_sync.py",
+      "regionTag": "domains_generated_domains_v1_Domains_SearchDomains_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "TransferDomain"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_transfer_domain_async.py",
+      "regionTag": "domains_generated_domains_v1_Domains_TransferDomain_async",
+      "segments": [
+        {
+          "end": 59,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 59,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 56,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 60,
+          "start": 57,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "TransferDomain"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_transfer_domain_sync.py",
+      "regionTag": "domains_generated_domains_v1_Domains_TransferDomain_sync",
+      "segments": [
+        {
+          "end": 59,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 59,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 56,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 60,
+          "start": 57,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "UpdateRegistration"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_update_registration_async.py",
+      "regionTag": "domains_generated_domains_v1_Domains_UpdateRegistration_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "Domains"
+          },
+          "shortName": "UpdateRegistration"
+        }
+      },
+      "file": "domains_generated_domains_v1_domains_update_registration_sync.py",
+      "regionTag": "domains_generated_domains_v1_Domains_UpdateRegistration_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    }
+  ]
+}

@@ -422,6 +422,28 @@ class DomainsClient(metaclass=DomainsClientMeta):
         ``RetrieveRegisterParameters`` on a domain before registering to
         confirm availability.
 
+
+
+        .. code-block::
+
+            from google.cloud import domains_v1
+
+            def sample_search_domains():
+                # Create a client
+                client = domains_v1.DomainsClient()
+
+                # Initialize request argument(s)
+                request = domains_v1.SearchDomainsRequest(
+                    query="query_value",
+                    location="location_value",
+                )
+
+                # Make the request
+                response = client.search_domains(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.domains_v1.types.SearchDomainsRequest, dict]):
                 The request object. Request for the `SearchDomains`
@@ -502,6 +524,28 @@ class DomainsClient(metaclass=DomainsClientMeta):
         r"""Gets parameters needed to register a new domain name, including
         price and up-to-date availability. Use the returned values to
         call ``RegisterDomain``.
+
+
+
+        .. code-block::
+
+            from google.cloud import domains_v1
+
+            def sample_retrieve_register_parameters():
+                # Create a client
+                client = domains_v1.DomainsClient()
+
+                # Initialize request argument(s)
+                request = domains_v1.RetrieveRegisterParametersRequest(
+                    domain_name="domain_name_value",
+                    location="location_value",
+                )
+
+                # Make the request
+                response = client.retrieve_register_parameters(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.domains_v1.types.RetrieveRegisterParametersRequest, dict]):
@@ -598,6 +642,42 @@ class DomainsClient(metaclass=DomainsClientMeta):
         ``REGISTRATION_FAILED``, it indicates that the domain was not
         registered successfully, and you can safely delete the resource
         and retry registration.
+
+
+
+        .. code-block::
+
+            from google.cloud import domains_v1
+
+            def sample_register_domain():
+                # Create a client
+                client = domains_v1.DomainsClient()
+
+                # Initialize request argument(s)
+                registration = domains_v1.Registration()
+                registration.domain_name = "domain_name_value"
+                registration.contact_settings.privacy = "REDACTED_CONTACT_DATA"
+                registration.contact_settings.registrant_contact.email = "email_value"
+                registration.contact_settings.registrant_contact.phone_number = "phone_number_value"
+                registration.contact_settings.admin_contact.email = "email_value"
+                registration.contact_settings.admin_contact.phone_number = "phone_number_value"
+                registration.contact_settings.technical_contact.email = "email_value"
+                registration.contact_settings.technical_contact.phone_number = "phone_number_value"
+
+                request = domains_v1.RegisterDomainRequest(
+                    parent="parent_value",
+                    registration=registration,
+                )
+
+                # Make the request
+                operation = client.register_domain(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.domains_v1.types.RegisterDomainRequest, dict]):
@@ -726,6 +806,28 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
         Use the returned values to call ``TransferDomain``.
 
+
+
+        .. code-block::
+
+            from google.cloud import domains_v1
+
+            def sample_retrieve_transfer_parameters():
+                # Create a client
+                client = domains_v1.DomainsClient()
+
+                # Initialize request argument(s)
+                request = domains_v1.RetrieveTransferParametersRequest(
+                    domain_name="domain_name_value",
+                    location="location_value",
+                )
+
+                # Make the request
+                response = client.retrieve_transfer_parameters(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.domains_v1.types.RetrieveTransferParametersRequest, dict]):
                 The request object. Request for the
@@ -832,6 +934,42 @@ class DomainsClient(metaclass=DomainsClientMeta):
         without being approved, the resource can end up in state
         ``TRANSFER_FAILED``. If transfer fails, you can safely delete
         the resource and retry the transfer.
+
+
+
+        .. code-block::
+
+            from google.cloud import domains_v1
+
+            def sample_transfer_domain():
+                # Create a client
+                client = domains_v1.DomainsClient()
+
+                # Initialize request argument(s)
+                registration = domains_v1.Registration()
+                registration.domain_name = "domain_name_value"
+                registration.contact_settings.privacy = "REDACTED_CONTACT_DATA"
+                registration.contact_settings.registrant_contact.email = "email_value"
+                registration.contact_settings.registrant_contact.phone_number = "phone_number_value"
+                registration.contact_settings.admin_contact.email = "email_value"
+                registration.contact_settings.admin_contact.phone_number = "phone_number_value"
+                registration.contact_settings.technical_contact.email = "email_value"
+                registration.contact_settings.technical_contact.phone_number = "phone_number_value"
+
+                request = domains_v1.TransferDomainRequest(
+                    parent="parent_value",
+                    registration=registration,
+                )
+
+                # Make the request
+                operation = client.transfer_domain(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.domains_v1.types.TransferDomainRequest, dict]):
@@ -973,6 +1111,27 @@ class DomainsClient(metaclass=DomainsClientMeta):
     ) -> pagers.ListRegistrationsPager:
         r"""Lists the ``Registration`` resources in a project.
 
+
+        .. code-block::
+
+            from google.cloud import domains_v1
+
+            def sample_list_registrations():
+                # Create a client
+                client = domains_v1.DomainsClient()
+
+                # Initialize request argument(s)
+                request = domains_v1.ListRegistrationsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_registrations(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.domains_v1.types.ListRegistrationsRequest, dict]):
                 The request object. Request for the `ListRegistrations`
@@ -1052,6 +1211,26 @@ class DomainsClient(metaclass=DomainsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> domains.Registration:
         r"""Gets the details of a ``Registration`` resource.
+
+
+        .. code-block::
+
+            from google.cloud import domains_v1
+
+            def sample_get_registration():
+                # Create a client
+                client = domains_v1.DomainsClient()
+
+                # Initialize request argument(s)
+                request = domains_v1.GetRegistrationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_registration(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.domains_v1.types.GetRegistrationRequest, dict]):
@@ -1152,6 +1331,30 @@ class DomainsClient(metaclass=DomainsClientMeta):
         -  To update DNS configuration, see ``ConfigureDnsSettings``
         -  To update contact information, see
            ``ConfigureContactSettings``
+
+
+
+        .. code-block::
+
+            from google.cloud import domains_v1
+
+            def sample_update_registration():
+                # Create a client
+                client = domains_v1.DomainsClient()
+
+                # Initialize request argument(s)
+                request = domains_v1.UpdateRegistrationRequest(
+                )
+
+                # Make the request
+                operation = client.update_registration(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.domains_v1.types.UpdateRegistrationRequest, dict]):
@@ -1266,6 +1469,30 @@ class DomainsClient(metaclass=DomainsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates a ``Registration``'s management settings.
+
+
+        .. code-block::
+
+            from google.cloud import domains_v1
+
+            def sample_configure_management_settings():
+                # Create a client
+                client = domains_v1.DomainsClient()
+
+                # Initialize request argument(s)
+                request = domains_v1.ConfigureManagementSettingsRequest(
+                    registration="registration_value",
+                )
+
+                # Make the request
+                operation = client.configure_management_settings(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.domains_v1.types.ConfigureManagementSettingsRequest, dict]):
@@ -1392,6 +1619,30 @@ class DomainsClient(metaclass=DomainsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates a ``Registration``'s DNS settings.
+
+
+        .. code-block::
+
+            from google.cloud import domains_v1
+
+            def sample_configure_dns_settings():
+                # Create a client
+                client = domains_v1.DomainsClient()
+
+                # Initialize request argument(s)
+                request = domains_v1.ConfigureDnsSettingsRequest(
+                    registration="registration_value",
+                )
+
+                # Make the request
+                operation = client.configure_dns_settings(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.domains_v1.types.ConfigureDnsSettingsRequest, dict]):
@@ -1524,6 +1775,31 @@ class DomainsClient(metaclass=DomainsClientMeta):
     ) -> operation.Operation:
         r"""Updates a ``Registration``'s contact settings. Some changes
         require confirmation by the domain's registrant contact .
+
+
+
+        .. code-block::
+
+            from google.cloud import domains_v1
+
+            def sample_configure_contact_settings():
+                # Create a client
+                client = domains_v1.DomainsClient()
+
+                # Initialize request argument(s)
+                request = domains_v1.ConfigureContactSettingsRequest(
+                    registration="registration_value",
+                )
+
+                # Make the request
+                operation = client.configure_contact_settings(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.domains_v1.types.ConfigureContactSettingsRequest, dict]):
@@ -1658,6 +1934,31 @@ class DomainsClient(metaclass=DomainsClientMeta):
         The domain does not renew automatically unless the new owner
         sets up billing in Google Domains.
 
+
+
+        .. code-block::
+
+            from google.cloud import domains_v1
+
+            def sample_export_registration():
+                # Create a client
+                client = domains_v1.DomainsClient()
+
+                # Initialize request argument(s)
+                request = domains_v1.ExportRegistrationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.export_registration(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.domains_v1.types.ExportRegistrationRequest, dict]):
                 The request object. Request for the `ExportRegistration`
@@ -1780,6 +2081,31 @@ class DomainsClient(metaclass=DomainsClientMeta):
         The domain does not renew automatically unless the new owner
         sets up billing in Google Domains.
 
+
+
+        .. code-block::
+
+            from google.cloud import domains_v1
+
+            def sample_delete_registration():
+                # Create a client
+                client = domains_v1.DomainsClient()
+
+                # Initialize request argument(s)
+                request = domains_v1.DeleteRegistrationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_registration(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.domains_v1.types.DeleteRegistrationRequest, dict]):
                 The request object. Request for the `DeleteRegistration`
@@ -1876,6 +2202,27 @@ class DomainsClient(metaclass=DomainsClientMeta):
         You can call this method only after 60 days have elapsed since
         the initial domain registration.
 
+
+
+        .. code-block::
+
+            from google.cloud import domains_v1
+
+            def sample_retrieve_authorization_code():
+                # Create a client
+                client = domains_v1.DomainsClient()
+
+                # Initialize request argument(s)
+                request = domains_v1.RetrieveAuthorizationCodeRequest(
+                    registration="registration_value",
+                )
+
+                # Make the request
+                response = client.retrieve_authorization_code(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.domains_v1.types.RetrieveAuthorizationCodeRequest, dict]):
                 The request object. Request for the
@@ -1953,6 +2300,27 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
         You can call this method only after 60 days have elapsed since
         the initial domain registration.
+
+
+
+        .. code-block::
+
+            from google.cloud import domains_v1
+
+            def sample_reset_authorization_code():
+                # Create a client
+                client = domains_v1.DomainsClient()
+
+                # Initialize request argument(s)
+                request = domains_v1.ResetAuthorizationCodeRequest(
+                    registration="registration_value",
+                )
+
+                # Make the request
+                response = client.reset_authorization_code(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.domains_v1.types.ResetAuthorizationCodeRequest, dict]):
