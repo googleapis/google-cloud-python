@@ -1,0 +1,623 @@
+{
+  "snippets": [
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OrgPolicy"
+          },
+          "shortName": "CreatePolicy"
+        }
+      },
+      "file": "orgpolicy_generated_orgpolicy_v2_org_policy_create_policy_async.py",
+      "regionTag": "orgpolicy_generated_orgpolicy_v2_OrgPolicy_CreatePolicy_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OrgPolicy"
+          },
+          "shortName": "CreatePolicy"
+        }
+      },
+      "file": "orgpolicy_generated_orgpolicy_v2_org_policy_create_policy_sync.py",
+      "regionTag": "orgpolicy_generated_orgpolicy_v2_OrgPolicy_CreatePolicy_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OrgPolicy"
+          },
+          "shortName": "DeletePolicy"
+        }
+      },
+      "file": "orgpolicy_generated_orgpolicy_v2_org_policy_delete_policy_async.py",
+      "regionTag": "orgpolicy_generated_orgpolicy_v2_OrgPolicy_DeletePolicy_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OrgPolicy"
+          },
+          "shortName": "DeletePolicy"
+        }
+      },
+      "file": "orgpolicy_generated_orgpolicy_v2_org_policy_delete_policy_sync.py",
+      "regionTag": "orgpolicy_generated_orgpolicy_v2_OrgPolicy_DeletePolicy_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OrgPolicy"
+          },
+          "shortName": "GetEffectivePolicy"
+        }
+      },
+      "file": "orgpolicy_generated_orgpolicy_v2_org_policy_get_effective_policy_async.py",
+      "regionTag": "orgpolicy_generated_orgpolicy_v2_OrgPolicy_GetEffectivePolicy_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OrgPolicy"
+          },
+          "shortName": "GetEffectivePolicy"
+        }
+      },
+      "file": "orgpolicy_generated_orgpolicy_v2_org_policy_get_effective_policy_sync.py",
+      "regionTag": "orgpolicy_generated_orgpolicy_v2_OrgPolicy_GetEffectivePolicy_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OrgPolicy"
+          },
+          "shortName": "GetPolicy"
+        }
+      },
+      "file": "orgpolicy_generated_orgpolicy_v2_org_policy_get_policy_async.py",
+      "regionTag": "orgpolicy_generated_orgpolicy_v2_OrgPolicy_GetPolicy_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OrgPolicy"
+          },
+          "shortName": "GetPolicy"
+        }
+      },
+      "file": "orgpolicy_generated_orgpolicy_v2_org_policy_get_policy_sync.py",
+      "regionTag": "orgpolicy_generated_orgpolicy_v2_OrgPolicy_GetPolicy_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OrgPolicy"
+          },
+          "shortName": "ListConstraints"
+        }
+      },
+      "file": "orgpolicy_generated_orgpolicy_v2_org_policy_list_constraints_async.py",
+      "regionTag": "orgpolicy_generated_orgpolicy_v2_OrgPolicy_ListConstraints_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OrgPolicy"
+          },
+          "shortName": "ListConstraints"
+        }
+      },
+      "file": "orgpolicy_generated_orgpolicy_v2_org_policy_list_constraints_sync.py",
+      "regionTag": "orgpolicy_generated_orgpolicy_v2_OrgPolicy_ListConstraints_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OrgPolicy"
+          },
+          "shortName": "ListPolicies"
+        }
+      },
+      "file": "orgpolicy_generated_orgpolicy_v2_org_policy_list_policies_async.py",
+      "regionTag": "orgpolicy_generated_orgpolicy_v2_OrgPolicy_ListPolicies_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OrgPolicy"
+          },
+          "shortName": "ListPolicies"
+        }
+      },
+      "file": "orgpolicy_generated_orgpolicy_v2_org_policy_list_policies_sync.py",
+      "regionTag": "orgpolicy_generated_orgpolicy_v2_OrgPolicy_ListPolicies_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "OrgPolicy"
+          },
+          "shortName": "UpdatePolicy"
+        }
+      },
+      "file": "orgpolicy_generated_orgpolicy_v2_org_policy_update_policy_async.py",
+      "regionTag": "orgpolicy_generated_orgpolicy_v2_OrgPolicy_UpdatePolicy_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "OrgPolicy"
+          },
+          "shortName": "UpdatePolicy"
+        }
+      },
+      "file": "orgpolicy_generated_orgpolicy_v2_org_policy_update_policy_sync.py",
+      "regionTag": "orgpolicy_generated_orgpolicy_v2_OrgPolicy_UpdatePolicy_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    }
+  ]
+}
