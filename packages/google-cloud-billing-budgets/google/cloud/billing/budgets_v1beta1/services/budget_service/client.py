@@ -413,6 +413,27 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         and limits</a> for more information on the limits of the
         number of budgets you can create.
 
+
+
+        .. code-block::
+
+            from google.cloud.billing import budgets_v1beta1
+
+            def sample_create_budget():
+                # Create a client
+                client = budgets_v1beta1.BudgetServiceClient()
+
+                # Initialize request argument(s)
+                request = budgets_v1beta1.CreateBudgetRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_budget(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.billing.budgets_v1beta1.types.CreateBudgetRequest, dict]):
                 The request object. Request for CreateBudget
@@ -472,6 +493,26 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         Cloud Console that aren't available on this API. Budget
         fields that are not exposed in this API will not be
         changed by this method.
+
+
+
+        .. code-block::
+
+            from google.cloud.billing import budgets_v1beta1
+
+            def sample_update_budget():
+                # Create a client
+                client = budgets_v1beta1.BudgetServiceClient()
+
+                # Initialize request argument(s)
+                request = budgets_v1beta1.UpdateBudgetRequest(
+                )
+
+                # Make the request
+                response = client.update_budget(request=request)
+
+                # Handle response
+                print(response)
 
         Args:
             request (Union[google.cloud.billing.budgets_v1beta1.types.UpdateBudgetRequest, dict]):
@@ -536,6 +577,27 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         the return value, though they may have been set in the
         Cloud Console.
 
+
+
+        .. code-block::
+
+            from google.cloud.billing import budgets_v1beta1
+
+            def sample_get_budget():
+                # Create a client
+                client = budgets_v1beta1.BudgetServiceClient()
+
+                # Initialize request argument(s)
+                request = budgets_v1beta1.GetBudgetRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_budget(request=request)
+
+                # Handle response
+                print(response)
+
         Args:
             request (Union[google.cloud.billing.budgets_v1beta1.types.GetBudgetRequest, dict]):
                 The request object. Request for GetBudget
@@ -597,6 +659,26 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         the return value, though they may have been set in the
         Cloud Console.
 
+
+
+        .. code-block::
+
+            from google.cloud.billing import budgets_v1beta1
+
+            def sample_list_budgets():
+                # Create a client
+                client = budgets_v1beta1.BudgetServiceClient()
+
+                # Initialize request argument(s)
+                request = budgets_v1beta1.ListBudgetsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_budgets(request=request)
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.billing.budgets_v1beta1.types.ListBudgetsRequest, dict]):
                 The request object. Request for ListBudgets
@@ -654,6 +736,24 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
     ) -> None:
         r"""Deletes a budget. Returns successfully if already
         deleted.
+
+
+
+        .. code-block::
+
+            from google.cloud.billing import budgets_v1beta1
+
+            def sample_delete_budget():
+                # Create a client
+                client = budgets_v1beta1.BudgetServiceClient()
+
+                # Initialize request argument(s)
+                request = budgets_v1beta1.DeleteBudgetRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.delete_budget(request=request)
 
         Args:
             request (Union[google.cloud.billing.budgets_v1beta1.types.DeleteBudgetRequest, dict]):
