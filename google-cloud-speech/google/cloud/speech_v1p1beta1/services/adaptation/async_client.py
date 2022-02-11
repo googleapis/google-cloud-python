@@ -216,6 +216,27 @@ class AdaptationAsyncClient:
         in the PhraseSet are favored by the recognition model
         when you send a call that includes the PhraseSet.
 
+
+        .. code-block::
+
+            from google.cloud import speech_v1p1beta1
+
+            def sample_create_phrase_set():
+                # Create a client
+                client = speech_v1p1beta1.AdaptationClient()
+
+                # Initialize request argument(s)
+                request = speech_v1p1beta1.CreatePhraseSetRequest(
+                    parent="parent_value",
+                    phrase_set_id="phrase_set_id_value",
+                )
+
+                # Make the request
+                response = client.create_phrase_set(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.speech_v1p1beta1.types.CreatePhraseSetRequest, dict]):
                 The request object. Message sent by the client for the
@@ -317,6 +338,25 @@ class AdaptationAsyncClient:
     ) -> resource.PhraseSet:
         r"""Get a phrase set.
 
+        .. code-block::
+
+            from google.cloud import speech_v1p1beta1
+
+            def sample_get_phrase_set():
+                # Create a client
+                client = speech_v1p1beta1.AdaptationClient()
+
+                # Initialize request argument(s)
+                request = speech_v1p1beta1.GetPhraseSetRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_phrase_set(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.speech_v1p1beta1.types.GetPhraseSetRequest, dict]):
                 The request object. Message sent by the client for the
@@ -397,6 +437,26 @@ class AdaptationAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPhraseSetAsyncPager:
         r"""List phrase sets.
+
+        .. code-block::
+
+            from google.cloud import speech_v1p1beta1
+
+            def sample_list_phrase_set():
+                # Create a client
+                client = speech_v1p1beta1.AdaptationClient()
+
+                # Initialize request argument(s)
+                request = speech_v1p1beta1.ListPhraseSetRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_phrase_set(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.speech_v1p1beta1.types.ListPhraseSetRequest, dict]):
@@ -487,6 +547,24 @@ class AdaptationAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resource.PhraseSet:
         r"""Update a phrase set.
+
+        .. code-block::
+
+            from google.cloud import speech_v1p1beta1
+
+            def sample_update_phrase_set():
+                # Create a client
+                client = speech_v1p1beta1.AdaptationClient()
+
+                # Initialize request argument(s)
+                request = speech_v1p1beta1.UpdatePhraseSetRequest(
+                )
+
+                # Make the request
+                response = client.update_phrase_set(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.speech_v1p1beta1.types.UpdatePhraseSetRequest, dict]):
@@ -580,6 +658,22 @@ class AdaptationAsyncClient:
     ) -> None:
         r"""Delete a phrase set.
 
+        .. code-block::
+
+            from google.cloud import speech_v1p1beta1
+
+            def sample_delete_phrase_set():
+                # Create a client
+                client = speech_v1p1beta1.AdaptationClient()
+
+                # Initialize request argument(s)
+                request = speech_v1p1beta1.DeletePhraseSetRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_phrase_set(request=request)
+
         Args:
             request (Union[google.cloud.speech_v1p1beta1.types.DeletePhraseSetRequest, dict]):
                 The request object. Message sent by the client for the
@@ -646,6 +740,26 @@ class AdaptationAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resource.CustomClass:
         r"""Create a custom class.
+
+        .. code-block::
+
+            from google.cloud import speech_v1p1beta1
+
+            def sample_create_custom_class():
+                # Create a client
+                client = speech_v1p1beta1.AdaptationClient()
+
+                # Initialize request argument(s)
+                request = speech_v1p1beta1.CreateCustomClassRequest(
+                    parent="parent_value",
+                    custom_class_id="custom_class_id_value",
+                )
+
+                # Make the request
+                response = client.create_custom_class(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.speech_v1p1beta1.types.CreateCustomClassRequest, dict]):
@@ -752,6 +866,25 @@ class AdaptationAsyncClient:
     ) -> resource.CustomClass:
         r"""Get a custom class.
 
+        .. code-block::
+
+            from google.cloud import speech_v1p1beta1
+
+            def sample_get_custom_class():
+                # Create a client
+                client = speech_v1p1beta1.AdaptationClient()
+
+                # Initialize request argument(s)
+                request = speech_v1p1beta1.GetCustomClassRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_custom_class(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.speech_v1p1beta1.types.GetCustomClassRequest, dict]):
                 The request object. Message sent by the client for the
@@ -829,6 +962,26 @@ class AdaptationAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCustomClassesAsyncPager:
         r"""List custom classes.
+
+        .. code-block::
+
+            from google.cloud import speech_v1p1beta1
+
+            def sample_list_custom_classes():
+                # Create a client
+                client = speech_v1p1beta1.AdaptationClient()
+
+                # Initialize request argument(s)
+                request = speech_v1p1beta1.ListCustomClassesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_custom_classes(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.speech_v1p1beta1.types.ListCustomClassesRequest, dict]):
@@ -919,6 +1072,24 @@ class AdaptationAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resource.CustomClass:
         r"""Update a custom class.
+
+        .. code-block::
+
+            from google.cloud import speech_v1p1beta1
+
+            def sample_update_custom_class():
+                # Create a client
+                client = speech_v1p1beta1.AdaptationClient()
+
+                # Initialize request argument(s)
+                request = speech_v1p1beta1.UpdateCustomClassRequest(
+                )
+
+                # Make the request
+                response = client.update_custom_class(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.speech_v1p1beta1.types.UpdateCustomClassRequest, dict]):
@@ -1015,6 +1186,22 @@ class AdaptationAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Delete a custom class.
+
+        .. code-block::
+
+            from google.cloud import speech_v1p1beta1
+
+            def sample_delete_custom_class():
+                # Create a client
+                client = speech_v1p1beta1.AdaptationClient()
+
+                # Initialize request argument(s)
+                request = speech_v1p1beta1.DeleteCustomClassRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_custom_class(request=request)
 
         Args:
             request (Union[google.cloud.speech_v1p1beta1.types.DeleteCustomClassRequest, dict]):
