@@ -216,6 +216,29 @@ class ServiceUsageAsyncClient:
         r"""Enable a service so that it can be used with a
         project.
 
+
+        .. code-block::
+
+            from google.cloud import service_usage_v1
+
+            def sample_enable_service():
+                # Create a client
+                client = service_usage_v1.ServiceUsageClient()
+
+                # Initialize request argument(s)
+                request = service_usage_v1.EnableServiceRequest(
+                )
+
+                # Make the request
+                operation = client.enable_service(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.service_usage_v1.types.EnableServiceRequest, dict]):
                 The request object. Request message for the
@@ -284,6 +307,29 @@ class ServiceUsageAsyncClient:
         ``FAILED_PRECONDITION`` status if the target service is not
         currently enabled.
 
+
+        .. code-block::
+
+            from google.cloud import service_usage_v1
+
+            def sample_disable_service():
+                # Create a client
+                client = service_usage_v1.ServiceUsageClient()
+
+                # Initialize request argument(s)
+                request = service_usage_v1.DisableServiceRequest(
+                )
+
+                # Make the request
+                operation = client.disable_service(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.service_usage_v1.types.DisableServiceRequest, dict]):
                 The request object. Request message for the
@@ -345,6 +391,25 @@ class ServiceUsageAsyncClient:
     ) -> resources.Service:
         r"""Returns the service configuration and enabled state
         for a given service.
+
+
+        .. code-block::
+
+            from google.cloud import service_usage_v1
+
+            def sample_get_service():
+                # Create a client
+                client = service_usage_v1.ServiceUsageClient()
+
+                # Initialize request argument(s)
+                request = service_usage_v1.GetServiceRequest(
+                )
+
+                # Make the request
+                response = client.get_service(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.service_usage_v1.types.GetServiceRequest, dict]):
@@ -408,6 +473,26 @@ class ServiceUsageAsyncClient:
         which provides higher throughput and richer filtering
         capability.
 
+
+        .. code-block::
+
+            from google.cloud import service_usage_v1
+
+            def sample_list_services():
+                # Create a client
+                client = service_usage_v1.ServiceUsageClient()
+
+                # Initialize request argument(s)
+                request = service_usage_v1.ListServicesRequest(
+                )
+
+                # Make the request
+                page_result = client.list_services(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.service_usage_v1.types.ListServicesRequest, dict]):
                 The request object. Request message for the
@@ -467,6 +552,29 @@ class ServiceUsageAsyncClient:
         if enabling any service fails, then the entire batch fails, and
         no state changes occur. To enable a single service, use the
         ``EnableService`` method instead.
+
+
+        .. code-block::
+
+            from google.cloud import service_usage_v1
+
+            def sample_batch_enable_services():
+                # Create a client
+                client = service_usage_v1.ServiceUsageClient()
+
+                # Initialize request argument(s)
+                request = service_usage_v1.BatchEnableServicesRequest(
+                )
+
+                # Make the request
+                operation = client.batch_enable_services(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.service_usage_v1.types.BatchEnableServicesRequest, dict]):
@@ -529,6 +637,25 @@ class ServiceUsageAsyncClient:
     ) -> serviceusage.BatchGetServicesResponse:
         r"""Returns the service configurations and enabled states
         for a given list of services.
+
+
+        .. code-block::
+
+            from google.cloud import service_usage_v1
+
+            def sample_batch_get_services():
+                # Create a client
+                client = service_usage_v1.ServiceUsageClient()
+
+                # Initialize request argument(s)
+                request = service_usage_v1.BatchGetServicesRequest(
+                )
+
+                # Make the request
+                response = client.batch_get_services(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.service_usage_v1.types.BatchGetServicesRequest, dict]):

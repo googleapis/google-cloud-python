@@ -1,0 +1,538 @@
+{
+  "snippets": [
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ServiceUsage"
+          },
+          "shortName": "BatchEnableServices"
+        }
+      },
+      "file": "serviceusage_generated_service_usage_v1_service_usage_batch_enable_services_async.py",
+      "regionTag": "serviceusage_generated_service_usage_v1_ServiceUsage_BatchEnableServices_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ServiceUsage"
+          },
+          "shortName": "BatchEnableServices"
+        }
+      },
+      "file": "serviceusage_generated_service_usage_v1_service_usage_batch_enable_services_sync.py",
+      "regionTag": "serviceusage_generated_service_usage_v1_ServiceUsage_BatchEnableServices_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ServiceUsage"
+          },
+          "shortName": "BatchGetServices"
+        }
+      },
+      "file": "serviceusage_generated_service_usage_v1_service_usage_batch_get_services_async.py",
+      "regionTag": "serviceusage_generated_service_usage_v1_ServiceUsage_BatchGetServices_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ServiceUsage"
+          },
+          "shortName": "BatchGetServices"
+        }
+      },
+      "file": "serviceusage_generated_service_usage_v1_service_usage_batch_get_services_sync.py",
+      "regionTag": "serviceusage_generated_service_usage_v1_ServiceUsage_BatchGetServices_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ServiceUsage"
+          },
+          "shortName": "DisableService"
+        }
+      },
+      "file": "serviceusage_generated_service_usage_v1_service_usage_disable_service_async.py",
+      "regionTag": "serviceusage_generated_service_usage_v1_ServiceUsage_DisableService_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ServiceUsage"
+          },
+          "shortName": "DisableService"
+        }
+      },
+      "file": "serviceusage_generated_service_usage_v1_service_usage_disable_service_sync.py",
+      "regionTag": "serviceusage_generated_service_usage_v1_ServiceUsage_DisableService_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ServiceUsage"
+          },
+          "shortName": "EnableService"
+        }
+      },
+      "file": "serviceusage_generated_service_usage_v1_service_usage_enable_service_async.py",
+      "regionTag": "serviceusage_generated_service_usage_v1_ServiceUsage_EnableService_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ServiceUsage"
+          },
+          "shortName": "EnableService"
+        }
+      },
+      "file": "serviceusage_generated_service_usage_v1_service_usage_enable_service_sync.py",
+      "regionTag": "serviceusage_generated_service_usage_v1_ServiceUsage_EnableService_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ServiceUsage"
+          },
+          "shortName": "GetService"
+        }
+      },
+      "file": "serviceusage_generated_service_usage_v1_service_usage_get_service_async.py",
+      "regionTag": "serviceusage_generated_service_usage_v1_ServiceUsage_GetService_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ServiceUsage"
+          },
+          "shortName": "GetService"
+        }
+      },
+      "file": "serviceusage_generated_service_usage_v1_service_usage_get_service_sync.py",
+      "regionTag": "serviceusage_generated_service_usage_v1_ServiceUsage_GetService_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ServiceUsage"
+          },
+          "shortName": "ListServices"
+        }
+      },
+      "file": "serviceusage_generated_service_usage_v1_service_usage_list_services_async.py",
+      "regionTag": "serviceusage_generated_service_usage_v1_ServiceUsage_ListServices_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ServiceUsage"
+          },
+          "shortName": "ListServices"
+        }
+      },
+      "file": "serviceusage_generated_service_usage_v1_service_usage_list_services_sync.py",
+      "regionTag": "serviceusage_generated_service_usage_v1_ServiceUsage_ListServices_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    }
+  ]
+}
