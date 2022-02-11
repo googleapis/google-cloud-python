@@ -215,6 +215,25 @@ class TemplatesServiceAsyncClient:
     ) -> jobs.Job:
         r"""Creates a Cloud Dataflow job from a template.
 
+        .. code-block::
+
+            from google.cloud import dataflow_v1beta3
+
+            def sample_create_job_from_template():
+                # Create a client
+                client = dataflow_v1beta3.TemplatesServiceClient()
+
+                # Initialize request argument(s)
+                request = dataflow_v1beta3.CreateJobFromTemplateRequest(
+                    gcs_path="gcs_path_value",
+                )
+
+                # Make the request
+                response = client.create_job_from_template(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataflow_v1beta3.types.CreateJobFromTemplateRequest, dict]):
                 The request object. A request to create a Cloud Dataflow
@@ -258,6 +277,25 @@ class TemplatesServiceAsyncClient:
     ) -> templates.LaunchTemplateResponse:
         r"""Launch a template.
 
+        .. code-block::
+
+            from google.cloud import dataflow_v1beta3
+
+            def sample_launch_template():
+                # Create a client
+                client = dataflow_v1beta3.TemplatesServiceClient()
+
+                # Initialize request argument(s)
+                request = dataflow_v1beta3.LaunchTemplateRequest(
+                    gcs_path="gcs_path_value",
+                )
+
+                # Make the request
+                response = client.launch_template(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataflow_v1beta3.types.LaunchTemplateRequest, dict]):
                 The request object. A request to launch a template.
@@ -299,6 +337,25 @@ class TemplatesServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> templates.GetTemplateResponse:
         r"""Get the template associated with a template.
+
+        .. code-block::
+
+            from google.cloud import dataflow_v1beta3
+
+            def sample_get_template():
+                # Create a client
+                client = dataflow_v1beta3.TemplatesServiceClient()
+
+                # Initialize request argument(s)
+                request = dataflow_v1beta3.GetTemplateRequest(
+                    gcs_path="gcs_path_value",
+                )
+
+                # Make the request
+                response = client.get_template(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dataflow_v1beta3.types.GetTemplateRequest, dict]):

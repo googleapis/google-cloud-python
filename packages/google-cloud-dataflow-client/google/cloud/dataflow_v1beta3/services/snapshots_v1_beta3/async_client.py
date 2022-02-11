@@ -213,6 +213,24 @@ class SnapshotsV1Beta3AsyncClient:
     ) -> snapshots.Snapshot:
         r"""Gets information about a snapshot.
 
+        .. code-block::
+
+            from google.cloud import dataflow_v1beta3
+
+            def sample_get_snapshot():
+                # Create a client
+                client = dataflow_v1beta3.SnapshotsV1Beta3Client()
+
+                # Initialize request argument(s)
+                request = dataflow_v1beta3.GetSnapshotRequest(
+                )
+
+                # Make the request
+                response = client.get_snapshot(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataflow_v1beta3.types.GetSnapshotRequest, dict]):
                 The request object. Request to get information about a
@@ -254,6 +272,24 @@ class SnapshotsV1Beta3AsyncClient:
     ) -> snapshots.DeleteSnapshotResponse:
         r"""Deletes a snapshot.
 
+        .. code-block::
+
+            from google.cloud import dataflow_v1beta3
+
+            def sample_delete_snapshot():
+                # Create a client
+                client = dataflow_v1beta3.SnapshotsV1Beta3Client()
+
+                # Initialize request argument(s)
+                request = dataflow_v1beta3.DeleteSnapshotRequest(
+                )
+
+                # Make the request
+                response = client.delete_snapshot(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataflow_v1beta3.types.DeleteSnapshotRequest, dict]):
                 The request object. Request to delete a snapshot.
@@ -293,6 +329,24 @@ class SnapshotsV1Beta3AsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> snapshots.ListSnapshotsResponse:
         r"""Lists snapshots.
+
+        .. code-block::
+
+            from google.cloud import dataflow_v1beta3
+
+            def sample_list_snapshots():
+                # Create a client
+                client = dataflow_v1beta3.SnapshotsV1Beta3Client()
+
+                # Initialize request argument(s)
+                request = dataflow_v1beta3.ListSnapshotsRequest(
+                )
+
+                # Make the request
+                response = client.list_snapshots(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dataflow_v1beta3.types.ListSnapshotsRequest, dict]):

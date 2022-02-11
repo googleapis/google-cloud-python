@@ -221,6 +221,25 @@ class MetricsV1Beta3AsyncClient:
         can only request the status of jobs that are running in
         ``us-central1``.
 
+
+        .. code-block::
+
+            from google.cloud import dataflow_v1beta3
+
+            def sample_get_job_metrics():
+                # Create a client
+                client = dataflow_v1beta3.MetricsV1Beta3Client()
+
+                # Initialize request argument(s)
+                request = dataflow_v1beta3.GetJobMetricsRequest(
+                )
+
+                # Make the request
+                response = client.get_job_metrics(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataflow_v1beta3.types.GetJobMetricsRequest, dict]):
                 The request object. Request to get job metrics.
@@ -274,6 +293,26 @@ class MetricsV1Beta3AsyncClient:
         status of the job.
         EXPERIMENTAL.  This API is subject to change or removal
         without notice.
+
+
+        .. code-block::
+
+            from google.cloud import dataflow_v1beta3
+
+            def sample_get_job_execution_details():
+                # Create a client
+                client = dataflow_v1beta3.MetricsV1Beta3Client()
+
+                # Initialize request argument(s)
+                request = dataflow_v1beta3.GetJobExecutionDetailsRequest(
+                )
+
+                # Make the request
+                page_result = client.get_job_execution_details(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.dataflow_v1beta3.types.GetJobExecutionDetailsRequest, dict]):
@@ -330,6 +369,26 @@ class MetricsV1Beta3AsyncClient:
 
         EXPERIMENTAL.  This API is subject to change or removal
         without notice.
+
+
+        .. code-block::
+
+            from google.cloud import dataflow_v1beta3
+
+            def sample_get_stage_execution_details():
+                # Create a client
+                client = dataflow_v1beta3.MetricsV1Beta3Client()
+
+                # Initialize request argument(s)
+                request = dataflow_v1beta3.GetStageExecutionDetailsRequest(
+                )
+
+                # Make the request
+                page_result = client.get_stage_execution_details(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.dataflow_v1beta3.types.GetStageExecutionDetailsRequest, dict]):

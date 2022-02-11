@@ -397,6 +397,25 @@ class FlexTemplatesServiceClient(metaclass=FlexTemplatesServiceClientMeta):
     ) -> templates.LaunchFlexTemplateResponse:
         r"""Launch a job with a FlexTemplate.
 
+
+        .. code-block::
+
+            from google.cloud import dataflow_v1beta3
+
+            def sample_launch_flex_template():
+                # Create a client
+                client = dataflow_v1beta3.FlexTemplatesServiceClient()
+
+                # Initialize request argument(s)
+                request = dataflow_v1beta3.LaunchFlexTemplateRequest(
+                )
+
+                # Make the request
+                response = client.launch_flex_template(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataflow_v1beta3.types.LaunchFlexTemplateRequest, dict]):
                 The request object. A request to launch a Cloud Dataflow

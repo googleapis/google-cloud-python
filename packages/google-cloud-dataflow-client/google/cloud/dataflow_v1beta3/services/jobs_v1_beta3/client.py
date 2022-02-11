@@ -404,6 +404,26 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
         Using ``projects.jobs.create`` is not recommended, as your job
         will always start in ``us-central1``.
 
+
+
+        .. code-block::
+
+            from google.cloud import dataflow_v1beta3
+
+            def sample_create_job():
+                # Create a client
+                client = dataflow_v1beta3.JobsV1Beta3Client()
+
+                # Initialize request argument(s)
+                request = dataflow_v1beta3.CreateJobRequest(
+                )
+
+                # Make the request
+                response = client.create_job(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataflow_v1beta3.types.CreateJobRequest, dict]):
                 The request object. Request to create a Cloud Dataflow
@@ -453,6 +473,26 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
         (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints).
         Using ``projects.jobs.get`` is not recommended, as you can only
         get the state of jobs that are running in ``us-central1``.
+
+
+
+        .. code-block::
+
+            from google.cloud import dataflow_v1beta3
+
+            def sample_get_job():
+                # Create a client
+                client = dataflow_v1beta3.JobsV1Beta3Client()
+
+                # Initialize request argument(s)
+                request = dataflow_v1beta3.GetJobRequest(
+                )
+
+                # Make the request
+                response = client.get_job(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dataflow_v1beta3.types.GetJobRequest, dict]):
@@ -505,6 +545,26 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
         only update the state of jobs that are running in
         ``us-central1``.
 
+
+
+        .. code-block::
+
+            from google.cloud import dataflow_v1beta3
+
+            def sample_update_job():
+                # Create a client
+                client = dataflow_v1beta3.JobsV1Beta3Client()
+
+                # Initialize request argument(s)
+                request = dataflow_v1beta3.UpdateJobRequest(
+                )
+
+                # Make the request
+                response = client.update_job(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataflow_v1beta3.types.UpdateJobRequest, dict]):
                 The request object. Request to update a Cloud Dataflow
@@ -556,6 +616,27 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
         ``projects.jobs.aggregated``. Using ``projects.jobs.list`` is
         not recommended, as you can only get the list of jobs that are
         running in ``us-central1``.
+
+
+
+        .. code-block::
+
+            from google.cloud import dataflow_v1beta3
+
+            def sample_list_jobs():
+                # Create a client
+                client = dataflow_v1beta3.JobsV1Beta3Client()
+
+                # Initialize request argument(s)
+                request = dataflow_v1beta3.ListJobsRequest(
+                )
+
+                # Make the request
+                page_result = client.list_jobs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.dataflow_v1beta3.types.ListJobsRequest, dict]):
@@ -615,6 +696,26 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListJobsPager:
         r"""List the jobs of a project across all regions.
+
+
+        .. code-block::
+
+            from google.cloud import dataflow_v1beta3
+
+            def sample_aggregated_list_jobs():
+                # Create a client
+                client = dataflow_v1beta3.JobsV1Beta3Client()
+
+                # Initialize request argument(s)
+                request = dataflow_v1beta3.ListJobsRequest(
+                )
+
+                # Make the request
+                page_result = client.aggregated_list_jobs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.dataflow_v1beta3.types.ListJobsRequest, dict]):
@@ -676,6 +777,26 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
         r"""Check for existence of active jobs in the given
         project across all regions.
 
+
+
+        .. code-block::
+
+            from google.cloud import dataflow_v1beta3
+
+            def sample_check_active_jobs():
+                # Create a client
+                client = dataflow_v1beta3.JobsV1Beta3Client()
+
+                # Initialize request argument(s)
+                request = dataflow_v1beta3.CheckActiveJobsRequest(
+                )
+
+                # Make the request
+                response = client.check_active_jobs(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataflow_v1beta3.types.CheckActiveJobsRequest, dict]):
                 The request object. Request to check is active jobs
@@ -717,6 +838,25 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> snapshots.Snapshot:
         r"""Snapshot the state of a streaming job.
+
+
+        .. code-block::
+
+            from google.cloud import dataflow_v1beta3
+
+            def sample_snapshot_job():
+                # Create a client
+                client = dataflow_v1beta3.JobsV1Beta3Client()
+
+                # Initialize request argument(s)
+                request = dataflow_v1beta3.SnapshotJobRequest(
+                )
+
+                # Make the request
+                response = client.snapshot_job(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dataflow_v1beta3.types.SnapshotJobRequest, dict]):
