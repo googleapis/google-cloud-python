@@ -433,6 +433,27 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         returns only the services enabled on the consumer. The
         ``consumer_id`` must have the format of "project:{PROJECT-ID}".
 
+
+
+        .. code-block::
+
+            from google.cloud import servicemanagement_v1
+
+            def sample_list_services():
+                # Create a client
+                client = servicemanagement_v1.ServiceManagerClient()
+
+                # Initialize request argument(s)
+                request = servicemanagement_v1.ListServicesRequest(
+                )
+
+                # Make the request
+                page_result = client.list_services(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.servicemanagement_v1.types.ListServicesRequest, dict]):
                 The request object. Request message for `ListServices`
@@ -520,6 +541,27 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         r"""Gets a managed service. Authentication is required
         unless the service is public.
 
+
+
+        .. code-block::
+
+            from google.cloud import servicemanagement_v1
+
+            def sample_get_service():
+                # Create a client
+                client = servicemanagement_v1.ServiceManagerClient()
+
+                # Initialize request argument(s)
+                request = servicemanagement_v1.GetServiceRequest(
+                    service_name="service_name_value",
+                )
+
+                # Make the request
+                response = client.get_service(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.servicemanagement_v1.types.GetServiceRequest, dict]):
                 The request object. Request message for `GetService`
@@ -589,6 +631,30 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         Please note one producer project can own no more than 20
         services.
         Operation<response: ManagedService>
+
+
+
+        .. code-block::
+
+            from google.cloud import servicemanagement_v1
+
+            def sample_create_service():
+                # Create a client
+                client = servicemanagement_v1.ServiceManagerClient()
+
+                # Initialize request argument(s)
+                request = servicemanagement_v1.CreateServiceRequest(
+                )
+
+                # Make the request
+                operation = client.create_service(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.servicemanagement_v1.types.CreateServiceRequest, dict]):
@@ -671,6 +737,31 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         permanently deleted.
 
         Operation<response: google.protobuf.Empty>
+
+
+
+        .. code-block::
+
+            from google.cloud import servicemanagement_v1
+
+            def sample_delete_service():
+                # Create a client
+                client = servicemanagement_v1.ServiceManagerClient()
+
+                # Initialize request argument(s)
+                request = servicemanagement_v1.DeleteServiceRequest(
+                    service_name="service_name_value",
+                )
+
+                # Make the request
+                operation = client.delete_service(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.servicemanagement_v1.types.DeleteServiceRequest, dict]):
@@ -766,6 +857,31 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
         Operation<response: UndeleteServiceResponse>
 
+
+
+        .. code-block::
+
+            from google.cloud import servicemanagement_v1
+
+            def sample_undelete_service():
+                # Create a client
+                client = servicemanagement_v1.ServiceManagerClient()
+
+                # Initialize request argument(s)
+                request = servicemanagement_v1.UndeleteServiceRequest(
+                    service_name="service_name_value",
+                )
+
+                # Make the request
+                operation = client.undelete_service(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.servicemanagement_v1.types.UndeleteServiceRequest, dict]):
                 The request object. Request message for UndeleteService
@@ -845,6 +961,28 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         r"""Lists the history of the service configuration for a
         managed service, from the newest to the oldest.
 
+
+
+        .. code-block::
+
+            from google.cloud import servicemanagement_v1
+
+            def sample_list_service_configs():
+                # Create a client
+                client = servicemanagement_v1.ServiceManagerClient()
+
+                # Initialize request argument(s)
+                request = servicemanagement_v1.ListServiceConfigsRequest(
+                    service_name="service_name_value",
+                )
+
+                # Make the request
+                page_result = client.list_service_configs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.servicemanagement_v1.types.ListServiceConfigsRequest, dict]):
                 The request object. Request message for
@@ -923,6 +1061,28 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
     ) -> service_pb2.Service:
         r"""Gets a service configuration (version) for a managed
         service.
+
+
+
+        .. code-block::
+
+            from google.cloud import servicemanagement_v1
+
+            def sample_get_service_config():
+                # Create a client
+                client = servicemanagement_v1.ServiceManagerClient()
+
+                # Initialize request argument(s)
+                request = servicemanagement_v1.GetServiceConfigRequest(
+                    service_name="service_name_value",
+                    config_id="config_id_value",
+                )
+
+                # Make the request
+                response = client.get_service_config(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.servicemanagement_v1.types.GetServiceConfigRequest, dict]):
@@ -1038,6 +1198,27 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         referenced by existing rollouts are kept for each service. The
         rest will be deleted eventually.
 
+
+
+        .. code-block::
+
+            from google.cloud import servicemanagement_v1
+
+            def sample_create_service_config():
+                # Create a client
+                client = servicemanagement_v1.ServiceManagerClient()
+
+                # Initialize request argument(s)
+                request = servicemanagement_v1.CreateServiceConfigRequest(
+                    service_name="service_name_value",
+                )
+
+                # Make the request
+                response = client.create_service_config(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.servicemanagement_v1.types.CreateServiceConfigRequest, dict]):
                 The request object. Request message for
@@ -1145,6 +1326,31 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
         Operation<response: SubmitConfigSourceResponse>
 
+
+
+        .. code-block::
+
+            from google.cloud import servicemanagement_v1
+
+            def sample_submit_config_source():
+                # Create a client
+                client = servicemanagement_v1.ServiceManagerClient()
+
+                # Initialize request argument(s)
+                request = servicemanagement_v1.SubmitConfigSourceRequest(
+                    service_name="service_name_value",
+                )
+
+                # Make the request
+                operation = client.submit_config_source(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.servicemanagement_v1.types.SubmitConfigSourceRequest, dict]):
                 The request object. Request message for
@@ -1246,6 +1452,29 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         rollouts for a managed service, from the newest to the
         oldest.
 
+
+
+        .. code-block::
+
+            from google.cloud import servicemanagement_v1
+
+            def sample_list_service_rollouts():
+                # Create a client
+                client = servicemanagement_v1.ServiceManagerClient()
+
+                # Initialize request argument(s)
+                request = servicemanagement_v1.ListServiceRolloutsRequest(
+                    service_name="service_name_value",
+                    filter="filter_value",
+                )
+
+                # Make the request
+                page_result = client.list_service_rollouts(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.servicemanagement_v1.types.ListServiceRolloutsRequest, dict]):
                 The request object. Request message for
@@ -1339,6 +1568,28 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
     ) -> resources.Rollout:
         r"""Gets a service configuration
         [rollout][google.api.servicemanagement.v1.Rollout].
+
+
+
+        .. code-block::
+
+            from google.cloud import servicemanagement_v1
+
+            def sample_get_service_rollout():
+                # Create a client
+                client = servicemanagement_v1.ServiceManagerClient()
+
+                # Initialize request argument(s)
+                request = servicemanagement_v1.GetServiceRolloutRequest(
+                    service_name="service_name_value",
+                    rollout_id="rollout_id_value",
+                )
+
+                # Make the request
+                response = client.get_service_rollout(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.servicemanagement_v1.types.GetServiceRolloutRequest, dict]):
@@ -1436,6 +1687,31 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         will be deleted eventually.
 
         Operation<response: Rollout>
+
+
+
+        .. code-block::
+
+            from google.cloud import servicemanagement_v1
+
+            def sample_create_service_rollout():
+                # Create a client
+                client = servicemanagement_v1.ServiceManagerClient()
+
+                # Initialize request argument(s)
+                request = servicemanagement_v1.CreateServiceRolloutRequest(
+                    service_name="service_name_value",
+                )
+
+                # Make the request
+                operation = client.create_service_rollout(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.servicemanagement_v1.types.CreateServiceRolloutRequest, dict]):
@@ -1537,6 +1813,26 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         method will compare GenerateConfigReportRequest.new_value with
         the last pushed service configuration.
 
+
+
+        .. code-block::
+
+            from google.cloud import servicemanagement_v1
+
+            def sample_generate_config_report():
+                # Create a client
+                client = servicemanagement_v1.ServiceManagerClient()
+
+                # Initialize request argument(s)
+                request = servicemanagement_v1.GenerateConfigReportRequest(
+                )
+
+                # Make the request
+                response = client.generate_config_report(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.servicemanagement_v1.types.GenerateConfigReportRequest, dict]):
                 The request object. Request message for
@@ -1625,6 +1921,32 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         information.
 
         Operation<response: EnableServiceResponse>
+
+
+
+        .. code-block::
+
+            from google.cloud import servicemanagement_v1
+
+            def sample_enable_service():
+                # Create a client
+                client = servicemanagement_v1.ServiceManagerClient()
+
+                # Initialize request argument(s)
+                request = servicemanagement_v1.EnableServiceRequest(
+                    service_name="service_name_value",
+                    consumer_id="consumer_id_value",
+                )
+
+                # Make the request
+                operation = client.enable_service(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.servicemanagement_v1.types.EnableServiceRequest, dict]):
@@ -1730,6 +2052,32 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         charges or security leaks.
 
         Operation<response: DisableServiceResponse>
+
+
+
+        .. code-block::
+
+            from google.cloud import servicemanagement_v1
+
+            def sample_disable_service():
+                # Create a client
+                client = servicemanagement_v1.ServiceManagerClient()
+
+                # Initialize request argument(s)
+                request = servicemanagement_v1.DisableServiceRequest(
+                    service_name="service_name_value",
+                    consumer_id="consumer_id_value",
+                )
+
+                # Make the request
+                operation = client.disable_service(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.servicemanagement_v1.types.DisableServiceRequest, dict]):
