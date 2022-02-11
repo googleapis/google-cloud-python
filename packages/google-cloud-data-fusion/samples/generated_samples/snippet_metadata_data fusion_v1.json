@@ -1,0 +1,627 @@
+{
+  "snippets": [
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "DataFusion"
+          },
+          "shortName": "CreateInstance"
+        }
+      },
+      "file": "datafusion_generated_data_fusion_v1_data_fusion_create_instance_async.py",
+      "regionTag": "datafusion_generated_data_fusion_v1_DataFusion_CreateInstance_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "start": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "DataFusion"
+          },
+          "shortName": "CreateInstance"
+        }
+      },
+      "file": "datafusion_generated_data_fusion_v1_data_fusion_create_instance_sync.py",
+      "regionTag": "datafusion_generated_data_fusion_v1_DataFusion_CreateInstance_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "start": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "DataFusion"
+          },
+          "shortName": "DeleteInstance"
+        }
+      },
+      "file": "datafusion_generated_data_fusion_v1_data_fusion_delete_instance_async.py",
+      "regionTag": "datafusion_generated_data_fusion_v1_DataFusion_DeleteInstance_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "DataFusion"
+          },
+          "shortName": "DeleteInstance"
+        }
+      },
+      "file": "datafusion_generated_data_fusion_v1_data_fusion_delete_instance_sync.py",
+      "regionTag": "datafusion_generated_data_fusion_v1_DataFusion_DeleteInstance_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "DataFusion"
+          },
+          "shortName": "GetInstance"
+        }
+      },
+      "file": "datafusion_generated_data_fusion_v1_data_fusion_get_instance_async.py",
+      "regionTag": "datafusion_generated_data_fusion_v1_DataFusion_GetInstance_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "DataFusion"
+          },
+          "shortName": "GetInstance"
+        }
+      },
+      "file": "datafusion_generated_data_fusion_v1_data_fusion_get_instance_sync.py",
+      "regionTag": "datafusion_generated_data_fusion_v1_DataFusion_GetInstance_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "DataFusion"
+          },
+          "shortName": "ListAvailableVersions"
+        }
+      },
+      "file": "datafusion_generated_data_fusion_v1_data_fusion_list_available_versions_async.py",
+      "regionTag": "datafusion_generated_data_fusion_v1_DataFusion_ListAvailableVersions_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "DataFusion"
+          },
+          "shortName": "ListAvailableVersions"
+        }
+      },
+      "file": "datafusion_generated_data_fusion_v1_data_fusion_list_available_versions_sync.py",
+      "regionTag": "datafusion_generated_data_fusion_v1_DataFusion_ListAvailableVersions_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "DataFusion"
+          },
+          "shortName": "ListInstances"
+        }
+      },
+      "file": "datafusion_generated_data_fusion_v1_data_fusion_list_instances_async.py",
+      "regionTag": "datafusion_generated_data_fusion_v1_DataFusion_ListInstances_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "DataFusion"
+          },
+          "shortName": "ListInstances"
+        }
+      },
+      "file": "datafusion_generated_data_fusion_v1_data_fusion_list_instances_sync.py",
+      "regionTag": "datafusion_generated_data_fusion_v1_DataFusion_ListInstances_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "DataFusion"
+          },
+          "shortName": "RestartInstance"
+        }
+      },
+      "file": "datafusion_generated_data_fusion_v1_data_fusion_restart_instance_async.py",
+      "regionTag": "datafusion_generated_data_fusion_v1_DataFusion_RestartInstance_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "DataFusion"
+          },
+          "shortName": "RestartInstance"
+        }
+      },
+      "file": "datafusion_generated_data_fusion_v1_data_fusion_restart_instance_sync.py",
+      "regionTag": "datafusion_generated_data_fusion_v1_DataFusion_RestartInstance_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "DataFusion"
+          },
+          "shortName": "UpdateInstance"
+        }
+      },
+      "file": "datafusion_generated_data_fusion_v1_data_fusion_update_instance_async.py",
+      "regionTag": "datafusion_generated_data_fusion_v1_DataFusion_UpdateInstance_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "DataFusion"
+          },
+          "shortName": "UpdateInstance"
+        }
+      },
+      "file": "datafusion_generated_data_fusion_v1_data_fusion_update_instance_sync.py",
+      "regionTag": "datafusion_generated_data_fusion_v1_DataFusion_UpdateInstance_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    }
+  ]
+}

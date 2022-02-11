@@ -218,6 +218,27 @@ class DataFusionAsyncClient:
         r"""Lists possible versions for Data Fusion instances in
         the specified project and location.
 
+
+        .. code-block::
+
+            from google.cloud import data_fusion_v1
+
+            def sample_list_available_versions():
+                # Create a client
+                client = data_fusion_v1.DataFusionClient()
+
+                # Initialize request argument(s)
+                request = data_fusion_v1.ListAvailableVersionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_available_versions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.data_fusion_v1.types.ListAvailableVersionsRequest, dict]):
                 The request object. Request message for the list
@@ -300,6 +321,27 @@ class DataFusionAsyncClient:
         r"""Lists Data Fusion instances in the specified project
         and location.
 
+
+        .. code-block::
+
+            from google.cloud import data_fusion_v1
+
+            def sample_list_instances():
+                # Create a client
+                client = data_fusion_v1.DataFusionClient()
+
+                # Initialize request argument(s)
+                request = data_fusion_v1.ListInstancesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_instances(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.data_fusion_v1.types.ListInstancesRequest, dict]):
                 The request object. Request message for listing Data
@@ -358,6 +400,25 @@ class DataFusionAsyncClient:
     ) -> datafusion.Instance:
         r"""Gets details of a single Data Fusion instance.
 
+        .. code-block::
+
+            from google.cloud import data_fusion_v1
+
+            def sample_get_instance():
+                # Create a client
+                client = data_fusion_v1.DataFusionClient()
+
+                # Initialize request argument(s)
+                request = data_fusion_v1.GetInstanceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_instance(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.data_fusion_v1.types.GetInstanceRequest, dict]):
                 The request object. Request message for getting details
@@ -408,6 +469,31 @@ class DataFusionAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Data Fusion instance in the specified
         project and location.
+
+
+        .. code-block::
+
+            from google.cloud import data_fusion_v1
+
+            def sample_create_instance():
+                # Create a client
+                client = data_fusion_v1.DataFusionClient()
+
+                # Initialize request argument(s)
+                request = data_fusion_v1.CreateInstanceRequest(
+                    parent="parent_value",
+                    instance_id="instance_id_value",
+                )
+
+                # Make the request
+                operation = client.create_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.data_fusion_v1.types.CreateInstanceRequest, dict]):
@@ -508,6 +594,29 @@ class DataFusionAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Date Fusion instance.
 
+        .. code-block::
+
+            from google.cloud import data_fusion_v1
+
+            def sample_delete_instance():
+                # Create a client
+                client = data_fusion_v1.DataFusionClient()
+
+                # Initialize request argument(s)
+                request = data_fusion_v1.DeleteInstanceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.data_fusion_v1.types.DeleteInstanceRequest, dict]):
                 The request object. Request message for deleting a Data
@@ -601,6 +710,32 @@ class DataFusionAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates a single Data Fusion instance.
+
+        .. code-block::
+
+            from google.cloud import data_fusion_v1
+
+            def sample_update_instance():
+                # Create a client
+                client = data_fusion_v1.DataFusionClient()
+
+                # Initialize request argument(s)
+                instance = data_fusion_v1.Instance()
+                instance.type_ = "DEVELOPER"
+
+                request = data_fusion_v1.UpdateInstanceRequest(
+                    instance=instance,
+                )
+
+                # Make the request
+                operation = client.update_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.data_fusion_v1.types.UpdateInstanceRequest, dict]):
@@ -705,6 +840,30 @@ class DataFusionAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Restart a single Data Fusion instance.
         At the end of an operation instance is fully restarted.
+
+
+        .. code-block::
+
+            from google.cloud import data_fusion_v1
+
+            def sample_restart_instance():
+                # Create a client
+                client = data_fusion_v1.DataFusionClient()
+
+                # Initialize request argument(s)
+                request = data_fusion_v1.RestartInstanceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.restart_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.data_fusion_v1.types.RestartInstanceRequest, dict]):
