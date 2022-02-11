@@ -36,7 +36,7 @@ async def sample_delete_authorized_certificate():
     )
 
     # Make the request
-    response = await client.delete_authorized_certificate(request=request)
+    await client.delete_authorized_certificate(request=request)
 
 
 # [END appengine_generated_appengine_admin_v1_AuthorizedCertificates_DeleteAuthorizedCertificate_async]

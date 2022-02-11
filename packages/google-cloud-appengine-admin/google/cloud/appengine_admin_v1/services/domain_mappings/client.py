@@ -413,6 +413,8 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
 
                 # Make the request
                 page_result = client.list_domain_mappings(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -490,7 +492,7 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
                 # Make the request
                 response = client.get_domain_mapping(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -566,6 +568,8 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -653,6 +657,8 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -738,6 +744,8 @@ class DomainMappingsClient(metaclass=DomainMappingsClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:

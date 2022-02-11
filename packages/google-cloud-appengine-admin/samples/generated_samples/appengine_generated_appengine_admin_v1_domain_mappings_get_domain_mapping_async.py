@@ -38,7 +38,7 @@ async def sample_get_domain_mapping():
     # Make the request
     response = await client.get_domain_mapping(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END appengine_generated_appengine_admin_v1_DomainMappings_GetDomainMapping_async]

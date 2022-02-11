@@ -415,6 +415,8 @@ class VersionsClient(metaclass=VersionsClientMeta):
 
                 # Make the request
                 page_result = client.list_versions(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -495,7 +497,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
                 # Make the request
                 response = client.get_version(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -568,6 +570,8 @@ class VersionsClient(metaclass=VersionsClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -685,6 +689,8 @@ class VersionsClient(metaclass=VersionsClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -766,6 +772,8 @@ class VersionsClient(metaclass=VersionsClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:

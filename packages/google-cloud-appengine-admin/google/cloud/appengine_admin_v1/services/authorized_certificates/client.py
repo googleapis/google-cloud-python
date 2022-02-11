@@ -417,6 +417,8 @@ class AuthorizedCertificatesClient(metaclass=AuthorizedCertificatesClientMeta):
 
                 # Make the request
                 page_result = client.list_authorized_certificates(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -497,7 +499,7 @@ class AuthorizedCertificatesClient(metaclass=AuthorizedCertificatesClientMeta):
                 # Make the request
                 response = client.get_authorized_certificate(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -571,7 +573,7 @@ class AuthorizedCertificatesClient(metaclass=AuthorizedCertificatesClientMeta):
                 # Make the request
                 response = client.create_authorized_certificate(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -651,7 +653,7 @@ class AuthorizedCertificatesClient(metaclass=AuthorizedCertificatesClientMeta):
                 # Make the request
                 response = client.update_authorized_certificate(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -723,7 +725,7 @@ class AuthorizedCertificatesClient(metaclass=AuthorizedCertificatesClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_authorized_certificate(request=request)
+                client.delete_authorized_certificate(request=request)
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.DeleteAuthorizedCertificateRequest, dict]):

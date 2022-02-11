@@ -411,7 +411,7 @@ class ApplicationsClient(metaclass=ApplicationsClientMeta):
                 # Make the request
                 response = client.get_application(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -495,6 +495,8 @@ class ApplicationsClient(metaclass=ApplicationsClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -577,6 +579,8 @@ class ApplicationsClient(metaclass=ApplicationsClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -669,6 +673,8 @@ class ApplicationsClient(metaclass=ApplicationsClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:

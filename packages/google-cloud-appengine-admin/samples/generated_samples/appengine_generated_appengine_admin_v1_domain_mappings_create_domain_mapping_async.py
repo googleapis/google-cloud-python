@@ -41,6 +41,8 @@ async def sample_create_domain_mapping():
     print("Waiting for operation to complete...")
 
     response = await operation.result()
+
+    # Handle the response
     print(response)
 
 # [END appengine_generated_appengine_admin_v1_DomainMappings_CreateDomainMapping_async]

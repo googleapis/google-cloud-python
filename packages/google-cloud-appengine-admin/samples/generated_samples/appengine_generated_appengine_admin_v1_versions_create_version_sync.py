@@ -41,6 +41,8 @@ def sample_create_version():
     print("Waiting for operation to complete...")
 
     response = operation.result()
+
+    # Handle the response
     print(response)
 
 # [END appengine_generated_appengine_admin_v1_Versions_CreateVersion_sync]

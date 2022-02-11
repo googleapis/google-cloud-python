@@ -225,6 +225,8 @@ class VersionsAsyncClient:
 
                 # Make the request
                 page_result = client.list_versions(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -303,7 +305,7 @@ class VersionsAsyncClient:
                 # Make the request
                 response = client.get_version(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -374,6 +376,8 @@ class VersionsAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -489,6 +493,8 @@ class VersionsAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -568,6 +574,8 @@ class VersionsAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:

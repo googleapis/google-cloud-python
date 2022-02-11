@@ -412,6 +412,8 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
                 # Make the request
                 page_result = client.list_services(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -491,7 +493,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
                 # Make the request
                 response = client.get_service(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -573,6 +575,8 @@ class ServicesClient(metaclass=ServicesClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -663,6 +667,8 @@ class ServicesClient(metaclass=ServicesClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:

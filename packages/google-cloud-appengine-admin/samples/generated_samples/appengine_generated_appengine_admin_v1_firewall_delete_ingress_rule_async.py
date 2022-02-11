@@ -36,7 +36,7 @@ async def sample_delete_ingress_rule():
     )
 
     # Make the request
-    response = await client.delete_ingress_rule(request=request)
+    await client.delete_ingress_rule(request=request)
 
 
 # [END appengine_generated_appengine_admin_v1_Firewall_DeleteIngressRule_async]

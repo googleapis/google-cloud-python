@@ -38,7 +38,7 @@ async def sample_get_version():
     # Make the request
     response = await client.get_version(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END appengine_generated_appengine_admin_v1_Versions_GetVersion_async]

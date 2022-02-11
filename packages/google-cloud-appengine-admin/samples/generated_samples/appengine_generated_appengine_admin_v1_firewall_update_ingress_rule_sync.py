@@ -38,7 +38,7 @@ def sample_update_ingress_rule():
     # Make the request
     response = client.update_ingress_rule(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END appengine_generated_appengine_admin_v1_Firewall_UpdateIngressRule_sync]

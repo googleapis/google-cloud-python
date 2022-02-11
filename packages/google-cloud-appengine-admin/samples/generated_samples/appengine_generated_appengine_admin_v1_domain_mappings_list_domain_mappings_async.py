@@ -37,6 +37,8 @@ async def sample_list_domain_mappings():
 
     # Make the request
     page_result = client.list_domain_mappings(request=request)
+
+    # Handle the response
     async for response in page_result:
         print(response)
 

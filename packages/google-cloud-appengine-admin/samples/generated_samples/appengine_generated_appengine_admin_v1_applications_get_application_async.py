@@ -38,7 +38,7 @@ async def sample_get_application():
     # Make the request
     response = await client.get_application(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END appengine_generated_appengine_admin_v1_Applications_GetApplication_async]

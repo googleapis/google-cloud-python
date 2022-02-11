@@ -222,6 +222,8 @@ class ServicesAsyncClient:
 
                 # Make the request
                 page_result = client.list_services(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -299,7 +301,7 @@ class ServicesAsyncClient:
                 # Make the request
                 response = client.get_service(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -379,6 +381,8 @@ class ServicesAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -467,6 +471,8 @@ class ServicesAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:

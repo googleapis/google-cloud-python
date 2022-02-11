@@ -41,6 +41,8 @@ async def sample_update_application():
     print("Waiting for operation to complete...")
 
     response = await operation.result()
+
+    # Handle the response
     print(response)
 
 # [END appengine_generated_appengine_admin_v1_Applications_UpdateApplication_async]

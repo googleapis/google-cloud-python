@@ -38,7 +38,7 @@ def sample_get_instance():
     # Make the request
     response = client.get_instance(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END appengine_generated_appengine_admin_v1_Instances_GetInstance_sync]

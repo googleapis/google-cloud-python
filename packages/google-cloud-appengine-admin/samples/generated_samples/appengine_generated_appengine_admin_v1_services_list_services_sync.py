@@ -37,6 +37,8 @@ def sample_list_services():
 
     # Make the request
     page_result = client.list_services(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

@@ -416,6 +416,8 @@ class AuthorizedDomainsClient(metaclass=AuthorizedDomainsClientMeta):
 
                 # Make the request
                 page_result = client.list_authorized_domains(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 

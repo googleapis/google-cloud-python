@@ -37,6 +37,8 @@ def sample_list_versions():
 
     # Make the request
     page_result = client.list_versions(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

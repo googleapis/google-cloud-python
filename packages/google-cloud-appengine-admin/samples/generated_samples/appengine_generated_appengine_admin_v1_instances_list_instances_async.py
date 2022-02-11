@@ -37,6 +37,8 @@ async def sample_list_instances():
 
     # Make the request
     page_result = client.list_instances(request=request)
+
+    # Handle the response
     async for response in page_result:
         print(response)
 

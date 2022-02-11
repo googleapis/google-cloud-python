@@ -38,7 +38,7 @@ def sample_create_authorized_certificate():
     # Make the request
     response = client.create_authorized_certificate(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END appengine_generated_appengine_admin_v1_AuthorizedCertificates_CreateAuthorizedCertificate_sync]

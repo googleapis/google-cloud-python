@@ -228,6 +228,8 @@ class FirewallAsyncClient:
 
                 # Make the request
                 page_result = client.list_ingress_rules(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -310,7 +312,7 @@ class FirewallAsyncClient:
                 # Make the request
                 response = client.batch_update_ingress_rules(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -375,7 +377,7 @@ class FirewallAsyncClient:
                 # Make the request
                 response = client.create_ingress_rule(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -444,7 +446,7 @@ class FirewallAsyncClient:
                 # Make the request
                 response = client.get_ingress_rule(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -513,7 +515,7 @@ class FirewallAsyncClient:
                 # Make the request
                 response = client.update_ingress_rule(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -580,7 +582,7 @@ class FirewallAsyncClient:
                 )
 
                 # Make the request
-                response = client.delete_ingress_rule(request=request)
+                client.delete_ingress_rule(request=request)
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.DeleteIngressRuleRequest, dict]):

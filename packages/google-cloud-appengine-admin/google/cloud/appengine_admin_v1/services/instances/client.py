@@ -433,6 +433,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
                 # Make the request
                 page_result = client.list_instances(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -510,7 +512,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 # Make the request
                 response = client.get_instance(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -598,6 +600,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -700,6 +704,8 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:

@@ -38,7 +38,7 @@ def sample_get_service():
     # Make the request
     response = client.get_service(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END appengine_generated_appengine_admin_v1_Services_GetService_sync]

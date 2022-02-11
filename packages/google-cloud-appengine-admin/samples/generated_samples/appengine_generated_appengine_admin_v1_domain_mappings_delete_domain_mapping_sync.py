@@ -41,6 +41,8 @@ def sample_delete_domain_mapping():
     print("Waiting for operation to complete...")
 
     response = operation.result()
+
+    # Handle the response
     print(response)
 
 # [END appengine_generated_appengine_admin_v1_DomainMappings_DeleteDomainMapping_sync]

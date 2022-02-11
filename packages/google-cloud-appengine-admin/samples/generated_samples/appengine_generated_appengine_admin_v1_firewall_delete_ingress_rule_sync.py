@@ -36,7 +36,7 @@ def sample_delete_ingress_rule():
     )
 
     # Make the request
-    response = client.delete_ingress_rule(request=request)
+    client.delete_ingress_rule(request=request)
 
 
 # [END appengine_generated_appengine_admin_v1_Firewall_DeleteIngressRule_sync]

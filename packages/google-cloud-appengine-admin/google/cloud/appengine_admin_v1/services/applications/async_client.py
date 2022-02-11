@@ -225,7 +225,7 @@ class ApplicationsAsyncClient:
                 # Make the request
                 response = client.get_application(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -307,6 +307,8 @@ class ApplicationsAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -387,6 +389,8 @@ class ApplicationsAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -477,6 +481,8 @@ class ApplicationsAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:

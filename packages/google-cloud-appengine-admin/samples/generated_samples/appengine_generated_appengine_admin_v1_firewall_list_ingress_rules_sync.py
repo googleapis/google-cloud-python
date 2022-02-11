@@ -37,6 +37,8 @@ def sample_list_ingress_rules():
 
     # Make the request
     page_result = client.list_ingress_rules(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 
