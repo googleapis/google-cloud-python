@@ -457,7 +457,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
                 # Make the request
                 response = client.get_table(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -543,6 +543,8 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
 
                 # Make the request
                 page_result = client.list_tables(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -619,7 +621,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
                 # Make the request
                 response = client.get_workspace(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -706,6 +708,8 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
 
                 # Make the request
                 page_result = client.list_workspaces(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -782,7 +786,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
                 # Make the request
                 response = client.get_row(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -873,6 +877,8 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
 
                 # Make the request
                 page_result = client.list_rows(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -974,7 +980,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
                 # Make the request
                 response = client.create_row(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1074,7 +1080,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
                 # Make the request
                 response = client.batch_create_rows(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1145,7 +1151,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
                 # Make the request
                 response = client.update_row(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1238,7 +1244,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
                 # Make the request
                 response = client.batch_update_rows(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1307,7 +1313,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_row(request=request)
+                client.delete_row(request=request)
 
         Args:
             request (Union[google.area120.tables_v1alpha1.types.DeleteRowRequest, dict]):
@@ -1389,7 +1395,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
                 )
 
                 # Make the request
-                response = client.batch_delete_rows(request=request)
+                client.batch_delete_rows(request=request)
 
         Args:
             request (Union[google.area120.tables_v1alpha1.types.BatchDeleteRowsRequest, dict]):

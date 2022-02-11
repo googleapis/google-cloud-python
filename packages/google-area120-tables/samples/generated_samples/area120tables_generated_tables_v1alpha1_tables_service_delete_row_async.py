@@ -37,7 +37,7 @@ async def sample_delete_row():
     )
 
     # Make the request
-    response = await client.delete_row(request=request)
+    await client.delete_row(request=request)
 
 
 # [END area120tables_generated_tables_v1alpha1_TablesService_DeleteRow_async]

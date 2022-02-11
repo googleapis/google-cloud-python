@@ -38,7 +38,7 @@ async def sample_batch_delete_rows():
     )
 
     # Make the request
-    response = await client.batch_delete_rows(request=request)
+    await client.batch_delete_rows(request=request)
 
 
 # [END area120tables_generated_tables_v1alpha1_TablesService_BatchDeleteRows_async]

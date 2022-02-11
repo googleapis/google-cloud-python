@@ -39,7 +39,7 @@ async def sample_batch_update_rows():
     # Make the request
     response = await client.batch_update_rows(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END area120tables_generated_tables_v1alpha1_TablesService_BatchUpdateRows_async]

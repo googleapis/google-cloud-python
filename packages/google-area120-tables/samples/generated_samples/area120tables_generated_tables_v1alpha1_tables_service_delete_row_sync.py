@@ -37,7 +37,7 @@ def sample_delete_row():
     )
 
     # Make the request
-    response = client.delete_row(request=request)
+    client.delete_row(request=request)
 
 
 # [END area120tables_generated_tables_v1alpha1_TablesService_DeleteRow_sync]

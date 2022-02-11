@@ -37,6 +37,8 @@ def sample_list_tables():
 
     # Make the request
     page_result = client.list_tables(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

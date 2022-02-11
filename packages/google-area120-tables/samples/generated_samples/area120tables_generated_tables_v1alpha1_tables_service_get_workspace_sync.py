@@ -39,7 +39,7 @@ def sample_get_workspace():
     # Make the request
     response = client.get_workspace(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END area120tables_generated_tables_v1alpha1_TablesService_GetWorkspace_sync]

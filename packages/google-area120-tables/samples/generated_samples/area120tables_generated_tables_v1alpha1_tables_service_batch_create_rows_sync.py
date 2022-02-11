@@ -43,7 +43,7 @@ def sample_batch_create_rows():
     # Make the request
     response = client.batch_create_rows(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END area120tables_generated_tables_v1alpha1_TablesService_BatchCreateRows_sync]

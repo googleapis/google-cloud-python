@@ -38,6 +38,8 @@ def sample_list_rows():
 
     # Make the request
     page_result = client.list_rows(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

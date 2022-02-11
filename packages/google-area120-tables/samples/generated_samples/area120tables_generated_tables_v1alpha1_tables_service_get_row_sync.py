@@ -39,7 +39,7 @@ def sample_get_row():
     # Make the request
     response = client.get_row(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END area120tables_generated_tables_v1alpha1_TablesService_GetRow_sync]

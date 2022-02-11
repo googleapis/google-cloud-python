@@ -38,7 +38,7 @@ async def sample_update_row():
     # Make the request
     response = await client.update_row(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END area120tables_generated_tables_v1alpha1_TablesService_UpdateRow_async]
