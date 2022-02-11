@@ -449,6 +449,27 @@ class TpuClient(metaclass=TpuClientMeta):
     ) -> pagers.ListNodesPager:
         r"""Lists nodes.
 
+
+        .. code-block::
+
+            from google.cloud import tpu_v1
+
+            def sample_list_nodes():
+                # Create a client
+                client = tpu_v1.TpuClient()
+
+                # Initialize request argument(s)
+                request = tpu_v1.ListNodesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_nodes(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.tpu_v1.types.ListNodesRequest, dict]):
                 The request object. Request for
@@ -527,6 +548,26 @@ class TpuClient(metaclass=TpuClientMeta):
     ) -> cloud_tpu.Node:
         r"""Gets the details of a node.
 
+
+        .. code-block::
+
+            from google.cloud import tpu_v1
+
+            def sample_get_node():
+                # Create a client
+                client = tpu_v1.TpuClient()
+
+                # Initialize request argument(s)
+                request = tpu_v1.GetNodeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_node(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.tpu_v1.types.GetNodeRequest, dict]):
                 The request object. Request for
@@ -595,6 +636,35 @@ class TpuClient(metaclass=TpuClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a node.
+
+
+        .. code-block::
+
+            from google.cloud import tpu_v1
+
+            def sample_create_node():
+                # Create a client
+                client = tpu_v1.TpuClient()
+
+                # Initialize request argument(s)
+                node = tpu_v1.Node()
+                node.accelerator_type = "accelerator_type_value"
+                node.tensorflow_version = "tensorflow_version_value"
+
+                request = tpu_v1.CreateNodeRequest(
+                    parent="parent_value",
+                    node=node,
+                )
+
+                # Make the request
+                operation = client.create_node(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.tpu_v1.types.CreateNodeRequest, dict]):
@@ -689,6 +759,30 @@ class TpuClient(metaclass=TpuClientMeta):
     ) -> operation.Operation:
         r"""Deletes a node.
 
+
+        .. code-block::
+
+            from google.cloud import tpu_v1
+
+            def sample_delete_node():
+                # Create a client
+                client = tpu_v1.TpuClient()
+
+                # Initialize request argument(s)
+                request = tpu_v1.DeleteNodeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_node(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.tpu_v1.types.DeleteNodeRequest, dict]):
                 The request object. Request for
@@ -767,6 +861,29 @@ class TpuClient(metaclass=TpuClientMeta):
     ) -> operation.Operation:
         r"""Reimages a node's OS.
 
+
+        .. code-block::
+
+            from google.cloud import tpu_v1
+
+            def sample_reimage_node():
+                # Create a client
+                client = tpu_v1.TpuClient()
+
+                # Initialize request argument(s)
+                request = tpu_v1.ReimageNodeRequest(
+                )
+
+                # Make the request
+                operation = client.reimage_node(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.tpu_v1.types.ReimageNodeRequest, dict]):
                 The request object. Request for
@@ -826,6 +943,29 @@ class TpuClient(metaclass=TpuClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Stops a node.
+
+
+        .. code-block::
+
+            from google.cloud import tpu_v1
+
+            def sample_stop_node():
+                # Create a client
+                client = tpu_v1.TpuClient()
+
+                # Initialize request argument(s)
+                request = tpu_v1.StopNodeRequest(
+                )
+
+                # Make the request
+                operation = client.stop_node(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.tpu_v1.types.StopNodeRequest, dict]):
@@ -887,6 +1027,29 @@ class TpuClient(metaclass=TpuClientMeta):
     ) -> operation.Operation:
         r"""Starts a node.
 
+
+        .. code-block::
+
+            from google.cloud import tpu_v1
+
+            def sample_start_node():
+                # Create a client
+                client = tpu_v1.TpuClient()
+
+                # Initialize request argument(s)
+                request = tpu_v1.StartNodeRequest(
+                )
+
+                # Make the request
+                operation = client.start_node(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.tpu_v1.types.StartNodeRequest, dict]):
                 The request object. Request for
@@ -947,6 +1110,27 @@ class TpuClient(metaclass=TpuClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTensorFlowVersionsPager:
         r"""List TensorFlow versions supported by this API.
+
+
+        .. code-block::
+
+            from google.cloud import tpu_v1
+
+            def sample_list_tensor_flow_versions():
+                # Create a client
+                client = tpu_v1.TpuClient()
+
+                # Initialize request argument(s)
+                request = tpu_v1.ListTensorFlowVersionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_tensor_flow_versions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.tpu_v1.types.ListTensorFlowVersionsRequest, dict]):
@@ -1028,6 +1212,26 @@ class TpuClient(metaclass=TpuClientMeta):
     ) -> cloud_tpu.TensorFlowVersion:
         r"""Gets TensorFlow Version.
 
+
+        .. code-block::
+
+            from google.cloud import tpu_v1
+
+            def sample_get_tensor_flow_version():
+                # Create a client
+                client = tpu_v1.TpuClient()
+
+                # Initialize request argument(s)
+                request = tpu_v1.GetTensorFlowVersionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_tensor_flow_version(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.tpu_v1.types.GetTensorFlowVersionRequest, dict]):
                 The request object. Request for
@@ -1096,6 +1300,27 @@ class TpuClient(metaclass=TpuClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAcceleratorTypesPager:
         r"""Lists accelerator types supported by this API.
+
+
+        .. code-block::
+
+            from google.cloud import tpu_v1
+
+            def sample_list_accelerator_types():
+                # Create a client
+                client = tpu_v1.TpuClient()
+
+                # Initialize request argument(s)
+                request = tpu_v1.ListAcceleratorTypesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_accelerator_types(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.tpu_v1.types.ListAcceleratorTypesRequest, dict]):
@@ -1174,6 +1399,26 @@ class TpuClient(metaclass=TpuClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_tpu.AcceleratorType:
         r"""Gets AcceleratorType.
+
+
+        .. code-block::
+
+            from google.cloud import tpu_v1
+
+            def sample_get_accelerator_type():
+                # Create a client
+                client = tpu_v1.TpuClient()
+
+                # Initialize request argument(s)
+                request = tpu_v1.GetAcceleratorTypeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_accelerator_type(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.tpu_v1.types.GetAcceleratorTypeRequest, dict]):
