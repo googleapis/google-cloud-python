@@ -433,6 +433,31 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         permissions, see `Cloud Identity and Access
         Management <https://cloud.google.com/iam>`__.
 
+
+
+        .. code-block::
+
+            from google.monitoring import dashboard_v1
+
+            def sample_create_dashboard():
+                # Create a client
+                client = dashboard_v1.DashboardsServiceClient()
+
+                # Initialize request argument(s)
+                dashboard = dashboard_v1.Dashboard()
+                dashboard.display_name = "display_name_value"
+
+                request = dashboard_v1.CreateDashboardRequest(
+                    parent="parent_value",
+                    dashboard=dashboard,
+                )
+
+                # Make the request
+                response = client.create_dashboard(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.monitoring_dashboard_v1.types.CreateDashboardRequest, dict]):
                 The request object. The `CreateDashboard` request.
@@ -488,6 +513,28 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         permission on the specified project. For more information, see
         `Cloud Identity and Access
         Management <https://cloud.google.com/iam>`__.
+
+
+
+        .. code-block::
+
+            from google.monitoring import dashboard_v1
+
+            def sample_list_dashboards():
+                # Create a client
+                client = dashboard_v1.DashboardsServiceClient()
+
+                # Initialize request argument(s)
+                request = dashboard_v1.ListDashboardsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_dashboards(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.monitoring_dashboard_v1.types.ListDashboardsRequest, dict]):
@@ -551,6 +598,27 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         `Cloud Identity and Access
         Management <https://cloud.google.com/iam>`__.
 
+
+
+        .. code-block::
+
+            from google.monitoring import dashboard_v1
+
+            def sample_get_dashboard():
+                # Create a client
+                client = dashboard_v1.DashboardsServiceClient()
+
+                # Initialize request argument(s)
+                request = dashboard_v1.GetDashboardRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_dashboard(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.monitoring_dashboard_v1.types.GetDashboardRequest, dict]):
                 The request object. The `GetDashboard` request.
@@ -607,6 +675,24 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         `Cloud Identity and Access
         Management <https://cloud.google.com/iam>`__.
 
+
+
+        .. code-block::
+
+            from google.monitoring import dashboard_v1
+
+            def sample_delete_dashboard():
+                # Create a client
+                client = dashboard_v1.DashboardsServiceClient()
+
+                # Initialize request argument(s)
+                request = dashboard_v1.DeleteDashboardRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_dashboard(request=request)
+
         Args:
             request (Union[google.cloud.monitoring_dashboard_v1.types.DeleteDashboardRequest, dict]):
                 The request object. The `DeleteDashboard` request.
@@ -653,6 +739,30 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
         permission on the specified dashboard. For more information, see
         `Cloud Identity and Access
         Management <https://cloud.google.com/iam>`__.
+
+
+
+        .. code-block::
+
+            from google.monitoring import dashboard_v1
+
+            def sample_update_dashboard():
+                # Create a client
+                client = dashboard_v1.DashboardsServiceClient()
+
+                # Initialize request argument(s)
+                dashboard = dashboard_v1.Dashboard()
+                dashboard.display_name = "display_name_value"
+
+                request = dashboard_v1.UpdateDashboardRequest(
+                    dashboard=dashboard,
+                )
+
+                # Make the request
+                response = client.update_dashboard(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.monitoring_dashboard_v1.types.UpdateDashboardRequest, dict]):
