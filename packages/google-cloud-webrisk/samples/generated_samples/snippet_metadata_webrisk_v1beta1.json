@@ -1,0 +1,271 @@
+{
+  "snippets": [
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "WebRiskServiceV1Beta1"
+          },
+          "shortName": "ComputeThreatListDiff"
+        }
+      },
+      "file": "webrisk_generated_webrisk_v1beta1_web_risk_service_v1_beta1_compute_threat_list_diff_async.py",
+      "regionTag": "webrisk_generated_webrisk_v1beta1_WebRiskServiceV1Beta1_ComputeThreatListDiff_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "WebRiskServiceV1Beta1"
+          },
+          "shortName": "ComputeThreatListDiff"
+        }
+      },
+      "file": "webrisk_generated_webrisk_v1beta1_web_risk_service_v1_beta1_compute_threat_list_diff_sync.py",
+      "regionTag": "webrisk_generated_webrisk_v1beta1_WebRiskServiceV1Beta1_ComputeThreatListDiff_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "WebRiskServiceV1Beta1"
+          },
+          "shortName": "SearchHashes"
+        }
+      },
+      "file": "webrisk_generated_webrisk_v1beta1_web_risk_service_v1_beta1_search_hashes_async.py",
+      "regionTag": "webrisk_generated_webrisk_v1beta1_WebRiskServiceV1Beta1_SearchHashes_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "WebRiskServiceV1Beta1"
+          },
+          "shortName": "SearchHashes"
+        }
+      },
+      "file": "webrisk_generated_webrisk_v1beta1_web_risk_service_v1_beta1_search_hashes_sync.py",
+      "regionTag": "webrisk_generated_webrisk_v1beta1_WebRiskServiceV1Beta1_SearchHashes_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "WebRiskServiceV1Beta1"
+          },
+          "shortName": "SearchUris"
+        }
+      },
+      "file": "webrisk_generated_webrisk_v1beta1_web_risk_service_v1_beta1_search_uris_async.py",
+      "regionTag": "webrisk_generated_webrisk_v1beta1_WebRiskServiceV1Beta1_SearchUris_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "WebRiskServiceV1Beta1"
+          },
+          "shortName": "SearchUris"
+        }
+      },
+      "file": "webrisk_generated_webrisk_v1beta1_web_risk_service_v1_beta1_search_uris_sync.py",
+      "regionTag": "webrisk_generated_webrisk_v1beta1_WebRiskServiceV1Beta1_SearchUris_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    }
+  ]
+}

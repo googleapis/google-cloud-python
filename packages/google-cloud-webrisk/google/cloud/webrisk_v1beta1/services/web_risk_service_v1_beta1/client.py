@@ -400,6 +400,26 @@ class WebRiskServiceV1Beta1Client(metaclass=WebRiskServiceV1Beta1ClientMeta):
     ) -> webrisk.ComputeThreatListDiffResponse:
         r"""Gets the most recent threat list diffs.
 
+
+        .. code-block::
+
+            from google.cloud import webrisk_v1beta1
+
+            def sample_compute_threat_list_diff():
+                # Create a client
+                client = webrisk_v1beta1.WebRiskServiceV1Beta1Client()
+
+                # Initialize request argument(s)
+                request = webrisk_v1beta1.ComputeThreatListDiffRequest(
+                    threat_type="UNWANTED_SOFTWARE",
+                )
+
+                # Make the request
+                response = client.compute_threat_list_diff(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.webrisk_v1beta1.types.ComputeThreatListDiffRequest, dict]):
                 The request object. Describes an API diff request.
@@ -482,6 +502,28 @@ class WebRiskServiceV1Beta1Client(metaclass=WebRiskServiceV1Beta1ClientMeta):
         r"""This method is used to check whether a URI is on a
         given threatList.
 
+
+
+        .. code-block::
+
+            from google.cloud import webrisk_v1beta1
+
+            def sample_search_uris():
+                # Create a client
+                client = webrisk_v1beta1.WebRiskServiceV1Beta1Client()
+
+                # Initialize request argument(s)
+                request = webrisk_v1beta1.SearchUrisRequest(
+                    uri="uri_value",
+                    threat_types="UNWANTED_SOFTWARE",
+                )
+
+                # Make the request
+                response = client.search_uris(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.webrisk_v1beta1.types.SearchUrisRequest, dict]):
                 The request object. Request to check URI entries against
@@ -559,6 +601,27 @@ class WebRiskServiceV1Beta1Client(metaclass=WebRiskServiceV1Beta1ClientMeta):
         threatList only holds partial hashes so the client must
         query this method to determine if there is a full hash
         match of a threat.
+
+
+
+        .. code-block::
+
+            from google.cloud import webrisk_v1beta1
+
+            def sample_search_hashes():
+                # Create a client
+                client = webrisk_v1beta1.WebRiskServiceV1Beta1Client()
+
+                # Initialize request argument(s)
+                request = webrisk_v1beta1.SearchHashesRequest(
+                    threat_types="UNWANTED_SOFTWARE",
+                )
+
+                # Make the request
+                response = client.search_hashes(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.webrisk_v1beta1.types.SearchHashesRequest, dict]):
