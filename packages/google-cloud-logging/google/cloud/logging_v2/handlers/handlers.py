@@ -179,7 +179,7 @@ class CloudLoggingHandler(logging.StreamHandler):
             resource = detect_resource(client.project)
         self.name = name
         self.client = client
-        self.transport = transport(client, name)
+        self.transport = transport(client, name, resource=resource)
         self.project_id = client.project
         self.resource = resource
         self.labels = labels

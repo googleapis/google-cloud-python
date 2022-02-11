@@ -14,6 +14,8 @@
 
 """Module containing base class for logging transport."""
 
+from google.cloud.logging_v2.logger import _GLOBAL_RESOURCE
+
 
 class Transport(object):
     """Base class for Google Cloud Logging handler transports.
@@ -21,6 +23,17 @@ class Transport(object):
     Subclasses of :class:`Transport` must have constructors that accept a
     client and name object, and must override :meth:`send`.
     """
+
+    def __init__(self, client, name, resource=_GLOBAL_RESOURCE, **kwargs):
+        """
+        Args:
+            client (~logging_v2.client.Client):
+                The Logging client.
+            name (str): The name of the lgoger.
+            resource (Optional[Resource|dict]): The default monitored resource to associate
+                with logs when not specified
+        """
+        super().__init__()
 
     def send(self, record, message, **kwargs):
         """Transport send to be implemented by subclasses.

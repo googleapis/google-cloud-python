@@ -29,6 +29,7 @@ import time
 
 from google.cloud.logging_v2 import _helpers
 from google.cloud.logging_v2.handlers.transports.base import Transport
+from google.cloud.logging_v2.logger import _GLOBAL_RESOURCE
 
 _DEFAULT_GRACE_PERIOD = 5.0  # Seconds
 _DEFAULT_MAX_BATCH_SIZE = 10
@@ -260,6 +261,8 @@ class BackgroundThreadTransport(Transport):
         grace_period=_DEFAULT_GRACE_PERIOD,
         batch_size=_DEFAULT_MAX_BATCH_SIZE,
         max_latency=_DEFAULT_MAX_LATENCY,
+        resource=_GLOBAL_RESOURCE,
+        **kwargs,
     ):
         """
         Args:
@@ -275,9 +278,11 @@ class BackgroundThreadTransport(Transport):
                 than the grace_period. This means this is effectively the longest
                 amount of time the background thread will hold onto log entries
                 before sending them to the server.
+            resource (Optional[Resource|dict]): The default monitored resource to associate
+                with logs when not specified
         """
         self.client = client
-        logger = self.client.logger(name)
+        logger = self.client.logger(name, resource=resource)
         self.worker = _Worker(
             logger,
             grace_period=grace_period,

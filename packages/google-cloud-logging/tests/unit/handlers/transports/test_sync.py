@@ -91,8 +91,9 @@ class TestSyncHandler(unittest.TestCase):
 class _Logger(object):
     from google.cloud.logging_v2.logger import _GLOBAL_RESOURCE
 
-    def __init__(self, name):
+    def __init__(self, name, resource=_GLOBAL_RESOURCE):
         self.name = name
+        self.resource = resource
 
     def log(
         self,
@@ -119,8 +120,8 @@ class _Client(object):
     def __init__(self, project):
         self.project = project
 
-    def logger(self, name):  # pylint: disable=unused-argument
-        self._logger = _Logger(name)
+    def logger(self, name, resource=None):  # pylint: disable=unused-argument
+        self._logger = _Logger(name, resource=resource)
         return self._logger
 
 

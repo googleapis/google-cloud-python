@@ -509,11 +509,12 @@ class _RaisingBatch(_Batch):
 
 
 class _Logger(object):
-    def __init__(self, name):
+    def __init__(self, name, resource=None):
         self.name = name
         self._batch_cls = _Batch
         self._batch = None
         self._num_batches = 0
+        self.resource = resource
 
     def batch(self):
         self._batch = self._batch_cls()
@@ -530,6 +531,6 @@ class _Client(object):
         self._credentials = credentials
         self._connection = mock.Mock(credentials=credentials, spec=["credentials"])
 
-    def logger(self, name):  # pylint: disable=unused-argument
-        self._logger = _Logger(name)
+    def logger(self, name, resource=None):  # pylint: disable=unused-argument
+        self._logger = _Logger(name, resource=resource)
         return self._logger

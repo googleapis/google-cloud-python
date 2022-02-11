@@ -29,10 +29,13 @@ class TestBaseHandler(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_send_is_abstract(self):
-        target = self._make_one()
+        target = self._make_one("client", "name")
         with self.assertRaises(NotImplementedError):
             target.send(None, None, resource=None)
 
+    def test_resource_is_valid_argunent(self):
+        self._make_one("client", "name", resource="resource")
+
     def test_flush_is_abstract_and_optional(self):
-        target = self._make_one()
+        target = self._make_one("client", "name")
         target.flush()
