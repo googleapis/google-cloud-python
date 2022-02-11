@@ -412,6 +412,27 @@ class IDSClient(metaclass=IDSClientMeta):
     ) -> pagers.ListEndpointsPager:
         r"""Lists Endpoints in a given project and location.
 
+
+        .. code-block::
+
+            from google.cloud import ids_v1
+
+            def sample_list_endpoints():
+                # Create a client
+                client = ids_v1.IDSClient()
+
+                # Initialize request argument(s)
+                request = ids_v1.ListEndpointsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_endpoints(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.ids_v1.types.ListEndpointsRequest, dict]):
                 The request object.
@@ -489,6 +510,26 @@ class IDSClient(metaclass=IDSClientMeta):
     ) -> ids.Endpoint:
         r"""Gets details of a single Endpoint.
 
+
+        .. code-block::
+
+            from google.cloud import ids_v1
+
+            def sample_get_endpoint():
+                # Create a client
+                client = ids_v1.IDSClient()
+
+                # Initialize request argument(s)
+                request = ids_v1.GetEndpointRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_endpoint(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.ids_v1.types.GetEndpointRequest, dict]):
                 The request object.
@@ -563,6 +604,37 @@ class IDSClient(metaclass=IDSClientMeta):
     ) -> operation.Operation:
         r"""Creates a new Endpoint in a given project and
         location.
+
+
+
+        .. code-block::
+
+            from google.cloud import ids_v1
+
+            def sample_create_endpoint():
+                # Create a client
+                client = ids_v1.IDSClient()
+
+                # Initialize request argument(s)
+                endpoint = ids_v1.Endpoint()
+                endpoint.network = "network_value"
+                endpoint.severity = "CRITICAL"
+
+                request = ids_v1.CreateEndpointRequest(
+                    parent="parent_value",
+                    endpoint_id="endpoint_id_value",
+                    endpoint=endpoint,
+                )
+
+                # Make the request
+                operation = client.create_endpoint(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.ids_v1.types.CreateEndpointRequest, dict]):
@@ -661,6 +733,30 @@ class IDSClient(metaclass=IDSClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single Endpoint.
+
+
+        .. code-block::
+
+            from google.cloud import ids_v1
+
+            def sample_delete_endpoint():
+                # Create a client
+                client = ids_v1.IDSClient()
+
+                # Initialize request argument(s)
+                request = ids_v1.DeleteEndpointRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_endpoint(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.ids_v1.types.DeleteEndpointRequest, dict]):
