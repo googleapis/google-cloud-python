@@ -1,0 +1,360 @@
+{
+  "snippets": [
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "MetricsScopes"
+          },
+          "shortName": "CreateMonitoredProject"
+        }
+      },
+      "file": "monitoring_generated_monitoring_metrics_scope_v1_metrics_scopes_create_monitored_project_async.py",
+      "regionTag": "monitoring_generated_monitoring_metrics_scope_v1_MetricsScopes_CreateMonitoredProject_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "MetricsScopes"
+          },
+          "shortName": "CreateMonitoredProject"
+        }
+      },
+      "file": "monitoring_generated_monitoring_metrics_scope_v1_metrics_scopes_create_monitored_project_sync.py",
+      "regionTag": "monitoring_generated_monitoring_metrics_scope_v1_MetricsScopes_CreateMonitoredProject_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "MetricsScopes"
+          },
+          "shortName": "DeleteMonitoredProject"
+        }
+      },
+      "file": "monitoring_generated_monitoring_metrics_scope_v1_metrics_scopes_delete_monitored_project_async.py",
+      "regionTag": "monitoring_generated_monitoring_metrics_scope_v1_MetricsScopes_DeleteMonitoredProject_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "MetricsScopes"
+          },
+          "shortName": "DeleteMonitoredProject"
+        }
+      },
+      "file": "monitoring_generated_monitoring_metrics_scope_v1_metrics_scopes_delete_monitored_project_sync.py",
+      "regionTag": "monitoring_generated_monitoring_metrics_scope_v1_MetricsScopes_DeleteMonitoredProject_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "MetricsScopes"
+          },
+          "shortName": "GetMetricsScope"
+        }
+      },
+      "file": "monitoring_generated_monitoring_metrics_scope_v1_metrics_scopes_get_metrics_scope_async.py",
+      "regionTag": "monitoring_generated_monitoring_metrics_scope_v1_MetricsScopes_GetMetricsScope_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "MetricsScopes"
+          },
+          "shortName": "GetMetricsScope"
+        }
+      },
+      "file": "monitoring_generated_monitoring_metrics_scope_v1_metrics_scopes_get_metrics_scope_sync.py",
+      "regionTag": "monitoring_generated_monitoring_metrics_scope_v1_MetricsScopes_GetMetricsScope_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "MetricsScopes"
+          },
+          "shortName": "ListMetricsScopesByMonitoredProject"
+        }
+      },
+      "file": "monitoring_generated_monitoring_metrics_scope_v1_metrics_scopes_list_metrics_scopes_by_monitored_project_async.py",
+      "regionTag": "monitoring_generated_monitoring_metrics_scope_v1_MetricsScopes_ListMetricsScopesByMonitoredProject_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "MetricsScopes"
+          },
+          "shortName": "ListMetricsScopesByMonitoredProject"
+        }
+      },
+      "file": "monitoring_generated_monitoring_metrics_scope_v1_metrics_scopes_list_metrics_scopes_by_monitored_project_sync.py",
+      "regionTag": "monitoring_generated_monitoring_metrics_scope_v1_MetricsScopes_ListMetricsScopesByMonitoredProject_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    }
+  ]
+}

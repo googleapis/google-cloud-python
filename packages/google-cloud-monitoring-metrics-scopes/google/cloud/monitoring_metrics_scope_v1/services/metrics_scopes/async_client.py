@@ -225,6 +225,25 @@ class MetricsScopesAsyncClient:
     ) -> metrics_scope.MetricsScope:
         r"""Returns a specific ``Metrics Scope``.
 
+        .. code-block::
+
+            from google.cloud import monitoring_metrics_scope_v1
+
+            def sample_get_metrics_scope():
+                # Create a client
+                client = monitoring_metrics_scope_v1.MetricsScopesClient()
+
+                # Initialize request argument(s)
+                request = monitoring_metrics_scope_v1.GetMetricsScopeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_metrics_scope(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.monitoring_metrics_scope_v1.types.GetMetricsScopeRequest, dict]):
                 The request object. Request for the `GetMetricsScope`
@@ -304,6 +323,26 @@ class MetricsScopesAsyncClient:
         representing the specified monitored project will always be the
         first entry in the response.
 
+
+        .. code-block::
+
+            from google.cloud import monitoring_metrics_scope_v1
+
+            def sample_list_metrics_scopes_by_monitored_project():
+                # Create a client
+                client = monitoring_metrics_scope_v1.MetricsScopesClient()
+
+                # Initialize request argument(s)
+                request = monitoring_metrics_scope_v1.ListMetricsScopesByMonitoredProjectRequest(
+                    monitored_resource_container="monitored_resource_container_value",
+                )
+
+                # Make the request
+                response = client.list_metrics_scopes_by_monitored_project(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.monitoring_metrics_scope_v1.types.ListMetricsScopesByMonitoredProjectRequest, dict]):
                 The request object. Request for the
@@ -349,6 +388,30 @@ class MetricsScopesAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Adds a ``MonitoredProject`` with the given project ID to the
         specified ``Metrics Scope``.
+
+
+        .. code-block::
+
+            from google.cloud import monitoring_metrics_scope_v1
+
+            def sample_create_monitored_project():
+                # Create a client
+                client = monitoring_metrics_scope_v1.MetricsScopesClient()
+
+                # Initialize request argument(s)
+                request = monitoring_metrics_scope_v1.CreateMonitoredProjectRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.create_monitored_project(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.monitoring_metrics_scope_v1.types.CreateMonitoredProjectRequest, dict]):
@@ -447,6 +510,30 @@ class MetricsScopesAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a ``MonitoredProject`` from the specified
         ``Metrics Scope``.
+
+
+        .. code-block::
+
+            from google.cloud import monitoring_metrics_scope_v1
+
+            def sample_delete_monitored_project():
+                # Create a client
+                client = monitoring_metrics_scope_v1.MetricsScopesClient()
+
+                # Initialize request argument(s)
+                request = monitoring_metrics_scope_v1.DeleteMonitoredProjectRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_monitored_project(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.monitoring_metrics_scope_v1.types.DeleteMonitoredProjectRequest, dict]):
