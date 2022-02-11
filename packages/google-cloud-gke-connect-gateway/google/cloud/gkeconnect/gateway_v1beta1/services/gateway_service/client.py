@@ -400,6 +400,26 @@ class GatewayServiceClient(metaclass=GatewayServiceClientMeta):
         r"""GetResource performs an HTTP GET request on the
         Kubernetes API Server.
 
+
+
+        .. code-block::
+
+            from google.cloud.gkeconnect import gateway_v1beta1
+
+            def sample_get_resource():
+                # Create a client
+                client = gateway_v1beta1.GatewayServiceClient()
+
+                # Initialize request argument(s)
+                request = gateway_v1beta1.HttpBody(
+                )
+
+                # Make the request
+                response = client.get_resource(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.api.httpbody_pb2.HttpBody, dict]):
                 The request object. Message that represents an arbitrary
@@ -532,6 +552,26 @@ class GatewayServiceClient(metaclass=GatewayServiceClientMeta):
     ) -> httpbody_pb2.HttpBody:
         r"""PostResource performs an HTTP POST on the Kubernetes
         API Server.
+
+
+
+        .. code-block::
+
+            from google.cloud.gkeconnect import gateway_v1beta1
+
+            def sample_post_resource():
+                # Create a client
+                client = gateway_v1beta1.GatewayServiceClient()
+
+                # Initialize request argument(s)
+                request = gateway_v1beta1.HttpBody(
+                )
+
+                # Make the request
+                response = client.post_resource(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.api.httpbody_pb2.HttpBody, dict]):
@@ -666,6 +706,26 @@ class GatewayServiceClient(metaclass=GatewayServiceClientMeta):
         r"""DeleteResource performs an HTTP DELETE on the
         Kubernetes API Server.
 
+
+
+        .. code-block::
+
+            from google.cloud.gkeconnect import gateway_v1beta1
+
+            def sample_delete_resource():
+                # Create a client
+                client = gateway_v1beta1.GatewayServiceClient()
+
+                # Initialize request argument(s)
+                request = gateway_v1beta1.HttpBody(
+                )
+
+                # Make the request
+                response = client.delete_resource(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.api.httpbody_pb2.HttpBody, dict]):
                 The request object. Message that represents an arbitrary
@@ -799,6 +859,26 @@ class GatewayServiceClient(metaclass=GatewayServiceClientMeta):
         r"""PutResource performs an HTTP PUT on the Kubernetes
         API Server.
 
+
+
+        .. code-block::
+
+            from google.cloud.gkeconnect import gateway_v1beta1
+
+            def sample_put_resource():
+                # Create a client
+                client = gateway_v1beta1.GatewayServiceClient()
+
+                # Initialize request argument(s)
+                request = gateway_v1beta1.HttpBody(
+                )
+
+                # Make the request
+                response = client.put_resource(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.api.httpbody_pb2.HttpBody, dict]):
                 The request object. Message that represents an arbitrary
@@ -931,6 +1011,26 @@ class GatewayServiceClient(metaclass=GatewayServiceClientMeta):
     ) -> httpbody_pb2.HttpBody:
         r"""PatchResource performs an HTTP PATCH on the
         Kubernetes API Server.
+
+
+
+        .. code-block::
+
+            from google.cloud.gkeconnect import gateway_v1beta1
+
+            def sample_patch_resource():
+                # Create a client
+                client = gateway_v1beta1.GatewayServiceClient()
+
+                # Initialize request argument(s)
+                request = gateway_v1beta1.HttpBody(
+                )
+
+                # Make the request
+                response = client.patch_resource(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.api.httpbody_pb2.HttpBody, dict]):
