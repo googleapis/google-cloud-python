@@ -519,6 +519,28 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         [Customer][google.cloud.channel.v1.Customer]s, or an empty list
         if there are no customers.
 
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_list_customers():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.ListCustomersRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_customers(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.channel_v1.types.ListCustomersRequest, dict]):
                 The request object. Request message for
@@ -591,6 +613,27 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         Return value: The [Customer][google.cloud.channel.v1.Customer]
         resource.
+
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_get_customer():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.GetCustomerRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_customer(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.channel_v1.types.GetCustomerRequest, dict]):
@@ -682,6 +725,28 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         [CloudIdentityCustomerAccount][google.cloud.channel.v1.CloudIdentityCustomerAccount]
         resources match the domain.
 
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_check_cloud_identity_accounts_exist():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.CheckCloudIdentityAccountsExistRequest(
+                    parent="parent_value",
+                    domain="domain_value",
+                )
+
+                # Make the request
+                response = client.check_cloud_identity_accounts_exist(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.channel_v1.types.CheckCloudIdentityAccountsExistRequest, dict]):
                 The request object. Request message for
@@ -747,6 +812,32 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         Return value: The newly created
         [Customer][google.cloud.channel.v1.Customer] resource.
 
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_create_customer():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                customer = channel_v1.Customer()
+                customer.org_display_name = "org_display_name_value"
+                customer.domain = "domain_value"
+
+                request = channel_v1.CreateCustomerRequest(
+                    parent="parent_value",
+                    customer=customer,
+                )
+
+                # Make the request
+                response = client.create_customer(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.channel_v1.types.CreateCustomerRequest, dict]):
                 The request object. Request message for
@@ -809,6 +900,31 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         Return value: The updated
         [Customer][google.cloud.channel.v1.Customer] resource.
+
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_update_customer():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                customer = channel_v1.Customer()
+                customer.org_display_name = "org_display_name_value"
+                customer.domain = "domain_value"
+
+                request = channel_v1.UpdateCustomerRequest(
+                    customer=customer,
+                )
+
+                # Make the request
+                response = client.update_customer(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.channel_v1.types.UpdateCustomerRequest, dict]):
@@ -873,6 +989,24 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         -  FAILED_PRECONDITION: The customer has existing entitlements.
         -  NOT_FOUND: No [Customer][google.cloud.channel.v1.Customer]
            resource found for the name in the request.
+
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_delete_customer():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.DeleteCustomerRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_customer(request=request)
 
         Args:
             request (Union[google.cloud.channel_v1.types.DeleteCustomerRequest, dict]):
@@ -953,6 +1087,29 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         Return value: The [Customer][google.cloud.channel.v1.Customer].
 
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_import_customer():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.ImportCustomerRequest(
+                    domain="domain_value",
+                    parent="parent_value",
+                    overwrite_if_exists=True,
+                )
+
+                # Make the request
+                response = client.import_customer(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.channel_v1.types.ImportCustomerRequest, dict]):
                 The request object. Request message for
@@ -1025,6 +1182,31 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         contains an instance of
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_provision_cloud_identity():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.ProvisionCloudIdentityRequest(
+                    customer="customer_value",
+                )
+
+                # Make the request
+                operation = client.provision_cloud_identity(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.channel_v1.types.ProvisionCloudIdentityRequest, dict]):
                 The request object. Request message for
@@ -1096,6 +1278,28 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         Return value: A list of the customer's
         [Entitlement][google.cloud.channel.v1.Entitlement]s.
+
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_list_entitlements():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.ListEntitlementsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_entitlements(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.channel_v1.types.ListEntitlementsRequest, dict]):
@@ -1177,6 +1381,29 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         Return value: A list of the customer's
         [TransferableSku][google.cloud.channel.v1.TransferableSku].
+
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_list_transferable_skus():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.ListTransferableSkusRequest(
+                    cloud_identity_id="cloud_identity_id_value",
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_transferable_skus(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.channel_v1.types.ListTransferableSkusRequest, dict]):
@@ -1261,6 +1488,30 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         [TransferableOffer][google.cloud.channel.v1.TransferableOffer]
         for the given customer and SKU.
 
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_list_transferable_offers():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.ListTransferableOffersRequest(
+                    cloud_identity_id="cloud_identity_id_value",
+                    parent="parent_value",
+                    sku="sku_value",
+                )
+
+                # Make the request
+                page_result = client.list_transferable_offers(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.channel_v1.types.ListTransferableOffersRequest, dict]):
                 The request object. Request message for
@@ -1331,6 +1582,27 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         Return value: The requested
         [Entitlement][google.cloud.channel.v1.Entitlement] resource.
+
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_get_entitlement():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.GetEntitlementRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_entitlement(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.channel_v1.types.GetEntitlementRequest, dict]):
@@ -1426,6 +1698,35 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         will contain an instance of
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_create_entitlement():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                entitlement = channel_v1.Entitlement()
+                entitlement.offer = "offer_value"
+
+                request = channel_v1.CreateEntitlementRequest(
+                    parent="parent_value",
+                    entitlement=entitlement,
+                )
+
+                # Make the request
+                operation = client.create_entitlement(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.channel_v1.types.CreateEntitlementRequest, dict]):
                 The request object. Request message for
@@ -1511,6 +1812,31 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         method of CloudChannelOperationsService. The Operation metadata
         will contain an instance of
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
+
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_change_parameters():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.ChangeParametersRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.change_parameters(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.channel_v1.types.ChangeParametersRequest, dict]):
@@ -1600,6 +1926,31 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         will contain an instance of
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_change_renewal_settings():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.ChangeRenewalSettingsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.change_renewal_settings(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.channel_v1.types.ChangeRenewalSettingsRequest, dict]):
                 The request object. Request message for
@@ -1683,6 +2034,32 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         method of CloudChannelOperationsService. The Operation metadata
         will contain an instance of
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
+
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_change_offer():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.ChangeOfferRequest(
+                    name="name_value",
+                    offer="offer_value",
+                )
+
+                # Make the request
+                operation = client.change_offer(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.channel_v1.types.ChangeOfferRequest, dict]):
@@ -1771,6 +2148,31 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         will contain an instance of
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_start_paid_service():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.StartPaidServiceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.start_paid_service(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.channel_v1.types.StartPaidServiceRequest, dict]):
                 The request object. Request message for
@@ -1854,6 +2256,31 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         method of CloudChannelOperationsService. The Operation metadata
         will contain an instance of
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
+
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_suspend_entitlement():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.SuspendEntitlementRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.suspend_entitlement(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.channel_v1.types.SuspendEntitlementRequest, dict]):
@@ -1943,6 +2370,31 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         contain google.protobuf.Empty on success. The Operation metadata
         will contain an instance of
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
+
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_cancel_entitlement():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.CancelEntitlementRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.cancel_entitlement(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.channel_v1.types.CancelEntitlementRequest, dict]):
@@ -2044,6 +2496,31 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         will contain an instance of
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_activate_entitlement():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.ActivateEntitlementRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.activate_entitlement(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.channel_v1.types.ActivateEntitlementRequest, dict]):
                 The request object. Request message for
@@ -2141,6 +2618,35 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         will contain an instance of
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_transfer_entitlements():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                entitlements = channel_v1.Entitlement()
+                entitlements.offer = "offer_value"
+
+                request = channel_v1.TransferEntitlementsRequest(
+                    parent="parent_value",
+                    entitlements=entitlements,
+                )
+
+                # Make the request
+                operation = client.transfer_entitlements(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.channel_v1.types.TransferEntitlementsRequest, dict]):
                 The request object. Request message for
@@ -2237,6 +2743,35 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         will contain an instance of
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_transfer_entitlements_to_google():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                entitlements = channel_v1.Entitlement()
+                entitlements.offer = "offer_value"
+
+                request = channel_v1.TransferEntitlementsToGoogleRequest(
+                    parent="parent_value",
+                    entitlements=entitlements,
+                )
+
+                # Make the request
+                operation = client.transfer_entitlements_to_google(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.channel_v1.types.TransferEntitlementsToGoogleRequest, dict]):
                 The request object. Request message for
@@ -2324,6 +2859,28 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink]
         resources.
 
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_list_channel_partner_links():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.ListChannelPartnerLinksRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_channel_partner_links(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.channel_v1.types.ListChannelPartnerLinksRequest, dict]):
                 The request object. Request message for
@@ -2400,6 +2957,27 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink]
         resource.
 
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_get_channel_partner_link():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.GetChannelPartnerLinkRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_channel_partner_link(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.channel_v1.types.GetChannelPartnerLinkRequest, dict]):
                 The request object. Request message for
@@ -2474,6 +3052,32 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         Return value: The new
         [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink]
         resource.
+
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_create_channel_partner_link():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                channel_partner_link = channel_v1.ChannelPartnerLink()
+                channel_partner_link.reseller_cloud_identity_id = "reseller_cloud_identity_id_value"
+                channel_partner_link.link_state = "SUSPENDED"
+
+                request = channel_v1.CreateChannelPartnerLinkRequest(
+                    parent="parent_value",
+                    channel_partner_link=channel_partner_link,
+                )
+
+                # Make the request
+                response = client.create_channel_partner_link(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.channel_v1.types.CreateChannelPartnerLinkRequest, dict]):
@@ -2552,6 +3156,32 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink]
         resource.
 
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_update_channel_partner_link():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                channel_partner_link = channel_v1.ChannelPartnerLink()
+                channel_partner_link.reseller_cloud_identity_id = "reseller_cloud_identity_id_value"
+                channel_partner_link.link_state = "SUSPENDED"
+
+                request = channel_v1.UpdateChannelPartnerLinkRequest(
+                    name="name_value",
+                    channel_partner_link=channel_partner_link,
+                )
+
+                # Make the request
+                response = client.update_channel_partner_link(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.channel_v1.types.UpdateChannelPartnerLinkRequest, dict]):
                 The request object. Request message for
@@ -2617,6 +3247,27 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         Return value: The [Offer][google.cloud.channel.v1.Offer]
         resource.
 
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_lookup_offer():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.LookupOfferRequest(
+                    entitlement="entitlement_value",
+                )
+
+                # Make the request
+                response = client.lookup_offer(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.channel_v1.types.LookupOfferRequest, dict]):
                 The request object. Request message for LookupOffer.
@@ -2676,6 +3327,28 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         -  INVALID_ARGUMENT: Required request parameters are missing or
            invalid.
 
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_list_products():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.ListProductsRequest(
+                    account="account_value",
+                )
+
+                # Make the request
+                page_result = client.list_products(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.channel_v1.types.ListProductsRequest, dict]):
                 The request object. Request message for ListProducts.
@@ -2731,6 +3404,29 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         -  INVALID_ARGUMENT: Required request parameters are missing or
            invalid.
+
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_list_skus():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.ListSkusRequest(
+                    parent="parent_value",
+                    account="account_value",
+                )
+
+                # Make the request
+                page_result = client.list_skus(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.channel_v1.types.ListSkusRequest, dict]):
@@ -2793,6 +3489,28 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         -  INVALID_ARGUMENT: Required request parameters are missing or
            invalid.
+
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_list_offers():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.ListOffersRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_offers(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.channel_v1.types.ListOffersRequest, dict]):
@@ -2860,6 +3578,32 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
            reseller.
         -  INVALID_ARGUMENT: Required request parameters are missing or
            invalid.
+
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_list_purchasable_skus():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                create_entitlement_purchase = channel_v1.CreateEntitlementPurchase()
+                create_entitlement_purchase.product = "product_value"
+
+                request = channel_v1.ListPurchasableSkusRequest(
+                    create_entitlement_purchase=create_entitlement_purchase,
+                    customer="customer_value",
+                )
+
+                # Make the request
+                page_result = client.list_purchasable_skus(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.channel_v1.types.ListPurchasableSkusRequest, dict]):
@@ -2929,6 +3673,32 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
            reseller
         -  INVALID_ARGUMENT: Required request parameters are missing or
            invalid.
+
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_list_purchasable_offers():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                create_entitlement_purchase = channel_v1.CreateEntitlementPurchase()
+                create_entitlement_purchase.sku = "sku_value"
+
+                request = channel_v1.ListPurchasableOffersRequest(
+                    create_entitlement_purchase=create_entitlement_purchase,
+                    customer="customer_value",
+                )
+
+                # Make the request
+                page_result = client.list_purchasable_offers(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.channel_v1.types.ListPurchasableOffersRequest, dict]):
@@ -3007,6 +3777,28 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         Return value: The topic name with the registered service email
         address.
 
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_register_subscriber():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.RegisterSubscriberRequest(
+                    account="account_value",
+                    service_account="service_account_value",
+                )
+
+                # Make the request
+                response = client.register_subscriber(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.channel_v1.types.RegisterSubscriberRequest, dict]):
                 The request object. Request Message for
@@ -3078,6 +3870,28 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         address. Returns a success response if the service email address
         wasn't registered with the topic.
 
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_unregister_subscriber():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.UnregisterSubscriberRequest(
+                    account="account_value",
+                    service_account="service_account_value",
+                )
+
+                # Make the request
+                response = client.unregister_subscriber(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.channel_v1.types.UnregisterSubscriberRequest, dict]):
                 The request object. Request Message for
@@ -3143,6 +3957,28 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
            the backend. Contact Cloud Channel support.
 
         Return value: A list of service email addresses.
+
+
+
+        .. code-block::
+
+            from google.cloud import channel_v1
+
+            def sample_list_subscribers():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.ListSubscribersRequest(
+                    account="account_value",
+                )
+
+                # Make the request
+                page_result = client.list_subscribers(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.channel_v1.types.ListSubscribersRequest, dict]):
