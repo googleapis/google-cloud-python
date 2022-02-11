@@ -222,6 +222,31 @@ class VpcAccessServiceAsyncClient:
         r"""Creates a Serverless VPC Access connector, returns an
         operation.
 
+
+        .. code-block::
+
+            from google.cloud import vpcaccess_v1
+
+            def sample_create_connector():
+                # Create a client
+                client = vpcaccess_v1.VpcAccessServiceClient()
+
+                # Initialize request argument(s)
+                request = vpcaccess_v1.CreateConnectorRequest(
+                    parent="parent_value",
+                    connector_id="connector_id_value",
+                )
+
+                # Make the request
+                operation = client.create_connector(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vpcaccess_v1.types.CreateConnectorRequest, dict]):
                 The request object. Request for creating a Serverless
@@ -322,6 +347,26 @@ class VpcAccessServiceAsyncClient:
         r"""Gets a Serverless VPC Access connector. Returns NOT_FOUND if the
         resource does not exist.
 
+
+        .. code-block::
+
+            from google.cloud import vpcaccess_v1
+
+            def sample_get_connector():
+                # Create a client
+                client = vpcaccess_v1.VpcAccessServiceClient()
+
+                # Initialize request argument(s)
+                request = vpcaccess_v1.GetConnectorRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_connector(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vpcaccess_v1.types.GetConnectorRequest, dict]):
                 The request object. Request for getting a Serverless VPC
@@ -392,6 +437,26 @@ class VpcAccessServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListConnectorsAsyncPager:
         r"""Lists Serverless VPC Access connectors.
+
+        .. code-block::
+
+            from google.cloud import vpcaccess_v1
+
+            def sample_list_connectors():
+                # Create a client
+                client = vpcaccess_v1.VpcAccessServiceClient()
+
+                # Initialize request argument(s)
+                request = vpcaccess_v1.ListConnectorsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_connectors(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.vpcaccess_v1.types.ListConnectorsRequest, dict]):
@@ -473,6 +538,30 @@ class VpcAccessServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a Serverless VPC Access connector. Returns NOT_FOUND if
         the resource does not exist.
+
+
+        .. code-block::
+
+            from google.cloud import vpcaccess_v1
+
+            def sample_delete_connector():
+                # Create a client
+                client = vpcaccess_v1.VpcAccessServiceClient()
+
+                # Initialize request argument(s)
+                request = vpcaccess_v1.DeleteConnectorRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_connector(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.vpcaccess_v1.types.DeleteConnectorRequest, dict]):
