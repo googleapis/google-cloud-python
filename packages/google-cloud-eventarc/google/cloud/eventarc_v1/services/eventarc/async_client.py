@@ -230,6 +230,25 @@ class EventarcAsyncClient:
     ) -> trigger.Trigger:
         r"""Get a single trigger.
 
+        .. code-block::
+
+            from google.cloud import eventarc_v1
+
+            def sample_get_trigger():
+                # Create a client
+                client = eventarc_v1.EventarcClient()
+
+                # Initialize request argument(s)
+                request = eventarc_v1.GetTriggerRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_trigger(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.eventarc_v1.types.GetTriggerRequest, dict]):
                 The request object. The request message for the
@@ -300,6 +319,26 @@ class EventarcAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTriggersAsyncPager:
         r"""List triggers.
+
+        .. code-block::
+
+            from google.cloud import eventarc_v1
+
+            def sample_list_triggers():
+                # Create a client
+                client = eventarc_v1.EventarcClient()
+
+                # Initialize request argument(s)
+                request = eventarc_v1.ListTriggersRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_triggers(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.eventarc_v1.types.ListTriggersRequest, dict]):
@@ -382,6 +421,40 @@ class EventarcAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Create a new trigger in a particular project and
         location.
+
+
+        .. code-block::
+
+            from google.cloud import eventarc_v1
+
+            def sample_create_trigger():
+                # Create a client
+                client = eventarc_v1.EventarcClient()
+
+                # Initialize request argument(s)
+                trigger = eventarc_v1.Trigger()
+                trigger.name = "name_value"
+                trigger.event_filters.attribute = "attribute_value"
+                trigger.event_filters.value = "value_value"
+                trigger.destination.cloud_run.service = "service_value"
+                trigger.destination.cloud_run.region = "region_value"
+
+                request = eventarc_v1.CreateTriggerRequest(
+                    parent="parent_value",
+                    trigger=trigger,
+                    trigger_id="trigger_id_value",
+                    validate_only=True,
+                )
+
+                # Make the request
+                operation = client.create_trigger(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.eventarc_v1.types.CreateTriggerRequest, dict]):
@@ -482,6 +555,29 @@ class EventarcAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Update a single trigger.
+
+        .. code-block::
+
+            from google.cloud import eventarc_v1
+
+            def sample_update_trigger():
+                # Create a client
+                client = eventarc_v1.EventarcClient()
+
+                # Initialize request argument(s)
+                request = eventarc_v1.UpdateTriggerRequest(
+                    validate_only=True,
+                )
+
+                # Make the request
+                operation = client.update_trigger(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.eventarc_v1.types.UpdateTriggerRequest, dict]):
@@ -587,6 +683,30 @@ class EventarcAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Delete a single trigger.
 
+        .. code-block::
+
+            from google.cloud import eventarc_v1
+
+            def sample_delete_trigger():
+                # Create a client
+                client = eventarc_v1.EventarcClient()
+
+                # Initialize request argument(s)
+                request = eventarc_v1.DeleteTriggerRequest(
+                    name="name_value",
+                    validate_only=True,
+                )
+
+                # Make the request
+                operation = client.delete_trigger(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.eventarc_v1.types.DeleteTriggerRequest, dict]):
                 The request object. The request message for the
@@ -679,6 +799,25 @@ class EventarcAsyncClient:
     ) -> channel.Channel:
         r"""Get a single Channel.
 
+        .. code-block::
+
+            from google.cloud import eventarc_v1
+
+            def sample_get_channel():
+                # Create a client
+                client = eventarc_v1.EventarcClient()
+
+                # Initialize request argument(s)
+                request = eventarc_v1.GetChannelRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_channel(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.eventarc_v1.types.GetChannelRequest, dict]):
                 The request object. The request message for the
@@ -755,6 +894,26 @@ class EventarcAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListChannelsAsyncPager:
         r"""List channels.
+
+        .. code-block::
+
+            from google.cloud import eventarc_v1
+
+            def sample_list_channels():
+                # Create a client
+                client = eventarc_v1.EventarcClient()
+
+                # Initialize request argument(s)
+                request = eventarc_v1.ListChannelsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_channels(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.eventarc_v1.types.ListChannelsRequest, dict]):
@@ -837,6 +996,38 @@ class EventarcAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Create a new channel in a particular project and
         location.
+
+
+        .. code-block::
+
+            from google.cloud import eventarc_v1
+
+            def sample_create_channel():
+                # Create a client
+                client = eventarc_v1.EventarcClient()
+
+                # Initialize request argument(s)
+                channel = eventarc_v1.Channel()
+                channel.pubsub_topic = "pubsub_topic_value"
+                channel.name = "name_value"
+                channel.provider = "provider_value"
+
+                request = eventarc_v1.CreateChannelRequest(
+                    parent="parent_value",
+                    channel=channel,
+                    channel_id="channel_id_value",
+                    validate_only=True,
+                )
+
+                # Make the request
+                operation = client.create_channel(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.eventarc_v1.types.CreateChannelRequest, dict]):
@@ -940,6 +1131,29 @@ class EventarcAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Update a single channel.
 
+        .. code-block::
+
+            from google.cloud import eventarc_v1
+
+            def sample_update_channel():
+                # Create a client
+                client = eventarc_v1.EventarcClient()
+
+                # Initialize request argument(s)
+                request = eventarc_v1.UpdateChannelRequest(
+                    validate_only=True,
+                )
+
+                # Make the request
+                operation = client.update_channel(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.eventarc_v1.types.UpdateChannelRequest, dict]):
                 The request object. The request message for the
@@ -1036,6 +1250,30 @@ class EventarcAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Delete a single channel.
 
+        .. code-block::
+
+            from google.cloud import eventarc_v1
+
+            def sample_delete_channel():
+                # Create a client
+                client = eventarc_v1.EventarcClient()
+
+                # Initialize request argument(s)
+                request = eventarc_v1.DeleteChannelRequest(
+                    name="name_value",
+                    validate_only=True,
+                )
+
+                # Make the request
+                operation = client.delete_channel(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.eventarc_v1.types.DeleteChannelRequest, dict]):
                 The request object. The request message for the
@@ -1121,6 +1359,25 @@ class EventarcAsyncClient:
     ) -> channel_connection.ChannelConnection:
         r"""Get a single ChannelConnection.
 
+        .. code-block::
+
+            from google.cloud import eventarc_v1
+
+            def sample_get_channel_connection():
+                # Create a client
+                client = eventarc_v1.EventarcClient()
+
+                # Initialize request argument(s)
+                request = eventarc_v1.GetChannelConnectionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_channel_connection(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.eventarc_v1.types.GetChannelConnectionRequest, dict]):
                 The request object. The request message for the
@@ -1196,6 +1453,26 @@ class EventarcAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListChannelConnectionsAsyncPager:
         r"""List channel connections.
+
+        .. code-block::
+
+            from google.cloud import eventarc_v1
+
+            def sample_list_channel_connections():
+                # Create a client
+                client = eventarc_v1.EventarcClient()
+
+                # Initialize request argument(s)
+                request = eventarc_v1.ListChannelConnectionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_channel_connections(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.eventarc_v1.types.ListChannelConnectionsRequest, dict]):
@@ -1279,6 +1556,36 @@ class EventarcAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Create a new ChannelConnection in a particular
         project and location.
+
+
+        .. code-block::
+
+            from google.cloud import eventarc_v1
+
+            def sample_create_channel_connection():
+                # Create a client
+                client = eventarc_v1.EventarcClient()
+
+                # Initialize request argument(s)
+                channel_connection = eventarc_v1.ChannelConnection()
+                channel_connection.name = "name_value"
+                channel_connection.channel = "channel_value"
+
+                request = eventarc_v1.CreateChannelConnectionRequest(
+                    parent="parent_value",
+                    channel_connection=channel_connection,
+                    channel_connection_id="channel_connection_id_value",
+                )
+
+                # Make the request
+                operation = client.create_channel_connection(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.eventarc_v1.types.CreateChannelConnectionRequest, dict]):
@@ -1381,6 +1688,29 @@ class EventarcAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Delete a single ChannelConnection.
+
+        .. code-block::
+
+            from google.cloud import eventarc_v1
+
+            def sample_delete_channel_connection():
+                # Create a client
+                client = eventarc_v1.EventarcClient()
+
+                # Initialize request argument(s)
+                request = eventarc_v1.DeleteChannelConnectionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_channel_connection(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.eventarc_v1.types.DeleteChannelConnectionRequest, dict]):
