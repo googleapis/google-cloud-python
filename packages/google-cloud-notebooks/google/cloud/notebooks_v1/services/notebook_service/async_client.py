@@ -231,6 +231,26 @@ class NotebookServiceAsyncClient:
     ) -> pagers.ListInstancesAsyncPager:
         r"""Lists instances in a given project and location.
 
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_list_instances():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.ListInstancesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_instances(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.notebooks_v1.types.ListInstancesRequest, dict]):
                 The request object. Request for listing notebook
@@ -311,6 +331,25 @@ class NotebookServiceAsyncClient:
     ) -> instance.Instance:
         r"""Gets details of a single Instance.
 
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_get_instance():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.GetInstanceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_instance(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.notebooks_v1.types.GetInstanceRequest, dict]):
                 The request object. Request for getting a notebook
@@ -384,6 +423,37 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Instance in a given project and
         location.
+
+
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_create_instance():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                instance = notebooks_v1.Instance()
+                instance.vm_image.image_name = "image_name_value"
+                instance.vm_image.project = "project_value"
+                instance.machine_type = "machine_type_value"
+
+                request = notebooks_v1.CreateInstanceRequest(
+                    parent="parent_value",
+                    instance_id="instance_id_value",
+                    instance=instance,
+                )
+
+                # Make the request
+                operation = client.create_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.notebooks_v1.types.CreateInstanceRequest, dict]):
@@ -487,6 +557,31 @@ class NotebookServiceAsyncClient:
         call makes these instances manageable by the Notebooks
         API.
 
+
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_register_instance():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.RegisterInstanceRequest(
+                    parent="parent_value",
+                    instance_id="instance_id_value",
+                )
+
+                # Make the request
+                operation = client.register_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.notebooks_v1.types.RegisterInstanceRequest, dict]):
                 The request object. Request for registering a notebook
@@ -546,6 +641,31 @@ class NotebookServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates the guest accelerators of a single Instance.
+
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_set_instance_accelerator():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.SetInstanceAcceleratorRequest(
+                    name="name_value",
+                    type_="TPU_V3",
+                    core_count=1073,
+                )
+
+                # Make the request
+                operation = client.set_instance_accelerator(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.notebooks_v1.types.SetInstanceAcceleratorRequest, dict]):
@@ -607,6 +727,30 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the machine type of a single Instance.
 
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_set_instance_machine_type():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.SetInstanceMachineTypeRequest(
+                    name="name_value",
+                    machine_type="machine_type_value",
+                )
+
+                # Make the request
+                operation = client.set_instance_machine_type(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.notebooks_v1.types.SetInstanceMachineTypeRequest, dict]):
                 The request object. Request for setting instance machine
@@ -666,6 +810,29 @@ class NotebookServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Update Notebook Instance configurations.
+
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_update_instance_config():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.UpdateInstanceConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.update_instance_config(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.notebooks_v1.types.UpdateInstanceConfigRequest, dict]):
@@ -728,6 +895,30 @@ class NotebookServiceAsyncClient:
         r"""Updates the Shielded instance configuration of a
         single Instance.
 
+
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_update_shielded_instance_config():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.UpdateShieldedInstanceConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.update_shielded_instance_config(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.notebooks_v1.types.UpdateShieldedInstanceConfigRequest, dict]):
                 The request object. Request for updating the Shielded
@@ -789,6 +980,29 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Replaces all the labels of an Instance.
 
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_set_instance_labels():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.SetInstanceLabelsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.set_instance_labels(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.notebooks_v1.types.SetInstanceLabelsRequest, dict]):
                 The request object. Request for setting instance labels.
@@ -848,6 +1062,29 @@ class NotebookServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Instance.
+
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_delete_instance():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.DeleteInstanceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.notebooks_v1.types.DeleteInstanceRequest, dict]):
@@ -940,6 +1177,29 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Starts a notebook instance.
 
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_start_instance():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.StartInstanceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.start_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.notebooks_v1.types.StartInstanceRequest, dict]):
                 The request object. Request for starting a notebook
@@ -1000,6 +1260,29 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Stops a notebook instance.
 
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_stop_instance():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.StopInstanceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.stop_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.notebooks_v1.types.StopInstanceRequest, dict]):
                 The request object. Request for stopping a notebook
@@ -1059,6 +1342,29 @@ class NotebookServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Resets a notebook instance.
+
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_reset_instance():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.ResetInstanceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.reset_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.notebooks_v1.types.ResetInstanceRequest, dict]):
@@ -1124,6 +1430,31 @@ class NotebookServiceAsyncClient:
         information to the instance metadata store. Do not use
         this method directly.
 
+
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_report_instance_info():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.ReportInstanceInfoRequest(
+                    name="name_value",
+                    vm_id="vm_id_value",
+                )
+
+                # Make the request
+                operation = client.report_instance_info(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.notebooks_v1.types.ReportInstanceInfoRequest, dict]):
                 The request object. Request for notebook instances to
@@ -1184,6 +1515,25 @@ class NotebookServiceAsyncClient:
     ) -> service.IsInstanceUpgradeableResponse:
         r"""Check if a notebook instance is upgradable.
 
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_is_instance_upgradeable():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.IsInstanceUpgradeableRequest(
+                    notebook_instance="notebook_instance_value",
+                )
+
+                # Make the request
+                response = client.is_instance_upgradeable(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.notebooks_v1.types.IsInstanceUpgradeableRequest, dict]):
                 The request object. Request for checking if a notebook
@@ -1235,6 +1585,25 @@ class NotebookServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.GetInstanceHealthResponse:
         r"""Check if a notebook instance is healthy.
+
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_get_instance_health():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.GetInstanceHealthRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_instance_health(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.notebooks_v1.types.GetInstanceHealthRequest, dict]):
@@ -1306,6 +1675,29 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Upgrades a notebook instance to the latest version.
 
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_upgrade_instance():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.UpgradeInstanceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.upgrade_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.notebooks_v1.types.UpgradeInstanceRequest, dict]):
                 The request object. Request for upgrading a notebook
@@ -1366,6 +1758,31 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Rollbacks a notebook instance to the previous
         version.
+
+
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_rollback_instance():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.RollbackInstanceRequest(
+                    name="name_value",
+                    target_snapshot="target_snapshot_value",
+                )
+
+                # Make the request
+                operation = client.rollback_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.notebooks_v1.types.RollbackInstanceRequest, dict]):
@@ -1429,6 +1846,31 @@ class NotebookServiceAsyncClient:
         call this endpoint to upgrade themselves. Do not use
         this method directly.
 
+
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_upgrade_instance_internal():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.UpgradeInstanceInternalRequest(
+                    name="name_value",
+                    vm_id="vm_id_value",
+                )
+
+                # Make the request
+                operation = client.upgrade_instance_internal(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.notebooks_v1.types.UpgradeInstanceInternalRequest, dict]):
                 The request object. Request for upgrading a notebook
@@ -1489,6 +1931,26 @@ class NotebookServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEnvironmentsAsyncPager:
         r"""Lists environments in a project.
+
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_list_environments():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.ListEnvironmentsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_environments(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.notebooks_v1.types.ListEnvironmentsRequest, dict]):
@@ -1568,6 +2030,25 @@ class NotebookServiceAsyncClient:
     ) -> environment.Environment:
         r"""Gets details of a single Environment.
 
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_get_environment():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.GetEnvironmentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_environment(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.notebooks_v1.types.GetEnvironmentRequest, dict]):
                 The request object. Request for getting a notebook
@@ -1641,6 +2122,35 @@ class NotebookServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Environment.
+
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_create_environment():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                environment = notebooks_v1.Environment()
+                environment.vm_image.image_name = "image_name_value"
+                environment.vm_image.project = "project_value"
+
+                request = notebooks_v1.CreateEnvironmentRequest(
+                    parent="parent_value",
+                    environment_id="environment_id_value",
+                    environment=environment,
+                )
+
+                # Make the request
+                operation = client.create_environment(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.notebooks_v1.types.CreateEnvironmentRequest, dict]):
@@ -1744,6 +2254,29 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Environment.
 
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_delete_environment():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.DeleteEnvironmentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_environment(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.notebooks_v1.types.DeleteEnvironmentRequest, dict]):
                 The request object. Request for deleting a notebook
@@ -1836,6 +2369,26 @@ class NotebookServiceAsyncClient:
     ) -> pagers.ListSchedulesAsyncPager:
         r"""Lists schedules in a given project and location.
 
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_list_schedules():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.ListSchedulesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_schedules(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.notebooks_v1.types.ListSchedulesRequest, dict]):
                 The request object. Request for listing scheduled
@@ -1916,6 +2469,25 @@ class NotebookServiceAsyncClient:
     ) -> schedule.Schedule:
         r"""Gets details of schedule
 
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_get_schedule():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.GetScheduleRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_schedule(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.notebooks_v1.types.GetScheduleRequest, dict]):
                 The request object. Request for getting scheduled
@@ -1984,6 +2556,29 @@ class NotebookServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes schedule and all underlying jobs
+
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_delete_schedule():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.DeleteScheduleRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_schedule(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.notebooks_v1.types.DeleteScheduleRequest, dict]):
@@ -2078,6 +2673,31 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Scheduled Notebook in a given project
         and location.
+
+
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_create_schedule():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.CreateScheduleRequest(
+                    parent="parent_value",
+                    schedule_id="schedule_id_value",
+                )
+
+                # Make the request
+                operation = client.create_schedule(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.notebooks_v1.types.CreateScheduleRequest, dict]):
@@ -2176,6 +2796,29 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Triggers execution of an existing schedule.
 
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_trigger_schedule():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.TriggerScheduleRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.trigger_schedule(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.notebooks_v1.types.TriggerScheduleRequest, dict]):
                 The request object. Request for created scheduled
@@ -2236,6 +2879,26 @@ class NotebookServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListExecutionsAsyncPager:
         r"""Lists executions in a given project and location
+
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_list_executions():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.ListExecutionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_executions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.notebooks_v1.types.ListExecutionsRequest, dict]):
@@ -2317,6 +2980,25 @@ class NotebookServiceAsyncClient:
     ) -> execution.Execution:
         r"""Gets details of executions
 
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_get_execution():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.GetExecutionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_execution(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.notebooks_v1.types.GetExecutionRequest, dict]):
                 The request object. Request for getting scheduled
@@ -2387,6 +3069,29 @@ class NotebookServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes execution
+
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_delete_execution():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.DeleteExecutionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_execution(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.notebooks_v1.types.DeleteExecutionRequest, dict]):
@@ -2482,6 +3187,31 @@ class NotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Scheduled Notebook in a given project
         and location.
+
+
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_create_execution():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.CreateExecutionRequest(
+                    parent="parent_value",
+                    execution_id="execution_id_value",
+                )
+
+                # Make the request
+                operation = client.create_execution(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.notebooks_v1.types.CreateExecutionRequest, dict]):

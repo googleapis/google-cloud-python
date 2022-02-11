@@ -223,6 +223,26 @@ class ManagedNotebookServiceAsyncClient:
     ) -> pagers.ListRuntimesAsyncPager:
         r"""Lists Runtimes in a given project and location.
 
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_list_runtimes():
+                # Create a client
+                client = notebooks_v1.ManagedNotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.ListRuntimesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_runtimes(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.notebooks_v1.types.ListRuntimesRequest, dict]):
                 The request object. Request for listing Managed Notebook
@@ -304,6 +324,26 @@ class ManagedNotebookServiceAsyncClient:
         r"""Gets details of a single Runtime. The location must
         be a regional endpoint rather than zonal.
 
+
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_get_runtime():
+                # Create a client
+                client = notebooks_v1.ManagedNotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.GetRuntimeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_runtime(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.notebooks_v1.types.GetRuntimeRequest, dict]):
                 The request object. Request for getting a Managed
@@ -377,6 +417,31 @@ class ManagedNotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Runtime in a given project and
         location.
+
+
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_create_runtime():
+                # Create a client
+                client = notebooks_v1.ManagedNotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.CreateRuntimeRequest(
+                    parent="parent_value",
+                    runtime_id="runtime_id_value",
+                )
+
+                # Make the request
+                operation = client.create_runtime(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.notebooks_v1.types.CreateRuntimeRequest, dict]):
@@ -476,6 +541,29 @@ class ManagedNotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Runtime.
 
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_delete_runtime():
+                # Create a client
+                client = notebooks_v1.ManagedNotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.DeleteRuntimeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_runtime(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.notebooks_v1.types.DeleteRuntimeRequest, dict]):
                 The request object. Request for deleting a Managed
@@ -572,6 +660,30 @@ class ManagedNotebookServiceAsyncClient:
         https://cloud.google.com/compute/docs/instances/stop-start-instance
         https://cloud.google.com/compute/docs/instances/suspend-resume-instance
 
+
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_start_runtime():
+                # Create a client
+                client = notebooks_v1.ManagedNotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.StartRuntimeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.start_runtime(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.notebooks_v1.types.StartRuntimeRequest, dict]):
                 The request object. Request for starting a Managed
@@ -658,6 +770,30 @@ class ManagedNotebookServiceAsyncClient:
         https://cloud.google.com/compute/docs/instances/stop-start-instance
         https://cloud.google.com/compute/docs/instances/suspend-resume-instance
 
+
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_stop_runtime():
+                # Create a client
+                client = notebooks_v1.ManagedNotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.StopRuntimeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.stop_runtime(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.notebooks_v1.types.StopRuntimeRequest, dict]):
                 The request object. Request for stopping a Managed
@@ -739,6 +875,29 @@ class ManagedNotebookServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Switch a Managed Notebook Runtime.
+
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_switch_runtime():
+                # Create a client
+                client = notebooks_v1.ManagedNotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.SwitchRuntimeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.switch_runtime(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.notebooks_v1.types.SwitchRuntimeRequest, dict]):
@@ -822,6 +981,29 @@ class ManagedNotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Resets a Managed Notebook Runtime.
 
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_reset_runtime():
+                # Create a client
+                client = notebooks_v1.ManagedNotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.ResetRuntimeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.reset_runtime(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.notebooks_v1.types.ResetRuntimeRequest, dict]):
                 The request object. Request for reseting a Managed
@@ -903,6 +1085,30 @@ class ManagedNotebookServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Report and process a runtime event.
+
+        .. code-block::
+
+            from google.cloud import notebooks_v1
+
+            def sample_report_runtime_event():
+                # Create a client
+                client = notebooks_v1.ManagedNotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.ReportRuntimeEventRequest(
+                    name="name_value",
+                    vm_id="vm_id_value",
+                )
+
+                # Make the request
+                operation = client.report_runtime_event(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.notebooks_v1.types.ReportRuntimeEventRequest, dict]):

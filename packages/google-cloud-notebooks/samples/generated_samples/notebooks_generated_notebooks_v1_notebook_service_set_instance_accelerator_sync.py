@@ -1,0 +1,51 @@
+# -*- coding: utf-8 -*-
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Generated code. DO NOT EDIT!
+#
+# Snippet for SetInstanceAccelerator
+# NOTE: This snippet has been automatically generated for illustrative purposes only.
+# It may require modifications to work in your environment.
+
+# To install the latest published package dependency, execute the following:
+#   python3 -m pip install google-cloud-notebooks
+
+
+# [START notebooks_generated_notebooks_v1_NotebookService_SetInstanceAccelerator_sync]
+from google.cloud import notebooks_v1
+
+
+def sample_set_instance_accelerator():
+    # Create a client
+    client = notebooks_v1.NotebookServiceClient()
+
+    # Initialize request argument(s)
+    request = notebooks_v1.SetInstanceAcceleratorRequest(
+        name="name_value",
+        type_="TPU_V3",
+        core_count=1073,
+    )
+
+    # Make the request
+    operation = client.set_instance_accelerator(request=request)
+
+    print("Waiting for operation to complete...")
+
+    response = operation.result()
+
+    # Handle the response
+    print(response)
+
+# [END notebooks_generated_notebooks_v1_NotebookService_SetInstanceAccelerator_sync]
