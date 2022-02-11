@@ -414,6 +414,28 @@ class ContextsClient(metaclass=ContextsClientMeta):
         r"""Returns the list of all contexts in the specified
         session.
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_list_contexts():
+                # Create a client
+                client = dialogflow_v2beta1.ContextsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.ListContextsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_contexts(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.ListContextsRequest, dict]):
                 The request object. The request message for
@@ -503,6 +525,26 @@ class ContextsClient(metaclass=ContextsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> context.Context:
         r"""Retrieves the specified context.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_get_context():
+                # Create a client
+                client = dialogflow_v2beta1.ContextsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.GetContextRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_context(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.GetContextRequest, dict]):
@@ -603,6 +645,27 @@ class ContextsClient(metaclass=ContextsClientMeta):
         r"""Creates a context.
         If the specified context already exists, overrides the
         context.
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_create_context():
+                # Create a client
+                client = dialogflow_v2beta1.ContextsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.CreateContextRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_context(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.CreateContextRequest, dict]):
@@ -710,6 +773,25 @@ class ContextsClient(metaclass=ContextsClientMeta):
     ) -> gcd_context.Context:
         r"""Updates the specified context.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_update_context():
+                # Create a client
+                client = dialogflow_v2beta1.ContextsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.UpdateContextRequest(
+                )
+
+                # Make the request
+                response = client.update_context(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.UpdateContextRequest, dict]):
                 The request object. The request message for
@@ -807,6 +889,23 @@ class ContextsClient(metaclass=ContextsClientMeta):
     ) -> None:
         r"""Deletes the specified context.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_delete_context():
+                # Create a client
+                client = dialogflow_v2beta1.ContextsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.DeleteContextRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_context(request=request)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.DeleteContextRequest, dict]):
                 The request object. The request message for
@@ -880,6 +979,23 @@ class ContextsClient(metaclass=ContextsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes all active contexts in the specified session.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_delete_all_contexts():
+                # Create a client
+                client = dialogflow_v2beta1.ContextsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.DeleteAllContextsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                client.delete_all_contexts(request=request)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.DeleteAllContextsRequest, dict]):

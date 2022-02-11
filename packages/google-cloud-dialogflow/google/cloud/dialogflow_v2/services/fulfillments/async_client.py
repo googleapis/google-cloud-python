@@ -212,6 +212,25 @@ class FulfillmentsAsyncClient:
     ) -> fulfillment.Fulfillment:
         r"""Retrieves the fulfillment.
 
+        .. code-block::
+
+            from google.cloud import dialogflow_v2
+
+            def sample_get_fulfillment():
+                # Create a client
+                client = dialogflow_v2.FulfillmentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2.GetFulfillmentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_fulfillment(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2.types.GetFulfillmentRequest, dict]):
                 The request object. The request message for
@@ -293,6 +312,29 @@ class FulfillmentsAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_fulfillment.Fulfillment:
         r"""Updates the fulfillment.
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2
+
+            def sample_update_fulfillment():
+                # Create a client
+                client = dialogflow_v2.FulfillmentsClient()
+
+                # Initialize request argument(s)
+                fulfillment = dialogflow_v2.Fulfillment()
+                fulfillment.generic_web_service.uri = "uri_value"
+                fulfillment.name = "name_value"
+
+                request = dialogflow_v2.UpdateFulfillmentRequest(
+                    fulfillment=fulfillment,
+                )
+
+                # Make the request
+                response = client.update_fulfillment(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2.types.UpdateFulfillmentRequest, dict]):

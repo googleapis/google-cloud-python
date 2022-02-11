@@ -465,6 +465,31 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         [Intent.live_agent_handoff][google.cloud.dialogflow.v2beta1.Intent.live_agent_handoff]
         is triggered, conversation will transfer to Assist Stage.
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_create_conversation():
+                # Create a client
+                client = dialogflow_v2beta1.ConversationsClient()
+
+                # Initialize request argument(s)
+                conversation = dialogflow_v2beta1.Conversation()
+                conversation.conversation_profile = "conversation_profile_value"
+
+                request = dialogflow_v2beta1.CreateConversationRequest(
+                    parent="parent_value",
+                    conversation=conversation,
+                )
+
+                # Make the request
+                response = client.create_conversation(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.CreateConversationRequest, dict]):
                 The request object. The request message for
@@ -550,6 +575,28 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         r"""Returns the list of all conversations in the
         specified project.
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_list_conversations():
+                # Create a client
+                client = dialogflow_v2beta1.ConversationsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.ListConversationsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_conversations(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.ListConversationsRequest, dict]):
                 The request object. The request message for
@@ -631,6 +678,26 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
     ) -> conversation.Conversation:
         r"""Retrieves the specific conversation.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_get_conversation():
+                # Create a client
+                client = dialogflow_v2beta1.ConversationsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.GetConversationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_conversation(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.GetConversationRequest, dict]):
                 The request object. The request message for
@@ -708,6 +775,27 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         r"""Completes the specified conversation. Finished
         conversations are purged from the database after 30
         days.
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_complete_conversation():
+                # Create a client
+                client = dialogflow_v2beta1.ConversationsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.CompleteConversationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.complete_conversation(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.CompleteConversationRequest, dict]):
@@ -788,6 +876,32 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         use this RPC to ingest historical messages to
         conversation.
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_batch_create_messages():
+                # Create a client
+                client = dialogflow_v2beta1.ConversationsClient()
+
+                # Initialize request argument(s)
+                requests = dialogflow_v2beta1.CreateMessageRequest()
+                requests.parent = "parent_value"
+                requests.message.content = "content_value"
+
+                request = dialogflow_v2beta1.BatchCreateMessagesRequest(
+                    parent="parent_value",
+                    requests=requests,
+                )
+
+                # Make the request
+                response = client.batch_create_messages(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.BatchCreateMessagesRequest, dict]):
                 The request object. The request message for
@@ -863,6 +977,28 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         updates without duplication, send request with filter
         ``create_time_epoch_microseconds > [first item's create_time of previous request]``
         and empty page_token.
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_list_messages():
+                # Create a client
+                client = dialogflow_v2beta1.ConversationsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.ListMessagesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_messages(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.ListMessagesRequest, dict]):

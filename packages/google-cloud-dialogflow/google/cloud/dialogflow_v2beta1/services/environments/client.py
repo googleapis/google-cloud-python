@@ -438,6 +438,28 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         r"""Returns the list of all non-draft environments of the
         specified agent.
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_list_environments():
+                # Create a client
+                client = dialogflow_v2beta1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.ListEnvironmentsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_environments(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.ListEnvironmentsRequest, dict]):
                 The request object. The request message for
@@ -520,6 +542,26 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
     ) -> environment.Environment:
         r"""Retrieves the specified agent environment.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_get_environment():
+                # Create a client
+                client = dialogflow_v2beta1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.GetEnvironmentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_environment(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.GetEnvironmentRequest, dict]):
                 The request object. The request message for
@@ -588,6 +630,27 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> environment.Environment:
         r"""Creates an agent environment.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_create_environment():
+                # Create a client
+                client = dialogflow_v2beta1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.CreateEnvironmentRequest(
+                    parent="parent_value",
+                    environment_id="environment_id_value",
+                )
+
+                # Make the request
+                response = client.create_environment(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.CreateEnvironmentRequest, dict]):
@@ -670,6 +733,26 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         changes to draft and can't be undone. You may want to save the
         draft to a version before calling this function.
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_update_environment():
+                # Create a client
+                client = dialogflow_v2beta1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.UpdateEnvironmentRequest(
+                )
+
+                # Make the request
+                response = client.update_environment(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.UpdateEnvironmentRequest, dict]):
                 The request object. The request message for
@@ -741,6 +824,23 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
     ) -> None:
         r"""Deletes the specified agent environment.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_delete_environment():
+                # Create a client
+                client = dialogflow_v2beta1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.DeleteEnvironmentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_environment(request=request)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.DeleteEnvironmentRequest, dict]):
                 The request object. The request message for
@@ -783,6 +883,27 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.GetEnvironmentHistoryPager:
         r"""Gets the history of the specified environment.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_get_environment_history():
+                # Create a client
+                client = dialogflow_v2beta1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.GetEnvironmentHistoryRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.get_environment_history(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.GetEnvironmentHistoryRequest, dict]):

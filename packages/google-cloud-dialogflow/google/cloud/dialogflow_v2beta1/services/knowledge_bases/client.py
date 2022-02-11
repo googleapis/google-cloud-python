@@ -416,6 +416,28 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         Note: The ``projects.agent.knowledgeBases`` resource is
         deprecated; only use ``projects.knowledgeBases``.
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_list_knowledge_bases():
+                # Create a client
+                client = dialogflow_v2beta1.KnowledgeBasesClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.ListKnowledgeBasesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_knowledge_bases(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.ListKnowledgeBasesRequest, dict]):
                 The request object. Request message for
@@ -499,6 +521,27 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
 
         Note: The ``projects.agent.knowledgeBases`` resource is
         deprecated; only use ``projects.knowledgeBases``.
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_get_knowledge_base():
+                # Create a client
+                client = dialogflow_v2beta1.KnowledgeBasesClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.GetKnowledgeBaseRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_knowledge_base(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.GetKnowledgeBaseRequest, dict]):
@@ -585,6 +628,31 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
 
         Note: The ``projects.agent.knowledgeBases`` resource is
         deprecated; only use ``projects.knowledgeBases``.
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_create_knowledge_base():
+                # Create a client
+                client = dialogflow_v2beta1.KnowledgeBasesClient()
+
+                # Initialize request argument(s)
+                knowledge_base = dialogflow_v2beta1.KnowledgeBase()
+                knowledge_base.display_name = "display_name_value"
+
+                request = dialogflow_v2beta1.CreateKnowledgeBaseRequest(
+                    parent="parent_value",
+                    knowledge_base=knowledge_base,
+                )
+
+                # Make the request
+                response = client.create_knowledge_base(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.CreateKnowledgeBaseRequest, dict]):
@@ -680,6 +748,24 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         Note: The ``projects.agent.knowledgeBases`` resource is
         deprecated; only use ``projects.knowledgeBases``.
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_delete_knowledge_base():
+                # Create a client
+                client = dialogflow_v2beta1.KnowledgeBasesClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.DeleteKnowledgeBaseRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_knowledge_base(request=request)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.DeleteKnowledgeBaseRequest, dict]):
                 The request object. Request message for
@@ -748,6 +834,30 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
 
         Note: The ``projects.agent.knowledgeBases`` resource is
         deprecated; only use ``projects.knowledgeBases``.
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_update_knowledge_base():
+                # Create a client
+                client = dialogflow_v2beta1.KnowledgeBasesClient()
+
+                # Initialize request argument(s)
+                knowledge_base = dialogflow_v2beta1.KnowledgeBase()
+                knowledge_base.display_name = "display_name_value"
+
+                request = dialogflow_v2beta1.UpdateKnowledgeBaseRequest(
+                    knowledge_base=knowledge_base,
+                )
+
+                # Make the request
+                response = client.update_knowledge_base(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.UpdateKnowledgeBaseRequest, dict]):

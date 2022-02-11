@@ -218,6 +218,27 @@ class IntentsAsyncClient:
         r"""Returns the list of all intents in the specified
         agent.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_list_intents():
+                # Create a client
+                client = dialogflow_v2beta1.IntentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.ListIntentsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_intents(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.ListIntentsRequest, dict]):
                 The request object. The request message for
@@ -320,6 +341,25 @@ class IntentsAsyncClient:
     ) -> intent.Intent:
         r"""Retrieves the specified intent.
 
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_get_intent():
+                # Create a client
+                client = dialogflow_v2beta1.IntentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.GetIntentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_intent(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.GetIntentRequest, dict]):
                 The request object. The request message for
@@ -419,6 +459,30 @@ class IntentsAsyncClient:
         Note: You should always train an agent prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_create_intent():
+                # Create a client
+                client = dialogflow_v2beta1.IntentsClient()
+
+                # Initialize request argument(s)
+                intent = dialogflow_v2beta1.Intent()
+                intent.display_name = "display_name_value"
+
+                request = dialogflow_v2beta1.CreateIntentRequest(
+                    parent="parent_value",
+                    intent=intent,
+                )
+
+                # Make the request
+                response = client.create_intent(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.CreateIntentRequest, dict]):
@@ -528,6 +592,29 @@ class IntentsAsyncClient:
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_update_intent():
+                # Create a client
+                client = dialogflow_v2beta1.IntentsClient()
+
+                # Initialize request argument(s)
+                intent = dialogflow_v2beta1.Intent()
+                intent.display_name = "display_name_value"
+
+                request = dialogflow_v2beta1.UpdateIntentRequest(
+                    intent=intent,
+                )
+
+                # Make the request
+                response = client.update_intent(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.UpdateIntentRequest, dict]):
                 The request object. The request message for
@@ -634,6 +721,23 @@ class IntentsAsyncClient:
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_delete_intent():
+                # Create a client
+                client = dialogflow_v2beta1.IntentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.DeleteIntentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_intent(request=request)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.DeleteIntentRequest, dict]):
                 The request object. The request message for
@@ -719,6 +823,31 @@ class IntentsAsyncClient:
         Note: You should always train an agent prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_batch_update_intents():
+                # Create a client
+                client = dialogflow_v2beta1.IntentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.BatchUpdateIntentsRequest(
+                    intent_batch_uri="intent_batch_uri_value",
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.batch_update_intents(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.BatchUpdateIntentsRequest, dict]):
@@ -842,6 +971,34 @@ class IntentsAsyncClient:
         Note: You should always train an agent prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_batch_delete_intents():
+                # Create a client
+                client = dialogflow_v2beta1.IntentsClient()
+
+                # Initialize request argument(s)
+                intents = dialogflow_v2beta1.Intent()
+                intents.display_name = "display_name_value"
+
+                request = dialogflow_v2beta1.BatchDeleteIntentsRequest(
+                    parent="parent_value",
+                    intents=intents,
+                )
+
+                # Make the request
+                operation = client.batch_delete_intents(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.BatchDeleteIntentsRequest, dict]):

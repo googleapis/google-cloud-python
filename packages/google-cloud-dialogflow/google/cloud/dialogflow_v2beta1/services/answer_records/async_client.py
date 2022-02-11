@@ -220,6 +220,25 @@ class AnswerRecordsAsyncClient:
         r"""Deprecated.
         Retrieves a specific answer record.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_get_answer_record():
+                # Create a client
+                client = dialogflow_v2beta1.AnswerRecordsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.GetAnswerRecordRequest(
+                )
+
+                # Make the request
+                response = client.get_answer_record(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.GetAnswerRecordRequest, dict]):
                 The request object. Request message for
@@ -307,6 +326,26 @@ class AnswerRecordsAsyncClient:
         r"""Returns the list of all answer records in the
         specified project in reverse chronological order.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_list_answer_records():
+                # Create a client
+                client = dialogflow_v2beta1.AnswerRecordsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.ListAnswerRecordsRequest(
+                )
+
+                # Make the request
+                page_result = client.list_answer_records(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.ListAnswerRecordsRequest, dict]):
                 The request object. Request message for
@@ -388,6 +427,24 @@ class AnswerRecordsAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_answer_record.AnswerRecord:
         r"""Updates the specified answer record.
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_update_answer_record():
+                # Create a client
+                client = dialogflow_v2beta1.AnswerRecordsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.UpdateAnswerRecordRequest(
+                )
+
+                # Make the request
+                response = client.update_answer_record(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.UpdateAnswerRecordRequest, dict]):

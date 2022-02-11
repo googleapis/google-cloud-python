@@ -215,6 +215,27 @@ class DocumentsAsyncClient:
         r"""Returns the list of all documents of the knowledge
         base.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2
+
+            def sample_list_documents():
+                # Create a client
+                client = dialogflow_v2.DocumentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2.ListDocumentsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_documents(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2.types.ListDocumentsRequest, dict]):
                 The request object. Request message for
@@ -295,6 +316,25 @@ class DocumentsAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document.Document:
         r"""Retrieves the specified document.
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2
+
+            def sample_get_document():
+                # Create a client
+                client = dialogflow_v2.DocumentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2.GetDocumentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_document(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2.types.GetDocumentRequest, dict]):
@@ -383,6 +423,37 @@ class DocumentsAsyncClient:
         -  ``metadata``:
            [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
         -  ``response``: [Document][google.cloud.dialogflow.v2.Document]
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2
+
+            def sample_create_document():
+                # Create a client
+                client = dialogflow_v2.DocumentsClient()
+
+                # Initialize request argument(s)
+                document = dialogflow_v2.Document()
+                document.content_uri = "content_uri_value"
+                document.display_name = "display_name_value"
+                document.mime_type = "mime_type_value"
+                document.knowledge_types = "ARTICLE_SUGGESTION"
+
+                request = dialogflow_v2.CreateDocumentRequest(
+                    parent="parent_value",
+                    document=document,
+                )
+
+                # Make the request
+                operation = client.create_document(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2.types.CreateDocumentRequest, dict]):
@@ -493,6 +564,39 @@ class DocumentsAsyncClient:
         -  ``response``:
            [ImportDocumentsResponse][google.cloud.dialogflow.v2.ImportDocumentsResponse]
 
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2
+
+            def sample_import_documents():
+                # Create a client
+                client = dialogflow_v2.DocumentsClient()
+
+                # Initialize request argument(s)
+                gcs_source = dialogflow_v2.GcsSources()
+                gcs_source.uris = ['uris_value_1', 'uris_value_2']
+
+                document_template = dialogflow_v2.ImportDocumentTemplate()
+                document_template.mime_type = "mime_type_value"
+                document_template.knowledge_types = "ARTICLE_SUGGESTION"
+
+                request = dialogflow_v2.ImportDocumentsRequest(
+                    gcs_source=gcs_source,
+                    parent="parent_value",
+                    document_template=document_template,
+                )
+
+                # Make the request
+                operation = client.import_documents(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2.types.ImportDocumentsRequest, dict]):
                 The request object. Request message for
@@ -564,6 +668,30 @@ class DocumentsAsyncClient:
            [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
         -  ``response``: An `Empty
            message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2
+
+            def sample_delete_document():
+                # Create a client
+                client = dialogflow_v2.DocumentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2.DeleteDocumentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_document(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2.types.DeleteDocumentRequest, dict]):
@@ -666,6 +794,36 @@ class DocumentsAsyncClient:
         -  ``metadata``:
            [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
         -  ``response``: [Document][google.cloud.dialogflow.v2.Document]
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2
+
+            def sample_update_document():
+                # Create a client
+                client = dialogflow_v2.DocumentsClient()
+
+                # Initialize request argument(s)
+                document = dialogflow_v2.Document()
+                document.content_uri = "content_uri_value"
+                document.display_name = "display_name_value"
+                document.mime_type = "mime_type_value"
+                document.knowledge_types = "ARTICLE_SUGGESTION"
+
+                request = dialogflow_v2.UpdateDocumentRequest(
+                    document=document,
+                )
+
+                # Make the request
+                operation = client.update_document(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2.types.UpdateDocumentRequest, dict]):
@@ -784,6 +942,31 @@ class DocumentsAsyncClient:
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2
+
+            def sample_reload_document():
+                # Create a client
+                client = dialogflow_v2.DocumentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2.ReloadDocumentRequest(
+                    content_uri="content_uri_value",
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.reload_document(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2.types.ReloadDocumentRequest, dict]):
                 The request object. Request message for
@@ -894,6 +1077,30 @@ class DocumentsAsyncClient:
         -  ``metadata``:
            [KnowledgeOperationMetadata][google.cloud.dialogflow.v2.KnowledgeOperationMetadata]
         -  ``response``: [Document][google.cloud.dialogflow.v2.Document]
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2
+
+            def sample_export_document():
+                # Create a client
+                client = dialogflow_v2.DocumentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2.ExportDocumentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.export_document(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2.types.ExportDocumentRequest, dict]):

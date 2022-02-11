@@ -419,6 +419,28 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_list_documents():
+                # Create a client
+                client = dialogflow_v2beta1.DocumentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.ListDocumentsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_documents(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.ListDocumentsRequest, dict]):
                 The request object. Request message for
@@ -502,6 +524,27 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_get_document():
+                # Create a client
+                client = dialogflow_v2beta1.DocumentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.GetDocumentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_document(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.GetDocumentRequest, dict]):
@@ -594,6 +637,38 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_create_document():
+                # Create a client
+                client = dialogflow_v2beta1.DocumentsClient()
+
+                # Initialize request argument(s)
+                document = dialogflow_v2beta1.Document()
+                document.content_uri = "content_uri_value"
+                document.display_name = "display_name_value"
+                document.mime_type = "mime_type_value"
+                document.knowledge_types = "SMART_REPLY"
+
+                request = dialogflow_v2beta1.CreateDocumentRequest(
+                    parent="parent_value",
+                    document=document,
+                )
+
+                # Make the request
+                operation = client.create_document(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.CreateDocumentRequest, dict]):
@@ -704,6 +779,40 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
         -  ``response``:
            [ImportDocumentsResponse][google.cloud.dialogflow.v2beta1.ImportDocumentsResponse]
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_import_documents():
+                # Create a client
+                client = dialogflow_v2beta1.DocumentsClient()
+
+                # Initialize request argument(s)
+                gcs_source = dialogflow_v2beta1.GcsSources()
+                gcs_source.uris = ['uris_value_1', 'uris_value_2']
+
+                document_template = dialogflow_v2beta1.ImportDocumentTemplate()
+                document_template.mime_type = "mime_type_value"
+                document_template.knowledge_types = "SMART_REPLY"
+
+                request = dialogflow_v2beta1.ImportDocumentsRequest(
+                    gcs_source=gcs_source,
+                    parent="parent_value",
+                    document_template=document_template,
+                )
+
+                # Make the request
+                operation = client.import_documents(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.ImportDocumentsRequest, dict]):
                 The request object. Request message for
@@ -779,6 +888,31 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_delete_document():
+                # Create a client
+                client = dialogflow_v2beta1.DocumentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.DeleteDocumentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_document(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.DeleteDocumentRequest, dict]):
@@ -885,6 +1019,37 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_update_document():
+                # Create a client
+                client = dialogflow_v2beta1.DocumentsClient()
+
+                # Initialize request argument(s)
+                document = dialogflow_v2beta1.Document()
+                document.content_uri = "content_uri_value"
+                document.display_name = "display_name_value"
+                document.mime_type = "mime_type_value"
+                document.knowledge_types = "SMART_REPLY"
+
+                request = dialogflow_v2beta1.UpdateDocumentRequest(
+                    document=document,
+                )
+
+                # Make the request
+                operation = client.update_document(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.UpdateDocumentRequest, dict]):
@@ -1007,6 +1172,31 @@ class DocumentsClient(metaclass=DocumentsClientMeta):
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_reload_document():
+                # Create a client
+                client = dialogflow_v2beta1.DocumentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.ReloadDocumentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.reload_document(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.ReloadDocumentRequest, dict]):

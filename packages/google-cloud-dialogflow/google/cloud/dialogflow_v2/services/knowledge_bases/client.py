@@ -414,6 +414,28 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         r"""Returns the list of all knowledge bases of the
         specified agent.
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2
+
+            def sample_list_knowledge_bases():
+                # Create a client
+                client = dialogflow_v2.KnowledgeBasesClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2.ListKnowledgeBasesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_knowledge_bases(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2.types.ListKnowledgeBasesRequest, dict]):
                 The request object. Request message for
@@ -494,6 +516,26 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> knowledge_base.KnowledgeBase:
         r"""Retrieves the specified knowledge base.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2
+
+            def sample_get_knowledge_base():
+                # Create a client
+                client = dialogflow_v2.KnowledgeBasesClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2.GetKnowledgeBaseRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_knowledge_base(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2.types.GetKnowledgeBaseRequest, dict]):
@@ -577,6 +619,30 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_knowledge_base.KnowledgeBase:
         r"""Creates a knowledge base.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2
+
+            def sample_create_knowledge_base():
+                # Create a client
+                client = dialogflow_v2.KnowledgeBasesClient()
+
+                # Initialize request argument(s)
+                knowledge_base = dialogflow_v2.KnowledgeBase()
+                knowledge_base.display_name = "display_name_value"
+
+                request = dialogflow_v2.CreateKnowledgeBaseRequest(
+                    parent="parent_value",
+                    knowledge_base=knowledge_base,
+                )
+
+                # Make the request
+                response = client.create_knowledge_base(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2.types.CreateKnowledgeBaseRequest, dict]):
@@ -669,6 +735,23 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
     ) -> None:
         r"""Deletes the specified knowledge base.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2
+
+            def sample_delete_knowledge_base():
+                # Create a client
+                client = dialogflow_v2.KnowledgeBasesClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2.DeleteKnowledgeBaseRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_knowledge_base(request=request)
+
         Args:
             request (Union[google.cloud.dialogflow_v2.types.DeleteKnowledgeBaseRequest, dict]):
                 The request object. Request message for
@@ -734,6 +817,29 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_knowledge_base.KnowledgeBase:
         r"""Updates the specified knowledge base.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2
+
+            def sample_update_knowledge_base():
+                # Create a client
+                client = dialogflow_v2.KnowledgeBasesClient()
+
+                # Initialize request argument(s)
+                knowledge_base = dialogflow_v2.KnowledgeBase()
+                knowledge_base.display_name = "display_name_value"
+
+                request = dialogflow_v2.UpdateKnowledgeBaseRequest(
+                    knowledge_base=knowledge_base,
+                )
+
+                # Make the request
+                response = client.update_knowledge_base(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2.types.UpdateKnowledgeBaseRequest, dict]):

@@ -423,6 +423,28 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         integration. Contact Dialogflow support if you need to
         use session entities with Google Assistant integration.
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_list_session_entity_types():
+                # Create a client
+                client = dialogflow_v2beta1.SessionEntityTypesClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.ListSessionEntityTypesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_session_entity_types(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.ListSessionEntityTypesRequest, dict]):
                 The request object. The request message for
@@ -517,6 +539,27 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         This method doesn't work with Google Assistant
         integration. Contact Dialogflow support if you need to
         use session entities with Google Assistant integration.
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_get_session_entity_type():
+                # Create a client
+                client = dialogflow_v2beta1.SessionEntityTypesClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.GetSessionEntityTypeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_session_entity_type(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.GetSessionEntityTypeRequest, dict]):
@@ -615,6 +658,27 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         This method doesn't work with Google Assistant
         integration. Contact Dialogflow support if you need to
         use session entities with Google Assistant integration.
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_create_session_entity_type():
+                # Create a client
+                client = dialogflow_v2beta1.SessionEntityTypesClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.CreateSessionEntityTypeRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_session_entity_type(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.CreateSessionEntityTypeRequest, dict]):
@@ -724,6 +788,26 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         integration. Contact Dialogflow support if you need to
         use session entities with Google Assistant integration.
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_update_session_entity_type():
+                # Create a client
+                client = dialogflow_v2beta1.SessionEntityTypesClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.UpdateSessionEntityTypeRequest(
+                )
+
+                # Make the request
+                response = client.update_session_entity_type(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.UpdateSessionEntityTypeRequest, dict]):
                 The request object. The request message for
@@ -820,6 +904,24 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         This method doesn't work with Google Assistant
         integration. Contact Dialogflow support if you need to
         use session entities with Google Assistant integration.
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_delete_session_entity_type():
+                # Create a client
+                client = dialogflow_v2beta1.SessionEntityTypesClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.DeleteSessionEntityTypeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_session_entity_type(request=request)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.DeleteSessionEntityTypeRequest, dict]):

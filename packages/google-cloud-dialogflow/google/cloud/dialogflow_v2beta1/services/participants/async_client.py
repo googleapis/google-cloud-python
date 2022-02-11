@@ -230,6 +230,25 @@ class ParticipantsAsyncClient:
     ) -> gcd_participant.Participant:
         r"""Creates a new participant in a conversation.
 
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_create_participant():
+                # Create a client
+                client = dialogflow_v2beta1.ParticipantsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.CreateParticipantRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_participant(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.CreateParticipantRequest, dict]):
                 The request object. The request message for
@@ -309,6 +328,25 @@ class ParticipantsAsyncClient:
     ) -> participant.Participant:
         r"""Retrieves a conversation participant.
 
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_get_participant():
+                # Create a client
+                client = dialogflow_v2beta1.ParticipantsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.GetParticipantRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_participant(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.GetParticipantRequest, dict]):
                 The request object. The request message for
@@ -380,6 +418,27 @@ class ParticipantsAsyncClient:
     ) -> pagers.ListParticipantsAsyncPager:
         r"""Returns the list of all participants in the specified
         conversation.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_list_participants():
+                # Create a client
+                client = dialogflow_v2beta1.ParticipantsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.ListParticipantsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_participants(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.ListParticipantsRequest, dict]):
@@ -462,6 +521,24 @@ class ParticipantsAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_participant.Participant:
         r"""Updates the specified participant.
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_update_participant():
+                # Create a client
+                client = dialogflow_v2beta1.ParticipantsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.UpdateParticipantRequest(
+                )
+
+                # Make the request
+                response = client.update_participant(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.UpdateParticipantRequest, dict]):
@@ -549,6 +626,26 @@ class ParticipantsAsyncClient:
         Note: Always use agent versions for production traffic sent to
         virtual agents. See `Versions and
         environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_analyze_content():
+                # Create a client
+                client = dialogflow_v2beta1.ParticipantsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.AnalyzeContentRequest(
+                    participant="participant_value",
+                )
+
+                # Make the request
+                response = client.analyze_content(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.AnalyzeContentRequest, dict]):
@@ -657,6 +754,26 @@ class ParticipantsAsyncClient:
         will try to compile suggestion based on the provided
         conversation context in the real time.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_suggest_articles():
+                # Create a client
+                client = dialogflow_v2beta1.ParticipantsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.SuggestArticlesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.suggest_articles(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.SuggestArticlesRequest, dict]):
                 The request object. The request message for
@@ -730,6 +847,26 @@ class ParticipantsAsyncClient:
         r"""Gets suggested faq answers for a participant based on
         specific historical messages.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_suggest_faq_answers():
+                # Create a client
+                client = dialogflow_v2beta1.ParticipantsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.SuggestFaqAnswersRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.suggest_faq_answers(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.SuggestFaqAnswersRequest, dict]):
                 The request object. The request message for
@@ -802,6 +939,26 @@ class ParticipantsAsyncClient:
     ) -> participant.SuggestSmartRepliesResponse:
         r"""Gets smart replies for a participant based on
         specific historical messages.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_suggest_smart_replies():
+                # Create a client
+                client = dialogflow_v2beta1.ParticipantsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.SuggestSmartRepliesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.suggest_smart_replies(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.SuggestSmartRepliesRequest, dict]):
@@ -893,6 +1050,26 @@ class ParticipantsAsyncClient:
         ``create_time_epoch_microseconds > [first item's create_time of previous request]``
         and empty page_token.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_list_suggestions():
+                # Create a client
+                client = dialogflow_v2beta1.ParticipantsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.ListSuggestionsRequest(
+                )
+
+                # Make the request
+                page_result = client.list_suggestions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.ListSuggestionsRequest, dict]):
                 The request object. The request message for
@@ -968,6 +1145,25 @@ class ParticipantsAsyncClient:
         [CompileSuggestion][google.cloud.dialogflow.v2beta1.Participants.CompileSuggestion]
         will try to compile suggestion based on the provided
         conversation context in the real time.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_compile_suggestion():
+                # Create a client
+                client = dialogflow_v2beta1.ParticipantsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.CompileSuggestionRequest(
+                )
+
+                # Make the request
+                response = client.compile_suggestion(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.CompileSuggestionRequest, dict]):

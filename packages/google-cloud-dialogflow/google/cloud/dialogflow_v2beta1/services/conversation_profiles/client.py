@@ -501,6 +501,28 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         r"""Returns the list of all conversation profiles in the
         specified project.
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_list_conversation_profiles():
+                # Create a client
+                client = dialogflow_v2beta1.ConversationProfilesClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.ListConversationProfilesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_conversation_profiles(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.ListConversationProfilesRequest, dict]):
                 The request object. The request message for
@@ -586,6 +608,26 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
     ) -> conversation_profile.ConversationProfile:
         r"""Retrieves the specified conversation profile.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_get_conversation_profile():
+                # Create a client
+                client = dialogflow_v2beta1.ConversationProfilesClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.GetConversationProfileRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_conversation_profile(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.GetConversationProfileRequest, dict]):
                 The request object. The request message for
@@ -666,6 +708,31 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         response. You can retrieve them via
         [GetConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfiles.GetConversationProfile]
         API.
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_create_conversation_profile():
+                # Create a client
+                client = dialogflow_v2beta1.ConversationProfilesClient()
+
+                # Initialize request argument(s)
+                conversation_profile = dialogflow_v2beta1.ConversationProfile()
+                conversation_profile.display_name = "display_name_value"
+
+                request = dialogflow_v2beta1.CreateConversationProfileRequest(
+                    parent="parent_value",
+                    conversation_profile=conversation_profile,
+                )
+
+                # Make the request
+                response = client.create_conversation_profile(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.CreateConversationProfileRequest, dict]):
@@ -761,6 +828,30 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         [GetConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfiles.GetConversationProfile]
         API.
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_update_conversation_profile():
+                # Create a client
+                client = dialogflow_v2beta1.ConversationProfilesClient()
+
+                # Initialize request argument(s)
+                conversation_profile = dialogflow_v2beta1.ConversationProfile()
+                conversation_profile.display_name = "display_name_value"
+
+                request = dialogflow_v2beta1.UpdateConversationProfileRequest(
+                    conversation_profile=conversation_profile,
+                )
+
+                # Make the request
+                response = client.update_conversation_profile(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.UpdateConversationProfileRequest, dict]):
                 The request object. The request message for
@@ -848,6 +939,23 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified conversation profile.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_delete_conversation_profile():
+                # Create a client
+                client = dialogflow_v2beta1.ConversationProfilesClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.DeleteConversationProfileRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_conversation_profile(request=request)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.DeleteConversationProfileRequest, dict]):

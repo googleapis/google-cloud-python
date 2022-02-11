@@ -246,6 +246,26 @@ class SessionsAsyncClient:
         `Versions and
         environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_detect_intent():
+                # Create a client
+                client = dialogflow_v2beta1.SessionsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.DetectIntentRequest(
+                    session="session_value",
+                )
+
+                # Make the request
+                response = client.detect_intent(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.DetectIntentRequest, dict]):
                 The request object. The request to detect user's intent.
@@ -378,6 +398,37 @@ class SessionsAsyncClient:
         Note: Always use agent versions for production traffic. See
         `Versions and
         environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_streaming_detect_intent():
+                # Create a client
+                client = dialogflow_v2beta1.SessionsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.StreamingDetectIntentRequest(
+                    session="session_value",
+                )
+
+                # This method expects an iterator which contains
+                # 'dialogflow_v2beta1.StreamingDetectIntentRequest' objects
+                # Here we create a generator that yields a single `request` for
+                # demonstrative purposes.
+                requests = [request]
+
+                def request_generator():
+                    for request in requests:
+                        yield request
+
+                # Make the request
+                stream = client.streaming_detect_intent(requests=request_generator())
+
+                # Handle the response
+                for response in stream:
+                    print(response)
 
         Args:
             requests (AsyncIterator[`google.cloud.dialogflow_v2beta1.types.StreamingDetectIntentRequest`]):

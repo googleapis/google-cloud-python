@@ -219,6 +219,27 @@ class EntityTypesAsyncClient:
         r"""Returns the list of all entity types in the specified
         agent.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_list_entity_types():
+                # Create a client
+                client = dialogflow_v2beta1.EntityTypesClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.ListEntityTypesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_entity_types(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.ListEntityTypesRequest, dict]):
                 The request object. The request message for
@@ -314,6 +335,25 @@ class EntityTypesAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> entity_type.EntityType:
         r"""Retrieves the specified entity type.
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_get_entity_type():
+                # Create a client
+                client = dialogflow_v2beta1.EntityTypesClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.GetEntityTypeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_entity_type(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.GetEntityTypeRequest, dict]):
@@ -419,6 +459,31 @@ class EntityTypesAsyncClient:
         Note: You should always train an agent prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_create_entity_type():
+                # Create a client
+                client = dialogflow_v2beta1.EntityTypesClient()
+
+                # Initialize request argument(s)
+                entity_type = dialogflow_v2beta1.EntityType()
+                entity_type.display_name = "display_name_value"
+                entity_type.kind = "KIND_REGEXP"
+
+                request = dialogflow_v2beta1.CreateEntityTypeRequest(
+                    parent="parent_value",
+                    entity_type=entity_type,
+                )
+
+                # Make the request
+                response = client.create_entity_type(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.CreateEntityTypeRequest, dict]):
@@ -532,6 +597,30 @@ class EntityTypesAsyncClient:
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_update_entity_type():
+                # Create a client
+                client = dialogflow_v2beta1.EntityTypesClient()
+
+                # Initialize request argument(s)
+                entity_type = dialogflow_v2beta1.EntityType()
+                entity_type.display_name = "display_name_value"
+                entity_type.kind = "KIND_REGEXP"
+
+                request = dialogflow_v2beta1.UpdateEntityTypeRequest(
+                    entity_type=entity_type,
+                )
+
+                # Make the request
+                response = client.update_entity_type(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.UpdateEntityTypeRequest, dict]):
                 The request object. The request message for
@@ -641,6 +730,23 @@ class EntityTypesAsyncClient:
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_delete_entity_type():
+                # Create a client
+                client = dialogflow_v2beta1.EntityTypesClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.DeleteEntityTypeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_entity_type(request=request)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.DeleteEntityTypeRequest, dict]):
                 The request object. The request message for
@@ -721,6 +827,31 @@ class EntityTypesAsyncClient:
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_batch_update_entity_types():
+                # Create a client
+                client = dialogflow_v2beta1.EntityTypesClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.BatchUpdateEntityTypesRequest(
+                    entity_type_batch_uri="entity_type_batch_uri_value",
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.batch_update_entity_types(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.BatchUpdateEntityTypesRequest, dict]):
                 The request object. The request message for
@@ -797,6 +928,31 @@ class EntityTypesAsyncClient:
         Note: You should always train an agent prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_batch_delete_entity_types():
+                # Create a client
+                client = dialogflow_v2beta1.EntityTypesClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.BatchDeleteEntityTypesRequest(
+                    parent="parent_value",
+                    entity_type_names=['entity_type_names_value_1', 'entity_type_names_value_2'],
+                )
+
+                # Make the request
+                operation = client.batch_delete_entity_types(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.BatchDeleteEntityTypesRequest, dict]):
@@ -917,6 +1073,34 @@ class EntityTypesAsyncClient:
         Note: You should always train an agent prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_batch_create_entities():
+                # Create a client
+                client = dialogflow_v2beta1.EntityTypesClient()
+
+                # Initialize request argument(s)
+                entities = dialogflow_v2beta1.Entity()
+                entities.value = "value_value"
+
+                request = dialogflow_v2beta1.BatchCreateEntitiesRequest(
+                    parent="parent_value",
+                    entities=entities,
+                )
+
+                # Make the request
+                operation = client.batch_create_entities(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.BatchCreateEntitiesRequest, dict]):
@@ -1050,6 +1234,34 @@ class EntityTypesAsyncClient:
         -  ``response``: An `Empty
            message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_batch_update_entities():
+                # Create a client
+                client = dialogflow_v2beta1.EntityTypesClient()
+
+                # Initialize request argument(s)
+                entities = dialogflow_v2beta1.Entity()
+                entities.value = "value_value"
+
+                request = dialogflow_v2beta1.BatchUpdateEntitiesRequest(
+                    parent="parent_value",
+                    entities=entities,
+                )
+
+                # Make the request
+                operation = client.batch_update_entities(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.BatchUpdateEntitiesRequest, dict]):
                 The request object. The request message for
@@ -1181,6 +1393,31 @@ class EntityTypesAsyncClient:
         Note: You should always train an agent prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_batch_delete_entities():
+                # Create a client
+                client = dialogflow_v2beta1.EntityTypesClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.BatchDeleteEntitiesRequest(
+                    parent="parent_value",
+                    entity_values=['entity_values_value_1', 'entity_values_value_2'],
+                )
+
+                # Make the request
+                operation = client.batch_delete_entities(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.BatchDeleteEntitiesRequest, dict]):

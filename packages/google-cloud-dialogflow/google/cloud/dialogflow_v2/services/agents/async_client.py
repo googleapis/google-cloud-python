@@ -209,6 +209,25 @@ class AgentsAsyncClient:
     ) -> agent.Agent:
         r"""Retrieves the specified agent.
 
+        .. code-block::
+
+            from google.cloud import dialogflow_v2
+
+            def sample_get_agent():
+                # Create a client
+                client = dialogflow_v2.AgentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2.GetAgentRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.get_agent(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2.types.GetAgentRequest, dict]):
                 The request object. The request message for
@@ -293,6 +312,32 @@ class AgentsAsyncClient:
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2
+
+            def sample_set_agent():
+                # Create a client
+                client = dialogflow_v2.AgentsClient()
+
+                # Initialize request argument(s)
+                agent = dialogflow_v2.Agent()
+                agent.parent = "parent_value"
+                agent.display_name = "display_name_value"
+                agent.default_language_code = "default_language_code_value"
+                agent.time_zone = "time_zone_value"
+
+                request = dialogflow_v2.SetAgentRequest(
+                    agent=agent,
+                )
+
+                # Make the request
+                response = client.set_agent(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2.types.SetAgentRequest, dict]):
                 The request object. The request message for
@@ -373,6 +418,22 @@ class AgentsAsyncClient:
     ) -> None:
         r"""Deletes the specified agent.
 
+        .. code-block::
+
+            from google.cloud import dialogflow_v2
+
+            def sample_delete_agent():
+                # Create a client
+                client = dialogflow_v2.AgentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2.DeleteAgentRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                client.delete_agent(request=request)
+
         Args:
             request (Union[google.cloud.dialogflow_v2.types.DeleteAgentRequest, dict]):
                 The request object. The request message for
@@ -442,6 +503,27 @@ class AgentsAsyncClient:
         projects the caller has access to. One can achieve that with a
         wildcard project collection id "-". Refer to `List
         Sub-Collections <https://cloud.google.com/apis/design/design_patterns#list_sub-collections>`__.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2
+
+            def sample_search_agents():
+                # Create a client
+                client = dialogflow_v2.AgentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2.SearchAgentsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.search_agents(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2.types.SearchAgentsRequest, dict]):
@@ -536,6 +618,30 @@ class AgentsAsyncClient:
         Note: You should always train an agent prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2
+
+            def sample_train_agent():
+                # Create a client
+                client = dialogflow_v2.AgentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2.TrainAgentRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.train_agent(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2.types.TrainAgentRequest, dict]):
@@ -638,6 +744,31 @@ class AgentsAsyncClient:
            message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
         -  ``response``:
            [ExportAgentResponse][google.cloud.dialogflow.v2.ExportAgentResponse]
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2
+
+            def sample_export_agent():
+                # Create a client
+                client = dialogflow_v2.AgentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2.ExportAgentRequest(
+                    parent="parent_value",
+                    agent_uri="agent_uri_value",
+                )
+
+                # Make the request
+                operation = client.export_agent(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2.types.ExportAgentRequest, dict]):
@@ -749,6 +880,31 @@ class AgentsAsyncClient:
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2
+
+            def sample_import_agent():
+                # Create a client
+                client = dialogflow_v2.AgentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2.ImportAgentRequest(
+                    agent_uri="agent_uri_value",
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.import_agent(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2.types.ImportAgentRequest, dict]):
                 The request object. The request message for
@@ -845,6 +1001,31 @@ class AgentsAsyncClient:
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2
+
+            def sample_restore_agent():
+                # Create a client
+                client = dialogflow_v2.AgentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2.RestoreAgentRequest(
+                    agent_uri="agent_uri_value",
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.restore_agent(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2.types.RestoreAgentRequest, dict]):
                 The request object. The request message for
@@ -916,6 +1097,26 @@ class AgentsAsyncClient:
         r"""Gets agent validation result. Agent validation is
         performed during training time and is updated
         automatically when training is completed.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2
+
+            def sample_get_validation_result():
+                # Create a client
+                client = dialogflow_v2.AgentsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2.GetValidationResultRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.get_validation_result(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2.types.GetValidationResultRequest, dict]):

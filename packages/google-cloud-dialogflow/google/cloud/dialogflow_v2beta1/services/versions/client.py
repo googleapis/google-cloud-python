@@ -413,6 +413,28 @@ class VersionsClient(metaclass=VersionsClientMeta):
         r"""Returns the list of all versions of the specified
         agent.
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_list_versions():
+                # Create a client
+                client = dialogflow_v2beta1.VersionsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.ListVersionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_versions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.ListVersionsRequest, dict]):
                 The request object. The request message for
@@ -495,6 +517,26 @@ class VersionsClient(metaclass=VersionsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> version.Version:
         r"""Retrieves the specified agent version.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_get_version():
+                # Create a client
+                client = dialogflow_v2beta1.VersionsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.GetVersionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_version(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.GetVersionRequest, dict]):
@@ -590,6 +632,27 @@ class VersionsClient(metaclass=VersionsClientMeta):
         r"""Creates an agent version.
         The new version points to the agent instance in the
         "default" environment.
+
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_create_version():
+                # Create a client
+                client = dialogflow_v2beta1.VersionsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.CreateVersionRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_version(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.CreateVersionRequest, dict]):
@@ -696,6 +759,26 @@ class VersionsClient(metaclass=VersionsClientMeta):
         allows you to update only mutable properties of the
         version resource.
 
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_update_version():
+                # Create a client
+                client = dialogflow_v2beta1.VersionsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.UpdateVersionRequest(
+                )
+
+                # Make the request
+                response = client.update_version(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.UpdateVersionRequest, dict]):
                 The request object. The request message for
@@ -798,6 +881,23 @@ class VersionsClient(metaclass=VersionsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Delete the specified agent version.
+
+
+        .. code-block::
+
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_delete_version():
+                # Create a client
+                client = dialogflow_v2beta1.VersionsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.DeleteVersionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_version(request=request)
 
         Args:
             request (Union[google.cloud.dialogflow_v2beta1.types.DeleteVersionRequest, dict]):
