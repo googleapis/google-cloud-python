@@ -428,6 +428,27 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
     ) -> pagers.ListConnectivityTestsPager:
         r"""Lists all Connectivity Tests owned by a project.
 
+
+        .. code-block::
+
+            from google.cloud import network_management_v1
+
+            def sample_list_connectivity_tests():
+                # Create a client
+                client = network_management_v1.ReachabilityServiceClient()
+
+                # Initialize request argument(s)
+                request = network_management_v1.ListConnectivityTestsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_connectivity_tests(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.network_management_v1.types.ListConnectivityTestsRequest, dict]):
                 The request object. Request for the
@@ -506,6 +527,26 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> connectivity_test.ConnectivityTest:
         r"""Gets the details of a specific Connectivity Test.
+
+
+        .. code-block::
+
+            from google.cloud import network_management_v1
+
+            def sample_get_connectivity_test():
+                # Create a client
+                client = network_management_v1.ReachabilityServiceClient()
+
+                # Initialize request argument(s)
+                request = network_management_v1.GetConnectivityTestRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_connectivity_test(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.network_management_v1.types.GetConnectivityTestRequest, dict]):
@@ -593,6 +634,36 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
         incomplete, the reachability result returns a value of
         AMBIGUOUS. For more information, see the Connectivity Test
         documentation.
+
+
+
+        .. code-block::
+
+            from google.cloud import network_management_v1
+
+            def sample_create_connectivity_test():
+                # Create a client
+                client = network_management_v1.ReachabilityServiceClient()
+
+                # Initialize request argument(s)
+                resource = network_management_v1.ConnectivityTest()
+                resource.name = "name_value"
+
+                request = network_management_v1.CreateConnectivityTestRequest(
+                    parent="parent_value",
+                    test_id="test_id_value",
+                    resource=resource,
+                )
+
+                # Make the request
+                operation = client.create_connectivity_test(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.network_management_v1.types.CreateConnectivityTestRequest, dict]):
@@ -715,6 +786,34 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
         ``AMBIGUOUS``. See the documentation in ``ConnectivityTest`` for
         for more details.
 
+
+
+        .. code-block::
+
+            from google.cloud import network_management_v1
+
+            def sample_update_connectivity_test():
+                # Create a client
+                client = network_management_v1.ReachabilityServiceClient()
+
+                # Initialize request argument(s)
+                resource = network_management_v1.ConnectivityTest()
+                resource.name = "name_value"
+
+                request = network_management_v1.UpdateConnectivityTestRequest(
+                    resource=resource,
+                )
+
+                # Make the request
+                operation = client.update_connectivity_test(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.network_management_v1.types.UpdateConnectivityTestRequest, dict]):
                 The request object. Request for the
@@ -821,6 +920,31 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
         configurations of listed projects), then the reachability result
         returns a value of ``UNKNOWN``.
 
+
+
+        .. code-block::
+
+            from google.cloud import network_management_v1
+
+            def sample_rerun_connectivity_test():
+                # Create a client
+                client = network_management_v1.ReachabilityServiceClient()
+
+                # Initialize request argument(s)
+                request = network_management_v1.RerunConnectivityTestRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.rerun_connectivity_test(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.network_management_v1.types.RerunConnectivityTestRequest, dict]):
                 The request object. Request for the
@@ -882,6 +1006,30 @@ class ReachabilityServiceClient(metaclass=ReachabilityServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a specific ``ConnectivityTest``.
+
+
+        .. code-block::
+
+            from google.cloud import network_management_v1
+
+            def sample_delete_connectivity_test():
+                # Create a client
+                client = network_management_v1.ReachabilityServiceClient()
+
+                # Initialize request argument(s)
+                request = network_management_v1.DeleteConnectivityTestRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_connectivity_test(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.network_management_v1.types.DeleteConnectivityTestRequest, dict]):
