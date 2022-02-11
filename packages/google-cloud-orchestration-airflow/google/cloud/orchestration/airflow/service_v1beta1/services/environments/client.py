@@ -417,6 +417,29 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
     ) -> operation.Operation:
         r"""Create a new environment.
 
+
+        .. code-block::
+
+            from google.cloud.orchestration.airflow import service_v1beta1
+
+            def sample_create_environment():
+                # Create a client
+                client = service_v1beta1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = service_v1beta1.CreateEnvironmentRequest(
+                )
+
+                # Make the request
+                operation = client.create_environment(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.orchestration.airflow.service_v1beta1.types.CreateEnvironmentRequest, dict]):
                 The request object. Create a new environment.
@@ -505,6 +528,25 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
     ) -> environments.Environment:
         r"""Get an existing environment.
 
+
+        .. code-block::
+
+            from google.cloud.orchestration.airflow import service_v1beta1
+
+            def sample_get_environment():
+                # Create a client
+                client = service_v1beta1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = service_v1beta1.GetEnvironmentRequest(
+                )
+
+                # Make the request
+                response = client.get_environment(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.orchestration.airflow.service_v1beta1.types.GetEnvironmentRequest, dict]):
                 The request object. Get an environment.
@@ -575,6 +617,26 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEnvironmentsPager:
         r"""List environments.
+
+
+        .. code-block::
+
+            from google.cloud.orchestration.airflow import service_v1beta1
+
+            def sample_list_environments():
+                # Create a client
+                client = service_v1beta1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = service_v1beta1.ListEnvironmentsRequest(
+                )
+
+                # Make the request
+                page_result = client.list_environments(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.orchestration.airflow.service_v1beta1.types.ListEnvironmentsRequest, dict]):
@@ -658,6 +720,29 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Update an environment.
+
+
+        .. code-block::
+
+            from google.cloud.orchestration.airflow import service_v1beta1
+
+            def sample_update_environment():
+                # Create a client
+                client = service_v1beta1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = service_v1beta1.UpdateEnvironmentRequest(
+                )
+
+                # Make the request
+                operation = client.update_environment(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.orchestration.airflow.service_v1beta1.types.UpdateEnvironmentRequest, dict]):
@@ -940,6 +1025,29 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
     ) -> operation.Operation:
         r"""Delete an environment.
 
+
+        .. code-block::
+
+            from google.cloud.orchestration.airflow import service_v1beta1
+
+            def sample_delete_environment():
+                # Create a client
+                client = service_v1beta1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = service_v1beta1.DeleteEnvironmentRequest(
+                )
+
+                # Make the request
+                operation = client.delete_environment(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.orchestration.airflow.service_v1beta1.types.DeleteEnvironmentRequest, dict]):
                 The request object. Delete an environment.
@@ -1031,6 +1139,29 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
     ) -> operation.Operation:
         r"""Restart Airflow web server.
 
+
+        .. code-block::
+
+            from google.cloud.orchestration.airflow import service_v1beta1
+
+            def sample_restart_web_server():
+                # Create a client
+                client = service_v1beta1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = service_v1beta1.RestartWebServerRequest(
+                )
+
+                # Make the request
+                operation = client.restart_web_server(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.orchestration.airflow.service_v1beta1.types.RestartWebServerRequest, dict]):
                 The request object. Restart Airflow web server.
@@ -1093,6 +1224,30 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         succeed.
         In case of problems detailed info can be found in the
         returned Operation.
+
+
+
+        .. code-block::
+
+            from google.cloud.orchestration.airflow import service_v1beta1
+
+            def sample_check_upgrade():
+                # Create a client
+                client = service_v1beta1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = service_v1beta1.CheckUpgradeRequest(
+                )
+
+                # Make the request
+                operation = client.check_upgrade(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.orchestration.airflow.service_v1beta1.types.CheckUpgradeRequest, dict]):

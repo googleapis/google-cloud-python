@@ -213,6 +213,25 @@ class ImageVersionsAsyncClient:
     ) -> pagers.ListImageVersionsAsyncPager:
         r"""List ImageVersions for provided location.
 
+        .. code-block::
+
+            from google.cloud.orchestration.airflow import service_v1beta1
+
+            def sample_list_image_versions():
+                # Create a client
+                client = service_v1beta1.ImageVersionsClient()
+
+                # Initialize request argument(s)
+                request = service_v1beta1.ListImageVersionsRequest(
+                )
+
+                # Make the request
+                page_result = client.list_image_versions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.orchestration.airflow.service_v1beta1.types.ListImageVersionsRequest, dict]):
                 The request object. List ImageVersions in a project and
