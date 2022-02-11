@@ -14,12 +14,12 @@
       "regionTag": "apigeeconnect_generated_apigeeconnect_v1_ConnectionService_ListConnections_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -34,11 +34,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -56,12 +58,12 @@
       "regionTag": "apigeeconnect_generated_apigeeconnect_v1_ConnectionService_ListConnections_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -76,11 +78,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -99,12 +103,12 @@
       "regionTag": "apigeeconnect_generated_apigeeconnect_v1_Tether_Egress_async",
       "segments": [
         {
-          "end": 51,
+          "end": 54,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 54,
           "start": 27,
           "type": "SHORT"
         },
@@ -114,16 +118,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 46,
+          "end": 47,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 47,
+          "end": 50,
+          "start": 48,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 55,
+          "start": 51,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -141,12 +147,12 @@
       "regionTag": "apigeeconnect_generated_apigeeconnect_v1_Tether_Egress_sync",
       "segments": [
         {
-          "end": 51,
+          "end": 54,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 54,
           "start": 27,
           "type": "SHORT"
         },
@@ -156,16 +162,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 46,
+          "end": 47,
           "start": 34,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 47,
+          "end": 50,
+          "start": 48,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 55,
+          "start": 51,
           "type": "RESPONSE_HANDLING"
         }
       ]

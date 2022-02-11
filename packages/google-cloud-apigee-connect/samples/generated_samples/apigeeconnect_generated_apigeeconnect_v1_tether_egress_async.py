@@ -40,12 +40,15 @@ async def sample_egress():
     # Here we create a generator that yields a single `request` for
     # demonstrative purposes.
     requests = [request]
+
     def request_generator():
         for request in requests:
             yield request
 
     # Make the request
     stream = await client.egress(requests=request_generator())
+
+    # Handle the response
     async for response in stream:
         print(response)
 

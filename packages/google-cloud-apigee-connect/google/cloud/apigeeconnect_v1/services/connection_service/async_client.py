@@ -232,6 +232,8 @@ class ConnectionServiceAsyncClient:
 
                 # Make the request
                 page_result = client.list_connections(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
