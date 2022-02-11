@@ -244,6 +244,30 @@ class CloudBuildAsyncClient:
         the build ID. Pass the build ID to ``GetBuild`` to determine the
         build status (such as ``SUCCESS`` or ``FAILURE``).
 
+
+        .. code-block::
+
+            from google.cloud.devtools import cloudbuild_v1
+
+            def sample_create_build():
+                # Create a client
+                client = cloudbuild_v1.CloudBuildClient()
+
+                # Initialize request argument(s)
+                request = cloudbuild_v1.CreateBuildRequest(
+                    project_id="project_id_value",
+                )
+
+                # Make the request
+                operation = client.create_build(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.devtools.cloudbuild_v1.types.CreateBuildRequest, dict]):
                 The request object. Request to create a new build.
@@ -351,6 +375,27 @@ class CloudBuildAsyncClient:
         ``SUCCESS``, ``FAILURE``, or ``WORKING``), and timing
         information.
 
+
+        .. code-block::
+
+            from google.cloud.devtools import cloudbuild_v1
+
+            def sample_get_build():
+                # Create a client
+                client = cloudbuild_v1.CloudBuildClient()
+
+                # Initialize request argument(s)
+                request = cloudbuild_v1.GetBuildRequest(
+                    project_id="project_id_value",
+                    id="id_value",
+                )
+
+                # Make the request
+                response = client.get_build(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.devtools.cloudbuild_v1.types.GetBuildRequest, dict]):
                 The request object. Request to get a build.
@@ -454,6 +499,27 @@ class CloudBuildAsyncClient:
         Previously requested builds may still be in-progress, or
         may have finished successfully or unsuccessfully.
 
+
+        .. code-block::
+
+            from google.cloud.devtools import cloudbuild_v1
+
+            def sample_list_builds():
+                # Create a client
+                client = cloudbuild_v1.CloudBuildClient()
+
+                # Initialize request argument(s)
+                request = cloudbuild_v1.ListBuildsRequest(
+                    project_id="project_id_value",
+                )
+
+                # Make the request
+                page_result = client.list_builds(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.devtools.cloudbuild_v1.types.ListBuildsRequest, dict]):
                 The request object. Request to list builds.
@@ -543,6 +609,26 @@ class CloudBuildAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloudbuild.Build:
         r"""Cancels a build in progress.
+
+        .. code-block::
+
+            from google.cloud.devtools import cloudbuild_v1
+
+            def sample_cancel_build():
+                # Create a client
+                client = cloudbuild_v1.CloudBuildClient()
+
+                # Initialize request argument(s)
+                request = cloudbuild_v1.CancelBuildRequest(
+                    project_id="project_id_value",
+                    id="id_value",
+                )
+
+                # Make the request
+                response = client.cancel_build(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.devtools.cloudbuild_v1.types.CancelBuildRequest, dict]):
@@ -664,6 +750,31 @@ class CloudBuildAsyncClient:
            available depending on the bucket's lifecycle management
            settings.
 
+
+        .. code-block::
+
+            from google.cloud.devtools import cloudbuild_v1
+
+            def sample_retry_build():
+                # Create a client
+                client = cloudbuild_v1.CloudBuildClient()
+
+                # Initialize request argument(s)
+                request = cloudbuild_v1.RetryBuildRequest(
+                    project_id="project_id_value",
+                    id="id_value",
+                )
+
+                # Make the request
+                operation = client.retry_build(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.devtools.cloudbuild_v1.types.RetryBuildRequest, dict]):
                 The request object. Specifies a build to retry.
@@ -772,6 +883,30 @@ class CloudBuildAsyncClient:
         LRO returned from a CreateBuild call.
 
         If rejected, the returned LRO will be immediately done.
+
+
+        .. code-block::
+
+            from google.cloud.devtools import cloudbuild_v1
+
+            def sample_approve_build():
+                # Create a client
+                client = cloudbuild_v1.CloudBuildClient()
+
+                # Initialize request argument(s)
+                request = cloudbuild_v1.ApproveBuildRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.approve_build(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.devtools.cloudbuild_v1.types.ApproveBuildRequest, dict]):
@@ -887,6 +1022,30 @@ class CloudBuildAsyncClient:
 
         This API is experimental.
 
+
+        .. code-block::
+
+            from google.cloud.devtools import cloudbuild_v1
+
+            def sample_create_build_trigger():
+                # Create a client
+                client = cloudbuild_v1.CloudBuildClient()
+
+                # Initialize request argument(s)
+                trigger = cloudbuild_v1.BuildTrigger()
+                trigger.autodetect = True
+
+                request = cloudbuild_v1.CreateBuildTriggerRequest(
+                    project_id="project_id_value",
+                    trigger=trigger,
+                )
+
+                # Make the request
+                response = client.create_build_trigger(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.devtools.cloudbuild_v1.types.CreateBuildTriggerRequest, dict]):
                 The request object. Request to create a new
@@ -962,6 +1121,27 @@ class CloudBuildAsyncClient:
         r"""Returns information about a ``BuildTrigger``.
 
         This API is experimental.
+
+
+        .. code-block::
+
+            from google.cloud.devtools import cloudbuild_v1
+
+            def sample_get_build_trigger():
+                # Create a client
+                client = cloudbuild_v1.CloudBuildClient()
+
+                # Initialize request argument(s)
+                request = cloudbuild_v1.GetBuildTriggerRequest(
+                    project_id="project_id_value",
+                    trigger_id="trigger_id_value",
+                )
+
+                # Make the request
+                response = client.get_build_trigger(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.devtools.cloudbuild_v1.types.GetBuildTriggerRequest, dict]):
@@ -1050,6 +1230,27 @@ class CloudBuildAsyncClient:
 
         This API is experimental.
 
+
+        .. code-block::
+
+            from google.cloud.devtools import cloudbuild_v1
+
+            def sample_list_build_triggers():
+                # Create a client
+                client = cloudbuild_v1.CloudBuildClient()
+
+                # Initialize request argument(s)
+                request = cloudbuild_v1.ListBuildTriggersRequest(
+                    project_id="project_id_value",
+                )
+
+                # Make the request
+                page_result = client.list_build_triggers(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.devtools.cloudbuild_v1.types.ListBuildTriggersRequest, dict]):
                 The request object. Request to list existing
@@ -1136,6 +1337,24 @@ class CloudBuildAsyncClient:
 
         This API is experimental.
 
+
+        .. code-block::
+
+            from google.cloud.devtools import cloudbuild_v1
+
+            def sample_delete_build_trigger():
+                # Create a client
+                client = cloudbuild_v1.CloudBuildClient()
+
+                # Initialize request argument(s)
+                request = cloudbuild_v1.DeleteBuildTriggerRequest(
+                    project_id="project_id_value",
+                    trigger_id="trigger_id_value",
+                )
+
+                # Make the request
+                client.delete_build_trigger(request=request)
+
         Args:
             request (Union[google.cloud.devtools.cloudbuild_v1.types.DeleteBuildTriggerRequest, dict]):
                 The request object. Request to delete a `BuildTrigger`.
@@ -1213,6 +1432,31 @@ class CloudBuildAsyncClient:
         r"""Updates a ``BuildTrigger`` by its project ID and trigger ID.
 
         This API is experimental.
+
+
+        .. code-block::
+
+            from google.cloud.devtools import cloudbuild_v1
+
+            def sample_update_build_trigger():
+                # Create a client
+                client = cloudbuild_v1.CloudBuildClient()
+
+                # Initialize request argument(s)
+                trigger = cloudbuild_v1.BuildTrigger()
+                trigger.autodetect = True
+
+                request = cloudbuild_v1.UpdateBuildTriggerRequest(
+                    project_id="project_id_value",
+                    trigger_id="trigger_id_value",
+                    trigger=trigger,
+                )
+
+                # Make the request
+                response = client.update_build_trigger(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.devtools.cloudbuild_v1.types.UpdateBuildTriggerRequest, dict]):
@@ -1295,6 +1539,30 @@ class CloudBuildAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Runs a ``BuildTrigger`` at a particular source revision.
+
+        .. code-block::
+
+            from google.cloud.devtools import cloudbuild_v1
+
+            def sample_run_build_trigger():
+                # Create a client
+                client = cloudbuild_v1.CloudBuildClient()
+
+                # Initialize request argument(s)
+                request = cloudbuild_v1.RunBuildTriggerRequest(
+                    project_id="project_id_value",
+                    trigger_id="trigger_id_value",
+                )
+
+                # Make the request
+                operation = client.run_build_trigger(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.devtools.cloudbuild_v1.types.RunBuildTriggerRequest, dict]):
@@ -1406,6 +1674,25 @@ class CloudBuildAsyncClient:
         r"""ReceiveTriggerWebhook [Experimental] is called when the API
         receives a webhook request targeted at a specific trigger.
 
+
+        .. code-block::
+
+            from google.cloud.devtools import cloudbuild_v1
+
+            def sample_receive_trigger_webhook():
+                # Create a client
+                client = cloudbuild_v1.CloudBuildClient()
+
+                # Initialize request argument(s)
+                request = cloudbuild_v1.ReceiveTriggerWebhookRequest(
+                )
+
+                # Make the request
+                response = client.receive_trigger_webhook(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.devtools.cloudbuild_v1.types.ReceiveTriggerWebhookRequest, dict]):
                 The request object. ReceiveTriggerWebhookRequest
@@ -1452,6 +1739,30 @@ class CloudBuildAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a ``WorkerPool``.
+
+        .. code-block::
+
+            from google.cloud.devtools import cloudbuild_v1
+
+            def sample_create_worker_pool():
+                # Create a client
+                client = cloudbuild_v1.CloudBuildClient()
+
+                # Initialize request argument(s)
+                request = cloudbuild_v1.CreateWorkerPoolRequest(
+                    parent="parent_value",
+                    worker_pool_id="worker_pool_id_value",
+                )
+
+                # Make the request
+                operation = client.create_worker_pool(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.devtools.cloudbuild_v1.types.CreateWorkerPoolRequest, dict]):
@@ -1570,6 +1881,25 @@ class CloudBuildAsyncClient:
     ) -> cloudbuild.WorkerPool:
         r"""Returns details of a ``WorkerPool``.
 
+        .. code-block::
+
+            from google.cloud.devtools import cloudbuild_v1
+
+            def sample_get_worker_pool():
+                # Create a client
+                client = cloudbuild_v1.CloudBuildClient()
+
+                # Initialize request argument(s)
+                request = cloudbuild_v1.GetWorkerPoolRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_worker_pool(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.devtools.cloudbuild_v1.types.GetWorkerPoolRequest, dict]):
                 The request object. Request to get a `WorkerPool` with
@@ -1665,6 +1995,29 @@ class CloudBuildAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a ``WorkerPool``.
 
+        .. code-block::
+
+            from google.cloud.devtools import cloudbuild_v1
+
+            def sample_delete_worker_pool():
+                # Create a client
+                client = cloudbuild_v1.CloudBuildClient()
+
+                # Initialize request argument(s)
+                request = cloudbuild_v1.DeleteWorkerPoolRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_worker_pool(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.devtools.cloudbuild_v1.types.DeleteWorkerPoolRequest, dict]):
                 The request object. Request to delete a `WorkerPool`.
@@ -1757,6 +2110,28 @@ class CloudBuildAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates a ``WorkerPool``.
+
+        .. code-block::
+
+            from google.cloud.devtools import cloudbuild_v1
+
+            def sample_update_worker_pool():
+                # Create a client
+                client = cloudbuild_v1.CloudBuildClient()
+
+                # Initialize request argument(s)
+                request = cloudbuild_v1.UpdateWorkerPoolRequest(
+                )
+
+                # Make the request
+                operation = client.update_worker_pool(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.devtools.cloudbuild_v1.types.UpdateWorkerPoolRequest, dict]):
@@ -1866,6 +2241,26 @@ class CloudBuildAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListWorkerPoolsAsyncPager:
         r"""Lists ``WorkerPool``\ s.
+
+        .. code-block::
+
+            from google.cloud.devtools import cloudbuild_v1
+
+            def sample_list_worker_pools():
+                # Create a client
+                client = cloudbuild_v1.CloudBuildClient()
+
+                # Initialize request argument(s)
+                request = cloudbuild_v1.ListWorkerPoolsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_worker_pools(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.devtools.cloudbuild_v1.types.ListWorkerPoolsRequest, dict]):
