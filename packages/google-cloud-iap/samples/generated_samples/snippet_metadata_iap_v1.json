@@ -1,0 +1,1157 @@
+{
+  "snippets": [
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "IdentityAwareProxyAdminService"
+          },
+          "shortName": "GetIamPolicy"
+        }
+      },
+      "file": "iap_generated_iap_v1_identity_aware_proxy_admin_service_get_iam_policy_async.py",
+      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyAdminService_GetIamPolicy_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "IdentityAwareProxyAdminService"
+          },
+          "shortName": "GetIamPolicy"
+        }
+      },
+      "file": "iap_generated_iap_v1_identity_aware_proxy_admin_service_get_iam_policy_sync.py",
+      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyAdminService_GetIamPolicy_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "IdentityAwareProxyAdminService"
+          },
+          "shortName": "GetIapSettings"
+        }
+      },
+      "file": "iap_generated_iap_v1_identity_aware_proxy_admin_service_get_iap_settings_async.py",
+      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyAdminService_GetIapSettings_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "IdentityAwareProxyAdminService"
+          },
+          "shortName": "GetIapSettings"
+        }
+      },
+      "file": "iap_generated_iap_v1_identity_aware_proxy_admin_service_get_iap_settings_sync.py",
+      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyAdminService_GetIapSettings_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "IdentityAwareProxyAdminService"
+          },
+          "shortName": "SetIamPolicy"
+        }
+      },
+      "file": "iap_generated_iap_v1_identity_aware_proxy_admin_service_set_iam_policy_async.py",
+      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyAdminService_SetIamPolicy_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "IdentityAwareProxyAdminService"
+          },
+          "shortName": "SetIamPolicy"
+        }
+      },
+      "file": "iap_generated_iap_v1_identity_aware_proxy_admin_service_set_iam_policy_sync.py",
+      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyAdminService_SetIamPolicy_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "IdentityAwareProxyAdminService"
+          },
+          "shortName": "TestIamPermissions"
+        }
+      },
+      "file": "iap_generated_iap_v1_identity_aware_proxy_admin_service_test_iam_permissions_async.py",
+      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyAdminService_TestIamPermissions_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "IdentityAwareProxyAdminService"
+          },
+          "shortName": "TestIamPermissions"
+        }
+      },
+      "file": "iap_generated_iap_v1_identity_aware_proxy_admin_service_test_iam_permissions_sync.py",
+      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyAdminService_TestIamPermissions_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "IdentityAwareProxyAdminService"
+          },
+          "shortName": "UpdateIapSettings"
+        }
+      },
+      "file": "iap_generated_iap_v1_identity_aware_proxy_admin_service_update_iap_settings_async.py",
+      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyAdminService_UpdateIapSettings_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "IdentityAwareProxyAdminService"
+          },
+          "shortName": "UpdateIapSettings"
+        }
+      },
+      "file": "iap_generated_iap_v1_identity_aware_proxy_admin_service_update_iap_settings_sync.py",
+      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyAdminService_UpdateIapSettings_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "IdentityAwareProxyOAuthService"
+          },
+          "shortName": "CreateBrand"
+        }
+      },
+      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_create_brand_async.py",
+      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_CreateBrand_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "IdentityAwareProxyOAuthService"
+          },
+          "shortName": "CreateBrand"
+        }
+      },
+      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_create_brand_sync.py",
+      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_CreateBrand_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "IdentityAwareProxyOAuthService"
+          },
+          "shortName": "CreateIdentityAwareProxyClient"
+        }
+      },
+      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_create_identity_aware_proxy_client_async.py",
+      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_CreateIdentityAwareProxyClient_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "IdentityAwareProxyOAuthService"
+          },
+          "shortName": "CreateIdentityAwareProxyClient"
+        }
+      },
+      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_create_identity_aware_proxy_client_sync.py",
+      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_CreateIdentityAwareProxyClient_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "IdentityAwareProxyOAuthService"
+          },
+          "shortName": "DeleteIdentityAwareProxyClient"
+        }
+      },
+      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_delete_identity_aware_proxy_client_async.py",
+      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_DeleteIdentityAwareProxyClient_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "IdentityAwareProxyOAuthService"
+          },
+          "shortName": "DeleteIdentityAwareProxyClient"
+        }
+      },
+      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_delete_identity_aware_proxy_client_sync.py",
+      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_DeleteIdentityAwareProxyClient_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "IdentityAwareProxyOAuthService"
+          },
+          "shortName": "GetBrand"
+        }
+      },
+      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_get_brand_async.py",
+      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_GetBrand_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "IdentityAwareProxyOAuthService"
+          },
+          "shortName": "GetBrand"
+        }
+      },
+      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_get_brand_sync.py",
+      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_GetBrand_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "IdentityAwareProxyOAuthService"
+          },
+          "shortName": "GetIdentityAwareProxyClient"
+        }
+      },
+      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_get_identity_aware_proxy_client_async.py",
+      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_GetIdentityAwareProxyClient_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "IdentityAwareProxyOAuthService"
+          },
+          "shortName": "GetIdentityAwareProxyClient"
+        }
+      },
+      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_get_identity_aware_proxy_client_sync.py",
+      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_GetIdentityAwareProxyClient_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "IdentityAwareProxyOAuthService"
+          },
+          "shortName": "ListBrands"
+        }
+      },
+      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_list_brands_async.py",
+      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_ListBrands_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "IdentityAwareProxyOAuthService"
+          },
+          "shortName": "ListBrands"
+        }
+      },
+      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_list_brands_sync.py",
+      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_ListBrands_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "IdentityAwareProxyOAuthService"
+          },
+          "shortName": "ListIdentityAwareProxyClients"
+        }
+      },
+      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_list_identity_aware_proxy_clients_async.py",
+      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_ListIdentityAwareProxyClients_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "IdentityAwareProxyOAuthService"
+          },
+          "shortName": "ListIdentityAwareProxyClients"
+        }
+      },
+      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_list_identity_aware_proxy_clients_sync.py",
+      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_ListIdentityAwareProxyClients_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "IdentityAwareProxyOAuthService"
+          },
+          "shortName": "ResetIdentityAwareProxyClientSecret"
+        }
+      },
+      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_reset_identity_aware_proxy_client_secret_async.py",
+      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_ResetIdentityAwareProxyClientSecret_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "IdentityAwareProxyOAuthService"
+          },
+          "shortName": "ResetIdentityAwareProxyClientSecret"
+        }
+      },
+      "file": "iap_generated_iap_v1_identity_aware_proxy_o_auth_service_reset_identity_aware_proxy_client_secret_sync.py",
+      "regionTag": "iap_generated_iap_v1_IdentityAwareProxyOAuthService_ResetIdentityAwareProxyClientSecret_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    }
+  ]
+}

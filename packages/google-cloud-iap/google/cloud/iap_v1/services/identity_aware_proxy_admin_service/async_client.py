@@ -224,6 +224,26 @@ class IdentityAwareProxyAdminServiceAsyncClient:
         information about managing access via IAP can be found at:
         https://cloud.google.com/iap/docs/managing-access#managing_access_via_the_api
 
+
+        .. code-block::
+
+            from google.cloud import iap_v1
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = iap_v1.IdentityAwareProxyAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = iap_v1.SetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
                 The request object. Request message for `SetIamPolicy`
@@ -331,6 +351,26 @@ class IdentityAwareProxyAdminServiceAsyncClient:
         protected resource. More information about managing access via
         IAP can be found at:
         https://cloud.google.com/iap/docs/managing-access#managing_access_via_the_api
+
+
+        .. code-block::
+
+            from google.cloud import iap_v1
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = iap_v1.IdentityAwareProxyAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = iap_v1.GetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
@@ -440,6 +480,27 @@ class IdentityAwareProxyAdminServiceAsyncClient:
         via IAP can be found at:
         https://cloud.google.com/iap/docs/managing-access#managing_access_via_the_api
 
+
+        .. code-block::
+
+            from google.cloud import iap_v1
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = iap_v1.IdentityAwareProxyAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = iap_v1.TestIamPermissionsRequest(
+                    resource="resource_value",
+                    permissions=['permissions_value_1', 'permissions_value_2'],
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
                 The request object. Request message for
@@ -491,6 +552,26 @@ class IdentityAwareProxyAdminServiceAsyncClient:
         r"""Gets the IAP settings on a particular IAP protected
         resource.
 
+
+        .. code-block::
+
+            from google.cloud import iap_v1
+
+            def sample_get_iap_settings():
+                # Create a client
+                client = iap_v1.IdentityAwareProxyAdminServiceClient()
+
+                # Initialize request argument(s)
+                request = iap_v1.GetIapSettingsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_iap_settings(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.iap_v1.types.GetIapSettingsRequest, dict]):
                 The request object. The request sent to GetIapSettings.
@@ -537,6 +618,29 @@ class IdentityAwareProxyAdminServiceAsyncClient:
     ) -> service.IapSettings:
         r"""Updates the IAP settings on a particular IAP protected resource.
         It replaces all fields unless the ``update_mask`` is set.
+
+
+        .. code-block::
+
+            from google.cloud import iap_v1
+
+            def sample_update_iap_settings():
+                # Create a client
+                client = iap_v1.IdentityAwareProxyAdminServiceClient()
+
+                # Initialize request argument(s)
+                iap_settings = iap_v1.IapSettings()
+                iap_settings.name = "name_value"
+
+                request = iap_v1.UpdateIapSettingsRequest(
+                    iap_settings=iap_settings,
+                )
+
+                # Make the request
+                response = client.update_iap_settings(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.iap_v1.types.UpdateIapSettingsRequest, dict]):

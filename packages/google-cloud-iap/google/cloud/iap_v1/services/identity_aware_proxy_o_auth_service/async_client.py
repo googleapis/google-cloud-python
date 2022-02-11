@@ -223,6 +223,25 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
     ) -> service.ListBrandsResponse:
         r"""Lists the existing brands for the project.
 
+        .. code-block::
+
+            from google.cloud import iap_v1
+
+            def sample_list_brands():
+                # Create a client
+                client = iap_v1.IdentityAwareProxyOAuthServiceClient()
+
+                # Initialize request argument(s)
+                request = iap_v1.ListBrandsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.list_brands(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.iap_v1.types.ListBrandsRequest, dict]):
                 The request object. The request sent to ListBrands.
@@ -278,6 +297,26 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         project, and that the specified support email is owned
         by the caller.
 
+
+        .. code-block::
+
+            from google.cloud import iap_v1
+
+            def sample_create_brand():
+                # Create a client
+                client = iap_v1.IdentityAwareProxyOAuthServiceClient()
+
+                # Initialize request argument(s)
+                request = iap_v1.CreateBrandRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_brand(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.iap_v1.types.CreateBrandRequest, dict]):
                 The request object. The request sent to CreateBrand.
@@ -326,6 +365,25 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.Brand:
         r"""Retrieves the OAuth brand of the project.
+
+        .. code-block::
+
+            from google.cloud import iap_v1
+
+            def sample_get_brand():
+                # Create a client
+                client = iap_v1.IdentityAwareProxyOAuthServiceClient()
+
+                # Initialize request argument(s)
+                request = iap_v1.GetBrandRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_brand(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.iap_v1.types.GetBrandRequest, dict]):
@@ -379,6 +437,26 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         the project exists and that it is set for internal-only
         use.
 
+
+        .. code-block::
+
+            from google.cloud import iap_v1
+
+            def sample_create_identity_aware_proxy_client():
+                # Create a client
+                client = iap_v1.IdentityAwareProxyOAuthServiceClient()
+
+                # Initialize request argument(s)
+                request = iap_v1.CreateIdentityAwareProxyClientRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_identity_aware_proxy_client(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.iap_v1.types.CreateIdentityAwareProxyClientRequest, dict]):
                 The request object. The request sent to
@@ -427,6 +505,26 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListIdentityAwareProxyClientsAsyncPager:
         r"""Lists the existing clients for the brand.
+
+        .. code-block::
+
+            from google.cloud import iap_v1
+
+            def sample_list_identity_aware_proxy_clients():
+                # Create a client
+                client = iap_v1.IdentityAwareProxyOAuthServiceClient()
+
+                # Initialize request argument(s)
+                request = iap_v1.ListIdentityAwareProxyClientsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_identity_aware_proxy_clients(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.iap_v1.types.ListIdentityAwareProxyClientsRequest, dict]):
@@ -487,6 +585,26 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         r"""Retrieves an Identity Aware Proxy (IAP) OAuth client.
         Requires that the client is owned by IAP.
 
+
+        .. code-block::
+
+            from google.cloud import iap_v1
+
+            def sample_get_identity_aware_proxy_client():
+                # Create a client
+                client = iap_v1.IdentityAwareProxyOAuthServiceClient()
+
+                # Initialize request argument(s)
+                request = iap_v1.GetIdentityAwareProxyClientRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_identity_aware_proxy_client(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.iap_v1.types.GetIdentityAwareProxyClientRequest, dict]):
                 The request object. The request sent to
@@ -537,6 +655,26 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         r"""Resets an Identity Aware Proxy (IAP) OAuth client
         secret. Useful if the secret was compromised. Requires
         that the client is owned by IAP.
+
+
+        .. code-block::
+
+            from google.cloud import iap_v1
+
+            def sample_reset_identity_aware_proxy_client_secret():
+                # Create a client
+                client = iap_v1.IdentityAwareProxyOAuthServiceClient()
+
+                # Initialize request argument(s)
+                request = iap_v1.ResetIdentityAwareProxyClientSecretRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.reset_identity_aware_proxy_client_secret(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.iap_v1.types.ResetIdentityAwareProxyClientSecretRequest, dict]):
@@ -589,6 +727,23 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         Useful for removing obsolete clients, managing the
         number of clients in a given project, and cleaning up
         after tests. Requires that the client is owned by IAP.
+
+
+        .. code-block::
+
+            from google.cloud import iap_v1
+
+            def sample_delete_identity_aware_proxy_client():
+                # Create a client
+                client = iap_v1.IdentityAwareProxyOAuthServiceClient()
+
+                # Initialize request argument(s)
+                request = iap_v1.DeleteIdentityAwareProxyClientRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_identity_aware_proxy_client(request=request)
 
         Args:
             request (Union[google.cloud.iap_v1.types.DeleteIdentityAwareProxyClientRequest, dict]):
