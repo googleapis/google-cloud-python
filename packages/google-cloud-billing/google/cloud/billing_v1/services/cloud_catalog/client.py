@@ -416,6 +416,26 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
     ) -> pagers.ListServicesPager:
         r"""Lists all public cloud services.
 
+
+        .. code-block::
+
+            from google.cloud import billing_v1
+
+            def sample_list_services():
+                # Create a client
+                client = billing_v1.CloudCatalogClient()
+
+                # Initialize request argument(s)
+                request = billing_v1.ListServicesRequest(
+                )
+
+                # Make the request
+                page_result = client.list_services(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.billing_v1.types.ListServicesRequest, dict]):
                 The request object. Request message for `ListServices`.
@@ -468,6 +488,28 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
     ) -> pagers.ListSkusPager:
         r"""Lists all publicly available SKUs for a given cloud
         service.
+
+
+
+        .. code-block::
+
+            from google.cloud import billing_v1
+
+            def sample_list_skus():
+                # Create a client
+                client = billing_v1.CloudCatalogClient()
+
+                # Initialize request argument(s)
+                request = billing_v1.ListSkusRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_skus(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.billing_v1.types.ListSkusRequest, dict]):

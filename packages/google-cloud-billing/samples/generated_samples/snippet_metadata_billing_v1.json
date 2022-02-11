@@ -1,0 +1,1072 @@
+{
+  "snippets": [
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "CloudBilling"
+          },
+          "shortName": "CreateBillingAccount"
+        }
+      },
+      "file": "cloudbilling_generated_billing_v1_cloud_billing_create_billing_account_async.py",
+      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_CreateBillingAccount_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "CloudBilling"
+          },
+          "shortName": "CreateBillingAccount"
+        }
+      },
+      "file": "cloudbilling_generated_billing_v1_cloud_billing_create_billing_account_sync.py",
+      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_CreateBillingAccount_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "CloudBilling"
+          },
+          "shortName": "GetBillingAccount"
+        }
+      },
+      "file": "cloudbilling_generated_billing_v1_cloud_billing_get_billing_account_async.py",
+      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_GetBillingAccount_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "CloudBilling"
+          },
+          "shortName": "GetBillingAccount"
+        }
+      },
+      "file": "cloudbilling_generated_billing_v1_cloud_billing_get_billing_account_sync.py",
+      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_GetBillingAccount_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "CloudBilling"
+          },
+          "shortName": "GetIamPolicy"
+        }
+      },
+      "file": "cloudbilling_generated_billing_v1_cloud_billing_get_iam_policy_async.py",
+      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_GetIamPolicy_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "CloudBilling"
+          },
+          "shortName": "GetIamPolicy"
+        }
+      },
+      "file": "cloudbilling_generated_billing_v1_cloud_billing_get_iam_policy_sync.py",
+      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_GetIamPolicy_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "CloudBilling"
+          },
+          "shortName": "GetProjectBillingInfo"
+        }
+      },
+      "file": "cloudbilling_generated_billing_v1_cloud_billing_get_project_billing_info_async.py",
+      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_GetProjectBillingInfo_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "CloudBilling"
+          },
+          "shortName": "GetProjectBillingInfo"
+        }
+      },
+      "file": "cloudbilling_generated_billing_v1_cloud_billing_get_project_billing_info_sync.py",
+      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_GetProjectBillingInfo_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "CloudBilling"
+          },
+          "shortName": "ListBillingAccounts"
+        }
+      },
+      "file": "cloudbilling_generated_billing_v1_cloud_billing_list_billing_accounts_async.py",
+      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_ListBillingAccounts_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "CloudBilling"
+          },
+          "shortName": "ListBillingAccounts"
+        }
+      },
+      "file": "cloudbilling_generated_billing_v1_cloud_billing_list_billing_accounts_sync.py",
+      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_ListBillingAccounts_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "CloudBilling"
+          },
+          "shortName": "ListProjectBillingInfo"
+        }
+      },
+      "file": "cloudbilling_generated_billing_v1_cloud_billing_list_project_billing_info_async.py",
+      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_ListProjectBillingInfo_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "CloudBilling"
+          },
+          "shortName": "ListProjectBillingInfo"
+        }
+      },
+      "file": "cloudbilling_generated_billing_v1_cloud_billing_list_project_billing_info_sync.py",
+      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_ListProjectBillingInfo_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "CloudBilling"
+          },
+          "shortName": "SetIamPolicy"
+        }
+      },
+      "file": "cloudbilling_generated_billing_v1_cloud_billing_set_iam_policy_async.py",
+      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_SetIamPolicy_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "CloudBilling"
+          },
+          "shortName": "SetIamPolicy"
+        }
+      },
+      "file": "cloudbilling_generated_billing_v1_cloud_billing_set_iam_policy_sync.py",
+      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_SetIamPolicy_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "CloudBilling"
+          },
+          "shortName": "TestIamPermissions"
+        }
+      },
+      "file": "cloudbilling_generated_billing_v1_cloud_billing_test_iam_permissions_async.py",
+      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_TestIamPermissions_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "CloudBilling"
+          },
+          "shortName": "TestIamPermissions"
+        }
+      },
+      "file": "cloudbilling_generated_billing_v1_cloud_billing_test_iam_permissions_sync.py",
+      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_TestIamPermissions_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "CloudBilling"
+          },
+          "shortName": "UpdateBillingAccount"
+        }
+      },
+      "file": "cloudbilling_generated_billing_v1_cloud_billing_update_billing_account_async.py",
+      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_UpdateBillingAccount_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "CloudBilling"
+          },
+          "shortName": "UpdateBillingAccount"
+        }
+      },
+      "file": "cloudbilling_generated_billing_v1_cloud_billing_update_billing_account_sync.py",
+      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_UpdateBillingAccount_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "CloudBilling"
+          },
+          "shortName": "UpdateProjectBillingInfo"
+        }
+      },
+      "file": "cloudbilling_generated_billing_v1_cloud_billing_update_project_billing_info_async.py",
+      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_UpdateProjectBillingInfo_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "CloudBilling"
+          },
+          "shortName": "UpdateProjectBillingInfo"
+        }
+      },
+      "file": "cloudbilling_generated_billing_v1_cloud_billing_update_project_billing_info_sync.py",
+      "regionTag": "cloudbilling_generated_billing_v1_CloudBilling_UpdateProjectBillingInfo_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "CloudCatalog"
+          },
+          "shortName": "ListServices"
+        }
+      },
+      "file": "cloudbilling_generated_billing_v1_cloud_catalog_list_services_async.py",
+      "regionTag": "cloudbilling_generated_billing_v1_CloudCatalog_ListServices_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "CloudCatalog"
+          },
+          "shortName": "ListServices"
+        }
+      },
+      "file": "cloudbilling_generated_billing_v1_cloud_catalog_list_services_sync.py",
+      "regionTag": "cloudbilling_generated_billing_v1_CloudCatalog_ListServices_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "CloudCatalog"
+          },
+          "shortName": "ListSkus"
+        }
+      },
+      "file": "cloudbilling_generated_billing_v1_cloud_catalog_list_skus_async.py",
+      "regionTag": "cloudbilling_generated_billing_v1_CloudCatalog_ListSkus_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "CloudCatalog"
+          },
+          "shortName": "ListSkus"
+        }
+      },
+      "file": "cloudbilling_generated_billing_v1_cloud_catalog_list_skus_sync.py",
+      "regionTag": "cloudbilling_generated_billing_v1_CloudCatalog_ListSkus_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    }
+  ]
+}

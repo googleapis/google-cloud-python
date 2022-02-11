@@ -398,6 +398,27 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         authenticated user must be a `viewer of the billing
         account <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
 
+
+
+        .. code-block::
+
+            from google.cloud import billing_v1
+
+            def sample_get_billing_account():
+                # Create a client
+                client = billing_v1.CloudBillingClient()
+
+                # Initialize request argument(s)
+                request = billing_v1.GetBillingAccountRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_billing_account(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.billing_v1.types.GetBillingAccountRequest, dict]):
                 The request object. Request message for
@@ -472,6 +493,27 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         has permission to
         `view <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
 
+
+
+        .. code-block::
+
+            from google.cloud import billing_v1
+
+            def sample_list_billing_accounts():
+                # Create a client
+                client = billing_v1.CloudBillingClient()
+
+                # Initialize request argument(s)
+                request = billing_v1.ListBillingAccountsRequest(
+                )
+
+                # Make the request
+                page_result = client.list_billing_accounts(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.billing_v1.types.ListBillingAccountsRequest, dict]):
                 The request object. Request message for
@@ -530,6 +572,27 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         permission, which is typically given to the
         `administrator <https://cloud.google.com/billing/docs/how-to/billing-access>`__
         of the billing account.
+
+
+
+        .. code-block::
+
+            from google.cloud import billing_v1
+
+            def sample_update_billing_account():
+                # Create a client
+                client = billing_v1.CloudBillingClient()
+
+                # Initialize request argument(s)
+                request = billing_v1.UpdateBillingAccountRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.update_billing_account(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.billing_v1.types.UpdateBillingAccountRequest, dict]):
@@ -622,6 +685,26 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         This method will return an error if the master account has not
         been provisioned as a reseller account.
 
+
+
+        .. code-block::
+
+            from google.cloud import billing_v1
+
+            def sample_create_billing_account():
+                # Create a client
+                client = billing_v1.CloudBillingClient()
+
+                # Initialize request argument(s)
+                request = billing_v1.CreateBillingAccountRequest(
+                )
+
+                # Make the request
+                response = client.create_billing_account(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.billing_v1.types.CreateBillingAccountRequest, dict]):
                 The request object. Request message for
@@ -695,6 +778,28 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         ``billing.resourceAssociations.list`` IAM permission, which is
         often given to billing account
         `viewers <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
+
+
+
+        .. code-block::
+
+            from google.cloud import billing_v1
+
+            def sample_list_project_billing_info():
+                # Create a client
+                client = billing_v1.CloudBillingClient()
+
+                # Initialize request argument(s)
+                request = billing_v1.ListProjectBillingInfoRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                page_result = client.list_project_billing_info(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.billing_v1.types.ListProjectBillingInfoRequest, dict]):
@@ -779,6 +884,27 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         r"""Gets the billing information for a project. The current
         authenticated user must have `permission to view the
         project <https://cloud.google.com/docs/permissions-overview#h.bgs0oxofvnoo>`__.
+
+
+
+        .. code-block::
+
+            from google.cloud import billing_v1
+
+            def sample_get_project_billing_info():
+                # Create a client
+                client = billing_v1.CloudBillingClient()
+
+                # Initialize request argument(s)
+                request = billing_v1.GetProjectBillingInfoRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_project_billing_info(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.billing_v1.types.GetProjectBillingInfoRequest, dict]):
@@ -891,6 +1017,27 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         always call this method with the name of an *open* billing
         account.
 
+
+
+        .. code-block::
+
+            from google.cloud import billing_v1
+
+            def sample_update_project_billing_info():
+                # Create a client
+                client = billing_v1.CloudBillingClient()
+
+                # Initialize request argument(s)
+                request = billing_v1.UpdateProjectBillingInfoRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.update_project_billing_info(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.billing_v1.types.UpdateProjectBillingInfoRequest, dict]):
                 The request object. Request message for
@@ -980,6 +1127,27 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         must have the ``billing.accounts.getIamPolicy`` permission on
         the account, which is often given to billing account
         `viewers <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
+
+
+
+        .. code-block::
+
+            from google.cloud import billing_v1
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = billing_v1.CloudBillingClient()
+
+                # Initialize request argument(s)
+                request = billing_v1.GetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
@@ -1110,6 +1278,27 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         which is often given to billing account
         `administrators <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
 
+
+
+        .. code-block::
+
+            from google.cloud import billing_v1
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = billing_v1.CloudBillingClient()
+
+                # Initialize request argument(s)
+                request = billing_v1.SetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
                 The request object. Request message for `SetIamPolicy`
@@ -1239,6 +1428,28 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         permissions as input and returns the subset of the input
         permissions that the caller is allowed for that
         resource.
+
+
+
+        .. code-block::
+
+            from google.cloud import billing_v1
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = billing_v1.CloudBillingClient()
+
+                # Initialize request argument(s)
+                request = billing_v1.TestIamPermissionsRequest(
+                    resource="resource_value",
+                    permissions=['permissions_value_1', 'permissions_value_2'],
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
