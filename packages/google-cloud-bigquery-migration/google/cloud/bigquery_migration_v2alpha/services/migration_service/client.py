@@ -434,6 +434,26 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
     ) -> migration_entities.MigrationWorkflow:
         r"""Creates a migration workflow.
 
+
+        .. code-block::
+
+            from google.cloud import bigquery_migration_v2alpha
+
+            def sample_create_migration_workflow():
+                # Create a client
+                client = bigquery_migration_v2alpha.MigrationServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_migration_v2alpha.CreateMigrationWorkflowRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_migration_workflow(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigquery_migration_v2alpha.types.CreateMigrationWorkflowRequest, dict]):
                 The request object. Request to create a migration
@@ -518,6 +538,26 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
     ) -> migration_entities.MigrationWorkflow:
         r"""Gets a previously created migration workflow.
 
+
+        .. code-block::
+
+            from google.cloud import bigquery_migration_v2alpha
+
+            def sample_get_migration_workflow():
+                # Create a client
+                client = bigquery_migration_v2alpha.MigrationServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_migration_v2alpha.GetMigrationWorkflowRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_migration_workflow(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigquery_migration_v2alpha.types.GetMigrationWorkflowRequest, dict]):
                 The request object. A request to get a previously
@@ -590,6 +630,27 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMigrationWorkflowsPager:
         r"""Lists previously created migration workflow.
+
+
+        .. code-block::
+
+            from google.cloud import bigquery_migration_v2alpha
+
+            def sample_list_migration_workflows():
+                # Create a client
+                client = bigquery_migration_v2alpha.MigrationServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_migration_v2alpha.ListMigrationWorkflowsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_migration_workflows(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.bigquery_migration_v2alpha.types.ListMigrationWorkflowsRequest, dict]):
@@ -671,6 +732,23 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
     ) -> None:
         r"""Deletes a migration workflow by name.
 
+
+        .. code-block::
+
+            from google.cloud import bigquery_migration_v2alpha
+
+            def sample_delete_migration_workflow():
+                # Create a client
+                client = bigquery_migration_v2alpha.MigrationServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_migration_v2alpha.DeleteMigrationWorkflowRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_migration_workflow(request=request)
+
         Args:
             request (Union[google.cloud.bigquery_migration_v2alpha.types.DeleteMigrationWorkflowRequest, dict]):
                 The request object. A request to delete a previously
@@ -742,6 +820,24 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
         signaled if the state is anything other than DRAFT or
         RUNNING.
 
+
+
+        .. code-block::
+
+            from google.cloud import bigquery_migration_v2alpha
+
+            def sample_start_migration_workflow():
+                # Create a client
+                client = bigquery_migration_v2alpha.MigrationServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_migration_v2alpha.StartMigrationWorkflowRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.start_migration_workflow(request=request)
+
         Args:
             request (Union[google.cloud.bigquery_migration_v2alpha.types.StartMigrationWorkflowRequest, dict]):
                 The request object. A request to start a previously
@@ -806,6 +902,26 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> migration_entities.MigrationSubtask:
         r"""Gets a previously created migration subtask.
+
+
+        .. code-block::
+
+            from google.cloud import bigquery_migration_v2alpha
+
+            def sample_get_migration_subtask():
+                # Create a client
+                client = bigquery_migration_v2alpha.MigrationServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_migration_v2alpha.GetMigrationSubtaskRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_migration_subtask(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigquery_migration_v2alpha.types.GetMigrationSubtaskRequest, dict]):
@@ -882,6 +998,27 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMigrationSubtasksPager:
         r"""Lists previously created migration subtasks.
+
+
+        .. code-block::
+
+            from google.cloud import bigquery_migration_v2alpha
+
+            def sample_list_migration_subtasks():
+                # Create a client
+                client = bigquery_migration_v2alpha.MigrationServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_migration_v2alpha.ListMigrationSubtasksRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_migration_subtasks(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.bigquery_migration_v2alpha.types.ListMigrationSubtasksRequest, dict]):
