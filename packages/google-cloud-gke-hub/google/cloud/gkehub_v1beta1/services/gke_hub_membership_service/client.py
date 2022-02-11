@@ -427,6 +427,27 @@ class GkeHubMembershipServiceClient(metaclass=GkeHubMembershipServiceClientMeta)
     ) -> pagers.ListMembershipsPager:
         r"""Lists Memberships in a given project and location.
 
+
+        .. code-block::
+
+            from google.cloud import gkehub_v1beta1
+
+            def sample_list_memberships():
+                # Create a client
+                client = gkehub_v1beta1.GkeHubMembershipServiceClient()
+
+                # Initialize request argument(s)
+                request = gkehub_v1beta1.ListMembershipsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_memberships(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.gkehub_v1beta1.types.ListMembershipsRequest, dict]):
                 The request object. Request message for
@@ -508,6 +529,26 @@ class GkeHubMembershipServiceClient(metaclass=GkeHubMembershipServiceClientMeta)
     ) -> membership.Membership:
         r"""Gets the details of a Membership.
 
+
+        .. code-block::
+
+            from google.cloud import gkehub_v1beta1
+
+            def sample_get_membership():
+                # Create a client
+                client = gkehub_v1beta1.GkeHubMembershipServiceClient()
+
+                # Initialize request argument(s)
+                request = gkehub_v1beta1.GetMembershipRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_membership(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.gkehub_v1beta1.types.GetMembershipRequest, dict]):
                 The request object. Request message for
@@ -584,6 +625,32 @@ class GkeHubMembershipServiceClient(metaclass=GkeHubMembershipServiceClientMeta)
         **This is currently only supported for GKE clusters on Google
         Cloud**. To register other clusters, follow the instructions at
         https://cloud.google.com/anthos/multicluster-management/connect/registering-a-cluster.
+
+
+
+        .. code-block::
+
+            from google.cloud import gkehub_v1beta1
+
+            def sample_create_membership():
+                # Create a client
+                client = gkehub_v1beta1.GkeHubMembershipServiceClient()
+
+                # Initialize request argument(s)
+                request = gkehub_v1beta1.CreateMembershipRequest(
+                    parent="parent_value",
+                    membership_id="membership_id_value",
+                )
+
+                # Make the request
+                operation = client.create_membership(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.gkehub_v1beta1.types.CreateMembershipRequest, dict]):
@@ -699,6 +766,31 @@ class GkeHubMembershipServiceClient(metaclass=GkeHubMembershipServiceClientMeta)
         at
         https://cloud.google.com/anthos/multicluster-management/connect/unregistering-a-cluster.
 
+
+
+        .. code-block::
+
+            from google.cloud import gkehub_v1beta1
+
+            def sample_delete_membership():
+                # Create a client
+                client = gkehub_v1beta1.GkeHubMembershipServiceClient()
+
+                # Initialize request argument(s)
+                request = gkehub_v1beta1.DeleteMembershipRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_membership(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.gkehub_v1beta1.types.DeleteMembershipRequest, dict]):
                 The request object. Request message for
@@ -792,6 +884,30 @@ class GkeHubMembershipServiceClient(metaclass=GkeHubMembershipServiceClientMeta)
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates an existing Membership.
+
+
+        .. code-block::
+
+            from google.cloud import gkehub_v1beta1
+
+            def sample_update_membership():
+                # Create a client
+                client = gkehub_v1beta1.GkeHubMembershipServiceClient()
+
+                # Initialize request argument(s)
+                request = gkehub_v1beta1.UpdateMembershipRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.update_membership(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.gkehub_v1beta1.types.UpdateMembershipRequest, dict]):
@@ -903,6 +1019,27 @@ class GkeHubMembershipServiceClient(metaclass=GkeHubMembershipServiceClientMeta)
         **This method is used internally by Google-provided libraries.**
         Most clients should not need to call this method directly.
 
+
+
+        .. code-block::
+
+            from google.cloud import gkehub_v1beta1
+
+            def sample_generate_connect_manifest():
+                # Create a client
+                client = gkehub_v1beta1.GkeHubMembershipServiceClient()
+
+                # Initialize request argument(s)
+                request = gkehub_v1beta1.GenerateConnectManifestRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.generate_connect_manifest(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.gkehub_v1beta1.types.GenerateConnectManifestRequest, dict]):
                 The request object. Request message for
@@ -958,6 +1095,28 @@ class GkeHubMembershipServiceClient(metaclass=GkeHubMembershipServiceClientMeta)
         r"""ValidateExclusivity validates the state of
         exclusivity in the cluster. The validation does not
         depend on an existing Hub membership resource.
+
+
+
+        .. code-block::
+
+            from google.cloud import gkehub_v1beta1
+
+            def sample_validate_exclusivity():
+                # Create a client
+                client = gkehub_v1beta1.GkeHubMembershipServiceClient()
+
+                # Initialize request argument(s)
+                request = gkehub_v1beta1.ValidateExclusivityRequest(
+                    parent="parent_value",
+                    intended_membership="intended_membership_value",
+                )
+
+                # Make the request
+                response = client.validate_exclusivity(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.gkehub_v1beta1.types.ValidateExclusivityRequest, dict]):
@@ -1021,6 +1180,27 @@ class GkeHubMembershipServiceClient(metaclass=GkeHubMembershipServiceClientMeta)
         newer version of the CRD and corresponding CR. The
         response will be the converted CRD and CR if there are
         any differences between the versions.
+
+
+
+        .. code-block::
+
+            from google.cloud import gkehub_v1beta1
+
+            def sample_generate_exclusivity_manifest():
+                # Create a client
+                client = gkehub_v1beta1.GkeHubMembershipServiceClient()
+
+                # Initialize request argument(s)
+                request = gkehub_v1beta1.GenerateExclusivityManifestRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.generate_exclusivity_manifest(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.gkehub_v1beta1.types.GenerateExclusivityManifestRequest, dict]):

@@ -226,6 +226,26 @@ class GkeHubAsyncClient:
     ) -> pagers.ListMembershipsAsyncPager:
         r"""Lists Memberships in a given project and location.
 
+        .. code-block::
+
+            from google.cloud import gkehub_v1
+
+            def sample_list_memberships():
+                # Create a client
+                client = gkehub_v1.GkeHubClient()
+
+                # Initialize request argument(s)
+                request = gkehub_v1.ListMembershipsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_memberships(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.gkehub_v1.types.ListMembershipsRequest, dict]):
                 The request object. Request message for
@@ -305,6 +325,25 @@ class GkeHubAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListFeaturesAsyncPager:
         r"""Lists Features in a given project and location.
+
+        .. code-block::
+
+            from google.cloud import gkehub_v1
+
+            def sample_list_features():
+                # Create a client
+                client = gkehub_v1.GkeHubClient()
+
+                # Initialize request argument(s)
+                request = gkehub_v1.ListFeaturesRequest(
+                )
+
+                # Make the request
+                page_result = client.list_features(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.gkehub_v1.types.ListFeaturesRequest, dict]):
@@ -386,6 +425,25 @@ class GkeHubAsyncClient:
     ) -> membership.Membership:
         r"""Gets the details of a Membership.
 
+        .. code-block::
+
+            from google.cloud import gkehub_v1
+
+            def sample_get_membership():
+                # Create a client
+                client = gkehub_v1.GkeHubClient()
+
+                # Initialize request argument(s)
+                request = gkehub_v1.GetMembershipRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_membership(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.gkehub_v1.types.GetMembershipRequest, dict]):
                 The request object. Request message for
@@ -456,6 +514,24 @@ class GkeHubAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> feature.Feature:
         r"""Gets details of a single Feature.
+
+        .. code-block::
+
+            from google.cloud import gkehub_v1
+
+            def sample_get_feature():
+                # Create a client
+                client = gkehub_v1.GkeHubClient()
+
+                # Initialize request argument(s)
+                request = gkehub_v1.GetFeatureRequest(
+                )
+
+                # Make the request
+                response = client.get_feature(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.gkehub_v1.types.GetFeatureRequest, dict]):
@@ -533,6 +609,31 @@ class GkeHubAsyncClient:
         **This is currently only supported for GKE clusters on Google
         Cloud**. To register other clusters, follow the instructions at
         https://cloud.google.com/anthos/multicluster-management/connect/registering-a-cluster.
+
+
+        .. code-block::
+
+            from google.cloud import gkehub_v1
+
+            def sample_create_membership():
+                # Create a client
+                client = gkehub_v1.GkeHubClient()
+
+                # Initialize request argument(s)
+                request = gkehub_v1.CreateMembershipRequest(
+                    parent="parent_value",
+                    membership_id="membership_id_value",
+                )
+
+                # Make the request
+                operation = client.create_membership(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.gkehub_v1.types.CreateMembershipRequest, dict]):
@@ -645,6 +746,28 @@ class GkeHubAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Adds a new Feature.
 
+        .. code-block::
+
+            from google.cloud import gkehub_v1
+
+            def sample_create_feature():
+                # Create a client
+                client = gkehub_v1.GkeHubClient()
+
+                # Initialize request argument(s)
+                request = gkehub_v1.CreateFeatureRequest(
+                )
+
+                # Make the request
+                operation = client.create_feature(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.gkehub_v1.types.CreateFeatureRequest, dict]):
                 The request object. Request message for the
@@ -747,6 +870,30 @@ class GkeHubAsyncClient:
         at
         https://cloud.google.com/anthos/multicluster-management/connect/unregistering-a-cluster.
 
+
+        .. code-block::
+
+            from google.cloud import gkehub_v1
+
+            def sample_delete_membership():
+                # Create a client
+                client = gkehub_v1.GkeHubClient()
+
+                # Initialize request argument(s)
+                request = gkehub_v1.DeleteMembershipRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_membership(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.gkehub_v1.types.DeleteMembershipRequest, dict]):
                 The request object. Request message for
@@ -838,6 +985,28 @@ class GkeHubAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Removes a Feature.
+
+        .. code-block::
+
+            from google.cloud import gkehub_v1
+
+            def sample_delete_feature():
+                # Create a client
+                client = gkehub_v1.GkeHubClient()
+
+                # Initialize request argument(s)
+                request = gkehub_v1.DeleteFeatureRequest(
+                )
+
+                # Make the request
+                operation = client.delete_feature(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.gkehub_v1.types.DeleteFeatureRequest, dict]):
@@ -932,6 +1101,29 @@ class GkeHubAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates an existing Membership.
+
+        .. code-block::
+
+            from google.cloud import gkehub_v1
+
+            def sample_update_membership():
+                # Create a client
+                client = gkehub_v1.GkeHubClient()
+
+                # Initialize request argument(s)
+                request = gkehub_v1.UpdateMembershipRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.update_membership(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.gkehub_v1.types.UpdateMembershipRequest, dict]):
@@ -1040,6 +1232,28 @@ class GkeHubAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates an existing Feature.
 
+        .. code-block::
+
+            from google.cloud import gkehub_v1
+
+            def sample_update_feature():
+                # Create a client
+                client = gkehub_v1.GkeHubClient()
+
+                # Initialize request argument(s)
+                request = gkehub_v1.UpdateFeatureRequest(
+                )
+
+                # Make the request
+                operation = client.update_feature(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.gkehub_v1.types.UpdateFeatureRequest, dict]):
                 The request object. Request message for
@@ -1146,6 +1360,26 @@ class GkeHubAsyncClient:
 
         **This method is used internally by Google-provided libraries.**
         Most clients should not need to call this method directly.
+
+
+        .. code-block::
+
+            from google.cloud import gkehub_v1
+
+            def sample_generate_connect_manifest():
+                # Create a client
+                client = gkehub_v1.GkeHubClient()
+
+                # Initialize request argument(s)
+                request = gkehub_v1.GenerateConnectManifestRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.generate_connect_manifest(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.gkehub_v1.types.GenerateConnectManifestRequest, dict]):
