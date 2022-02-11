@@ -249,6 +249,26 @@ class DataprocMetastoreAsyncClient:
     ) -> pagers.ListServicesAsyncPager:
         r"""Lists services in a project and location.
 
+        .. code-block::
+
+            from google.cloud import metastore_v1alpha
+
+            def sample_list_services():
+                # Create a client
+                client = metastore_v1alpha.DataprocMetastoreClient()
+
+                # Initialize request argument(s)
+                request = metastore_v1alpha.ListServicesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_services(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.metastore_v1alpha.types.ListServicesRequest, dict]):
                 The request object. Request message for
@@ -331,6 +351,25 @@ class DataprocMetastoreAsyncClient:
     ) -> metastore.Service:
         r"""Gets the details of a single service.
 
+        .. code-block::
+
+            from google.cloud import metastore_v1alpha
+
+            def sample_get_service():
+                # Create a client
+                client = metastore_v1alpha.DataprocMetastoreClient()
+
+                # Initialize request argument(s)
+                request = metastore_v1alpha.GetServiceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_service(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.metastore_v1alpha.types.GetServiceRequest, dict]):
                 The request object. Request message for
@@ -406,6 +445,31 @@ class DataprocMetastoreAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a metastore service in a project and
         location.
+
+
+        .. code-block::
+
+            from google.cloud import metastore_v1alpha
+
+            def sample_create_service():
+                # Create a client
+                client = metastore_v1alpha.DataprocMetastoreClient()
+
+                # Initialize request argument(s)
+                request = metastore_v1alpha.CreateServiceRequest(
+                    parent="parent_value",
+                    service_id="service_id_value",
+                )
+
+                # Make the request
+                operation = client.create_service(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.metastore_v1alpha.types.CreateServiceRequest, dict]):
@@ -520,6 +584,28 @@ class DataprocMetastoreAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single service.
 
+        .. code-block::
+
+            from google.cloud import metastore_v1alpha
+
+            def sample_update_service():
+                # Create a client
+                client = metastore_v1alpha.DataprocMetastoreClient()
+
+                # Initialize request argument(s)
+                request = metastore_v1alpha.UpdateServiceRequest(
+                )
+
+                # Make the request
+                operation = client.update_service(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.metastore_v1alpha.types.UpdateServiceRequest, dict]):
                 The request object. Request message for
@@ -620,6 +706,29 @@ class DataprocMetastoreAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single service.
 
+        .. code-block::
+
+            from google.cloud import metastore_v1alpha
+
+            def sample_delete_service():
+                # Create a client
+                client = metastore_v1alpha.DataprocMetastoreClient()
+
+                # Initialize request argument(s)
+                request = metastore_v1alpha.DeleteServiceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_service(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.metastore_v1alpha.types.DeleteServiceRequest, dict]):
                 The request object. Request message for
@@ -714,6 +823,26 @@ class DataprocMetastoreAsyncClient:
     ) -> pagers.ListMetadataImportsAsyncPager:
         r"""Lists imports in a service.
 
+        .. code-block::
+
+            from google.cloud import metastore_v1alpha
+
+            def sample_list_metadata_imports():
+                # Create a client
+                client = metastore_v1alpha.DataprocMetastoreClient()
+
+                # Initialize request argument(s)
+                request = metastore_v1alpha.ListMetadataImportsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_metadata_imports(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.metastore_v1alpha.types.ListMetadataImportsRequest, dict]):
                 The request object. Request message for
@@ -796,6 +925,25 @@ class DataprocMetastoreAsyncClient:
     ) -> metastore.MetadataImport:
         r"""Gets details of a single import.
 
+        .. code-block::
+
+            from google.cloud import metastore_v1alpha
+
+            def sample_get_metadata_import():
+                # Create a client
+                client = metastore_v1alpha.DataprocMetastoreClient()
+
+                # Initialize request argument(s)
+                request = metastore_v1alpha.GetMetadataImportRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_metadata_import(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.metastore_v1alpha.types.GetMetadataImportRequest, dict]):
                 The request object. Request message for
@@ -871,6 +1019,31 @@ class DataprocMetastoreAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new MetadataImport in a given project and
         location.
+
+
+        .. code-block::
+
+            from google.cloud import metastore_v1alpha
+
+            def sample_create_metadata_import():
+                # Create a client
+                client = metastore_v1alpha.DataprocMetastoreClient()
+
+                # Initialize request argument(s)
+                request = metastore_v1alpha.CreateMetadataImportRequest(
+                    parent="parent_value",
+                    metadata_import_id="metadata_import_id_value",
+                )
+
+                # Make the request
+                operation = client.create_metadata_import(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.metastore_v1alpha.types.CreateMetadataImportRequest, dict]):
@@ -986,6 +1159,29 @@ class DataprocMetastoreAsyncClient:
         Only the description field of MetadataImport is
         supported to be updated.
 
+
+        .. code-block::
+
+            from google.cloud import metastore_v1alpha
+
+            def sample_update_metadata_import():
+                # Create a client
+                client = metastore_v1alpha.DataprocMetastoreClient()
+
+                # Initialize request argument(s)
+                request = metastore_v1alpha.UpdateMetadataImportRequest(
+                )
+
+                # Make the request
+                operation = client.update_metadata_import(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.metastore_v1alpha.types.UpdateMetadataImportRequest, dict]):
                 The request object. Request message for
@@ -1085,6 +1281,30 @@ class DataprocMetastoreAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Exports metadata from a service.
 
+        .. code-block::
+
+            from google.cloud import metastore_v1alpha
+
+            def sample_export_metadata():
+                # Create a client
+                client = metastore_v1alpha.DataprocMetastoreClient()
+
+                # Initialize request argument(s)
+                request = metastore_v1alpha.ExportMetadataRequest(
+                    destination_gcs_folder="destination_gcs_folder_value",
+                    service="service_value",
+                )
+
+                # Make the request
+                operation = client.export_metadata(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.metastore_v1alpha.types.ExportMetadataRequest, dict]):
                 The request object. Request message for
@@ -1146,6 +1366,30 @@ class DataprocMetastoreAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Restores a service from a backup.
+
+        .. code-block::
+
+            from google.cloud import metastore_v1alpha
+
+            def sample_restore_service():
+                # Create a client
+                client = metastore_v1alpha.DataprocMetastoreClient()
+
+                # Initialize request argument(s)
+                request = metastore_v1alpha.RestoreServiceRequest(
+                    service="service_value",
+                    backup="backup_value",
+                )
+
+                # Make the request
+                operation = client.restore_service(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.metastore_v1alpha.types.RestoreServiceRequest, dict]):
@@ -1242,6 +1486,26 @@ class DataprocMetastoreAsyncClient:
     ) -> pagers.ListBackupsAsyncPager:
         r"""Lists backups in a service.
 
+        .. code-block::
+
+            from google.cloud import metastore_v1alpha
+
+            def sample_list_backups():
+                # Create a client
+                client = metastore_v1alpha.DataprocMetastoreClient()
+
+                # Initialize request argument(s)
+                request = metastore_v1alpha.ListBackupsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_backups(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.metastore_v1alpha.types.ListBackupsRequest, dict]):
                 The request object. Request message for
@@ -1324,6 +1588,25 @@ class DataprocMetastoreAsyncClient:
     ) -> metastore.Backup:
         r"""Gets details of a single backup.
 
+        .. code-block::
+
+            from google.cloud import metastore_v1alpha
+
+            def sample_get_backup():
+                # Create a client
+                client = metastore_v1alpha.DataprocMetastoreClient()
+
+                # Initialize request argument(s)
+                request = metastore_v1alpha.GetBackupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_backup(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.metastore_v1alpha.types.GetBackupRequest, dict]):
                 The request object. Request message for
@@ -1396,6 +1679,30 @@ class DataprocMetastoreAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Backup in a given project and location.
+
+        .. code-block::
+
+            from google.cloud import metastore_v1alpha
+
+            def sample_create_backup():
+                # Create a client
+                client = metastore_v1alpha.DataprocMetastoreClient()
+
+                # Initialize request argument(s)
+                request = metastore_v1alpha.CreateBackupRequest(
+                    parent="parent_value",
+                    backup_id="backup_id_value",
+                )
+
+                # Make the request
+                operation = client.create_backup(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.metastore_v1alpha.types.CreateBackupRequest, dict]):
@@ -1505,6 +1812,29 @@ class DataprocMetastoreAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single backup.
+
+        .. code-block::
+
+            from google.cloud import metastore_v1alpha
+
+            def sample_delete_backup():
+                # Create a client
+                client = metastore_v1alpha.DataprocMetastoreClient()
+
+                # Initialize request argument(s)
+                request = metastore_v1alpha.DeleteBackupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_backup(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.metastore_v1alpha.types.DeleteBackupRequest, dict]):
