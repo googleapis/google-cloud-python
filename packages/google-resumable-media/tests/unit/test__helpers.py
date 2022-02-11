@@ -408,6 +408,66 @@ class Test__parse_checksum_header(object):
         assert error.args[2] == [self.MD5_CHECKSUM, another_checksum]
 
 
+class Test__parse_generation_header(object):
+
+    GENERATION_VALUE = 1641590104888641
+
+    def test_empty_value(self):
+        headers = {}
+        response = _mock_response(headers=headers)
+        generation_header = _helpers._parse_generation_header(response, _get_headers)
+        assert generation_header is None
+
+    def test_header_value(self):
+        headers = {_helpers._GENERATION_HEADER: self.GENERATION_VALUE}
+        response = _mock_response(headers=headers)
+        generation_header = _helpers._parse_generation_header(response, _get_headers)
+        assert generation_header == self.GENERATION_VALUE
+
+
+class Test__get_generation_from_url(object):
+
+    GENERATION_VALUE = 1641590104888641
+    MEDIA_URL = (
+        "https://storage.googleapis.com/storage/v1/b/my-bucket/o/my-object?alt=media"
+    )
+    MEDIA_URL_W_GENERATION = MEDIA_URL + f"&generation={GENERATION_VALUE}"
+
+    def test_empty_value(self):
+        generation = _helpers._get_generation_from_url(self.MEDIA_URL)
+        assert generation is None
+
+    def test_generation_in_url(self):
+        generation = _helpers._get_generation_from_url(self.MEDIA_URL_W_GENERATION)
+        assert generation == self.GENERATION_VALUE
+
+
+class Test__add_query_parameters(object):
+    def test_w_empty_list(self):
+        query_params = {}
+        MEDIA_URL = "https://storage.googleapis.com/storage/v1/b/my-bucket/o/my-object"
+        new_url = _helpers.add_query_parameters(MEDIA_URL, query_params)
+        assert new_url == MEDIA_URL
+
+    def test_wo_existing_qs(self):
+        query_params = {"one": "One", "two": "Two"}
+        MEDIA_URL = "https://storage.googleapis.com/storage/v1/b/my-bucket/o/my-object"
+        expected = "&".join(
+            ["{}={}".format(name, value) for name, value in query_params.items()]
+        )
+        new_url = _helpers.add_query_parameters(MEDIA_URL, query_params)
+        assert new_url == "{}?{}".format(MEDIA_URL, expected)
+
+    def test_w_existing_qs(self):
+        query_params = {"one": "One", "two": "Two"}
+        MEDIA_URL = "https://storage.googleapis.com/storage/v1/b/my-bucket/o/my-object?alt=media"
+        expected = "&".join(
+            ["{}={}".format(name, value) for name, value in query_params.items()]
+        )
+        new_url = _helpers.add_query_parameters(MEDIA_URL, query_params)
+        assert new_url == "{}&{}".format(MEDIA_URL, expected)
+
+
 def _mock_response(headers):
     return mock.Mock(
         headers=headers,

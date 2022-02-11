@@ -139,6 +139,10 @@ class Download(DownloadBase):
             media_url, stream=stream, start=start, end=end, headers=headers
         )
         self.checksum = checksum
+        self._bytes_downloaded = 0
+        self._expected_checksum = None
+        self._checksum_object = None
+        self._object_generation = None
 
     def _prepare_request(self):
         """Prepare the contents of an HTTP request.

@@ -22,6 +22,11 @@ import logging
 import random
 import warnings
 
+from urllib.parse import parse_qs
+from urllib.parse import urlencode
+from urllib.parse import urlsplit
+from urllib.parse import urlunsplit
+
 from google.resumable_media import common
 
 
@@ -33,6 +38,7 @@ _SLOW_CRC32C_WARNING = (
     "implementation. Python 3 has a faster implementation, `google-crc32c`, "
     "which will be used if it is installed."
 )
+_GENERATION_HEADER = "x-goog-generation"
 _HASH_HEADER = "x-goog-hash"
 _MISSING_CHECKSUM = """\
 No {checksum_type} checksum was returned from the service while downloading {}
@@ -300,6 +306,67 @@ def _get_checksum_object(checksum_type):
         return None
     else:
         raise ValueError("checksum must be ``'md5'``, ``'crc32c'`` or ``None``")
+
+
+def _parse_generation_header(response, get_headers):
+    """Parses the generation header from an ``X-Goog-Generation`` value.
+
+    Args:
+        response (~requests.Response): The HTTP response object.
+        get_headers (callable: response->dict): returns response headers.
+
+    Returns:
+        Optional[long]: The object generation from the response, if it
+        can be detected from the ``X-Goog-Generation`` header; otherwise, None.
+    """
+    headers = get_headers(response)
+    object_generation = headers.get(_GENERATION_HEADER, None)
+
+    if object_generation is None:
+        return None
+    else:
+        return int(object_generation)
+
+
+def _get_generation_from_url(media_url):
+    """Retrieve the object generation query param specified in the media url.
+
+    Args:
+        media_url (str): The URL containing the media to be downloaded.
+
+    Returns:
+        long: The object generation from the media url if exists; otherwise, None.
+    """
+
+    _, _, _, query, _ = urlsplit(media_url)
+    query_params = parse_qs(query)
+    object_generation = query_params.get("generation", None)
+
+    if object_generation is None:
+        return None
+    else:
+        return int(object_generation[0])
+
+
+def add_query_parameters(media_url, query_params):
+    """Add query parameters to a base url.
+
+    Args:
+        media_url (str): The URL containing the media to be downloaded.
+        query_params (dict): Names and values of the query parameters to add.
+
+    Returns:
+        str: URL with additional query strings appended.
+    """
+
+    if len(query_params) == 0:
+        return media_url
+
+    scheme, netloc, path, query, frag = urlsplit(media_url)
+    params = parse_qs(query)
+    new_params = {**params, **query_params}
+    query = urlencode(new_params, doseq=True)
+    return urlunsplit((scheme, netloc, path, query, frag))
 
 
 class _DoNothingHash(object):

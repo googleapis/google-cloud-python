@@ -86,12 +86,22 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
                 checksum doesn't agree with server-computed checksum.
         """
 
-        # `_get_expected_checksum()` may return None even if a checksum was
-        # requested, in which case it will emit an info log _MISSING_CHECKSUM.
-        # If an invalid checksum type is specified, this will raise ValueError.
-        expected_checksum, checksum_object = _helpers._get_expected_checksum(
-            response, self._get_headers, self.media_url, checksum_type=self.checksum
-        )
+        # Retrieve the expected checksum only once for the download request,
+        # then compute and validate the checksum when the full download completes.
+        # Retried requests are range requests, and there's no way to detect
+        # data corruption for that byte range alone.
+        if self._expected_checksum is None and self._checksum_object is None:
+            # `_get_expected_checksum()` may return None even if a checksum was
+            # requested, in which case it will emit an info log _MISSING_CHECKSUM.
+            # If an invalid checksum type is specified, this will raise ValueError.
+            expected_checksum, checksum_object = _helpers._get_expected_checksum(
+                response, self._get_headers, self.media_url, checksum_type=self.checksum
+            )
+            self._expected_checksum = expected_checksum
+            self._checksum_object = checksum_object
+        else:
+            expected_checksum = self._expected_checksum
+            checksum_object = self._checksum_object
 
         with response:
             # NOTE: In order to handle compressed streams gracefully, we try
@@ -104,6 +114,7 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
             )
             for chunk in body_iter:
                 self._stream.write(chunk)
+                self._bytes_downloaded += len(chunk)
                 local_checksum_object.update(chunk)
 
         if expected_checksum is not None:
@@ -150,7 +161,7 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
             ValueError: If the current :class:`Download` has already
                 finished.
         """
-        method, url, payload, headers = self._prepare_request()
+        method, _, payload, headers = self._prepare_request()
         # NOTE: We assume "payload is None" but pass it along anyway.
         request_kwargs = {
             "data": payload,
@@ -160,9 +171,38 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
         if self._stream is not None:
             request_kwargs["stream"] = True
 
+        # Assign object generation if generation is specified in the media url.
+        if self._object_generation is None:
+            self._object_generation = _helpers._get_generation_from_url(self.media_url)
+
         # Wrap the request business logic in a function to be retried.
         def retriable_request():
+            url = self.media_url
+
+            # To restart an interrupted download, read from the offset of last byte
+            # received using a range request, and set object generation query param.
+            if self._bytes_downloaded > 0:
+                _download.add_bytes_range(
+                    self._bytes_downloaded, self.end, self._headers
+                )
+                request_kwargs["headers"] = self._headers
+
+                # Set object generation query param to ensure the same object content is requested.
+                if (
+                    self._object_generation is not None
+                    and _helpers._get_generation_from_url(self.media_url) is None
+                ):
+                    query_param = {"generation": self._object_generation}
+                    url = _helpers.add_query_parameters(self.media_url, query_param)
+
             result = transport.request(method, url, **request_kwargs)
+
+            # If a generation hasn't been specified, and this is the first response we get, let's record the
+            # generation. In future requests we'll specify the generation query param to avoid data races.
+            if self._object_generation is None:
+                self._object_generation = _helpers._parse_generation_header(
+                    result, self._get_headers
+                )
 
             self._process_response(result)
 
@@ -223,13 +263,22 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
             ~google.resumable_media.common.DataCorruption: If the download's
                 checksum doesn't agree with server-computed checksum.
         """
-
-        # `_get_expected_checksum()` may return None even if a checksum was
-        # requested, in which case it will emit an info log _MISSING_CHECKSUM.
-        # If an invalid checksum type is specified, this will raise ValueError.
-        expected_checksum, checksum_object = _helpers._get_expected_checksum(
-            response, self._get_headers, self.media_url, checksum_type=self.checksum
-        )
+        # Retrieve the expected checksum only once for the download request,
+        # then compute and validate the checksum when the full download completes.
+        # Retried requests are range requests, and there's no way to detect
+        # data corruption for that byte range alone.
+        if self._expected_checksum is None and self._checksum_object is None:
+            # `_get_expected_checksum()` may return None even if a checksum was
+            # requested, in which case it will emit an info log _MISSING_CHECKSUM.
+            # If an invalid checksum type is specified, this will raise ValueError.
+            expected_checksum, checksum_object = _helpers._get_expected_checksum(
+                response, self._get_headers, self.media_url, checksum_type=self.checksum
+            )
+            self._expected_checksum = expected_checksum
+            self._checksum_object = checksum_object
+        else:
+            expected_checksum = self._expected_checksum
+            checksum_object = self._checksum_object
 
         with response:
             body_iter = response.raw.stream(
@@ -237,6 +286,7 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
             )
             for chunk in body_iter:
                 self._stream.write(chunk)
+                self._bytes_downloaded += len(chunk)
                 checksum_object.update(chunk)
             response._content_consumed = True
 
@@ -285,19 +335,47 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
             ValueError: If the current :class:`Download` has already
                 finished.
         """
-        method, url, payload, headers = self._prepare_request()
+        method, _, payload, headers = self._prepare_request()
+        # NOTE: We assume "payload is None" but pass it along anyway.
+        request_kwargs = {
+            "data": payload,
+            "headers": headers,
+            "timeout": timeout,
+            "stream": True,
+        }
+
+        # Assign object generation if generation is specified in the media url.
+        if self._object_generation is None:
+            self._object_generation = _helpers._get_generation_from_url(self.media_url)
 
         # Wrap the request business logic in a function to be retried.
         def retriable_request():
-            # NOTE: We assume "payload is None" but pass it along anyway.
-            result = transport.request(
-                method,
-                url,
-                data=payload,
-                headers=headers,
-                stream=True,
-                timeout=timeout,
-            )
+            url = self.media_url
+
+            # To restart an interrupted download, read from the offset of last byte
+            # received using a range request, and set object generation query param.
+            if self._bytes_downloaded > 0:
+                _download.add_bytes_range(
+                    self._bytes_downloaded, self.end, self._headers
+                )
+                request_kwargs["headers"] = self._headers
+
+                # Set object generation query param to ensure the same object content is requested.
+                if (
+                    self._object_generation is not None
+                    and _helpers._get_generation_from_url(self.media_url) is None
+                ):
+                    query_param = {"generation": self._object_generation}
+                    url = _helpers.add_query_parameters(self.media_url, query_param)
+
+            result = transport.request(method, url, **request_kwargs)
+
+            # If a generation hasn't been specified, and this is the first response we get, let's record the
+            # generation. In future requests we'll specify the generation query param to avoid data races.
+            if self._object_generation is None:
+                self._object_generation = _helpers._parse_generation_header(
+                    result, self._get_headers
+                )
 
             self._process_response(result)
 

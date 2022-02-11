@@ -42,6 +42,7 @@ class TestDownload(object):
         assert ret_val is None
 
         assert stream.getvalue() == chunk1 + chunk2
+        assert download._bytes_downloaded == len(chunk1 + chunk2)
 
         # Check mocks.
         response.__enter__.assert_called_once_with()
@@ -66,6 +67,8 @@ class TestDownload(object):
         assert ret_val is None
 
         assert stream.getvalue() == chunk1 + chunk2 + chunk3
+        assert download._bytes_downloaded == len(chunk1 + chunk2 + chunk3)
+        assert download._checksum_object is not None
 
         # Check mocks.
         response.__enter__.assert_called_once_with()
@@ -273,6 +276,125 @@ class TestDownload(object):
         # Make sure the headers have been modified.
         assert headers == {"range": range_bytes}
 
+    def test_consume_gets_generation_from_url(self):
+        GENERATION_VALUE = 1641590104888641
+        url = EXAMPLE_URL + f"&generation={GENERATION_VALUE}"
+        stream = io.BytesIO()
+        chunks = (b"up down ", b"charlie ", b"brown")
+
+        download = download_mod.Download(
+            url, stream=stream, end=65536, headers=None, checksum="md5"
+        )
+        transport = mock.Mock(spec=["request"])
+        transport.request.return_value = _mock_response(chunks=chunks, headers=None)
+
+        assert not download.finished
+        assert download._object_generation is None
+
+        ret_val = download.consume(transport)
+
+        assert download._object_generation == GENERATION_VALUE
+        assert ret_val is transport.request.return_value
+        assert stream.getvalue() == b"".join(chunks)
+
+        called_kwargs = {
+            "data": None,
+            "headers": download._headers,
+            "timeout": EXPECTED_TIMEOUT,
+            "stream": True,
+        }
+        transport.request.assert_called_once_with("GET", url, **called_kwargs)
+
+    def test_consume_gets_generation_from_headers(self):
+        GENERATION_VALUE = 1641590104888641
+        stream = io.BytesIO()
+        chunks = (b"up down ", b"charlie ", b"brown")
+
+        download = download_mod.Download(
+            EXAMPLE_URL, stream=stream, end=65536, headers=None, checksum="md5"
+        )
+        transport = mock.Mock(spec=["request"])
+        headers = {_helpers._GENERATION_HEADER: GENERATION_VALUE}
+        transport.request.return_value = _mock_response(chunks=chunks, headers=headers)
+
+        assert not download.finished
+        assert download._object_generation is None
+
+        ret_val = download.consume(transport)
+
+        assert download._object_generation == GENERATION_VALUE
+        assert ret_val is transport.request.return_value
+        assert stream.getvalue() == b"".join(chunks)
+
+        called_kwargs = {
+            "data": None,
+            "headers": download._headers,
+            "timeout": EXPECTED_TIMEOUT,
+            "stream": True,
+        }
+        transport.request.assert_called_once_with("GET", EXAMPLE_URL, **called_kwargs)
+
+    def test_consume_w_object_generation(self):
+        GENERATION_VALUE = 1641590104888641
+        stream = io.BytesIO()
+        chunks = (b"up down ", b"charlie ", b"brown")
+        end = 65536
+
+        download = download_mod.Download(
+            EXAMPLE_URL, stream=stream, end=end, headers=None, checksum="md5"
+        )
+        transport = mock.Mock(spec=["request"])
+        transport.request.return_value = _mock_response(chunks=chunks, headers=None)
+
+        assert download._object_generation is None
+
+        # Mock a retry operation with object generation retrieved and bytes already downloaded in the stream
+        download._object_generation = GENERATION_VALUE
+        offset = 256
+        download._bytes_downloaded = offset
+        download.consume(transport)
+
+        expected_url = EXAMPLE_URL + f"&generation={GENERATION_VALUE}"
+        called_kwargs = {
+            "data": None,
+            "headers": download._headers,
+            "timeout": EXPECTED_TIMEOUT,
+            "stream": True,
+        }
+        transport.request.assert_called_once_with("GET", expected_url, **called_kwargs)
+        range_bytes = "bytes={:d}-{:d}".format(offset, end)
+        assert download._headers["range"] == range_bytes
+
+    def test_consume_w_bytes_downloaded(self):
+        stream = io.BytesIO()
+        chunks = (b"up down ", b"charlie ", b"brown")
+        end = 65536
+
+        download = download_mod.Download(
+            EXAMPLE_URL, stream=stream, end=end, headers=None, checksum="md5"
+        )
+        transport = mock.Mock(spec=["request"])
+        transport.request.return_value = _mock_response(chunks=chunks, headers=None)
+
+        assert download._bytes_downloaded == 0
+
+        # Mock a retry operation with bytes already downloaded in the stream and checksum stored
+        offset = 256
+        download._bytes_downloaded = offset
+        download._expected_checksum = None
+        download._checksum_object = _helpers._DoNothingHash()
+        download.consume(transport)
+
+        called_kwargs = {
+            "data": None,
+            "headers": download._headers,
+            "timeout": EXPECTED_TIMEOUT,
+            "stream": True,
+        }
+        transport.request.assert_called_once_with("GET", EXAMPLE_URL, **called_kwargs)
+        range_bytes = "bytes={:d}-{:d}".format(offset, end)
+        assert download._headers["range"] == range_bytes
+
 
 class TestRawDownload(object):
     def test__write_to_stream_no_hash_check(self):
@@ -287,6 +409,7 @@ class TestRawDownload(object):
         assert ret_val is None
 
         assert stream.getvalue() == chunk1 + chunk2
+        assert download._bytes_downloaded == len(chunk1 + chunk2)
 
         # Check mocks.
         response.__enter__.assert_called_once_with()
@@ -313,6 +436,8 @@ class TestRawDownload(object):
         assert ret_val is None
 
         assert stream.getvalue() == chunk1 + chunk2 + chunk3
+        assert download._bytes_downloaded == len(chunk1 + chunk2 + chunk3)
+        assert download._checksum_object is not None
 
         # Check mocks.
         response.__enter__.assert_called_once_with()
@@ -525,6 +650,127 @@ class TestRawDownload(object):
         range_bytes = "bytes={:d}-{:d}".format(0, end)
         # Make sure the headers have been modified.
         assert headers == {"range": range_bytes}
+
+    def test_consume_gets_generation_from_url(self):
+        GENERATION_VALUE = 1641590104888641
+        url = EXAMPLE_URL + f"&generation={GENERATION_VALUE}"
+        stream = io.BytesIO()
+        chunks = (b"up down ", b"charlie ", b"brown")
+
+        download = download_mod.RawDownload(
+            url, stream=stream, end=65536, headers=None, checksum="md5"
+        )
+        transport = mock.Mock(spec=["request"])
+        transport.request.return_value = _mock_raw_response(chunks=chunks, headers=None)
+
+        assert not download.finished
+        assert download._object_generation is None
+
+        ret_val = download.consume(transport)
+
+        assert download._object_generation == GENERATION_VALUE
+        assert ret_val is transport.request.return_value
+        assert stream.getvalue() == b"".join(chunks)
+
+        called_kwargs = {
+            "data": None,
+            "headers": download._headers,
+            "timeout": EXPECTED_TIMEOUT,
+            "stream": True,
+        }
+        transport.request.assert_called_once_with("GET", url, **called_kwargs)
+
+    def test_consume_gets_generation_from_headers(self):
+        GENERATION_VALUE = 1641590104888641
+        stream = io.BytesIO()
+        chunks = (b"up down ", b"charlie ", b"brown")
+
+        download = download_mod.RawDownload(
+            EXAMPLE_URL, stream=stream, end=65536, headers=None, checksum="md5"
+        )
+        transport = mock.Mock(spec=["request"])
+        headers = {_helpers._GENERATION_HEADER: GENERATION_VALUE}
+        transport.request.return_value = _mock_raw_response(
+            chunks=chunks, headers=headers
+        )
+
+        assert not download.finished
+        assert download._object_generation is None
+
+        ret_val = download.consume(transport)
+
+        assert download._object_generation == GENERATION_VALUE
+        assert ret_val is transport.request.return_value
+        assert stream.getvalue() == b"".join(chunks)
+
+        called_kwargs = {
+            "data": None,
+            "headers": download._headers,
+            "timeout": EXPECTED_TIMEOUT,
+            "stream": True,
+        }
+        transport.request.assert_called_once_with("GET", EXAMPLE_URL, **called_kwargs)
+
+    def test_consume_w_object_generation(self):
+        GENERATION_VALUE = 1641590104888641
+        stream = io.BytesIO()
+        chunks = (b"up down ", b"charlie ", b"brown")
+        end = 65536
+
+        download = download_mod.RawDownload(
+            EXAMPLE_URL, stream=stream, end=end, headers=None, checksum="md5"
+        )
+        transport = mock.Mock(spec=["request"])
+        transport.request.return_value = _mock_raw_response(chunks=chunks, headers=None)
+
+        assert download._object_generation is None
+
+        # Mock a retry operation with object generation retrieved and bytes already downloaded in the stream
+        download._object_generation = GENERATION_VALUE
+        offset = 256
+        download._bytes_downloaded = offset
+        download.consume(transport)
+
+        expected_url = EXAMPLE_URL + f"&generation={GENERATION_VALUE}"
+        called_kwargs = {
+            "data": None,
+            "headers": download._headers,
+            "timeout": EXPECTED_TIMEOUT,
+            "stream": True,
+        }
+        transport.request.assert_called_once_with("GET", expected_url, **called_kwargs)
+        range_bytes = "bytes={:d}-{:d}".format(offset, end)
+        assert download._headers["range"] == range_bytes
+
+    def test_consume_w_bytes_downloaded(self):
+        stream = io.BytesIO()
+        chunks = (b"up down ", b"charlie ", b"brown")
+        end = 65536
+
+        download = download_mod.RawDownload(
+            EXAMPLE_URL, stream=stream, end=end, headers=None, checksum="md5"
+        )
+        transport = mock.Mock(spec=["request"])
+        transport.request.return_value = _mock_raw_response(chunks=chunks, headers=None)
+
+        assert download._bytes_downloaded == 0
+
+        # Mock a retry operation with bytes already downloaded in the stream and checksum stored
+        offset = 256
+        download._bytes_downloaded = offset
+        download._expected_checksum = None
+        download._checksum_object = _helpers._DoNothingHash()
+        download.consume(transport)
+
+        called_kwargs = {
+            "data": None,
+            "headers": download._headers,
+            "timeout": EXPECTED_TIMEOUT,
+            "stream": True,
+        }
+        transport.request.assert_called_once_with("GET", EXAMPLE_URL, **called_kwargs)
+        range_bytes = "bytes={:d}-{:d}".format(offset, end)
+        assert download._headers["range"] == range_bytes
 
 
 class TestChunkedDownload(object):
