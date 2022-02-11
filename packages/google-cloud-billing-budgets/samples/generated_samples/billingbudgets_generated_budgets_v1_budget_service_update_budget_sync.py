@@ -38,7 +38,7 @@ def sample_update_budget():
     # Make the request
     response = client.update_budget(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END billingbudgets_generated_budgets_v1_BudgetService_UpdateBudget_sync]

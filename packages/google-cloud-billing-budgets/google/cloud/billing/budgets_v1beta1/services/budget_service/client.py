@@ -408,10 +408,10 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> budget_model.Budget:
-        r"""Creates a new budget. See
-        <a href="https://cloud.google.com/billing/quotas">Quotas
-        and limits</a> for more information on the limits of the
-        number of budgets you can create.
+        r"""Creates a new budget. See `Quotas and
+        limits <https://cloud.google.com/billing/quotas>`__ for more
+        information on the limits of the number of budgets you can
+        create.
 
 
 
@@ -431,7 +431,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
                 # Make the request
                 response = client.create_budget(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -511,7 +511,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
                 # Make the request
                 response = client.update_budget(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -595,7 +595,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
                 # Make the request
                 response = client.get_budget(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -676,6 +676,8 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
 
                 # Make the request
                 page_result = client.list_budgets(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -753,7 +755,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_budget(request=request)
+                client.delete_budget(request=request)
 
         Args:
             request (Union[google.cloud.billing.budgets_v1beta1.types.DeleteBudgetRequest, dict]):

@@ -72,10 +72,13 @@ class Budget(proto.Message):
         amount (google.cloud.billing.budgets_v1beta1.types.BudgetAmount):
             Required. Budgeted amount.
         threshold_rules (Sequence[google.cloud.billing.budgets_v1beta1.types.ThresholdRule]):
-            Optional. Rules that trigger alerts
-            (notifications of thresholds being crossed) when
-            spend exceeds the specified percentages of the
-            budget.
+            Optional. Rules that trigger alerts (notifications of
+            thresholds being crossed) when spend exceeds the specified
+            percentages of the budget.
+
+            Optional for ``pubsubTopic`` notifications.
+
+            Required if using email notifications.
         all_updates_rule (google.cloud.billing.budgets_v1beta1.types.AllUpdatesRule):
             Optional. Rules to apply to notifications
             sent based on budget spend and thresholds.
@@ -150,13 +153,25 @@ class LastPeriodAmount(proto.Message):
 
 
 class ThresholdRule(proto.Message):
-    r"""ThresholdRule contains a definition of a threshold which triggers an
-    alert (a notification of a threshold being crossed) to be sent when
-    spend goes above the specified amount. Alerts are automatically
-    e-mailed to users with the Billing Account Administrator role or the
-    Billing Account User role. The thresholds here have no effect on
-    notifications sent to anything configured under
-    ``Budget.all_updates_rule``.
+    r"""ThresholdRule contains the definition of a threshold. Threshold
+    rules define the triggering events used to generate a budget
+    notification email. When a threshold is crossed (spend exceeds the
+    specified percentages of the budget), budget alert emails are sent
+    to the email recipients you specify in the
+    `NotificationsRule <#notificationsrule>`__.
+
+    Threshold rules also affect the fields included in the `JSON data
+    object <https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#notification_format>`__
+    sent to a Pub/Sub topic.
+
+    Threshold rules are *required* if using email notifications.
+
+    Threshold rules are *optional* if only setting a ```pubsubTopic``
+    NotificationsRule <#NotificationsRule>`__, unless you want your JSON
+    data object to include data about the thresholds you set.
+
+    For more information, see `set budget threshold rules and
+    actions <https://cloud.google.com/billing/docs/how-to/budgets#budget-actions>`__.
 
     Attributes:
         threshold_percent (float):
@@ -282,13 +297,16 @@ class Filter(proto.Message):
             omitted, the report will include usage from the parent
             account and all subaccounts, if they exist.
         labels (Sequence[google.cloud.billing.budgets_v1beta1.types.Filter.LabelsEntry]):
-            Optional. A single label and value pair
-            specifying that usage from only this set of
-            labeled resources should be included in the
-            budget. Currently, multiple entries or multiple
-            values per entry are not allowed. If omitted,
-            the report will include all labeled and
-            unlabeled usage.
+            Optional. A single label and value pair specifying that
+            usage from only this set of labeled resources should be
+            included in the budget. If omitted, the report will include
+            all labeled and unlabeled usage.
+
+            An object containing a single ``"key": value`` pair.
+            Example: ``{ "name": "wrench" }``.
+
+            *Currently, multiple entries or multiple values per entry
+            are not allowed.*
         calendar_period (google.cloud.billing.budgets_v1beta1.types.CalendarPeriod):
             Optional. Specifies to track usage for
             recurring calendar period. For example, assume

@@ -240,10 +240,10 @@ class BudgetServiceGrpcAsyncIOTransport(BudgetServiceTransport):
     ) -> Callable[[budget_service.CreateBudgetRequest], Awaitable[budget_model.Budget]]:
         r"""Return a callable for the create budget method over gRPC.
 
-        Creates a new budget. See
-        <a href="https://cloud.google.com/billing/quotas">Quotas
-        and limits</a> for more information on the limits of the
-        number of budgets you can create.
+        Creates a new budget. See `Quotas and
+        limits <https://cloud.google.com/billing/quotas>`__ for more
+        information on the limits of the number of budgets you can
+        create.
 
         Returns:
             Callable[[~.CreateBudgetRequest],

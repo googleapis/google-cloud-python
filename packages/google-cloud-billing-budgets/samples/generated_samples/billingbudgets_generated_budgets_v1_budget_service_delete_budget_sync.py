@@ -37,7 +37,7 @@ def sample_delete_budget():
     )
 
     # Make the request
-    response = client.delete_budget(request=request)
+    client.delete_budget(request=request)
 
 
 # [END billingbudgets_generated_budgets_v1_BudgetService_DeleteBudget_sync]

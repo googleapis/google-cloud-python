@@ -277,12 +277,12 @@
       "regionTag": "billingbudgets_generated_budgets_v1_BudgetService_ListBudgets_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -297,11 +297,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -319,12 +321,12 @@
       "regionTag": "billingbudgets_generated_budgets_v1_BudgetService_ListBudgets_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -339,11 +341,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]

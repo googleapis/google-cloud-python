@@ -39,7 +39,7 @@ async def sample_get_budget():
     # Make the request
     response = await client.get_budget(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END billingbudgets_generated_budgets_v1_BudgetService_GetBudget_async]

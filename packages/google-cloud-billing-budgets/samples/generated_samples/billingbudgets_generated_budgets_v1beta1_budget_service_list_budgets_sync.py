@@ -38,6 +38,8 @@ def sample_list_budgets():
 
     # Make the request
     page_result = client.list_budgets(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 
