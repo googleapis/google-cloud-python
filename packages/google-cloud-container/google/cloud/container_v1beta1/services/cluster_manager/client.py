@@ -409,6 +409,28 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Lists all clusters owned by a project in either the
         specified zone or all zones.
 
+
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_list_clusters():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.ListClustersRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.list_clusters(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.container_v1beta1.types.ListClustersRequest, dict]):
                 The request object. ListClustersRequest lists clusters.
@@ -496,6 +518,28 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Cluster:
         r"""Gets the details for a specific cluster.
+
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_get_cluster():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.GetClusterRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                    cluster_id="cluster_id_value",
+                )
+
+                # Make the request
+                response = client.get_cluster(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.container_v1beta1.types.GetClusterRequest, dict]):
@@ -606,6 +650,28 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         Finally, an entry is added to the project's global metadata
         indicating which CIDR range the cluster is using.
 
+
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_create_cluster():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.CreateClusterRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.create_cluster(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.container_v1beta1.types.CreateClusterRequest, dict]):
                 The request object. CreateClusterRequest creates a
@@ -705,6 +771,28 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Updates the settings for a specific cluster.
+
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_update_cluster():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.UpdateClusterRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                    cluster_id="cluster_id_value",
+                )
+
+                # Make the request
+                response = client.update_cluster(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.container_v1beta1.types.UpdateClusterRequest, dict]):
@@ -814,6 +902,32 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Updates the version and/or image type of a specific
         node pool.
 
+
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_update_node_pool():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.UpdateNodePoolRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                    cluster_id="cluster_id_value",
+                    node_pool_id="node_pool_id_value",
+                    node_version="node_version_value",
+                    image_type="image_type_value",
+                )
+
+                # Make the request
+                response = client.update_node_pool(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.container_v1beta1.types.UpdateNodePoolRequest, dict]):
                 The request object. SetNodePoolVersionRequest updates
@@ -866,6 +980,30 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.Operation:
         r"""Sets the autoscaling settings of a specific node
         pool.
+
+
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_set_node_pool_autoscaling():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.SetNodePoolAutoscalingRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                    cluster_id="cluster_id_value",
+                    node_pool_id="node_pool_id_value",
+                )
+
+                # Make the request
+                response = client.set_node_pool_autoscaling(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.container_v1beta1.types.SetNodePoolAutoscalingRequest, dict]):
@@ -924,6 +1062,29 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Sets the logging service for a specific cluster.
+
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_set_logging_service():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.SetLoggingServiceRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                    cluster_id="cluster_id_value",
+                    logging_service="logging_service_value",
+                )
+
+                # Make the request
+                response = client.set_logging_service(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.container_v1beta1.types.SetLoggingServiceRequest, dict]):
@@ -1047,6 +1208,29 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Sets the monitoring service for a specific cluster.
+
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_set_monitoring_service():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.SetMonitoringServiceRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                    cluster_id="cluster_id_value",
+                    monitoring_service="monitoring_service_value",
+                )
+
+                # Make the request
+                response = client.set_monitoring_service(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.container_v1beta1.types.SetMonitoringServiceRequest, dict]):
@@ -1173,6 +1357,28 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.Operation:
         r"""Sets the addons for a specific cluster.
 
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_set_addons_config():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.SetAddonsConfigRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                    cluster_id="cluster_id_value",
+                )
+
+                # Make the request
+                response = client.set_addons_config(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.container_v1beta1.types.SetAddonsConfigRequest, dict]):
                 The request object. SetAddonsRequest sets the addons
@@ -1286,6 +1492,30 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Sets the locations for a specific cluster. Deprecated. Use
         `projects.locations.clusters.update <https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters/update>`__
         instead.
+
+
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_set_locations():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.SetLocationsRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                    cluster_id="cluster_id_value",
+                    locations=['locations_value_1', 'locations_value_2'],
+                )
+
+                # Make the request
+                response = client.set_locations(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.container_v1beta1.types.SetLocationsRequest, dict]):
@@ -1409,6 +1639,29 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.Operation:
         r"""Updates the master for a specific cluster.
 
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_update_master():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.UpdateMasterRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                    cluster_id="cluster_id_value",
+                    master_version="master_version_value",
+                )
+
+                # Make the request
+                response = client.update_master(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.container_v1beta1.types.UpdateMasterRequest, dict]):
                 The request object. UpdateMasterRequest updates the
@@ -1531,6 +1784,30 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         either via password generation or explicitly setting the
         password.
 
+
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_set_master_auth():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.SetMasterAuthRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                    cluster_id="cluster_id_value",
+                    action="SET_USERNAME",
+                )
+
+                # Make the request
+                response = client.set_master_auth(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.container_v1beta1.types.SetMasterAuthRequest, dict]):
                 The request object. SetMasterAuthRequest updates the
@@ -1594,6 +1871,29 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         use by the cluster, such as load balancer resources, are
         not deleted if they weren't present when the cluster was
         initially created.
+
+
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_delete_cluster():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.DeleteClusterRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                    cluster_id="cluster_id_value",
+                )
+
+                # Make the request
+                response = client.delete_cluster(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.container_v1beta1.types.DeleteClusterRequest, dict]):
@@ -1696,6 +1996,28 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Lists all operations in a project in the specified
         zone or all zones.
 
+
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_list_operations():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.ListOperationsRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.list_operations(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.container_v1beta1.types.ListOperationsRequest, dict]):
                 The request object. ListOperationsRequest lists
@@ -1784,6 +2106,28 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Gets the specified operation.
+
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_get_operation():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.GetOperationRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                    operation_id="operation_id_value",
+                )
+
+                # Make the request
+                response = client.get_operation(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.container_v1beta1.types.GetOperationRequest, dict]):
@@ -1885,6 +2229,25 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> None:
         r"""Cancels the specified operation.
 
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_cancel_operation():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.CancelOperationRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                    operation_id="operation_id_value",
+                )
+
+                # Make the request
+                client.cancel_operation(request=request)
+
         Args:
             request (Union[google.cloud.container_v1beta1.types.CancelOperationRequest, dict]):
                 The request object. CancelOperationRequest cancels a
@@ -1976,6 +2339,28 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Returns configuration info about the Google
         Kubernetes Engine service.
 
+
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_get_server_config():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.GetServerConfigRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                )
+
+                # Make the request
+                response = client.get_server_config(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.container_v1beta1.types.GetServerConfigRequest, dict]):
                 The request object. Gets the current Kubernetes Engine
@@ -2063,6 +2448,28 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.ListNodePoolsResponse:
         r"""Lists the node pools for a cluster.
+
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_list_node_pools():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.ListNodePoolsRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                    cluster_id="cluster_id_value",
+                )
+
+                # Make the request
+                response = client.list_node_pools(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.container_v1beta1.types.ListNodePoolsRequest, dict]):
@@ -2162,6 +2569,26 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         This API is not yet intended for general use, and is not
         available for all clusters.
 
+
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_get_json_web_keys():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.GetJSONWebKeysRequest(
+                )
+
+                # Make the request
+                response = client.get_json_web_keys(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.container_v1beta1.types.GetJSONWebKeysRequest, dict]):
                 The request object. GetJSONWebKeysRequest gets the
@@ -2219,6 +2646,29 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.NodePool:
         r"""Retrieves the requested node pool.
+
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_get_node_pool():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.GetNodePoolRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                    cluster_id="cluster_id_value",
+                    node_pool_id="node_pool_id_value",
+                )
+
+                # Make the request
+                response = client.get_node_pool(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.container_v1beta1.types.GetNodePoolRequest, dict]):
@@ -2371,6 +2821,28 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.Operation:
         r"""Creates a node pool for a cluster.
 
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_create_node_pool():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.CreateNodePoolRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                    cluster_id="cluster_id_value",
+                )
+
+                # Make the request
+                response = client.create_node_pool(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.container_v1beta1.types.CreateNodePoolRequest, dict]):
                 The request object. CreateNodePoolRequest creates a node
@@ -2478,6 +2950,29 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Deletes a node pool from a cluster.
+
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_delete_node_pool():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.DeleteNodePoolRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                    cluster_id="cluster_id_value",
+                    node_pool_id="node_pool_id_value",
+                )
+
+                # Make the request
+                response = client.delete_node_pool(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.container_v1beta1.types.DeleteNodePoolRequest, dict]):
@@ -2592,6 +3087,30 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Rolls back a previously Aborted or Failed NodePool
         upgrade. This makes no changes if the last upgrade
         successfully completed.
+
+
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_rollback_node_pool_upgrade():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.RollbackNodePoolUpgradeRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                    cluster_id="cluster_id_value",
+                    node_pool_id="node_pool_id_value",
+                )
+
+                # Make the request
+                response = client.rollback_node_pool_upgrade(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.container_v1beta1.types.RollbackNodePoolUpgradeRequest, dict]):
@@ -2710,6 +3229,29 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Sets the NodeManagement options for a node pool.
+
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_set_node_pool_management():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.SetNodePoolManagementRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                    cluster_id="cluster_id_value",
+                    node_pool_id="node_pool_id_value",
+                )
+
+                # Make the request
+                response = client.set_node_pool_management(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.container_v1beta1.types.SetNodePoolManagementRequest, dict]):
@@ -2837,6 +3379,29 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Sets labels on a cluster.
+
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_set_labels():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.SetLabelsRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                    cluster_id="cluster_id_value",
+                    label_fingerprint="label_fingerprint_value",
+                )
+
+                # Make the request
+                response = client.set_labels(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.container_v1beta1.types.SetLabelsRequest, dict]):
@@ -2968,6 +3533,30 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Enables or disables the ABAC authorization mechanism
         on a cluster.
 
+
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_set_legacy_abac():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.SetLegacyAbacRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                    cluster_id="cluster_id_value",
+                    enabled=True,
+                )
+
+                # Make the request
+                response = client.set_legacy_abac(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.container_v1beta1.types.SetLegacyAbacRequest, dict]):
                 The request object. SetLegacyAbacRequest enables or
@@ -3078,6 +3667,28 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.Operation:
         r"""Starts master IP rotation.
 
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_start_ip_rotation():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.StartIPRotationRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                    cluster_id="cluster_id_value",
+                )
+
+                # Make the request
+                response = client.start_ip_rotation(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.container_v1beta1.types.StartIPRotationRequest, dict]):
                 The request object. StartIPRotationRequest creates a new
@@ -3179,6 +3790,28 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.Operation:
         r"""Completes master IP rotation.
 
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_complete_ip_rotation():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.CompleteIPRotationRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                    cluster_id="cluster_id_value",
+                )
+
+                # Make the request
+                response = client.complete_ip_rotation(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.container_v1beta1.types.CompleteIPRotationRequest, dict]):
                 The request object. CompleteIPRotationRequest moves the
@@ -3279,6 +3912,31 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         created by modifying
         [NodePool.locations][google.container.v1beta1.NodePool.locations].
 
+
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_set_node_pool_size():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.SetNodePoolSizeRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                    cluster_id="cluster_id_value",
+                    node_pool_id="node_pool_id_value",
+                    node_count=1070,
+                )
+
+                # Make the request
+                response = client.set_node_pool_size(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.container_v1beta1.types.SetNodePoolSizeRequest, dict]):
                 The request object. SetNodePoolSizeRequest sets the size
@@ -3334,6 +3992,28 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
         r"""Enables or disables Network Policy for a cluster.
+
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_set_network_policy():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.SetNetworkPolicyRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                    cluster_id="cluster_id_value",
+                )
+
+                # Make the request
+                response = client.set_network_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.container_v1beta1.types.SetNetworkPolicyRequest, dict]):
@@ -3445,6 +4125,28 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.Operation:
         r"""Sets the maintenance policy for a cluster.
 
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_set_maintenance_policy():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.SetMaintenancePolicyRequest(
+                    project_id="project_id_value",
+                    zone="zone_value",
+                    cluster_id="cluster_id_value",
+                )
+
+                # Make the request
+                response = client.set_maintenance_policy(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.container_v1beta1.types.SetMaintenancePolicyRequest, dict]):
                 The request object. SetMaintenancePolicyRequest sets the
@@ -3549,6 +4251,28 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Lists subnetworks that can be used for creating
         clusters in a project.
 
+
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_list_usable_subnetworks():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.ListUsableSubnetworksRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_usable_subnetworks(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.container_v1beta1.types.ListUsableSubnetworksRequest, dict]):
                 The request object. ListUsableSubnetworksRequest
@@ -3632,6 +4356,27 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.ListLocationsResponse:
         r"""Fetches locations that offer Google Kubernetes
         Engine.
+
+
+
+        .. code-block::
+
+            from google.cloud import container_v1beta1
+
+            def sample_list_locations():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.ListLocationsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.list_locations(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.container_v1beta1.types.ListLocationsRequest, dict]):
