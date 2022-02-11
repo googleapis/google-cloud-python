@@ -398,6 +398,26 @@ class ImageAnnotatorClient(metaclass=ImageAnnotatorClientMeta):
         r"""Run image detection and annotation for a batch of
         images.
 
+
+
+        .. code-block::
+
+            from google.cloud import vision_v1p1beta1
+
+            def sample_batch_annotate_images():
+                # Create a client
+                client = vision_v1p1beta1.ImageAnnotatorClient()
+
+                # Initialize request argument(s)
+                request = vision_v1p1beta1.BatchAnnotateImagesRequest(
+                )
+
+                # Make the request
+                response = client.batch_annotate_images(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vision_v1p1beta1.types.BatchAnnotateImagesRequest, dict]):
                 The request object. Multiple image annotation requests

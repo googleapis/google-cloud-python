@@ -251,6 +251,26 @@ class ProductSearchAsyncClient:
         -  Returns INVALID_ARGUMENT if display_name is missing, or is
            longer than 4096 characters.
 
+
+        .. code-block::
+
+            from google.cloud import vision_v1
+
+            def sample_create_product_set():
+                # Create a client
+                client = vision_v1.ProductSearchClient()
+
+                # Initialize request argument(s)
+                request = vision_v1.CreateProductSetRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_product_set(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vision_v1.types.CreateProductSetRequest, dict]):
                 The request object. Request message for the
@@ -358,6 +378,27 @@ class ProductSearchAsyncClient:
         -  Returns INVALID_ARGUMENT if page_size is greater than 100, or
            less than 1.
 
+
+        .. code-block::
+
+            from google.cloud import vision_v1
+
+            def sample_list_product_sets():
+                # Create a client
+                client = vision_v1.ProductSearchClient()
+
+                # Initialize request argument(s)
+                request = vision_v1.ListProductSetsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_product_sets(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.vision_v1.types.ListProductSetsRequest, dict]):
                 The request object. Request message for the
@@ -453,6 +494,26 @@ class ProductSearchAsyncClient:
 
         -  Returns NOT_FOUND if the ProductSet does not exist.
 
+
+        .. code-block::
+
+            from google.cloud import vision_v1
+
+            def sample_get_product_set():
+                # Create a client
+                client = vision_v1.ProductSearchClient()
+
+                # Initialize request argument(s)
+                request = vision_v1.GetProductSetRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_product_set(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vision_v1.types.GetProductSetRequest, dict]):
                 The request object. Request message for the
@@ -547,6 +608,25 @@ class ProductSearchAsyncClient:
         -  Returns INVALID_ARGUMENT if display_name is present in
            update_mask but missing from the request or longer than 4096
            characters.
+
+
+        .. code-block::
+
+            from google.cloud import vision_v1
+
+            def sample_update_product_set():
+                # Create a client
+                client = vision_v1.ProductSearchClient()
+
+                # Initialize request argument(s)
+                request = vision_v1.UpdateProductSetRequest(
+                )
+
+                # Make the request
+                response = client.update_product_set(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.vision_v1.types.UpdateProductSetRequest, dict]):
@@ -648,6 +728,23 @@ class ProductSearchAsyncClient:
         The actual image files are not deleted from Google Cloud
         Storage.
 
+
+        .. code-block::
+
+            from google.cloud import vision_v1
+
+            def sample_delete_product_set():
+                # Create a client
+                client = vision_v1.ProductSearchClient()
+
+                # Initialize request argument(s)
+                request = vision_v1.DeleteProductSetRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_product_set(request=request)
+
         Args:
             request (Union[google.cloud.vision_v1.types.DeleteProductSetRequest, dict]):
                 The request object. Request message for the
@@ -734,6 +831,26 @@ class ProductSearchAsyncClient:
            characters.
         -  Returns INVALID_ARGUMENT if product_category is missing or
            invalid.
+
+
+        .. code-block::
+
+            from google.cloud import vision_v1
+
+            def sample_create_product():
+                # Create a client
+                client = vision_v1.ProductSearchClient()
+
+                # Initialize request argument(s)
+                request = vision_v1.CreateProductRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_product(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.vision_v1.types.CreateProductRequest, dict]):
@@ -837,6 +954,27 @@ class ProductSearchAsyncClient:
         -  Returns INVALID_ARGUMENT if page_size is greater than 100 or
            less than 1.
 
+
+        .. code-block::
+
+            from google.cloud import vision_v1
+
+            def sample_list_products():
+                # Create a client
+                client = vision_v1.ProductSearchClient()
+
+                # Initialize request argument(s)
+                request = vision_v1.ListProductsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_products(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.vision_v1.types.ListProductsRequest, dict]):
                 The request object. Request message for the
@@ -931,6 +1069,26 @@ class ProductSearchAsyncClient:
         Possible errors:
 
         -  Returns NOT_FOUND if the Product does not exist.
+
+
+        .. code-block::
+
+            from google.cloud import vision_v1
+
+            def sample_get_product():
+                # Create a client
+                client = vision_v1.ProductSearchClient()
+
+                # Initialize request argument(s)
+                request = vision_v1.GetProductRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_product(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.vision_v1.types.GetProductRequest, dict]):
@@ -1028,6 +1186,25 @@ class ProductSearchAsyncClient:
            update_mask but is longer than 4096 characters.
         -  Returns INVALID_ARGUMENT if product_category is present in
            update_mask.
+
+
+        .. code-block::
+
+            from google.cloud import vision_v1
+
+            def sample_update_product():
+                # Create a client
+                client = vision_v1.ProductSearchClient()
+
+                # Initialize request argument(s)
+                request = vision_v1.UpdateProductRequest(
+                )
+
+                # Make the request
+                response = client.update_product(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.vision_v1.types.UpdateProductRequest, dict]):
@@ -1128,6 +1305,23 @@ class ProductSearchAsyncClient:
         ProductSets containing the product may still work until
         all related caches are refreshed.
 
+
+        .. code-block::
+
+            from google.cloud import vision_v1
+
+            def sample_delete_product():
+                # Create a client
+                client = vision_v1.ProductSearchClient()
+
+                # Initialize request argument(s)
+                request = vision_v1.DeleteProductRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_product(request=request)
+
         Args:
             request (Union[google.cloud.vision_v1.types.DeleteProductRequest, dict]):
                 The request object. Request message for the
@@ -1226,6 +1420,30 @@ class ProductSearchAsyncClient:
            product_category is detected.
         -  Returns INVALID_ARGUMENT if bounding_poly contains more than
            10 polygons.
+
+
+        .. code-block::
+
+            from google.cloud import vision_v1
+
+            def sample_create_reference_image():
+                # Create a client
+                client = vision_v1.ProductSearchClient()
+
+                # Initialize request argument(s)
+                reference_image = vision_v1.ReferenceImage()
+                reference_image.uri = "uri_value"
+
+                request = vision_v1.CreateReferenceImageRequest(
+                    parent="parent_value",
+                    reference_image=reference_image,
+                )
+
+                # Make the request
+                response = client.create_reference_image(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.vision_v1.types.CreateReferenceImageRequest, dict]):
@@ -1336,6 +1554,23 @@ class ProductSearchAsyncClient:
         The actual image files are not deleted from Google Cloud
         Storage.
 
+
+        .. code-block::
+
+            from google.cloud import vision_v1
+
+            def sample_delete_reference_image():
+                # Create a client
+                client = vision_v1.ProductSearchClient()
+
+                # Initialize request argument(s)
+                request = vision_v1.DeleteReferenceImageRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_reference_image(request=request)
+
         Args:
             request (Union[google.cloud.vision_v1.types.DeleteReferenceImageRequest, dict]):
                 The request object. Request message for the
@@ -1418,6 +1653,27 @@ class ProductSearchAsyncClient:
         -  Returns NOT_FOUND if the parent product does not exist.
         -  Returns INVALID_ARGUMENT if the page_size is greater than
            100, or less than 1.
+
+
+        .. code-block::
+
+            from google.cloud import vision_v1
+
+            def sample_list_reference_images():
+                # Create a client
+                client = vision_v1.ProductSearchClient()
+
+                # Initialize request argument(s)
+                request = vision_v1.ListReferenceImagesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_reference_images(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.vision_v1.types.ListReferenceImagesRequest, dict]):
@@ -1515,6 +1771,26 @@ class ProductSearchAsyncClient:
 
         -  Returns NOT_FOUND if the specified image does not exist.
 
+
+        .. code-block::
+
+            from google.cloud import vision_v1
+
+            def sample_get_reference_image():
+                # Create a client
+                client = vision_v1.ProductSearchClient()
+
+                # Initialize request argument(s)
+                request = vision_v1.GetReferenceImageRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_reference_image(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vision_v1.types.GetReferenceImageRequest, dict]):
                 The request object. Request message for the
@@ -1610,6 +1886,24 @@ class ProductSearchAsyncClient:
         -  Returns NOT_FOUND if the Product or the ProductSet doesn't
            exist.
 
+
+        .. code-block::
+
+            from google.cloud import vision_v1
+
+            def sample_add_product_to_product_set():
+                # Create a client
+                client = vision_v1.ProductSearchClient()
+
+                # Initialize request argument(s)
+                request = vision_v1.AddProductToProductSetRequest(
+                    name="name_value",
+                    product="product_value",
+                )
+
+                # Make the request
+                client.add_product_to_product_set(request=request)
+
         Args:
             request (Union[google.cloud.vision_v1.types.AddProductToProductSetRequest, dict]):
                 The request object. Request message for the
@@ -1701,6 +1995,23 @@ class ProductSearchAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Removes a Product from the specified ProductSet.
+
+        .. code-block::
+
+            from google.cloud import vision_v1
+
+            def sample_remove_product_from_product_set():
+                # Create a client
+                client = vision_v1.ProductSearchClient()
+
+                # Initialize request argument(s)
+                request = vision_v1.RemoveProductFromProductSetRequest(
+                    name="name_value",
+                    product="product_value",
+                )
+
+                # Make the request
+                client.remove_product_from_product_set(request=request)
 
         Args:
             request (Union[google.cloud.vision_v1.types.RemoveProductFromProductSetRequest, dict]):
@@ -1799,6 +2110,27 @@ class ProductSearchAsyncClient:
 
         -  Returns INVALID_ARGUMENT if page_size is greater than 100 or
            less than 1.
+
+
+        .. code-block::
+
+            from google.cloud import vision_v1
+
+            def sample_list_products_in_product_set():
+                # Create a client
+                client = vision_v1.ProductSearchClient()
+
+                # Initialize request argument(s)
+                request = vision_v1.ListProductsInProductSetRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                page_result = client.list_products_in_product_set(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.vision_v1.types.ListProductsInProductSetRequest, dict]):
@@ -1904,6 +2236,30 @@ class ProductSearchAsyncClient:
         The input source of this method is a csv file on Google Cloud
         Storage. For the format of the csv file please see
         [ImportProductSetsGcsSource.csv_file_uri][google.cloud.vision.v1.ImportProductSetsGcsSource.csv_file_uri].
+
+
+        .. code-block::
+
+            from google.cloud import vision_v1
+
+            def sample_import_product_sets():
+                # Create a client
+                client = vision_v1.ProductSearchClient()
+
+                # Initialize request argument(s)
+                request = vision_v1.ImportProductSetsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.import_product_sets(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.vision_v1.types.ImportProductSetsRequest, dict]):
@@ -2036,6 +2392,30 @@ class ProductSearchAsyncClient:
         API can be used to keep track of the progress and results of the
         request. ``Operation.metadata`` contains
         ``BatchOperationMetadata``. (progress)
+
+
+        .. code-block::
+
+            from google.cloud import vision_v1
+
+            def sample_purge_products():
+                # Create a client
+                client = vision_v1.ProductSearchClient()
+
+                # Initialize request argument(s)
+                request = vision_v1.PurgeProductsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.purge_products(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.vision_v1.types.PurgeProductsRequest, dict]):

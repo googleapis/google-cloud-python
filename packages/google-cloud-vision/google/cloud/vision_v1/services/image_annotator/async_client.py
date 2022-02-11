@@ -221,6 +221,25 @@ class ImageAnnotatorAsyncClient:
         r"""Run image detection and annotation for a batch of
         images.
 
+
+        .. code-block::
+
+            from google.cloud import vision_v1
+
+            def sample_batch_annotate_images():
+                # Create a client
+                client = vision_v1.ImageAnnotatorClient()
+
+                # Initialize request argument(s)
+                request = vision_v1.BatchAnnotateImagesRequest(
+                )
+
+                # Make the request
+                response = client.batch_annotate_images(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vision_v1.types.BatchAnnotateImagesRequest, dict]):
                 The request object. Multiple image annotation requests
@@ -302,6 +321,25 @@ class ImageAnnotatorAsyncClient:
         (gif) or pages (pdf or tiff) from each file provided and
         perform detection and annotation for each image
         extracted.
+
+
+        .. code-block::
+
+            from google.cloud import vision_v1
+
+            def sample_batch_annotate_files():
+                # Create a client
+                client = vision_v1.ImageAnnotatorClient()
+
+                # Initialize request argument(s)
+                request = vision_v1.BatchAnnotateFilesRequest(
+                )
+
+                # Make the request
+                response = client.batch_annotate_files(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.vision_v1.types.BatchAnnotateFilesRequest, dict]):
@@ -389,6 +427,29 @@ class ImageAnnotatorAsyncClient:
         This service will write image annotation outputs to json files
         in customer GCS bucket, each json file containing
         BatchAnnotateImagesResponse proto.
+
+
+        .. code-block::
+
+            from google.cloud import vision_v1
+
+            def sample_async_batch_annotate_images():
+                # Create a client
+                client = vision_v1.ImageAnnotatorClient()
+
+                # Initialize request argument(s)
+                request = vision_v1.AsyncBatchAnnotateImagesRequest(
+                )
+
+                # Make the request
+                operation = client.async_batch_annotate_images(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.vision_v1.types.AsyncBatchAnnotateImagesRequest, dict]):
@@ -490,6 +551,29 @@ class ImageAnnotatorAsyncClient:
         interface. ``Operation.metadata`` contains ``OperationMetadata``
         (metadata). ``Operation.response`` contains
         ``AsyncBatchAnnotateFilesResponse`` (results).
+
+
+        .. code-block::
+
+            from google.cloud import vision_v1
+
+            def sample_async_batch_annotate_files():
+                # Create a client
+                client = vision_v1.ImageAnnotatorClient()
+
+                # Initialize request argument(s)
+                request = vision_v1.AsyncBatchAnnotateFilesRequest(
+                )
+
+                # Make the request
+                operation = client.async_batch_annotate_files(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.vision_v1.types.AsyncBatchAnnotateFilesRequest, dict]):
