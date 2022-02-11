@@ -1,0 +1,1157 @@
+{
+  "snippets": [
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "WebSecurityScanner"
+          },
+          "shortName": "CreateScanConfig"
+        }
+      },
+      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_create_scan_config_async.py",
+      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_CreateScanConfig_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "start": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "WebSecurityScanner"
+          },
+          "shortName": "CreateScanConfig"
+        }
+      },
+      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_create_scan_config_sync.py",
+      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_CreateScanConfig_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "start": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "WebSecurityScanner"
+          },
+          "shortName": "DeleteScanConfig"
+        }
+      },
+      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_delete_scan_config_async.py",
+      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_DeleteScanConfig_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "WebSecurityScanner"
+          },
+          "shortName": "DeleteScanConfig"
+        }
+      },
+      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_delete_scan_config_sync.py",
+      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_DeleteScanConfig_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "WebSecurityScanner"
+          },
+          "shortName": "GetFinding"
+        }
+      },
+      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_get_finding_async.py",
+      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_GetFinding_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "WebSecurityScanner"
+          },
+          "shortName": "GetFinding"
+        }
+      },
+      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_get_finding_sync.py",
+      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_GetFinding_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "WebSecurityScanner"
+          },
+          "shortName": "GetScanConfig"
+        }
+      },
+      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_get_scan_config_async.py",
+      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_GetScanConfig_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "WebSecurityScanner"
+          },
+          "shortName": "GetScanConfig"
+        }
+      },
+      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_get_scan_config_sync.py",
+      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_GetScanConfig_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "WebSecurityScanner"
+          },
+          "shortName": "GetScanRun"
+        }
+      },
+      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_get_scan_run_async.py",
+      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_GetScanRun_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "WebSecurityScanner"
+          },
+          "shortName": "GetScanRun"
+        }
+      },
+      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_get_scan_run_sync.py",
+      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_GetScanRun_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "WebSecurityScanner"
+          },
+          "shortName": "ListCrawledUrls"
+        }
+      },
+      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_list_crawled_urls_async.py",
+      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_ListCrawledUrls_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "WebSecurityScanner"
+          },
+          "shortName": "ListCrawledUrls"
+        }
+      },
+      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_list_crawled_urls_sync.py",
+      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_ListCrawledUrls_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "WebSecurityScanner"
+          },
+          "shortName": "ListFindingTypeStats"
+        }
+      },
+      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_list_finding_type_stats_async.py",
+      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_ListFindingTypeStats_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "WebSecurityScanner"
+          },
+          "shortName": "ListFindingTypeStats"
+        }
+      },
+      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_list_finding_type_stats_sync.py",
+      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_ListFindingTypeStats_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "WebSecurityScanner"
+          },
+          "shortName": "ListFindings"
+        }
+      },
+      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_list_findings_async.py",
+      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_ListFindings_async",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "WebSecurityScanner"
+          },
+          "shortName": "ListFindings"
+        }
+      },
+      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_list_findings_sync.py",
+      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_ListFindings_sync",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "WebSecurityScanner"
+          },
+          "shortName": "ListScanConfigs"
+        }
+      },
+      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_list_scan_configs_async.py",
+      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_ListScanConfigs_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "WebSecurityScanner"
+          },
+          "shortName": "ListScanConfigs"
+        }
+      },
+      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_list_scan_configs_sync.py",
+      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_ListScanConfigs_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "WebSecurityScanner"
+          },
+          "shortName": "ListScanRuns"
+        }
+      },
+      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_list_scan_runs_async.py",
+      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_ListScanRuns_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "WebSecurityScanner"
+          },
+          "shortName": "ListScanRuns"
+        }
+      },
+      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_list_scan_runs_sync.py",
+      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_ListScanRuns_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "WebSecurityScanner"
+          },
+          "shortName": "StartScanRun"
+        }
+      },
+      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_start_scan_run_async.py",
+      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_StartScanRun_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "WebSecurityScanner"
+          },
+          "shortName": "StartScanRun"
+        }
+      },
+      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_start_scan_run_sync.py",
+      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_StartScanRun_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "WebSecurityScanner"
+          },
+          "shortName": "StopScanRun"
+        }
+      },
+      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_stop_scan_run_async.py",
+      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_StopScanRun_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "WebSecurityScanner"
+          },
+          "shortName": "StopScanRun"
+        }
+      },
+      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_stop_scan_run_sync.py",
+      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_StopScanRun_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "WebSecurityScanner"
+          },
+          "shortName": "UpdateScanConfig"
+        }
+      },
+      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_update_scan_config_async.py",
+      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_UpdateScanConfig_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "WebSecurityScanner"
+          },
+          "shortName": "UpdateScanConfig"
+        }
+      },
+      "file": "websecurityscanner_generated_websecurityscanner_v1beta_web_security_scanner_update_scan_config_sync.py",
+      "regionTag": "websecurityscanner_generated_websecurityscanner_v1beta_WebSecurityScanner_UpdateScanConfig_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    }
+  ]
+}

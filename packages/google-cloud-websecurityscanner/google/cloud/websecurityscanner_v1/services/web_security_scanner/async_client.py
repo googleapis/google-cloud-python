@@ -226,6 +226,24 @@ class WebSecurityScannerAsyncClient:
     ) -> scan_config.ScanConfig:
         r"""Creates a new ScanConfig.
 
+        .. code-block::
+
+            from google.cloud import websecurityscanner_v1
+
+            def sample_create_scan_config():
+                # Create a client
+                client = websecurityscanner_v1.WebSecurityScannerClient()
+
+                # Initialize request argument(s)
+                request = websecurityscanner_v1.CreateScanConfigRequest(
+                )
+
+                # Make the request
+                response = client.create_scan_config(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.websecurityscanner_v1.types.CreateScanConfigRequest, dict]):
                 The request object. Request for the `CreateScanConfig`
@@ -275,6 +293,22 @@ class WebSecurityScannerAsyncClient:
     ) -> None:
         r"""Deletes an existing ScanConfig and its child
         resources.
+
+
+        .. code-block::
+
+            from google.cloud import websecurityscanner_v1
+
+            def sample_delete_scan_config():
+                # Create a client
+                client = websecurityscanner_v1.WebSecurityScannerClient()
+
+                # Initialize request argument(s)
+                request = websecurityscanner_v1.DeleteScanConfigRequest(
+                )
+
+                # Make the request
+                client.delete_scan_config(request=request)
 
         Args:
             request (Union[google.cloud.websecurityscanner_v1.types.DeleteScanConfigRequest, dict]):
@@ -327,6 +361,24 @@ class WebSecurityScannerAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> scan_config.ScanConfig:
         r"""Gets a ScanConfig.
+
+        .. code-block::
+
+            from google.cloud import websecurityscanner_v1
+
+            def sample_get_scan_config():
+                # Create a client
+                client = websecurityscanner_v1.WebSecurityScannerClient()
+
+                # Initialize request argument(s)
+                request = websecurityscanner_v1.GetScanConfigRequest(
+                )
+
+                # Make the request
+                response = client.get_scan_config(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.websecurityscanner_v1.types.GetScanConfigRequest, dict]):
@@ -386,6 +438,25 @@ class WebSecurityScannerAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListScanConfigsAsyncPager:
         r"""Lists ScanConfigs under a given project.
+
+        .. code-block::
+
+            from google.cloud import websecurityscanner_v1
+
+            def sample_list_scan_configs():
+                # Create a client
+                client = websecurityscanner_v1.WebSecurityScannerClient()
+
+                # Initialize request argument(s)
+                request = websecurityscanner_v1.ListScanConfigsRequest(
+                )
+
+                # Make the request
+                page_result = client.list_scan_configs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.websecurityscanner_v1.types.ListScanConfigsRequest, dict]):
@@ -455,6 +526,25 @@ class WebSecurityScannerAsyncClient:
         r"""Updates a ScanConfig. This method support partial
         update of a ScanConfig.
 
+
+        .. code-block::
+
+            from google.cloud import websecurityscanner_v1
+
+            def sample_update_scan_config():
+                # Create a client
+                client = websecurityscanner_v1.WebSecurityScannerClient()
+
+                # Initialize request argument(s)
+                request = websecurityscanner_v1.UpdateScanConfigRequest(
+                )
+
+                # Make the request
+                response = client.update_scan_config(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.websecurityscanner_v1.types.UpdateScanConfigRequest, dict]):
                 The request object. Request for the
@@ -506,6 +596,24 @@ class WebSecurityScannerAsyncClient:
     ) -> scan_run.ScanRun:
         r"""Start a ScanRun according to the given ScanConfig.
 
+        .. code-block::
+
+            from google.cloud import websecurityscanner_v1
+
+            def sample_start_scan_run():
+                # Create a client
+                client = websecurityscanner_v1.WebSecurityScannerClient()
+
+                # Initialize request argument(s)
+                request = websecurityscanner_v1.StartScanRunRequest(
+                )
+
+                # Make the request
+                response = client.start_scan_run(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.websecurityscanner_v1.types.StartScanRunRequest, dict]):
                 The request object. Request for the `StartScanRun`
@@ -555,6 +663,24 @@ class WebSecurityScannerAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> scan_run.ScanRun:
         r"""Gets a ScanRun.
+
+        .. code-block::
+
+            from google.cloud import websecurityscanner_v1
+
+            def sample_get_scan_run():
+                # Create a client
+                client = websecurityscanner_v1.WebSecurityScannerClient()
+
+                # Initialize request argument(s)
+                request = websecurityscanner_v1.GetScanRunRequest(
+                )
+
+                # Make the request
+                response = client.get_scan_run(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.websecurityscanner_v1.types.GetScanRunRequest, dict]):
@@ -615,6 +741,26 @@ class WebSecurityScannerAsyncClient:
     ) -> pagers.ListScanRunsAsyncPager:
         r"""Lists ScanRuns under a given ScanConfig, in
         descending order of ScanRun stop time.
+
+
+        .. code-block::
+
+            from google.cloud import websecurityscanner_v1
+
+            def sample_list_scan_runs():
+                # Create a client
+                client = websecurityscanner_v1.WebSecurityScannerClient()
+
+                # Initialize request argument(s)
+                request = websecurityscanner_v1.ListScanRunsRequest(
+                )
+
+                # Make the request
+                page_result = client.list_scan_runs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.websecurityscanner_v1.types.ListScanRunsRequest, dict]):
@@ -683,6 +829,24 @@ class WebSecurityScannerAsyncClient:
     ) -> scan_run.ScanRun:
         r"""Stops a ScanRun. The stopped ScanRun is returned.
 
+        .. code-block::
+
+            from google.cloud import websecurityscanner_v1
+
+            def sample_stop_scan_run():
+                # Create a client
+                client = websecurityscanner_v1.WebSecurityScannerClient()
+
+                # Initialize request argument(s)
+                request = websecurityscanner_v1.StopScanRunRequest(
+                )
+
+                # Make the request
+                response = client.stop_scan_run(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.websecurityscanner_v1.types.StopScanRunRequest, dict]):
                 The request object. Request for the `StopScanRun`
@@ -732,6 +896,25 @@ class WebSecurityScannerAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCrawledUrlsAsyncPager:
         r"""List CrawledUrls under a given ScanRun.
+
+        .. code-block::
+
+            from google.cloud import websecurityscanner_v1
+
+            def sample_list_crawled_urls():
+                # Create a client
+                client = websecurityscanner_v1.WebSecurityScannerClient()
+
+                # Initialize request argument(s)
+                request = websecurityscanner_v1.ListCrawledUrlsRequest(
+                )
+
+                # Make the request
+                page_result = client.list_crawled_urls(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.websecurityscanner_v1.types.ListCrawledUrlsRequest, dict]):
@@ -800,6 +983,24 @@ class WebSecurityScannerAsyncClient:
     ) -> finding.Finding:
         r"""Gets a Finding.
 
+        .. code-block::
+
+            from google.cloud import websecurityscanner_v1
+
+            def sample_get_finding():
+                # Create a client
+                client = websecurityscanner_v1.WebSecurityScannerClient()
+
+                # Initialize request argument(s)
+                request = websecurityscanner_v1.GetFindingRequest(
+                )
+
+                # Make the request
+                response = client.get_finding(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.websecurityscanner_v1.types.GetFindingRequest, dict]):
                 The request object. Request for the `GetFinding` method.
@@ -858,6 +1059,25 @@ class WebSecurityScannerAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListFindingsAsyncPager:
         r"""List Findings under a given ScanRun.
+
+        .. code-block::
+
+            from google.cloud import websecurityscanner_v1
+
+            def sample_list_findings():
+                # Create a client
+                client = websecurityscanner_v1.WebSecurityScannerClient()
+
+                # Initialize request argument(s)
+                request = websecurityscanner_v1.ListFindingsRequest(
+                )
+
+                # Make the request
+                page_result = client.list_findings(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.websecurityscanner_v1.types.ListFindingsRequest, dict]):
@@ -925,6 +1145,24 @@ class WebSecurityScannerAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> web_security_scanner.ListFindingTypeStatsResponse:
         r"""List all FindingTypeStats under a given ScanRun.
+
+        .. code-block::
+
+            from google.cloud import websecurityscanner_v1
+
+            def sample_list_finding_type_stats():
+                # Create a client
+                client = websecurityscanner_v1.WebSecurityScannerClient()
+
+                # Initialize request argument(s)
+                request = websecurityscanner_v1.ListFindingTypeStatsRequest(
+                )
+
+                # Make the request
+                response = client.list_finding_type_stats(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.websecurityscanner_v1.types.ListFindingTypeStatsRequest, dict]):
