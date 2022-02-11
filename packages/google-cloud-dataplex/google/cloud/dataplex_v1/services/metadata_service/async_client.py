@@ -220,6 +220,25 @@ class MetadataServiceAsyncClient:
     ) -> metadata_.Entity:
         r"""Get a metadata entity.
 
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_get_entity():
+                # Create a client
+                client = dataplex_v1.MetadataServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.GetEntityRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_entity(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataplex_v1.types.GetEntityRequest, dict]):
                 The request object. Get metadata entity request.
@@ -298,6 +317,27 @@ class MetadataServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEntitiesAsyncPager:
         r"""List metadata entities in a zone.
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_list_entities():
+                # Create a client
+                client = dataplex_v1.MetadataServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.ListEntitiesRequest(
+                    parent="parent_value",
+                    view="FILESETS",
+                )
+
+                # Make the request
+                page_result = client.list_entities(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.ListEntitiesRequest, dict]):
@@ -386,6 +426,25 @@ class MetadataServiceAsyncClient:
     ) -> metadata_.Partition:
         r"""Get a metadata partition of an entity.
 
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_get_partition():
+                # Create a client
+                client = dataplex_v1.MetadataServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.GetPartitionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_partition(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataplex_v1.types.GetPartitionRequest, dict]):
                 The request object. Get metadata partition request.
@@ -464,6 +523,26 @@ class MetadataServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPartitionsAsyncPager:
         r"""List metadata partitions of an entity.
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_list_partitions():
+                # Create a client
+                client = dataplex_v1.MetadataServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.ListPartitionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_partitions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.ListPartitionsRequest, dict]):

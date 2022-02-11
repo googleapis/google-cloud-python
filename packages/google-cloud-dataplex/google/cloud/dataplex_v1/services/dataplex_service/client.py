@@ -507,6 +507,31 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> operation.Operation:
         r"""Creates a lake resource.
 
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_create_lake():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.CreateLakeRequest(
+                    parent="parent_value",
+                    lake_id="lake_id_value",
+                )
+
+                # Make the request
+                operation = client.create_lake(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataplex_v1.types.CreateLakeRequest, dict]):
                 The request object. Create lake request.
@@ -625,6 +650,29 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> operation.Operation:
         r"""Updates a lake resource.
 
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_update_lake():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.UpdateLakeRequest(
+                )
+
+                # Make the request
+                operation = client.update_lake(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataplex_v1.types.UpdateLakeRequest, dict]):
                 The request object. Update lake request.
@@ -725,6 +773,31 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         r"""Deletes a lake resource. All zones within the lake
         must be deleted before the lake can be deleted.
 
+
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_delete_lake():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.DeleteLakeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_lake(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataplex_v1.types.DeleteLakeRequest, dict]):
                 The request object. Delete lake request.
@@ -816,6 +889,27 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> pagers.ListLakesPager:
         r"""Lists lake resources in a project and location.
 
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_list_lakes():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.ListLakesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_lakes(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dataplex_v1.types.ListLakesRequest, dict]):
                 The request object. List lakes request.
@@ -895,6 +989,26 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Lake:
         r"""Retrieves a lake resource.
+
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_get_lake():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.GetLakeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_lake(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.GetLakeRequest, dict]):
@@ -980,6 +1094,27 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> pagers.ListLakeActionsPager:
         r"""Lists action resources in a lake.
 
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_list_lake_actions():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.ListLakeActionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_lake_actions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dataplex_v1.types.ListLakeActionsRequest, dict]):
                 The request object. List lake actions request.
@@ -1059,6 +1194,36 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a zone resource within a lake.
+
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_create_zone():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                zone = dataplex_v1.Zone()
+                zone.type_ = "CURATED"
+                zone.resource_spec.location_type = "MULTI_REGION"
+
+                request = dataplex_v1.CreateZoneRequest(
+                    parent="parent_value",
+                    zone_id="zone_id_value",
+                    zone=zone,
+                )
+
+                # Make the request
+                operation = client.create_zone(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.CreateZoneRequest, dict]):
@@ -1171,6 +1336,34 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> operation.Operation:
         r"""Updates a zone resource.
 
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_update_zone():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                zone = dataplex_v1.Zone()
+                zone.type_ = "CURATED"
+                zone.resource_spec.location_type = "MULTI_REGION"
+
+                request = dataplex_v1.UpdateZoneRequest(
+                    zone=zone,
+                )
+
+                # Make the request
+                operation = client.update_zone(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataplex_v1.types.UpdateZoneRequest, dict]):
                 The request object. Update zone request.
@@ -1264,6 +1457,31 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         r"""Deletes a zone resource. All assets within a zone
         must be deleted before the zone can be deleted.
 
+
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_delete_zone():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.DeleteZoneRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_zone(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataplex_v1.types.DeleteZoneRequest, dict]):
                 The request object. Delete zone request.
@@ -1355,6 +1573,27 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> pagers.ListZonesPager:
         r"""Lists zone resources in a lake.
 
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_list_zones():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.ListZonesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_zones(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dataplex_v1.types.ListZonesRequest, dict]):
                 The request object. List zones request.
@@ -1433,6 +1672,26 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> resources.Zone:
         r"""Retrieves a zone resource.
 
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_get_zone():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.GetZoneRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_zone(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataplex_v1.types.GetZoneRequest, dict]):
                 The request object. Get zone request.
@@ -1508,6 +1767,27 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListZoneActionsPager:
         r"""Lists action resources in a zone.
+
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_list_zone_actions():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.ListZoneActionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_zone_actions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.ListZoneActionsRequest, dict]):
@@ -1588,6 +1868,35 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates an asset resource.
+
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_create_asset():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                asset = dataplex_v1.Asset()
+                asset.resource_spec.type_ = "BIGQUERY_DATASET"
+
+                request = dataplex_v1.CreateAssetRequest(
+                    parent="parent_value",
+                    asset_id="asset_id_value",
+                    asset=asset,
+                )
+
+                # Make the request
+                operation = client.create_asset(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.CreateAssetRequest, dict]):
@@ -1694,6 +2003,33 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> operation.Operation:
         r"""Updates an asset resource.
 
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_update_asset():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                asset = dataplex_v1.Asset()
+                asset.resource_spec.type_ = "BIGQUERY_DATASET"
+
+                request = dataplex_v1.UpdateAssetRequest(
+                    asset=asset,
+                )
+
+                # Make the request
+                operation = client.update_asset(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataplex_v1.types.UpdateAssetRequest, dict]):
                 The request object. Update asset request.
@@ -1784,6 +2120,31 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         r"""Deletes an asset resource. The referenced storage
         resource is detached (default) or deleted based on the
         associated Lifecycle policy.
+
+
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_delete_asset():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.DeleteAssetRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_asset(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.DeleteAssetRequest, dict]):
@@ -1876,6 +2237,27 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> pagers.ListAssetsPager:
         r"""Lists asset resources in a zone.
 
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_list_assets():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.ListAssetsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_assets(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dataplex_v1.types.ListAssetsRequest, dict]):
                 The request object. List assets request.
@@ -1954,6 +2336,26 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> resources.Asset:
         r"""Retrieves an asset resource.
 
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_get_asset():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.GetAssetRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_asset(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataplex_v1.types.GetAssetRequest, dict]):
                 The request object. Get asset request.
@@ -2024,6 +2426,27 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAssetActionsPager:
         r"""Lists action resources in an asset.
+
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_list_asset_actions():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.ListAssetActionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_asset_actions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.ListAssetActionsRequest, dict]):
@@ -2104,6 +2527,38 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a task resource within a lake.
+
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_create_task():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                task = dataplex_v1.Task()
+                task.spark.main_jar_file_uri = "main_jar_file_uri_value"
+                task.trigger_spec.schedule = "schedule_value"
+                task.trigger_spec.type_ = "RECURRING"
+                task.execution_spec.service_account = "service_account_value"
+
+                request = dataplex_v1.CreateTaskRequest(
+                    parent="parent_value",
+                    task_id="task_id_value",
+                    task=task,
+                )
+
+                # Make the request
+                operation = client.create_task(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.CreateTaskRequest, dict]):
@@ -2201,6 +2656,36 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> operation.Operation:
         r"""Update the task resource.
 
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_update_task():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                task = dataplex_v1.Task()
+                task.spark.main_jar_file_uri = "main_jar_file_uri_value"
+                task.trigger_spec.schedule = "schedule_value"
+                task.trigger_spec.type_ = "RECURRING"
+                task.execution_spec.service_account = "service_account_value"
+
+                request = dataplex_v1.UpdateTaskRequest(
+                    task=task,
+                )
+
+                # Make the request
+                operation = client.update_task(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataplex_v1.types.UpdateTaskRequest, dict]):
                 The request object. Update task request.
@@ -2290,6 +2775,30 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Delete the task resource.
+
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_delete_task():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.DeleteTaskRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_task(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.DeleteTaskRequest, dict]):
@@ -2382,6 +2891,27 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> pagers.ListTasksPager:
         r"""Lists tasks under the given lake.
 
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_list_tasks():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.ListTasksRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_tasks(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dataplex_v1.types.ListTasksRequest, dict]):
                 The request object. List tasks request.
@@ -2460,6 +2990,26 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> tasks.Task:
         r"""Get task resource.
 
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_get_task():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.GetTaskRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_task(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataplex_v1.types.GetTaskRequest, dict]):
                 The request object. Get task request.
@@ -2527,6 +3077,27 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListJobsPager:
         r"""Lists Jobs under the given task.
+
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_list_jobs():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.ListJobsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_jobs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.ListJobsRequest, dict]):
@@ -2606,6 +3177,26 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
     ) -> tasks.Job:
         r"""Get job resource.
 
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_get_job():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.GetJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_job(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataplex_v1.types.GetJobRequest, dict]):
                 The request object. Get job request.
@@ -2675,6 +3266,23 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Cancel jobs running for the task resource.
+
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_cancel_job():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.CancelJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.cancel_job(request=request)
 
         Args:
             request (Union[google.cloud.dataplex_v1.types.CancelJobRequest, dict]):
