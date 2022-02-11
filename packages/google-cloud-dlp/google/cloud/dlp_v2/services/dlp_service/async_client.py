@@ -245,6 +245,25 @@ class DlpServiceAsyncClient:
         https://cloud.google.com/dlp/docs/inspecting-images and
         https://cloud.google.com/dlp/docs/inspecting-text,
 
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_inspect_content():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.InspectContentRequest(
+                )
+
+                # Make the request
+                response = client.inspect_content(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dlp_v2.types.InspectContentRequest, dict]):
                 The request object. Request to search for potentially
@@ -310,6 +329,25 @@ class DlpServiceAsyncClient:
         this request, the system will automatically choose what
         detectors to run. By default this may be all types, but
         may change over time as detectors are updated.
+
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_redact_image():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.RedactImageRequest(
+                )
+
+                # Make the request
+                response = client.redact_image(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dlp_v2.types.RedactImageRequest, dict]):
@@ -378,6 +416,25 @@ class DlpServiceAsyncClient:
         detectors to run. By default this may be all types, but
         may change over time as detectors are updated.
 
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_deidentify_content():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.DeidentifyContentRequest(
+                )
+
+                # Make the request
+                response = client.deidentify_content(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dlp_v2.types.DeidentifyContentRequest, dict]):
                 The request object. Request to de-identify a list of
@@ -439,6 +496,26 @@ class DlpServiceAsyncClient:
         https://cloud.google.com/dlp/docs/pseudonymization#re-identification_in_free_text_code_example
         to learn more.
 
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_reidentify_content():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.ReidentifyContentRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.reidentify_content(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dlp_v2.types.ReidentifyContentRequest, dict]):
                 The request object. Request to re-identify an item.
@@ -498,6 +575,25 @@ class DlpServiceAsyncClient:
         that the DLP API supports. See
         https://cloud.google.com/dlp/docs/infotypes-reference to
         learn more.
+
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_list_info_types():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.ListInfoTypesRequest(
+                )
+
+                # Make the request
+                response = client.list_info_types(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dlp_v2.types.ListInfoTypesRequest, dict]):
@@ -582,6 +678,26 @@ class DlpServiceAsyncClient:
         storage. See
         https://cloud.google.com/dlp/docs/creating-templates to
         learn more.
+
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_create_inspect_template():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.CreateInspectTemplateRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_inspect_template(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dlp_v2.types.CreateInspectTemplateRequest, dict]):
@@ -694,6 +810,26 @@ class DlpServiceAsyncClient:
         See https://cloud.google.com/dlp/docs/creating-templates
         to learn more.
 
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_update_inspect_template():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.UpdateInspectTemplateRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.update_inspect_template(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dlp_v2.types.UpdateInspectTemplateRequest, dict]):
                 The request object. Request message for
@@ -790,6 +926,26 @@ class DlpServiceAsyncClient:
         See https://cloud.google.com/dlp/docs/creating-templates
         to learn more.
 
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_get_inspect_template():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.GetInspectTemplateRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_inspect_template(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dlp_v2.types.GetInspectTemplateRequest, dict]):
                 The request object. Request message for
@@ -879,6 +1035,27 @@ class DlpServiceAsyncClient:
         r"""Lists InspectTemplates.
         See https://cloud.google.com/dlp/docs/creating-templates
         to learn more.
+
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_list_inspect_templates():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.ListInspectTemplatesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_inspect_templates(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.dlp_v2.types.ListInspectTemplatesRequest, dict]):
@@ -994,6 +1171,23 @@ class DlpServiceAsyncClient:
         See https://cloud.google.com/dlp/docs/creating-templates
         to learn more.
 
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_delete_inspect_template():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.DeleteInspectTemplateRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_inspect_template(request=request)
+
         Args:
             request (Union[google.cloud.dlp_v2.types.DeleteInspectTemplateRequest, dict]):
                 The request object. Request message for
@@ -1074,6 +1268,26 @@ class DlpServiceAsyncClient:
         and storage. See
         https://cloud.google.com/dlp/docs/creating-templates-deid
         to learn more.
+
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_create_deidentify_template():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.CreateDeidentifyTemplateRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_deidentify_template(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dlp_v2.types.CreateDeidentifyTemplateRequest, dict]):
@@ -1185,6 +1399,26 @@ class DlpServiceAsyncClient:
         https://cloud.google.com/dlp/docs/creating-templates-deid
         to learn more.
 
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_update_deidentify_template():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.UpdateDeidentifyTemplateRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.update_deidentify_template(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dlp_v2.types.UpdateDeidentifyTemplateRequest, dict]):
                 The request object. Request message for
@@ -1280,6 +1514,26 @@ class DlpServiceAsyncClient:
         https://cloud.google.com/dlp/docs/creating-templates-deid
         to learn more.
 
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_get_deidentify_template():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.GetDeidentifyTemplateRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_deidentify_template(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dlp_v2.types.GetDeidentifyTemplateRequest, dict]):
                 The request object. Request message for
@@ -1368,6 +1622,27 @@ class DlpServiceAsyncClient:
         See
         https://cloud.google.com/dlp/docs/creating-templates-deid
         to learn more.
+
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_list_deidentify_templates():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.ListDeidentifyTemplatesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_deidentify_templates(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.dlp_v2.types.ListDeidentifyTemplatesRequest, dict]):
@@ -1484,6 +1759,23 @@ class DlpServiceAsyncClient:
         https://cloud.google.com/dlp/docs/creating-templates-deid
         to learn more.
 
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_delete_deidentify_template():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.DeleteDeidentifyTemplateRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_deidentify_template(request=request)
+
         Args:
             request (Union[google.cloud.dlp_v2.types.DeleteDeidentifyTemplateRequest, dict]):
                 The request object. Request message for
@@ -1564,6 +1856,30 @@ class DlpServiceAsyncClient:
         schedule. See
         https://cloud.google.com/dlp/docs/creating-job-triggers
         to learn more.
+
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_create_job_trigger():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                job_trigger = dlp_v2.JobTrigger()
+                job_trigger.status = "CANCELLED"
+
+                request = dlp_v2.CreateJobTriggerRequest(
+                    parent="parent_value",
+                    job_trigger=job_trigger,
+                )
+
+                # Make the request
+                response = client.create_job_trigger(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dlp_v2.types.CreateJobTriggerRequest, dict]):
@@ -1667,6 +1983,26 @@ class DlpServiceAsyncClient:
         https://cloud.google.com/dlp/docs/creating-job-triggers
         to learn more.
 
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_update_job_trigger():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.UpdateJobTriggerRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.update_job_trigger(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dlp_v2.types.UpdateJobTriggerRequest, dict]):
                 The request object. Request message for
@@ -1760,6 +2096,26 @@ class DlpServiceAsyncClient:
         asynchronously. To review the findings monitor the jobs
         within the trigger.
 
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_hybrid_inspect_job_trigger():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.HybridInspectJobTriggerRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.hybrid_inspect_job_trigger(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dlp_v2.types.HybridInspectJobTriggerRequest, dict]):
                 The request object. Request to search for potentially
@@ -1834,6 +2190,26 @@ class DlpServiceAsyncClient:
         See
         https://cloud.google.com/dlp/docs/creating-job-triggers
         to learn more.
+
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_get_job_trigger():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.GetJobTriggerRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_job_trigger(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dlp_v2.types.GetJobTriggerRequest, dict]):
@@ -1920,6 +2296,27 @@ class DlpServiceAsyncClient:
         See
         https://cloud.google.com/dlp/docs/creating-job-triggers
         to learn more.
+
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_list_job_triggers():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.ListJobTriggersRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_job_triggers(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.dlp_v2.types.ListJobTriggersRequest, dict]):
@@ -2029,6 +2426,23 @@ class DlpServiceAsyncClient:
         https://cloud.google.com/dlp/docs/creating-job-triggers
         to learn more.
 
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_delete_job_trigger():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.DeleteJobTriggerRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_job_trigger(request=request)
+
         Args:
             request (Union[google.cloud.dlp_v2.types.DeleteJobTriggerRequest, dict]):
                 The request object. Request message for
@@ -2105,6 +2519,26 @@ class DlpServiceAsyncClient:
         of a trigger instead of waiting on the trigger event to
         occur.
 
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_activate_job_trigger():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.ActivateJobTriggerRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.activate_job_trigger(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dlp_v2.types.ActivateJobTriggerRequest, dict]):
                 The request object. Request message for
@@ -2164,6 +2598,26 @@ class DlpServiceAsyncClient:
         inspect jobs, the system will automatically choose what
         detectors to run. By default this may be all types, but
         may change over time as detectors are updated.
+
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_create_dlp_job():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.CreateDlpJobRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_dlp_job(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dlp_v2.types.CreateDlpJobRequest, dict]):
@@ -2278,6 +2732,27 @@ class DlpServiceAsyncClient:
         https://cloud.google.com/dlp/docs/compute-risk-analysis
         to learn more.
 
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_list_dlp_jobs():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.ListDlpJobsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_dlp_jobs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.dlp_v2.types.ListDlpJobsRequest, dict]):
                 The request object. The request message for listing DLP
@@ -2389,6 +2864,26 @@ class DlpServiceAsyncClient:
         https://cloud.google.com/dlp/docs/compute-risk-analysis
         to learn more.
 
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_get_dlp_job():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.GetDlpJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_dlp_job(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dlp_v2.types.GetDlpJobRequest, dict]):
                 The request object. The request message for
@@ -2476,6 +2971,23 @@ class DlpServiceAsyncClient:
         https://cloud.google.com/dlp/docs/compute-risk-analysis
         to learn more.
 
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_delete_dlp_job():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.DeleteDlpJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_dlp_job(request=request)
+
         Args:
             request (Union[google.cloud.dlp_v2.types.DeleteDlpJobRequest, dict]):
                 The request object. The request message for deleting a
@@ -2555,6 +3067,23 @@ class DlpServiceAsyncClient:
         https://cloud.google.com/dlp/docs/compute-risk-analysis
         to learn more.
 
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_cancel_dlp_job():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.CancelDlpJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.cancel_dlp_job(request=request)
+
         Args:
             request (Union[google.cloud.dlp_v2.types.CancelDlpJobRequest, dict]):
                 The request object. The request message for canceling a
@@ -2601,6 +3130,26 @@ class DlpServiceAsyncClient:
         inspection. See
         https://cloud.google.com/dlp/docs/creating-stored-infotypes
         to learn more.
+
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_create_stored_info_type():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.CreateStoredInfoTypeRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_stored_info_type(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dlp_v2.types.CreateStoredInfoTypeRequest, dict]):
@@ -2711,6 +3260,26 @@ class DlpServiceAsyncClient:
         https://cloud.google.com/dlp/docs/creating-stored-infotypes
         to learn more.
 
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_update_stored_info_type():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.UpdateStoredInfoTypeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.update_stored_info_type(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dlp_v2.types.UpdateStoredInfoTypeRequest, dict]):
                 The request object. Request message for
@@ -2808,6 +3377,26 @@ class DlpServiceAsyncClient:
         https://cloud.google.com/dlp/docs/creating-stored-infotypes
         to learn more.
 
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_get_stored_info_type():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.GetStoredInfoTypeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_stored_info_type(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dlp_v2.types.GetStoredInfoTypeRequest, dict]):
                 The request object. Request message for
@@ -2894,6 +3483,27 @@ class DlpServiceAsyncClient:
         See
         https://cloud.google.com/dlp/docs/creating-stored-infotypes
         to learn more.
+
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_list_stored_info_types():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.ListStoredInfoTypesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_stored_info_types(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.dlp_v2.types.ListStoredInfoTypesRequest, dict]):
@@ -3010,6 +3620,23 @@ class DlpServiceAsyncClient:
         https://cloud.google.com/dlp/docs/creating-stored-infotypes
         to learn more.
 
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_delete_stored_info_type():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.DeleteStoredInfoTypeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_stored_info_type(request=request)
+
         Args:
             request (Union[google.cloud.dlp_v2.types.DeleteStoredInfoTypeRequest, dict]):
                 The request object. Request message for
@@ -3088,6 +3715,26 @@ class DlpServiceAsyncClient:
         To review the findings, inspect the job. Inspection will
         occur asynchronously.
 
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_hybrid_inspect_dlp_job():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.HybridInspectDlpJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.hybrid_inspect_dlp_job(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dlp_v2.types.HybridInspectDlpJobRequest, dict]):
                 The request object. Request to search for potentially
@@ -3160,6 +3807,23 @@ class DlpServiceAsyncClient:
         r"""Finish a running hybrid DlpJob. Triggers the
         finalization steps and running of any enabled actions
         that have not yet run.
+
+
+        .. code-block::
+
+            from google.cloud import dlp_v2
+
+            def sample_finish_dlp_job():
+                # Create a client
+                client = dlp_v2.DlpServiceClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.FinishDlpJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.finish_dlp_job(request=request)
 
         Args:
             request (Union[google.cloud.dlp_v2.types.FinishDlpJobRequest, dict]):
