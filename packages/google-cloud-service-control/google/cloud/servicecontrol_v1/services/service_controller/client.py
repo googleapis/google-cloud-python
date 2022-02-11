@@ -417,6 +417,26 @@ class ServiceControllerClient(metaclass=ServiceControllerClientMeta):
         permission on the specified service. For more information, see
         `Cloud IAM <https://cloud.google.com/iam>`__.
 
+
+
+        .. code-block::
+
+            from google.cloud import servicecontrol_v1
+
+            def sample_check():
+                # Create a client
+                client = servicecontrol_v1.ServiceControllerClient()
+
+                # Initialize request argument(s)
+                request = servicecontrol_v1.CheckRequest(
+                )
+
+                # Make the request
+                response = client.check(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.servicecontrol_v1.types.CheckRequest, dict]):
                 The request object. Request message for the Check
@@ -477,6 +497,26 @@ class ServiceControllerClient(metaclass=ServiceControllerClientMeta):
         This method requires the ``servicemanagement.services.report``
         permission on the specified service. For more information, see
         `Google Cloud IAM <https://cloud.google.com/iam>`__.
+
+
+
+        .. code-block::
+
+            from google.cloud import servicecontrol_v1
+
+            def sample_report():
+                # Create a client
+                client = servicecontrol_v1.ServiceControllerClient()
+
+                # Initialize request argument(s)
+                request = servicecontrol_v1.ReportRequest(
+                )
+
+                # Make the request
+                response = client.report(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.servicecontrol_v1.types.ReportRequest, dict]):

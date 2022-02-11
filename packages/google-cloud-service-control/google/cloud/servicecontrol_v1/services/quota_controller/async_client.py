@@ -225,6 +225,25 @@ class QuotaControllerAsyncClient:
         inject these errors to prohibit any hard dependency on the quota
         functionality.
 
+
+        .. code-block::
+
+            from google.cloud import servicecontrol_v1
+
+            def sample_allocate_quota():
+                # Create a client
+                client = servicecontrol_v1.QuotaControllerClient()
+
+                # Initialize request argument(s)
+                request = servicecontrol_v1.AllocateQuotaRequest(
+                )
+
+                # Make the request
+                response = client.allocate_quota(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.servicecontrol_v1.types.AllocateQuotaRequest, dict]):
                 The request object. Request message for the
