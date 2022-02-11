@@ -39,7 +39,7 @@ async def sample_create_policy_tag():
     # Make the request
     response = await client.create_policy_tag(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_CreatePolicyTag_async]

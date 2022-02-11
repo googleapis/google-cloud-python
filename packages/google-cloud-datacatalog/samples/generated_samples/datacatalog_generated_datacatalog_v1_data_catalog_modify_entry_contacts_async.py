@@ -39,7 +39,7 @@ async def sample_modify_entry_contacts():
     # Make the request
     response = await client.modify_entry_contacts(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END datacatalog_generated_datacatalog_v1_DataCatalog_ModifyEntryContacts_async]

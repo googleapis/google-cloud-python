@@ -37,7 +37,7 @@ async def sample_delete_tag():
     )
 
     # Make the request
-    response = await client.delete_tag(request=request)
+    await client.delete_tag(request=request)
 
 
 # [END datacatalog_generated_datacatalog_v1beta1_DataCatalog_DeleteTag_async]

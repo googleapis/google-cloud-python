@@ -43,7 +43,7 @@ def sample_import_taxonomies():
     # Make the request
     response = client.import_taxonomies(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END datacatalog_generated_datacatalog_v1_PolicyTagManagerSerialization_ImportTaxonomies_sync]

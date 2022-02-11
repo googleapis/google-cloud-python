@@ -39,7 +39,7 @@ def sample_star_entry():
     # Make the request
     response = client.star_entry(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END datacatalog_generated_datacatalog_v1_DataCatalog_StarEntry_sync]

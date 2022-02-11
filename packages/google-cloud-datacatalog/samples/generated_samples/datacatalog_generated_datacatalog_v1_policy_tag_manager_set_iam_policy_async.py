@@ -39,7 +39,7 @@ async def sample_set_iam_policy():
     # Make the request
     response = await client.set_iam_policy(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END datacatalog_generated_datacatalog_v1_PolicyTagManager_SetIamPolicy_async]

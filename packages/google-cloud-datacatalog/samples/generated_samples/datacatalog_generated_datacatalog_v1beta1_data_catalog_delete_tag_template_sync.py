@@ -38,7 +38,7 @@ def sample_delete_tag_template():
     )
 
     # Make the request
-    response = client.delete_tag_template(request=request)
+    client.delete_tag_template(request=request)
 
 
 # [END datacatalog_generated_datacatalog_v1beta1_DataCatalog_DeleteTagTemplate_sync]

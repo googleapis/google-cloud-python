@@ -38,7 +38,7 @@ async def sample_update_tag_template():
     # Make the request
     response = await client.update_tag_template(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END datacatalog_generated_datacatalog_v1beta1_DataCatalog_UpdateTagTemplate_async]

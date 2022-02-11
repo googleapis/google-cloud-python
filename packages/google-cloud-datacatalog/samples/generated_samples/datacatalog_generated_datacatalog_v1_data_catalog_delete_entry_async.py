@@ -37,7 +37,7 @@ async def sample_delete_entry():
     )
 
     # Make the request
-    response = await client.delete_entry(request=request)
+    await client.delete_entry(request=request)
 
 
 # [END datacatalog_generated_datacatalog_v1_DataCatalog_DeleteEntry_async]

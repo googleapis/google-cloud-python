@@ -38,6 +38,8 @@ def sample_search_catalog():
 
     # Make the request
     page_result = client.search_catalog(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

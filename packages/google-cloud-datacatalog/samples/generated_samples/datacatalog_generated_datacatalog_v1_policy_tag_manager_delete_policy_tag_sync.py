@@ -37,7 +37,7 @@ def sample_delete_policy_tag():
     )
 
     # Make the request
-    response = client.delete_policy_tag(request=request)
+    client.delete_policy_tag(request=request)
 
 
 # [END datacatalog_generated_datacatalog_v1_PolicyTagManager_DeletePolicyTag_sync]

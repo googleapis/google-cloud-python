@@ -461,7 +461,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 # Make the request
                 response = client.create_taxonomy(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -571,7 +571,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_taxonomy(request=request)
+                client.delete_taxonomy(request=request)
 
         Args:
             request (Union[google.cloud.datacatalog_v1.types.DeleteTaxonomyRequest, dict]):
@@ -657,7 +657,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 # Make the request
                 response = client.update_taxonomy(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -762,6 +762,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
                 # Make the request
                 page_result = client.list_taxonomies(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -862,7 +864,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 # Make the request
                 response = client.get_taxonomy(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -964,7 +966,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 # Make the request
                 response = client.create_policy_tag(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1074,7 +1076,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_policy_tag(request=request)
+                client.delete_policy_tag(request=request)
 
         Args:
             request (Union[google.cloud.datacatalog_v1.types.DeletePolicyTagRequest, dict]):
@@ -1160,7 +1162,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 # Make the request
                 response = client.update_policy_tag(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1260,6 +1262,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
                 # Make the request
                 page_result = client.list_policy_tags(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1360,7 +1364,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 # Make the request
                 response = client.get_policy_tag(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1457,7 +1461,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 # Make the request
                 response = client.get_iam_policy(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1581,7 +1585,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 # Make the request
                 response = client.set_iam_policy(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1708,7 +1712,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 # Make the request
                 response = client.test_iam_permissions(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:

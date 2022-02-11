@@ -40,7 +40,7 @@ def sample_rename_tag_template_field():
     # Make the request
     response = client.rename_tag_template_field(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END datacatalog_generated_datacatalog_v1beta1_DataCatalog_RenameTagTemplateField_sync]

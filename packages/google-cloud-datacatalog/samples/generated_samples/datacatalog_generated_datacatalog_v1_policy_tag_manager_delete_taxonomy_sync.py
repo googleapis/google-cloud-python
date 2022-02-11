@@ -37,7 +37,7 @@ def sample_delete_taxonomy():
     )
 
     # Make the request
-    response = client.delete_taxonomy(request=request)
+    client.delete_taxonomy(request=request)
 
 
 # [END datacatalog_generated_datacatalog_v1_PolicyTagManager_DeleteTaxonomy_sync]

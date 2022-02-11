@@ -39,7 +39,7 @@ def sample_get_taxonomy():
     # Make the request
     response = client.get_taxonomy(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_GetTaxonomy_sync]

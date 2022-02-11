@@ -39,7 +39,7 @@ def sample_lookup_entry():
     # Make the request
     response = client.lookup_entry(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END datacatalog_generated_datacatalog_v1_DataCatalog_LookupEntry_sync]

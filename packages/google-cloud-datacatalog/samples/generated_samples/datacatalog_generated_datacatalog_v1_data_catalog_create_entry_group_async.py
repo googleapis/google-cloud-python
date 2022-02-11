@@ -40,7 +40,7 @@ async def sample_create_entry_group():
     # Make the request
     response = await client.create_entry_group(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END datacatalog_generated_datacatalog_v1_DataCatalog_CreateEntryGroup_async]

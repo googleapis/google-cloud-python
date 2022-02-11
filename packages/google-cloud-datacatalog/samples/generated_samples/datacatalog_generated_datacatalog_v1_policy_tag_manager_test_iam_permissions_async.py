@@ -40,7 +40,7 @@ async def sample_test_iam_permissions():
     # Make the request
     response = await client.test_iam_permissions(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END datacatalog_generated_datacatalog_v1_PolicyTagManager_TestIamPermissions_async]

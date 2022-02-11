@@ -38,7 +38,7 @@ async def sample_delete_tag_template_field():
     )
 
     # Make the request
-    response = await client.delete_tag_template_field(request=request)
+    await client.delete_tag_template_field(request=request)
 
 
 # [END datacatalog_generated_datacatalog_v1beta1_DataCatalog_DeleteTagTemplateField_async]

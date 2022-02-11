@@ -1240,12 +1240,12 @@
       "regionTag": "datacatalog_generated_datacatalog_v1_DataCatalog_ListEntries_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -1260,11 +1260,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1282,12 +1284,12 @@
       "regionTag": "datacatalog_generated_datacatalog_v1_DataCatalog_ListEntries_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -1302,11 +1304,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1325,12 +1329,12 @@
       "regionTag": "datacatalog_generated_datacatalog_v1_DataCatalog_ListEntryGroups_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -1345,11 +1349,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1367,12 +1373,12 @@
       "regionTag": "datacatalog_generated_datacatalog_v1_DataCatalog_ListEntryGroups_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -1387,11 +1393,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1410,12 +1418,12 @@
       "regionTag": "datacatalog_generated_datacatalog_v1_DataCatalog_ListTags_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -1430,11 +1438,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1452,12 +1462,12 @@
       "regionTag": "datacatalog_generated_datacatalog_v1_DataCatalog_ListTags_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -1472,11 +1482,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1940,12 +1952,12 @@
       "regionTag": "datacatalog_generated_datacatalog_v1_DataCatalog_SearchCatalog_async",
       "segments": [
         {
-          "end": 42,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 42,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -1960,11 +1972,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 40,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 43,
+          "end": 45,
+          "start": 41,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1982,12 +1996,12 @@
       "regionTag": "datacatalog_generated_datacatalog_v1_DataCatalog_SearchCatalog_sync",
       "segments": [
         {
-          "end": 42,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 42,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -2002,11 +2016,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 40,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 43,
+          "end": 45,
+          "start": 41,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -3708,12 +3724,12 @@
       "regionTag": "datacatalog_generated_datacatalog_v1_PolicyTagManager_ListPolicyTags_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -3728,11 +3744,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -3750,12 +3768,12 @@
       "regionTag": "datacatalog_generated_datacatalog_v1_PolicyTagManager_ListPolicyTags_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -3770,11 +3788,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -3793,12 +3813,12 @@
       "regionTag": "datacatalog_generated_datacatalog_v1_PolicyTagManager_ListTaxonomies_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -3813,11 +3833,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -3835,12 +3857,12 @@
       "regionTag": "datacatalog_generated_datacatalog_v1_PolicyTagManager_ListTaxonomies_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -3855,11 +3877,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]

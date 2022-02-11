@@ -38,6 +38,8 @@ def sample_list_taxonomies():
 
     # Make the request
     page_result = client.list_taxonomies(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

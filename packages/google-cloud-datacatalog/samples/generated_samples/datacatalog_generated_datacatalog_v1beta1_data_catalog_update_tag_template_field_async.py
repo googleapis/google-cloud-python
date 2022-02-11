@@ -43,7 +43,7 @@ async def sample_update_tag_template_field():
     # Make the request
     response = await client.update_tag_template_field(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END datacatalog_generated_datacatalog_v1beta1_DataCatalog_UpdateTagTemplateField_async]

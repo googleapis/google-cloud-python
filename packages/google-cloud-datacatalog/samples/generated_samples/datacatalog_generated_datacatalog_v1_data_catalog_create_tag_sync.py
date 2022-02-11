@@ -44,7 +44,7 @@ def sample_create_tag():
     # Make the request
     response = client.create_tag(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END datacatalog_generated_datacatalog_v1_DataCatalog_CreateTag_sync]

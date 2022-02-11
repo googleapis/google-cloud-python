@@ -43,7 +43,7 @@ async def sample_replace_taxonomy():
     # Make the request
     response = await client.replace_taxonomy(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END datacatalog_generated_datacatalog_v1_PolicyTagManagerSerialization_ReplaceTaxonomy_async]

@@ -446,7 +446,7 @@ class PolicyTagManagerSerializationClient(
                 # Make the request
                 response = client.import_taxonomies(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -527,7 +527,7 @@ class PolicyTagManagerSerializationClient(
                 # Make the request
                 response = client.export_taxonomies(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:

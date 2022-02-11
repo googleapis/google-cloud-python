@@ -38,6 +38,8 @@ def sample_list_policy_tags():
 
     # Make the request
     page_result = client.list_policy_tags(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

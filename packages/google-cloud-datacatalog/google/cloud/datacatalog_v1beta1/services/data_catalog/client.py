@@ -526,6 +526,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
                 # Make the request
                 page_result = client.search_catalog(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -655,7 +657,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 # Make the request
                 response = client.create_entry_group(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -781,7 +783,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 # Make the request
                 response = client.update_entry_group(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -888,7 +890,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 # Make the request
                 response = client.get_entry_group(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -995,7 +997,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_entry_group(request=request)
+                client.delete_entry_group(request=request)
 
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.DeleteEntryGroupRequest, dict]):
@@ -1077,6 +1079,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
                 # Make the request
                 page_result = client.list_entry_groups(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1199,7 +1203,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 # Make the request
                 response = client.create_entry(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1332,7 +1336,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 # Make the request
                 response = client.update_entry(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1473,7 +1477,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_entry(request=request)
+                client.delete_entry(request=request)
 
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.DeleteEntryRequest, dict]):
@@ -1557,7 +1561,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 # Make the request
                 response = client.get_entry(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1662,7 +1666,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 # Make the request
                 response = client.lookup_entry(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1736,6 +1740,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
                 # Make the request
                 page_result = client.list_entries(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1846,7 +1852,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 # Make the request
                 response = client.create_tag_template(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1965,7 +1971,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 # Make the request
                 response = client.get_tag_template(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2073,7 +2079,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 # Make the request
                 response = client.update_tag_template(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2194,7 +2200,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_tag_template(request=request)
+                client.delete_tag_template(request=request)
 
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.DeleteTagTemplateRequest, dict]):
@@ -2302,7 +2308,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 # Make the request
                 response = client.create_tag_template_field(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2434,7 +2440,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 # Make the request
                 response = client.update_tag_template_field(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2564,7 +2570,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 # Make the request
                 response = client.rename_tag_template_field(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2673,7 +2679,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_tag_template_field(request=request)
+                client.delete_tag_template_field(request=request)
 
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.DeleteTagTemplateFieldRequest, dict]):
@@ -2784,7 +2790,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 # Make the request
                 response = client.create_tag(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2898,7 +2904,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 # Make the request
                 response = client.update_tag(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -3003,7 +3009,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_tag(request=request)
+                client.delete_tag(request=request)
 
         Args:
             request (Union[google.cloud.datacatalog_v1beta1.types.DeleteTagRequest, dict]):
@@ -3088,6 +3094,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
                 # Make the request
                 page_result = client.list_tags(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -3212,7 +3220,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 # Make the request
                 response = client.set_iam_policy(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -3378,7 +3386,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 # Make the request
                 response = client.get_iam_policy(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -3537,7 +3545,7 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 # Make the request
                 response = client.test_iam_permissions(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:

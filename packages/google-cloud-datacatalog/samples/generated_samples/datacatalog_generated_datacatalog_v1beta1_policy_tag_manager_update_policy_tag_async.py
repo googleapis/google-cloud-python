@@ -38,7 +38,7 @@ async def sample_update_policy_tag():
     # Make the request
     response = await client.update_policy_tag(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END datacatalog_generated_datacatalog_v1beta1_PolicyTagManager_UpdatePolicyTag_async]

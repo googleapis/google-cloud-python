@@ -40,7 +40,7 @@ async def sample_rename_tag_template_field_enum_value():
     # Make the request
     response = await client.rename_tag_template_field_enum_value(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END datacatalog_generated_datacatalog_v1_DataCatalog_RenameTagTemplateFieldEnumValue_async]

@@ -39,7 +39,7 @@ def sample_get_iam_policy():
     # Make the request
     response = client.get_iam_policy(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END datacatalog_generated_datacatalog_v1_PolicyTagManager_GetIamPolicy_sync]

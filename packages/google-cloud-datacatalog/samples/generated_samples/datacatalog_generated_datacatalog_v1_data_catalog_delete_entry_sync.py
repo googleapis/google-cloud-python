@@ -37,7 +37,7 @@ def sample_delete_entry():
     )
 
     # Make the request
-    response = client.delete_entry(request=request)
+    client.delete_entry(request=request)
 
 
 # [END datacatalog_generated_datacatalog_v1_DataCatalog_DeleteEntry_sync]

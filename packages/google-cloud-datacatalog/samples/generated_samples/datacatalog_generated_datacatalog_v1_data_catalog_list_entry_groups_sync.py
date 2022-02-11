@@ -38,6 +38,8 @@ def sample_list_entry_groups():
 
     # Make the request
     page_result = client.list_entry_groups(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

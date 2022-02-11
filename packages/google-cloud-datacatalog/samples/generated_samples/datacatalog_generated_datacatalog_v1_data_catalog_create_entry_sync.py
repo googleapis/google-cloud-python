@@ -46,7 +46,7 @@ def sample_create_entry():
     # Make the request
     response = client.create_entry(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END datacatalog_generated_datacatalog_v1_DataCatalog_CreateEntry_sync]

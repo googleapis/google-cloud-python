@@ -40,7 +40,7 @@ async def sample_create_tag_template():
     # Make the request
     response = await client.create_tag_template(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END datacatalog_generated_datacatalog_v1_DataCatalog_CreateTagTemplate_async]

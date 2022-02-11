@@ -39,7 +39,7 @@ def sample_modify_entry_overview():
     # Make the request
     response = client.modify_entry_overview(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END datacatalog_generated_datacatalog_v1_DataCatalog_ModifyEntryOverview_sync]

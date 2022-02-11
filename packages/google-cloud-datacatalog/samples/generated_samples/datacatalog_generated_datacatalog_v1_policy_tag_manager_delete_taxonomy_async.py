@@ -37,7 +37,7 @@ async def sample_delete_taxonomy():
     )
 
     # Make the request
-    response = await client.delete_taxonomy(request=request)
+    await client.delete_taxonomy(request=request)
 
 
 # [END datacatalog_generated_datacatalog_v1_PolicyTagManager_DeleteTaxonomy_async]

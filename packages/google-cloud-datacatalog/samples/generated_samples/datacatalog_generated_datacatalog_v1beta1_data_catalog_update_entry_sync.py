@@ -44,7 +44,7 @@ def sample_update_entry():
     # Make the request
     response = client.update_entry(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END datacatalog_generated_datacatalog_v1beta1_DataCatalog_UpdateEntry_sync]
