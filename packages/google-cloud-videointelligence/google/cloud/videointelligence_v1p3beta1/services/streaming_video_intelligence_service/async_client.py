@@ -241,6 +241,36 @@ class StreamingVideoIntelligenceServiceAsyncClient:
         bytes. This method is only available via the gRPC API
         (not REST).
 
+
+        .. code-block::
+
+            from google.cloud import videointelligence_v1p3beta1
+
+            def sample_streaming_annotate_video():
+                # Create a client
+                client = videointelligence_v1p3beta1.StreamingVideoIntelligenceServiceClient()
+
+                # Initialize request argument(s)
+                request = videointelligence_v1p3beta1.StreamingAnnotateVideoRequest(
+                )
+
+                # This method expects an iterator which contains
+                # 'videointelligence_v1p3beta1.StreamingAnnotateVideoRequest' objects
+                # Here we create a generator that yields a single `request` for
+                # demonstrative purposes.
+                requests = [request]
+
+                def request_generator():
+                    for request in requests:
+                        yield request
+
+                # Make the request
+                stream = client.streaming_annotate_video(requests=request_generator())
+
+                # Handle the response
+                for response in stream:
+                    print(response)
+
         Args:
             requests (AsyncIterator[`google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoRequest`]):
                 The request object AsyncIterator. The top-level message sent by the

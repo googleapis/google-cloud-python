@@ -1,0 +1,93 @@
+{
+  "snippets": [
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "VideoIntelligenceService"
+          },
+          "shortName": "AnnotateVideo"
+        }
+      },
+      "file": "videointelligence_generated_videointelligence_v1_video_intelligence_service_annotate_video_async.py",
+      "regionTag": "videointelligence_generated_videointelligence_v1_VideoIntelligenceService_AnnotateVideo_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "VideoIntelligenceService"
+          },
+          "shortName": "AnnotateVideo"
+        }
+      },
+      "file": "videointelligence_generated_videointelligence_v1_video_intelligence_service_annotate_video_sync.py",
+      "regionTag": "videointelligence_generated_videointelligence_v1_VideoIntelligenceService_AnnotateVideo_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    }
+  ]
+}
