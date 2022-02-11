@@ -230,6 +230,26 @@ class StorageTransferServiceAsyncClient:
         Service and can only be used by Storage Transfer
         Service.
 
+
+        .. code-block::
+
+            from google.cloud import storage_transfer_v1
+
+            def sample_get_google_service_account():
+                # Create a client
+                client = storage_transfer_v1.StorageTransferServiceClient()
+
+                # Initialize request argument(s)
+                request = storage_transfer_v1.GetGoogleServiceAccountRequest(
+                    project_id="project_id_value",
+                )
+
+                # Make the request
+                response = client.get_google_service_account(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.storage_transfer_v1.types.GetGoogleServiceAccountRequest, dict]):
                 The request object. Request passed to
@@ -270,6 +290,24 @@ class StorageTransferServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer_types.TransferJob:
         r"""Creates a transfer job that runs periodically.
+
+        .. code-block::
+
+            from google.cloud import storage_transfer_v1
+
+            def sample_create_transfer_job():
+                # Create a client
+                client = storage_transfer_v1.StorageTransferServiceClient()
+
+                # Initialize request argument(s)
+                request = storage_transfer_v1.CreateTransferJobRequest(
+                )
+
+                # Make the request
+                response = client.create_transfer_job(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.storage_transfer_v1.types.CreateTransferJobRequest, dict]):
@@ -324,6 +362,27 @@ class StorageTransferServiceAsyncClient:
         or
         [ENABLED][google.storagetransfer.v1.TransferJob.Status.ENABLED]).
 
+
+        .. code-block::
+
+            from google.cloud import storage_transfer_v1
+
+            def sample_update_transfer_job():
+                # Create a client
+                client = storage_transfer_v1.StorageTransferServiceClient()
+
+                # Initialize request argument(s)
+                request = storage_transfer_v1.UpdateTransferJobRequest(
+                    job_name="job_name_value",
+                    project_id="project_id_value",
+                )
+
+                # Make the request
+                response = client.update_transfer_job(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.storage_transfer_v1.types.UpdateTransferJobRequest, dict]):
                 The request object. Request passed to UpdateTransferJob.
@@ -373,6 +432,26 @@ class StorageTransferServiceAsyncClient:
     ) -> transfer_types.TransferJob:
         r"""Gets a transfer job.
 
+        .. code-block::
+
+            from google.cloud import storage_transfer_v1
+
+            def sample_get_transfer_job():
+                # Create a client
+                client = storage_transfer_v1.StorageTransferServiceClient()
+
+                # Initialize request argument(s)
+                request = storage_transfer_v1.GetTransferJobRequest(
+                    job_name="job_name_value",
+                    project_id="project_id_value",
+                )
+
+                # Make the request
+                response = client.get_transfer_job(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.storage_transfer_v1.types.GetTransferJobRequest, dict]):
                 The request object. Request passed to GetTransferJob.
@@ -421,6 +500,26 @@ class StorageTransferServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTransferJobsAsyncPager:
         r"""Lists transfer jobs.
+
+        .. code-block::
+
+            from google.cloud import storage_transfer_v1
+
+            def sample_list_transfer_jobs():
+                # Create a client
+                client = storage_transfer_v1.StorageTransferServiceClient()
+
+                # Initialize request argument(s)
+                request = storage_transfer_v1.ListTransferJobsRequest(
+                    filter="filter_value",
+                )
+
+                # Make the request
+                page_result = client.list_transfer_jobs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.storage_transfer_v1.types.ListTransferJobsRequest, dict]):
@@ -474,6 +573,22 @@ class StorageTransferServiceAsyncClient:
     ) -> None:
         r"""Pauses a transfer operation.
 
+        .. code-block::
+
+            from google.cloud import storage_transfer_v1
+
+            def sample_pause_transfer_operation():
+                # Create a client
+                client = storage_transfer_v1.StorageTransferServiceClient()
+
+                # Initialize request argument(s)
+                request = storage_transfer_v1.PauseTransferOperationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.pause_transfer_operation(request=request)
+
         Args:
             request (Union[google.cloud.storage_transfer_v1.types.PauseTransferOperationRequest, dict]):
                 The request object. Request passed to
@@ -515,6 +630,22 @@ class StorageTransferServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Resumes a transfer operation that is paused.
+
+        .. code-block::
+
+            from google.cloud import storage_transfer_v1
+
+            def sample_resume_transfer_operation():
+                # Create a client
+                client = storage_transfer_v1.StorageTransferServiceClient()
+
+                # Initialize request argument(s)
+                request = storage_transfer_v1.ResumeTransferOperationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.resume_transfer_operation(request=request)
 
         Args:
             request (Union[google.cloud.storage_transfer_v1.types.ResumeTransferOperationRequest, dict]):
@@ -560,6 +691,31 @@ class StorageTransferServiceAsyncClient:
         current TransferJob. A TransferJob has a maximum of one
         active TransferOperation. If this method is called while
         a TransferOperation is active, an error wil be returned.
+
+
+        .. code-block::
+
+            from google.cloud import storage_transfer_v1
+
+            def sample_run_transfer_job():
+                # Create a client
+                client = storage_transfer_v1.StorageTransferServiceClient()
+
+                # Initialize request argument(s)
+                request = storage_transfer_v1.RunTransferJobRequest(
+                    job_name="job_name_value",
+                    project_id="project_id_value",
+                )
+
+                # Make the request
+                operation = client.run_transfer_job(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.storage_transfer_v1.types.RunTransferJobRequest, dict]):
