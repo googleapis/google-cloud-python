@@ -30,6 +30,7 @@ from .recommendation import (
     RecommendationContent,
     RecommendationStateInfo,
     SecurityProjection,
+    SustainabilityProjection,
     ValueMatcher,
 )
 from .recommender_config import (
@@ -66,6 +67,7 @@ __all__ = (
     "RecommendationContent",
     "RecommendationStateInfo",
     "SecurityProjection",
+    "SustainabilityProjection",
     "ValueMatcher",
     "RecommenderConfig",
     "RecommenderGenerationConfig",

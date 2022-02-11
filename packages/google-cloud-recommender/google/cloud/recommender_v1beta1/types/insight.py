@@ -88,7 +88,7 @@ class Insight(proto.Message):
         Attributes:
             recommendation (str):
                 Recommendation resource name, e.g.
-                ``projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/recommendations/[RECOMMENDATION_ID]``
+                projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/recommendations/[RECOMMENDATION_ID]
         """
 
         recommendation = proto.Field(proto.STRING, number=1,)

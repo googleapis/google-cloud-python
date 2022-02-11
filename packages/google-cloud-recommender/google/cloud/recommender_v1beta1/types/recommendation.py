@@ -31,6 +31,7 @@ __protobuf__ = proto.module(
         "ValueMatcher",
         "CostProjection",
         "SecurityProjection",
+        "SustainabilityProjection",
         "Impact",
         "RecommendationStateInfo",
     },
@@ -351,6 +352,24 @@ class SecurityProjection(proto.Message):
     details = proto.Field(proto.MESSAGE, number=2, message=struct_pb2.Struct,)
 
 
+class SustainabilityProjection(proto.Message):
+    r"""Contains metadata about how much sustainability a
+    recommendation can save or incur.
+
+    Attributes:
+        kg_c_o2e (float):
+            Carbon Footprint generated in kg of CO2 equivalent. Chose
+            kg_c_o2e so that the name renders correctly in camelCase
+            (kgCO2e).
+        duration (google.protobuf.duration_pb2.Duration):
+            Duration for which this sustanability
+            applies.
+    """
+
+    kg_c_o2e = proto.Field(proto.DOUBLE, number=1,)
+    duration = proto.Field(proto.MESSAGE, number=2, message=duration_pb2.Duration,)
+
+
 class Impact(proto.Message):
     r"""Contains the impact a recommendation can have for a given
     category.
@@ -373,6 +392,10 @@ class Impact(proto.Message):
             Use with CategoryType.SECURITY
 
             This field is a member of `oneof`_ ``projection``.
+        sustainability_projection (google.cloud.recommender_v1beta1.types.SustainabilityProjection):
+            Use with CategoryType.SUSTAINABILITY
+
+            This field is a member of `oneof`_ ``projection``.
     """
 
     class Category(proto.Enum):
@@ -390,6 +413,12 @@ class Impact(proto.Message):
     )
     security_projection = proto.Field(
         proto.MESSAGE, number=101, oneof="projection", message="SecurityProjection",
+    )
+    sustainability_projection = proto.Field(
+        proto.MESSAGE,
+        number=102,
+        oneof="projection",
+        message="SustainabilityProjection",
     )
 
 

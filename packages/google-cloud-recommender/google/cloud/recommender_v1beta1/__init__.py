@@ -29,6 +29,7 @@ from .types.recommendation import Recommendation
 from .types.recommendation import RecommendationContent
 from .types.recommendation import RecommendationStateInfo
 from .types.recommendation import SecurityProjection
+from .types.recommendation import SustainabilityProjection
 from .types.recommendation import ValueMatcher
 from .types.recommender_config import RecommenderConfig
 from .types.recommender_config import RecommenderGenerationConfig
@@ -76,6 +77,7 @@ __all__ = (
     "RecommenderConfig",
     "RecommenderGenerationConfig",
     "SecurityProjection",
+    "SustainabilityProjection",
     "UpdateInsightTypeConfigRequest",
     "UpdateRecommenderConfigRequest",
     "ValueMatcher",

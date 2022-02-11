@@ -246,6 +246,27 @@ class RecommenderAsyncClient:
         recommender.*.list IAM permission for the specified insight
         type.
 
+
+        .. code-block::
+
+            from google.cloud import recommender_v1beta1
+
+            def sample_list_insights():
+                # Create a client
+                client = recommender_v1beta1.RecommenderClient()
+
+                # Initialize request argument(s)
+                request = recommender_v1beta1.ListInsightsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_insights(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.recommender_v1beta1.types.ListInsightsRequest, dict]):
                 The request object. Request for the `ListInsights`
@@ -351,6 +372,26 @@ class RecommenderAsyncClient:
         r"""Gets the requested insight. Requires the recommender.*.get IAM
         permission for the specified insight type.
 
+
+        .. code-block::
+
+            from google.cloud import recommender_v1beta1
+
+            def sample_get_insight():
+                # Create a client
+                client = recommender_v1beta1.RecommenderClient()
+
+                # Initialize request argument(s)
+                request = recommender_v1beta1.GetInsightRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_insight(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.recommender_v1beta1.types.GetInsightRequest, dict]):
                 The request object. Request to the `GetInsight` method.
@@ -441,6 +482,27 @@ class RecommenderAsyncClient:
         MarkInsightAccepted can be applied to insights in ACTIVE state.
         Requires the recommender.*.update IAM permission for the
         specified insight.
+
+
+        .. code-block::
+
+            from google.cloud import recommender_v1beta1
+
+            def sample_mark_insight_accepted():
+                # Create a client
+                client = recommender_v1beta1.RecommenderClient()
+
+                # Initialize request argument(s)
+                request = recommender_v1beta1.MarkInsightAcceptedRequest(
+                    name="name_value",
+                    etag="etag_value",
+                )
+
+                # Make the request
+                response = client.mark_insight_accepted(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.recommender_v1beta1.types.MarkInsightAcceptedRequest, dict]):
@@ -534,6 +596,27 @@ class RecommenderAsyncClient:
         r"""Lists recommendations for the specified Cloud Resource. Requires
         the recommender.*.list IAM permission for the specified
         recommender.
+
+
+        .. code-block::
+
+            from google.cloud import recommender_v1beta1
+
+            def sample_list_recommendations():
+                # Create a client
+                client = recommender_v1beta1.RecommenderClient()
+
+                # Initialize request argument(s)
+                request = recommender_v1beta1.ListRecommendationsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_recommendations(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.recommender_v1beta1.types.ListRecommendationsRequest, dict]):
@@ -668,6 +751,26 @@ class RecommenderAsyncClient:
         r"""Gets the requested recommendation. Requires the
         recommender.*.get IAM permission for the specified recommender.
 
+
+        .. code-block::
+
+            from google.cloud import recommender_v1beta1
+
+            def sample_get_recommendation():
+                # Create a client
+                client = recommender_v1beta1.RecommenderClient()
+
+                # Initialize request argument(s)
+                request = recommender_v1beta1.GetRecommendationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_recommendation(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.recommender_v1beta1.types.GetRecommendationRequest, dict]):
                 The request object. Request to the `GetRecommendation`
@@ -764,6 +867,27 @@ class RecommenderAsyncClient:
 
         Requires the recommender.*.update IAM permission for the
         specified recommender.
+
+
+        .. code-block::
+
+            from google.cloud import recommender_v1beta1
+
+            def sample_mark_recommendation_claimed():
+                # Create a client
+                client = recommender_v1beta1.RecommenderClient()
+
+                # Initialize request argument(s)
+                request = recommender_v1beta1.MarkRecommendationClaimedRequest(
+                    name="name_value",
+                    etag="etag_value",
+                )
+
+                # Make the request
+                response = client.mark_recommendation_claimed(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.recommender_v1beta1.types.MarkRecommendationClaimedRequest, dict]):
@@ -874,6 +998,27 @@ class RecommenderAsyncClient:
         Requires the recommender.*.update IAM permission for the
         specified recommender.
 
+
+        .. code-block::
+
+            from google.cloud import recommender_v1beta1
+
+            def sample_mark_recommendation_succeeded():
+                # Create a client
+                client = recommender_v1beta1.RecommenderClient()
+
+                # Initialize request argument(s)
+                request = recommender_v1beta1.MarkRecommendationSucceededRequest(
+                    name="name_value",
+                    etag="etag_value",
+                )
+
+                # Make the request
+                response = client.mark_recommendation_succeeded(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.recommender_v1beta1.types.MarkRecommendationSucceededRequest, dict]):
                 The request object. Request for the
@@ -983,6 +1128,27 @@ class RecommenderAsyncClient:
         Requires the recommender.*.update IAM permission for the
         specified recommender.
 
+
+        .. code-block::
+
+            from google.cloud import recommender_v1beta1
+
+            def sample_mark_recommendation_failed():
+                # Create a client
+                client = recommender_v1beta1.RecommenderClient()
+
+                # Initialize request argument(s)
+                request = recommender_v1beta1.MarkRecommendationFailedRequest(
+                    name="name_value",
+                    etag="etag_value",
+                )
+
+                # Make the request
+                response = client.mark_recommendation_failed(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.recommender_v1beta1.types.MarkRecommendationFailedRequest, dict]):
                 The request object. Request for the
@@ -1077,6 +1243,26 @@ class RecommenderAsyncClient:
         r"""Gets the requested Recommender Config. There is only
         one instance of the config for each Recommender.
 
+
+        .. code-block::
+
+            from google.cloud import recommender_v1beta1
+
+            def sample_get_recommender_config():
+                # Create a client
+                client = recommender_v1beta1.RecommenderClient()
+
+                # Initialize request argument(s)
+                request = recommender_v1beta1.GetRecommenderConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_recommender_config(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.recommender_v1beta1.types.GetRecommenderConfigRequest, dict]):
                 The request object. Request for the
@@ -1154,6 +1340,25 @@ class RecommenderAsyncClient:
     ) -> gcr_recommender_config.RecommenderConfig:
         r"""Updates a Recommender Config. This will create a new
         revision of the config.
+
+
+        .. code-block::
+
+            from google.cloud import recommender_v1beta1
+
+            def sample_update_recommender_config():
+                # Create a client
+                client = recommender_v1beta1.RecommenderClient()
+
+                # Initialize request argument(s)
+                request = recommender_v1beta1.UpdateRecommenderConfigRequest(
+                )
+
+                # Make the request
+                response = client.update_recommender_config(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.recommender_v1beta1.types.UpdateRecommenderConfigRequest, dict]):
@@ -1234,6 +1439,26 @@ class RecommenderAsyncClient:
         r"""Gets the requested InsightTypeConfig. There is only
         one instance of the config for each InsightType.
 
+
+        .. code-block::
+
+            from google.cloud import recommender_v1beta1
+
+            def sample_get_insight_type_config():
+                # Create a client
+                client = recommender_v1beta1.RecommenderClient()
+
+                # Initialize request argument(s)
+                request = recommender_v1beta1.GetInsightTypeConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_insight_type_config(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.recommender_v1beta1.types.GetInsightTypeConfigRequest, dict]):
                 The request object. Request for the
@@ -1311,6 +1536,25 @@ class RecommenderAsyncClient:
     ) -> gcr_insight_type_config.InsightTypeConfig:
         r"""Updates an InsightTypeConfig change. This will create
         a new revision of the config.
+
+
+        .. code-block::
+
+            from google.cloud import recommender_v1beta1
+
+            def sample_update_insight_type_config():
+                # Create a client
+                client = recommender_v1beta1.RecommenderClient()
+
+                # Initialize request argument(s)
+                request = recommender_v1beta1.UpdateInsightTypeConfigRequest(
+                )
+
+                # Make the request
+                response = client.update_insight_type_config(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.recommender_v1beta1.types.UpdateInsightTypeConfigRequest, dict]):

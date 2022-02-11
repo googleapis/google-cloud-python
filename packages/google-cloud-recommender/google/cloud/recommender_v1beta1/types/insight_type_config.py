@@ -53,8 +53,8 @@ class InsightTypeConfig(proto.Message):
             can have 2 segments: prefix (optional) and name (required),
             separated by a slash (/). Prefix must be a DNS subdomain.
             Name must be 63 characters or less, begin and end with
-            alphanumerics, with dashes (``-``), underscores (``_``),
-            dots (``.``), and alphanumerics between.
+            alphanumerics, with dashes (-), underscores (_), dots (.),
+            and alphanumerics between.
         display_name (str):
             A user-settable field to provide a
             human-readable name to be used in user
