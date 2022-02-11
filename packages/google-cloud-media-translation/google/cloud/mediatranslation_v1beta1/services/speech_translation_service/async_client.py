@@ -229,6 +229,42 @@ class SpeechTranslationServiceAsyncClient:
         receive results while sending audio. This method is only
         available via the gRPC API (not REST).
 
+
+        .. code-block::
+
+            from google.cloud import mediatranslation_v1beta1
+
+            def sample_streaming_translate_speech():
+                # Create a client
+                client = mediatranslation_v1beta1.SpeechTranslationServiceClient()
+
+                # Initialize request argument(s)
+                streaming_config = mediatranslation_v1beta1.StreamingTranslateSpeechConfig()
+                streaming_config.audio_config.audio_encoding = "audio_encoding_value"
+                streaming_config.audio_config.source_language_code = "source_language_code_value"
+                streaming_config.audio_config.target_language_code = "target_language_code_value"
+
+                request = mediatranslation_v1beta1.StreamingTranslateSpeechRequest(
+                    streaming_config=streaming_config,
+                )
+
+                # This method expects an iterator which contains
+                # 'mediatranslation_v1beta1.StreamingTranslateSpeechRequest' objects
+                # Here we create a generator that yields a single `request` for
+                # demonstrative purposes.
+                requests = [request]
+
+                def request_generator():
+                    for request in requests:
+                        yield request
+
+                # Make the request
+                stream = client.streaming_translate_speech(requests=request_generator())
+
+                # Handle the response
+                for response in stream:
+                    print(response)
+
         Args:
             requests (AsyncIterator[`google.cloud.mediatranslation_v1beta1.types.StreamingTranslateSpeechRequest`]):
                 The request object AsyncIterator. The top-level message sent by the
