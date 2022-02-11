@@ -417,6 +417,27 @@ class FoldersClient(metaclass=FoldersClientMeta):
         caller must have ``resourcemanager.folders.get`` permission on
         the identified folder.
 
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_get_folder():
+                # Create a client
+                client = resourcemanager_v3.FoldersClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.GetFolderRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_folder(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.resourcemanager_v3.types.GetFolderRequest, dict]):
                 The request object. The GetFolder request message.
@@ -493,6 +514,28 @@ class FoldersClient(metaclass=FoldersClientMeta):
         ordering of their display_name. The caller must have
         ``resourcemanager.folders.list`` permission on the identified
         parent.
+
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_list_folders():
+                # Create a client
+                client = resourcemanager_v3.FoldersClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.ListFoldersRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_folders(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.resourcemanager_v3.types.ListFoldersRequest, dict]):
@@ -576,6 +619,27 @@ class FoldersClient(metaclass=FoldersClientMeta):
 
         This will only return folders on which the caller has the
         permission ``resourcemanager.folders.get``.
+
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_search_folders():
+                # Create a client
+                client = resourcemanager_v3.FoldersClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.SearchFoldersRequest(
+                )
+
+                # Make the request
+                page_result = client.search_folders(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.resourcemanager_v3.types.SearchFoldersRequest, dict]):
@@ -712,6 +776,34 @@ class FoldersClient(metaclass=FoldersClientMeta):
         The caller must have ``resourcemanager.folders.create``
         permission on the identified parent.
 
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_create_folder():
+                # Create a client
+                client = resourcemanager_v3.FoldersClient()
+
+                # Initialize request argument(s)
+                folder = resourcemanager_v3.Folder()
+                folder.parent = "parent_value"
+
+                request = resourcemanager_v3.CreateFolderRequest(
+                    folder=folder,
+                )
+
+                # Make the request
+                operation = client.create_folder(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.resourcemanager_v3.types.CreateFolderRequest, dict]):
                 The request object. The CreateFolder request message.
@@ -805,6 +897,34 @@ class FoldersClient(metaclass=FoldersClientMeta):
         If the update fails due to the unique name constraint then a
         ``PreconditionFailure`` explaining this violation will be
         returned in the Status.details field.
+
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_update_folder():
+                # Create a client
+                client = resourcemanager_v3.FoldersClient()
+
+                # Initialize request argument(s)
+                folder = resourcemanager_v3.Folder()
+                folder.parent = "parent_value"
+
+                request = resourcemanager_v3.UpdateFolderRequest(
+                    folder=folder,
+                )
+
+                # Make the request
+                operation = client.update_folder(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.resourcemanager_v3.types.UpdateFolderRequest, dict]):
@@ -922,6 +1042,32 @@ class FoldersClient(metaclass=FoldersClientMeta):
         ``resourcemanager.folders.move`` permission on the folder's
         current and proposed new parent.
 
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_move_folder():
+                # Create a client
+                client = resourcemanager_v3.FoldersClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.MoveFolderRequest(
+                    name="name_value",
+                    destination_parent="destination_parent_value",
+                )
+
+                # Make the request
+                operation = client.move_folder(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.resourcemanager_v3.types.MoveFolderRequest, dict]):
                 The request object. The MoveFolder request message.
@@ -1024,6 +1170,31 @@ class FoldersClient(metaclass=FoldersClientMeta):
         must have ``resourcemanager.folders.delete`` permission on the
         identified folder.
 
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_delete_folder():
+                # Create a client
+                client = resourcemanager_v3.FoldersClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.DeleteFolderRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_folder(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.resourcemanager_v3.types.DeleteFolderRequest, dict]):
                 The request object. The DeleteFolder request message.
@@ -1116,6 +1287,31 @@ class FoldersClient(metaclass=FoldersClientMeta):
         ``resourcemanager.folders.undelete`` permission on the
         identified folder.
 
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_undelete_folder():
+                # Create a client
+                client = resourcemanager_v3.FoldersClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.UndeleteFolderRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.undelete_folder(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.resourcemanager_v3.types.UndeleteFolderRequest, dict]):
                 The request object. The UndeleteFolder request message.
@@ -1200,6 +1396,27 @@ class FoldersClient(metaclass=FoldersClientMeta):
         example: "folders/1234". The caller must have
         ``resourcemanager.folders.getIamPolicy`` permission on the
         identified folder.
+
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = resourcemanager_v3.FoldersClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.GetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
@@ -1330,6 +1547,27 @@ class FoldersClient(metaclass=FoldersClientMeta):
         ``resourcemanager.folders.setIamPolicy`` permission on the
         identified folder.
 
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = resourcemanager_v3.FoldersClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.SetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
                 The request object. Request message for `SetIamPolicy`
@@ -1459,6 +1697,28 @@ class FoldersClient(metaclass=FoldersClientMeta):
         example: "folders/1234".
 
         There are no permissions required for making this API call.
+
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = resourcemanager_v3.FoldersClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.TestIamPermissionsRequest(
+                    resource="resource_value",
+                    permissions=['permissions_value_1', 'permissions_value_2'],
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):

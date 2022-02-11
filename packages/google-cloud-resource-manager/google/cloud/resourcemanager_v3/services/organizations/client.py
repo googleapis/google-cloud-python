@@ -407,6 +407,27 @@ class OrganizationsClient(metaclass=OrganizationsClientMeta):
         r"""Fetches an organization resource identified by the
         specified resource name.
 
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_get_organization():
+                # Create a client
+                client = resourcemanager_v3.OrganizationsClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.GetOrganizationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_organization(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.resourcemanager_v3.types.GetOrganizationRequest, dict]):
                 The request object. The request sent to the
@@ -489,6 +510,27 @@ class OrganizationsClient(metaclass=OrganizationsClientMeta):
 
         Search will only return organizations on which the user has the
         permission ``resourcemanager.organizations.get``
+
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_search_organizations():
+                # Create a client
+                client = resourcemanager_v3.OrganizationsClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.SearchOrganizationsRequest(
+                )
+
+                # Make the request
+                page_result = client.search_organizations(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.resourcemanager_v3.types.SearchOrganizationsRequest, dict]):
@@ -590,6 +632,27 @@ class OrganizationsClient(metaclass=OrganizationsClientMeta):
         Authorization requires the IAM permission
         ``resourcemanager.organizations.getIamPolicy`` on the specified
         organization.
+
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = resourcemanager_v3.OrganizationsClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.GetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
@@ -723,6 +786,27 @@ class OrganizationsClient(metaclass=OrganizationsClientMeta):
         ``resourcemanager.organizations.setIamPolicy`` on the specified
         organization.
 
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = resourcemanager_v3.OrganizationsClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.SetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
                 The request object. Request message for `SetIamPolicy`
@@ -852,6 +936,28 @@ class OrganizationsClient(metaclass=OrganizationsClientMeta):
         organization's resource name, for example: "organizations/123".
 
         There are no permissions required for making this API call.
+
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = resourcemanager_v3.OrganizationsClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.TestIamPermissionsRequest(
+                    resource="resource_value",
+                    permissions=['permissions_value_1', 'permissions_value_2'],
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):

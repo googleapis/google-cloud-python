@@ -215,6 +215,26 @@ class ProjectsAsyncClient:
         The caller must have ``resourcemanager.projects.get`` permission
         for this project.
 
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_get_project():
+                # Create a client
+                client = resourcemanager_v3.ProjectsClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.GetProjectRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_project(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.resourcemanager_v3.types.GetProjectRequest, dict]):
                 The request object. The request sent to the
@@ -303,6 +323,27 @@ class ProjectsAsyncClient:
         (ascending) lexical ordering of their ``display_name``. The
         caller must have ``resourcemanager.projects.list`` permission on
         the identified parent.
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_list_projects():
+                # Create a client
+                client = resourcemanager_v3.ProjectsClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.ListProjectsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_projects(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.resourcemanager_v3.types.ListProjectsRequest, dict]):
@@ -410,6 +451,26 @@ class ProjectsAsyncClient:
         project, use the
         [GetProject][google.cloud.resourcemanager.v3.Projects.GetProject]
         method.
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_search_projects():
+                # Create a client
+                client = resourcemanager_v3.ProjectsClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.SearchProjectsRequest(
+                )
+
+                # Make the request
+                page_result = client.search_projects(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.resourcemanager_v3.types.SearchProjectsRequest, dict]):
@@ -535,6 +596,29 @@ class ProjectsAsyncClient:
         after a few hours, so there is no need to call
         ``DeleteOperation``.
 
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_create_project():
+                # Create a client
+                client = resourcemanager_v3.ProjectsClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.CreateProjectRequest(
+                )
+
+                # Make the request
+                operation = client.create_project(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.resourcemanager_v3.types.CreateProjectRequest, dict]):
                 The request object. The request sent to the
@@ -626,6 +710,29 @@ class ProjectsAsyncClient:
 
         The caller must have ``resourcemanager.projects.update``
         permission for this project.
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_update_project():
+                # Create a client
+                client = resourcemanager_v3.ProjectsClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.UpdateProjectRequest(
+                )
+
+                # Make the request
+                operation = client.update_project(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.resourcemanager_v3.types.UpdateProjectRequest, dict]):
@@ -737,6 +844,31 @@ class ProjectsAsyncClient:
         permission on the project and have
         ``resourcemanager.projects.move`` permission on the project's
         current and proposed new parent.
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_move_project():
+                # Create a client
+                client = resourcemanager_v3.ProjectsClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.MoveProjectRequest(
+                    name="name_value",
+                    destination_parent="destination_parent_value",
+                )
+
+                # Make the request
+                operation = client.move_project(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.resourcemanager_v3.types.MoveProjectRequest, dict]):
@@ -864,6 +996,30 @@ class ProjectsAsyncClient:
         The caller must have ``resourcemanager.projects.delete``
         permissions for this project.
 
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_delete_project():
+                # Create a client
+                client = resourcemanager_v3.ProjectsClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.DeleteProjectRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_project(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.resourcemanager_v3.types.DeleteProjectRequest, dict]):
                 The request object. [DeleteProject][google.cloud.resourcemanager.v3.Projects.DeleteProject]
@@ -953,6 +1109,30 @@ class ProjectsAsyncClient:
         The caller must have ``resourcemanager.projects.undelete``
         permission for this project.
 
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_undelete_project():
+                # Create a client
+                client = resourcemanager_v3.ProjectsClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.UndeleteProjectRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.undelete_project(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.resourcemanager_v3.types.UndeleteProjectRequest, dict]):
                 The request object. The request sent to the
@@ -1040,6 +1220,26 @@ class ProjectsAsyncClient:
         r"""Returns the IAM access control policy for the
         specified project. Permission is denied if the policy or
         the resource do not exist.
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = resourcemanager_v3.ProjectsClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.GetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
@@ -1227,6 +1427,26 @@ class ProjectsAsyncClient:
         -  Calling this method requires enabling the App Engine Admin
            API.
 
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = resourcemanager_v3.ProjectsClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.SetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
                 The request object. Request message for `SetIamPolicy`
@@ -1354,6 +1574,27 @@ class ProjectsAsyncClient:
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns permissions that a caller has on the
         specified project.
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = resourcemanager_v3.ProjectsClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.TestIamPermissionsRequest(
+                    resource="resource_value",
+                    permissions=['permissions_value_1', 'permissions_value_2'],
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):

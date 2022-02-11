@@ -409,6 +409,27 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
     ) -> pagers.ListTagKeysPager:
         r"""Lists all TagKeys for a parent resource.
 
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_list_tag_keys():
+                # Create a client
+                client = resourcemanager_v3.TagKeysClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.ListTagKeysRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_tag_keys(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.resourcemanager_v3.types.ListTagKeysRequest, dict]):
                 The request object. The request message for listing all
@@ -485,6 +506,27 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
         ``PERMISSION_DENIED`` if the key does not exist or the user does
         not have permission to view it.
 
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_get_tag_key():
+                # Create a client
+                client = resourcemanager_v3.TagKeysClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.GetTagKeyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_tag_key(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.resourcemanager_v3.types.GetTagKeyRequest, dict]):
                 The request object. The request message for getting a
@@ -559,6 +601,34 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
         process, the second request will receive an error. A
         maximum of 300 TagKeys can exist under a parent at any
         given time.
+
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_create_tag_key():
+                # Create a client
+                client = resourcemanager_v3.TagKeysClient()
+
+                # Initialize request argument(s)
+                tag_key = resourcemanager_v3.TagKey()
+                tag_key.short_name = "short_name_value"
+
+                request = resourcemanager_v3.CreateTagKeyRequest(
+                    tag_key=tag_key,
+                )
+
+                # Make the request
+                operation = client.create_tag_key(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.resourcemanager_v3.types.CreateTagKeyRequest, dict]):
@@ -637,6 +707,33 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the attributes of the TagKey resource.
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_update_tag_key():
+                # Create a client
+                client = resourcemanager_v3.TagKeysClient()
+
+                # Initialize request argument(s)
+                tag_key = resourcemanager_v3.TagKey()
+                tag_key.short_name = "short_name_value"
+
+                request = resourcemanager_v3.UpdateTagKeyRequest(
+                    tag_key=tag_key,
+                )
+
+                # Make the request
+                operation = client.update_tag_key(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.resourcemanager_v3.types.UpdateTagKeyRequest, dict]):
@@ -737,6 +834,31 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
         r"""Deletes a TagKey. The TagKey cannot be deleted if it
         has any child TagValues.
 
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_delete_tag_key():
+                # Create a client
+                client = resourcemanager_v3.TagKeysClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.DeleteTagKeyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_tag_key(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.resourcemanager_v3.types.DeleteTagKeyRequest, dict]):
                 The request object. The request message for deleting a
@@ -825,6 +947,27 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
         example, "tagKeys/1234". The caller must have
         ``cloudresourcemanager.googleapis.com/tagKeys.getIamPolicy``
         permission on the specified TagKey.
+
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = resourcemanager_v3.TagKeysClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.GetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
@@ -955,6 +1098,27 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
         ``resourcemanager.tagKeys.setIamPolicy`` permission on the
         identified tagValue.
 
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = resourcemanager_v3.TagKeysClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.SetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
                 The request object. Request message for `SetIamPolicy`
@@ -1084,6 +1248,28 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
         example, "tagKeys/1234".
 
         There are no permissions required for making this API call.
+
+
+
+        .. code-block::
+
+            from google.cloud import resourcemanager_v3
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = resourcemanager_v3.TagKeysClient()
+
+                # Initialize request argument(s)
+                request = resourcemanager_v3.TestIamPermissionsRequest(
+                    resource="resource_value",
+                    permissions=['permissions_value_1', 'permissions_value_2'],
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
