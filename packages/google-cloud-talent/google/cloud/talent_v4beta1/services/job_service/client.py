@@ -435,6 +435,34 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         Typically, the job becomes searchable within 10 seconds,
         but it may take up to 5 minutes.
 
+
+
+        .. code-block::
+
+            from google.cloud import talent_v4beta1
+
+            def sample_create_job():
+                # Create a client
+                client = talent_v4beta1.JobServiceClient()
+
+                # Initialize request argument(s)
+                job = talent_v4beta1.Job()
+                job.company = "company_value"
+                job.requisition_id = "requisition_id_value"
+                job.title = "title_value"
+                job.description = "description_value"
+
+                request = talent_v4beta1.CreateJobRequest(
+                    parent="parent_value",
+                    job=job,
+                )
+
+                # Make the request
+                response = client.create_job(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.talent_v4beta1.types.CreateJobRequest, dict]):
                 The request object. Create job request.
@@ -520,6 +548,37 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Begins executing a batch create jobs operation.
+
+
+        .. code-block::
+
+            from google.cloud import talent_v4beta1
+
+            def sample_batch_create_jobs():
+                # Create a client
+                client = talent_v4beta1.JobServiceClient()
+
+                # Initialize request argument(s)
+                jobs = talent_v4beta1.Job()
+                jobs.company = "company_value"
+                jobs.requisition_id = "requisition_id_value"
+                jobs.title = "title_value"
+                jobs.description = "description_value"
+
+                request = talent_v4beta1.BatchCreateJobsRequest(
+                    parent="parent_value",
+                    jobs=jobs,
+                )
+
+                # Make the request
+                operation = client.batch_create_jobs(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.talent_v4beta1.types.BatchCreateJobsRequest, dict]):
@@ -618,6 +677,27 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         r"""Retrieves the specified job, whose status is OPEN or
         recently EXPIRED within the last 90 days.
 
+
+
+        .. code-block::
+
+            from google.cloud import talent_v4beta1
+
+            def sample_get_job():
+                # Create a client
+                client = talent_v4beta1.JobServiceClient()
+
+                # Initialize request argument(s)
+                request = talent_v4beta1.GetJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_job(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.talent_v4beta1.types.GetJobRequest, dict]):
                 The request object. Get job request.
@@ -699,6 +779,33 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         results within 10 seconds, but it may take up to 5
         minutes.
 
+
+
+        .. code-block::
+
+            from google.cloud import talent_v4beta1
+
+            def sample_update_job():
+                # Create a client
+                client = talent_v4beta1.JobServiceClient()
+
+                # Initialize request argument(s)
+                job = talent_v4beta1.Job()
+                job.company = "company_value"
+                job.requisition_id = "requisition_id_value"
+                job.title = "title_value"
+                job.description = "description_value"
+
+                request = talent_v4beta1.UpdateJobRequest(
+                    job=job,
+                )
+
+                # Make the request
+                response = client.update_job(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.talent_v4beta1.types.UpdateJobRequest, dict]):
                 The request object. Update job request.
@@ -769,6 +876,37 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Begins executing a batch update jobs operation.
+
+
+        .. code-block::
+
+            from google.cloud import talent_v4beta1
+
+            def sample_batch_update_jobs():
+                # Create a client
+                client = talent_v4beta1.JobServiceClient()
+
+                # Initialize request argument(s)
+                jobs = talent_v4beta1.Job()
+                jobs.company = "company_value"
+                jobs.requisition_id = "requisition_id_value"
+                jobs.title = "title_value"
+                jobs.description = "description_value"
+
+                request = talent_v4beta1.BatchUpdateJobsRequest(
+                    parent="parent_value",
+                    jobs=jobs,
+                )
+
+                # Make the request
+                operation = client.batch_update_jobs(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.talent_v4beta1.types.BatchUpdateJobsRequest, dict]):
@@ -868,6 +1006,24 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         Typically, the job becomes unsearchable within 10
         seconds, but it may take up to 5 minutes.
 
+
+
+        .. code-block::
+
+            from google.cloud import talent_v4beta1
+
+            def sample_delete_job():
+                # Create a client
+                client = talent_v4beta1.JobServiceClient()
+
+                # Initialize request argument(s)
+                request = talent_v4beta1.DeleteJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_job(request=request)
+
         Args:
             request (Union[google.cloud.talent_v4beta1.types.DeleteJobRequest, dict]):
                 The request object. Delete job request.
@@ -938,6 +1094,25 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
     ) -> None:
         r"""Deletes a list of [Job][google.cloud.talent.v4beta1.Job]s by
         filter.
+
+
+
+        .. code-block::
+
+            from google.cloud import talent_v4beta1
+
+            def sample_batch_delete_jobs():
+                # Create a client
+                client = talent_v4beta1.JobServiceClient()
+
+                # Initialize request argument(s)
+                request = talent_v4beta1.BatchDeleteJobsRequest(
+                    parent="parent_value",
+                    filter="filter_value",
+                )
+
+                # Make the request
+                client.batch_delete_jobs(request=request)
 
         Args:
             request (Union[google.cloud.talent_v4beta1.types.BatchDeleteJobsRequest, dict]):
@@ -1027,6 +1202,28 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListJobsPager:
         r"""Lists jobs by filter.
+
+
+        .. code-block::
+
+            from google.cloud import talent_v4beta1
+
+            def sample_list_jobs():
+                # Create a client
+                client = talent_v4beta1.JobServiceClient()
+
+                # Initialize request argument(s)
+                request = talent_v4beta1.ListJobsRequest(
+                    parent="parent_value",
+                    filter="filter_value",
+                )
+
+                # Make the request
+                page_result = client.list_jobs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.talent_v4beta1.types.ListJobsRequest, dict]):
@@ -1146,6 +1343,28 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         present in the database, and only returns jobs that the caller
         has permission to search against.
 
+
+
+        .. code-block::
+
+            from google.cloud import talent_v4beta1
+
+            def sample_search_jobs():
+                # Create a client
+                client = talent_v4beta1.JobServiceClient()
+
+                # Initialize request argument(s)
+                request = talent_v4beta1.SearchJobsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.search_jobs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.talent_v4beta1.types.SearchJobsRequest, dict]):
                 The request object. The Request body of the `SearchJobs`
@@ -1215,6 +1434,28 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         [visibility][google.cloud.talent.v4beta1.Job.visibility] of jobs
         present in the database, and only returns jobs the caller has
         permission to search against.
+
+
+
+        .. code-block::
+
+            from google.cloud import talent_v4beta1
+
+            def sample_search_jobs_for_alert():
+                # Create a client
+                client = talent_v4beta1.JobServiceClient()
+
+                # Initialize request argument(s)
+                request = talent_v4beta1.SearchJobsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.search_jobs_for_alert(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.talent_v4beta1.types.SearchJobsRequest, dict]):

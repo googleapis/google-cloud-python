@@ -218,6 +218,29 @@ class TenantServiceAsyncClient:
     ) -> gct_tenant.Tenant:
         r"""Creates a new tenant entity.
 
+        .. code-block::
+
+            from google.cloud import talent_v4beta1
+
+            def sample_create_tenant():
+                # Create a client
+                client = talent_v4beta1.TenantServiceClient()
+
+                # Initialize request argument(s)
+                tenant = talent_v4beta1.Tenant()
+                tenant.external_id = "external_id_value"
+
+                request = talent_v4beta1.CreateTenantRequest(
+                    parent="parent_value",
+                    tenant=tenant,
+                )
+
+                # Make the request
+                response = client.create_tenant(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.talent_v4beta1.types.CreateTenantRequest, dict]):
                 The request object. The Request of the CreateTenant
@@ -303,6 +326,25 @@ class TenantServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tenant.Tenant:
         r"""Retrieves specified tenant.
+
+        .. code-block::
+
+            from google.cloud import talent_v4beta1
+
+            def sample_get_tenant():
+                # Create a client
+                client = talent_v4beta1.TenantServiceClient()
+
+                # Initialize request argument(s)
+                request = talent_v4beta1.GetTenantRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_tenant(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.talent_v4beta1.types.GetTenantRequest, dict]):
@@ -394,6 +436,28 @@ class TenantServiceAsyncClient:
     ) -> gct_tenant.Tenant:
         r"""Updates specified tenant.
 
+        .. code-block::
+
+            from google.cloud import talent_v4beta1
+
+            def sample_update_tenant():
+                # Create a client
+                client = talent_v4beta1.TenantServiceClient()
+
+                # Initialize request argument(s)
+                tenant = talent_v4beta1.Tenant()
+                tenant.external_id = "external_id_value"
+
+                request = talent_v4beta1.UpdateTenantRequest(
+                    tenant=tenant,
+                )
+
+                # Make the request
+                response = client.update_tenant(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.talent_v4beta1.types.UpdateTenantRequest, dict]):
                 The request object. Request for updating a specified
@@ -473,6 +537,22 @@ class TenantServiceAsyncClient:
     ) -> None:
         r"""Deletes specified tenant.
 
+        .. code-block::
+
+            from google.cloud import talent_v4beta1
+
+            def sample_delete_tenant():
+                # Create a client
+                client = talent_v4beta1.TenantServiceClient()
+
+                # Initialize request argument(s)
+                request = talent_v4beta1.DeleteTenantRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_tenant(request=request)
+
         Args:
             request (Union[google.cloud.talent_v4beta1.types.DeleteTenantRequest, dict]):
                 The request object. Request to delete a tenant.
@@ -548,6 +628,26 @@ class TenantServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTenantsAsyncPager:
         r"""Lists all tenants associated with the project.
+
+        .. code-block::
+
+            from google.cloud import talent_v4beta1
+
+            def sample_list_tenants():
+                # Create a client
+                client = talent_v4beta1.TenantServiceClient()
+
+                # Initialize request argument(s)
+                request = talent_v4beta1.ListTenantsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_tenants(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.talent_v4beta1.types.ListTenantsRequest, dict]):

@@ -416,6 +416,33 @@ class EventServiceClient(metaclass=EventServiceClientMeta):
         more <https://cloud.google.com/talent-solution/docs/management-tools>`__
         about self service tools.
 
+
+
+        .. code-block::
+
+            from google.cloud import talent_v4beta1
+
+            def sample_create_client_event():
+                # Create a client
+                client = talent_v4beta1.EventServiceClient()
+
+                # Initialize request argument(s)
+                client_event = talent_v4beta1.ClientEvent()
+                client_event.job_event.type_ = "INTERVIEW_GRANTED"
+                client_event.job_event.jobs = ['jobs_value_1', 'jobs_value_2']
+                client_event.event_id = "event_id_value"
+
+                request = talent_v4beta1.CreateClientEventRequest(
+                    parent="parent_value",
+                    client_event=client_event,
+                )
+
+                # Make the request
+                response = client.create_client_event(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.talent_v4beta1.types.CreateClientEventRequest, dict]):
                 The request object. The report event request.

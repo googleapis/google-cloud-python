@@ -422,6 +422,29 @@ class CompletionClient(metaclass=CompletionClientMeta):
         suggestions. Intended for use by a job search
         auto-complete search box.
 
+
+
+        .. code-block::
+
+            from google.cloud import talent_v4
+
+            def sample_complete_query():
+                # Create a client
+                client = talent_v4.CompletionClient()
+
+                # Initialize request argument(s)
+                request = talent_v4.CompleteQueryRequest(
+                    tenant="tenant_value",
+                    query="query_value",
+                    page_size=951,
+                )
+
+                # Make the request
+                response = client.complete_query(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.talent_v4.types.CompleteQueryRequest, dict]):
                 The request object. Auto-complete parameters.

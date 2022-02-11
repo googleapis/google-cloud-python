@@ -430,6 +430,31 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
     ) -> gct_company.Company:
         r"""Creates a new company entity.
 
+
+        .. code-block::
+
+            from google.cloud import talent_v4
+
+            def sample_create_company():
+                # Create a client
+                client = talent_v4.CompanyServiceClient()
+
+                # Initialize request argument(s)
+                company = talent_v4.Company()
+                company.display_name = "display_name_value"
+                company.external_id = "external_id_value"
+
+                request = talent_v4.CreateCompanyRequest(
+                    parent="parent_value",
+                    company=company,
+                )
+
+                # Make the request
+                response = client.create_company(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.talent_v4.types.CreateCompanyRequest, dict]):
                 The request object. The Request of the CreateCompany
@@ -516,6 +541,26 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
     ) -> company.Company:
         r"""Retrieves specified company.
 
+
+        .. code-block::
+
+            from google.cloud import talent_v4
+
+            def sample_get_company():
+                # Create a client
+                client = talent_v4.CompanyServiceClient()
+
+                # Initialize request argument(s)
+                request = talent_v4.GetCompanyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_company(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.talent_v4.types.GetCompanyRequest, dict]):
                 The request object. Request for getting a company by
@@ -596,6 +641,30 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gct_company.Company:
         r"""Updates specified company.
+
+
+        .. code-block::
+
+            from google.cloud import talent_v4
+
+            def sample_update_company():
+                # Create a client
+                client = talent_v4.CompanyServiceClient()
+
+                # Initialize request argument(s)
+                company = talent_v4.Company()
+                company.display_name = "display_name_value"
+                company.external_id = "external_id_value"
+
+                request = talent_v4.UpdateCompanyRequest(
+                    company=company,
+                )
+
+                # Make the request
+                response = client.update_company(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.talent_v4.types.UpdateCompanyRequest, dict]):
@@ -695,6 +764,24 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
         Prerequisite: The company has no jobs associated with
         it.
 
+
+
+        .. code-block::
+
+            from google.cloud import talent_v4
+
+            def sample_delete_company():
+                # Create a client
+                client = talent_v4.CompanyServiceClient()
+
+                # Initialize request argument(s)
+                request = talent_v4.DeleteCompanyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_company(request=request)
+
         Args:
             request (Union[google.cloud.talent_v4.types.DeleteCompanyRequest, dict]):
                 The request object. Request to delete a company.
@@ -761,6 +848,27 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCompaniesPager:
         r"""Lists all companies associated with the project.
+
+
+        .. code-block::
+
+            from google.cloud import talent_v4
+
+            def sample_list_companies():
+                # Create a client
+                client = talent_v4.CompanyServiceClient()
+
+                # Initialize request argument(s)
+                request = talent_v4.ListCompaniesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_companies(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.talent_v4.types.ListCompaniesRequest, dict]):

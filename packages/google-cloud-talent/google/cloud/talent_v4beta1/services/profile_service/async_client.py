@@ -223,6 +223,26 @@ class ProfileServiceAsyncClient:
     ) -> pagers.ListProfilesAsyncPager:
         r"""Lists profiles by filter. The order is unspecified.
 
+        .. code-block::
+
+            from google.cloud import talent_v4beta1
+
+            def sample_list_profiles():
+                # Create a client
+                client = talent_v4beta1.ProfileServiceClient()
+
+                # Initialize request argument(s)
+                request = talent_v4beta1.ListProfilesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_profiles(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.talent_v4beta1.types.ListProfilesRequest, dict]):
                 The request object. List profiles request.
@@ -316,6 +336,25 @@ class ProfileServiceAsyncClient:
     ) -> gct_profile.Profile:
         r"""Creates and returns a new profile.
 
+        .. code-block::
+
+            from google.cloud import talent_v4beta1
+
+            def sample_create_profile():
+                # Create a client
+                client = talent_v4beta1.ProfileServiceClient()
+
+                # Initialize request argument(s)
+                request = talent_v4beta1.CreateProfileRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_profile(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.talent_v4beta1.types.CreateProfileRequest, dict]):
                 The request object. Create profile request.
@@ -398,6 +437,25 @@ class ProfileServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> profile.Profile:
         r"""Gets the specified profile.
+
+        .. code-block::
+
+            from google.cloud import talent_v4beta1
+
+            def sample_get_profile():
+                # Create a client
+                client = talent_v4beta1.ProfileServiceClient()
+
+                # Initialize request argument(s)
+                request = talent_v4beta1.GetProfileRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_profile(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.talent_v4beta1.types.GetProfileRequest, dict]):
@@ -485,6 +543,25 @@ class ProfileServiceAsyncClient:
         r"""Updates the specified profile and returns the updated
         result.
 
+
+        .. code-block::
+
+            from google.cloud import talent_v4beta1
+
+            def sample_update_profile():
+                # Create a client
+                client = talent_v4beta1.ProfileServiceClient()
+
+                # Initialize request argument(s)
+                request = talent_v4beta1.UpdateProfileRequest(
+                )
+
+                # Make the request
+                response = client.update_profile(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.talent_v4beta1.types.UpdateProfileRequest, dict]):
                 The request object. Update profile request
@@ -558,6 +635,23 @@ class ProfileServiceAsyncClient:
         r"""Deletes the specified profile.
         Prerequisite: The profile has no associated applications
         or assignments associated.
+
+
+        .. code-block::
+
+            from google.cloud import talent_v4beta1
+
+            def sample_delete_profile():
+                # Create a client
+                client = talent_v4beta1.ProfileServiceClient()
+
+                # Initialize request argument(s)
+                request = talent_v4beta1.DeleteProfileRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_profile(request=request)
 
         Args:
             request (Union[google.cloud.talent_v4beta1.types.DeleteProfileRequest, dict]):
@@ -641,6 +735,27 @@ class ProfileServiceAsyncClient:
         See
         [SearchProfilesRequest][google.cloud.talent.v4beta1.SearchProfilesRequest]
         for more information.
+
+
+        .. code-block::
+
+            from google.cloud import talent_v4beta1
+
+            def sample_search_profiles():
+                # Create a client
+                client = talent_v4beta1.ProfileServiceClient()
+
+                # Initialize request argument(s)
+                request = talent_v4beta1.SearchProfilesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.search_profiles(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.talent_v4beta1.types.SearchProfilesRequest, dict]):

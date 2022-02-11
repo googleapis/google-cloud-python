@@ -471,6 +471,32 @@ class ApplicationServiceClient(metaclass=ApplicationServiceClientMeta):
     ) -> gct_application.Application:
         r"""Creates a new application entity.
 
+
+        .. code-block::
+
+            from google.cloud import talent_v4beta1
+
+            def sample_create_application():
+                # Create a client
+                client = talent_v4beta1.ApplicationServiceClient()
+
+                # Initialize request argument(s)
+                application = talent_v4beta1.Application()
+                application.external_id = "external_id_value"
+                application.job = "job_value"
+                application.stage = "STARTED"
+
+                request = talent_v4beta1.CreateApplicationRequest(
+                    parent="parent_value",
+                    application=application,
+                )
+
+                # Make the request
+                response = client.create_application(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.talent_v4beta1.types.CreateApplicationRequest, dict]):
                 The request object. The Request of the CreateApplication
@@ -555,6 +581,26 @@ class ApplicationServiceClient(metaclass=ApplicationServiceClientMeta):
     ) -> application.Application:
         r"""Retrieves specified application.
 
+
+        .. code-block::
+
+            from google.cloud import talent_v4beta1
+
+            def sample_get_application():
+                # Create a client
+                client = talent_v4beta1.ApplicationServiceClient()
+
+                # Initialize request argument(s)
+                request = talent_v4beta1.GetApplicationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_application(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.talent_v4beta1.types.GetApplicationRequest, dict]):
                 The request object. Request for getting a application by
@@ -631,6 +677,31 @@ class ApplicationServiceClient(metaclass=ApplicationServiceClientMeta):
     ) -> gct_application.Application:
         r"""Updates specified application.
 
+
+        .. code-block::
+
+            from google.cloud import talent_v4beta1
+
+            def sample_update_application():
+                # Create a client
+                client = talent_v4beta1.ApplicationServiceClient()
+
+                # Initialize request argument(s)
+                application = talent_v4beta1.Application()
+                application.external_id = "external_id_value"
+                application.job = "job_value"
+                application.stage = "STARTED"
+
+                request = talent_v4beta1.UpdateApplicationRequest(
+                    application=application,
+                )
+
+                # Make the request
+                response = client.update_application(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.talent_v4beta1.types.UpdateApplicationRequest, dict]):
                 The request object. Request for updating a specified
@@ -705,6 +776,23 @@ class ApplicationServiceClient(metaclass=ApplicationServiceClientMeta):
     ) -> None:
         r"""Deletes specified application.
 
+
+        .. code-block::
+
+            from google.cloud import talent_v4beta1
+
+            def sample_delete_application():
+                # Create a client
+                client = talent_v4beta1.ApplicationServiceClient()
+
+                # Initialize request argument(s)
+                request = talent_v4beta1.DeleteApplicationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_application(request=request)
+
         Args:
             request (Union[google.cloud.talent_v4beta1.types.DeleteApplicationRequest, dict]):
                 The request object. Request to delete a application.
@@ -772,6 +860,27 @@ class ApplicationServiceClient(metaclass=ApplicationServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListApplicationsPager:
         r"""Lists all applications associated with the profile.
+
+
+        .. code-block::
+
+            from google.cloud import talent_v4beta1
+
+            def sample_list_applications():
+                # Create a client
+                client = talent_v4beta1.ApplicationServiceClient()
+
+                # Initialize request argument(s)
+                request = talent_v4beta1.ListApplicationsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_applications(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.talent_v4beta1.types.ListApplicationsRequest, dict]):
