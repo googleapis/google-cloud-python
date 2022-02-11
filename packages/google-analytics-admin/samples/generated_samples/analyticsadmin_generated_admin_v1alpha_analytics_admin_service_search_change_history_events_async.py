@@ -38,6 +38,8 @@ async def sample_search_change_history_events():
 
     # Make the request
     page_result = client.search_change_history_events(request=request)
+
+    # Handle the response
     async for response in page_result:
         print(response)
 

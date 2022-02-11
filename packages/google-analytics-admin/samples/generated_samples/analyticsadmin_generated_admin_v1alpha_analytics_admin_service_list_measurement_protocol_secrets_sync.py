@@ -38,6 +38,8 @@ def sample_list_measurement_protocol_secrets():
 
     # Make the request
     page_result = client.list_measurement_protocol_secrets(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

@@ -38,7 +38,7 @@ async def sample_update_data_stream():
     # Make the request
     response = await client.update_data_stream(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateDataStream_async]

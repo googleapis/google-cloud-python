@@ -39,7 +39,7 @@ async def sample_get_global_site_tag():
     # Make the request
     response = await client.get_global_site_tag(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetGlobalSiteTag_async]

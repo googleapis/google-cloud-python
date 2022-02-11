@@ -362,12 +362,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_AuditUserLinks_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -382,11 +382,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -404,12 +406,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_AuditUserLinks_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -424,11 +426,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -4578,12 +4582,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListAccountSummaries_async",
       "segments": [
         {
-          "end": 42,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 42,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -4598,11 +4602,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 40,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 43,
+          "end": 45,
+          "start": 41,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -4620,12 +4626,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListAccountSummaries_sync",
       "segments": [
         {
-          "end": 42,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 42,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -4640,11 +4646,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 40,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 43,
+          "end": 45,
+          "start": 41,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -4663,12 +4671,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListAccounts_async",
       "segments": [
         {
-          "end": 42,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 42,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -4683,11 +4691,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 40,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 43,
+          "end": 45,
+          "start": 41,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -4705,12 +4715,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListAccounts_sync",
       "segments": [
         {
-          "end": 42,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 42,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -4725,11 +4735,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 40,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 43,
+          "end": 45,
+          "start": 41,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -4748,12 +4760,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListAndroidAppDataStreams_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -4768,11 +4780,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -4790,12 +4804,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListAndroidAppDataStreams_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -4810,11 +4824,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -4833,12 +4849,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListConversionEvents_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -4853,11 +4869,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -4875,12 +4893,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListConversionEvents_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -4895,11 +4913,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -4918,12 +4938,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListCustomDimensions_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -4938,11 +4958,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -4960,12 +4982,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListCustomDimensions_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -4980,11 +5002,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -5003,12 +5027,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListCustomMetrics_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -5023,11 +5047,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -5045,12 +5071,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListCustomMetrics_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -5065,11 +5091,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -5088,12 +5116,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListDataStreams_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -5108,11 +5136,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -5130,12 +5160,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListDataStreams_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -5150,11 +5180,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -5173,12 +5205,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinkProposals_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -5193,11 +5225,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -5215,12 +5249,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinkProposals_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -5235,11 +5269,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -5258,12 +5294,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinks_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -5278,11 +5314,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -5300,12 +5338,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListDisplayVideo360AdvertiserLinks_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -5320,11 +5358,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -5343,12 +5383,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListFirebaseLinks_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -5363,11 +5403,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -5385,12 +5427,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListFirebaseLinks_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -5405,11 +5447,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -5428,12 +5472,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListGoogleAdsLinks_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -5448,11 +5492,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -5470,12 +5516,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListGoogleAdsLinks_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -5490,11 +5536,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -5513,12 +5561,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListIosAppDataStreams_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -5533,11 +5581,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -5555,12 +5605,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListIosAppDataStreams_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -5575,11 +5625,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -5598,12 +5650,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListMeasurementProtocolSecrets_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -5618,11 +5670,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -5640,12 +5694,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListMeasurementProtocolSecrets_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -5660,11 +5714,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -5683,12 +5739,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListProperties_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -5703,11 +5759,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -5725,12 +5783,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListProperties_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -5745,11 +5803,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -5768,12 +5828,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListUserLinks_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -5788,11 +5848,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -5810,12 +5872,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListUserLinks_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -5830,11 +5892,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -5853,12 +5917,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListWebDataStreams_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -5873,11 +5937,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -5895,12 +5961,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ListWebDataStreams_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -5915,11 +5981,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -6027,12 +6095,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_SearchChangeHistoryEvents_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -6047,11 +6115,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -6069,12 +6139,12 @@
       "regionTag": "analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_SearchChangeHistoryEvents_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -6089,11 +6159,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]

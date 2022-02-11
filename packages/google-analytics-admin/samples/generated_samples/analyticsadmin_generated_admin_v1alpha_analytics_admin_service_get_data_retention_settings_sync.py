@@ -39,7 +39,7 @@ def sample_get_data_retention_settings():
     # Make the request
     response = client.get_data_retention_settings(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetDataRetentionSettings_sync]

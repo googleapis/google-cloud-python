@@ -37,7 +37,7 @@ async def sample_delete_user_link():
     )
 
     # Make the request
-    response = await client.delete_user_link(request=request)
+    await client.delete_user_link(request=request)
 
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteUserLink_async]

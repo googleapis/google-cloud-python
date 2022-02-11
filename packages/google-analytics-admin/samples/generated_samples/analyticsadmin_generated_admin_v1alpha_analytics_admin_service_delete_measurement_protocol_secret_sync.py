@@ -37,7 +37,7 @@ def sample_delete_measurement_protocol_secret():
     )
 
     # Make the request
-    response = client.delete_measurement_protocol_secret(request=request)
+    client.delete_measurement_protocol_secret(request=request)
 
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteMeasurementProtocolSecret_sync]

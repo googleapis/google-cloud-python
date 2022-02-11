@@ -37,7 +37,7 @@ def sample_delete_user_link():
     )
 
     # Make the request
-    response = client.delete_user_link(request=request)
+    client.delete_user_link(request=request)
 
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteUserLink_sync]

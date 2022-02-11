@@ -42,7 +42,7 @@ def sample_update_account():
     # Make the request
     response = client.update_account(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateAccount_sync]

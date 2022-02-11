@@ -40,7 +40,7 @@ async def sample_acknowledge_user_data_collection():
     # Make the request
     response = await client.acknowledge_user_data_collection(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_AcknowledgeUserDataCollection_async]

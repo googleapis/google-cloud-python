@@ -37,7 +37,7 @@ def sample_archive_custom_metric():
     )
 
     # Make the request
-    response = client.archive_custom_metric(request=request)
+    client.archive_custom_metric(request=request)
 
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ArchiveCustomMetric_sync]

@@ -38,6 +38,8 @@ def sample_list_user_links():
 
     # Make the request
     page_result = client.list_user_links(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

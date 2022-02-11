@@ -39,7 +39,7 @@ def sample_get_custom_dimension():
     # Make the request
     response = client.get_custom_dimension(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetCustomDimension_sync]

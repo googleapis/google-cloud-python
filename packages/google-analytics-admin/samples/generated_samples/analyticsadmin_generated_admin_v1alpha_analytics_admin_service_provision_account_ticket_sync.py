@@ -38,7 +38,7 @@ def sample_provision_account_ticket():
     # Make the request
     response = client.provision_account_ticket(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ProvisionAccountTicket_sync]

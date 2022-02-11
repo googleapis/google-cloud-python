@@ -37,7 +37,7 @@ def sample_archive_custom_dimension():
     )
 
     # Make the request
-    response = client.archive_custom_dimension(request=request)
+    client.archive_custom_dimension(request=request)
 
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ArchiveCustomDimension_sync]

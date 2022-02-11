@@ -37,7 +37,7 @@ def sample_delete_display_video360_advertiser_link_proposal():
     )
 
     # Make the request
-    response = client.delete_display_video360_advertiser_link_proposal(request=request)
+    client.delete_display_video360_advertiser_link_proposal(request=request)
 
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteDisplayVideo360AdvertiserLinkProposal_sync]

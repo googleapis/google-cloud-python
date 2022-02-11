@@ -39,7 +39,7 @@ async def sample_delete_property():
     # Make the request
     response = await client.delete_property(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteProperty_async]

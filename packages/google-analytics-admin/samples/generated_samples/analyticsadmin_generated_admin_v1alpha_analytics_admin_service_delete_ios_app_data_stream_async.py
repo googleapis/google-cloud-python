@@ -37,7 +37,7 @@ async def sample_delete_ios_app_data_stream():
     )
 
     # Make the request
-    response = await client.delete_ios_app_data_stream(request=request)
+    await client.delete_ios_app_data_stream(request=request)
 
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteIosAppDataStream_async]

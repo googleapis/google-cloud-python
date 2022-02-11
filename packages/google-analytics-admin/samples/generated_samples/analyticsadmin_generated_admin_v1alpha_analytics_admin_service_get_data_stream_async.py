@@ -39,7 +39,7 @@ async def sample_get_data_stream():
     # Make the request
     response = await client.get_data_stream(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetDataStream_async]

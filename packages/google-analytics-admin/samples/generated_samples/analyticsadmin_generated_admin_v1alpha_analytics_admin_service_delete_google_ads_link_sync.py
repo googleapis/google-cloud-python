@@ -37,7 +37,7 @@ def sample_delete_google_ads_link():
     )
 
     # Make the request
-    response = client.delete_google_ads_link(request=request)
+    client.delete_google_ads_link(request=request)
 
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteGoogleAdsLink_sync]

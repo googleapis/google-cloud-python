@@ -39,7 +39,7 @@ async def sample_create_conversion_event():
     # Make the request
     response = await client.create_conversion_event(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateConversionEvent_async]

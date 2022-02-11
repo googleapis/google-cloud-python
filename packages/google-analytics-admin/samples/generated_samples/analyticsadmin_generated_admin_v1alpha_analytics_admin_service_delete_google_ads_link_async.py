@@ -37,7 +37,7 @@ async def sample_delete_google_ads_link():
     )
 
     # Make the request
-    response = await client.delete_google_ads_link(request=request)
+    await client.delete_google_ads_link(request=request)
 
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteGoogleAdsLink_async]

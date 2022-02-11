@@ -37,7 +37,7 @@ async def sample_archive_custom_metric():
     )
 
     # Make the request
-    response = await client.archive_custom_metric(request=request)
+    await client.archive_custom_metric(request=request)
 
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_ArchiveCustomMetric_async]

@@ -38,6 +38,8 @@ def sample_list_data_streams():
 
     # Make the request
     page_result = client.list_data_streams(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

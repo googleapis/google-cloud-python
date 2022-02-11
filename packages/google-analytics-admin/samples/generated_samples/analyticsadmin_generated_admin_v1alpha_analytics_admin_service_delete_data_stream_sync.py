@@ -37,7 +37,7 @@ def sample_delete_data_stream():
     )
 
     # Make the request
-    response = client.delete_data_stream(request=request)
+    client.delete_data_stream(request=request)
 
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteDataStream_sync]

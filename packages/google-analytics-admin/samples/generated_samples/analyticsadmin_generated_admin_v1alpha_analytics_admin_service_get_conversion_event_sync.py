@@ -39,7 +39,7 @@ def sample_get_conversion_event():
     # Make the request
     response = client.get_conversion_event(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetConversionEvent_sync]

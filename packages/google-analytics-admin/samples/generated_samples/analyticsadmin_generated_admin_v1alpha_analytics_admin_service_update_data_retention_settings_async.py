@@ -38,7 +38,7 @@ async def sample_update_data_retention_settings():
     # Make the request
     response = await client.update_data_retention_settings(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateDataRetentionSettings_async]

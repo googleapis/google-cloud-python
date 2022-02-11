@@ -43,7 +43,7 @@ async def sample_create_property():
     # Make the request
     response = await client.create_property(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateProperty_async]

@@ -43,7 +43,7 @@ def sample_batch_create_user_links():
     # Make the request
     response = client.batch_create_user_links(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_BatchCreateUserLinks_sync]

@@ -37,6 +37,8 @@ async def sample_list_account_summaries():
 
     # Make the request
     page_result = client.list_account_summaries(request=request)
+
+    # Handle the response
     async for response in page_result:
         print(response)
 

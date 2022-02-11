@@ -38,6 +38,8 @@ def sample_list_custom_dimensions():
 
     # Make the request
     page_result = client.list_custom_dimensions(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

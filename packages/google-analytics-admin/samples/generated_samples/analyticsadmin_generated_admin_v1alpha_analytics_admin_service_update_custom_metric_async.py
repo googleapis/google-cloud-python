@@ -38,7 +38,7 @@ async def sample_update_custom_metric():
     # Make the request
     response = await client.update_custom_metric(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateCustomMetric_async]

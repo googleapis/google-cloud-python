@@ -38,6 +38,8 @@ async def sample_list_google_ads_links():
 
     # Make the request
     page_result = client.list_google_ads_links(request=request)
+
+    # Handle the response
     async for response in page_result:
         print(response)
 

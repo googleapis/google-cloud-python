@@ -37,7 +37,7 @@ async def sample_delete_measurement_protocol_secret():
     )
 
     # Make the request
-    response = await client.delete_measurement_protocol_secret(request=request)
+    await client.delete_measurement_protocol_secret(request=request)
 
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteMeasurementProtocolSecret_async]

@@ -39,7 +39,7 @@ async def sample_get_measurement_protocol_secret():
     # Make the request
     response = await client.get_measurement_protocol_secret(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetMeasurementProtocolSecret_async]

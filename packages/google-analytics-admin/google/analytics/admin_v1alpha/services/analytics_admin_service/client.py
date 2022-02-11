@@ -703,7 +703,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.get_account(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -796,6 +796,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
                 # Make the request
                 page_result = client.list_accounts(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -878,7 +880,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_account(request=request)
+                client.delete_account(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteAccountRequest, dict]):
@@ -966,7 +968,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.update_account(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1069,7 +1071,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.provision_account_ticket(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1133,6 +1135,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
                 # Make the request
                 page_result = client.list_account_summaries(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1207,7 +1211,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.get_property(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1302,6 +1306,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
                 # Make the request
                 page_result = client.list_properties(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1382,7 +1388,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.create_property(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1480,7 +1486,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.delete_property(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1577,7 +1583,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.update_property(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1685,7 +1691,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.get_user_link(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1778,7 +1784,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.batch_get_user_links(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1848,6 +1854,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
                 # Make the request
                 page_result = client.list_user_links(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1957,6 +1965,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
                 # Make the request
                 page_result = client.audit_user_links(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -2043,7 +2053,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.create_user_link(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2157,7 +2167,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.batch_create_user_links(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2227,7 +2237,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.update_user_link(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2320,7 +2330,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.batch_update_user_links(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2389,7 +2399,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_user_link(request=request)
+                client.delete_user_link(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteUserLinkRequest, dict]):
@@ -2475,7 +2485,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 )
 
                 # Make the request
-                response = client.batch_delete_user_links(request=request)
+                client.batch_delete_user_links(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.BatchDeleteUserLinksRequest, dict]):
@@ -2538,7 +2548,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.get_web_data_stream(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2629,7 +2639,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_web_data_stream(request=request)
+                client.delete_web_data_stream(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteWebDataStreamRequest, dict]):
@@ -2718,7 +2728,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.update_web_data_stream(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2830,7 +2840,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.create_web_data_stream(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2933,6 +2943,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
                 # Make the request
                 page_result = client.list_web_data_streams(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -3035,7 +3047,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.get_ios_app_data_stream(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -3126,7 +3138,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_ios_app_data_stream(request=request)
+                client.delete_ios_app_data_stream(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteIosAppDataStreamRequest, dict]):
@@ -3217,7 +3229,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.update_ios_app_data_stream(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -3329,6 +3341,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
                 # Make the request
                 page_result = client.list_ios_app_data_streams(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -3433,7 +3447,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.get_android_app_data_stream(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -3526,7 +3540,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_android_app_data_stream(request=request)
+                client.delete_android_app_data_stream(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteAndroidAppDataStreamRequest, dict]):
@@ -3613,7 +3627,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.update_android_app_data_stream(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -3730,6 +3744,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
                 # Make the request
                 page_result = client.list_android_app_data_streams(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -3837,7 +3853,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.create_firebase_link(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -3935,7 +3951,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_firebase_link(request=request)
+                client.delete_firebase_link(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteFirebaseLinkRequest, dict]):
@@ -4020,6 +4036,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
                 # Make the request
                 page_result = client.list_firebase_links(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -4122,7 +4140,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.get_global_site_tag(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -4219,7 +4237,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.create_google_ads_link(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -4319,7 +4337,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.update_google_ads_link(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -4420,7 +4438,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_google_ads_link(request=request)
+                client.delete_google_ads_link(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteGoogleAdsLinkRequest, dict]):
@@ -4502,6 +4520,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
                 # Make the request
                 page_result = client.list_google_ads_links(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -4604,7 +4624,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.get_data_sharing_settings(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -4703,7 +4723,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.get_measurement_protocol_secret(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -4803,6 +4823,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
                 # Make the request
                 page_result = client.list_measurement_protocol_secrets(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -4918,7 +4940,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.create_measurement_protocol_secret(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -5026,7 +5048,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_measurement_protocol_secret(request=request)
+                client.delete_measurement_protocol_secret(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteMeasurementProtocolSecretRequest, dict]):
@@ -5124,7 +5146,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.update_measurement_protocol_secret(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -5242,7 +5264,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.acknowledge_user_data_collection(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -5317,6 +5339,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
                 # Make the request
                 page_result = client.search_change_history_events(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -5399,7 +5423,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.get_google_signals_settings(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -5493,7 +5517,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.update_google_signals_settings(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -5608,7 +5632,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.create_conversion_event(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -5710,7 +5734,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.get_conversion_event(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -5801,7 +5825,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_conversion_event(request=request)
+                client.delete_conversion_event(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteConversionEventRequest, dict]):
@@ -5888,6 +5912,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
                 # Make the request
                 page_result = client.list_conversion_events(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -5991,7 +6017,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.get_display_video360_advertiser_link(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -6091,6 +6117,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
                 # Make the request
                 page_result = client.list_display_video360_advertiser_links(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -6204,7 +6232,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.create_display_video360_advertiser_link(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -6314,7 +6342,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_display_video360_advertiser_link(request=request)
+                client.delete_display_video360_advertiser_link(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteDisplayVideo360AdvertiserLinkRequest, dict]):
@@ -6409,7 +6437,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.update_display_video360_advertiser_link(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -6530,7 +6558,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.get_display_video360_advertiser_link_proposal(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -6639,6 +6667,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
                 # Make the request
                 page_result = client.list_display_video360_advertiser_link_proposals(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -6748,7 +6778,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.create_display_video360_advertiser_link_proposal(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -6866,7 +6896,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_display_video360_advertiser_link_proposal(request=request)
+                client.delete_display_video360_advertiser_link_proposal(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteDisplayVideo360AdvertiserLinkProposalRequest, dict]):
@@ -6962,7 +6992,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.approve_display_video360_advertiser_link_proposal(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -7047,7 +7077,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.cancel_display_video360_advertiser_link_proposal(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -7138,7 +7168,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.create_custom_dimension(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -7236,7 +7266,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.update_custom_dimension(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -7335,6 +7365,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
                 # Make the request
                 page_result = client.list_custom_dimensions(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -7433,7 +7465,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 )
 
                 # Make the request
-                response = client.archive_custom_dimension(request=request)
+                client.archive_custom_dimension(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ArchiveCustomDimensionRequest, dict]):
@@ -7518,7 +7550,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.get_custom_dimension(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -7616,7 +7648,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.create_custom_metric(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -7712,7 +7744,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.update_custom_metric(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -7811,6 +7843,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
                 # Make the request
                 page_result = client.list_custom_metrics(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -7909,7 +7943,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 )
 
                 # Make the request
-                response = client.archive_custom_metric(request=request)
+                client.archive_custom_metric(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ArchiveCustomMetricRequest, dict]):
@@ -7993,7 +8027,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.get_custom_metric(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -8085,7 +8119,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.get_data_retention_settings(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -8183,7 +8217,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.update_data_retention_settings(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -8300,7 +8334,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.create_data_stream(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -8396,7 +8430,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_data_stream(request=request)
+                client.delete_data_stream(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteDataStreamRequest, dict]):
@@ -8480,7 +8514,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.update_data_stream(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -8581,6 +8615,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
                 # Make the request
                 page_result = client.list_data_streams(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -8681,7 +8717,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 # Make the request
                 response = client.get_data_stream(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:

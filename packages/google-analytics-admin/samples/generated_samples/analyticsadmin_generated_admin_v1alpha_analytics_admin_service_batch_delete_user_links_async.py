@@ -41,7 +41,7 @@ async def sample_batch_delete_user_links():
     )
 
     # Make the request
-    response = await client.batch_delete_user_links(request=request)
+    await client.batch_delete_user_links(request=request)
 
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_BatchDeleteUserLinks_async]

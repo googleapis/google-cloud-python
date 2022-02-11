@@ -39,7 +39,7 @@ async def sample_get_display_video360_advertiser_link():
     # Make the request
     response = await client.get_display_video360_advertiser_link(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_GetDisplayVideo360AdvertiserLink_async]

@@ -37,7 +37,7 @@ async def sample_delete_conversion_event():
     )
 
     # Make the request
-    response = await client.delete_conversion_event(request=request)
+    await client.delete_conversion_event(request=request)
 
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteConversionEvent_async]

@@ -38,6 +38,8 @@ def sample_list_display_video360_advertiser_links():
 
     # Make the request
     page_result = client.list_display_video360_advertiser_links(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

@@ -38,6 +38,8 @@ async def sample_list_ios_app_data_streams():
 
     # Make the request
     page_result = client.list_ios_app_data_streams(request=request)
+
+    # Handle the response
     async for response in page_result:
         print(response)
 

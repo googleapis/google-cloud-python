@@ -38,6 +38,8 @@ async def sample_audit_user_links():
 
     # Make the request
     page_result = client.audit_user_links(request=request)
+
+    # Handle the response
     async for response in page_result:
         print(response)
 

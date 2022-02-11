@@ -37,7 +37,7 @@ def sample_delete_account():
     )
 
     # Make the request
-    response = client.delete_account(request=request)
+    client.delete_account(request=request)
 
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteAccount_sync]

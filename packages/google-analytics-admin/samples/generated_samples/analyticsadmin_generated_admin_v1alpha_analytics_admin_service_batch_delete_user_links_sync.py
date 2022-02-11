@@ -41,7 +41,7 @@ def sample_batch_delete_user_links():
     )
 
     # Make the request
-    response = client.batch_delete_user_links(request=request)
+    client.batch_delete_user_links(request=request)
 
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_BatchDeleteUserLinks_sync]

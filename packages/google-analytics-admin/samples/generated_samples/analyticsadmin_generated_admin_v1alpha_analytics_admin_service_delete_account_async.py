@@ -37,7 +37,7 @@ async def sample_delete_account():
     )
 
     # Make the request
-    response = await client.delete_account(request=request)
+    await client.delete_account(request=request)
 
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_DeleteAccount_async]

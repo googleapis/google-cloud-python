@@ -39,7 +39,7 @@ def sample_create_user_link():
     # Make the request
     response = client.create_user_link(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateUserLink_sync]

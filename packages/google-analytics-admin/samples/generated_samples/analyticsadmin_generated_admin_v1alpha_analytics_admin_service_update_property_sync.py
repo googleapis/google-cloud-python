@@ -43,7 +43,7 @@ def sample_update_property():
     # Make the request
     response = client.update_property(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_UpdateProperty_sync]

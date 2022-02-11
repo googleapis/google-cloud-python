@@ -46,7 +46,7 @@ async def sample_create_custom_metric():
     # Make the request
     response = await client.create_custom_metric(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END analyticsadmin_generated_admin_v1alpha_AnalyticsAdminService_CreateCustomMetric_async]

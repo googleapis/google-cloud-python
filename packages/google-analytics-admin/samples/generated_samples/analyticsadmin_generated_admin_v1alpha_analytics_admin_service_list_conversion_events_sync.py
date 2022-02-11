@@ -38,6 +38,8 @@ def sample_list_conversion_events():
 
     # Make the request
     page_result = client.list_conversion_events(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 
