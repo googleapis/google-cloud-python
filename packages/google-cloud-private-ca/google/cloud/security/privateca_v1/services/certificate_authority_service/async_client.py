@@ -261,6 +261,30 @@ class CertificateAuthorityServiceAsyncClient:
         a given Project, Location from a particular
         [CaPool][google.cloud.security.privateca.v1.CaPool].
 
+
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_create_certificate():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                certificate = privateca_v1.Certificate()
+                certificate.pem_csr = "pem_csr_value"
+
+                request = privateca_v1.CreateCertificateRequest(
+                    parent="parent_value",
+                    certificate=certificate,
+                )
+
+                # Make the request
+                response = client.create_certificate(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.security.privateca_v1.types.CreateCertificateRequest, dict]):
                 The request object. Request message for
@@ -359,6 +383,26 @@ class CertificateAuthorityServiceAsyncClient:
         r"""Returns a
         [Certificate][google.cloud.security.privateca.v1.Certificate].
 
+
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_get_certificate():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                request = privateca_v1.GetCertificateRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_certificate(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.security.privateca_v1.types.GetCertificateRequest, dict]):
                 The request object. Request message for
@@ -433,6 +477,27 @@ class CertificateAuthorityServiceAsyncClient:
     ) -> pagers.ListCertificatesAsyncPager:
         r"""Lists
         [Certificates][google.cloud.security.privateca.v1.Certificate].
+
+
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_list_certificates():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                request = privateca_v1.ListCertificatesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_certificates(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.security.privateca_v1.types.ListCertificatesRequest, dict]):
@@ -517,6 +582,27 @@ class CertificateAuthorityServiceAsyncClient:
         r"""Revoke a
         [Certificate][google.cloud.security.privateca.v1.Certificate].
 
+
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_revoke_certificate():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                request = privateca_v1.RevokeCertificateRequest(
+                    name="name_value",
+                    reason="ATTRIBUTE_AUTHORITY_COMPROMISE",
+                )
+
+                # Make the request
+                response = client.revoke_certificate(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.security.privateca_v1.types.RevokeCertificateRequest, dict]):
                 The request object. Request message for
@@ -594,6 +680,29 @@ class CertificateAuthorityServiceAsyncClient:
         Currently, the only field you can update is the
         [labels][google.cloud.security.privateca.v1.Certificate.labels]
         field.
+
+
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_update_certificate():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                certificate = privateca_v1.Certificate()
+                certificate.pem_csr = "pem_csr_value"
+
+                request = privateca_v1.UpdateCertificateRequest(
+                    certificate=certificate,
+                )
+
+                # Make the request
+                response = client.update_certificate(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.security.privateca_v1.types.UpdateCertificateRequest, dict]):
@@ -687,6 +796,35 @@ class CertificateAuthorityServiceAsyncClient:
         [FetchCertificateAuthorityCsr][google.cloud.security.privateca.v1.CertificateAuthorityService.FetchCertificateAuthorityCsr],
         this method can complete the activation process.
 
+
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_activate_certificate_authority():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                subordinate_config = privateca_v1.SubordinateConfig()
+                subordinate_config.certificate_authority = "certificate_authority_value"
+
+                request = privateca_v1.ActivateCertificateAuthorityRequest(
+                    name="name_value",
+                    pem_ca_certificate="pem_ca_certificate_value",
+                    subordinate_config=subordinate_config,
+                )
+
+                # Make the request
+                operation = client.activate_certificate_authority(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.security.privateca_v1.types.ActivateCertificateAuthorityRequest, dict]):
                 The request object. Request message for
@@ -776,6 +914,36 @@ class CertificateAuthorityServiceAsyncClient:
         r"""Create a new
         [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
         in a given Project and Location.
+
+
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_create_certificate_authority():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                certificate_authority = privateca_v1.CertificateAuthority()
+                certificate_authority.type_ = "SUBORDINATE"
+                certificate_authority.key_spec.cloud_kms_key_version = "cloud_kms_key_version_value"
+
+                request = privateca_v1.CreateCertificateAuthorityRequest(
+                    parent="parent_value",
+                    certificate_authority_id="certificate_authority_id_value",
+                    certificate_authority=certificate_authority,
+                )
+
+                # Make the request
+                operation = client.create_certificate_authority(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.security.privateca_v1.types.CreateCertificateAuthorityRequest, dict]):
@@ -886,6 +1054,30 @@ class CertificateAuthorityServiceAsyncClient:
         r"""Disable a
         [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority].
 
+
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_disable_certificate_authority():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                request = privateca_v1.DisableCertificateAuthorityRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.disable_certificate_authority(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.security.privateca_v1.types.DisableCertificateAuthorityRequest, dict]):
                 The request object. Request message for
@@ -972,6 +1164,30 @@ class CertificateAuthorityServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Enable a
         [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority].
+
+
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_enable_certificate_authority():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                request = privateca_v1.EnableCertificateAuthorityRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.enable_certificate_authority(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.security.privateca_v1.types.EnableCertificateAuthorityRequest, dict]):
@@ -1069,6 +1285,26 @@ class CertificateAuthorityServiceAsyncClient:
         resource, or could be an on-prem certificate authority. See also
         [ActivateCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.ActivateCertificateAuthority].
 
+
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_fetch_certificate_authority_csr():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                request = privateca_v1.FetchCertificateAuthorityCsrRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.fetch_certificate_authority_csr(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.security.privateca_v1.types.FetchCertificateAuthorityCsrRequest, dict]):
                 The request object. Request message for
@@ -1142,6 +1378,26 @@ class CertificateAuthorityServiceAsyncClient:
     ) -> resources.CertificateAuthority:
         r"""Returns a
         [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority].
+
+
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_get_certificate_authority():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                request = privateca_v1.GetCertificateAuthorityRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_certificate_authority(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.security.privateca_v1.types.GetCertificateAuthorityRequest, dict]):
@@ -1220,6 +1476,27 @@ class CertificateAuthorityServiceAsyncClient:
     ) -> pagers.ListCertificateAuthoritiesAsyncPager:
         r"""Lists
         [CertificateAuthorities][google.cloud.security.privateca.v1.CertificateAuthority].
+
+
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_list_certificate_authorities():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                request = privateca_v1.ListCertificateAuthoritiesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_certificate_authorities(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.security.privateca_v1.types.ListCertificateAuthoritiesRequest, dict]):
@@ -1305,6 +1582,30 @@ class CertificateAuthorityServiceAsyncClient:
         r"""Undelete a
         [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
         that has been deleted.
+
+
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_undelete_certificate_authority():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                request = privateca_v1.UndeleteCertificateAuthorityRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.undelete_certificate_authority(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.security.privateca_v1.types.UndeleteCertificateAuthorityRequest, dict]):
@@ -1393,6 +1694,30 @@ class CertificateAuthorityServiceAsyncClient:
         r"""Delete a
         [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority].
 
+
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_delete_certificate_authority():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                request = privateca_v1.DeleteCertificateAuthorityRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_certificate_authority(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.security.privateca_v1.types.DeleteCertificateAuthorityRequest, dict]):
                 The request object. Request message for
@@ -1480,6 +1805,34 @@ class CertificateAuthorityServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Update a
         [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority].
+
+
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_update_certificate_authority():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                certificate_authority = privateca_v1.CertificateAuthority()
+                certificate_authority.type_ = "SUBORDINATE"
+                certificate_authority.key_spec.cloud_kms_key_version = "cloud_kms_key_version_value"
+
+                request = privateca_v1.UpdateCertificateAuthorityRequest(
+                    certificate_authority=certificate_authority,
+                )
+
+                # Make the request
+                operation = client.update_certificate_authority(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.security.privateca_v1.types.UpdateCertificateAuthorityRequest, dict]):
@@ -1578,6 +1931,34 @@ class CertificateAuthorityServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Create a [CaPool][google.cloud.security.privateca.v1.CaPool].
+
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_create_ca_pool():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                ca_pool = privateca_v1.CaPool()
+                ca_pool.tier = "DEVOPS"
+
+                request = privateca_v1.CreateCaPoolRequest(
+                    parent="parent_value",
+                    ca_pool_id="ca_pool_id_value",
+                    ca_pool=ca_pool,
+                )
+
+                # Make the request
+                operation = client.create_ca_pool(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.security.privateca_v1.types.CreateCaPoolRequest, dict]):
@@ -1689,6 +2070,32 @@ class CertificateAuthorityServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Update a [CaPool][google.cloud.security.privateca.v1.CaPool].
 
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_update_ca_pool():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                ca_pool = privateca_v1.CaPool()
+                ca_pool.tier = "DEVOPS"
+
+                request = privateca_v1.UpdateCaPoolRequest(
+                    ca_pool=ca_pool,
+                )
+
+                # Make the request
+                operation = client.update_ca_pool(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.security.privateca_v1.types.UpdateCaPoolRequest, dict]):
                 The request object. Request message for
@@ -1789,6 +2196,25 @@ class CertificateAuthorityServiceAsyncClient:
     ) -> resources.CaPool:
         r"""Returns a [CaPool][google.cloud.security.privateca.v1.CaPool].
 
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_get_ca_pool():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                request = privateca_v1.GetCaPoolRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_ca_pool(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.security.privateca_v1.types.GetCaPoolRequest, dict]):
                 The request object. Request message for
@@ -1869,6 +2295,26 @@ class CertificateAuthorityServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCaPoolsAsyncPager:
         r"""Lists [CaPools][google.cloud.security.privateca.v1.CaPool].
+
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_list_ca_pools():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                request = privateca_v1.ListCaPoolsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_ca_pools(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.security.privateca_v1.types.ListCaPoolsRequest, dict]):
@@ -1951,6 +2397,29 @@ class CertificateAuthorityServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Delete a [CaPool][google.cloud.security.privateca.v1.CaPool].
+
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_delete_ca_pool():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                request = privateca_v1.DeleteCaPoolRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_ca_pool(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.security.privateca_v1.types.DeleteCaPoolRequest, dict]):
@@ -2050,6 +2519,26 @@ class CertificateAuthorityServiceAsyncClient:
         resources in the
         [CaPool][google.cloud.security.privateca.v1.CaPool].
 
+
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_fetch_ca_certs():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                request = privateca_v1.FetchCaCertsRequest(
+                    ca_pool="ca_pool_value",
+                )
+
+                # Make the request
+                response = client.fetch_ca_certs(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.security.privateca_v1.types.FetchCaCertsRequest, dict]):
                 The request object. Request message for
@@ -2122,6 +2611,26 @@ class CertificateAuthorityServiceAsyncClient:
     ) -> resources.CertificateRevocationList:
         r"""Returns a
         [CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList].
+
+
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_get_certificate_revocation_list():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                request = privateca_v1.GetCertificateRevocationListRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_certificate_revocation_list(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.security.privateca_v1.types.GetCertificateRevocationListRequest, dict]):
@@ -2199,6 +2708,27 @@ class CertificateAuthorityServiceAsyncClient:
     ) -> pagers.ListCertificateRevocationListsAsyncPager:
         r"""Lists
         [CertificateRevocationLists][google.cloud.security.privateca.v1.CertificateRevocationList].
+
+
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_list_certificate_revocation_lists():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                request = privateca_v1.ListCertificateRevocationListsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_certificate_revocation_lists(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.security.privateca_v1.types.ListCertificateRevocationListsRequest, dict]):
@@ -2284,6 +2814,29 @@ class CertificateAuthorityServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Update a
         [CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList].
+
+
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_update_certificate_revocation_list():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                request = privateca_v1.UpdateCertificateRevocationListRequest(
+                )
+
+                # Make the request
+                operation = client.update_certificate_revocation_list(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.security.privateca_v1.types.UpdateCertificateRevocationListRequest, dict]):
@@ -2388,6 +2941,31 @@ class CertificateAuthorityServiceAsyncClient:
         r"""Create a new
         [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate]
         in a given Project and Location.
+
+
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_create_certificate_template():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                request = privateca_v1.CreateCertificateTemplateRequest(
+                    parent="parent_value",
+                    certificate_template_id="certificate_template_id_value",
+                )
+
+                # Make the request
+                operation = client.create_certificate_template(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.security.privateca_v1.types.CreateCertificateTemplateRequest, dict]):
@@ -2494,6 +3072,30 @@ class CertificateAuthorityServiceAsyncClient:
         r"""DeleteCertificateTemplate deletes a
         [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate].
 
+
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_delete_certificate_template():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                request = privateca_v1.DeleteCertificateTemplateRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_certificate_template(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.security.privateca_v1.types.DeleteCertificateTemplateRequest, dict]):
                 The request object. Request message for
@@ -2589,6 +3191,26 @@ class CertificateAuthorityServiceAsyncClient:
         r"""Returns a
         [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate].
 
+
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_get_certificate_template():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                request = privateca_v1.GetCertificateTemplateRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_certificate_template(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.security.privateca_v1.types.GetCertificateTemplateRequest, dict]):
                 The request object. Request message for
@@ -2663,6 +3285,27 @@ class CertificateAuthorityServiceAsyncClient:
     ) -> pagers.ListCertificateTemplatesAsyncPager:
         r"""Lists
         [CertificateTemplates][google.cloud.security.privateca.v1.CertificateTemplate].
+
+
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_list_certificate_templates():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                request = privateca_v1.ListCertificateTemplatesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_certificate_templates(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.security.privateca_v1.types.ListCertificateTemplatesRequest, dict]):
@@ -2747,6 +3390,29 @@ class CertificateAuthorityServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Update a
         [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate].
+
+
+        .. code-block::
+
+            from google.cloud.security import privateca_v1
+
+            def sample_update_certificate_template():
+                # Create a client
+                client = privateca_v1.CertificateAuthorityServiceClient()
+
+                # Initialize request argument(s)
+                request = privateca_v1.UpdateCertificateTemplateRequest(
+                )
+
+                # Make the request
+                operation = client.update_certificate_template(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.security.privateca_v1.types.UpdateCertificateTemplateRequest, dict]):
