@@ -38,6 +38,8 @@ def sample_list_workloads():
 
     # Make the request
     page_result = client.list_workloads(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

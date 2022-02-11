@@ -251,6 +251,8 @@ class AssuredWorkloadsServiceAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -366,7 +368,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 # Make the request
                 response = client.update_workload(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -470,7 +472,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.delete_workload(request=request)
+                client.delete_workload(request=request)
 
         Args:
             request (Union[google.cloud.assuredworkloads_v1beta1.types.DeleteWorkloadRequest, dict]):
@@ -561,7 +563,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 # Make the request
                 response = client.get_workload(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -663,6 +665,8 @@ class AssuredWorkloadsServiceAsyncClient:
 
                 # Make the request
                 page_result = client.list_workloads(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 

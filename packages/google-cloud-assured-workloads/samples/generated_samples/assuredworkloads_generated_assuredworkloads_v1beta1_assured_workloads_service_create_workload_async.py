@@ -47,6 +47,8 @@ async def sample_create_workload():
     print("Waiting for operation to complete...")
 
     response = await operation.result()
+
+    # Handle the response
     print(response)
 
 # [END assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_CreateWorkload_async]

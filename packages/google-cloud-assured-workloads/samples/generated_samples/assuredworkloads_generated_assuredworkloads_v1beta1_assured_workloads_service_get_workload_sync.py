@@ -39,7 +39,7 @@ def sample_get_workload():
     # Make the request
     response = client.get_workload(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_GetWorkload_sync]

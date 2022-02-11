@@ -14,12 +14,12 @@
       "regionTag": "assuredworkloads_generated_assuredworkloads_v1_AssuredWorkloadsService_CreateWorkload_async",
       "segments": [
         {
-          "end": 52,
+          "end": 54,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 54,
           "start": 27,
           "type": "SHORT"
         },
@@ -34,11 +34,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 51,
           "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 55,
+          "start": 52,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -56,12 +58,12 @@
       "regionTag": "assuredworkloads_generated_assuredworkloads_v1_AssuredWorkloadsService_CreateWorkload_sync",
       "segments": [
         {
-          "end": 52,
+          "end": 54,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 54,
           "start": 27,
           "type": "SHORT"
         },
@@ -76,11 +78,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 51,
           "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
+          "end": 55,
+          "start": 52,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -273,12 +277,12 @@
       "regionTag": "assuredworkloads_generated_assuredworkloads_v1_AssuredWorkloadsService_ListWorkloads_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -293,11 +297,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -315,12 +321,12 @@
       "regionTag": "assuredworkloads_generated_assuredworkloads_v1_AssuredWorkloadsService_ListWorkloads_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -335,11 +341,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]

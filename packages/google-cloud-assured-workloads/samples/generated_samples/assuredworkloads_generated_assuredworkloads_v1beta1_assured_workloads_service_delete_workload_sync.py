@@ -37,7 +37,7 @@ def sample_delete_workload():
     )
 
     # Make the request
-    response = client.delete_workload(request=request)
+    client.delete_workload(request=request)
 
 
 # [END assuredworkloads_generated_assuredworkloads_v1beta1_AssuredWorkloadsService_DeleteWorkload_sync]

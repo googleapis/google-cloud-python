@@ -37,7 +37,7 @@ async def sample_delete_workload():
     )
 
     # Make the request
-    response = await client.delete_workload(request=request)
+    await client.delete_workload(request=request)
 
 
 # [END assuredworkloads_generated_assuredworkloads_v1_AssuredWorkloadsService_DeleteWorkload_async]

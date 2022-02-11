@@ -44,7 +44,7 @@ def sample_update_workload():
     # Make the request
     response = client.update_workload(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END assuredworkloads_generated_assuredworkloads_v1_AssuredWorkloadsService_UpdateWorkload_sync]
