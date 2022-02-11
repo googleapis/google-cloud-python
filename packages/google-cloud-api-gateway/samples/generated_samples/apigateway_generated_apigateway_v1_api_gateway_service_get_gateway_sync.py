@@ -39,7 +39,7 @@ def sample_get_gateway():
     # Make the request
     response = client.get_gateway(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END apigateway_generated_apigateway_v1_ApiGatewayService_GetGateway_sync]

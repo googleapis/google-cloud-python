@@ -39,7 +39,7 @@ async def sample_get_api():
     # Make the request
     response = await client.get_api(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END apigateway_generated_apigateway_v1_ApiGatewayService_GetApi_async]

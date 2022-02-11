@@ -38,6 +38,8 @@ def sample_list_api_configs():
 
     # Make the request
     page_result = client.list_api_configs(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

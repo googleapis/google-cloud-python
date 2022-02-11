@@ -45,6 +45,8 @@ async def sample_update_gateway():
     print("Waiting for operation to complete...")
 
     response = await operation.result()
+
+    # Handle the response
     print(response)
 
 # [END apigateway_generated_apigateway_v1_ApiGatewayService_UpdateGateway_async]

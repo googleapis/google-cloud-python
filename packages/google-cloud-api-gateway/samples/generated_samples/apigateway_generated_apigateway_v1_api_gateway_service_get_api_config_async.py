@@ -39,7 +39,7 @@ async def sample_get_api_config():
     # Make the request
     response = await client.get_api_config(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END apigateway_generated_apigateway_v1_ApiGatewayService_GetApiConfig_async]

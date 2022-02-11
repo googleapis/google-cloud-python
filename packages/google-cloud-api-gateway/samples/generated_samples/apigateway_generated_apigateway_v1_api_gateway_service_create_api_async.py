@@ -43,6 +43,8 @@ async def sample_create_api():
     print("Waiting for operation to complete...")
 
     response = await operation.result()
+
+    # Handle the response
     print(response)
 
 # [END apigateway_generated_apigateway_v1_ApiGatewayService_CreateApi_async]

@@ -249,6 +249,8 @@ class ApiGatewayServiceAsyncClient:
 
                 # Make the request
                 page_result = client.list_gateways(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -348,7 +350,7 @@ class ApiGatewayServiceAsyncClient:
                 # Make the request
                 response = client.get_gateway(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -454,6 +456,8 @@ class ApiGatewayServiceAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -588,6 +592,8 @@ class ApiGatewayServiceAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -714,6 +720,8 @@ class ApiGatewayServiceAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -832,6 +840,8 @@ class ApiGatewayServiceAsyncClient:
 
                 # Make the request
                 page_result = client.list_apis(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -931,7 +941,7 @@ class ApiGatewayServiceAsyncClient:
                 # Make the request
                 response = client.get_api(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1027,6 +1037,8 @@ class ApiGatewayServiceAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1156,6 +1168,8 @@ class ApiGatewayServiceAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1279,6 +1293,8 @@ class ApiGatewayServiceAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1397,6 +1413,8 @@ class ApiGatewayServiceAsyncClient:
 
                 # Make the request
                 page_result = client.list_api_configs(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1496,7 +1514,7 @@ class ApiGatewayServiceAsyncClient:
                 # Make the request
                 response = client.get_api_config(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1595,6 +1613,8 @@ class ApiGatewayServiceAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1723,6 +1743,8 @@ class ApiGatewayServiceAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1847,6 +1869,8 @@ class ApiGatewayServiceAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:

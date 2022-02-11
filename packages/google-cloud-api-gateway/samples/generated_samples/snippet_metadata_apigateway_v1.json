@@ -14,12 +14,12 @@
       "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_CreateApiConfig_async",
       "segments": [
         {
-          "end": 47,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 47,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
@@ -34,11 +34,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 46,
           "start": 40,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 48,
+          "end": 50,
+          "start": 47,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -56,12 +58,12 @@
       "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_CreateApiConfig_sync",
       "segments": [
         {
-          "end": 47,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 47,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
@@ -76,11 +78,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 46,
           "start": 40,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 48,
+          "end": 50,
+          "start": 47,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -99,12 +103,12 @@
       "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_CreateApi_async",
       "segments": [
         {
-          "end": 47,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 47,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
@@ -119,11 +123,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 46,
           "start": 40,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 48,
+          "end": 50,
+          "start": 47,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -141,12 +147,12 @@
       "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_CreateApi_sync",
       "segments": [
         {
-          "end": 47,
+          "end": 49,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 47,
+          "end": 49,
           "start": 27,
           "type": "SHORT"
         },
@@ -161,11 +167,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 46,
           "start": 40,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 48,
+          "end": 50,
+          "start": 47,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -184,12 +192,12 @@
       "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_CreateGateway_async",
       "segments": [
         {
-          "end": 51,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -204,11 +212,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 50,
           "start": 44,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 54,
+          "start": 51,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -226,12 +236,12 @@
       "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_CreateGateway_sync",
       "segments": [
         {
-          "end": 51,
+          "end": 53,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 53,
           "start": 27,
           "type": "SHORT"
         },
@@ -246,11 +256,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 50,
           "start": 44,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 54,
+          "start": 51,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -269,12 +281,12 @@
       "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_DeleteApiConfig_async",
       "segments": [
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "SHORT"
         },
@@ -289,11 +301,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 45,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 49,
+          "start": 46,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -311,12 +325,12 @@
       "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_DeleteApiConfig_sync",
       "segments": [
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "SHORT"
         },
@@ -331,11 +345,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 45,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 49,
+          "start": 46,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -354,12 +370,12 @@
       "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_DeleteApi_async",
       "segments": [
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "SHORT"
         },
@@ -374,11 +390,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 45,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 49,
+          "start": 46,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -396,12 +414,12 @@
       "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_DeleteApi_sync",
       "segments": [
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "SHORT"
         },
@@ -416,11 +434,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 45,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 49,
+          "start": 46,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -439,12 +459,12 @@
       "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_DeleteGateway_async",
       "segments": [
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "SHORT"
         },
@@ -459,11 +479,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 45,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 49,
+          "start": 46,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -481,12 +503,12 @@
       "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_DeleteGateway_sync",
       "segments": [
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "SHORT"
         },
@@ -501,11 +523,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 45,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 49,
+          "start": 46,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -791,12 +815,12 @@
       "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_ListApiConfigs_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -811,11 +835,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -833,12 +859,12 @@
       "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_ListApiConfigs_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -853,11 +879,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -876,12 +904,12 @@
       "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_ListApis_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -896,11 +924,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -918,12 +948,12 @@
       "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_ListApis_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -938,11 +968,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -961,12 +993,12 @@
       "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_ListGateways_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -981,11 +1013,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1003,12 +1037,12 @@
       "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_ListGateways_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -1023,11 +1057,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1046,12 +1082,12 @@
       "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_UpdateApiConfig_async",
       "segments": [
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "SHORT"
         },
@@ -1066,11 +1102,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 44,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
+          "end": 48,
+          "start": 45,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1088,12 +1126,12 @@
       "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_UpdateApiConfig_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "SHORT"
         },
@@ -1108,11 +1146,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 44,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
+          "end": 48,
+          "start": 45,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1131,12 +1171,12 @@
       "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_UpdateApi_async",
       "segments": [
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "SHORT"
         },
@@ -1151,11 +1191,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 44,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
+          "end": 48,
+          "start": 45,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1173,12 +1215,12 @@
       "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_UpdateApi_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "SHORT"
         },
@@ -1193,11 +1235,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 44,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
+          "end": 48,
+          "start": 45,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1216,12 +1260,12 @@
       "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_UpdateGateway_async",
       "segments": [
         {
-          "end": 49,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 49,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
@@ -1236,11 +1280,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 48,
           "start": 42,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 50,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1258,12 +1304,12 @@
       "regionTag": "apigateway_generated_apigateway_v1_ApiGatewayService_UpdateGateway_sync",
       "segments": [
         {
-          "end": 49,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 49,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
@@ -1278,11 +1324,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 48,
           "start": 42,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 50,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ]

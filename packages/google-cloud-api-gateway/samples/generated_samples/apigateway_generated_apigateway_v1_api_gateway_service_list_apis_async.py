@@ -38,6 +38,8 @@ async def sample_list_apis():
 
     # Make the request
     page_result = client.list_apis(request=request)
+
+    # Handle the response
     async for response in page_result:
         print(response)
 

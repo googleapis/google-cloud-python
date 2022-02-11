@@ -38,6 +38,8 @@ def sample_list_gateways():
 
     # Make the request
     page_result = client.list_gateways(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 
