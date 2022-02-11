@@ -860,7 +860,7 @@ class _Client(object):
 
 
 class _Transport(object):
-    def __init__(self, client, name):
+    def __init__(self, client, name, resource=None):
         self.client = client
         self.name = name
 

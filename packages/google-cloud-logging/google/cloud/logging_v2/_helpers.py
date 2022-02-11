@@ -89,7 +89,7 @@ def entry_from_resource(resource, client, loggers):
     return LogEntry.from_api_repr(resource, client, loggers=loggers)
 
 
-def retrieve_metadata_server(metadata_key):
+def retrieve_metadata_server(metadata_key, timeout=5):
     """Retrieve the metadata key in the metadata server.
 
     See: https://cloud.google.com/compute/docs/storing-retrieving-metadata
@@ -99,6 +99,7 @@ def retrieve_metadata_server(metadata_key):
             Key of the metadata which will form the url. You can
             also supply query parameters after the metadata key.
             e.g. "tags?alt=json"
+        timeout (number): number of seconds to wait for the HTTP request
 
     Returns:
         str: The value of the metadata key returned by the metadata server.
@@ -106,7 +107,7 @@ def retrieve_metadata_server(metadata_key):
     url = METADATA_URL + metadata_key
 
     try:
-        response = requests.get(url, headers=METADATA_HEADERS)
+        response = requests.get(url, headers=METADATA_HEADERS, timeout=timeout)
 
         if response.status_code == requests.codes.ok:
             return response.text

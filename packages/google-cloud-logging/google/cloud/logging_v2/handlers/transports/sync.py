@@ -18,6 +18,7 @@ Logs directly to the the Cloud Logging API with a synchronous call.
 """
 from google.cloud.logging_v2 import _helpers
 from google.cloud.logging_v2.handlers.transports.base import Transport
+from google.cloud.logging_v2.logger import _GLOBAL_RESOURCE
 
 
 class SyncTransport(Transport):
@@ -26,8 +27,16 @@ class SyncTransport(Transport):
     Uses this library's Logging client to directly make the API call.
     """
 
-    def __init__(self, client, name):
-        self.logger = client.logger(name)
+    def __init__(self, client, name, resource=_GLOBAL_RESOURCE, **kwargs):
+        """
+        Args:
+            client (~logging_v2.client.Client):
+                The Logging client.
+            name (str): The name of the lgoger.
+            resource (Optional[Resource|dict]): The default monitored resource to associate
+                with logs when not specified
+        """
+        self.logger = client.logger(name, resource=resource)
 
     def send(self, record, message, **kwargs):
         """Overrides transport.send().
