@@ -940,8 +940,8 @@ class JobStatistics(proto.Message):
 
         Attributes:
             name (str):
-                Reservation name or "unreserved" for on-
-                emand resources usage.
+                Reservation name or "unreserved" for
+                on-demand resources usage.
             slot_ms (int):
                 Total slot milliseconds used by the
                 reservation for a particular job.
