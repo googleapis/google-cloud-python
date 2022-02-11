@@ -430,6 +430,27 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
     ) -> pagers.ListJobsPager:
         r"""Lists jobs.
 
+
+        .. code-block::
+
+            from google.cloud import scheduler_v1beta1
+
+            def sample_list_jobs():
+                # Create a client
+                client = scheduler_v1beta1.CloudSchedulerClient()
+
+                # Initialize request argument(s)
+                request = scheduler_v1beta1.ListJobsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_jobs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.scheduler_v1beta1.types.ListJobsRequest, dict]):
                 The request object. Request message for listing jobs
@@ -511,6 +532,26 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
     ) -> job.Job:
         r"""Gets a job.
 
+
+        .. code-block::
+
+            from google.cloud import scheduler_v1beta1
+
+            def sample_get_job():
+                # Create a client
+                client = scheduler_v1beta1.CloudSchedulerClient()
+
+                # Initialize request argument(s)
+                request = scheduler_v1beta1.GetJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_job(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.scheduler_v1beta1.types.GetJobRequest, dict]):
                 The request object. Request message for
@@ -583,6 +624,26 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_job.Job:
         r"""Creates a job.
+
+
+        .. code-block::
+
+            from google.cloud import scheduler_v1beta1
+
+            def sample_create_job():
+                # Create a client
+                client = scheduler_v1beta1.CloudSchedulerClient()
+
+                # Initialize request argument(s)
+                request = scheduler_v1beta1.CreateJobRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_job(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.scheduler_v1beta1.types.CreateJobRequest, dict]):
@@ -684,6 +745,26 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         retry the UpdateJob request until a successful response is
         received.
 
+
+
+        .. code-block::
+
+            from google.cloud import scheduler_v1beta1
+
+            def sample_update_job():
+                # Create a client
+                client = scheduler_v1beta1.CloudSchedulerClient()
+
+                # Initialize request argument(s)
+                request = scheduler_v1beta1.UpdateJobRequest(
+                )
+
+                # Make the request
+                response = client.update_job(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.scheduler_v1beta1.types.UpdateJobRequest, dict]):
                 The request object. Request message for
@@ -770,6 +851,23 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
     ) -> None:
         r"""Deletes a job.
 
+
+        .. code-block::
+
+            from google.cloud import scheduler_v1beta1
+
+            def sample_delete_job():
+                # Create a client
+                client = scheduler_v1beta1.CloudSchedulerClient()
+
+                # Initialize request argument(s)
+                request = scheduler_v1beta1.DeleteJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_job(request=request)
+
         Args:
             request (Union[google.cloud.scheduler_v1beta1.types.DeleteJobRequest, dict]):
                 The request object. Request message for deleting a job
@@ -845,6 +943,27 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         A job must be in
         [Job.State.ENABLED][google.cloud.scheduler.v1beta1.Job.State.ENABLED]
         to be paused.
+
+
+
+        .. code-block::
+
+            from google.cloud import scheduler_v1beta1
+
+            def sample_pause_job():
+                # Create a client
+                client = scheduler_v1beta1.CloudSchedulerClient()
+
+                # Initialize request argument(s)
+                request = scheduler_v1beta1.PauseJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.pause_job(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.scheduler_v1beta1.types.PauseJobRequest, dict]):
@@ -928,6 +1047,27 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         [Job.State.PAUSED][google.cloud.scheduler.v1beta1.Job.State.PAUSED]
         to be resumed.
 
+
+
+        .. code-block::
+
+            from google.cloud import scheduler_v1beta1
+
+            def sample_resume_job():
+                # Create a client
+                client = scheduler_v1beta1.CloudSchedulerClient()
+
+                # Initialize request argument(s)
+                request = scheduler_v1beta1.ResumeJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.resume_job(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.scheduler_v1beta1.types.ResumeJobRequest, dict]):
                 The request object. Request message for
@@ -1001,6 +1141,27 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         r"""Forces a job to run now.
         When this method is called, Cloud Scheduler will
         dispatch the job, even if the job is already running.
+
+
+
+        .. code-block::
+
+            from google.cloud import scheduler_v1beta1
+
+            def sample_run_job():
+                # Create a client
+                client = scheduler_v1beta1.CloudSchedulerClient()
+
+                # Initialize request argument(s)
+                request = scheduler_v1beta1.RunJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.run_job(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.scheduler_v1beta1.types.RunJobRequest, dict]):
