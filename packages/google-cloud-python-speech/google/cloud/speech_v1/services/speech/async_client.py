@@ -220,6 +220,33 @@ class SpeechAsyncClient:
         r"""Performs synchronous speech recognition: receive
         results after all audio has been sent and processed.
 
+
+        .. code-block::
+
+            from google.cloud import speech_v1
+
+            def sample_recognize():
+                # Create a client
+                client = speech_v1.SpeechClient()
+
+                # Initialize request argument(s)
+                config = speech_v1.RecognitionConfig()
+                config.language_code = "language_code_value"
+
+                audio = speech_v1.RecognitionAudio()
+                audio.content = b'content_blob'
+
+                request = speech_v1.RecognizeRequest(
+                    config=config,
+                    audio=audio,
+                )
+
+                # Make the request
+                response = client.recognize(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.speech_v1.types.RecognizeRequest, dict]):
                 The request object. The top-level message sent by the
@@ -312,6 +339,37 @@ class SpeechAsyncClient:
         on asynchronous speech recognition, see the
         `how-to <https://cloud.google.com/speech-to-text/docs/async-recognize>`__.
 
+
+        .. code-block::
+
+            from google.cloud import speech_v1
+
+            def sample_long_running_recognize():
+                # Create a client
+                client = speech_v1.SpeechClient()
+
+                # Initialize request argument(s)
+                config = speech_v1.RecognitionConfig()
+                config.language_code = "language_code_value"
+
+                audio = speech_v1.RecognitionAudio()
+                audio.content = b'content_blob'
+
+                request = speech_v1.LongRunningRecognizeRequest(
+                    config=config,
+                    audio=audio,
+                )
+
+                # Make the request
+                operation = client.long_running_recognize(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.speech_v1.types.LongRunningRecognizeRequest, dict]):
                 The request object. The top-level message sent by the
@@ -401,6 +459,40 @@ class SpeechAsyncClient:
         r"""Performs bidirectional streaming speech recognition:
         receive results while sending audio. This method is only
         available via the gRPC API (not REST).
+
+
+        .. code-block::
+
+            from google.cloud import speech_v1
+
+            def sample_streaming_recognize():
+                # Create a client
+                client = speech_v1.SpeechClient()
+
+                # Initialize request argument(s)
+                streaming_config = speech_v1.StreamingRecognitionConfig()
+                streaming_config.config.language_code = "language_code_value"
+
+                request = speech_v1.StreamingRecognizeRequest(
+                    streaming_config=streaming_config,
+                )
+
+                # This method expects an iterator which contains
+                # 'speech_v1.StreamingRecognizeRequest' objects
+                # Here we create a generator that yields a single `request` for
+                # demonstrative purposes.
+                requests = [request]
+
+                def request_generator():
+                    for request in requests:
+                        yield request
+
+                # Make the request
+                stream = client.streaming_recognize(requests=request_generator())
+
+                # Handle the response
+                for response in stream:
+                    print(response)
 
         Args:
             requests (AsyncIterator[`google.cloud.speech_v1.types.StreamingRecognizeRequest`]):
