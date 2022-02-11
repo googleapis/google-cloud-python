@@ -29,6 +29,7 @@ for library in s.get_staging_dirs(default_version):
     s.move(library / f"scripts/fixup_oslogin_{library.name}_keywords.py")
     s.move(library / "docs", excludes=["index.rst", "common"])
     s.move(library / f"docs/common", f"docs/oslogin_{library.name}/common", excludes=["services.rst"])
+    s.move(library / "samples")
 
 s.remove_staging_dirs()
 
