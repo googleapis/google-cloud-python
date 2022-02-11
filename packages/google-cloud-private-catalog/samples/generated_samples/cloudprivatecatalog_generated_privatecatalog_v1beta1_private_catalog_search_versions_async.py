@@ -39,6 +39,8 @@ async def sample_search_versions():
 
     # Make the request
     page_result = client.search_versions(request=request)
+
+    # Handle the response
     async for response in page_result:
         print(response)
 

@@ -14,12 +14,12 @@
       "regionTag": "cloudprivatecatalog_generated_privatecatalog_v1beta1_PrivateCatalog_SearchCatalogs_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -34,11 +34,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -56,12 +58,12 @@
       "regionTag": "cloudprivatecatalog_generated_privatecatalog_v1beta1_PrivateCatalog_SearchCatalogs_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -76,11 +78,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -99,12 +103,12 @@
       "regionTag": "cloudprivatecatalog_generated_privatecatalog_v1beta1_PrivateCatalog_SearchProducts_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -119,11 +123,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -141,12 +147,12 @@
       "regionTag": "cloudprivatecatalog_generated_privatecatalog_v1beta1_PrivateCatalog_SearchProducts_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -161,11 +167,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -184,12 +192,12 @@
       "regionTag": "cloudprivatecatalog_generated_privatecatalog_v1beta1_PrivateCatalog_SearchVersions_async",
       "segments": [
         {
-          "end": 44,
+          "end": 46,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 46,
           "start": 27,
           "type": "SHORT"
         },
@@ -204,11 +212,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 42,
           "start": 40,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
+          "end": 47,
+          "start": 43,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -226,12 +236,12 @@
       "regionTag": "cloudprivatecatalog_generated_privatecatalog_v1beta1_PrivateCatalog_SearchVersions_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 46,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 46,
           "start": 27,
           "type": "SHORT"
         },
@@ -246,11 +256,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 42,
           "start": 40,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
+          "end": 47,
+          "start": 43,
           "type": "RESPONSE_HANDLING"
         }
       ]

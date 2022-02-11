@@ -38,6 +38,8 @@ async def sample_search_products():
 
     # Make the request
     page_result = client.search_products(request=request)
+
+    # Handle the response
     async for response in page_result:
         print(response)
 

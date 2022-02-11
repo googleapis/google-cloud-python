@@ -256,6 +256,8 @@ class PrivateCatalogAsyncClient:
 
                 # Make the request
                 page_result = client.search_catalogs(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -335,6 +337,8 @@ class PrivateCatalogAsyncClient:
 
                 # Make the request
                 page_result = client.search_products(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -415,6 +419,8 @@ class PrivateCatalogAsyncClient:
 
                 # Make the request
                 page_result = client.search_versions(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
