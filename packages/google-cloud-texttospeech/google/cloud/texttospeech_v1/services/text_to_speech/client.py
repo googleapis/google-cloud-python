@@ -391,6 +391,25 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
     ) -> cloud_tts.ListVoicesResponse:
         r"""Returns a list of Voice supported for synthesis.
 
+
+        .. code-block::
+
+            from google.cloud import texttospeech_v1
+
+            def sample_list_voices():
+                # Create a client
+                client = texttospeech_v1.TextToSpeechClient()
+
+                # Initialize request argument(s)
+                request = texttospeech_v1.ListVoicesRequest(
+                )
+
+                # Make the request
+                response = client.list_voices(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.texttospeech_v1.types.ListVoicesRequest, dict]):
                 The request object. The top-level message sent by the
@@ -465,6 +484,38 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
     ) -> cloud_tts.SynthesizeSpeechResponse:
         r"""Synthesizes speech synchronously: receive results
         after all text input has been processed.
+
+
+
+        .. code-block::
+
+            from google.cloud import texttospeech_v1
+
+            def sample_synthesize_speech():
+                # Create a client
+                client = texttospeech_v1.TextToSpeechClient()
+
+                # Initialize request argument(s)
+                input = texttospeech_v1.SynthesisInput()
+                input.text = "text_value"
+
+                voice = texttospeech_v1.VoiceSelectionParams()
+                voice.language_code = "language_code_value"
+
+                audio_config = texttospeech_v1.AudioConfig()
+                audio_config.audio_encoding = "ALAW"
+
+                request = texttospeech_v1.SynthesizeSpeechRequest(
+                    input=input,
+                    voice=voice,
+                    audio_config=audio_config,
+                )
+
+                # Make the request
+                response = client.synthesize_speech(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.texttospeech_v1.types.SynthesizeSpeechRequest, dict]):
