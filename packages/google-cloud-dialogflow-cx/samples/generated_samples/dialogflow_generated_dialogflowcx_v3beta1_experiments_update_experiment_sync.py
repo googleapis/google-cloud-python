@@ -42,7 +42,7 @@ def sample_update_experiment():
     # Make the request
     response = client.update_experiment(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3beta1_Experiments_UpdateExperiment_sync]

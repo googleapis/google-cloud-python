@@ -37,7 +37,7 @@ def sample_delete_intent():
     )
 
     # Make the request
-    response = client.delete_intent(request=request)
+    client.delete_intent(request=request)
 
 
 # [END dialogflow_generated_dialogflowcx_v3_Intents_DeleteIntent_sync]

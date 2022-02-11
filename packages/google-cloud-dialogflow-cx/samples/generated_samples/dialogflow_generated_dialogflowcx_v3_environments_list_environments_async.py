@@ -38,6 +38,8 @@ async def sample_list_environments():
 
     # Make the request
     page_result = client.list_environments(request=request)
+
+    # Handle the response
     async for response in page_result:
         print(response)
 

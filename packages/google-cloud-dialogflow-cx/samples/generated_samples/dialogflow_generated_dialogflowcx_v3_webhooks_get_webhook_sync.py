@@ -39,7 +39,7 @@ def sample_get_webhook():
     # Make the request
     response = client.get_webhook(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3_Webhooks_GetWebhook_sync]

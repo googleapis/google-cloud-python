@@ -38,6 +38,8 @@ def sample_list_changelogs():
 
     # Make the request
     page_result = client.list_changelogs(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

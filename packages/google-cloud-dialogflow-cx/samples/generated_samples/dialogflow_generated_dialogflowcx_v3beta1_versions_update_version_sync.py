@@ -42,7 +42,7 @@ def sample_update_version():
     # Make the request
     response = client.update_version(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3beta1_Versions_UpdateVersion_sync]

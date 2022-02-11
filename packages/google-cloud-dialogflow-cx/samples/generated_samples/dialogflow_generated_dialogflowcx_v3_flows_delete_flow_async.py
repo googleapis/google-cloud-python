@@ -37,7 +37,7 @@ async def sample_delete_flow():
     )
 
     # Make the request
-    response = await client.delete_flow(request=request)
+    await client.delete_flow(request=request)
 
 
 # [END dialogflow_generated_dialogflowcx_v3_Flows_DeleteFlow_async]

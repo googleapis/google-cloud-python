@@ -38,6 +38,8 @@ def sample_list_session_entity_types():
 
     # Make the request
     page_result = client.list_session_entity_types(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

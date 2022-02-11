@@ -39,7 +39,7 @@ async def sample_get_flow_validation_result():
     # Make the request
     response = await client.get_flow_validation_result(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3beta1_Flows_GetFlowValidationResult_async]

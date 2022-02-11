@@ -228,6 +228,8 @@ class IntentsAsyncClient:
 
                 # Make the request
                 page_result = client.list_intents(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -327,7 +329,7 @@ class IntentsAsyncClient:
                 # Make the request
                 response = client.get_intent(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -432,7 +434,7 @@ class IntentsAsyncClient:
                 # Make the request
                 response = client.create_intent(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -543,7 +545,7 @@ class IntentsAsyncClient:
                 # Make the request
                 response = client.update_intent(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -651,7 +653,7 @@ class IntentsAsyncClient:
                 )
 
                 # Make the request
-                response = client.delete_intent(request=request)
+                client.delete_intent(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.DeleteIntentRequest, dict]):

@@ -37,7 +37,7 @@ async def sample_delete_webhook():
     )
 
     # Make the request
-    response = await client.delete_webhook(request=request)
+    await client.delete_webhook(request=request)
 
 
 # [END dialogflow_generated_dialogflowcx_v3_Webhooks_DeleteWebhook_async]

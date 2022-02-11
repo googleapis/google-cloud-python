@@ -40,7 +40,7 @@ async def sample_calculate_coverage():
     # Make the request
     response = await client.calculate_coverage(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3_TestCases_CalculateCoverage_async]

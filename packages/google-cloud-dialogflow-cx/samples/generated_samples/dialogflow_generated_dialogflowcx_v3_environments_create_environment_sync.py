@@ -47,6 +47,8 @@ def sample_create_environment():
     print("Waiting for operation to complete...")
 
     response = operation.result()
+
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3_Environments_CreateEnvironment_sync]

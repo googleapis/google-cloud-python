@@ -39,7 +39,7 @@ def sample_get_session_entity_type():
     # Make the request
     response = client.get_session_entity_type(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3beta1_SessionEntityTypes_GetSessionEntityType_sync]

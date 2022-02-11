@@ -38,6 +38,8 @@ def sample_list_experiments():
 
     # Make the request
     page_result = client.list_experiments(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

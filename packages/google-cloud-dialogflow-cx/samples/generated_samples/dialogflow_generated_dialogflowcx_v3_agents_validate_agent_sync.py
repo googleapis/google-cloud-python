@@ -39,7 +39,7 @@ def sample_validate_agent():
     # Make the request
     response = client.validate_agent(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3_Agents_ValidateAgent_sync]

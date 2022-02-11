@@ -38,7 +38,7 @@ def sample_fulfill_intent():
     # Make the request
     response = client.fulfill_intent(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3_Sessions_FulfillIntent_sync]

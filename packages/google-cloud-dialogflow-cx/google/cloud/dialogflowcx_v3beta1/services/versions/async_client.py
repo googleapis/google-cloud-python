@@ -232,6 +232,8 @@ class VersionsAsyncClient:
 
                 # Make the request
                 page_result = client.list_versions(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -335,7 +337,7 @@ class VersionsAsyncClient:
                 # Make the request
                 response = client.get_version(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -446,6 +448,8 @@ class VersionsAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -563,7 +567,7 @@ class VersionsAsyncClient:
                 # Make the request
                 response = client.update_version(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -661,7 +665,7 @@ class VersionsAsyncClient:
                 )
 
                 # Make the request
-                response = client.delete_version(request=request)
+                client.delete_version(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.DeleteVersionRequest, dict]):
@@ -759,6 +763,8 @@ class VersionsAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -874,7 +880,7 @@ class VersionsAsyncClient:
                 # Make the request
                 response = client.compare_versions(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:

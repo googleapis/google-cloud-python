@@ -225,6 +225,8 @@ class ChangelogsAsyncClient:
 
                 # Make the request
                 page_result = client.list_changelogs(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -324,7 +326,7 @@ class ChangelogsAsyncClient:
                 # Make the request
                 response = client.get_changelog(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:

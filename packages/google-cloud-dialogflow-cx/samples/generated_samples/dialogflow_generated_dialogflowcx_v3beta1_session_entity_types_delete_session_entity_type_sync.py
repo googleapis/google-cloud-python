@@ -37,7 +37,7 @@ def sample_delete_session_entity_type():
     )
 
     # Make the request
-    response = client.delete_session_entity_type(request=request)
+    client.delete_session_entity_type(request=request)
 
 
 # [END dialogflow_generated_dialogflowcx_v3beta1_SessionEntityTypes_DeleteSessionEntityType_sync]

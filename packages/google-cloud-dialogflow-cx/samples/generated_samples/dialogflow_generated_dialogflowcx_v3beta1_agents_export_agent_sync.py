@@ -42,6 +42,8 @@ def sample_export_agent():
     print("Waiting for operation to complete...")
 
     response = operation.result()
+
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3beta1_Agents_ExportAgent_sync]

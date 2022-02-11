@@ -432,6 +432,8 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
 
                 # Make the request
                 page_result = client.list_entity_types(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -533,7 +535,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 # Make the request
                 response = client.get_entity_type(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -662,7 +664,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 # Make the request
                 response = client.create_entity_type(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -802,7 +804,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 # Make the request
                 response = client.update_entity_type(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -937,7 +939,7 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_entity_type(request=request)
+                client.delete_entity_type(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.DeleteEntityTypeRequest, dict]):

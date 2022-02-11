@@ -37,7 +37,7 @@ def sample_delete_flow():
     )
 
     # Make the request
-    response = client.delete_flow(request=request)
+    client.delete_flow(request=request)
 
 
 # [END dialogflow_generated_dialogflowcx_v3_Flows_DeleteFlow_sync]

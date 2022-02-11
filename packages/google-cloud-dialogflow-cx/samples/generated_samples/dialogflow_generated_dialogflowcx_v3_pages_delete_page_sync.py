@@ -37,7 +37,7 @@ def sample_delete_page():
     )
 
     # Make the request
-    response = client.delete_page(request=request)
+    client.delete_page(request=request)
 
 
 # [END dialogflow_generated_dialogflowcx_v3_Pages_DeletePage_sync]

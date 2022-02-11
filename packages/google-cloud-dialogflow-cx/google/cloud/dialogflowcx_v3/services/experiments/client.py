@@ -456,6 +456,8 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
 
                 # Make the request
                 page_result = client.list_experiments(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -560,7 +562,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
                 # Make the request
                 response = client.get_experiment(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -662,7 +664,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
                 # Make the request
                 response = client.create_experiment(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -770,7 +772,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
                 # Make the request
                 response = client.update_experiment(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -870,7 +872,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_experiment(request=request)
+                client.delete_experiment(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.DeleteExperimentRequest, dict]):
@@ -958,7 +960,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
                 # Make the request
                 response = client.start_experiment(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1053,7 +1055,7 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
                 # Make the request
                 response = client.stop_experiment(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:

@@ -44,7 +44,7 @@ def sample_detect_intent():
     # Make the request
     response = client.detect_intent(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3beta1_Sessions_DetectIntent_sync]

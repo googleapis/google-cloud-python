@@ -246,6 +246,8 @@ class AgentsAsyncClient:
 
                 # Make the request
                 page_result = client.list_agents(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -345,7 +347,7 @@ class AgentsAsyncClient:
                 # Make the request
                 response = client.get_agent(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -459,7 +461,7 @@ class AgentsAsyncClient:
                 # Make the request
                 response = client.create_agent(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -579,7 +581,7 @@ class AgentsAsyncClient:
                 # Make the request
                 response = client.update_agent(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -689,7 +691,7 @@ class AgentsAsyncClient:
                 )
 
                 # Make the request
-                response = client.delete_agent(request=request)
+                client.delete_agent(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.DeleteAgentRequest, dict]):
@@ -784,6 +786,8 @@ class AgentsAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -886,6 +890,8 @@ class AgentsAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -978,7 +984,7 @@ class AgentsAsyncClient:
                 # Make the request
                 response = client.validate_agent(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1049,7 +1055,7 @@ class AgentsAsyncClient:
                 # Make the request
                 response = client.get_agent_validation_result(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:

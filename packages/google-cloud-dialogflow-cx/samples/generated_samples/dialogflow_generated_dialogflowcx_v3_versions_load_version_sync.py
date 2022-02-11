@@ -42,6 +42,8 @@ def sample_load_version():
     print("Waiting for operation to complete...")
 
     response = operation.result()
+
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3_Versions_LoadVersion_sync]

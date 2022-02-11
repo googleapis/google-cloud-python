@@ -37,7 +37,7 @@ def sample_delete_environment():
     )
 
     # Make the request
-    response = client.delete_environment(request=request)
+    client.delete_environment(request=request)
 
 
 # [END dialogflow_generated_dialogflowcx_v3_Environments_DeleteEnvironment_sync]

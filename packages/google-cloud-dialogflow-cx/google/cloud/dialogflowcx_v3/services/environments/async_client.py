@@ -248,6 +248,8 @@ class EnvironmentsAsyncClient:
 
                 # Make the request
                 page_result = client.list_environments(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -351,7 +353,7 @@ class EnvironmentsAsyncClient:
                 # Make the request
                 response = client.get_environment(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -478,6 +480,8 @@ class EnvironmentsAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -617,6 +621,8 @@ class EnvironmentsAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -734,7 +740,7 @@ class EnvironmentsAsyncClient:
                 )
 
                 # Make the request
-                response = client.delete_environment(request=request)
+                client.delete_environment(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.DeleteEnvironmentRequest, dict]):
@@ -819,6 +825,8 @@ class EnvironmentsAsyncClient:
 
                 # Make the request
                 page_result = client.lookup_environment_history(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -933,6 +941,8 @@ class EnvironmentsAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1016,6 +1026,8 @@ class EnvironmentsAsyncClient:
 
                 # Make the request
                 page_result = client.list_continuous_test_results(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1130,6 +1142,8 @@ class EnvironmentsAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:

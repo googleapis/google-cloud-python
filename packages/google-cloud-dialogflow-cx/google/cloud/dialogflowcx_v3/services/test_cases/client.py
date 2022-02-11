@@ -594,6 +594,8 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
 
                 # Make the request
                 page_result = client.list_test_cases(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -693,7 +695,7 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
                 )
 
                 # Make the request
-                response = client.batch_delete_test_cases(request=request)
+                client.batch_delete_test_cases(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.BatchDeleteTestCasesRequest, dict]):
@@ -776,7 +778,7 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
                 # Make the request
                 response = client.get_test_case(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -870,7 +872,7 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
                 # Make the request
                 response = client.create_test_case(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -970,7 +972,7 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
                 # Make the request
                 response = client.update_test_case(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1085,6 +1087,8 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1181,6 +1185,8 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1263,7 +1269,7 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
                 # Make the request
                 response = client.calculate_coverage(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1351,6 +1357,8 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1449,6 +1457,8 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1530,6 +1540,8 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
 
                 # Make the request
                 page_result = client.list_test_case_results(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1632,7 +1644,7 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
                 # Make the request
                 response = client.get_test_case_result(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:

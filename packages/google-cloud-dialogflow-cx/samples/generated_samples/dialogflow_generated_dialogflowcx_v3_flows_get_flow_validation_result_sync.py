@@ -39,7 +39,7 @@ def sample_get_flow_validation_result():
     # Make the request
     response = client.get_flow_validation_result(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3_Flows_GetFlowValidationResult_sync]

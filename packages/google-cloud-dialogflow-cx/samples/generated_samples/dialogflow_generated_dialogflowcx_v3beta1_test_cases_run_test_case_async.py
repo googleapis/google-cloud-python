@@ -42,6 +42,8 @@ async def sample_run_test_case():
     print("Waiting for operation to complete...")
 
     response = await operation.result()
+
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3beta1_TestCases_RunTestCase_async]

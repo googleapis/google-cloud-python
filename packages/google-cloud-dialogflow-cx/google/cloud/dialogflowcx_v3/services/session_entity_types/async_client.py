@@ -242,6 +242,8 @@ class SessionEntityTypesAsyncClient:
 
                 # Make the request
                 page_result = client.list_session_entity_types(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -346,7 +348,7 @@ class SessionEntityTypesAsyncClient:
                 # Make the request
                 response = client.get_session_entity_type(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -464,7 +466,7 @@ class SessionEntityTypesAsyncClient:
                 # Make the request
                 response = client.create_session_entity_type(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -591,7 +593,7 @@ class SessionEntityTypesAsyncClient:
                 # Make the request
                 response = client.update_session_entity_type(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -708,7 +710,7 @@ class SessionEntityTypesAsyncClient:
                 )
 
                 # Make the request
-                response = client.delete_session_entity_type(request=request)
+                client.delete_session_entity_type(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.DeleteSessionEntityTypeRequest, dict]):

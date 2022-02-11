@@ -37,7 +37,7 @@ async def sample_delete_intent():
     )
 
     # Make the request
-    response = await client.delete_intent(request=request)
+    await client.delete_intent(request=request)
 
 
 # [END dialogflow_generated_dialogflowcx_v3_Intents_DeleteIntent_async]

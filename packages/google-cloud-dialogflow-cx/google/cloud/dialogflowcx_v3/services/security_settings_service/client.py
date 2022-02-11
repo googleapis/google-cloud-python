@@ -483,7 +483,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
                 # Make the request
                 response = client.create_security_settings(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -594,7 +594,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
                 # Make the request
                 response = client.get_security_settings(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -698,7 +698,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
                 # Make the request
                 response = client.update_security_settings(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -808,6 +808,8 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
 
                 # Make the request
                 page_result = client.list_security_settings(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -909,7 +911,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
                 )
 
                 # Make the request
-                response = client.delete_security_settings(request=request)
+                client.delete_security_settings(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.DeleteSecuritySettingsRequest, dict]):

@@ -43,7 +43,7 @@ async def sample_create_experiment():
     # Make the request
     response = await client.create_experiment(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3_Experiments_CreateExperiment_async]

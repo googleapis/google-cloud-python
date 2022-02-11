@@ -38,6 +38,8 @@ def sample_list_intents():
 
     # Make the request
     page_result = client.list_intents(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

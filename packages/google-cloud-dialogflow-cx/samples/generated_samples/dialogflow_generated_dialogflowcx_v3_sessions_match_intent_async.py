@@ -44,7 +44,7 @@ async def sample_match_intent():
     # Make the request
     response = await client.match_intent(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3_Sessions_MatchIntent_async]

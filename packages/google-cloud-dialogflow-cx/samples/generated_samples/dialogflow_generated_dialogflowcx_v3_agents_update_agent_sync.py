@@ -44,7 +44,7 @@ def sample_update_agent():
     # Make the request
     response = client.update_agent(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3_Agents_UpdateAgent_sync]

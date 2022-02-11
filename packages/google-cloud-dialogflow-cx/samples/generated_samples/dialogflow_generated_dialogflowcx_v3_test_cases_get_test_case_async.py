@@ -39,7 +39,7 @@ async def sample_get_test_case():
     # Make the request
     response = await client.get_test_case(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3_TestCases_GetTestCase_async]

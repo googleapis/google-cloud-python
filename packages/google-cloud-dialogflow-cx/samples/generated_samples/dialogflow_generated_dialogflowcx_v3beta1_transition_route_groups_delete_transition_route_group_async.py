@@ -37,7 +37,7 @@ async def sample_delete_transition_route_group():
     )
 
     # Make the request
-    response = await client.delete_transition_route_group(request=request)
+    await client.delete_transition_route_group(request=request)
 
 
 # [END dialogflow_generated_dialogflowcx_v3beta1_TransitionRouteGroups_DeleteTransitionRouteGroup_async]

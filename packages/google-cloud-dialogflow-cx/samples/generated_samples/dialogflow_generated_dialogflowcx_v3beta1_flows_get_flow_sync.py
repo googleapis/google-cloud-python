@@ -39,7 +39,7 @@ def sample_get_flow():
     # Make the request
     response = client.get_flow(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3beta1_Flows_GetFlow_sync]

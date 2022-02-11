@@ -37,7 +37,7 @@ async def sample_delete_experiment():
     )
 
     # Make the request
-    response = await client.delete_experiment(request=request)
+    await client.delete_experiment(request=request)
 
 
 # [END dialogflow_generated_dialogflowcx_v3beta1_Experiments_DeleteExperiment_async]

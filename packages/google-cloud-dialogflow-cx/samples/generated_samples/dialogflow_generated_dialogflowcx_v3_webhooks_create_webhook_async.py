@@ -44,7 +44,7 @@ async def sample_create_webhook():
     # Make the request
     response = await client.create_webhook(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3_Webhooks_CreateWebhook_async]

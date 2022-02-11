@@ -37,7 +37,7 @@ async def sample_delete_page():
     )
 
     # Make the request
-    response = await client.delete_page(request=request)
+    await client.delete_page(request=request)
 
 
 # [END dialogflow_generated_dialogflowcx_v3_Pages_DeletePage_async]

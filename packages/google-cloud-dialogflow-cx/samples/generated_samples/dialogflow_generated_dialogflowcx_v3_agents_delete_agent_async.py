@@ -37,7 +37,7 @@ async def sample_delete_agent():
     )
 
     # Make the request
-    response = await client.delete_agent(request=request)
+    await client.delete_agent(request=request)
 
 
 # [END dialogflow_generated_dialogflowcx_v3_Agents_DeleteAgent_async]

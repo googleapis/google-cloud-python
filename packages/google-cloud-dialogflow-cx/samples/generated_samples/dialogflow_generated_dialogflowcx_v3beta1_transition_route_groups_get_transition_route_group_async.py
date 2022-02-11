@@ -39,7 +39,7 @@ async def sample_get_transition_route_group():
     # Make the request
     response = await client.get_transition_route_group(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3beta1_TransitionRouteGroups_GetTransitionRouteGroup_async]

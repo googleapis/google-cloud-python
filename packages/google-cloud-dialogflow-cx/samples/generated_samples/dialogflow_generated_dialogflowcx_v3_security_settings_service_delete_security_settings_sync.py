@@ -37,7 +37,7 @@ def sample_delete_security_settings():
     )
 
     # Make the request
-    response = client.delete_security_settings(request=request)
+    client.delete_security_settings(request=request)
 
 
 # [END dialogflow_generated_dialogflowcx_v3_SecuritySettingsService_DeleteSecuritySettings_sync]

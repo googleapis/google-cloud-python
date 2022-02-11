@@ -43,6 +43,8 @@ def sample_import_test_cases():
     print("Waiting for operation to complete...")
 
     response = operation.result()
+
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3beta1_TestCases_ImportTestCases_sync]

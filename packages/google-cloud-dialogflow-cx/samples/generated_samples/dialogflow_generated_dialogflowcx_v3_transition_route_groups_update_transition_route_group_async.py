@@ -42,7 +42,7 @@ async def sample_update_transition_route_group():
     # Make the request
     response = await client.update_transition_route_group(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3_TransitionRouteGroups_UpdateTransitionRouteGroup_async]

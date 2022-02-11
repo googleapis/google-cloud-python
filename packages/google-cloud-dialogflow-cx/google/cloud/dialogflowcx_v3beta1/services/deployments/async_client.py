@@ -237,6 +237,8 @@ class DeploymentsAsyncClient:
 
                 # Make the request
                 page_result = client.list_deployments(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -340,7 +342,7 @@ class DeploymentsAsyncClient:
                 # Make the request
                 response = client.get_deployment(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:

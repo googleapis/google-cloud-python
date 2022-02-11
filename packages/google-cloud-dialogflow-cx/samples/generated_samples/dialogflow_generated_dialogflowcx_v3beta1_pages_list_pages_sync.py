@@ -38,6 +38,8 @@ def sample_list_pages():
 
     # Make the request
     page_result = client.list_pages(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

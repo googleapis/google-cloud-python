@@ -37,7 +37,7 @@ def sample_delete_version():
     )
 
     # Make the request
-    response = client.delete_version(request=request)
+    client.delete_version(request=request)
 
 
 # [END dialogflow_generated_dialogflowcx_v3_Versions_DeleteVersion_sync]

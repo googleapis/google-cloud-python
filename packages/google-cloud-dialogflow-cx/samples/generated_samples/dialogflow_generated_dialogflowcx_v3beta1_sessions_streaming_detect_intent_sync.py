@@ -45,12 +45,15 @@ def sample_streaming_detect_intent():
     # Here we create a generator that yields a single `request` for
     # demonstrative purposes.
     requests = [request]
+
     def request_generator():
         for request in requests:
             yield request
 
     # Make the request
     stream = client.streaming_detect_intent(requests=request_generator())
+
+    # Handle the response
     for response in stream:
         print(response)
 

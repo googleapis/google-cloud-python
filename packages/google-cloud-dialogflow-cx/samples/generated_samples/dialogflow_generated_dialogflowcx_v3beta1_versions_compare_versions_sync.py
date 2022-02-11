@@ -40,7 +40,7 @@ def sample_compare_versions():
     # Make the request
     response = client.compare_versions(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3beta1_Versions_CompareVersions_sync]

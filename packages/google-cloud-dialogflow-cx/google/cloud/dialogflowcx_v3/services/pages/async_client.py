@@ -233,6 +233,8 @@ class PagesAsyncClient:
 
                 # Make the request
                 page_result = client.list_pages(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -332,7 +334,7 @@ class PagesAsyncClient:
                 # Make the request
                 response = client.get_page(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -452,7 +454,7 @@ class PagesAsyncClient:
                 # Make the request
                 response = client.create_page(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -578,7 +580,7 @@ class PagesAsyncClient:
                 # Make the request
                 response = client.update_page(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -701,7 +703,7 @@ class PagesAsyncClient:
                 )
 
                 # Make the request
-                response = client.delete_page(request=request)
+                client.delete_page(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.DeletePageRequest, dict]):

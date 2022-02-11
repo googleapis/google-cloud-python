@@ -43,7 +43,7 @@ async def sample_create_intent():
     # Make the request
     response = await client.create_intent(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3beta1_Intents_CreateIntent_async]

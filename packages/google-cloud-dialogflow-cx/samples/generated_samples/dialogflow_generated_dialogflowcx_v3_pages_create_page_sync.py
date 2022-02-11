@@ -43,7 +43,7 @@ def sample_create_page():
     # Make the request
     response = client.create_page(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3_Pages_CreatePage_sync]

@@ -42,6 +42,8 @@ async def sample_run_continuous_test():
     print("Waiting for operation to complete...")
 
     response = await operation.result()
+
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3_Environments_RunContinuousTest_async]

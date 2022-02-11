@@ -39,7 +39,7 @@ async def sample_get_changelog():
     # Make the request
     response = await client.get_changelog(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3beta1_Changelogs_GetChangelog_async]

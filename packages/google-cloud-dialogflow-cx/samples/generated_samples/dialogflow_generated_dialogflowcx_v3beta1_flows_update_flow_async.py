@@ -42,7 +42,7 @@ async def sample_update_flow():
     # Make the request
     response = await client.update_flow(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3beta1_Flows_UpdateFlow_async]

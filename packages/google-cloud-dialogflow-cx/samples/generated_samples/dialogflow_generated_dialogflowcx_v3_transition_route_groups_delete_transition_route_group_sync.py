@@ -37,7 +37,7 @@ def sample_delete_transition_route_group():
     )
 
     # Make the request
-    response = client.delete_transition_route_group(request=request)
+    client.delete_transition_route_group(request=request)
 
 
 # [END dialogflow_generated_dialogflowcx_v3_TransitionRouteGroups_DeleteTransitionRouteGroup_sync]

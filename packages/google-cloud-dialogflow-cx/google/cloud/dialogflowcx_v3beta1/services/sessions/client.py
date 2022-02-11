@@ -588,7 +588,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 # Make the request
                 response = client.detect_intent(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -671,12 +671,15 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 # Here we create a generator that yields a single `request` for
                 # demonstrative purposes.
                 requests = [request]
+
                 def request_generator():
                     for request in requests:
                         yield request
 
                 # Make the request
                 stream = client.streaming_detect_intent(requests=request_generator())
+
+                # Handle the response
                 for response in stream:
                     print(response)
 
@@ -803,7 +806,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 # Make the request
                 response = client.match_intent(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -876,7 +879,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 # Make the request
                 response = client.fulfill_intent(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:

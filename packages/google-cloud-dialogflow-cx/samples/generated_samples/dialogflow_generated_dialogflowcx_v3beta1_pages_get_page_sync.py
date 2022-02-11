@@ -39,7 +39,7 @@ def sample_get_page():
     # Make the request
     response = client.get_page(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3beta1_Pages_GetPage_sync]

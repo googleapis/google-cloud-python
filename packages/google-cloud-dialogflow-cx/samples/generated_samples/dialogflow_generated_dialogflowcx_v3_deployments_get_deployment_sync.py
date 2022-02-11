@@ -39,7 +39,7 @@ def sample_get_deployment():
     # Make the request
     response = client.get_deployment(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3_Deployments_GetDeployment_sync]

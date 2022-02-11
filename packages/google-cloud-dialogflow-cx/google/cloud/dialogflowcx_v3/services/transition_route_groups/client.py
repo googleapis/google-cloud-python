@@ -511,6 +511,8 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
 
                 # Make the request
                 page_result = client.list_transition_route_groups(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -620,7 +622,7 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
                 # Make the request
                 response = client.get_transition_route_group(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -733,7 +735,7 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
                 # Make the request
                 response = client.create_transition_route_group(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -855,7 +857,7 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
                 # Make the request
                 response = client.update_transition_route_group(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -971,7 +973,7 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_transition_route_group(request=request)
+                client.delete_transition_route_group(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.DeleteTransitionRouteGroupRequest, dict]):

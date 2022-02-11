@@ -229,6 +229,8 @@ class WebhooksAsyncClient:
 
                 # Make the request
                 page_result = client.list_webhooks(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -328,7 +330,7 @@ class WebhooksAsyncClient:
                 # Make the request
                 response = client.get_webhook(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -429,7 +431,7 @@ class WebhooksAsyncClient:
                 # Make the request
                 response = client.create_webhook(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -536,7 +538,7 @@ class WebhooksAsyncClient:
                 # Make the request
                 response = client.update_webhook(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -639,7 +641,7 @@ class WebhooksAsyncClient:
                 )
 
                 # Make the request
-                response = client.delete_webhook(request=request)
+                client.delete_webhook(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.DeleteWebhookRequest, dict]):

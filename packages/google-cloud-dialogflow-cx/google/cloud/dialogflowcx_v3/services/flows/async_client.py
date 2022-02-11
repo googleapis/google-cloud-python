@@ -252,7 +252,7 @@ class FlowsAsyncClient:
                 # Make the request
                 response = client.create_flow(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -368,7 +368,7 @@ class FlowsAsyncClient:
                 )
 
                 # Make the request
-                response = client.delete_flow(request=request)
+                client.delete_flow(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3.types.DeleteFlowRequest, dict]):
@@ -449,6 +449,8 @@ class FlowsAsyncClient:
 
                 # Make the request
                 page_result = client.list_flows(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -548,7 +550,7 @@ class FlowsAsyncClient:
                 # Make the request
                 response = client.get_flow(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -668,7 +670,7 @@ class FlowsAsyncClient:
                 # Make the request
                 response = client.update_flow(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -808,6 +810,8 @@ class FlowsAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -921,7 +925,7 @@ class FlowsAsyncClient:
                 # Make the request
                 response = client.validate_flow(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -992,7 +996,7 @@ class FlowsAsyncClient:
                 # Make the request
                 response = client.get_flow_validation_result(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1101,6 +1105,8 @@ class FlowsAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1197,6 +1203,8 @@ class FlowsAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:

@@ -39,7 +39,7 @@ def sample_stop_experiment():
     # Make the request
     response = client.stop_experiment(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3_Experiments_StopExperiment_sync]

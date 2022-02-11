@@ -38,7 +38,7 @@ async def sample_batch_delete_test_cases():
     )
 
     # Make the request
-    response = await client.batch_delete_test_cases(request=request)
+    await client.batch_delete_test_cases(request=request)
 
 
 # [END dialogflow_generated_dialogflowcx_v3_TestCases_BatchDeleteTestCases_async]

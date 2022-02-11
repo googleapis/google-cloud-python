@@ -37,7 +37,7 @@ def sample_delete_webhook():
     )
 
     # Make the request
-    response = client.delete_webhook(request=request)
+    client.delete_webhook(request=request)
 
 
 # [END dialogflow_generated_dialogflowcx_v3beta1_Webhooks_DeleteWebhook_sync]

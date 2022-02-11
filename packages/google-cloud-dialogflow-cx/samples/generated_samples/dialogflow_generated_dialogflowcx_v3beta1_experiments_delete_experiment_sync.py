@@ -37,7 +37,7 @@ def sample_delete_experiment():
     )
 
     # Make the request
-    response = client.delete_experiment(request=request)
+    client.delete_experiment(request=request)
 
 
 # [END dialogflow_generated_dialogflowcx_v3beta1_Experiments_DeleteExperiment_sync]

@@ -38,6 +38,8 @@ def sample_list_agents():
 
     # Make the request
     page_result = client.list_agents(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

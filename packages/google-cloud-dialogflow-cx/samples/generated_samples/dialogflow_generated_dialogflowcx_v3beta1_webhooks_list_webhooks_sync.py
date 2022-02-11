@@ -38,6 +38,8 @@ def sample_list_webhooks():
 
     # Make the request
     page_result = client.list_webhooks(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

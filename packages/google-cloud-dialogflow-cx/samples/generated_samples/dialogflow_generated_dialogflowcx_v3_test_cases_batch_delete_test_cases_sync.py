@@ -38,7 +38,7 @@ def sample_batch_delete_test_cases():
     )
 
     # Make the request
-    response = client.batch_delete_test_cases(request=request)
+    client.batch_delete_test_cases(request=request)
 
 
 # [END dialogflow_generated_dialogflowcx_v3_TestCases_BatchDeleteTestCases_sync]

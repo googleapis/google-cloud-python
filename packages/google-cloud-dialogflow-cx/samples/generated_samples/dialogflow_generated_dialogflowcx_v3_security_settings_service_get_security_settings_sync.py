@@ -39,7 +39,7 @@ def sample_get_security_settings():
     # Make the request
     response = client.get_security_settings(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3_SecuritySettingsService_GetSecuritySettings_sync]

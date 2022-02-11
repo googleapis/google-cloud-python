@@ -37,7 +37,7 @@ async def sample_delete_version():
     )
 
     # Make the request
-    response = await client.delete_version(request=request)
+    await client.delete_version(request=request)
 
 
 # [END dialogflow_generated_dialogflowcx_v3_Versions_DeleteVersion_async]

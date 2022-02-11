@@ -536,7 +536,7 @@ class FlowsClient(metaclass=FlowsClientMeta):
                 # Make the request
                 response = client.create_flow(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -653,7 +653,7 @@ class FlowsClient(metaclass=FlowsClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_flow(request=request)
+                client.delete_flow(request=request)
 
         Args:
             request (Union[google.cloud.dialogflowcx_v3beta1.types.DeleteFlowRequest, dict]):
@@ -735,6 +735,8 @@ class FlowsClient(metaclass=FlowsClientMeta):
 
                 # Make the request
                 page_result = client.list_flows(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -835,7 +837,7 @@ class FlowsClient(metaclass=FlowsClientMeta):
                 # Make the request
                 response = client.get_flow(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -956,7 +958,7 @@ class FlowsClient(metaclass=FlowsClientMeta):
                 # Make the request
                 response = client.update_flow(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1097,6 +1099,8 @@ class FlowsClient(metaclass=FlowsClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1211,7 +1215,7 @@ class FlowsClient(metaclass=FlowsClientMeta):
                 # Make the request
                 response = client.validate_flow(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1284,7 +1288,7 @@ class FlowsClient(metaclass=FlowsClientMeta):
                 # Make the request
                 response = client.get_flow_validation_result(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1396,6 +1400,8 @@ class FlowsClient(metaclass=FlowsClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1494,6 +1500,8 @@ class FlowsClient(metaclass=FlowsClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:

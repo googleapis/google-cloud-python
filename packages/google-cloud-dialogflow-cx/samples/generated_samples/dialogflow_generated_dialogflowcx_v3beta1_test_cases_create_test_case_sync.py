@@ -43,7 +43,7 @@ def sample_create_test_case():
     # Make the request
     response = client.create_test_case(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END dialogflow_generated_dialogflowcx_v3beta1_TestCases_CreateTestCase_sync]

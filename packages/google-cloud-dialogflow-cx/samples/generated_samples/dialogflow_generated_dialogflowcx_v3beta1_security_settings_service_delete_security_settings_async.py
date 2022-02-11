@@ -37,7 +37,7 @@ async def sample_delete_security_settings():
     )
 
     # Make the request
-    response = await client.delete_security_settings(request=request)
+    await client.delete_security_settings(request=request)
 
 
 # [END dialogflow_generated_dialogflowcx_v3beta1_SecuritySettingsService_DeleteSecuritySettings_async]

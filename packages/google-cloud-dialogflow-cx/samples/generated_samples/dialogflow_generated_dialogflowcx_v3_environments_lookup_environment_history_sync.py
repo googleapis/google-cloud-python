@@ -38,6 +38,8 @@ def sample_lookup_environment_history():
 
     # Make the request
     page_result = client.lookup_environment_history(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

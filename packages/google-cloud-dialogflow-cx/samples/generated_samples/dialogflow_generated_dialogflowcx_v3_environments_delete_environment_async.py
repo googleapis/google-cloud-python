@@ -37,7 +37,7 @@ async def sample_delete_environment():
     )
 
     # Make the request
-    response = await client.delete_environment(request=request)
+    await client.delete_environment(request=request)
 
 
 # [END dialogflow_generated_dialogflowcx_v3_Environments_DeleteEnvironment_async]
