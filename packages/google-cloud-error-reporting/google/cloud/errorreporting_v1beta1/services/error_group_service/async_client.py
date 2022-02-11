@@ -215,6 +215,25 @@ class ErrorGroupServiceAsyncClient:
     ) -> common.ErrorGroup:
         r"""Get the specified group.
 
+        .. code-block::
+
+            from google.cloud import errorreporting_v1beta1
+
+            def sample_get_group():
+                # Create a client
+                client = errorreporting_v1beta1.ErrorGroupServiceClient()
+
+                # Initialize request argument(s)
+                request = errorreporting_v1beta1.GetGroupRequest(
+                    group_name="group_name_value",
+                )
+
+                # Make the request
+                response = client.get_group(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.errorreporting_v1beta1.types.GetGroupRequest, dict]):
                 The request object. A request to return an individual
@@ -292,6 +311,25 @@ class ErrorGroupServiceAsyncClient:
     ) -> common.ErrorGroup:
         r"""Replace the data for the specified group.
         Fails if the group does not exist.
+
+
+        .. code-block::
+
+            from google.cloud import errorreporting_v1beta1
+
+            def sample_update_group():
+                # Create a client
+                client = errorreporting_v1beta1.ErrorGroupServiceClient()
+
+                # Initialize request argument(s)
+                request = errorreporting_v1beta1.UpdateGroupRequest(
+                )
+
+                # Make the request
+                response = client.update_group(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.errorreporting_v1beta1.types.UpdateGroupRequest, dict]):

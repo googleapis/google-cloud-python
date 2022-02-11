@@ -227,6 +227,30 @@ class ReportErrorsServiceAsyncClient:
         For more information, see `Using Error Reporting with
         regionalized logs </error-reporting/docs/regionalization>`__.
 
+
+        .. code-block::
+
+            from google.cloud import errorreporting_v1beta1
+
+            def sample_report_error_event():
+                # Create a client
+                client = errorreporting_v1beta1.ReportErrorsServiceClient()
+
+                # Initialize request argument(s)
+                event = errorreporting_v1beta1.ReportedErrorEvent()
+                event.message = "message_value"
+
+                request = errorreporting_v1beta1.ReportErrorEventRequest(
+                    project_name="project_name_value",
+                    event=event,
+                )
+
+                # Make the request
+                response = client.report_error_event(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.errorreporting_v1beta1.types.ReportErrorEventRequest, dict]):
                 The request object. A request for reporting an

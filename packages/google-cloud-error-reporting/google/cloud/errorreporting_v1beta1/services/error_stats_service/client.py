@@ -411,6 +411,27 @@ class ErrorStatsServiceClient(metaclass=ErrorStatsServiceClientMeta):
     ) -> pagers.ListGroupStatsPager:
         r"""Lists the specified groups.
 
+
+        .. code-block::
+
+            from google.cloud import errorreporting_v1beta1
+
+            def sample_list_group_stats():
+                # Create a client
+                client = errorreporting_v1beta1.ErrorStatsServiceClient()
+
+                # Initialize request argument(s)
+                request = errorreporting_v1beta1.ListGroupStatsRequest(
+                    project_name="project_name_value",
+                )
+
+                # Make the request
+                page_result = client.list_group_stats(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.errorreporting_v1beta1.types.ListGroupStatsRequest, dict]):
                 The request object. Specifies a set of `ErrorGroupStats`
@@ -515,6 +536,28 @@ class ErrorStatsServiceClient(metaclass=ErrorStatsServiceClientMeta):
     ) -> pagers.ListEventsPager:
         r"""Lists the specified events.
 
+
+        .. code-block::
+
+            from google.cloud import errorreporting_v1beta1
+
+            def sample_list_events():
+                # Create a client
+                client = errorreporting_v1beta1.ErrorStatsServiceClient()
+
+                # Initialize request argument(s)
+                request = errorreporting_v1beta1.ListEventsRequest(
+                    project_name="project_name_value",
+                    group_id="group_id_value",
+                )
+
+                # Make the request
+                page_result = client.list_events(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.errorreporting_v1beta1.types.ListEventsRequest, dict]):
                 The request object. Specifies a set of error events to
@@ -609,6 +652,26 @@ class ErrorStatsServiceClient(metaclass=ErrorStatsServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> error_stats_service.DeleteEventsResponse:
         r"""Deletes all error events of a given project.
+
+
+        .. code-block::
+
+            from google.cloud import errorreporting_v1beta1
+
+            def sample_delete_events():
+                # Create a client
+                client = errorreporting_v1beta1.ErrorStatsServiceClient()
+
+                # Initialize request argument(s)
+                request = errorreporting_v1beta1.DeleteEventsRequest(
+                    project_name="project_name_value",
+                )
+
+                # Make the request
+                response = client.delete_events(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.errorreporting_v1beta1.types.DeleteEventsRequest, dict]):
