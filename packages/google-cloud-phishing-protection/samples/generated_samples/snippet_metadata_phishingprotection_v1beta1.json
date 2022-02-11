@@ -1,0 +1,93 @@
+{
+  "snippets": [
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "PhishingProtectionServiceV1Beta1"
+          },
+          "shortName": "ReportPhishing"
+        }
+      },
+      "file": "phishingprotection_generated_phishingprotection_v1beta1_phishing_protection_service_v1_beta1_report_phishing_async.py",
+      "regionTag": "phishingprotection_generated_phishingprotection_v1beta1_PhishingProtectionServiceV1Beta1_ReportPhishing_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "PhishingProtectionServiceV1Beta1"
+          },
+          "shortName": "ReportPhishing"
+        }
+      },
+      "file": "phishingprotection_generated_phishingprotection_v1beta1_phishing_protection_service_v1_beta1_report_phishing_sync.py",
+      "regionTag": "phishingprotection_generated_phishingprotection_v1beta1_PhishingProtectionServiceV1Beta1_ReportPhishing_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    }
+  ]
+}

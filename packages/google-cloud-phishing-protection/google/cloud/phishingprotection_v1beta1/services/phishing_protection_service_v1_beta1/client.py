@@ -413,6 +413,28 @@ class PhishingProtectionServiceV1Beta1Client(
         in order to protect users that could get exposed to this threat
         in the future.
 
+
+
+        .. code-block::
+
+            from google.cloud import phishingprotection_v1beta1
+
+            def sample_report_phishing():
+                # Create a client
+                client = phishingprotection_v1beta1.PhishingProtectionServiceV1Beta1Client()
+
+                # Initialize request argument(s)
+                request = phishingprotection_v1beta1.ReportPhishingRequest(
+                    parent="parent_value",
+                    uri="uri_value",
+                )
+
+                # Make the request
+                response = client.report_phishing(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.phishingprotection_v1beta1.types.ReportPhishingRequest, dict]):
                 The request object. The ReportPhishing request message.
