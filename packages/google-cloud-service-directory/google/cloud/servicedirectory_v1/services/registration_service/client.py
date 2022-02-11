@@ -476,6 +476,27 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
     ) -> gcs_namespace.Namespace:
         r"""Creates a namespace, and returns the new Namespace.
 
+
+        .. code-block::
+
+            from google.cloud import servicedirectory_v1
+
+            def sample_create_namespace():
+                # Create a client
+                client = servicedirectory_v1.RegistrationServiceClient()
+
+                # Initialize request argument(s)
+                request = servicedirectory_v1.CreateNamespaceRequest(
+                    parent="parent_value",
+                    namespace_id="namespace_id_value",
+                )
+
+                # Make the request
+                response = client.create_namespace(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.servicedirectory_v1.types.CreateNamespaceRequest, dict]):
                 The request object. The request message for
@@ -574,6 +595,27 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
     ) -> pagers.ListNamespacesPager:
         r"""Lists all namespaces.
 
+
+        .. code-block::
+
+            from google.cloud import servicedirectory_v1
+
+            def sample_list_namespaces():
+                # Create a client
+                client = servicedirectory_v1.RegistrationServiceClient()
+
+                # Initialize request argument(s)
+                request = servicedirectory_v1.ListNamespacesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_namespaces(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.servicedirectory_v1.types.ListNamespacesRequest, dict]):
                 The request object. The request message for
@@ -655,6 +697,26 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
     ) -> namespace.Namespace:
         r"""Gets a namespace.
 
+
+        .. code-block::
+
+            from google.cloud import servicedirectory_v1
+
+            def sample_get_namespace():
+                # Create a client
+                client = servicedirectory_v1.RegistrationServiceClient()
+
+                # Initialize request argument(s)
+                request = servicedirectory_v1.GetNamespaceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_namespace(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.servicedirectory_v1.types.GetNamespaceRequest, dict]):
                 The request object. The request message for
@@ -728,6 +790,25 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_namespace.Namespace:
         r"""Updates a namespace.
+
+
+        .. code-block::
+
+            from google.cloud import servicedirectory_v1
+
+            def sample_update_namespace():
+                # Create a client
+                client = servicedirectory_v1.RegistrationServiceClient()
+
+                # Initialize request argument(s)
+                request = servicedirectory_v1.UpdateNamespaceRequest(
+                )
+
+                # Make the request
+                response = client.update_namespace(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.servicedirectory_v1.types.UpdateNamespaceRequest, dict]):
@@ -812,6 +893,24 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         r"""Deletes a namespace. This also deletes all services
         and endpoints in the namespace.
 
+
+
+        .. code-block::
+
+            from google.cloud import servicedirectory_v1
+
+            def sample_delete_namespace():
+                # Create a client
+                client = servicedirectory_v1.RegistrationServiceClient()
+
+                # Initialize request argument(s)
+                request = servicedirectory_v1.DeleteNamespaceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_namespace(request=request)
+
         Args:
             request (Union[google.cloud.servicedirectory_v1.types.DeleteNamespaceRequest, dict]):
                 The request object. The request message for
@@ -877,6 +976,27 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_service.Service:
         r"""Creates a service, and returns the new Service.
+
+
+        .. code-block::
+
+            from google.cloud import servicedirectory_v1
+
+            def sample_create_service():
+                # Create a client
+                client = servicedirectory_v1.RegistrationServiceClient()
+
+                # Initialize request argument(s)
+                request = servicedirectory_v1.CreateServiceRequest(
+                    parent="parent_value",
+                    service_id="service_id_value",
+                )
+
+                # Make the request
+                response = client.create_service(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.servicedirectory_v1.types.CreateServiceRequest, dict]):
@@ -975,6 +1095,27 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
     ) -> pagers.ListServicesPager:
         r"""Lists all services belonging to a namespace.
 
+
+        .. code-block::
+
+            from google.cloud import servicedirectory_v1
+
+            def sample_list_services():
+                # Create a client
+                client = servicedirectory_v1.RegistrationServiceClient()
+
+                # Initialize request argument(s)
+                request = servicedirectory_v1.ListServicesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_services(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.servicedirectory_v1.types.ListServicesRequest, dict]):
                 The request object. The request message for
@@ -1056,6 +1197,26 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
     ) -> service.Service:
         r"""Gets a service.
 
+
+        .. code-block::
+
+            from google.cloud import servicedirectory_v1
+
+            def sample_get_service():
+                # Create a client
+                client = servicedirectory_v1.RegistrationServiceClient()
+
+                # Initialize request argument(s)
+                request = servicedirectory_v1.GetServiceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_service(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.servicedirectory_v1.types.GetServiceRequest, dict]):
                 The request object. The request message for
@@ -1132,6 +1293,25 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_service.Service:
         r"""Updates a service.
+
+
+        .. code-block::
+
+            from google.cloud import servicedirectory_v1
+
+            def sample_update_service():
+                # Create a client
+                client = servicedirectory_v1.RegistrationServiceClient()
+
+                # Initialize request argument(s)
+                request = servicedirectory_v1.UpdateServiceRequest(
+                )
+
+                # Make the request
+                response = client.update_service(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.servicedirectory_v1.types.UpdateServiceRequest, dict]):
@@ -1216,6 +1396,24 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         r"""Deletes a service. This also deletes all endpoints
         associated with the service.
 
+
+
+        .. code-block::
+
+            from google.cloud import servicedirectory_v1
+
+            def sample_delete_service():
+                # Create a client
+                client = servicedirectory_v1.RegistrationServiceClient()
+
+                # Initialize request argument(s)
+                request = servicedirectory_v1.DeleteServiceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_service(request=request)
+
         Args:
             request (Union[google.cloud.servicedirectory_v1.types.DeleteServiceRequest, dict]):
                 The request object. The request message for
@@ -1281,6 +1479,27 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_endpoint.Endpoint:
         r"""Creates a endpoint, and returns the new Endpoint.
+
+
+        .. code-block::
+
+            from google.cloud import servicedirectory_v1
+
+            def sample_create_endpoint():
+                # Create a client
+                client = servicedirectory_v1.RegistrationServiceClient()
+
+                # Initialize request argument(s)
+                request = servicedirectory_v1.CreateEndpointRequest(
+                    parent="parent_value",
+                    endpoint_id="endpoint_id_value",
+                )
+
+                # Make the request
+                response = client.create_endpoint(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.servicedirectory_v1.types.CreateEndpointRequest, dict]):
@@ -1378,6 +1597,27 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
     ) -> pagers.ListEndpointsPager:
         r"""Lists all endpoints.
 
+
+        .. code-block::
+
+            from google.cloud import servicedirectory_v1
+
+            def sample_list_endpoints():
+                # Create a client
+                client = servicedirectory_v1.RegistrationServiceClient()
+
+                # Initialize request argument(s)
+                request = servicedirectory_v1.ListEndpointsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_endpoints(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.servicedirectory_v1.types.ListEndpointsRequest, dict]):
                 The request object. The request message for
@@ -1459,6 +1699,26 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
     ) -> endpoint.Endpoint:
         r"""Gets a endpoint.
 
+
+        .. code-block::
+
+            from google.cloud import servicedirectory_v1
+
+            def sample_get_endpoint():
+                # Create a client
+                client = servicedirectory_v1.RegistrationServiceClient()
+
+                # Initialize request argument(s)
+                request = servicedirectory_v1.GetEndpointRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_endpoint(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.servicedirectory_v1.types.GetEndpointRequest, dict]):
                 The request object. The request message for
@@ -1533,6 +1793,25 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_endpoint.Endpoint:
         r"""Updates a endpoint.
+
+
+        .. code-block::
+
+            from google.cloud import servicedirectory_v1
+
+            def sample_update_endpoint():
+                # Create a client
+                client = servicedirectory_v1.RegistrationServiceClient()
+
+                # Initialize request argument(s)
+                request = servicedirectory_v1.UpdateEndpointRequest(
+                )
+
+                # Make the request
+                response = client.update_endpoint(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.servicedirectory_v1.types.UpdateEndpointRequest, dict]):
@@ -1615,6 +1894,23 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
     ) -> None:
         r"""Deletes a endpoint.
 
+
+        .. code-block::
+
+            from google.cloud import servicedirectory_v1
+
+            def sample_delete_endpoint():
+                # Create a client
+                client = servicedirectory_v1.RegistrationServiceClient()
+
+                # Initialize request argument(s)
+                request = servicedirectory_v1.DeleteEndpointRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_endpoint(request=request)
+
         Args:
             request (Union[google.cloud.servicedirectory_v1.types.DeleteEndpointRequest, dict]):
                 The request object. The request message for
@@ -1678,6 +1974,27 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
     ) -> policy_pb2.Policy:
         r"""Gets the IAM Policy for a resource (namespace or
         service only).
+
+
+
+        .. code-block::
+
+            from google.cloud import servicedirectory_v1
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = servicedirectory_v1.RegistrationServiceClient()
+
+                # Initialize request argument(s)
+                request = servicedirectory_v1.GetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
@@ -1784,6 +2101,27 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         r"""Sets the IAM Policy for a resource (namespace or
         service only).
 
+
+
+        .. code-block::
+
+            from google.cloud import servicedirectory_v1
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = servicedirectory_v1.RegistrationServiceClient()
+
+                # Initialize request argument(s)
+                request = servicedirectory_v1.SetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
                 The request object. Request message for `SetIamPolicy`
@@ -1888,6 +2226,28 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Tests IAM permissions for a resource (namespace or
         service only).
+
+
+
+        .. code-block::
+
+            from google.cloud import servicedirectory_v1
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = servicedirectory_v1.RegistrationServiceClient()
+
+                # Initialize request argument(s)
+                request = servicedirectory_v1.TestIamPermissionsRequest(
+                    resource="resource_value",
+                    permissions=['permissions_value_1', 'permissions_value_2'],
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):

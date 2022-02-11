@@ -431,6 +431,27 @@ class LookupServiceClient(metaclass=LookupServiceClientMeta):
         and its associated endpoints. Resolving a service is not
         considered an active developer method.
 
+
+
+        .. code-block::
+
+            from google.cloud import servicedirectory_v1
+
+            def sample_resolve_service():
+                # Create a client
+                client = servicedirectory_v1.LookupServiceClient()
+
+                # Initialize request argument(s)
+                request = servicedirectory_v1.ResolveServiceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.resolve_service(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.servicedirectory_v1.types.ResolveServiceRequest, dict]):
                 The request object. The request message for
