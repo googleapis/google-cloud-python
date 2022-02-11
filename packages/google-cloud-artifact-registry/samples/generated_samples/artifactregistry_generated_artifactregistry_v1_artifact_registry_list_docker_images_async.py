@@ -38,6 +38,8 @@ async def sample_list_docker_images():
 
     # Make the request
     page_result = client.list_docker_images(request=request)
+
+    # Handle the response
     async for response in page_result:
         print(response)
 

@@ -284,6 +284,8 @@ class ArtifactRegistryAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -369,6 +371,8 @@ class ArtifactRegistryAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -447,6 +451,8 @@ class ArtifactRegistryAsyncClient:
 
                 # Make the request
                 page_result = client.list_repositories(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -555,7 +561,7 @@ class ArtifactRegistryAsyncClient:
                 # Make the request
                 response = client.get_repository(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -662,6 +668,8 @@ class ArtifactRegistryAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -780,7 +788,7 @@ class ArtifactRegistryAsyncClient:
                 # Make the request
                 response = client.update_repository(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -888,6 +896,8 @@ class ArtifactRegistryAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1004,6 +1014,8 @@ class ArtifactRegistryAsyncClient:
 
                 # Make the request
                 page_result = client.list_packages(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1109,7 +1121,7 @@ class ArtifactRegistryAsyncClient:
                 # Make the request
                 response = client.get_package(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1210,6 +1222,8 @@ class ArtifactRegistryAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1324,6 +1338,8 @@ class ArtifactRegistryAsyncClient:
 
                 # Make the request
                 page_result = client.list_versions(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1429,7 +1445,7 @@ class ArtifactRegistryAsyncClient:
                 # Make the request
                 response = client.get_version(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1533,6 +1549,8 @@ class ArtifactRegistryAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1647,6 +1665,8 @@ class ArtifactRegistryAsyncClient:
 
                 # Make the request
                 page_result = client.list_files(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1752,7 +1772,7 @@ class ArtifactRegistryAsyncClient:
                 # Make the request
                 response = client.get_file(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1847,6 +1867,8 @@ class ArtifactRegistryAsyncClient:
 
                 # Make the request
                 page_result = client.list_tags(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -1952,7 +1974,7 @@ class ArtifactRegistryAsyncClient:
                 # Make the request
                 response = client.get_tag(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2050,7 +2072,7 @@ class ArtifactRegistryAsyncClient:
                 # Make the request
                 response = client.create_tag(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2156,7 +2178,7 @@ class ArtifactRegistryAsyncClient:
                 # Make the request
                 response = client.update_tag(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2254,7 +2276,7 @@ class ArtifactRegistryAsyncClient:
                 )
 
                 # Make the request
-                response = client.delete_tag(request=request)
+                client.delete_tag(request=request)
 
         Args:
             request (Union[google.cloud.artifactregistry_v1beta2.types.DeleteTagRequest, dict]):
@@ -2341,7 +2363,7 @@ class ArtifactRegistryAsyncClient:
                 # Make the request
                 response = client.set_iam_policy(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2465,7 +2487,7 @@ class ArtifactRegistryAsyncClient:
                 # Make the request
                 response = client.get_iam_policy(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2601,7 +2623,7 @@ class ArtifactRegistryAsyncClient:
                 # Make the request
                 response = client.test_iam_permissions(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2671,7 +2693,7 @@ class ArtifactRegistryAsyncClient:
                 # Make the request
                 response = client.get_project_settings(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -2761,7 +2783,7 @@ class ArtifactRegistryAsyncClient:
                 # Make the request
                 response = client.update_project_settings(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:

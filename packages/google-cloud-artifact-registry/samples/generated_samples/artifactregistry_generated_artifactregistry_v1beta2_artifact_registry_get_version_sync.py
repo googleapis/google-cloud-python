@@ -38,7 +38,7 @@ def sample_get_version():
     # Make the request
     response = client.get_version(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_GetVersion_sync]

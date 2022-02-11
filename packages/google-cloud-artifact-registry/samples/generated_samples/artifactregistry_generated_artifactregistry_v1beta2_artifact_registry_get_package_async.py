@@ -38,7 +38,7 @@ async def sample_get_package():
     # Make the request
     response = await client.get_package(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_GetPackage_async]

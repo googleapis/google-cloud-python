@@ -36,7 +36,7 @@ def sample_delete_tag():
     )
 
     # Make the request
-    response = client.delete_tag(request=request)
+    client.delete_tag(request=request)
 
 
 # [END artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_DeleteTag_sync]

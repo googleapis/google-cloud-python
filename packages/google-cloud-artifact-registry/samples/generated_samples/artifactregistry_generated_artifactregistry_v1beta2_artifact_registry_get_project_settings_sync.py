@@ -39,7 +39,7 @@ def sample_get_project_settings():
     # Make the request
     response = client.get_project_settings(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_GetProjectSettings_sync]

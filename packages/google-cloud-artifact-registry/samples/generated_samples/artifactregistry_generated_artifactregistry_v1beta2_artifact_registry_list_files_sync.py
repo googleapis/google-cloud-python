@@ -37,6 +37,8 @@ def sample_list_files():
 
     # Make the request
     page_result = client.list_files(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

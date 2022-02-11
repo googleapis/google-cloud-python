@@ -38,7 +38,7 @@ def sample_create_tag():
     # Make the request
     response = client.create_tag(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_CreateTag_sync]

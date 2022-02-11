@@ -37,6 +37,8 @@ def sample_list_packages():
 
     # Make the request
     page_result = client.list_packages(request=request)
+
+    # Handle the response
     for response in page_result:
         print(response)
 

@@ -36,7 +36,7 @@ async def sample_delete_tag():
     )
 
     # Make the request
-    response = await client.delete_tag(request=request)
+    await client.delete_tag(request=request)
 
 
 # [END artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_DeleteTag_async]

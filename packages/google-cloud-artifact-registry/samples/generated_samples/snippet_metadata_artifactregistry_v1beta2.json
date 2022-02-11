@@ -14,12 +14,12 @@
       "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_CreateRepository_async",
       "segments": [
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "SHORT"
         },
@@ -34,11 +34,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 45,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 49,
+          "start": 46,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -56,12 +58,12 @@
       "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_CreateRepository_sync",
       "segments": [
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "SHORT"
         },
@@ -76,11 +78,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 45,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 49,
+          "start": 46,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -188,12 +192,12 @@
       "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_DeletePackage_async",
       "segments": [
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "SHORT"
         },
@@ -208,11 +212,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 44,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
+          "end": 48,
+          "start": 45,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -230,12 +236,12 @@
       "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_DeletePackage_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "SHORT"
         },
@@ -250,11 +256,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 44,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
+          "end": 48,
+          "start": 45,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -273,12 +281,12 @@
       "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_DeleteRepository_async",
       "segments": [
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "SHORT"
         },
@@ -293,11 +301,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 45,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 49,
+          "start": 46,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -315,12 +325,12 @@
       "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_DeleteRepository_sync",
       "segments": [
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 46,
+          "end": 48,
           "start": 27,
           "type": "SHORT"
         },
@@ -335,11 +345,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 45,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 47,
+          "end": 49,
+          "start": 46,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -443,12 +455,12 @@
       "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_DeleteVersion_async",
       "segments": [
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "SHORT"
         },
@@ -463,11 +475,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 44,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
+          "end": 48,
+          "start": 45,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -485,12 +499,12 @@
       "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_DeleteVersion_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "SHORT"
         },
@@ -505,11 +519,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 44,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
+          "end": 48,
+          "start": 45,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1151,12 +1167,12 @@
       "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_ImportAptArtifacts_async",
       "segments": [
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "SHORT"
         },
@@ -1171,11 +1187,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 44,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
+          "end": 48,
+          "start": 45,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1193,12 +1211,12 @@
       "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_ImportAptArtifacts_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "SHORT"
         },
@@ -1213,11 +1231,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 44,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
+          "end": 48,
+          "start": 45,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1236,12 +1256,12 @@
       "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_ImportYumArtifacts_async",
       "segments": [
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "SHORT"
         },
@@ -1256,11 +1276,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 44,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
+          "end": 48,
+          "start": 45,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1278,12 +1300,12 @@
       "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_ImportYumArtifacts_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 47,
           "start": 27,
           "type": "SHORT"
         },
@@ -1298,11 +1320,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 44,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
+          "end": 48,
+          "start": 45,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1321,12 +1345,12 @@
       "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_ListFiles_async",
       "segments": [
         {
-          "end": 42,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 42,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -1341,11 +1365,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 40,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 43,
+          "end": 45,
+          "start": 41,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1363,12 +1389,12 @@
       "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_ListFiles_sync",
       "segments": [
         {
-          "end": 42,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 42,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -1383,11 +1409,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 40,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 43,
+          "end": 45,
+          "start": 41,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1406,12 +1434,12 @@
       "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_ListPackages_async",
       "segments": [
         {
-          "end": 42,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 42,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -1426,11 +1454,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 40,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 43,
+          "end": 45,
+          "start": 41,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1448,12 +1478,12 @@
       "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_ListPackages_sync",
       "segments": [
         {
-          "end": 42,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 42,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -1468,11 +1498,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 40,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 43,
+          "end": 45,
+          "start": 41,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1491,12 +1523,12 @@
       "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_ListRepositories_async",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -1511,11 +1543,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1533,12 +1567,12 @@
       "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_ListRepositories_sync",
       "segments": [
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 43,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
@@ -1553,11 +1587,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 41,
           "start": 39,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 44,
+          "end": 46,
+          "start": 42,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1576,12 +1612,12 @@
       "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_ListTags_async",
       "segments": [
         {
-          "end": 42,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 42,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -1596,11 +1632,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 40,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 43,
+          "end": 45,
+          "start": 41,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1618,12 +1656,12 @@
       "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_ListTags_sync",
       "segments": [
         {
-          "end": 42,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 42,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -1638,11 +1676,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 40,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 43,
+          "end": 45,
+          "start": 41,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1661,12 +1701,12 @@
       "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_ListVersions_async",
       "segments": [
         {
-          "end": 42,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 42,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -1681,11 +1721,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 40,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 43,
+          "end": 45,
+          "start": 41,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -1703,12 +1745,12 @@
       "regionTag": "artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_ListVersions_sync",
       "segments": [
         {
-          "end": 42,
+          "end": 44,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 42,
+          "end": 44,
           "start": 27,
           "type": "SHORT"
         },
@@ -1723,11 +1765,13 @@
           "type": "REQUEST_INITIALIZATION"
         },
         {
+          "end": 40,
           "start": 38,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 43,
+          "end": 45,
+          "start": 41,
           "type": "RESPONSE_HANDLING"
         }
       ]

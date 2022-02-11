@@ -40,7 +40,7 @@ async def sample_test_iam_permissions():
     # Make the request
     response = await client.test_iam_permissions(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_TestIamPermissions_async]

@@ -42,6 +42,8 @@ async def sample_delete_repository():
     print("Waiting for operation to complete...")
 
     response = await operation.result()
+
+    # Handle the response
     print(response)
 
 # [END artifactregistry_generated_artifactregistry_v1beta2_ArtifactRegistry_DeleteRepository_async]
