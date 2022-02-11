@@ -1,0 +1,538 @@
+{
+  "snippets": [
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "LanguageService"
+          },
+          "shortName": "AnalyzeEntities"
+        }
+      },
+      "file": "language_generated_language_v1_language_service_analyze_entities_async.py",
+      "regionTag": "language_generated_language_v1_LanguageService_AnalyzeEntities_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "LanguageService"
+          },
+          "shortName": "AnalyzeEntities"
+        }
+      },
+      "file": "language_generated_language_v1_language_service_analyze_entities_sync.py",
+      "regionTag": "language_generated_language_v1_LanguageService_AnalyzeEntities_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "LanguageService"
+          },
+          "shortName": "AnalyzeEntitySentiment"
+        }
+      },
+      "file": "language_generated_language_v1_language_service_analyze_entity_sentiment_async.py",
+      "regionTag": "language_generated_language_v1_LanguageService_AnalyzeEntitySentiment_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "LanguageService"
+          },
+          "shortName": "AnalyzeEntitySentiment"
+        }
+      },
+      "file": "language_generated_language_v1_language_service_analyze_entity_sentiment_sync.py",
+      "regionTag": "language_generated_language_v1_LanguageService_AnalyzeEntitySentiment_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "LanguageService"
+          },
+          "shortName": "AnalyzeSentiment"
+        }
+      },
+      "file": "language_generated_language_v1_language_service_analyze_sentiment_async.py",
+      "regionTag": "language_generated_language_v1_LanguageService_AnalyzeSentiment_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "LanguageService"
+          },
+          "shortName": "AnalyzeSentiment"
+        }
+      },
+      "file": "language_generated_language_v1_language_service_analyze_sentiment_sync.py",
+      "regionTag": "language_generated_language_v1_LanguageService_AnalyzeSentiment_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "LanguageService"
+          },
+          "shortName": "AnalyzeSyntax"
+        }
+      },
+      "file": "language_generated_language_v1_language_service_analyze_syntax_async.py",
+      "regionTag": "language_generated_language_v1_LanguageService_AnalyzeSyntax_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "LanguageService"
+          },
+          "shortName": "AnalyzeSyntax"
+        }
+      },
+      "file": "language_generated_language_v1_language_service_analyze_syntax_sync.py",
+      "regionTag": "language_generated_language_v1_LanguageService_AnalyzeSyntax_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "LanguageService"
+          },
+          "shortName": "AnnotateText"
+        }
+      },
+      "file": "language_generated_language_v1_language_service_annotate_text_async.py",
+      "regionTag": "language_generated_language_v1_LanguageService_AnnotateText_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "LanguageService"
+          },
+          "shortName": "AnnotateText"
+        }
+      },
+      "file": "language_generated_language_v1_language_service_annotate_text_sync.py",
+      "regionTag": "language_generated_language_v1_LanguageService_AnnotateText_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "LanguageService"
+          },
+          "shortName": "ClassifyText"
+        }
+      },
+      "file": "language_generated_language_v1_language_service_classify_text_async.py",
+      "regionTag": "language_generated_language_v1_LanguageService_ClassifyText_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "LanguageService"
+          },
+          "shortName": "ClassifyText"
+        }
+      },
+      "file": "language_generated_language_v1_language_service_classify_text_sync.py",
+      "regionTag": "language_generated_language_v1_LanguageService_ClassifyText_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    }
+  ]
+}

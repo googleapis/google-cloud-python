@@ -396,6 +396,29 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
     ) -> language_service.AnalyzeSentimentResponse:
         r"""Analyzes the sentiment of the provided text.
 
+
+        .. code-block::
+
+            from google.cloud import language_v1
+
+            def sample_analyze_sentiment():
+                # Create a client
+                client = language_v1.LanguageServiceClient()
+
+                # Initialize request argument(s)
+                document = language_v1.Document()
+                document.content = "content_value"
+
+                request = language_v1.AnalyzeSentimentRequest(
+                    document=document,
+                )
+
+                # Make the request
+                response = client.analyze_sentiment(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.language_v1.types.AnalyzeSentimentRequest, dict]):
                 The request object. The sentiment analysis request
@@ -472,6 +495,30 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
         salience, mentions for each entity, and other
         properties.
 
+
+
+        .. code-block::
+
+            from google.cloud import language_v1
+
+            def sample_analyze_entities():
+                # Create a client
+                client = language_v1.LanguageServiceClient()
+
+                # Initialize request argument(s)
+                document = language_v1.Document()
+                document.content = "content_value"
+
+                request = language_v1.AnalyzeEntitiesRequest(
+                    document=document,
+                )
+
+                # Make the request
+                response = client.analyze_entities(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.language_v1.types.AnalyzeEntitiesRequest, dict]):
                 The request object. The entity analysis request message.
@@ -544,6 +591,30 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
         [AnalyzeEntities][google.cloud.language.v1.LanguageService.AnalyzeEntities]
         in the text and analyzes sentiment associated with each entity
         and its mentions.
+
+
+
+        .. code-block::
+
+            from google.cloud import language_v1
+
+            def sample_analyze_entity_sentiment():
+                # Create a client
+                client = language_v1.LanguageServiceClient()
+
+                # Initialize request argument(s)
+                document = language_v1.Document()
+                document.content = "content_value"
+
+                request = language_v1.AnalyzeEntitySentimentRequest(
+                    document=document,
+                )
+
+                # Make the request
+                response = client.analyze_entity_sentiment(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.language_v1.types.AnalyzeEntitySentimentRequest, dict]):
@@ -620,6 +691,30 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
         boundaries and tokenization along with part of speech
         tags, dependency trees, and other properties.
 
+
+
+        .. code-block::
+
+            from google.cloud import language_v1
+
+            def sample_analyze_syntax():
+                # Create a client
+                client = language_v1.LanguageServiceClient()
+
+                # Initialize request argument(s)
+                document = language_v1.Document()
+                document.content = "content_value"
+
+                request = language_v1.AnalyzeSyntaxRequest(
+                    document=document,
+                )
+
+                # Make the request
+                response = client.analyze_syntax(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.language_v1.types.AnalyzeSyntaxRequest, dict]):
                 The request object. The syntax analysis request message.
@@ -689,6 +784,29 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
     ) -> language_service.ClassifyTextResponse:
         r"""Classifies a document into categories.
 
+
+        .. code-block::
+
+            from google.cloud import language_v1
+
+            def sample_classify_text():
+                # Create a client
+                client = language_v1.LanguageServiceClient()
+
+                # Initialize request argument(s)
+                document = language_v1.Document()
+                document.content = "content_value"
+
+                request = language_v1.ClassifyTextRequest(
+                    document=document,
+                )
+
+                # Make the request
+                response = client.classify_text(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.language_v1.types.ClassifyTextRequest, dict]):
                 The request object. The document classification request
@@ -755,6 +873,30 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
         r"""A convenience method that provides all the features
         that analyzeSentiment, analyzeEntities, and
         analyzeSyntax provide in one call.
+
+
+
+        .. code-block::
+
+            from google.cloud import language_v1
+
+            def sample_annotate_text():
+                # Create a client
+                client = language_v1.LanguageServiceClient()
+
+                # Initialize request argument(s)
+                document = language_v1.Document()
+                document.content = "content_value"
+
+                request = language_v1.AnnotateTextRequest(
+                    document=document,
+                )
+
+                # Make the request
+                response = client.annotate_text(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.language_v1.types.AnnotateTextRequest, dict]):
