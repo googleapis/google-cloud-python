@@ -474,6 +474,27 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         r"""Creates an Assessment of the likelihood an event is
         legitimate.
 
+
+
+        .. code-block::
+
+            from google.cloud import recaptchaenterprise_v1
+
+            def sample_create_assessment():
+                # Create a client
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+
+                # Initialize request argument(s)
+                request = recaptchaenterprise_v1.CreateAssessmentRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_assessment(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.recaptchaenterprise_v1.types.CreateAssessmentRequest, dict]):
                 The request object. The create assessment request
@@ -553,6 +574,27 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         r"""Annotates a previously created Assessment to provide
         additional information on whether the event turned out
         to be authentic or fraudulent.
+
+
+
+        .. code-block::
+
+            from google.cloud import recaptchaenterprise_v1
+
+            def sample_annotate_assessment():
+                # Create a client
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+
+                # Initialize request argument(s)
+                request = recaptchaenterprise_v1.AnnotateAssessmentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.annotate_assessment(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.recaptchaenterprise_v1.types.AnnotateAssessmentRequest, dict]):
@@ -637,6 +679,30 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
     ) -> recaptchaenterprise.Key:
         r"""Creates a new reCAPTCHA Enterprise key.
 
+
+        .. code-block::
+
+            from google.cloud import recaptchaenterprise_v1
+
+            def sample_create_key():
+                # Create a client
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+
+                # Initialize request argument(s)
+                key = recaptchaenterprise_v1.Key()
+                key.web_settings.integration_type = "INVISIBLE"
+
+                request = recaptchaenterprise_v1.CreateKeyRequest(
+                    parent="parent_value",
+                    key=key,
+                )
+
+                # Make the request
+                response = client.create_key(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.recaptchaenterprise_v1.types.CreateKeyRequest, dict]):
                 The request object. The create key request message.
@@ -687,6 +753,28 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
     ) -> pagers.ListKeysPager:
         r"""Returns the list of all keys that belong to a
         project.
+
+
+
+        .. code-block::
+
+            from google.cloud import recaptchaenterprise_v1
+
+            def sample_list_keys():
+                # Create a client
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+
+                # Initialize request argument(s)
+                request = recaptchaenterprise_v1.ListKeysRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_keys(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.recaptchaenterprise_v1.types.ListKeysRequest, dict]):
@@ -746,6 +834,26 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
     ) -> recaptchaenterprise.Key:
         r"""Returns the specified key.
 
+
+        .. code-block::
+
+            from google.cloud import recaptchaenterprise_v1
+
+            def sample_get_key():
+                # Create a client
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+
+                # Initialize request argument(s)
+                request = recaptchaenterprise_v1.GetKeyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_key(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.recaptchaenterprise_v1.types.GetKeyRequest, dict]):
                 The request object. The get key request message.
@@ -795,6 +903,29 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> recaptchaenterprise.Key:
         r"""Updates the specified key.
+
+
+        .. code-block::
+
+            from google.cloud import recaptchaenterprise_v1
+
+            def sample_update_key():
+                # Create a client
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+
+                # Initialize request argument(s)
+                key = recaptchaenterprise_v1.Key()
+                key.web_settings.integration_type = "INVISIBLE"
+
+                request = recaptchaenterprise_v1.UpdateKeyRequest(
+                    key=key,
+                )
+
+                # Make the request
+                response = client.update_key(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.recaptchaenterprise_v1.types.UpdateKeyRequest, dict]):
@@ -846,6 +977,23 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
     ) -> None:
         r"""Deletes the specified key.
 
+
+        .. code-block::
+
+            from google.cloud import recaptchaenterprise_v1
+
+            def sample_delete_key():
+                # Create a client
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+
+                # Initialize request argument(s)
+                request = recaptchaenterprise_v1.DeleteKeyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_key(request=request)
+
         Args:
             request (Union[google.cloud.recaptchaenterprise_v1.types.DeleteKeyRequest, dict]):
                 The request object. The delete key request message.
@@ -893,6 +1041,27 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         of the current owners of the reCAPTCHA Site Key, and
         your user must have the reCAPTCHA Enterprise Admin IAM
         role in the destination project.
+
+
+
+        .. code-block::
+
+            from google.cloud import recaptchaenterprise_v1
+
+            def sample_migrate_key():
+                # Create a client
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+
+                # Initialize request argument(s)
+                request = recaptchaenterprise_v1.MigrateKeyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.migrate_key(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.recaptchaenterprise_v1.types.MigrateKeyRequest, dict]):
@@ -945,6 +1114,27 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
     ) -> recaptchaenterprise.Metrics:
         r"""Get some aggregated metrics for a Key. This data can
         be used to build dashboards.
+
+
+
+        .. code-block::
+
+            from google.cloud import recaptchaenterprise_v1
+
+            def sample_get_metrics():
+                # Create a client
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+
+                # Initialize request argument(s)
+                request = recaptchaenterprise_v1.GetMetricsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_metrics(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.recaptchaenterprise_v1.types.GetMetricsRequest, dict]):
@@ -1016,6 +1206,27 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRelatedAccountGroupsPager:
         r"""List groups of related accounts.
+
+
+        .. code-block::
+
+            from google.cloud import recaptchaenterprise_v1
+
+            def sample_list_related_account_groups():
+                # Create a client
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+
+                # Initialize request argument(s)
+                request = recaptchaenterprise_v1.ListRelatedAccountGroupsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_related_account_groups(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.recaptchaenterprise_v1.types.ListRelatedAccountGroupsRequest, dict]):
@@ -1100,6 +1311,27 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRelatedAccountGroupMembershipsPager:
         r"""Get the memberships in a group of related accounts.
+
+
+        .. code-block::
+
+            from google.cloud import recaptchaenterprise_v1
+
+            def sample_list_related_account_group_memberships():
+                # Create a client
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+
+                # Initialize request argument(s)
+                request = recaptchaenterprise_v1.ListRelatedAccountGroupMembershipsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_related_account_group_memberships(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.recaptchaenterprise_v1.types.ListRelatedAccountGroupMembershipsRequest, dict]):
@@ -1190,6 +1422,27 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchRelatedAccountGroupMembershipsPager:
         r"""Search group memberships related to a given account.
+
+
+        .. code-block::
+
+            from google.cloud import recaptchaenterprise_v1
+
+            def sample_search_related_account_group_memberships():
+                # Create a client
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+
+                # Initialize request argument(s)
+                request = recaptchaenterprise_v1.SearchRelatedAccountGroupMembershipsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.search_related_account_group_memberships(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.recaptchaenterprise_v1.types.SearchRelatedAccountGroupMembershipsRequest, dict]):
