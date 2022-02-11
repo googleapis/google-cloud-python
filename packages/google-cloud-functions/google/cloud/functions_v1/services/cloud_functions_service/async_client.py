@@ -236,6 +236,26 @@ class CloudFunctionsServiceAsyncClient:
         r"""Returns a list of functions that belong to the
         requested project.
 
+
+        .. code-block::
+
+            from google.cloud import functions_v1
+
+            def sample_list_functions():
+                # Create a client
+                client = functions_v1.CloudFunctionsServiceClient()
+
+                # Initialize request argument(s)
+                request = functions_v1.ListFunctionsRequest(
+                )
+
+                # Make the request
+                page_result = client.list_functions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.functions_v1.types.ListFunctionsRequest, dict]):
                 The request object. Request for the `ListFunctions`
@@ -304,6 +324,26 @@ class CloudFunctionsServiceAsyncClient:
     ) -> functions.CloudFunction:
         r"""Returns a function with the given name from the
         requested project.
+
+
+        .. code-block::
+
+            from google.cloud import functions_v1
+
+            def sample_get_function():
+                # Create a client
+                client = functions_v1.CloudFunctionsServiceClient()
+
+                # Initialize request argument(s)
+                request = functions_v1.GetFunctionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_function(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.functions_v1.types.GetFunctionRequest, dict]):
@@ -391,6 +431,34 @@ class CloudFunctionsServiceAsyncClient:
         r"""Creates a new function. If a function with the given name
         already exists in the specified project, the long running
         operation will return ``ALREADY_EXISTS`` error.
+
+
+        .. code-block::
+
+            from google.cloud import functions_v1
+
+            def sample_create_function():
+                # Create a client
+                client = functions_v1.CloudFunctionsServiceClient()
+
+                # Initialize request argument(s)
+                function = functions_v1.CloudFunction()
+                function.source_archive_url = "source_archive_url_value"
+
+                request = functions_v1.CreateFunctionRequest(
+                    location="location_value",
+                    function=function,
+                )
+
+                # Make the request
+                operation = client.create_function(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.functions_v1.types.CreateFunctionRequest, dict]):
@@ -481,6 +549,32 @@ class CloudFunctionsServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates existing function.
+
+        .. code-block::
+
+            from google.cloud import functions_v1
+
+            def sample_update_function():
+                # Create a client
+                client = functions_v1.CloudFunctionsServiceClient()
+
+                # Initialize request argument(s)
+                function = functions_v1.CloudFunction()
+                function.source_archive_url = "source_archive_url_value"
+
+                request = functions_v1.UpdateFunctionRequest(
+                    function=function,
+                )
+
+                # Make the request
+                operation = client.update_function(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.functions_v1.types.UpdateFunctionRequest, dict]):
@@ -578,6 +672,30 @@ class CloudFunctionsServiceAsyncClient:
         specified project. If the given function is used by some
         trigger, the trigger will be updated to remove this
         function.
+
+
+        .. code-block::
+
+            from google.cloud import functions_v1
+
+            def sample_delete_function():
+                # Create a client
+                client = functions_v1.CloudFunctionsServiceClient()
+
+                # Initialize request argument(s)
+                request = functions_v1.DeleteFunctionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_function(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.functions_v1.types.DeleteFunctionRequest, dict]):
@@ -685,6 +803,27 @@ class CloudFunctionsServiceAsyncClient:
         information on the actual limits, refer to `Rate
         Limits <https://cloud.google.com/functions/quotas#rate_limits>`__.
 
+
+        .. code-block::
+
+            from google.cloud import functions_v1
+
+            def sample_call_function():
+                # Create a client
+                client = functions_v1.CloudFunctionsServiceClient()
+
+                # Initialize request argument(s)
+                request = functions_v1.CallFunctionRequest(
+                    name="name_value",
+                    data="data_value",
+                )
+
+                # Make the request
+                response = client.call_function(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.functions_v1.types.CallFunctionRequest, dict]):
                 The request object. Request for the `CallFunction`
@@ -789,6 +928,25 @@ class CloudFunctionsServiceAsyncClient:
 
         -  ``Authorization: Bearer YOUR_TOKEN``
 
+
+        .. code-block::
+
+            from google.cloud import functions_v1
+
+            def sample_generate_upload_url():
+                # Create a client
+                client = functions_v1.CloudFunctionsServiceClient()
+
+                # Initialize request argument(s)
+                request = functions_v1.GenerateUploadUrlRequest(
+                )
+
+                # Make the request
+                response = client.generate_upload_url(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.functions_v1.types.GenerateUploadUrlRequest, dict]):
                 The request object. Request of `GenerateSourceUploadUrl`
@@ -841,6 +999,25 @@ class CloudFunctionsServiceAsyncClient:
         For more information about the signed URL usage see:
         https://cloud.google.com/storage/docs/access-control/signed-urls
 
+
+        .. code-block::
+
+            from google.cloud import functions_v1
+
+            def sample_generate_download_url():
+                # Create a client
+                client = functions_v1.CloudFunctionsServiceClient()
+
+                # Initialize request argument(s)
+                request = functions_v1.GenerateDownloadUrlRequest(
+                )
+
+                # Make the request
+                response = client.generate_download_url(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.functions_v1.types.GenerateDownloadUrlRequest, dict]):
                 The request object. Request of `GenerateDownloadUrl`
@@ -888,6 +1065,26 @@ class CloudFunctionsServiceAsyncClient:
     ) -> policy_pb2.Policy:
         r"""Sets the IAM access control policy on the specified
         function. Replaces any existing policy.
+
+
+        .. code-block::
+
+            from google.cloud import functions_v1
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = functions_v1.CloudFunctionsServiceClient()
+
+                # Initialize request argument(s)
+                request = functions_v1.SetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
@@ -996,6 +1193,26 @@ class CloudFunctionsServiceAsyncClient:
         Returns an empty policy if the function exists and does
         not have a policy set.
 
+
+        .. code-block::
+
+            from google.cloud import functions_v1
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = functions_v1.CloudFunctionsServiceClient()
+
+                # Initialize request argument(s)
+                request = functions_v1.GetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
                 The request object. Request message for `GetIamPolicy`
@@ -1102,6 +1319,27 @@ class CloudFunctionsServiceAsyncClient:
         r"""Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will
         return an empty set of permissions, not a NOT_FOUND error.
+
+
+        .. code-block::
+
+            from google.cloud import functions_v1
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = functions_v1.CloudFunctionsServiceClient()
+
+                # Initialize request argument(s)
+                request = functions_v1.TestIamPermissionsRequest(
+                    resource="resource_value",
+                    permissions=['permissions_value_1', 'permissions_value_2'],
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
