@@ -237,6 +237,26 @@ class CloudMemcacheAsyncClient:
     ) -> pagers.ListInstancesAsyncPager:
         r"""Lists Instances in a given location.
 
+        .. code-block::
+
+            from google.cloud import memcache_v1beta2
+
+            def sample_list_instances():
+                # Create a client
+                client = memcache_v1beta2.CloudMemcacheClient()
+
+                # Initialize request argument(s)
+                request = memcache_v1beta2.ListInstancesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_instances(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.memcache_v1beta2.types.ListInstancesRequest, dict]):
                 The request object. Request for
@@ -319,6 +339,25 @@ class CloudMemcacheAsyncClient:
     ) -> cloud_memcache.Instance:
         r"""Gets details of a single Instance.
 
+        .. code-block::
+
+            from google.cloud import memcache_v1beta2
+
+            def sample_get_instance():
+                # Create a client
+                client = memcache_v1beta2.CloudMemcacheClient()
+
+                # Initialize request argument(s)
+                request = memcache_v1beta2.GetInstanceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_instance(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.memcache_v1beta2.types.GetInstanceRequest, dict]):
                 The request object. Request for
@@ -391,6 +430,37 @@ class CloudMemcacheAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Instance in a given location.
+
+        .. code-block::
+
+            from google.cloud import memcache_v1beta2
+
+            def sample_create_instance():
+                # Create a client
+                client = memcache_v1beta2.CloudMemcacheClient()
+
+                # Initialize request argument(s)
+                resource = memcache_v1beta2.Instance()
+                resource.name = "name_value"
+                resource.node_count = 1070
+                resource.node_config.cpu_count = 976
+                resource.node_config.memory_size_mb = 1505
+
+                request = memcache_v1beta2.CreateInstanceRequest(
+                    parent="parent_value",
+                    instance_id="instance_id_value",
+                    resource=resource,
+                )
+
+                # Make the request
+                operation = client.create_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.memcache_v1beta2.types.CreateInstanceRequest, dict]):
@@ -504,6 +574,36 @@ class CloudMemcacheAsyncClient:
         r"""Updates an existing Instance in a given project and
         location.
 
+
+        .. code-block::
+
+            from google.cloud import memcache_v1beta2
+
+            def sample_update_instance():
+                # Create a client
+                client = memcache_v1beta2.CloudMemcacheClient()
+
+                # Initialize request argument(s)
+                resource = memcache_v1beta2.Instance()
+                resource.name = "name_value"
+                resource.node_count = 1070
+                resource.node_config.cpu_count = 976
+                resource.node_config.memory_size_mb = 1505
+
+                request = memcache_v1beta2.UpdateInstanceRequest(
+                    resource=resource,
+                )
+
+                # Make the request
+                operation = client.update_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.memcache_v1beta2.types.UpdateInstanceRequest, dict]):
                 The request object. Request for
@@ -602,6 +702,30 @@ class CloudMemcacheAsyncClient:
         instance. This method only stages the parameters, it must be
         followed by ``ApplyParameters`` to apply the parameters to nodes
         of the Memcached instance.
+
+
+        .. code-block::
+
+            from google.cloud import memcache_v1beta2
+
+            def sample_update_parameters():
+                # Create a client
+                client = memcache_v1beta2.CloudMemcacheClient()
+
+                # Initialize request argument(s)
+                request = memcache_v1beta2.UpdateParametersRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.update_parameters(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.memcache_v1beta2.types.UpdateParametersRequest, dict]):
@@ -702,6 +826,29 @@ class CloudMemcacheAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Instance.
 
+        .. code-block::
+
+            from google.cloud import memcache_v1beta2
+
+            def sample_delete_instance():
+                # Create a client
+                client = memcache_v1beta2.CloudMemcacheClient()
+
+                # Initialize request argument(s)
+                request = memcache_v1beta2.DeleteInstanceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.memcache_v1beta2.types.DeleteInstanceRequest, dict]):
                 The request object. Request for
@@ -799,6 +946,30 @@ class CloudMemcacheAsyncClient:
         r"""``ApplyParameters`` restarts the set of specified nodes in order
         to update them to the current set of parameters for the
         Memcached Instance.
+
+
+        .. code-block::
+
+            from google.cloud import memcache_v1beta2
+
+            def sample_apply_parameters():
+                # Create a client
+                client = memcache_v1beta2.CloudMemcacheClient()
+
+                # Initialize request argument(s)
+                request = memcache_v1beta2.ApplyParametersRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.apply_parameters(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.memcache_v1beta2.types.ApplyParametersRequest, dict]):
@@ -905,6 +1076,30 @@ class CloudMemcacheAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates software on the selected nodes of the
         Instance.
+
+
+        .. code-block::
+
+            from google.cloud import memcache_v1beta2
+
+            def sample_apply_software_update():
+                # Create a client
+                client = memcache_v1beta2.CloudMemcacheClient()
+
+                # Initialize request argument(s)
+                request = memcache_v1beta2.ApplySoftwareUpdateRequest(
+                    instance="instance_value",
+                )
+
+                # Make the request
+                operation = client.apply_software_update(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.memcache_v1beta2.types.ApplySoftwareUpdateRequest, dict]):
