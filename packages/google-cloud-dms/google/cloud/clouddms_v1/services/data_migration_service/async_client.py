@@ -230,6 +230,26 @@ class DataMigrationServiceAsyncClient:
     ) -> pagers.ListMigrationJobsAsyncPager:
         r"""Lists migration jobs in a given project and location.
 
+        .. code-block::
+
+            from google.cloud import clouddms_v1
+
+            def sample_list_migration_jobs():
+                # Create a client
+                client = clouddms_v1.DataMigrationServiceClient()
+
+                # Initialize request argument(s)
+                request = clouddms_v1.ListMigrationJobsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_migration_jobs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.clouddms_v1.types.ListMigrationJobsRequest, dict]):
                 The request object. Retrieve a list of all migration
@@ -310,6 +330,25 @@ class DataMigrationServiceAsyncClient:
     ) -> clouddms_resources.MigrationJob:
         r"""Gets details of a single migration job.
 
+        .. code-block::
+
+            from google.cloud import clouddms_v1
+
+            def sample_get_migration_job():
+                # Create a client
+                client = clouddms_v1.DataMigrationServiceClient()
+
+                # Initialize request argument(s)
+                request = clouddms_v1.GetMigrationJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_migration_job(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.clouddms_v1.types.GetMigrationJobRequest, dict]):
                 The request object. Request message for
@@ -383,6 +422,39 @@ class DataMigrationServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new migration job in a given project and
         location.
+
+
+        .. code-block::
+
+            from google.cloud import clouddms_v1
+
+            def sample_create_migration_job():
+                # Create a client
+                client = clouddms_v1.DataMigrationServiceClient()
+
+                # Initialize request argument(s)
+                migration_job = clouddms_v1.MigrationJob()
+                migration_job.reverse_ssh_connectivity.vm_ip = "vm_ip_value"
+                migration_job.reverse_ssh_connectivity.vm_port = 775
+                migration_job.type_ = "CONTINUOUS"
+                migration_job.source = "source_value"
+                migration_job.destination = "destination_value"
+
+                request = clouddms_v1.CreateMigrationJobRequest(
+                    parent="parent_value",
+                    migration_job_id="migration_job_id_value",
+                    migration_job=migration_job,
+                )
+
+                # Make the request
+                operation = client.create_migration_job(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.clouddms_v1.types.CreateMigrationJobRequest, dict]):
@@ -488,6 +560,36 @@ class DataMigrationServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single migration job.
 
+        .. code-block::
+
+            from google.cloud import clouddms_v1
+
+            def sample_update_migration_job():
+                # Create a client
+                client = clouddms_v1.DataMigrationServiceClient()
+
+                # Initialize request argument(s)
+                migration_job = clouddms_v1.MigrationJob()
+                migration_job.reverse_ssh_connectivity.vm_ip = "vm_ip_value"
+                migration_job.reverse_ssh_connectivity.vm_port = 775
+                migration_job.type_ = "CONTINUOUS"
+                migration_job.source = "source_value"
+                migration_job.destination = "destination_value"
+
+                request = clouddms_v1.UpdateMigrationJobRequest(
+                    migration_job=migration_job,
+                )
+
+                # Make the request
+                operation = client.update_migration_job(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.clouddms_v1.types.UpdateMigrationJobRequest, dict]):
                 The request object. Request message for
@@ -584,6 +686,29 @@ class DataMigrationServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single migration job.
 
+        .. code-block::
+
+            from google.cloud import clouddms_v1
+
+            def sample_delete_migration_job():
+                # Create a client
+                client = clouddms_v1.DataMigrationServiceClient()
+
+                # Initialize request argument(s)
+                request = clouddms_v1.DeleteMigrationJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_migration_job(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.clouddms_v1.types.DeleteMigrationJobRequest, dict]):
                 The request object. Request message for
@@ -675,6 +800,28 @@ class DataMigrationServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Start an already created migration job.
 
+        .. code-block::
+
+            from google.cloud import clouddms_v1
+
+            def sample_start_migration_job():
+                # Create a client
+                client = clouddms_v1.DataMigrationServiceClient()
+
+                # Initialize request argument(s)
+                request = clouddms_v1.StartMigrationJobRequest(
+                )
+
+                # Make the request
+                operation = client.start_migration_job(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.clouddms_v1.types.StartMigrationJobRequest, dict]):
                 The request object. Request message for
@@ -735,6 +882,28 @@ class DataMigrationServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Stops a running migration job.
+
+        .. code-block::
+
+            from google.cloud import clouddms_v1
+
+            def sample_stop_migration_job():
+                # Create a client
+                client = clouddms_v1.DataMigrationServiceClient()
+
+                # Initialize request argument(s)
+                request = clouddms_v1.StopMigrationJobRequest(
+                )
+
+                # Make the request
+                operation = client.stop_migration_job(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.clouddms_v1.types.StopMigrationJobRequest, dict]):
@@ -797,6 +966,29 @@ class DataMigrationServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Resume a migration job that is currently stopped and
         is resumable (was stopped during CDC phase).
+
+
+        .. code-block::
+
+            from google.cloud import clouddms_v1
+
+            def sample_resume_migration_job():
+                # Create a client
+                client = clouddms_v1.DataMigrationServiceClient()
+
+                # Initialize request argument(s)
+                request = clouddms_v1.ResumeMigrationJobRequest(
+                )
+
+                # Make the request
+                operation = client.resume_migration_job(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.clouddms_v1.types.ResumeMigrationJobRequest, dict]):
@@ -861,6 +1053,29 @@ class DataMigrationServiceAsyncClient:
         destination and promoting the destination to be a
         standalone database.
 
+
+        .. code-block::
+
+            from google.cloud import clouddms_v1
+
+            def sample_promote_migration_job():
+                # Create a client
+                client = clouddms_v1.DataMigrationServiceClient()
+
+                # Initialize request argument(s)
+                request = clouddms_v1.PromoteMigrationJobRequest(
+                )
+
+                # Make the request
+                operation = client.promote_migration_job(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.clouddms_v1.types.PromoteMigrationJobRequest, dict]):
                 The request object. Request message for
@@ -923,6 +1138,29 @@ class DataMigrationServiceAsyncClient:
         r"""Verify a migration job, making sure the destination
         can reach the source and that all configuration and
         prerequisites are met.
+
+
+        .. code-block::
+
+            from google.cloud import clouddms_v1
+
+            def sample_verify_migration_job():
+                # Create a client
+                client = clouddms_v1.DataMigrationServiceClient()
+
+                # Initialize request argument(s)
+                request = clouddms_v1.VerifyMigrationJobRequest(
+                )
+
+                # Make the request
+                operation = client.verify_migration_job(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.clouddms_v1.types.VerifyMigrationJobRequest, dict]):
@@ -987,6 +1225,29 @@ class DataMigrationServiceAsyncClient:
         the destination instance to its original state and
         starting the migration process from scratch.
 
+
+        .. code-block::
+
+            from google.cloud import clouddms_v1
+
+            def sample_restart_migration_job():
+                # Create a client
+                client = clouddms_v1.DataMigrationServiceClient()
+
+                # Initialize request argument(s)
+                request = clouddms_v1.RestartMigrationJobRequest(
+                )
+
+                # Make the request
+                operation = client.restart_migration_job(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.clouddms_v1.types.RestartMigrationJobRequest, dict]):
                 The request object. Request message for
@@ -1049,6 +1310,30 @@ class DataMigrationServiceAsyncClient:
         r"""Generate a SSH configuration script to configure the
         reverse SSH connectivity.
 
+
+        .. code-block::
+
+            from google.cloud import clouddms_v1
+
+            def sample_generate_ssh_script():
+                # Create a client
+                client = clouddms_v1.DataMigrationServiceClient()
+
+                # Initialize request argument(s)
+                vm_creation_config = clouddms_v1.VmCreationConfig()
+                vm_creation_config.vm_machine_type = "vm_machine_type_value"
+
+                request = clouddms_v1.GenerateSshScriptRequest(
+                    vm_creation_config=vm_creation_config,
+                    vm="vm_value",
+                )
+
+                # Make the request
+                response = client.generate_ssh_script(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.clouddms_v1.types.GenerateSshScriptRequest, dict]):
                 The request object. Request message for
@@ -1101,6 +1386,27 @@ class DataMigrationServiceAsyncClient:
     ) -> pagers.ListConnectionProfilesAsyncPager:
         r"""Retrieve a list of all connection profiles in a given
         project and location.
+
+
+        .. code-block::
+
+            from google.cloud import clouddms_v1
+
+            def sample_list_connection_profiles():
+                # Create a client
+                client = clouddms_v1.DataMigrationServiceClient()
+
+                # Initialize request argument(s)
+                request = clouddms_v1.ListConnectionProfilesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_connection_profiles(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.clouddms_v1.types.ListConnectionProfilesRequest, dict]):
@@ -1182,6 +1488,25 @@ class DataMigrationServiceAsyncClient:
     ) -> clouddms_resources.ConnectionProfile:
         r"""Gets details of a single connection profile.
 
+        .. code-block::
+
+            from google.cloud import clouddms_v1
+
+            def sample_get_connection_profile():
+                # Create a client
+                client = clouddms_v1.DataMigrationServiceClient()
+
+                # Initialize request argument(s)
+                request = clouddms_v1.GetConnectionProfileRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_connection_profile(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.clouddms_v1.types.GetConnectionProfileRequest, dict]):
                 The request object. Request message for
@@ -1253,6 +1578,38 @@ class DataMigrationServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new connection profile in a given project
         and location.
+
+
+        .. code-block::
+
+            from google.cloud import clouddms_v1
+
+            def sample_create_connection_profile():
+                # Create a client
+                client = clouddms_v1.DataMigrationServiceClient()
+
+                # Initialize request argument(s)
+                connection_profile = clouddms_v1.ConnectionProfile()
+                connection_profile.mysql.host = "host_value"
+                connection_profile.mysql.port = 453
+                connection_profile.mysql.username = "username_value"
+                connection_profile.mysql.password = "password_value"
+
+                request = clouddms_v1.CreateConnectionProfileRequest(
+                    parent="parent_value",
+                    connection_profile_id="connection_profile_id_value",
+                    connection_profile=connection_profile,
+                )
+
+                # Make the request
+                operation = client.create_connection_profile(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.clouddms_v1.types.CreateConnectionProfileRequest, dict]):
@@ -1356,6 +1713,36 @@ class DataMigrationServiceAsyncClient:
         r"""Update the configuration of a single connection
         profile.
 
+
+        .. code-block::
+
+            from google.cloud import clouddms_v1
+
+            def sample_update_connection_profile():
+                # Create a client
+                client = clouddms_v1.DataMigrationServiceClient()
+
+                # Initialize request argument(s)
+                connection_profile = clouddms_v1.ConnectionProfile()
+                connection_profile.mysql.host = "host_value"
+                connection_profile.mysql.port = 453
+                connection_profile.mysql.username = "username_value"
+                connection_profile.mysql.password = "password_value"
+
+                request = clouddms_v1.UpdateConnectionProfileRequest(
+                    connection_profile=connection_profile,
+                )
+
+                # Make the request
+                operation = client.update_connection_profile(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.clouddms_v1.types.UpdateConnectionProfileRequest, dict]):
                 The request object. Request message for
@@ -1453,6 +1840,30 @@ class DataMigrationServiceAsyncClient:
         connection profile. A connection profile can only be
         deleted if it is not in use by any active migration
         jobs.
+
+
+        .. code-block::
+
+            from google.cloud import clouddms_v1
+
+            def sample_delete_connection_profile():
+                # Create a client
+                client = clouddms_v1.DataMigrationServiceClient()
+
+                # Initialize request argument(s)
+                request = clouddms_v1.DeleteConnectionProfileRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_connection_profile(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.clouddms_v1.types.DeleteConnectionProfileRequest, dict]):
