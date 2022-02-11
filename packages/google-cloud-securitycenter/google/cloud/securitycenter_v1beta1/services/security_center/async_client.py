@@ -246,6 +246,25 @@ class SecurityCenterAsyncClient:
     ) -> gcs_source.Source:
         r"""Creates a source.
 
+        .. code-block::
+
+            from google.cloud import securitycenter_v1beta1
+
+            def sample_create_source():
+                # Create a client
+                client = securitycenter_v1beta1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1beta1.CreateSourceRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_source(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.securitycenter_v1beta1.types.CreateSourceRequest, dict]):
                 The request object. Request message for creating a
@@ -333,6 +352,27 @@ class SecurityCenterAsyncClient:
     ) -> gcs_finding.Finding:
         r"""Creates a finding. The corresponding source must
         exist for finding creation to succeed.
+
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1beta1
+
+            def sample_create_finding():
+                # Create a client
+                client = securitycenter_v1beta1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1beta1.CreateFindingRequest(
+                    parent="parent_value",
+                    finding_id="finding_id_value",
+                )
+
+                # Make the request
+                response = client.create_finding(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.securitycenter_v1beta1.types.CreateFindingRequest, dict]):
@@ -435,6 +475,26 @@ class SecurityCenterAsyncClient:
     ) -> policy_pb2.Policy:
         r"""Gets the access control policy on the specified
         Source.
+
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1beta1
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = securitycenter_v1beta1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1beta1.GetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
@@ -574,6 +634,25 @@ class SecurityCenterAsyncClient:
     ) -> organization_settings.OrganizationSettings:
         r"""Gets the settings for an organization.
 
+        .. code-block::
+
+            from google.cloud import securitycenter_v1beta1
+
+            def sample_get_organization_settings():
+                # Create a client
+                client = securitycenter_v1beta1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1beta1.GetOrganizationSettingsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_organization_settings(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.securitycenter_v1beta1.types.GetOrganizationSettingsRequest, dict]):
                 The request object. Request message for getting
@@ -656,6 +735,25 @@ class SecurityCenterAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> source.Source:
         r"""Gets a source.
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1beta1
+
+            def sample_get_source():
+                # Create a client
+                client = securitycenter_v1beta1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1beta1.GetSourceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_source(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.securitycenter_v1beta1.types.GetSourceRequest, dict]):
@@ -743,6 +841,28 @@ class SecurityCenterAsyncClient:
         r"""Filters an organization's assets and  groups them by
         their specified properties.
 
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1beta1
+
+            def sample_group_assets():
+                # Create a client
+                client = securitycenter_v1beta1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1beta1.GroupAssetsRequest(
+                    parent="parent_value",
+                    group_by="group_by_value",
+                )
+
+                # Make the request
+                page_result = client.group_assets(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.securitycenter_v1beta1.types.GroupAssetsRequest, dict]):
                 The request object. Request message for grouping by
@@ -817,6 +937,28 @@ class SecurityCenterAsyncClient:
         To group across all sources provide a ``-`` as the source id.
         Example:
         /v1beta1/organizations/{organization_id}/sources/-/findings
+
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1beta1
+
+            def sample_group_findings():
+                # Create a client
+                client = securitycenter_v1beta1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1beta1.GroupFindingsRequest(
+                    parent="parent_value",
+                    group_by="group_by_value",
+                )
+
+                # Make the request
+                page_result = client.group_findings(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.securitycenter_v1beta1.types.GroupFindingsRequest, dict]):
@@ -928,6 +1070,26 @@ class SecurityCenterAsyncClient:
     ) -> pagers.ListAssetsAsyncPager:
         r"""Lists an organization's assets.
 
+        .. code-block::
+
+            from google.cloud import securitycenter_v1beta1
+
+            def sample_list_assets():
+                # Create a client
+                client = securitycenter_v1beta1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1beta1.ListAssetsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_assets(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.securitycenter_v1beta1.types.ListAssetsRequest, dict]):
                 The request object. Request message for listing assets.
@@ -998,6 +1160,27 @@ class SecurityCenterAsyncClient:
         Example:
         /v1beta1/organizations/{organization_id}/sources/-/findings
 
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1beta1
+
+            def sample_list_findings():
+                # Create a client
+                client = securitycenter_v1beta1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1beta1.ListFindingsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_findings(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.securitycenter_v1beta1.types.ListFindingsRequest, dict]):
                 The request object. Request message for listing
@@ -1066,6 +1249,26 @@ class SecurityCenterAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSourcesAsyncPager:
         r"""Lists all sources belonging to an organization.
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1beta1
+
+            def sample_list_sources():
+                # Create a client
+                client = securitycenter_v1beta1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1beta1.ListSourcesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_sources(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.securitycenter_v1beta1.types.ListSourcesRequest, dict]):
@@ -1161,6 +1364,30 @@ class SecurityCenterAsyncClient:
         organization. If it is called too frequently the caller will
         receive a TOO_MANY_REQUESTS error.
 
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1beta1
+
+            def sample_run_asset_discovery():
+                # Create a client
+                client = securitycenter_v1beta1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1beta1.RunAssetDiscoveryRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.run_asset_discovery(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.securitycenter_v1beta1.types.RunAssetDiscoveryRequest, dict]):
                 The request object. Request message for running asset
@@ -1255,6 +1482,26 @@ class SecurityCenterAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> finding.Finding:
         r"""Updates the state of a finding.
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1beta1
+
+            def sample_set_finding_state():
+                # Create a client
+                client = securitycenter_v1beta1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1beta1.SetFindingStateRequest(
+                    name="name_value",
+                    state="INACTIVE",
+                )
+
+                # Make the request
+                response = client.set_finding_state(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.securitycenter_v1beta1.types.SetFindingStateRequest, dict]):
@@ -1355,6 +1602,26 @@ class SecurityCenterAsyncClient:
     ) -> policy_pb2.Policy:
         r"""Sets the access control policy on the specified
         Source.
+
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1beta1
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = securitycenter_v1beta1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1beta1.SetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
@@ -1484,6 +1751,27 @@ class SecurityCenterAsyncClient:
         r"""Returns the permissions that a caller has on the
         specified source.
 
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1beta1
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = securitycenter_v1beta1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1beta1.TestIamPermissionsRequest(
+                    resource="resource_value",
+                    permissions=['permissions_value_1', 'permissions_value_2'],
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
                 The request object. Request message for
@@ -1577,6 +1865,25 @@ class SecurityCenterAsyncClient:
         r"""Creates or updates a finding. The corresponding
         source must exist for a finding creation to succeed.
 
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1beta1
+
+            def sample_update_finding():
+                # Create a client
+                client = securitycenter_v1beta1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1beta1.UpdateFindingRequest(
+                )
+
+                # Make the request
+                response = client.update_finding(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.securitycenter_v1beta1.types.UpdateFindingRequest, dict]):
                 The request object. Request message for updating or
@@ -1664,6 +1971,24 @@ class SecurityCenterAsyncClient:
     ) -> gcs_organization_settings.OrganizationSettings:
         r"""Updates an organization's settings.
 
+        .. code-block::
+
+            from google.cloud import securitycenter_v1beta1
+
+            def sample_update_organization_settings():
+                # Create a client
+                client = securitycenter_v1beta1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1beta1.UpdateOrganizationSettingsRequest(
+                )
+
+                # Make the request
+                response = client.update_organization_settings(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.securitycenter_v1beta1.types.UpdateOrganizationSettingsRequest, dict]):
                 The request object. Request message for updating an
@@ -1737,6 +2062,24 @@ class SecurityCenterAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_source.Source:
         r"""Updates a source.
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1beta1
+
+            def sample_update_source():
+                # Create a client
+                client = securitycenter_v1beta1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1beta1.UpdateSourceRequest(
+                )
+
+                # Make the request
+                response = client.update_source(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.securitycenter_v1beta1.types.UpdateSourceRequest, dict]):
@@ -1814,6 +2157,24 @@ class SecurityCenterAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_security_marks.SecurityMarks:
         r"""Updates security marks.
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1beta1
+
+            def sample_update_security_marks():
+                # Create a client
+                client = securitycenter_v1beta1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1beta1.UpdateSecurityMarksRequest(
+                )
+
+                # Make the request
+                response = client.update_security_marks(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.securitycenter_v1beta1.types.UpdateSecurityMarksRequest, dict]):

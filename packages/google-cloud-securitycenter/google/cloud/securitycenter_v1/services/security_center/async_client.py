@@ -272,6 +272,30 @@ class SecurityCenterAsyncClient:
         organization, folder or project. The findings matched by
         the filter will be muted after the LRO is done.
 
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_bulk_mute_findings():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.BulkMuteFindingsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.bulk_mute_findings(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.securitycenter_v1.types.BulkMuteFindingsRequest, dict]):
                 The request object. Request message for bulk findings
@@ -364,6 +388,25 @@ class SecurityCenterAsyncClient:
     ) -> gcs_source.Source:
         r"""Creates a source.
 
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_create_source():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.CreateSourceRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_source(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.securitycenter_v1.types.CreateSourceRequest, dict]):
                 The request object. Request message for creating a
@@ -451,6 +494,27 @@ class SecurityCenterAsyncClient:
     ) -> gcs_finding.Finding:
         r"""Creates a finding. The corresponding source must
         exist for finding creation to succeed.
+
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_create_finding():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.CreateFindingRequest(
+                    parent="parent_value",
+                    finding_id="finding_id_value",
+                )
+
+                # Make the request
+                response = client.create_finding(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.securitycenter_v1.types.CreateFindingRequest, dict]):
@@ -555,6 +619,30 @@ class SecurityCenterAsyncClient:
     ) -> gcs_mute_config.MuteConfig:
         r"""Creates a mute config.
 
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_create_mute_config():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                mute_config = securitycenter_v1.MuteConfig()
+                mute_config.filter = "filter_value"
+
+                request = securitycenter_v1.CreateMuteConfigRequest(
+                    parent="parent_value",
+                    mute_config=mute_config,
+                    mute_config_id="mute_config_id_value",
+                )
+
+                # Make the request
+                response = client.create_mute_config(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.securitycenter_v1.types.CreateMuteConfigRequest, dict]):
                 The request object. Request message for creating a mute
@@ -653,6 +741,26 @@ class SecurityCenterAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_notification_config.NotificationConfig:
         r"""Creates a notification config.
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_create_notification_config():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.CreateNotificationConfigRequest(
+                    parent="parent_value",
+                    config_id="config_id_value",
+                )
+
+                # Make the request
+                response = client.create_notification_config(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.securitycenter_v1.types.CreateNotificationConfigRequest, dict]):
@@ -753,6 +861,22 @@ class SecurityCenterAsyncClient:
     ) -> None:
         r"""Deletes an existing mute config.
 
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_delete_mute_config():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.DeleteMuteConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_mute_config(request=request)
+
         Args:
             request (Union[google.cloud.securitycenter_v1.types.DeleteMuteConfigRequest, dict]):
                 The request object. Request message for deleting a mute
@@ -821,6 +945,22 @@ class SecurityCenterAsyncClient:
     ) -> None:
         r"""Deletes a notification config.
 
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_delete_notification_config():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.DeleteNotificationConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_notification_config(request=request)
+
         Args:
             request (Union[google.cloud.securitycenter_v1.types.DeleteNotificationConfigRequest, dict]):
                 The request object. Request message for deleting a
@@ -886,6 +1026,26 @@ class SecurityCenterAsyncClient:
     ) -> policy_pb2.Policy:
         r"""Gets the access control policy on the specified
         Source.
+
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.GetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
@@ -1023,6 +1183,25 @@ class SecurityCenterAsyncClient:
     ) -> mute_config.MuteConfig:
         r"""Gets a mute config.
 
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_get_mute_config():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.GetMuteConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_mute_config(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.securitycenter_v1.types.GetMuteConfigRequest, dict]):
                 The request object. Request message for retrieving a
@@ -1099,6 +1278,25 @@ class SecurityCenterAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> notification_config.NotificationConfig:
         r"""Gets a notification config.
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_get_notification_config():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.GetNotificationConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_notification_config(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.securitycenter_v1.types.GetNotificationConfigRequest, dict]):
@@ -1188,6 +1386,25 @@ class SecurityCenterAsyncClient:
     ) -> organization_settings.OrganizationSettings:
         r"""Gets the settings for an organization.
 
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_get_organization_settings():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.GetOrganizationSettingsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_organization_settings(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.securitycenter_v1.types.GetOrganizationSettingsRequest, dict]):
                 The request object. Request message for getting
@@ -1270,6 +1487,25 @@ class SecurityCenterAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> source.Source:
         r"""Gets a source.
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_get_source():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.GetSourceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_source(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.securitycenter_v1.types.GetSourceRequest, dict]):
@@ -1357,6 +1593,28 @@ class SecurityCenterAsyncClient:
         r"""Filters an organization's assets and  groups them by
         their specified properties.
 
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_group_assets():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.GroupAssetsRequest(
+                    parent="parent_value",
+                    group_by="group_by_value",
+                )
+
+                # Make the request
+                page_result = client.group_assets(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.securitycenter_v1.types.GroupAssetsRequest, dict]):
                 The request object. Request message for grouping by
@@ -1432,6 +1690,28 @@ class SecurityCenterAsyncClient:
         Example: /v1/organizations/{organization_id}/sources/-/findings,
         /v1/folders/{folder_id}/sources/-/findings,
         /v1/projects/{project_id}/sources/-/findings
+
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_group_findings():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.GroupFindingsRequest(
+                    parent="parent_value",
+                    group_by="group_by_value",
+                )
+
+                # Make the request
+                page_result = client.group_findings(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.securitycenter_v1.types.GroupFindingsRequest, dict]):
@@ -1552,6 +1832,26 @@ class SecurityCenterAsyncClient:
     ) -> pagers.ListAssetsAsyncPager:
         r"""Lists an organization's assets.
 
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_list_assets():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.ListAssetsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_assets(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.securitycenter_v1.types.ListAssetsRequest, dict]):
                 The request object. Request message for listing assets.
@@ -1621,6 +1921,27 @@ class SecurityCenterAsyncClient:
         To list across all sources provide a ``-`` as the source id.
         Example: /v1/organizations/{organization_id}/sources/-/findings
 
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_list_findings():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.ListFindingsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_findings(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.securitycenter_v1.types.ListFindingsRequest, dict]):
                 The request object. Request message for listing
@@ -1689,6 +2010,26 @@ class SecurityCenterAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMuteConfigsAsyncPager:
         r"""Lists mute configs.
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_list_mute_configs():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.ListMuteConfigsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_mute_configs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.securitycenter_v1.types.ListMuteConfigsRequest, dict]):
@@ -1774,6 +2115,26 @@ class SecurityCenterAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListNotificationConfigsAsyncPager:
         r"""Lists notification configs.
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_list_notification_configs():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.ListNotificationConfigsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_notification_configs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.securitycenter_v1.types.ListNotificationConfigsRequest, dict]):
@@ -1865,6 +2226,26 @@ class SecurityCenterAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSourcesAsyncPager:
         r"""Lists all sources belonging to an organization.
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_list_sources():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.ListSourcesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_sources(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.securitycenter_v1.types.ListSourcesRequest, dict]):
@@ -1961,6 +2342,30 @@ class SecurityCenterAsyncClient:
         organization. If it is called too frequently the caller will
         receive a TOO_MANY_REQUESTS error.
 
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_run_asset_discovery():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.RunAssetDiscoveryRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.run_asset_discovery(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.securitycenter_v1.types.RunAssetDiscoveryRequest, dict]):
                 The request object. Request message for running asset
@@ -2045,6 +2450,26 @@ class SecurityCenterAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> finding.Finding:
         r"""Updates the state of a finding.
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_set_finding_state():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.SetFindingStateRequest(
+                    name="name_value",
+                    state="INACTIVE",
+                )
+
+                # Make the request
+                response = client.set_finding_state(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.securitycenter_v1.types.SetFindingStateRequest, dict]):
@@ -2146,6 +2571,26 @@ class SecurityCenterAsyncClient:
     ) -> finding.Finding:
         r"""Updates the mute state of a finding.
 
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_set_mute():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.SetMuteRequest(
+                    name="name_value",
+                    mute="UNDEFINED",
+                )
+
+                # Make the request
+                response = client.set_mute(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.securitycenter_v1.types.SetMuteRequest, dict]):
                 The request object. Request message for updating a
@@ -2238,6 +2683,26 @@ class SecurityCenterAsyncClient:
     ) -> policy_pb2.Policy:
         r"""Sets the access control policy on the specified
         Source.
+
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.SetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
@@ -2367,6 +2832,27 @@ class SecurityCenterAsyncClient:
         r"""Returns the permissions that a caller has on the
         specified source.
 
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.TestIamPermissionsRequest(
+                    resource="resource_value",
+                    permissions=['permissions_value_1', 'permissions_value_2'],
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
                 The request object. Request message for
@@ -2460,6 +2946,24 @@ class SecurityCenterAsyncClient:
     ) -> gcs_external_system.ExternalSystem:
         r"""Updates external system. This is for a given finding.
 
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_update_external_system():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.UpdateExternalSystemRequest(
+                )
+
+                # Make the request
+                response = client.update_external_system(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.securitycenter_v1.types.UpdateExternalSystemRequest, dict]):
                 The request object. Request message for updating a
@@ -2544,6 +3048,25 @@ class SecurityCenterAsyncClient:
     ) -> gcs_finding.Finding:
         r"""Creates or updates a finding. The corresponding
         source must exist for a finding creation to succeed.
+
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_update_finding():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.UpdateFindingRequest(
+                )
+
+                # Make the request
+                response = client.update_finding(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.securitycenter_v1.types.UpdateFindingRequest, dict]):
@@ -2630,6 +3153,28 @@ class SecurityCenterAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_mute_config.MuteConfig:
         r"""Updates a mute config.
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_update_mute_config():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                mute_config = securitycenter_v1.MuteConfig()
+                mute_config.filter = "filter_value"
+
+                request = securitycenter_v1.UpdateMuteConfigRequest(
+                    mute_config=mute_config,
+                )
+
+                # Make the request
+                response = client.update_mute_config(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.securitycenter_v1.types.UpdateMuteConfigRequest, dict]):
@@ -2718,6 +3263,25 @@ class SecurityCenterAsyncClient:
     ) -> gcs_notification_config.NotificationConfig:
         r"""Updates a notification config. The following update fields are
         allowed: description, pubsub_topic, streaming_config.filter
+
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_update_notification_config():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.UpdateNotificationConfigRequest(
+                )
+
+                # Make the request
+                response = client.update_notification_config(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.securitycenter_v1.types.UpdateNotificationConfigRequest, dict]):
@@ -2809,6 +3373,24 @@ class SecurityCenterAsyncClient:
     ) -> gcs_organization_settings.OrganizationSettings:
         r"""Updates an organization's settings.
 
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_update_organization_settings():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.UpdateOrganizationSettingsRequest(
+                )
+
+                # Make the request
+                response = client.update_organization_settings(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.securitycenter_v1.types.UpdateOrganizationSettingsRequest, dict]):
                 The request object. Request message for updating an
@@ -2882,6 +3464,24 @@ class SecurityCenterAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_source.Source:
         r"""Updates a source.
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_update_source():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.UpdateSourceRequest(
+                )
+
+                # Make the request
+                response = client.update_source(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.securitycenter_v1.types.UpdateSourceRequest, dict]):
@@ -2959,6 +3559,24 @@ class SecurityCenterAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_security_marks.SecurityMarks:
         r"""Updates security marks.
+
+        .. code-block::
+
+            from google.cloud import securitycenter_v1
+
+            def sample_update_security_marks():
+                # Create a client
+                client = securitycenter_v1.SecurityCenterClient()
+
+                # Initialize request argument(s)
+                request = securitycenter_v1.UpdateSecurityMarksRequest(
+                )
+
+                # Make the request
+                response = client.update_security_marks(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.securitycenter_v1.types.UpdateSecurityMarksRequest, dict]):
