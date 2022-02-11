@@ -399,6 +399,28 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
         r"""Returns of a list of traces that match the specified
         filter conditions.
 
+
+
+        .. code-block::
+
+            from google.cloud import trace_v1
+
+            def sample_list_traces():
+                # Create a client
+                client = trace_v1.TraceServiceClient()
+
+                # Initialize request argument(s)
+                request = trace_v1.ListTracesRequest(
+                    project_id="project_id_value",
+                )
+
+                # Make the request
+                page_result = client.list_traces(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.trace_v1.types.ListTracesRequest, dict]):
                 The request object. The request message for the
@@ -473,6 +495,27 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> trace.Trace:
         r"""Gets a single trace by its ID.
+
+
+        .. code-block::
+
+            from google.cloud import trace_v1
+
+            def sample_get_trace():
+                # Create a client
+                client = trace_v1.TraceServiceClient()
+
+                # Initialize request argument(s)
+                request = trace_v1.GetTraceRequest(
+                    project_id="project_id_value",
+                    trace_id="trace_id_value",
+                )
+
+                # Make the request
+                response = client.get_trace(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.trace_v1.types.GetTraceRequest, dict]):
@@ -555,6 +598,24 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
         provided values, and any new fields provided are merged
         with the existing trace data. If the ID does not match,
         a new trace is created.
+
+
+
+        .. code-block::
+
+            from google.cloud import trace_v1
+
+            def sample_patch_traces():
+                # Create a client
+                client = trace_v1.TraceServiceClient()
+
+                # Initialize request argument(s)
+                request = trace_v1.PatchTracesRequest(
+                    project_id="project_id_value",
+                )
+
+                # Make the request
+                client.patch_traces(request=request)
 
         Args:
             request (Union[google.cloud.trace_v1.types.PatchTracesRequest, dict]):

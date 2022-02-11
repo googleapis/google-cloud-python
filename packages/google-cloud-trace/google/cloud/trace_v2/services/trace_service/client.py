@@ -419,6 +419,29 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
         r"""Sends new spans to new or existing traces. You cannot
         update existing spans.
 
+
+
+        .. code-block::
+
+            from google.cloud import trace_v2
+
+            def sample_batch_write_spans():
+                # Create a client
+                client = trace_v2.TraceServiceClient()
+
+                # Initialize request argument(s)
+                spans = trace_v2.Span()
+                spans.name = "name_value"
+                spans.span_id = "span_id_value"
+
+                request = trace_v2.BatchWriteSpansRequest(
+                    name="name_value",
+                    spans=spans,
+                )
+
+                # Make the request
+                client.batch_write_spans(request=request)
+
         Args:
             request (Union[google.cloud.trace_v2.types.BatchWriteSpansRequest, dict]):
                 The request object. The request message for the
@@ -491,6 +514,27 @@ class TraceServiceClient(metaclass=TraceServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> trace.Span:
         r"""Creates a new span.
+
+
+        .. code-block::
+
+            from google.cloud import trace_v2
+
+            def sample_create_span():
+                # Create a client
+                client = trace_v2.TraceServiceClient()
+
+                # Initialize request argument(s)
+                request = trace_v2.Span(
+                    name="name_value",
+                    span_id="span_id_value",
+                )
+
+                # Make the request
+                response = client.create_span(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.trace_v2.types.Span, dict]):

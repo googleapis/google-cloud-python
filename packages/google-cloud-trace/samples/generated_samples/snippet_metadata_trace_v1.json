@@ -1,0 +1,267 @@
+{
+  "snippets": [
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "TraceService"
+          },
+          "shortName": "GetTrace"
+        }
+      },
+      "file": "cloudtrace_generated_trace_v1_trace_service_get_trace_async.py",
+      "regionTag": "cloudtrace_generated_trace_v1_TraceService_GetTrace_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "TraceService"
+          },
+          "shortName": "GetTrace"
+        }
+      },
+      "file": "cloudtrace_generated_trace_v1_trace_service_get_trace_sync.py",
+      "regionTag": "cloudtrace_generated_trace_v1_TraceService_GetTrace_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "TraceService"
+          },
+          "shortName": "ListTraces"
+        }
+      },
+      "file": "cloudtrace_generated_trace_v1_trace_service_list_traces_async.py",
+      "regionTag": "cloudtrace_generated_trace_v1_TraceService_ListTraces_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "TraceService"
+          },
+          "shortName": "ListTraces"
+        }
+      },
+      "file": "cloudtrace_generated_trace_v1_trace_service_list_traces_sync.py",
+      "regionTag": "cloudtrace_generated_trace_v1_TraceService_ListTraces_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "TraceService"
+          },
+          "shortName": "PatchTraces"
+        }
+      },
+      "file": "cloudtrace_generated_trace_v1_trace_service_patch_traces_async.py",
+      "regionTag": "cloudtrace_generated_trace_v1_TraceService_PatchTraces_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "TraceService"
+          },
+          "shortName": "PatchTraces"
+        }
+      },
+      "file": "cloudtrace_generated_trace_v1_trace_service_patch_traces_sync.py",
+      "regionTag": "cloudtrace_generated_trace_v1_TraceService_PatchTraces_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    }
+  ]
+}
