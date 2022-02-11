@@ -459,6 +459,28 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         r"""Lists all instances in a project for either a
         specified location or for all locations.
 
+
+
+        .. code-block::
+
+            from google.cloud import filestore_v1
+
+            def sample_list_instances():
+                # Create a client
+                client = filestore_v1.CloudFilestoreManagerClient()
+
+                # Initialize request argument(s)
+                request = filestore_v1.ListInstancesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_instances(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.filestore_v1.types.ListInstancesRequest, dict]):
                 The request object. ListInstancesRequest lists
@@ -543,6 +565,26 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
     ) -> cloud_filestore_service.Instance:
         r"""Gets the details of a specific instance.
 
+
+        .. code-block::
+
+            from google.cloud import filestore_v1
+
+            def sample_get_instance():
+                # Create a client
+                client = filestore_v1.CloudFilestoreManagerClient()
+
+                # Initialize request argument(s)
+                request = filestore_v1.GetInstanceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_instance(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.filestore_v1.types.GetInstanceRequest, dict]):
                 The request object. GetInstanceRequest gets the state of
@@ -617,6 +659,32 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         instance needs to be equal to or larger than the
         capacity of the backup (and also equal to or larger than
         the minimum capacity of the tier).
+
+
+
+        .. code-block::
+
+            from google.cloud import filestore_v1
+
+            def sample_create_instance():
+                # Create a client
+                client = filestore_v1.CloudFilestoreManagerClient()
+
+                # Initialize request argument(s)
+                request = filestore_v1.CreateInstanceRequest(
+                    parent="parent_value",
+                    instance_id="instance_id_value",
+                )
+
+                # Make the request
+                operation = client.create_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.filestore_v1.types.CreateInstanceRequest, dict]):
@@ -722,6 +790,29 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
     ) -> operation.Operation:
         r"""Updates the settings of a specific instance.
 
+
+        .. code-block::
+
+            from google.cloud import filestore_v1
+
+            def sample_update_instance():
+                # Create a client
+                client = filestore_v1.CloudFilestoreManagerClient()
+
+                # Initialize request argument(s)
+                request = filestore_v1.UpdateInstanceRequest(
+                )
+
+                # Make the request
+                operation = client.update_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.filestore_v1.types.UpdateInstanceRequest, dict]):
                 The request object. UpdateInstanceRequest updates the
@@ -821,6 +912,33 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         larger than the capacity of the backup (and also equal
         to or larger than the minimum capacity of the tier).
 
+
+
+        .. code-block::
+
+            from google.cloud import filestore_v1
+
+            def sample_restore_instance():
+                # Create a client
+                client = filestore_v1.CloudFilestoreManagerClient()
+
+                # Initialize request argument(s)
+                request = filestore_v1.RestoreInstanceRequest(
+                    source_backup="source_backup_value",
+                    name="name_value",
+                    file_share="file_share_value",
+                )
+
+                # Make the request
+                operation = client.restore_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.filestore_v1.types.RestoreInstanceRequest, dict]):
                 The request object. RestoreInstanceRequest restores an
@@ -882,6 +1000,30 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes an instance.
+
+
+        .. code-block::
+
+            from google.cloud import filestore_v1
+
+            def sample_delete_instance():
+                # Create a client
+                client = filestore_v1.CloudFilestoreManagerClient()
+
+                # Initialize request argument(s)
+                request = filestore_v1.DeleteInstanceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.filestore_v1.types.DeleteInstanceRequest, dict]):
@@ -976,6 +1118,28 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         r"""Lists all backups in a project for either a specified
         location or for all locations.
 
+
+
+        .. code-block::
+
+            from google.cloud import filestore_v1
+
+            def sample_list_backups():
+                # Create a client
+                client = filestore_v1.CloudFilestoreManagerClient()
+
+                # Initialize request argument(s)
+                request = filestore_v1.ListBackupsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_backups(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.filestore_v1.types.ListBackupsRequest, dict]):
                 The request object. ListBackupsRequest lists backups.
@@ -1059,6 +1223,26 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
     ) -> cloud_filestore_service.Backup:
         r"""Gets the details of a specific backup.
 
+
+        .. code-block::
+
+            from google.cloud import filestore_v1
+
+            def sample_get_backup():
+                # Create a client
+                client = filestore_v1.CloudFilestoreManagerClient()
+
+                # Initialize request argument(s)
+                request = filestore_v1.GetBackupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_backup(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.filestore_v1.types.GetBackupRequest, dict]):
                 The request object. GetBackupRequest gets the state of a
@@ -1129,6 +1313,31 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a backup.
+
+
+        .. code-block::
+
+            from google.cloud import filestore_v1
+
+            def sample_create_backup():
+                # Create a client
+                client = filestore_v1.CloudFilestoreManagerClient()
+
+                # Initialize request argument(s)
+                request = filestore_v1.CreateBackupRequest(
+                    parent="parent_value",
+                    backup_id="backup_id_value",
+                )
+
+                # Make the request
+                operation = client.create_backup(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.filestore_v1.types.CreateBackupRequest, dict]):
@@ -1238,6 +1447,30 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
     ) -> operation.Operation:
         r"""Deletes a backup.
 
+
+        .. code-block::
+
+            from google.cloud import filestore_v1
+
+            def sample_delete_backup():
+                # Create a client
+                client = filestore_v1.CloudFilestoreManagerClient()
+
+                # Initialize request argument(s)
+                request = filestore_v1.DeleteBackupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_backup(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.filestore_v1.types.DeleteBackupRequest, dict]):
                 The request object. DeleteBackupRequest deletes a
@@ -1330,6 +1563,29 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the settings of a specific backup.
+
+
+        .. code-block::
+
+            from google.cloud import filestore_v1
+
+            def sample_update_backup():
+                # Create a client
+                client = filestore_v1.CloudFilestoreManagerClient()
+
+                # Initialize request argument(s)
+                request = filestore_v1.UpdateBackupRequest(
+                )
+
+                # Make the request
+                operation = client.update_backup(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.filestore_v1.types.UpdateBackupRequest, dict]):
