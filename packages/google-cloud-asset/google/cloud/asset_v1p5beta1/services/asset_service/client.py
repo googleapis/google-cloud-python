@@ -458,6 +458,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
                 # Make the request
                 page_result = client.list_assets(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 

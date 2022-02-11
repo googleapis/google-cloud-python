@@ -417,7 +417,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 # Make the request
                 response = client.analyze_iam_policy(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -504,6 +504,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:

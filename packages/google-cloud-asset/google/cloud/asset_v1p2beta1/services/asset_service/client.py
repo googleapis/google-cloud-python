@@ -427,7 +427,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 # Make the request
                 response = client.create_feed(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -529,7 +529,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 # Make the request
                 response = client.get_feed(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -628,7 +628,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 # Make the request
                 response = client.list_feeds(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -723,7 +723,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 # Make the request
                 response = client.update_feed(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -821,7 +821,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_feed(request=request)
+                client.delete_feed(request=request)
 
         Args:
             request (Union[google.cloud.asset_v1p2beta1.types.DeleteFeedRequest, dict]):
