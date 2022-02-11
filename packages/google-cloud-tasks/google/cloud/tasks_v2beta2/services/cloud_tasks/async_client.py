@@ -222,6 +222,27 @@ class CloudTasksAsyncClient:
         r"""Lists queues.
         Queues are returned in lexicographical order.
 
+
+        .. code-block::
+
+            from google.cloud import tasks_v2beta2
+
+            def sample_list_queues():
+                # Create a client
+                client = tasks_v2beta2.CloudTasksClient()
+
+                # Initialize request argument(s)
+                request = tasks_v2beta2.ListQueuesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_queues(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.tasks_v2beta2.types.ListQueuesRequest, dict]):
                 The request object. Request message for
@@ -311,6 +332,25 @@ class CloudTasksAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> queue.Queue:
         r"""Gets a queue.
+
+        .. code-block::
+
+            from google.cloud import tasks_v2beta2
+
+            def sample_get_queue():
+                # Create a client
+                client = tasks_v2beta2.CloudTasksClient()
+
+                # Initialize request argument(s)
+                request = tasks_v2beta2.GetQueueRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_queue(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.tasks_v2beta2.types.GetQueueRequest, dict]):
@@ -407,6 +447,26 @@ class CloudTasksAsyncClient:
         to manage your queues. Read `Overview of Queue Management and
         queue.yaml <https://cloud.google.com/tasks/docs/queue-yaml>`__
         before using this method.
+
+
+        .. code-block::
+
+            from google.cloud import tasks_v2beta2
+
+            def sample_create_queue():
+                # Create a client
+                client = tasks_v2beta2.CloudTasksClient()
+
+                # Initialize request argument(s)
+                request = tasks_v2beta2.CreateQueueRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_queue(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.tasks_v2beta2.types.CreateQueueRequest, dict]):
@@ -512,6 +572,25 @@ class CloudTasksAsyncClient:
         to manage your queues. Read `Overview of Queue Management and
         queue.yaml <https://cloud.google.com/tasks/docs/queue-yaml>`__
         before using this method.
+
+
+        .. code-block::
+
+            from google.cloud import tasks_v2beta2
+
+            def sample_update_queue():
+                # Create a client
+                client = tasks_v2beta2.CloudTasksClient()
+
+                # Initialize request argument(s)
+                request = tasks_v2beta2.UpdateQueueRequest(
+                )
+
+                # Make the request
+                response = client.update_queue(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.tasks_v2beta2.types.UpdateQueueRequest, dict]):
@@ -621,6 +700,23 @@ class CloudTasksAsyncClient:
         queue.yaml <https://cloud.google.com/tasks/docs/queue-yaml>`__
         before using this method.
 
+
+        .. code-block::
+
+            from google.cloud import tasks_v2beta2
+
+            def sample_delete_queue():
+                # Create a client
+                client = tasks_v2beta2.CloudTasksClient()
+
+                # Initialize request argument(s)
+                request = tasks_v2beta2.DeleteQueueRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_queue(request=request)
+
         Args:
             request (Union[google.cloud.tasks_v2beta2.types.DeleteQueueRequest, dict]):
                 The request object. Request message for
@@ -699,6 +795,26 @@ class CloudTasksAsyncClient:
         Purge operations can take up to one minute to take
         effect. Tasks might be dispatched before the purge takes
         effect. A purge is irreversible.
+
+
+        .. code-block::
+
+            from google.cloud import tasks_v2beta2
+
+            def sample_purge_queue():
+                # Create a client
+                client = tasks_v2beta2.CloudTasksClient()
+
+                # Initialize request argument(s)
+                request = tasks_v2beta2.PurgeQueueRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.purge_queue(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.tasks_v2beta2.types.PurgeQueueRequest, dict]):
@@ -781,6 +897,26 @@ class CloudTasksAsyncClient:
         Tasks can still be added when the queue is paused. A queue is
         paused if its [state][google.cloud.tasks.v2beta2.Queue.state] is
         [PAUSED][google.cloud.tasks.v2beta2.Queue.State.PAUSED].
+
+
+        .. code-block::
+
+            from google.cloud import tasks_v2beta2
+
+            def sample_pause_queue():
+                # Create a client
+                client = tasks_v2beta2.CloudTasksClient()
+
+                # Initialize request argument(s)
+                request = tasks_v2beta2.PauseQueueRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.pause_queue(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.tasks_v2beta2.types.PauseQueueRequest, dict]):
@@ -871,6 +1007,26 @@ class CloudTasksAsyncClient:
         Scaling
         Risks <https://cloud.google.com/tasks/docs/manage-cloud-task-scaling>`__.
 
+
+        .. code-block::
+
+            from google.cloud import tasks_v2beta2
+
+            def sample_resume_queue():
+                # Create a client
+                client = tasks_v2beta2.CloudTasksClient()
+
+                # Initialize request argument(s)
+                request = tasks_v2beta2.ResumeQueueRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.resume_queue(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.tasks_v2beta2.types.ResumeQueueRequest, dict]):
                 The request object. Request message for
@@ -953,6 +1109,26 @@ class CloudTasksAsyncClient:
         specified resource parent:
 
         -  ``cloudtasks.queues.getIamPolicy``
+
+
+        .. code-block::
+
+            from google.cloud import tasks_v2beta2
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = tasks_v2beta2.CloudTasksClient()
+
+                # Initialize request argument(s)
+                request = tasks_v2beta2.GetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
@@ -1102,6 +1278,26 @@ class CloudTasksAsyncClient:
 
         -  ``cloudtasks.queues.setIamPolicy``
 
+
+        .. code-block::
+
+            from google.cloud import tasks_v2beta2
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = tasks_v2beta2.CloudTasksClient()
+
+                # Initialize request argument(s)
+                request = tasks_v2beta2.SetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
                 The request object. Request message for `SetIamPolicy`
@@ -1237,6 +1433,27 @@ class CloudTasksAsyncClient:
         authorization checking. This operation may "fail open" without
         warning.
 
+
+        .. code-block::
+
+            from google.cloud import tasks_v2beta2
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = tasks_v2beta2.CloudTasksClient()
+
+                # Initialize request argument(s)
+                request = tasks_v2beta2.TestIamPermissionsRequest(
+                    resource="resource_value",
+                    permissions=['permissions_value_1', 'permissions_value_2'],
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
                 The request object. Request message for
@@ -1338,6 +1555,27 @@ class CloudTasksAsyncClient:
         The tasks may be returned in any order. The ordering may change
         at any time.
 
+
+        .. code-block::
+
+            from google.cloud import tasks_v2beta2
+
+            def sample_list_tasks():
+                # Create a client
+                client = tasks_v2beta2.CloudTasksClient()
+
+                # Initialize request argument(s)
+                request = tasks_v2beta2.ListTasksRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_tasks(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.tasks_v2beta2.types.ListTasksRequest, dict]):
                 The request object. Request message for listing tasks
@@ -1429,6 +1667,25 @@ class CloudTasksAsyncClient:
     ) -> task.Task:
         r"""Gets a task.
 
+        .. code-block::
+
+            from google.cloud import tasks_v2beta2
+
+            def sample_get_task():
+                # Create a client
+                client = tasks_v2beta2.CloudTasksClient()
+
+                # Initialize request argument(s)
+                request = tasks_v2beta2.GetTaskRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_task(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.tasks_v2beta2.types.GetTaskRequest, dict]):
                 The request object. Request message for getting a task
@@ -1518,6 +1775,26 @@ class CloudTasksAsyncClient:
            maximum task size is 100KB.
         -  For [pull queues][google.cloud.tasks.v2beta2.PullTarget], the
            maximum task size is 1MB.
+
+
+        .. code-block::
+
+            from google.cloud import tasks_v2beta2
+
+            def sample_create_task():
+                # Create a client
+                client = tasks_v2beta2.CloudTasksClient()
+
+                # Initialize request argument(s)
+                request = tasks_v2beta2.CreateTaskRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_task(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.tasks_v2beta2.types.CreateTaskRequest, dict]):
@@ -1641,6 +1918,23 @@ class CloudTasksAsyncClient:
         A task cannot be deleted if it has completed
         successfully or permanently failed.
 
+
+        .. code-block::
+
+            from google.cloud import tasks_v2beta2
+
+            def sample_delete_task():
+                # Create a client
+                client = tasks_v2beta2.CloudTasksClient()
+
+                # Initialize request argument(s)
+                request = tasks_v2beta2.DeleteTaskRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_task(request=request)
+
         Args:
             request (Union[google.cloud.tasks_v2beta2.types.DeleteTaskRequest, dict]):
                 The request object. Request message for deleting a task
@@ -1739,6 +2033,26 @@ class CloudTasksAsyncClient:
         returned when
         [max_tasks_dispatched_per_second][google.cloud.tasks.v2beta2.RateLimits.max_tasks_dispatched_per_second]
         is exceeded.
+
+
+        .. code-block::
+
+            from google.cloud import tasks_v2beta2
+
+            def sample_lease_tasks():
+                # Create a client
+                client = tasks_v2beta2.CloudTasksClient()
+
+                # Initialize request argument(s)
+                request = tasks_v2beta2.LeaseTasksRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.lease_tasks(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.tasks_v2beta2.types.LeaseTasksRequest, dict]):
@@ -1859,6 +2173,23 @@ class CloudTasksAsyncClient:
         [GetTask][google.cloud.tasks.v2beta2.CloudTasks.GetTask], or
         [ListTasks][google.cloud.tasks.v2beta2.CloudTasks.ListTasks].
 
+
+        .. code-block::
+
+            from google.cloud import tasks_v2beta2
+
+            def sample_acknowledge_task():
+                # Create a client
+                client = tasks_v2beta2.CloudTasksClient()
+
+                # Initialize request argument(s)
+                request = tasks_v2beta2.AcknowledgeTaskRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.acknowledge_task(request=request)
+
         Args:
             request (Union[google.cloud.tasks_v2beta2.types.AcknowledgeTaskRequest, dict]):
                 The request object. Request message for acknowledging a
@@ -1946,6 +2277,26 @@ class CloudTasksAsyncClient:
         duration, starting from now. The new task lease will be returned
         in the task's
         [schedule_time][google.cloud.tasks.v2beta2.Task.schedule_time].
+
+
+        .. code-block::
+
+            from google.cloud import tasks_v2beta2
+
+            def sample_renew_lease():
+                # Create a client
+                client = tasks_v2beta2.CloudTasksClient()
+
+                # Initialize request argument(s)
+                request = tasks_v2beta2.RenewLeaseRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.renew_lease(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.tasks_v2beta2.types.RenewLeaseRequest, dict]):
@@ -2052,6 +2403,26 @@ class CloudTasksAsyncClient:
         to now. This will make the task available to be leased to the
         next caller of
         [LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks].
+
+
+        .. code-block::
+
+            from google.cloud import tasks_v2beta2
+
+            def sample_cancel_lease():
+                # Create a client
+                client = tasks_v2beta2.CloudTasksClient()
+
+                # Initialize request argument(s)
+                request = tasks_v2beta2.CancelLeaseRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.cancel_lease(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.tasks_v2beta2.types.CancelLeaseRequest, dict]):
@@ -2170,6 +2541,26 @@ class CloudTasksAsyncClient:
         [RunTask][google.cloud.tasks.v2beta2.CloudTasks.RunTask] cannot
         be called on a [pull
         task][google.cloud.tasks.v2beta2.PullMessage].
+
+
+        .. code-block::
+
+            from google.cloud import tasks_v2beta2
+
+            def sample_run_task():
+                # Create a client
+                client = tasks_v2beta2.CloudTasksClient()
+
+                # Initialize request argument(s)
+                request = tasks_v2beta2.RunTaskRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.run_task(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.tasks_v2beta2.types.RunTaskRequest, dict]):
