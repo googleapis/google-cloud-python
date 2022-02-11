@@ -396,6 +396,26 @@ class IamCheckerClient(metaclass=IamCheckerClientMeta):
         a specific resource, and explains why the member does or
         does not have that permission.
 
+
+
+        .. code-block::
+
+            from google.cloud import policytroubleshooter_v1
+
+            def sample_troubleshoot_iam_policy():
+                # Create a client
+                client = policytroubleshooter_v1.IamCheckerClient()
+
+                # Initialize request argument(s)
+                request = policytroubleshooter_v1.TroubleshootIamPolicyRequest(
+                )
+
+                # Make the request
+                response = client.troubleshoot_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.policytroubleshooter_v1.types.TroubleshootIamPolicyRequest, dict]):
                 The request object. Request for
