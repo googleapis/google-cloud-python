@@ -433,6 +433,27 @@ class ContainerAnalysisClient(metaclass=ContainerAnalysisClientMeta):
         ``projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]`` for
         occurrences.
 
+
+
+        .. code-block::
+
+            from google.cloud.devtools import containeranalysis_v1
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = containeranalysis_v1.ContainerAnalysisClient()
+
+                # Initialize request argument(s)
+                request = containeranalysis_v1.SetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
                 The request object. Request message for `SetIamPolicy`
@@ -565,6 +586,27 @@ class ContainerAnalysisClient(metaclass=ContainerAnalysisClientMeta):
         ``projects/[PROJECT_ID]/notes/[NOTE_ID]`` for notes and
         ``projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]`` for
         occurrences.
+
+
+
+        .. code-block::
+
+            from google.cloud.devtools import containeranalysis_v1
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = containeranalysis_v1.ContainerAnalysisClient()
+
+                # Initialize request argument(s)
+                request = containeranalysis_v1.GetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
@@ -699,6 +741,28 @@ class ContainerAnalysisClient(metaclass=ContainerAnalysisClientMeta):
         ``projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]`` for
         occurrences.
 
+
+
+        .. code-block::
+
+            from google.cloud.devtools import containeranalysis_v1
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = containeranalysis_v1.ContainerAnalysisClient()
+
+                # Initialize request argument(s)
+                request = containeranalysis_v1.TestIamPermissionsRequest(
+                    resource="resource_value",
+                    permissions=['permissions_value_1', 'permissions_value_2'],
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
                 The request object. Request message for
@@ -783,6 +847,27 @@ class ContainerAnalysisClient(metaclass=ContainerAnalysisClientMeta):
     ) -> containeranalysis.VulnerabilityOccurrencesSummary:
         r"""Gets a summary of the number and severity of
         occurrences.
+
+
+
+        .. code-block::
+
+            from google.cloud.devtools import containeranalysis_v1
+
+            def sample_get_vulnerability_occurrences_summary():
+                # Create a client
+                client = containeranalysis_v1.ContainerAnalysisClient()
+
+                # Initialize request argument(s)
+                request = containeranalysis_v1.GetVulnerabilityOccurrencesSummaryRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.get_vulnerability_occurrences_summary(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.devtools.containeranalysis_v1.types.GetVulnerabilityOccurrencesSummaryRequest, dict]):
