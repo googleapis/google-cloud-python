@@ -457,6 +457,37 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
     ) -> operation.Operation:
         r"""Creates a Microsoft AD domain.
 
+
+        .. code-block::
+
+            from google.cloud import managedidentities_v1
+
+            def sample_create_microsoft_ad_domain():
+                # Create a client
+                client = managedidentities_v1.ManagedIdentitiesServiceClient()
+
+                # Initialize request argument(s)
+                domain = managedidentities_v1.Domain()
+                domain.name = "name_value"
+                domain.reserved_ip_range = "reserved_ip_range_value"
+                domain.locations = ['locations_value_1', 'locations_value_2']
+
+                request = managedidentities_v1.CreateMicrosoftAdDomainRequest(
+                    parent="parent_value",
+                    domain_name="domain_name_value",
+                    domain=domain,
+                )
+
+                # Make the request
+                operation = client.create_microsoft_ad_domain(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.managedidentities_v1.types.CreateMicrosoftAdDomainRequest, dict]):
                 The request object. Request message for
@@ -575,6 +606,26 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
     ) -> managed_identities_service.ResetAdminPasswordResponse:
         r"""Resets a domain's administrator password.
 
+
+        .. code-block::
+
+            from google.cloud import managedidentities_v1
+
+            def sample_reset_admin_password():
+                # Create a client
+                client = managedidentities_v1.ManagedIdentitiesServiceClient()
+
+                # Initialize request argument(s)
+                request = managedidentities_v1.ResetAdminPasswordRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.reset_admin_password(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.managedidentities_v1.types.ResetAdminPasswordRequest, dict]):
                 The request object. Request message for
@@ -647,6 +698,27 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDomainsPager:
         r"""Lists domains in a project.
+
+
+        .. code-block::
+
+            from google.cloud import managedidentities_v1
+
+            def sample_list_domains():
+                # Create a client
+                client = managedidentities_v1.ManagedIdentitiesServiceClient()
+
+                # Initialize request argument(s)
+                request = managedidentities_v1.ListDomainsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_domains(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.managedidentities_v1.types.ListDomainsRequest, dict]):
@@ -728,6 +800,26 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
     ) -> resource.Domain:
         r"""Gets information about a domain.
 
+
+        .. code-block::
+
+            from google.cloud import managedidentities_v1
+
+            def sample_get_domain():
+                # Create a client
+                client = managedidentities_v1.ManagedIdentitiesServiceClient()
+
+                # Initialize request argument(s)
+                request = managedidentities_v1.GetDomainRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_domain(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.managedidentities_v1.types.GetDomainRequest, dict]):
                 The request object. Request message for
@@ -799,6 +891,35 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the metadata and configuration of a domain.
+
+
+        .. code-block::
+
+            from google.cloud import managedidentities_v1
+
+            def sample_update_domain():
+                # Create a client
+                client = managedidentities_v1.ManagedIdentitiesServiceClient()
+
+                # Initialize request argument(s)
+                domain = managedidentities_v1.Domain()
+                domain.name = "name_value"
+                domain.reserved_ip_range = "reserved_ip_range_value"
+                domain.locations = ['locations_value_1', 'locations_value_2']
+
+                request = managedidentities_v1.UpdateDomainRequest(
+                    domain=domain,
+                )
+
+                # Make the request
+                operation = client.update_domain(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.managedidentities_v1.types.UpdateDomainRequest, dict]):
@@ -899,6 +1020,30 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
     ) -> operation.Operation:
         r"""Deletes a domain.
 
+
+        .. code-block::
+
+            from google.cloud import managedidentities_v1
+
+            def sample_delete_domain():
+                # Create a client
+                client = managedidentities_v1.ManagedIdentitiesServiceClient()
+
+                # Initialize request argument(s)
+                request = managedidentities_v1.DeleteDomainRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_domain(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.managedidentities_v1.types.DeleteDomainRequest, dict]):
                 The request object. Request message for
@@ -992,6 +1137,38 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
     ) -> operation.Operation:
         r"""Adds an AD trust to a domain.
 
+
+        .. code-block::
+
+            from google.cloud import managedidentities_v1
+
+            def sample_attach_trust():
+                # Create a client
+                client = managedidentities_v1.ManagedIdentitiesServiceClient()
+
+                # Initialize request argument(s)
+                trust = managedidentities_v1.Trust()
+                trust.target_domain_name = "target_domain_name_value"
+                trust.trust_type = "EXTERNAL"
+                trust.trust_direction = "BIDIRECTIONAL"
+                trust.target_dns_ip_addresses = ['target_dns_ip_addresses_value_1', 'target_dns_ip_addresses_value_2']
+                trust.trust_handshake_secret = "trust_handshake_secret_value"
+
+                request = managedidentities_v1.AttachTrustRequest(
+                    name="name_value",
+                    trust=trust,
+                )
+
+                # Make the request
+                operation = client.attach_trust(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.managedidentities_v1.types.AttachTrustRequest, dict]):
                 The request object. Request message for
@@ -1083,6 +1260,32 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the DNS conditional forwarder.
+
+
+        .. code-block::
+
+            from google.cloud import managedidentities_v1
+
+            def sample_reconfigure_trust():
+                # Create a client
+                client = managedidentities_v1.ManagedIdentitiesServiceClient()
+
+                # Initialize request argument(s)
+                request = managedidentities_v1.ReconfigureTrustRequest(
+                    name="name_value",
+                    target_domain_name="target_domain_name_value",
+                    target_dns_ip_addresses=['target_dns_ip_addresses_value_1', 'target_dns_ip_addresses_value_2'],
+                )
+
+                # Make the request
+                operation = client.reconfigure_trust(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.managedidentities_v1.types.ReconfigureTrustRequest, dict]):
@@ -1188,6 +1391,38 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
     ) -> operation.Operation:
         r"""Removes an AD trust.
 
+
+        .. code-block::
+
+            from google.cloud import managedidentities_v1
+
+            def sample_detach_trust():
+                # Create a client
+                client = managedidentities_v1.ManagedIdentitiesServiceClient()
+
+                # Initialize request argument(s)
+                trust = managedidentities_v1.Trust()
+                trust.target_domain_name = "target_domain_name_value"
+                trust.trust_type = "EXTERNAL"
+                trust.trust_direction = "BIDIRECTIONAL"
+                trust.target_dns_ip_addresses = ['target_dns_ip_addresses_value_1', 'target_dns_ip_addresses_value_2']
+                trust.trust_handshake_secret = "trust_handshake_secret_value"
+
+                request = managedidentities_v1.DetachTrustRequest(
+                    name="name_value",
+                    trust=trust,
+                )
+
+                # Make the request
+                operation = client.detach_trust(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.managedidentities_v1.types.DetachTrustRequest, dict]):
                 The request object. Request message for
@@ -1282,6 +1517,39 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
         r"""Validates a trust state, that the target domain is
         reachable, and that the target domain is able to accept
         incoming trust requests.
+
+
+
+        .. code-block::
+
+            from google.cloud import managedidentities_v1
+
+            def sample_validate_trust():
+                # Create a client
+                client = managedidentities_v1.ManagedIdentitiesServiceClient()
+
+                # Initialize request argument(s)
+                trust = managedidentities_v1.Trust()
+                trust.target_domain_name = "target_domain_name_value"
+                trust.trust_type = "EXTERNAL"
+                trust.trust_direction = "BIDIRECTIONAL"
+                trust.target_dns_ip_addresses = ['target_dns_ip_addresses_value_1', 'target_dns_ip_addresses_value_2']
+                trust.trust_handshake_secret = "trust_handshake_secret_value"
+
+                request = managedidentities_v1.ValidateTrustRequest(
+                    name="name_value",
+                    trust=trust,
+                )
+
+                # Make the request
+                operation = client.validate_trust(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.managedidentities_v1.types.ValidateTrustRequest, dict]):
