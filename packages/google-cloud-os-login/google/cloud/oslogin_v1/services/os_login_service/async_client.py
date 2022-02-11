@@ -224,6 +224,22 @@ class OsLoginServiceAsyncClient:
     ) -> None:
         r"""Deletes a POSIX account.
 
+        .. code-block::
+
+            from google.cloud import oslogin_v1
+
+            def sample_delete_posix_account():
+                # Create a client
+                client = oslogin_v1.OsLoginServiceClient()
+
+                # Initialize request argument(s)
+                request = oslogin_v1.DeletePosixAccountRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_posix_account(request=request)
+
         Args:
             request (Union[google.cloud.oslogin_v1.types.DeletePosixAccountRequest, dict]):
                 The request object. A request message for deleting a
@@ -299,6 +315,22 @@ class OsLoginServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an SSH public key.
+
+        .. code-block::
+
+            from google.cloud import oslogin_v1
+
+            def sample_delete_ssh_public_key():
+                # Create a client
+                client = oslogin_v1.OsLoginServiceClient()
+
+                # Initialize request argument(s)
+                request = oslogin_v1.DeleteSshPublicKeyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_ssh_public_key(request=request)
 
         Args:
             request (Union[google.cloud.oslogin_v1.types.DeleteSshPublicKeyRequest, dict]):
@@ -376,6 +408,26 @@ class OsLoginServiceAsyncClient:
     ) -> oslogin.LoginProfile:
         r"""Retrieves the profile information used for logging in
         to a virtual machine on Google Compute Engine.
+
+
+        .. code-block::
+
+            from google.cloud import oslogin_v1
+
+            def sample_get_login_profile():
+                # Create a client
+                client = oslogin_v1.OsLoginServiceClient()
+
+                # Initialize request argument(s)
+                request = oslogin_v1.GetLoginProfileRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_login_profile(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.oslogin_v1.types.GetLoginProfileRequest, dict]):
@@ -458,6 +510,25 @@ class OsLoginServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> common.SshPublicKey:
         r"""Retrieves an SSH public key.
+
+        .. code-block::
+
+            from google.cloud import oslogin_v1
+
+            def sample_get_ssh_public_key():
+                # Create a client
+                client = oslogin_v1.OsLoginServiceClient()
+
+                # Initialize request argument(s)
+                request = oslogin_v1.GetSshPublicKeyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_ssh_public_key(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.oslogin_v1.types.GetSshPublicKeyRequest, dict]):
@@ -546,6 +617,26 @@ class OsLoginServiceAsyncClient:
         information. Default POSIX account information is set
         when no username and UID exist as part of the login
         profile.
+
+
+        .. code-block::
+
+            from google.cloud import oslogin_v1
+
+            def sample_import_ssh_public_key():
+                # Create a client
+                client = oslogin_v1.OsLoginServiceClient()
+
+                # Initialize request argument(s)
+                request = oslogin_v1.ImportSshPublicKeyRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.import_ssh_public_key(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.oslogin_v1.types.ImportSshPublicKeyRequest, dict]):
@@ -648,6 +739,26 @@ class OsLoginServiceAsyncClient:
     ) -> common.SshPublicKey:
         r"""Updates an SSH public key and returns the profile
         information. This method supports patch semantics.
+
+
+        .. code-block::
+
+            from google.cloud import oslogin_v1
+
+            def sample_update_ssh_public_key():
+                # Create a client
+                client = oslogin_v1.OsLoginServiceClient()
+
+                # Initialize request argument(s)
+                request = oslogin_v1.UpdateSshPublicKeyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.update_ssh_public_key(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.oslogin_v1.types.UpdateSshPublicKeyRequest, dict]):
