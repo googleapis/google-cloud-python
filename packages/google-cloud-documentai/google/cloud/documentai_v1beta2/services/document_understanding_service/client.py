@@ -409,6 +409,35 @@ class DocumentUnderstandingServiceClient(
         r"""LRO endpoint to batch process many documents. The output is
         written to Cloud Storage as JSON in the [Document] format.
 
+
+
+        .. code-block::
+
+            from google.cloud import documentai_v1beta2
+
+            def sample_batch_process_documents():
+                # Create a client
+                client = documentai_v1beta2.DocumentUnderstandingServiceClient()
+
+                # Initialize request argument(s)
+                requests = documentai_v1beta2.ProcessDocumentRequest()
+                requests.input_config.gcs_source.uri = "uri_value"
+                requests.input_config.mime_type = "mime_type_value"
+
+                request = documentai_v1beta2.BatchProcessDocumentsRequest(
+                    requests=requests,
+                )
+
+                # Make the request
+                operation = client.batch_process_documents(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.documentai_v1beta2.types.BatchProcessDocumentsRequest, dict]):
                 The request object. Request to batch process documents
@@ -489,6 +518,30 @@ class DocumentUnderstandingServiceClient(
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> document.Document:
         r"""Processes a single document.
+
+
+        .. code-block::
+
+            from google.cloud import documentai_v1beta2
+
+            def sample_process_document():
+                # Create a client
+                client = documentai_v1beta2.DocumentUnderstandingServiceClient()
+
+                # Initialize request argument(s)
+                input_config = documentai_v1beta2.InputConfig()
+                input_config.gcs_source.uri = "uri_value"
+                input_config.mime_type = "mime_type_value"
+
+                request = documentai_v1beta2.ProcessDocumentRequest(
+                    input_config=input_config,
+                )
+
+                # Make the request
+                response = client.process_document(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.documentai_v1beta2.types.ProcessDocumentRequest, dict]):

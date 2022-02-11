@@ -46,6 +46,8 @@ async def sample_review_document():
     print("Waiting for operation to complete...")
 
     response = await operation.result()
+
+    # Handle the response
     print(response)
 
 # [END documentai_generated_documentai_v1beta3_DocumentProcessorService_ReviewDocument_async]

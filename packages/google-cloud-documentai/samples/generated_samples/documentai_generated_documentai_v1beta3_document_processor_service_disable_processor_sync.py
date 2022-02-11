@@ -42,6 +42,8 @@ def sample_disable_processor():
     print("Waiting for operation to complete...")
 
     response = operation.result()
+
+    # Handle the response
     print(response)
 
 # [END documentai_generated_documentai_v1beta3_DocumentProcessorService_DisableProcessor_sync]

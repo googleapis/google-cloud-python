@@ -39,7 +39,7 @@ async def sample_fetch_processor_types():
     # Make the request
     response = await client.fetch_processor_types(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END documentai_generated_documentai_v1beta3_DocumentProcessorService_FetchProcessorTypes_async]

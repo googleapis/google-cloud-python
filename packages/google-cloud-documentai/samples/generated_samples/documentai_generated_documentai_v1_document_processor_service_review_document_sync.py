@@ -46,6 +46,8 @@ def sample_review_document():
     print("Waiting for operation to complete...")
 
     response = operation.result()
+
+    # Handle the response
     print(response)
 
 # [END documentai_generated_documentai_v1_DocumentProcessorService_ReviewDocument_sync]

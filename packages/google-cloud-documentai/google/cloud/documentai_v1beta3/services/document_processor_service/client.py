@@ -478,7 +478,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
                 # Make the request
                 response = client.process_document(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -574,6 +574,8 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -677,7 +679,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
                 # Make the request
                 response = client.fetch_processor_types(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -770,6 +772,8 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
 
                 # Make the request
                 page_result = client.list_processors(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -875,7 +879,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
                 # Make the request
                 response = client.create_processor(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -988,6 +992,8 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1101,6 +1107,8 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1184,6 +1192,8 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -1274,6 +1284,8 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:

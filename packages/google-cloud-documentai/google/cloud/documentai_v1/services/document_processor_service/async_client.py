@@ -253,7 +253,7 @@ class DocumentProcessorServiceAsyncClient:
                 # Make the request
                 response = client.process_document(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -358,6 +358,8 @@ class DocumentProcessorServiceAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:
@@ -477,6 +479,8 @@ class DocumentProcessorServiceAsyncClient:
                 print("Waiting for operation to complete...")
 
                 response = operation.result()
+
+                # Handle the response
                 print(response)
 
         Args:

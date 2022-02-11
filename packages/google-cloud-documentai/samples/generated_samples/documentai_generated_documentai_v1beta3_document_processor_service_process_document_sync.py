@@ -43,7 +43,7 @@ def sample_process_document():
     # Make the request
     response = client.process_document(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END documentai_generated_documentai_v1beta3_DocumentProcessorService_ProcessDocument_sync]

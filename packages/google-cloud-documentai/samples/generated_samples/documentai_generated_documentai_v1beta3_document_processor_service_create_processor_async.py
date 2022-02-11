@@ -39,7 +39,7 @@ async def sample_create_processor():
     # Make the request
     response = await client.create_processor(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END documentai_generated_documentai_v1beta3_DocumentProcessorService_CreateProcessor_async]
