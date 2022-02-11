@@ -440,6 +440,37 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         be
         `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata>`__.
 
+
+
+        .. code-block::
+
+            from google.cloud import dataproc_v1
+
+            def sample_create_cluster():
+                # Create a client
+                client = dataproc_v1.ClusterControllerClient()
+
+                # Initialize request argument(s)
+                cluster = dataproc_v1.Cluster()
+                cluster.project_id = "project_id_value"
+                cluster.cluster_name = "cluster_name_value"
+
+                request = dataproc_v1.CreateClusterRequest(
+                    project_id="project_id_value",
+                    region="region_value",
+                    cluster=cluster,
+                )
+
+                # Make the request
+                operation = client.create_cluster(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataproc_v1.types.CreateClusterRequest, dict]):
                 The request object. A request to create a cluster.
@@ -540,6 +571,38 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         The cluster must be in a
         [``RUNNING``][google.cloud.dataproc.v1.ClusterStatus.State]
         state or an error is returned.
+
+
+
+        .. code-block::
+
+            from google.cloud import dataproc_v1
+
+            def sample_update_cluster():
+                # Create a client
+                client = dataproc_v1.ClusterControllerClient()
+
+                # Initialize request argument(s)
+                cluster = dataproc_v1.Cluster()
+                cluster.project_id = "project_id_value"
+                cluster.cluster_name = "cluster_name_value"
+
+                request = dataproc_v1.UpdateClusterRequest(
+                    project_id="project_id_value",
+                    region="region_value",
+                    cluster_name="cluster_name_value",
+                    cluster=cluster,
+                )
+
+                # Make the request
+                operation = client.update_cluster(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dataproc_v1.types.UpdateClusterRequest, dict]):
@@ -708,6 +771,32 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
     ) -> operation.Operation:
         r"""Stops a cluster in a project.
 
+
+        .. code-block::
+
+            from google.cloud import dataproc_v1
+
+            def sample_stop_cluster():
+                # Create a client
+                client = dataproc_v1.ClusterControllerClient()
+
+                # Initialize request argument(s)
+                request = dataproc_v1.StopClusterRequest(
+                    project_id="project_id_value",
+                    region="region_value",
+                    cluster_name="cluster_name_value",
+                )
+
+                # Make the request
+                operation = client.stop_cluster(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataproc_v1.types.StopClusterRequest, dict]):
                 The request object. A request to stop a cluster.
@@ -760,6 +849,32 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Starts a cluster in a project.
+
+
+        .. code-block::
+
+            from google.cloud import dataproc_v1
+
+            def sample_start_cluster():
+                # Create a client
+                client = dataproc_v1.ClusterControllerClient()
+
+                # Initialize request argument(s)
+                request = dataproc_v1.StartClusterRequest(
+                    project_id="project_id_value",
+                    region="region_value",
+                    cluster_name="cluster_name_value",
+                )
+
+                # Make the request
+                operation = client.start_cluster(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dataproc_v1.types.StartClusterRequest, dict]):
@@ -819,6 +934,33 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         [Operation.metadata][google.longrunning.Operation.metadata] will
         be
         `ClusterOperationMetadata <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata>`__.
+
+
+
+        .. code-block::
+
+            from google.cloud import dataproc_v1
+
+            def sample_delete_cluster():
+                # Create a client
+                client = dataproc_v1.ClusterControllerClient()
+
+                # Initialize request argument(s)
+                request = dataproc_v1.DeleteClusterRequest(
+                    project_id="project_id_value",
+                    region="region_value",
+                    cluster_name="cluster_name_value",
+                )
+
+                # Make the request
+                operation = client.delete_cluster(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dataproc_v1.types.DeleteClusterRequest, dict]):
@@ -925,6 +1067,29 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         r"""Gets the resource representation for a cluster in a
         project.
 
+
+
+        .. code-block::
+
+            from google.cloud import dataproc_v1
+
+            def sample_get_cluster():
+                # Create a client
+                client = dataproc_v1.ClusterControllerClient()
+
+                # Initialize request argument(s)
+                request = dataproc_v1.GetClusterRequest(
+                    project_id="project_id_value",
+                    region="region_value",
+                    cluster_name="cluster_name_value",
+                )
+
+                # Make the request
+                response = client.get_cluster(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataproc_v1.types.GetClusterRequest, dict]):
                 The request object. Request to get the resource
@@ -1010,6 +1175,29 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
     ) -> pagers.ListClustersPager:
         r"""Lists all regions/{region}/clusters in a project
         alphabetically.
+
+
+
+        .. code-block::
+
+            from google.cloud import dataproc_v1
+
+            def sample_list_clusters():
+                # Create a client
+                client = dataproc_v1.ClusterControllerClient()
+
+                # Initialize request argument(s)
+                request = dataproc_v1.ListClustersRequest(
+                    project_id="project_id_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                page_result = client.list_clusters(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.dataproc_v1.types.ListClustersRequest, dict]):
@@ -1133,6 +1321,33 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         [Operation.response][google.longrunning.Operation.response]
         contains
         `DiagnoseClusterResults <https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#diagnoseclusterresults>`__.
+
+
+
+        .. code-block::
+
+            from google.cloud import dataproc_v1
+
+            def sample_diagnose_cluster():
+                # Create a client
+                client = dataproc_v1.ClusterControllerClient()
+
+                # Initialize request argument(s)
+                request = dataproc_v1.DiagnoseClusterRequest(
+                    project_id="project_id_value",
+                    region="region_value",
+                    cluster_name="cluster_name_value",
+                )
+
+                # Make the request
+                operation = client.diagnose_cluster(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dataproc_v1.types.DiagnoseClusterRequest, dict]):

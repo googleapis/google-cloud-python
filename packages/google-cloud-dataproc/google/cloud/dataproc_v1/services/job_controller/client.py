@@ -396,6 +396,32 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
     ) -> jobs.Job:
         r"""Submits a job to a cluster.
 
+
+        .. code-block::
+
+            from google.cloud import dataproc_v1
+
+            def sample_submit_job():
+                # Create a client
+                client = dataproc_v1.JobControllerClient()
+
+                # Initialize request argument(s)
+                job = dataproc_v1.Job()
+                job.hadoop_job.main_jar_file_uri = "main_jar_file_uri_value"
+                job.placement.cluster_name = "cluster_name_value"
+
+                request = dataproc_v1.SubmitJobRequest(
+                    project_id="project_id_value",
+                    region="region_value",
+                    job=job,
+                )
+
+                # Make the request
+                response = client.submit_job(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataproc_v1.types.SubmitJobRequest, dict]):
                 The request object. A request to submit a job.
@@ -476,6 +502,36 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Submits job to a cluster.
+
+
+        .. code-block::
+
+            from google.cloud import dataproc_v1
+
+            def sample_submit_job_as_operation():
+                # Create a client
+                client = dataproc_v1.JobControllerClient()
+
+                # Initialize request argument(s)
+                job = dataproc_v1.Job()
+                job.hadoop_job.main_jar_file_uri = "main_jar_file_uri_value"
+                job.placement.cluster_name = "cluster_name_value"
+
+                request = dataproc_v1.SubmitJobRequest(
+                    project_id="project_id_value",
+                    region="region_value",
+                    job=job,
+                )
+
+                # Make the request
+                operation = client.submit_job_as_operation(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dataproc_v1.types.SubmitJobRequest, dict]):
@@ -572,6 +628,29 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         r"""Gets the resource representation for a job in a
         project.
 
+
+
+        .. code-block::
+
+            from google.cloud import dataproc_v1
+
+            def sample_get_job():
+                # Create a client
+                client = dataproc_v1.JobControllerClient()
+
+                # Initialize request argument(s)
+                request = dataproc_v1.GetJobRequest(
+                    project_id="project_id_value",
+                    region="region_value",
+                    job_id="job_id_value",
+                )
+
+                # Make the request
+                response = client.get_job(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataproc_v1.types.GetJobRequest, dict]):
                 The request object. A request to get the resource
@@ -653,6 +732,28 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListJobsPager:
         r"""Lists regions/{region}/jobs in a project.
+
+
+        .. code-block::
+
+            from google.cloud import dataproc_v1
+
+            def sample_list_jobs():
+                # Create a client
+                client = dataproc_v1.JobControllerClient()
+
+                # Initialize request argument(s)
+                request = dataproc_v1.ListJobsRequest(
+                    project_id="project_id_value",
+                    region="region_value",
+                )
+
+                # Make the request
+                page_result = client.list_jobs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.dataproc_v1.types.ListJobsRequest, dict]):
@@ -759,6 +860,33 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
     ) -> jobs.Job:
         r"""Updates a job in a project.
 
+
+        .. code-block::
+
+            from google.cloud import dataproc_v1
+
+            def sample_update_job():
+                # Create a client
+                client = dataproc_v1.JobControllerClient()
+
+                # Initialize request argument(s)
+                job = dataproc_v1.Job()
+                job.hadoop_job.main_jar_file_uri = "main_jar_file_uri_value"
+                job.placement.cluster_name = "cluster_name_value"
+
+                request = dataproc_v1.UpdateJobRequest(
+                    project_id="project_id_value",
+                    region="region_value",
+                    job_id="job_id_value",
+                    job=job,
+                )
+
+                # Make the request
+                response = client.update_job(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataproc_v1.types.UpdateJobRequest, dict]):
                 The request object. A request to update a job.
@@ -806,6 +934,29 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         `regions/{region}/jobs.list <https://cloud.google.com/dataproc/docs/reference/rest/v1/projects.regions.jobs/list>`__
         or
         `regions/{region}/jobs.get <https://cloud.google.com/dataproc/docs/reference/rest/v1/projects.regions.jobs/get>`__.
+
+
+
+        .. code-block::
+
+            from google.cloud import dataproc_v1
+
+            def sample_cancel_job():
+                # Create a client
+                client = dataproc_v1.JobControllerClient()
+
+                # Initialize request argument(s)
+                request = dataproc_v1.CancelJobRequest(
+                    project_id="project_id_value",
+                    region="region_value",
+                    job_id="job_id_value",
+                )
+
+                # Make the request
+                response = client.cancel_job(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dataproc_v1.types.CancelJobRequest, dict]):
@@ -888,6 +1039,26 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
     ) -> None:
         r"""Deletes the job from the project. If the job is active, the
         delete fails, and the response returns ``FAILED_PRECONDITION``.
+
+
+
+        .. code-block::
+
+            from google.cloud import dataproc_v1
+
+            def sample_delete_job():
+                # Create a client
+                client = dataproc_v1.JobControllerClient()
+
+                # Initialize request argument(s)
+                request = dataproc_v1.DeleteJobRequest(
+                    project_id="project_id_value",
+                    region="region_value",
+                    job_id="job_id_value",
+                )
+
+                # Make the request
+                client.delete_job(request=request)
 
         Args:
             request (Union[google.cloud.dataproc_v1.types.DeleteJobRequest, dict]):

@@ -1,0 +1,2747 @@
+{
+  "snippets": [
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AutoscalingPolicyService"
+          },
+          "shortName": "CreateAutoscalingPolicy"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_autoscaling_policy_service_create_autoscaling_policy_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_AutoscalingPolicyService_CreateAutoscalingPolicy_async",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AutoscalingPolicyService"
+          },
+          "shortName": "CreateAutoscalingPolicy"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_autoscaling_policy_service_create_autoscaling_policy_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_AutoscalingPolicyService_CreateAutoscalingPolicy_sync",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AutoscalingPolicyService"
+          },
+          "shortName": "DeleteAutoscalingPolicy"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_autoscaling_policy_service_delete_autoscaling_policy_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_AutoscalingPolicyService_DeleteAutoscalingPolicy_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AutoscalingPolicyService"
+          },
+          "shortName": "DeleteAutoscalingPolicy"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_autoscaling_policy_service_delete_autoscaling_policy_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_AutoscalingPolicyService_DeleteAutoscalingPolicy_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AutoscalingPolicyService"
+          },
+          "shortName": "GetAutoscalingPolicy"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_autoscaling_policy_service_get_autoscaling_policy_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_AutoscalingPolicyService_GetAutoscalingPolicy_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AutoscalingPolicyService"
+          },
+          "shortName": "GetAutoscalingPolicy"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_autoscaling_policy_service_get_autoscaling_policy_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_AutoscalingPolicyService_GetAutoscalingPolicy_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AutoscalingPolicyService"
+          },
+          "shortName": "ListAutoscalingPolicies"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_autoscaling_policy_service_list_autoscaling_policies_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_AutoscalingPolicyService_ListAutoscalingPolicies_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AutoscalingPolicyService"
+          },
+          "shortName": "ListAutoscalingPolicies"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_autoscaling_policy_service_list_autoscaling_policies_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_AutoscalingPolicyService_ListAutoscalingPolicies_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "AutoscalingPolicyService"
+          },
+          "shortName": "UpdateAutoscalingPolicy"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_autoscaling_policy_service_update_autoscaling_policy_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_AutoscalingPolicyService_UpdateAutoscalingPolicy_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "start": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "AutoscalingPolicyService"
+          },
+          "shortName": "UpdateAutoscalingPolicy"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_autoscaling_policy_service_update_autoscaling_policy_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_AutoscalingPolicyService_UpdateAutoscalingPolicy_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "start": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "BatchController"
+          },
+          "shortName": "CreateBatch"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_batch_controller_create_batch_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_BatchController_CreateBatch_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "BatchController"
+          },
+          "shortName": "CreateBatch"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_batch_controller_create_batch_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_BatchController_CreateBatch_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "BatchController"
+          },
+          "shortName": "DeleteBatch"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_batch_controller_delete_batch_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_BatchController_DeleteBatch_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "BatchController"
+          },
+          "shortName": "DeleteBatch"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_batch_controller_delete_batch_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_BatchController_DeleteBatch_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "BatchController"
+          },
+          "shortName": "GetBatch"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_batch_controller_get_batch_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_BatchController_GetBatch_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "BatchController"
+          },
+          "shortName": "GetBatch"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_batch_controller_get_batch_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_BatchController_GetBatch_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "BatchController"
+          },
+          "shortName": "ListBatches"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_batch_controller_list_batches_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_BatchController_ListBatches_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "BatchController"
+          },
+          "shortName": "ListBatches"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_batch_controller_list_batches_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_BatchController_ListBatches_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ClusterController"
+          },
+          "shortName": "CreateCluster"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_cluster_controller_create_cluster_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_CreateCluster_async",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ClusterController"
+          },
+          "shortName": "CreateCluster"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_cluster_controller_create_cluster_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_CreateCluster_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ClusterController"
+          },
+          "shortName": "DeleteCluster"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_cluster_controller_delete_cluster_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_DeleteCluster_async",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ClusterController"
+          },
+          "shortName": "DeleteCluster"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_cluster_controller_delete_cluster_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_DeleteCluster_sync",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ClusterController"
+          },
+          "shortName": "DiagnoseCluster"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_cluster_controller_diagnose_cluster_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_DiagnoseCluster_async",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ClusterController"
+          },
+          "shortName": "DiagnoseCluster"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_cluster_controller_diagnose_cluster_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_DiagnoseCluster_sync",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ClusterController"
+          },
+          "shortName": "GetCluster"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_cluster_controller_get_cluster_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_GetCluster_async",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 41,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "start": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ClusterController"
+          },
+          "shortName": "GetCluster"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_cluster_controller_get_cluster_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_GetCluster_sync",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 41,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "start": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ClusterController"
+          },
+          "shortName": "ListClusters"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_cluster_controller_list_clusters_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_ListClusters_async",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ClusterController"
+          },
+          "shortName": "ListClusters"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_cluster_controller_list_clusters_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_ListClusters_sync",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ClusterController"
+          },
+          "shortName": "StartCluster"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_cluster_controller_start_cluster_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_StartCluster_async",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ClusterController"
+          },
+          "shortName": "StartCluster"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_cluster_controller_start_cluster_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_StartCluster_sync",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ClusterController"
+          },
+          "shortName": "StopCluster"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_cluster_controller_stop_cluster_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_StopCluster_async",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ClusterController"
+          },
+          "shortName": "StopCluster"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_cluster_controller_stop_cluster_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_StopCluster_sync",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ClusterController"
+          },
+          "shortName": "UpdateCluster"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_cluster_controller_update_cluster_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_UpdateCluster_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ClusterController"
+          },
+          "shortName": "UpdateCluster"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_cluster_controller_update_cluster_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_ClusterController_UpdateCluster_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "JobController"
+          },
+          "shortName": "CancelJob"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_job_controller_cancel_job_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_JobController_CancelJob_async",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 41,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "start": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "JobController"
+          },
+          "shortName": "CancelJob"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_job_controller_cancel_job_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_JobController_CancelJob_sync",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 41,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "start": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "JobController"
+          },
+          "shortName": "DeleteJob"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_job_controller_delete_job_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_JobController_DeleteJob_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 41,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "JobController"
+          },
+          "shortName": "DeleteJob"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_job_controller_delete_job_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_JobController_DeleteJob_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 41,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "JobController"
+          },
+          "shortName": "GetJob"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_job_controller_get_job_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_JobController_GetJob_async",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 41,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "start": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "JobController"
+          },
+          "shortName": "GetJob"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_job_controller_get_job_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_JobController_GetJob_sync",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 41,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "start": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "JobController"
+          },
+          "shortName": "ListJobs"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_job_controller_list_jobs_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_JobController_ListJobs_async",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "JobController"
+          },
+          "shortName": "ListJobs"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_job_controller_list_jobs_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_JobController_ListJobs_sync",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "JobController"
+          },
+          "shortName": "SubmitJobAsOperation"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_job_controller_submit_job_as_operation_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_JobController_SubmitJobAsOperation_async",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "JobController"
+          },
+          "shortName": "SubmitJobAsOperation"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_job_controller_submit_job_as_operation_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_JobController_SubmitJobAsOperation_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "JobController"
+          },
+          "shortName": "SubmitJob"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_job_controller_submit_job_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_JobController_SubmitJob_async",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "JobController"
+          },
+          "shortName": "SubmitJob"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_job_controller_submit_job_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_JobController_SubmitJob_sync",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "JobController"
+          },
+          "shortName": "UpdateJob"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_job_controller_update_job_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_JobController_UpdateJob_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "JobController"
+          },
+          "shortName": "UpdateJob"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_job_controller_update_job_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_JobController_UpdateJob_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "WorkflowTemplateService"
+          },
+          "shortName": "CreateWorkflowTemplate"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_workflow_template_service_create_workflow_template_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_WorkflowTemplateService_CreateWorkflowTemplate_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "WorkflowTemplateService"
+          },
+          "shortName": "CreateWorkflowTemplate"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_workflow_template_service_create_workflow_template_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_WorkflowTemplateService_CreateWorkflowTemplate_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "WorkflowTemplateService"
+          },
+          "shortName": "DeleteWorkflowTemplate"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_workflow_template_service_delete_workflow_template_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_WorkflowTemplateService_DeleteWorkflowTemplate_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "WorkflowTemplateService"
+          },
+          "shortName": "DeleteWorkflowTemplate"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_workflow_template_service_delete_workflow_template_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_WorkflowTemplateService_DeleteWorkflowTemplate_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "WorkflowTemplateService"
+          },
+          "shortName": "GetWorkflowTemplate"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_workflow_template_service_get_workflow_template_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_WorkflowTemplateService_GetWorkflowTemplate_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "WorkflowTemplateService"
+          },
+          "shortName": "GetWorkflowTemplate"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_workflow_template_service_get_workflow_template_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_WorkflowTemplateService_GetWorkflowTemplate_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "WorkflowTemplateService"
+          },
+          "shortName": "InstantiateInlineWorkflowTemplate"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_workflow_template_service_instantiate_inline_workflow_template_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_WorkflowTemplateService_InstantiateInlineWorkflowTemplate_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "WorkflowTemplateService"
+          },
+          "shortName": "InstantiateInlineWorkflowTemplate"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_workflow_template_service_instantiate_inline_workflow_template_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_WorkflowTemplateService_InstantiateInlineWorkflowTemplate_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "WorkflowTemplateService"
+          },
+          "shortName": "InstantiateWorkflowTemplate"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_workflow_template_service_instantiate_workflow_template_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_WorkflowTemplateService_InstantiateWorkflowTemplate_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "WorkflowTemplateService"
+          },
+          "shortName": "InstantiateWorkflowTemplate"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_workflow_template_service_instantiate_workflow_template_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_WorkflowTemplateService_InstantiateWorkflowTemplate_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "WorkflowTemplateService"
+          },
+          "shortName": "ListWorkflowTemplates"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_workflow_template_service_list_workflow_templates_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_WorkflowTemplateService_ListWorkflowTemplates_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "WorkflowTemplateService"
+          },
+          "shortName": "ListWorkflowTemplates"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_workflow_template_service_list_workflow_templates_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_WorkflowTemplateService_ListWorkflowTemplates_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "WorkflowTemplateService"
+          },
+          "shortName": "UpdateWorkflowTemplate"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_workflow_template_service_update_workflow_template_async.py",
+      "regionTag": "dataproc_generated_dataproc_v1_WorkflowTemplateService_UpdateWorkflowTemplate_async",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "WorkflowTemplateService"
+          },
+          "shortName": "UpdateWorkflowTemplate"
+        }
+      },
+      "file": "dataproc_generated_dataproc_v1_workflow_template_service_update_workflow_template_sync.py",
+      "regionTag": "dataproc_generated_dataproc_v1_WorkflowTemplateService_UpdateWorkflowTemplate_sync",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    }
+  ]
+}

@@ -234,6 +234,32 @@ class WorkflowTemplateServiceAsyncClient:
     ) -> workflow_templates.WorkflowTemplate:
         r"""Creates new workflow template.
 
+        .. code-block::
+
+            from google.cloud import dataproc_v1
+
+            def sample_create_workflow_template():
+                # Create a client
+                client = dataproc_v1.WorkflowTemplateServiceClient()
+
+                # Initialize request argument(s)
+                template = dataproc_v1.WorkflowTemplate()
+                template.id = "id_value"
+                template.placement.managed_cluster.cluster_name = "cluster_name_value"
+                template.jobs.hadoop_job.main_jar_file_uri = "main_jar_file_uri_value"
+                template.jobs.step_id = "step_id_value"
+
+                request = dataproc_v1.CreateWorkflowTemplateRequest(
+                    parent="parent_value",
+                    template=template,
+                )
+
+                # Make the request
+                response = client.create_workflow_template(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataproc_v1.types.CreateWorkflowTemplateRequest, dict]):
                 The request object. A request to create a workflow
@@ -334,6 +360,26 @@ class WorkflowTemplateServiceAsyncClient:
         r"""Retrieves the latest workflow template.
         Can retrieve previously instantiated template by
         specifying optional version parameter.
+
+
+        .. code-block::
+
+            from google.cloud import dataproc_v1
+
+            def sample_get_workflow_template():
+                # Create a client
+                client = dataproc_v1.WorkflowTemplateServiceClient()
+
+                # Initialize request argument(s)
+                request = dataproc_v1.GetWorkflowTemplateRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_workflow_template(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dataproc_v1.types.GetWorkflowTemplateRequest, dict]):
@@ -452,6 +498,30 @@ class WorkflowTemplateServiceAsyncClient:
         On successful completion,
         [Operation.response][google.longrunning.Operation.response] will
         be [Empty][google.protobuf.Empty].
+
+
+        .. code-block::
+
+            from google.cloud import dataproc_v1
+
+            def sample_instantiate_workflow_template():
+                # Create a client
+                client = dataproc_v1.WorkflowTemplateServiceClient()
+
+                # Initialize request argument(s)
+                request = dataproc_v1.InstantiateWorkflowTemplateRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.instantiate_workflow_template(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest, dict]):
@@ -607,6 +677,37 @@ class WorkflowTemplateServiceAsyncClient:
         [Operation.response][google.longrunning.Operation.response] will
         be [Empty][google.protobuf.Empty].
 
+
+        .. code-block::
+
+            from google.cloud import dataproc_v1
+
+            def sample_instantiate_inline_workflow_template():
+                # Create a client
+                client = dataproc_v1.WorkflowTemplateServiceClient()
+
+                # Initialize request argument(s)
+                template = dataproc_v1.WorkflowTemplate()
+                template.id = "id_value"
+                template.placement.managed_cluster.cluster_name = "cluster_name_value"
+                template.jobs.hadoop_job.main_jar_file_uri = "main_jar_file_uri_value"
+                template.jobs.step_id = "step_id_value"
+
+                request = dataproc_v1.InstantiateInlineWorkflowTemplateRequest(
+                    parent="parent_value",
+                    template=template,
+                )
+
+                # Make the request
+                operation = client.instantiate_inline_workflow_template(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataproc_v1.types.InstantiateInlineWorkflowTemplateRequest, dict]):
                 The request object. A request to instantiate an inline
@@ -731,6 +832,32 @@ class WorkflowTemplateServiceAsyncClient:
         template must contain version that matches the current
         server version.
 
+
+        .. code-block::
+
+            from google.cloud import dataproc_v1
+
+            def sample_update_workflow_template():
+                # Create a client
+                client = dataproc_v1.WorkflowTemplateServiceClient()
+
+                # Initialize request argument(s)
+                template = dataproc_v1.WorkflowTemplate()
+                template.id = "id_value"
+                template.placement.managed_cluster.cluster_name = "cluster_name_value"
+                template.jobs.hadoop_job.main_jar_file_uri = "main_jar_file_uri_value"
+                template.jobs.step_id = "step_id_value"
+
+                request = dataproc_v1.UpdateWorkflowTemplateRequest(
+                    template=template,
+                )
+
+                # Make the request
+                response = client.update_workflow_template(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataproc_v1.types.UpdateWorkflowTemplateRequest, dict]):
                 The request object. A request to update a workflow
@@ -815,6 +942,27 @@ class WorkflowTemplateServiceAsyncClient:
     ) -> pagers.ListWorkflowTemplatesAsyncPager:
         r"""Lists workflows that match the specified filter in
         the request.
+
+
+        .. code-block::
+
+            from google.cloud import dataproc_v1
+
+            def sample_list_workflow_templates():
+                # Create a client
+                client = dataproc_v1.WorkflowTemplateServiceClient()
+
+                # Initialize request argument(s)
+                request = dataproc_v1.ListWorkflowTemplatesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_workflow_templates(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.dataproc_v1.types.ListWorkflowTemplatesRequest, dict]):
@@ -917,6 +1065,23 @@ class WorkflowTemplateServiceAsyncClient:
     ) -> None:
         r"""Deletes a workflow template. It does not cancel
         in-progress workflows.
+
+
+        .. code-block::
+
+            from google.cloud import dataproc_v1
+
+            def sample_delete_workflow_template():
+                # Create a client
+                client = dataproc_v1.WorkflowTemplateServiceClient()
+
+                # Initialize request argument(s)
+                request = dataproc_v1.DeleteWorkflowTemplateRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_workflow_template(request=request)
 
         Args:
             request (Union[google.cloud.dataproc_v1.types.DeleteWorkflowTemplateRequest, dict]):

@@ -419,6 +419,32 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
     ) -> autoscaling_policies.AutoscalingPolicy:
         r"""Creates new autoscaling policy.
 
+
+        .. code-block::
+
+            from google.cloud import dataproc_v1
+
+            def sample_create_autoscaling_policy():
+                # Create a client
+                client = dataproc_v1.AutoscalingPolicyServiceClient()
+
+                # Initialize request argument(s)
+                policy = dataproc_v1.AutoscalingPolicy()
+                policy.basic_algorithm.yarn_config.scale_up_factor = 0.1578
+                policy.basic_algorithm.yarn_config.scale_down_factor = 0.1789
+                policy.worker_config.max_instances = 1389
+
+                request = dataproc_v1.CreateAutoscalingPolicyRequest(
+                    parent="parent_value",
+                    policy=policy,
+                )
+
+                # Make the request
+                response = client.create_autoscaling_policy(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataproc_v1.types.CreateAutoscalingPolicyRequest, dict]):
                 The request object. A request to create an autoscaling
@@ -517,6 +543,32 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
         Disabled check for update_mask, because all updates will be full
         replacements.
 
+
+
+        .. code-block::
+
+            from google.cloud import dataproc_v1
+
+            def sample_update_autoscaling_policy():
+                # Create a client
+                client = dataproc_v1.AutoscalingPolicyServiceClient()
+
+                # Initialize request argument(s)
+                policy = dataproc_v1.AutoscalingPolicy()
+                policy.basic_algorithm.yarn_config.scale_up_factor = 0.1578
+                policy.basic_algorithm.yarn_config.scale_down_factor = 0.1789
+                policy.worker_config.max_instances = 1389
+
+                request = dataproc_v1.UpdateAutoscalingPolicyRequest(
+                    policy=policy,
+                )
+
+                # Make the request
+                response = client.update_autoscaling_policy(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.dataproc_v1.types.UpdateAutoscalingPolicyRequest, dict]):
                 The request object. A request to update an autoscaling
@@ -591,6 +643,26 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> autoscaling_policies.AutoscalingPolicy:
         r"""Retrieves autoscaling policy.
+
+
+        .. code-block::
+
+            from google.cloud import dataproc_v1
+
+            def sample_get_autoscaling_policy():
+                # Create a client
+                client = dataproc_v1.AutoscalingPolicyServiceClient()
+
+                # Initialize request argument(s)
+                request = dataproc_v1.GetAutoscalingPolicyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_autoscaling_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.dataproc_v1.types.GetAutoscalingPolicyRequest, dict]):
@@ -674,6 +746,27 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAutoscalingPoliciesPager:
         r"""Lists autoscaling policies in the project.
+
+
+        .. code-block::
+
+            from google.cloud import dataproc_v1
+
+            def sample_list_autoscaling_policies():
+                # Create a client
+                client = dataproc_v1.AutoscalingPolicyServiceClient()
+
+                # Initialize request argument(s)
+                request = dataproc_v1.ListAutoscalingPoliciesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_autoscaling_policies(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.dataproc_v1.types.ListAutoscalingPoliciesRequest, dict]):
@@ -770,6 +863,24 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
         r"""Deletes an autoscaling policy. It is an error to
         delete an autoscaling policy that is in use by one or
         more clusters.
+
+
+
+        .. code-block::
+
+            from google.cloud import dataproc_v1
+
+            def sample_delete_autoscaling_policy():
+                # Create a client
+                client = dataproc_v1.AutoscalingPolicyServiceClient()
+
+                # Initialize request argument(s)
+                request = dataproc_v1.DeleteAutoscalingPolicyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_autoscaling_policy(request=request)
 
         Args:
             request (Union[google.cloud.dataproc_v1.types.DeleteAutoscalingPolicyRequest, dict]):
