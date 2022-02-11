@@ -216,6 +216,27 @@ class ExecutionsAsyncClient:
         executions are ordered by their start time (newest
         first).
 
+
+        .. code-block::
+
+            from google.cloud.workflows import executions_v1
+
+            def sample_list_executions():
+                # Create a client
+                client = executions_v1.ExecutionsClient()
+
+                # Initialize request argument(s)
+                request = executions_v1.ListExecutionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_executions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.workflows.executions_v1.types.ListExecutionsRequest, dict]):
                 The request object. Request for the
@@ -302,6 +323,26 @@ class ExecutionsAsyncClient:
         r"""Creates a new execution using the latest revision of
         the given workflow.
 
+
+        .. code-block::
+
+            from google.cloud.workflows import executions_v1
+
+            def sample_create_execution():
+                # Create a client
+                client = executions_v1.ExecutionsClient()
+
+                # Initialize request argument(s)
+                request = executions_v1.CreateExecutionRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_execution(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.workflows.executions_v1.types.CreateExecutionRequest, dict]):
                 The request object. Request for the
@@ -385,6 +426,25 @@ class ExecutionsAsyncClient:
     ) -> executions.Execution:
         r"""Returns an execution of the given name.
 
+        .. code-block::
+
+            from google.cloud.workflows import executions_v1
+
+            def sample_get_execution():
+                # Create a client
+                client = executions_v1.ExecutionsClient()
+
+                # Initialize request argument(s)
+                request = executions_v1.GetExecutionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_execution(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.workflows.executions_v1.types.GetExecutionRequest, dict]):
                 The request object. Request for the
@@ -457,6 +517,25 @@ class ExecutionsAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> executions.Execution:
         r"""Cancels an execution of the given name.
+
+        .. code-block::
+
+            from google.cloud.workflows import executions_v1
+
+            def sample_cancel_execution():
+                # Create a client
+                client = executions_v1.ExecutionsClient()
+
+                # Initialize request argument(s)
+                request = executions_v1.CancelExecutionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.cancel_execution(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.workflows.executions_v1.types.CancelExecutionRequest, dict]):

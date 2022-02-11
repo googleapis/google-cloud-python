@@ -434,6 +434,28 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
         executions are ordered by their start time (newest
         first).
 
+
+
+        .. code-block::
+
+            from google.cloud.workflows import executions_v1beta
+
+            def sample_list_executions():
+                # Create a client
+                client = executions_v1beta.ExecutionsClient()
+
+                # Initialize request argument(s)
+                request = executions_v1beta.ListExecutionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_executions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.workflows.executions_v1beta.types.ListExecutionsRequest, dict]):
                 The request object. Request for the
@@ -520,6 +542,27 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
         r"""Creates a new execution using the latest revision of
         the given workflow.
 
+
+
+        .. code-block::
+
+            from google.cloud.workflows import executions_v1beta
+
+            def sample_create_execution():
+                # Create a client
+                client = executions_v1beta.ExecutionsClient()
+
+                # Initialize request argument(s)
+                request = executions_v1beta.CreateExecutionRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_execution(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.workflows.executions_v1beta.types.CreateExecutionRequest, dict]):
                 The request object. Request for the
@@ -603,6 +646,26 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
     ) -> executions.Execution:
         r"""Returns an execution of the given name.
 
+
+        .. code-block::
+
+            from google.cloud.workflows import executions_v1beta
+
+            def sample_get_execution():
+                # Create a client
+                client = executions_v1beta.ExecutionsClient()
+
+                # Initialize request argument(s)
+                request = executions_v1beta.GetExecutionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_execution(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.workflows.executions_v1beta.types.GetExecutionRequest, dict]):
                 The request object. Request for the
@@ -675,6 +738,26 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> executions.Execution:
         r"""Cancels an execution of the given name.
+
+
+        .. code-block::
+
+            from google.cloud.workflows import executions_v1beta
+
+            def sample_cancel_execution():
+                # Create a client
+                client = executions_v1beta.ExecutionsClient()
+
+                # Initialize request argument(s)
+                request = executions_v1beta.CancelExecutionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.cancel_execution(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.workflows.executions_v1beta.types.CancelExecutionRequest, dict]):

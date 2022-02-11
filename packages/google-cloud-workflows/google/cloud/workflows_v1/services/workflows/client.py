@@ -417,6 +417,28 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
         r"""Lists Workflows in a given project and location.
         The default order is not specified.
 
+
+
+        .. code-block::
+
+            from google.cloud import workflows_v1
+
+            def sample_list_workflows():
+                # Create a client
+                client = workflows_v1.WorkflowsClient()
+
+                # Initialize request argument(s)
+                request = workflows_v1.ListWorkflowsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_workflows(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.workflows_v1.types.ListWorkflowsRequest, dict]):
                 The request object. Request for the
@@ -501,6 +523,26 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
     ) -> workflows.Workflow:
         r"""Gets details of a single Workflow.
 
+
+        .. code-block::
+
+            from google.cloud import workflows_v1
+
+            def sample_get_workflow():
+                # Create a client
+                client = workflows_v1.WorkflowsClient()
+
+                # Initialize request argument(s)
+                request = workflows_v1.GetWorkflowRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_workflow(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.workflows_v1.types.GetWorkflowRequest, dict]):
                 The request object. Request for the
@@ -578,6 +620,36 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
         already exists in the specified project and location, the long
         running operation will return
         [ALREADY_EXISTS][google.rpc.Code.ALREADY_EXISTS] error.
+
+
+
+        .. code-block::
+
+            from google.cloud import workflows_v1
+
+            def sample_create_workflow():
+                # Create a client
+                client = workflows_v1.WorkflowsClient()
+
+                # Initialize request argument(s)
+                workflow = workflows_v1.Workflow()
+                workflow.source_contents = "source_contents_value"
+
+                request = workflows_v1.CreateWorkflowRequest(
+                    parent="parent_value",
+                    workflow=workflow,
+                    workflow_id="workflow_id_value",
+                )
+
+                # Make the request
+                operation = client.create_workflow(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.workflows_v1.types.CreateWorkflowRequest, dict]):
@@ -690,6 +762,31 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
         This method also cancels and deletes all running
         executions of the workflow.
 
+
+
+        .. code-block::
+
+            from google.cloud import workflows_v1
+
+            def sample_delete_workflow():
+                # Create a client
+                client = workflows_v1.WorkflowsClient()
+
+                # Initialize request argument(s)
+                request = workflows_v1.DeleteWorkflowRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_workflow(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.workflows_v1.types.DeleteWorkflowRequest, dict]):
                 The request object. Request for the
@@ -789,6 +886,34 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
         workflow may be created as a result of a successful
         update operation. In that case, such revision will be
         used in new workflow executions.
+
+
+
+        .. code-block::
+
+            from google.cloud import workflows_v1
+
+            def sample_update_workflow():
+                # Create a client
+                client = workflows_v1.WorkflowsClient()
+
+                # Initialize request argument(s)
+                workflow = workflows_v1.Workflow()
+                workflow.source_contents = "source_contents_value"
+
+                request = workflows_v1.UpdateWorkflowRequest(
+                    workflow=workflow,
+                )
+
+                # Make the request
+                operation = client.update_workflow(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.workflows_v1.types.UpdateWorkflowRequest, dict]):
