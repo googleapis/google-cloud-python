@@ -459,6 +459,31 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
         -  A row with column values matching the columns of the model,
            up to 5MB. Not available for FORECASTING ``prediction_type``.
 
+
+
+        .. code-block::
+
+            from google.cloud import automl_v1
+
+            def sample_predict():
+                # Create a client
+                client = automl_v1.PredictionServiceClient()
+
+                # Initialize request argument(s)
+                payload = automl_v1.ExamplePayload()
+                payload.image.image_bytes = b'image_bytes_blob'
+
+                request = automl_v1.PredictRequest(
+                    name="name_value",
+                    payload=payload,
+                )
+
+                # Make the request
+                response = client.predict(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.automl_v1.types.PredictRequest, dict]):
                 The request object. Request message for
@@ -598,6 +623,39 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
         -  AutoML Natural Language Entity Extraction
         -  AutoML Natural Language Sentiment Analysis
         -  AutoML Tables
+
+
+
+        .. code-block::
+
+            from google.cloud import automl_v1
+
+            def sample_batch_predict():
+                # Create a client
+                client = automl_v1.PredictionServiceClient()
+
+                # Initialize request argument(s)
+                input_config = automl_v1.BatchPredictInputConfig()
+                input_config.gcs_source.input_uris = ['input_uris_value_1', 'input_uris_value_2']
+
+                output_config = automl_v1.BatchPredictOutputConfig()
+                output_config.gcs_destination.output_uri_prefix = "output_uri_prefix_value"
+
+                request = automl_v1.BatchPredictRequest(
+                    name="name_value",
+                    input_config=input_config,
+                    output_config=output_config,
+                )
+
+                # Make the request
+                operation = client.batch_predict(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.automl_v1.types.BatchPredictRequest, dict]):

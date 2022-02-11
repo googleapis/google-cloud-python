@@ -443,6 +443,31 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
         -  Text Sentiment - TextSnippet, content up 500 characters,
            UTF-8 encoded.
 
+
+
+        .. code-block::
+
+            from google.cloud import automl_v1beta1
+
+            def sample_predict():
+                # Create a client
+                client = automl_v1beta1.PredictionServiceClient()
+
+                # Initialize request argument(s)
+                payload = automl_v1beta1.ExamplePayload()
+                payload.image.image_bytes = b'image_bytes_blob'
+
+                request = automl_v1beta1.PredictRequest(
+                    name="name_value",
+                    payload=payload,
+                )
+
+                # Make the request
+                response = client.predict(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.automl_v1beta1.types.PredictRequest, dict]):
                 The request object. Request message for
@@ -572,6 +597,31 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
         -  Video Classification
         -  Video Object Tracking \* Text Extraction
         -  Tables
+
+
+
+        .. code-block::
+
+            from google.cloud import automl_v1beta1
+
+            def sample_batch_predict():
+                # Create a client
+                client = automl_v1beta1.PredictionServiceClient()
+
+                # Initialize request argument(s)
+                request = automl_v1beta1.BatchPredictRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.batch_predict(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.automl_v1beta1.types.BatchPredictRequest, dict]):
