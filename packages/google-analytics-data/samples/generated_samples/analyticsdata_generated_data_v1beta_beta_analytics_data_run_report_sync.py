@@ -38,7 +38,7 @@ def sample_run_report():
     # Make the request
     response = client.run_report(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END analyticsdata_generated_data_v1beta_BetaAnalyticsData_RunReport_sync]

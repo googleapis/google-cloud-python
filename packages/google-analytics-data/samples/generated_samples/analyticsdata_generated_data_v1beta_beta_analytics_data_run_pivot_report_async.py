@@ -38,7 +38,7 @@ async def sample_run_pivot_report():
     # Make the request
     response = await client.run_pivot_report(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END analyticsdata_generated_data_v1beta_BetaAnalyticsData_RunPivotReport_async]

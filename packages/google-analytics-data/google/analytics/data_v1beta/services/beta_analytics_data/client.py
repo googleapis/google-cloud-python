@@ -431,7 +431,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
                 # Make the request
                 response = client.run_report(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -505,7 +505,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
                 # Make the request
                 response = client.run_pivot_report(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -576,7 +576,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
                 # Make the request
                 response = client.batch_run_reports(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -647,7 +647,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
                 # Make the request
                 response = client.batch_run_pivot_reports(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -729,7 +729,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
                 # Make the request
                 response = client.get_metadata(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -832,7 +832,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
                 # Make the request
                 response = client.run_realtime_report(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -912,7 +912,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
                 # Make the request
                 response = client.check_compatibility(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:

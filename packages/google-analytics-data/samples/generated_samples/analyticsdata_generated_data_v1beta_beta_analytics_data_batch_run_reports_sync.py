@@ -38,7 +38,7 @@ def sample_batch_run_reports():
     # Make the request
     response = client.batch_run_reports(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END analyticsdata_generated_data_v1beta_BetaAnalyticsData_BatchRunReports_sync]

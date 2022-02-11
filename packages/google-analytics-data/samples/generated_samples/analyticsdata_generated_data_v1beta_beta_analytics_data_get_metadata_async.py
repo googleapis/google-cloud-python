@@ -39,7 +39,7 @@ async def sample_get_metadata():
     # Make the request
     response = await client.get_metadata(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END analyticsdata_generated_data_v1beta_BetaAnalyticsData_GetMetadata_async]

@@ -38,7 +38,7 @@ def sample_check_compatibility():
     # Make the request
     response = client.check_compatibility(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END analyticsdata_generated_data_v1beta_BetaAnalyticsData_CheckCompatibility_sync]
