@@ -553,6 +553,28 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> pagers.ListSourcesPager:
         r"""Lists Sources in a given project and location.
 
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_list_sources():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.ListSourcesRequest(
+                    parent="parent_value",
+                    page_token="page_token_value",
+                )
+
+                # Make the request
+                page_result = client.list_sources(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.vmmigration_v1.types.ListSourcesRequest, dict]):
                 The request object. Request message for 'ListSources'
@@ -633,6 +655,26 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> vmmigration.Source:
         r"""Gets details of a single Source.
 
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_get_source():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.GetSourceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_source(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vmmigration_v1.types.GetSourceRequest, dict]):
                 The request object. Request message for 'GetSource'
@@ -705,6 +747,31 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new Source in a given project and location.
+
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_create_source():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.CreateSourceRequest(
+                    parent="parent_value",
+                    source_id="source_id_value",
+                )
+
+                # Make the request
+                operation = client.create_source(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.vmmigration_v1.types.CreateSourceRequest, dict]):
@@ -800,6 +867,29 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> operation.Operation:
         r"""Updates the parameters of a single Source.
 
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_update_source():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.UpdateSourceRequest(
+                )
+
+                # Make the request
+                operation = client.update_source(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vmmigration_v1.types.UpdateSourceRequest, dict]):
                 The request object. Update message for 'UpdateSources'
@@ -893,6 +983,30 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single Source.
+
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_delete_source():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.DeleteSourceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_source(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.vmmigration_v1.types.DeleteSourceRequest, dict]):
@@ -990,6 +1104,27 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         as opposed to listing the MigratingVms resources in the
         vmmigration service.
 
+
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_fetch_inventory():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.FetchInventoryRequest(
+                    source="source_value",
+                )
+
+                # Make the request
+                response = client.fetch_inventory(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vmmigration_v1.types.FetchInventoryRequest, dict]):
                 The request object. Request message for
@@ -1058,6 +1193,28 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListUtilizationReportsPager:
         r"""Lists Utilization Reports of the given Source.
+
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_list_utilization_reports():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.ListUtilizationReportsRequest(
+                    parent="parent_value",
+                    page_token="page_token_value",
+                )
+
+                # Make the request
+                page_result = client.list_utilization_reports(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.vmmigration_v1.types.ListUtilizationReportsRequest, dict]):
@@ -1139,6 +1296,26 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> vmmigration.UtilizationReport:
         r"""Gets a single Utilization Report.
 
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_get_utilization_report():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.GetUtilizationReportRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_utilization_report(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vmmigration_v1.types.GetUtilizationReportRequest, dict]):
                 The request object. Request message for
@@ -1212,6 +1389,31 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new UtilizationReport.
+
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_create_utilization_report():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.CreateUtilizationReportRequest(
+                    parent="parent_value",
+                    utilization_report_id="utilization_report_id_value",
+                )
+
+                # Make the request
+                operation = client.create_utilization_report(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.vmmigration_v1.types.CreateUtilizationReportRequest, dict]):
@@ -1317,6 +1519,30 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single Utilization Report.
 
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_delete_utilization_report():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.DeleteUtilizationReportRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_utilization_report(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vmmigration_v1.types.DeleteUtilizationReportRequest, dict]):
                 The request object. Request message for
@@ -1411,6 +1637,28 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> pagers.ListDatacenterConnectorsPager:
         r"""Lists DatacenterConnectors in a given Source.
 
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_list_datacenter_connectors():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.ListDatacenterConnectorsRequest(
+                    parent="parent_value",
+                    page_token="page_token_value",
+                )
+
+                # Make the request
+                page_result = client.list_datacenter_connectors(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.vmmigration_v1.types.ListDatacenterConnectorsRequest, dict]):
                 The request object. Request message for
@@ -1493,6 +1741,26 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> vmmigration.DatacenterConnector:
         r"""Gets details of a single DatacenterConnector.
 
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_get_datacenter_connector():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.GetDatacenterConnectorRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_datacenter_connector(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vmmigration_v1.types.GetDatacenterConnectorRequest, dict]):
                 The request object. Request message for
@@ -1569,6 +1837,31 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new DatacenterConnector in a given Source.
+
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_create_datacenter_connector():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.CreateDatacenterConnectorRequest(
+                    parent="parent_value",
+                    datacenter_connector_id="datacenter_connector_id_value",
+                )
+
+                # Make the request
+                operation = client.create_datacenter_connector(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.vmmigration_v1.types.CreateDatacenterConnectorRequest, dict]):
@@ -1675,6 +1968,30 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single DatacenterConnector.
 
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_delete_datacenter_connector():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.DeleteDatacenterConnectorRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_datacenter_connector(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vmmigration_v1.types.DeleteDatacenterConnectorRequest, dict]):
                 The request object. Request message for
@@ -1771,6 +2088,31 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> operation.Operation:
         r"""Creates a new MigratingVm in a given Source.
 
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_create_migrating_vm():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.CreateMigratingVmRequest(
+                    parent="parent_value",
+                    migrating_vm_id="migrating_vm_id_value",
+                )
+
+                # Make the request
+                operation = client.create_migrating_vm(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vmmigration_v1.types.CreateMigratingVmRequest, dict]):
                 The request object. Request message for
@@ -1864,6 +2206,28 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> pagers.ListMigratingVmsPager:
         r"""Lists MigratingVms in a given Source.
 
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_list_migrating_vms():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.ListMigratingVmsRequest(
+                    parent="parent_value",
+                    page_token="page_token_value",
+                )
+
+                # Make the request
+                page_result = client.list_migrating_vms(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.vmmigration_v1.types.ListMigratingVmsRequest, dict]):
                 The request object. Request message for
@@ -1944,6 +2308,26 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> vmmigration.MigratingVm:
         r"""Gets details of a single MigratingVm.
 
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_get_migrating_vm():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.GetMigratingVmRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_migrating_vm(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vmmigration_v1.types.GetMigratingVmRequest, dict]):
                 The request object. Request message for 'GetMigratingVm'
@@ -2016,6 +2400,29 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Updates the parameters of a single MigratingVm.
+
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_update_migrating_vm():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.UpdateMigratingVmRequest(
+                )
+
+                # Make the request
+                operation = client.update_migrating_vm(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.vmmigration_v1.types.UpdateMigratingVmRequest, dict]):
@@ -2111,6 +2518,30 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single MigratingVm.
 
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_delete_migrating_vm():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.DeleteMigratingVmRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_migrating_vm(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vmmigration_v1.types.DeleteMigratingVmRequest, dict]):
                 The request object. Request message for
@@ -2205,6 +2636,31 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         uploading data and creating snapshots, in replication
         cycles scheduled by the policy.
 
+
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_start_migration():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.StartMigrationRequest(
+                    migrating_vm="migrating_vm_value",
+                )
+
+                # Make the request
+                operation = client.start_migration(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vmmigration_v1.types.StartMigrationRequest, dict]):
                 The request object. Request message for
@@ -2293,6 +2749,31 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         start the process of uploading data and creating
         snapshots.
 
+
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_resume_migration():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.ResumeMigrationRequest(
+                    migrating_vm="migrating_vm_value",
+                )
+
+                # Make the request
+                operation = client.resume_migration(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vmmigration_v1.types.ResumeMigrationRequest, dict]):
                 The request object. Request message for
@@ -2359,6 +2840,31 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         data. Further replication cycles will not be triggered
         while the VM is paused.
 
+
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_pause_migration():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.PauseMigrationRequest(
+                    migrating_vm="migrating_vm_value",
+                )
+
+                # Make the request
+                operation = client.pause_migration(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vmmigration_v1.types.PauseMigrationRequest, dict]):
                 The request object. Request message for 'PauseMigration'
@@ -2424,6 +2930,31 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         r"""Marks a migration as completed, deleting migration
         resources that are no longer being used. Only applicable
         after cutover is done.
+
+
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_finalize_migration():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.FinalizeMigrationRequest(
+                    migrating_vm="migrating_vm_value",
+                )
+
+                # Make the request
+                operation = client.finalize_migration(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.vmmigration_v1.types.FinalizeMigrationRequest, dict]):
@@ -2510,6 +3041,31 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Initiates a Clone of a specific migrating VM.
+
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_create_clone_job():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.CreateCloneJobRequest(
+                    parent="parent_value",
+                    clone_job_id="clone_job_id_value",
+                )
+
+                # Make the request
+                operation = client.create_clone_job(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.vmmigration_v1.types.CreateCloneJobRequest, dict]):
@@ -2616,6 +3172,30 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> operation.Operation:
         r"""Initiates the cancellation of a running clone job.
 
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_cancel_clone_job():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.CancelCloneJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.cancel_clone_job(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vmmigration_v1.types.CancelCloneJobRequest, dict]):
                 The request object. Request message for 'CancelCloneJob'
@@ -2696,6 +3276,28 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> pagers.ListCloneJobsPager:
         r"""Lists CloneJobs of a given migrating VM.
 
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_list_clone_jobs():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.ListCloneJobsRequest(
+                    parent="parent_value",
+                    page_token="page_token_value",
+                )
+
+                # Make the request
+                page_result = client.list_clone_jobs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.vmmigration_v1.types.ListCloneJobsRequest, dict]):
                 The request object. Request message for
@@ -2775,6 +3377,26 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> vmmigration.CloneJob:
         r"""Gets details of a single CloneJob.
+
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_get_clone_job():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.GetCloneJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_clone_job(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.vmmigration_v1.types.GetCloneJobRequest, dict]):
@@ -2860,6 +3482,32 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         r"""Initiates a Cutover of a specific migrating VM.
         The returned LRO is completed when the cutover job
         resource is created and the job is initiated.
+
+
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_create_cutover_job():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.CreateCutoverJobRequest(
+                    parent="parent_value",
+                    cutover_job_id="cutover_job_id_value",
+                )
+
+                # Make the request
+                operation = client.create_cutover_job(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.vmmigration_v1.types.CreateCutoverJobRequest, dict]):
@@ -2956,6 +3604,30 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> operation.Operation:
         r"""Initiates the cancellation of a running cutover job.
 
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_cancel_cutover_job():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.CancelCutoverJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.cancel_cutover_job(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vmmigration_v1.types.CancelCutoverJobRequest, dict]):
                 The request object. Request message for
@@ -3035,6 +3707,28 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCutoverJobsPager:
         r"""Lists CutoverJobs of a given migrating VM.
+
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_list_cutover_jobs():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.ListCutoverJobsRequest(
+                    parent="parent_value",
+                    page_token="page_token_value",
+                )
+
+                # Make the request
+                page_result = client.list_cutover_jobs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.vmmigration_v1.types.ListCutoverJobsRequest, dict]):
@@ -3116,6 +3810,26 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> vmmigration.CutoverJob:
         r"""Gets details of a single CutoverJob.
 
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_get_cutover_job():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.GetCutoverJobRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_cutover_job(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vmmigration_v1.types.GetCutoverJobRequest, dict]):
                 The request object. Request message for 'GetCutoverJob'
@@ -3188,6 +3902,28 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListGroupsPager:
         r"""Lists Groups in a given project and location.
+
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_list_groups():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.ListGroupsRequest(
+                    parent="parent_value",
+                    page_token="page_token_value",
+                )
+
+                # Make the request
+                page_result = client.list_groups(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.vmmigration_v1.types.ListGroupsRequest, dict]):
@@ -3269,6 +4005,26 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> vmmigration.Group:
         r"""Gets details of a single Group.
 
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_get_group():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.GetGroupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_group(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vmmigration_v1.types.GetGroupRequest, dict]):
                 The request object. Request message for 'GetGroup'
@@ -3340,6 +4096,31 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new Group in a given project and location.
+
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_create_group():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.CreateGroupRequest(
+                    parent="parent_value",
+                    group_id="group_id_value",
+                )
+
+                # Make the request
+                operation = client.create_group(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.vmmigration_v1.types.CreateGroupRequest, dict]):
@@ -3435,6 +4216,29 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> operation.Operation:
         r"""Updates the parameters of a single Group.
 
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_update_group():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.UpdateGroupRequest(
+                )
+
+                # Make the request
+                operation = client.update_group(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vmmigration_v1.types.UpdateGroupRequest, dict]):
                 The request object. Update message for 'UpdateGroups'
@@ -3529,6 +4333,30 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> operation.Operation:
         r"""Deletes a single Group.
 
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_delete_group():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.DeleteGroupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_group(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vmmigration_v1.types.DeleteGroupRequest, dict]):
                 The request object. Request message for 'DeleteGroup'
@@ -3619,6 +4447,30 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
     ) -> operation.Operation:
         r"""Adds a MigratingVm to a Group.
 
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_add_group_migration():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.AddGroupMigrationRequest(
+                    group="group_value",
+                )
+
+                # Make the request
+                operation = client.add_group_migration(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vmmigration_v1.types.AddGroupMigrationRequest, dict]):
                 The request object. Request message for
@@ -3700,6 +4552,30 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Removes a MigratingVm from a Group.
+
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_remove_group_migration():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.RemoveGroupMigrationRequest(
+                    group="group_value",
+                )
+
+                # Make the request
+                operation = client.remove_group_migration(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.vmmigration_v1.types.RemoveGroupMigrationRequest, dict]):
@@ -3784,6 +4660,29 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         NOTE: TargetProject is a global resource; hence the only
         supported value for location is ``global``.
 
+
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_list_target_projects():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.ListTargetProjectsRequest(
+                    parent="parent_value",
+                    page_token="page_token_value",
+                )
+
+                # Make the request
+                page_result = client.list_target_projects(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.vmmigration_v1.types.ListTargetProjectsRequest, dict]):
                 The request object. Request message for
@@ -3867,6 +4766,27 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         NOTE: TargetProject is a global resource; hence the only
         supported value for location is ``global``.
 
+
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_get_target_project():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.GetTargetProjectRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_target_project(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vmmigration_v1.types.GetTargetProjectRequest, dict]):
                 The request object. Request message for
@@ -3941,6 +4861,32 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         NOTE: TargetProject is a global resource; hence the only
         supported value for location is ``global``.
+
+
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_create_target_project():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.CreateTargetProjectRequest(
+                    parent="parent_value",
+                    target_project_id="target_project_id_value",
+                )
+
+                # Make the request
+                operation = client.create_target_project(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.vmmigration_v1.types.CreateTargetProjectRequest, dict]):
@@ -4039,6 +4985,30 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         NOTE: TargetProject is a global resource; hence the only
         supported value for location is ``global``.
 
+
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_update_target_project():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.UpdateTargetProjectRequest(
+                )
+
+                # Make the request
+                operation = client.update_target_project(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.vmmigration_v1.types.UpdateTargetProjectRequest, dict]):
                 The request object. Update message for
@@ -4135,6 +5105,31 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         NOTE: TargetProject is a global resource; hence the only
         supported value for location is ``global``.
+
+
+
+        .. code-block::
+
+            from google.cloud import vmmigration_v1
+
+            def sample_delete_target_project():
+                # Create a client
+                client = vmmigration_v1.VmMigrationClient()
+
+                # Initialize request argument(s)
+                request = vmmigration_v1.DeleteTargetProjectRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_target_project(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.vmmigration_v1.types.DeleteTargetProjectRequest, dict]):
