@@ -1,0 +1,1331 @@
+{
+  "snippets": [
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "CatalogService"
+          },
+          "shortName": "CreateCatalogItem"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_catalog_service_create_catalog_item_async.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_CatalogService_CreateCatalogItem_async",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "CatalogService"
+          },
+          "shortName": "CreateCatalogItem"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_catalog_service_create_catalog_item_sync.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_CatalogService_CreateCatalogItem_sync",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "CatalogService"
+          },
+          "shortName": "DeleteCatalogItem"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_catalog_service_delete_catalog_item_async.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_CatalogService_DeleteCatalogItem_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "CatalogService"
+          },
+          "shortName": "DeleteCatalogItem"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_catalog_service_delete_catalog_item_sync.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_CatalogService_DeleteCatalogItem_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "CatalogService"
+          },
+          "shortName": "GetCatalogItem"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_catalog_service_get_catalog_item_async.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_CatalogService_GetCatalogItem_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "CatalogService"
+          },
+          "shortName": "GetCatalogItem"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_catalog_service_get_catalog_item_sync.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_CatalogService_GetCatalogItem_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "CatalogService"
+          },
+          "shortName": "ImportCatalogItems"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_catalog_service_import_catalog_items_async.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_CatalogService_ImportCatalogItems_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "CatalogService"
+          },
+          "shortName": "ImportCatalogItems"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_catalog_service_import_catalog_items_sync.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_CatalogService_ImportCatalogItems_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "CatalogService"
+          },
+          "shortName": "ListCatalogItems"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_catalog_service_list_catalog_items_async.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_CatalogService_ListCatalogItems_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "CatalogService"
+          },
+          "shortName": "ListCatalogItems"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_catalog_service_list_catalog_items_sync.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_CatalogService_ListCatalogItems_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "CatalogService"
+          },
+          "shortName": "UpdateCatalogItem"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_catalog_service_update_catalog_item_async.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_CatalogService_UpdateCatalogItem_async",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "CatalogService"
+          },
+          "shortName": "UpdateCatalogItem"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_catalog_service_update_catalog_item_sync.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_CatalogService_UpdateCatalogItem_sync",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "PredictionApiKeyRegistry"
+          },
+          "shortName": "CreatePredictionApiKeyRegistration"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_prediction_api_key_registry_create_prediction_api_key_registration_async.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_PredictionApiKeyRegistry_CreatePredictionApiKeyRegistration_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "PredictionApiKeyRegistry"
+          },
+          "shortName": "CreatePredictionApiKeyRegistration"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_prediction_api_key_registry_create_prediction_api_key_registration_sync.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_PredictionApiKeyRegistry_CreatePredictionApiKeyRegistration_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "PredictionApiKeyRegistry"
+          },
+          "shortName": "DeletePredictionApiKeyRegistration"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_prediction_api_key_registry_delete_prediction_api_key_registration_async.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_PredictionApiKeyRegistry_DeletePredictionApiKeyRegistration_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "PredictionApiKeyRegistry"
+          },
+          "shortName": "DeletePredictionApiKeyRegistration"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_prediction_api_key_registry_delete_prediction_api_key_registration_sync.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_PredictionApiKeyRegistry_DeletePredictionApiKeyRegistration_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "PredictionApiKeyRegistry"
+          },
+          "shortName": "ListPredictionApiKeyRegistrations"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_prediction_api_key_registry_list_prediction_api_key_registrations_async.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_PredictionApiKeyRegistry_ListPredictionApiKeyRegistrations_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "PredictionApiKeyRegistry"
+          },
+          "shortName": "ListPredictionApiKeyRegistrations"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_prediction_api_key_registry_list_prediction_api_key_registrations_sync.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_PredictionApiKeyRegistry_ListPredictionApiKeyRegistrations_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "PredictionService"
+          },
+          "shortName": "Predict"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_prediction_service_predict_async.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_PredictionService_Predict_async",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "PredictionService"
+          },
+          "shortName": "Predict"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_prediction_service_predict_sync.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_PredictionService_Predict_sync",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "UserEventService"
+          },
+          "shortName": "CollectUserEvent"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_user_event_service_collect_user_event_async.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_UserEventService_CollectUserEvent_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "UserEventService"
+          },
+          "shortName": "CollectUserEvent"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_user_event_service_collect_user_event_sync.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_UserEventService_CollectUserEvent_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "UserEventService"
+          },
+          "shortName": "ImportUserEvents"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_user_event_service_import_user_events_async.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_UserEventService_ImportUserEvents_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "UserEventService"
+          },
+          "shortName": "ImportUserEvents"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_user_event_service_import_user_events_sync.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_UserEventService_ImportUserEvents_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "UserEventService"
+          },
+          "shortName": "ListUserEvents"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_user_event_service_list_user_events_async.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_UserEventService_ListUserEvents_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "UserEventService"
+          },
+          "shortName": "ListUserEvents"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_user_event_service_list_user_events_sync.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_UserEventService_ListUserEvents_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "UserEventService"
+          },
+          "shortName": "PurgeUserEvents"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_user_event_service_purge_user_events_async.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_UserEventService_PurgeUserEvents_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "start": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "UserEventService"
+          },
+          "shortName": "PurgeUserEvents"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_user_event_service_purge_user_events_sync.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_UserEventService_PurgeUserEvents_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "start": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "UserEventService"
+          },
+          "shortName": "WriteUserEvent"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_user_event_service_write_user_event_async.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_UserEventService_WriteUserEvent_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "start": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "UserEventService"
+          },
+          "shortName": "WriteUserEvent"
+        }
+      },
+      "file": "recommendationengine_generated_recommendationengine_v1beta1_user_event_service_write_user_event_sync.py",
+      "regionTag": "recommendationengine_generated_recommendationengine_v1beta1_UserEventService_WriteUserEvent_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "start": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    }
+  ]
+}

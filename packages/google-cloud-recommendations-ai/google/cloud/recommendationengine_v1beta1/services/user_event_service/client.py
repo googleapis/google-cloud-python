@@ -426,6 +426,31 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
     ) -> gcr_user_event.UserEvent:
         r"""Writes a single user event.
 
+
+        .. code-block::
+
+            from google.cloud import recommendationengine_v1beta1
+
+            def sample_write_user_event():
+                # Create a client
+                client = recommendationengine_v1beta1.UserEventServiceClient()
+
+                # Initialize request argument(s)
+                user_event = recommendationengine_v1beta1.UserEvent()
+                user_event.event_type = "event_type_value"
+                user_event.user_info.visitor_id = "visitor_id_value"
+
+                request = recommendationengine_v1beta1.WriteUserEventRequest(
+                    parent="parent_value",
+                    user_event=user_event,
+                )
+
+                # Make the request
+                response = client.write_user_event(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.recommendationengine_v1beta1.types.WriteUserEventRequest, dict]):
                 The request object. Request message for WriteUserEvent
@@ -513,6 +538,28 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         This method is used only by the Recommendations AI
         JavaScript pixel. Users should not call this method
         directly.
+
+
+
+        .. code-block::
+
+            from google.cloud import recommendationengine_v1beta1
+
+            def sample_collect_user_event():
+                # Create a client
+                client = recommendationengine_v1beta1.UserEventServiceClient()
+
+                # Initialize request argument(s)
+                request = recommendationengine_v1beta1.CollectUserEventRequest(
+                    parent="parent_value",
+                    user_event="user_event_value",
+                )
+
+                # Make the request
+                response = client.collect_user_event(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.recommendationengine_v1beta1.types.CollectUserEventRequest, dict]):
@@ -667,6 +714,28 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         r"""Gets a list of user events within a time range, with
         potential filtering.
 
+
+
+        .. code-block::
+
+            from google.cloud import recommendationengine_v1beta1
+
+            def sample_list_user_events():
+                # Create a client
+                client = recommendationengine_v1beta1.UserEventServiceClient()
+
+                # Initialize request argument(s)
+                request = recommendationengine_v1beta1.ListUserEventsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_user_events(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.recommendationengine_v1beta1.types.ListUserEventsRequest, dict]):
                 The request object. Request message for ListUserEvents
@@ -795,6 +864,32 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         specified by the filter, this operation could take hours
         or days to complete. To test a filter, use the list
         command first.
+
+
+
+        .. code-block::
+
+            from google.cloud import recommendationengine_v1beta1
+
+            def sample_purge_user_events():
+                # Create a client
+                client = recommendationengine_v1beta1.UserEventServiceClient()
+
+                # Initialize request argument(s)
+                request = recommendationengine_v1beta1.PurgeUserEventsRequest(
+                    parent="parent_value",
+                    filter="filter_value",
+                )
+
+                # Make the request
+                operation = client.purge_user_events(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.recommendationengine_v1beta1.types.PurgeUserEventsRequest, dict]):
@@ -925,6 +1020,31 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         it is possible for a subset of the items to be
         successfully inserted. Operation.metadata is of type
         ImportMetadata.
+
+
+
+        .. code-block::
+
+            from google.cloud import recommendationengine_v1beta1
+
+            def sample_import_user_events():
+                # Create a client
+                client = recommendationengine_v1beta1.UserEventServiceClient()
+
+                # Initialize request argument(s)
+                request = recommendationengine_v1beta1.ImportUserEventsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.import_user_events(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.recommendationengine_v1beta1.types.ImportUserEventsRequest, dict]):

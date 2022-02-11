@@ -424,6 +424,33 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
         service. `Learn
         more </recommendations-ai/docs/setting-up#register-key>`__.
 
+
+
+        .. code-block::
+
+            from google.cloud import recommendationengine_v1beta1
+
+            def sample_predict():
+                # Create a client
+                client = recommendationengine_v1beta1.PredictionServiceClient()
+
+                # Initialize request argument(s)
+                user_event = recommendationengine_v1beta1.UserEvent()
+                user_event.event_type = "event_type_value"
+                user_event.user_info.visitor_id = "visitor_id_value"
+
+                request = recommendationengine_v1beta1.PredictRequest(
+                    name="name_value",
+                    user_event=user_event,
+                )
+
+                # Make the request
+                page_result = client.predict(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.recommendationengine_v1beta1.types.PredictRequest, dict]):
                 The request object. Request message for Predict method.

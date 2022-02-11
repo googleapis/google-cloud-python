@@ -223,6 +223,31 @@ class CatalogServiceAsyncClient:
     ) -> catalog.CatalogItem:
         r"""Creates a catalog item.
 
+        .. code-block::
+
+            from google.cloud import recommendationengine_v1beta1
+
+            def sample_create_catalog_item():
+                # Create a client
+                client = recommendationengine_v1beta1.CatalogServiceClient()
+
+                # Initialize request argument(s)
+                catalog_item = recommendationengine_v1beta1.CatalogItem()
+                catalog_item.id = "id_value"
+                catalog_item.category_hierarchies.categories = ['categories_value_1', 'categories_value_2']
+                catalog_item.title = "title_value"
+
+                request = recommendationengine_v1beta1.CreateCatalogItemRequest(
+                    parent="parent_value",
+                    catalog_item=catalog_item,
+                )
+
+                # Make the request
+                response = client.create_catalog_item(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.recommendationengine_v1beta1.types.CreateCatalogItemRequest, dict]):
                 The request object. Request message for
@@ -311,6 +336,25 @@ class CatalogServiceAsyncClient:
     ) -> catalog.CatalogItem:
         r"""Gets a specific catalog item.
 
+        .. code-block::
+
+            from google.cloud import recommendationengine_v1beta1
+
+            def sample_get_catalog_item():
+                # Create a client
+                client = recommendationengine_v1beta1.CatalogServiceClient()
+
+                # Initialize request argument(s)
+                request = recommendationengine_v1beta1.GetCatalogItemRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_catalog_item(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.recommendationengine_v1beta1.types.GetCatalogItemRequest, dict]):
                 The request object. Request message for GetCatalogItem
@@ -392,6 +436,26 @@ class CatalogServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCatalogItemsAsyncPager:
         r"""Gets a list of catalog items.
+
+        .. code-block::
+
+            from google.cloud import recommendationengine_v1beta1
+
+            def sample_list_catalog_items():
+                # Create a client
+                client = recommendationengine_v1beta1.CatalogServiceClient()
+
+                # Initialize request argument(s)
+                request = recommendationengine_v1beta1.ListCatalogItemsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_catalog_items(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.recommendationengine_v1beta1.types.ListCatalogItemsRequest, dict]):
@@ -495,6 +559,32 @@ class CatalogServiceAsyncClient:
         r"""Updates a catalog item. Partial updating is
         supported. Non-existing items will be created.
 
+
+        .. code-block::
+
+            from google.cloud import recommendationengine_v1beta1
+
+            def sample_update_catalog_item():
+                # Create a client
+                client = recommendationengine_v1beta1.CatalogServiceClient()
+
+                # Initialize request argument(s)
+                catalog_item = recommendationengine_v1beta1.CatalogItem()
+                catalog_item.id = "id_value"
+                catalog_item.category_hierarchies.categories = ['categories_value_1', 'categories_value_2']
+                catalog_item.title = "title_value"
+
+                request = recommendationengine_v1beta1.UpdateCatalogItemRequest(
+                    name="name_value",
+                    catalog_item=catalog_item,
+                )
+
+                # Make the request
+                response = client.update_catalog_item(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.recommendationengine_v1beta1.types.UpdateCatalogItemRequest, dict]):
                 The request object. Request message for
@@ -595,6 +685,22 @@ class CatalogServiceAsyncClient:
     ) -> None:
         r"""Deletes a catalog item.
 
+        .. code-block::
+
+            from google.cloud import recommendationengine_v1beta1
+
+            def sample_delete_catalog_item():
+                # Create a client
+                client = recommendationengine_v1beta1.CatalogServiceClient()
+
+                # Initialize request argument(s)
+                request = recommendationengine_v1beta1.DeleteCatalogItemRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_catalog_item(request=request)
+
         Args:
             request (Union[google.cloud.recommendationengine_v1beta1.types.DeleteCatalogItemRequest, dict]):
                 The request object. Request message for
@@ -677,6 +783,30 @@ class CatalogServiceAsyncClient:
         Operation.response is of type ImportResponse. Note that
         it is possible for a subset of the items to be
         successfully updated.
+
+
+        .. code-block::
+
+            from google.cloud import recommendationengine_v1beta1
+
+            def sample_import_catalog_items():
+                # Create a client
+                client = recommendationengine_v1beta1.CatalogServiceClient()
+
+                # Initialize request argument(s)
+                request = recommendationengine_v1beta1.ImportCatalogItemsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.import_catalog_items(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.recommendationengine_v1beta1.types.ImportCatalogItemsRequest, dict]):

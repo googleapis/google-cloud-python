@@ -240,6 +240,25 @@ class PredictionApiKeyRegistryAsyncClient:
     ) -> prediction_apikey_registry_service.PredictionApiKeyRegistration:
         r"""Register an API key for use with predict method.
 
+        .. code-block::
+
+            from google.cloud import recommendationengine_v1beta1
+
+            def sample_create_prediction_api_key_registration():
+                # Create a client
+                client = recommendationengine_v1beta1.PredictionApiKeyRegistryClient()
+
+                # Initialize request argument(s)
+                request = recommendationengine_v1beta1.CreatePredictionApiKeyRegistrationRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_prediction_api_key_registration(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.recommendationengine_v1beta1.types.CreatePredictionApiKeyRegistrationRequest, dict]):
                 The request object. Request message for the
@@ -333,6 +352,27 @@ class PredictionApiKeyRegistryAsyncClient:
     ) -> pagers.ListPredictionApiKeyRegistrationsAsyncPager:
         r"""List the registered apiKeys for use with predict
         method.
+
+
+        .. code-block::
+
+            from google.cloud import recommendationengine_v1beta1
+
+            def sample_list_prediction_api_key_registrations():
+                # Create a client
+                client = recommendationengine_v1beta1.PredictionApiKeyRegistryClient()
+
+                # Initialize request argument(s)
+                request = recommendationengine_v1beta1.ListPredictionApiKeyRegistrationsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_prediction_api_key_registrations(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.recommendationengine_v1beta1.types.ListPredictionApiKeyRegistrationsRequest, dict]):
@@ -428,6 +468,22 @@ class PredictionApiKeyRegistryAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Unregister an apiKey from using for predict method.
+
+        .. code-block::
+
+            from google.cloud import recommendationengine_v1beta1
+
+            def sample_delete_prediction_api_key_registration():
+                # Create a client
+                client = recommendationengine_v1beta1.PredictionApiKeyRegistryClient()
+
+                # Initialize request argument(s)
+                request = recommendationengine_v1beta1.DeletePredictionApiKeyRegistrationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_prediction_api_key_registration(request=request)
 
         Args:
             request (Union[google.cloud.recommendationengine_v1beta1.types.DeletePredictionApiKeyRegistrationRequest, dict]):
