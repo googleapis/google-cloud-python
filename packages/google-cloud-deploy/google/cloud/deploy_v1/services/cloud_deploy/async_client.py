@@ -234,6 +234,27 @@ class CloudDeployAsyncClient:
         r"""Lists DeliveryPipelines in a given project and
         location.
 
+
+        .. code-block::
+
+            from google.cloud import deploy_v1
+
+            def sample_list_delivery_pipelines():
+                # Create a client
+                client = deploy_v1.CloudDeployClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.ListDeliveryPipelinesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_delivery_pipelines(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.deploy_v1.types.ListDeliveryPipelinesRequest, dict]):
                 The request object. The request object for
@@ -323,6 +344,25 @@ class CloudDeployAsyncClient:
     ) -> cloud_deploy.DeliveryPipeline:
         r"""Gets details of a single DeliveryPipeline.
 
+        .. code-block::
+
+            from google.cloud import deploy_v1
+
+            def sample_get_delivery_pipeline():
+                # Create a client
+                client = deploy_v1.CloudDeployClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.GetDeliveryPipelineRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_delivery_pipeline(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.deploy_v1.types.GetDeliveryPipelineRequest, dict]):
                 The request object. The request object for
@@ -409,6 +449,31 @@ class CloudDeployAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new DeliveryPipeline in a given project and
         location.
+
+
+        .. code-block::
+
+            from google.cloud import deploy_v1
+
+            def sample_create_delivery_pipeline():
+                # Create a client
+                client = deploy_v1.CloudDeployClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.CreateDeliveryPipelineRequest(
+                    parent="parent_value",
+                    delivery_pipeline_id="delivery_pipeline_id_value",
+                )
+
+                # Make the request
+                operation = client.create_delivery_pipeline(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.deploy_v1.types.CreateDeliveryPipelineRequest, dict]):
@@ -512,6 +577,28 @@ class CloudDeployAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single DeliveryPipeline.
 
+        .. code-block::
+
+            from google.cloud import deploy_v1
+
+            def sample_update_delivery_pipeline():
+                # Create a client
+                client = deploy_v1.CloudDeployClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.UpdateDeliveryPipelineRequest(
+                )
+
+                # Make the request
+                operation = client.update_delivery_pipeline(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.deploy_v1.types.UpdateDeliveryPipelineRequest, dict]):
                 The request object. The request object for
@@ -612,6 +699,29 @@ class CloudDeployAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single DeliveryPipeline.
 
+        .. code-block::
+
+            from google.cloud import deploy_v1
+
+            def sample_delete_delivery_pipeline():
+                # Create a client
+                client = deploy_v1.CloudDeployClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.DeleteDeliveryPipelineRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_delivery_pipeline(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.deploy_v1.types.DeleteDeliveryPipelineRequest, dict]):
                 The request object. The request object for
@@ -705,6 +815,26 @@ class CloudDeployAsyncClient:
     ) -> pagers.ListTargetsAsyncPager:
         r"""Lists Targets in a given project and location.
 
+        .. code-block::
+
+            from google.cloud import deploy_v1
+
+            def sample_list_targets():
+                # Create a client
+                client = deploy_v1.CloudDeployClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.ListTargetsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_targets(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.deploy_v1.types.ListTargetsRequest, dict]):
                 The request object. The request object for
@@ -794,6 +924,25 @@ class CloudDeployAsyncClient:
     ) -> cloud_deploy.Target:
         r"""Gets details of a single Target.
 
+        .. code-block::
+
+            from google.cloud import deploy_v1
+
+            def sample_get_target():
+                # Create a client
+                client = deploy_v1.CloudDeployClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.GetTargetRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_target(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.deploy_v1.types.GetTargetRequest, dict]):
                 The request object. The request object for `GetTarget`.
@@ -876,6 +1025,30 @@ class CloudDeployAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Target in a given project and location.
+
+        .. code-block::
+
+            from google.cloud import deploy_v1
+
+            def sample_create_target():
+                # Create a client
+                client = deploy_v1.CloudDeployClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.CreateTargetRequest(
+                    parent="parent_value",
+                    target_id="target_id_value",
+                )
+
+                # Make the request
+                operation = client.create_target(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.deploy_v1.types.CreateTargetRequest, dict]):
@@ -978,6 +1151,28 @@ class CloudDeployAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single Target.
 
+        .. code-block::
+
+            from google.cloud import deploy_v1
+
+            def sample_update_target():
+                # Create a client
+                client = deploy_v1.CloudDeployClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.UpdateTargetRequest(
+                )
+
+                # Make the request
+                operation = client.update_target(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.deploy_v1.types.UpdateTargetRequest, dict]):
                 The request object. The request object for
@@ -1076,6 +1271,29 @@ class CloudDeployAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Target.
 
+        .. code-block::
+
+            from google.cloud import deploy_v1
+
+            def sample_delete_target():
+                # Create a client
+                client = deploy_v1.CloudDeployClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.DeleteTargetRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_target(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.deploy_v1.types.DeleteTargetRequest, dict]):
                 The request object. The request object for
@@ -1169,6 +1387,26 @@ class CloudDeployAsyncClient:
     ) -> pagers.ListReleasesAsyncPager:
         r"""Lists Releases in a given project and location.
 
+        .. code-block::
+
+            from google.cloud import deploy_v1
+
+            def sample_list_releases():
+                # Create a client
+                client = deploy_v1.CloudDeployClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.ListReleasesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_releases(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.deploy_v1.types.ListReleasesRequest, dict]):
                 The request object. The request object for
@@ -1257,6 +1495,25 @@ class CloudDeployAsyncClient:
     ) -> cloud_deploy.Release:
         r"""Gets details of a single Release.
 
+        .. code-block::
+
+            from google.cloud import deploy_v1
+
+            def sample_get_release():
+                # Create a client
+                client = deploy_v1.CloudDeployClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.GetReleaseRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_release(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.deploy_v1.types.GetReleaseRequest, dict]):
                 The request object. The request object for `GetRelease`.
@@ -1340,6 +1597,31 @@ class CloudDeployAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Release in a given project and
         location.
+
+
+        .. code-block::
+
+            from google.cloud import deploy_v1
+
+            def sample_create_release():
+                # Create a client
+                client = deploy_v1.CloudDeployClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.CreateReleaseRequest(
+                    parent="parent_value",
+                    release_id="release_id_value",
+                )
+
+                # Make the request
+                operation = client.create_release(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.deploy_v1.types.CreateReleaseRequest, dict]):
@@ -1441,6 +1723,26 @@ class CloudDeployAsyncClient:
     ) -> cloud_deploy.ApproveRolloutResponse:
         r"""Approves a Rollout.
 
+        .. code-block::
+
+            from google.cloud import deploy_v1
+
+            def sample_approve_rollout():
+                # Create a client
+                client = deploy_v1.CloudDeployClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.ApproveRolloutRequest(
+                    name="name_value",
+                    approved=True,
+                )
+
+                # Make the request
+                response = client.approve_rollout(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.deploy_v1.types.ApproveRolloutRequest, dict]):
                 The request object. The request object used by
@@ -1511,6 +1813,26 @@ class CloudDeployAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListRolloutsAsyncPager:
         r"""Lists Rollouts in a given project and location.
+
+        .. code-block::
+
+            from google.cloud import deploy_v1
+
+            def sample_list_rollouts():
+                # Create a client
+                client = deploy_v1.CloudDeployClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.ListRolloutsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_rollouts(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.deploy_v1.types.ListRolloutsRequest, dict]):
@@ -1601,6 +1923,25 @@ class CloudDeployAsyncClient:
     ) -> cloud_deploy.Rollout:
         r"""Gets details of a single Rollout.
 
+        .. code-block::
+
+            from google.cloud import deploy_v1
+
+            def sample_get_rollout():
+                # Create a client
+                client = deploy_v1.CloudDeployClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.GetRolloutRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_rollout(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.deploy_v1.types.GetRolloutRequest, dict]):
                 The request object. GetRolloutRequest is the request
@@ -1685,6 +2026,35 @@ class CloudDeployAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Rollout in a given project and
         location.
+
+
+        .. code-block::
+
+            from google.cloud import deploy_v1
+
+            def sample_create_rollout():
+                # Create a client
+                client = deploy_v1.CloudDeployClient()
+
+                # Initialize request argument(s)
+                rollout = deploy_v1.Rollout()
+                rollout.target_id = "target_id_value"
+
+                request = deploy_v1.CreateRolloutRequest(
+                    parent="parent_value",
+                    rollout_id="rollout_id_value",
+                    rollout=rollout,
+                )
+
+                # Make the request
+                operation = client.create_rollout(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.deploy_v1.types.CreateRolloutRequest, dict]):
@@ -1785,6 +2155,25 @@ class CloudDeployAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_deploy.Config:
         r"""Gets the configuration for a location.
+
+        .. code-block::
+
+            from google.cloud import deploy_v1
+
+            def sample_get_config():
+                # Create a client
+                client = deploy_v1.CloudDeployClient()
+
+                # Initialize request argument(s)
+                request = deploy_v1.GetConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_config(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.deploy_v1.types.GetConfigRequest, dict]):
