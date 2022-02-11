@@ -247,6 +247,26 @@ class BinauthzManagementServiceV1AsyncClient:
         [policy][google.cloud.binaryauthorization.v1.Policy] if the
         project does not have one.
 
+
+        .. code-block::
+
+            from google.cloud import binaryauthorization_v1
+
+            def sample_get_policy():
+                # Create a client
+                client = binaryauthorization_v1.BinauthzManagementServiceV1Client()
+
+                # Initialize request argument(s)
+                request = binaryauthorization_v1.GetPolicyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_policy(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.binaryauthorization_v1.types.GetPolicyRequest, dict]):
                 The request object. Request message for
@@ -335,6 +355,30 @@ class BinauthzManagementServiceV1AsyncClient:
         concurrent policy enforcement (or management!) requests. Returns
         NOT_FOUND if the project does not exist, INVALID_ARGUMENT if the
         request is malformed.
+
+
+        .. code-block::
+
+            from google.cloud import binaryauthorization_v1
+
+            def sample_update_policy():
+                # Create a client
+                client = binaryauthorization_v1.BinauthzManagementServiceV1Client()
+
+                # Initialize request argument(s)
+                policy = binaryauthorization_v1.Policy()
+                policy.default_admission_rule.evaluation_mode = "ALWAYS_DENY"
+                policy.default_admission_rule.enforcement_mode = "DRYRUN_AUDIT_LOG_ONLY"
+
+                request = binaryauthorization_v1.UpdatePolicyRequest(
+                    policy=policy,
+                )
+
+                # Make the request
+                response = client.update_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.binaryauthorization_v1.types.UpdatePolicyRequest, dict]):
@@ -431,6 +475,32 @@ class BinauthzManagementServiceV1AsyncClient:
         INVALID_ARGUMENT if the request is malformed, ALREADY_EXISTS if
         the [attestor][google.cloud.binaryauthorization.v1.Attestor]
         already exists.
+
+
+        .. code-block::
+
+            from google.cloud import binaryauthorization_v1
+
+            def sample_create_attestor():
+                # Create a client
+                client = binaryauthorization_v1.BinauthzManagementServiceV1Client()
+
+                # Initialize request argument(s)
+                attestor = binaryauthorization_v1.Attestor()
+                attestor.user_owned_grafeas_note.note_reference = "note_reference_value"
+                attestor.name = "name_value"
+
+                request = binaryauthorization_v1.CreateAttestorRequest(
+                    parent="parent_value",
+                    attestor_id="attestor_id_value",
+                    attestor=attestor,
+                )
+
+                # Make the request
+                response = client.create_attestor(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.binaryauthorization_v1.types.CreateAttestorRequest, dict]):
@@ -531,6 +601,26 @@ class BinauthzManagementServiceV1AsyncClient:
         [attestor][google.cloud.binaryauthorization.v1.Attestor] does
         not exist.
 
+
+        .. code-block::
+
+            from google.cloud import binaryauthorization_v1
+
+            def sample_get_attestor():
+                # Create a client
+                client = binaryauthorization_v1.BinauthzManagementServiceV1Client()
+
+                # Initialize request argument(s)
+                request = binaryauthorization_v1.GetAttestorRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_attestor(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.binaryauthorization_v1.types.GetAttestorRequest, dict]):
                 The request object. Request message for
@@ -617,6 +707,30 @@ class BinauthzManagementServiceV1AsyncClient:
         Returns NOT_FOUND if the
         [attestor][google.cloud.binaryauthorization.v1.Attestor] does
         not exist.
+
+
+        .. code-block::
+
+            from google.cloud import binaryauthorization_v1
+
+            def sample_update_attestor():
+                # Create a client
+                client = binaryauthorization_v1.BinauthzManagementServiceV1Client()
+
+                # Initialize request argument(s)
+                attestor = binaryauthorization_v1.Attestor()
+                attestor.user_owned_grafeas_note.note_reference = "note_reference_value"
+                attestor.name = "name_value"
+
+                request = binaryauthorization_v1.UpdateAttestorRequest(
+                    attestor=attestor,
+                )
+
+                # Make the request
+                response = client.update_attestor(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.binaryauthorization_v1.types.UpdateAttestorRequest, dict]):
@@ -706,6 +820,27 @@ class BinauthzManagementServiceV1AsyncClient:
     ) -> pagers.ListAttestorsAsyncPager:
         r"""Lists [attestors][google.cloud.binaryauthorization.v1.Attestor].
         Returns INVALID_ARGUMENT if the project does not exist.
+
+
+        .. code-block::
+
+            from google.cloud import binaryauthorization_v1
+
+            def sample_list_attestors():
+                # Create a client
+                client = binaryauthorization_v1.BinauthzManagementServiceV1Client()
+
+                # Initialize request argument(s)
+                request = binaryauthorization_v1.ListAttestorsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_attestors(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.binaryauthorization_v1.types.ListAttestorsRequest, dict]):
@@ -802,6 +937,23 @@ class BinauthzManagementServiceV1AsyncClient:
         Returns NOT_FOUND if the
         [attestor][google.cloud.binaryauthorization.v1.Attestor] does
         not exist.
+
+
+        .. code-block::
+
+            from google.cloud import binaryauthorization_v1
+
+            def sample_delete_attestor():
+                # Create a client
+                client = binaryauthorization_v1.BinauthzManagementServiceV1Client()
+
+                # Initialize request argument(s)
+                request = binaryauthorization_v1.DeleteAttestorRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_attestor(request=request)
 
         Args:
             request (Union[google.cloud.binaryauthorization_v1.types.DeleteAttestorRequest, dict]):

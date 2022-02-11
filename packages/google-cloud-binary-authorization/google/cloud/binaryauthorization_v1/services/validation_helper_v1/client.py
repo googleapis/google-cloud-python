@@ -395,6 +395,29 @@ class ValidationHelperV1Client(metaclass=ValidationHelperV1ClientMeta):
         r"""Returns whether the given Attestation for the given
         image URI was signed by the given Attestor
 
+
+
+        .. code-block::
+
+            from google.cloud import binaryauthorization_v1
+
+            def sample_validate_attestation_occurrence():
+                # Create a client
+                client = binaryauthorization_v1.ValidationHelperV1Client()
+
+                # Initialize request argument(s)
+                request = binaryauthorization_v1.ValidateAttestationOccurrenceRequest(
+                    attestor="attestor_value",
+                    occurrence_note="occurrence_note_value",
+                    occurrence_resource_uri="occurrence_resource_uri_value",
+                )
+
+                # Make the request
+                response = client.validate_attestation_occurrence(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.binaryauthorization_v1.types.ValidateAttestationOccurrenceRequest, dict]):
                 The request object. Request message for

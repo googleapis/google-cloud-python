@@ -1,0 +1,801 @@
+{
+  "snippets": [
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "BinauthzManagementServiceV1"
+          },
+          "shortName": "CreateAttestor"
+        }
+      },
+      "file": "binaryauthorization_generated_binaryauthorization_v1_binauthz_management_service_v1_create_attestor_async.py",
+      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_BinauthzManagementServiceV1_CreateAttestor_async",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "BinauthzManagementServiceV1"
+          },
+          "shortName": "CreateAttestor"
+        }
+      },
+      "file": "binaryauthorization_generated_binaryauthorization_v1_binauthz_management_service_v1_create_attestor_sync.py",
+      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_BinauthzManagementServiceV1_CreateAttestor_sync",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "BinauthzManagementServiceV1"
+          },
+          "shortName": "DeleteAttestor"
+        }
+      },
+      "file": "binaryauthorization_generated_binaryauthorization_v1_binauthz_management_service_v1_delete_attestor_async.py",
+      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_BinauthzManagementServiceV1_DeleteAttestor_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "BinauthzManagementServiceV1"
+          },
+          "shortName": "DeleteAttestor"
+        }
+      },
+      "file": "binaryauthorization_generated_binaryauthorization_v1_binauthz_management_service_v1_delete_attestor_sync.py",
+      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_BinauthzManagementServiceV1_DeleteAttestor_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "BinauthzManagementServiceV1"
+          },
+          "shortName": "GetAttestor"
+        }
+      },
+      "file": "binaryauthorization_generated_binaryauthorization_v1_binauthz_management_service_v1_get_attestor_async.py",
+      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_BinauthzManagementServiceV1_GetAttestor_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "BinauthzManagementServiceV1"
+          },
+          "shortName": "GetAttestor"
+        }
+      },
+      "file": "binaryauthorization_generated_binaryauthorization_v1_binauthz_management_service_v1_get_attestor_sync.py",
+      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_BinauthzManagementServiceV1_GetAttestor_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "BinauthzManagementServiceV1"
+          },
+          "shortName": "GetPolicy"
+        }
+      },
+      "file": "binaryauthorization_generated_binaryauthorization_v1_binauthz_management_service_v1_get_policy_async.py",
+      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_BinauthzManagementServiceV1_GetPolicy_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "BinauthzManagementServiceV1"
+          },
+          "shortName": "GetPolicy"
+        }
+      },
+      "file": "binaryauthorization_generated_binaryauthorization_v1_binauthz_management_service_v1_get_policy_sync.py",
+      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_BinauthzManagementServiceV1_GetPolicy_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "BinauthzManagementServiceV1"
+          },
+          "shortName": "ListAttestors"
+        }
+      },
+      "file": "binaryauthorization_generated_binaryauthorization_v1_binauthz_management_service_v1_list_attestors_async.py",
+      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_BinauthzManagementServiceV1_ListAttestors_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "BinauthzManagementServiceV1"
+          },
+          "shortName": "ListAttestors"
+        }
+      },
+      "file": "binaryauthorization_generated_binaryauthorization_v1_binauthz_management_service_v1_list_attestors_sync.py",
+      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_BinauthzManagementServiceV1_ListAttestors_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "BinauthzManagementServiceV1"
+          },
+          "shortName": "UpdateAttestor"
+        }
+      },
+      "file": "binaryauthorization_generated_binaryauthorization_v1_binauthz_management_service_v1_update_attestor_async.py",
+      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_BinauthzManagementServiceV1_UpdateAttestor_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "BinauthzManagementServiceV1"
+          },
+          "shortName": "UpdateAttestor"
+        }
+      },
+      "file": "binaryauthorization_generated_binaryauthorization_v1_binauthz_management_service_v1_update_attestor_sync.py",
+      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_BinauthzManagementServiceV1_UpdateAttestor_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "BinauthzManagementServiceV1"
+          },
+          "shortName": "UpdatePolicy"
+        }
+      },
+      "file": "binaryauthorization_generated_binaryauthorization_v1_binauthz_management_service_v1_update_policy_async.py",
+      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_BinauthzManagementServiceV1_UpdatePolicy_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "BinauthzManagementServiceV1"
+          },
+          "shortName": "UpdatePolicy"
+        }
+      },
+      "file": "binaryauthorization_generated_binaryauthorization_v1_binauthz_management_service_v1_update_policy_sync.py",
+      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_BinauthzManagementServiceV1_UpdatePolicy_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "SystemPolicyV1"
+          },
+          "shortName": "GetSystemPolicy"
+        }
+      },
+      "file": "binaryauthorization_generated_binaryauthorization_v1_system_policy_v1_get_system_policy_async.py",
+      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_SystemPolicyV1_GetSystemPolicy_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "SystemPolicyV1"
+          },
+          "shortName": "GetSystemPolicy"
+        }
+      },
+      "file": "binaryauthorization_generated_binaryauthorization_v1_system_policy_v1_get_system_policy_sync.py",
+      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_SystemPolicyV1_GetSystemPolicy_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ValidationHelperV1"
+          },
+          "shortName": "ValidateAttestationOccurrence"
+        }
+      },
+      "file": "binaryauthorization_generated_binaryauthorization_v1_validation_helper_v1_validate_attestation_occurrence_async.py",
+      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_ValidationHelperV1_ValidateAttestationOccurrence_async",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 41,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "start": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ValidationHelperV1"
+          },
+          "shortName": "ValidateAttestationOccurrence"
+        }
+      },
+      "file": "binaryauthorization_generated_binaryauthorization_v1_validation_helper_v1_validate_attestation_occurrence_sync.py",
+      "regionTag": "binaryauthorization_generated_binaryauthorization_v1_ValidationHelperV1_ValidateAttestationOccurrence_sync",
+      "segments": [
+        {
+          "end": 46,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 46,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 41,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 47,
+          "start": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    }
+  ]
+}

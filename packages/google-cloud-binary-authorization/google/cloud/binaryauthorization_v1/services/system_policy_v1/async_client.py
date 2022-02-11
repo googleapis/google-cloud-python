@@ -215,6 +215,26 @@ class SystemPolicyV1AsyncClient:
         r"""Gets the current system policy in the specified
         location.
 
+
+        .. code-block::
+
+            from google.cloud import binaryauthorization_v1
+
+            def sample_get_system_policy():
+                # Create a client
+                client = binaryauthorization_v1.SystemPolicyV1Client()
+
+                # Initialize request argument(s)
+                request = binaryauthorization_v1.GetSystemPolicyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_system_policy(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.binaryauthorization_v1.types.GetSystemPolicyRequest, dict]):
                 The request object. Request to read the current system
