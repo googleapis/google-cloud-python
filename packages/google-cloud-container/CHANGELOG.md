@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+### [2.10.3](https://github.com/googleapis/python-container/compare/v2.10.2...v2.10.3) (2022-02-11)
+
+
+### Documentation
+
+* add generated snippets ([#192](https://github.com/googleapis/python-container/issues/192)) ([e3a3a05](https://github.com/googleapis/python-container/commit/e3a3a056d80ac713edbf5cb4a8358063f8a83214))
+
 ### [2.10.2](https://github.com/googleapis/python-container/compare/v2.10.1...v2.10.2) (2022-02-04)
 
 ### Bug Fixes
