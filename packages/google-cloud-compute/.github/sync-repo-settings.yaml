@@ -3,7 +3,7 @@
 branchProtectionRules:
 # Identifies the protection rule pattern. Name of the branch to be protected.
 # Defaults to `master`
-- pattern: master
+- pattern: main
   requiresCodeOwnerReviews: true
   requiresStrictStatusChecks: true
   requiredStatusCheckContexts:
