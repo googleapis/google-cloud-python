@@ -1,0 +1,183 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.video.live_stream_v1",
+  "protoPackage": "google.cloud.video.livestream.v1",
+  "schema": "1.0",
+  "services": {
+    "LivestreamService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "LivestreamServiceClient",
+          "rpcs": {
+            "CreateChannel": {
+              "methods": [
+                "create_channel"
+              ]
+            },
+            "CreateEvent": {
+              "methods": [
+                "create_event"
+              ]
+            },
+            "CreateInput": {
+              "methods": [
+                "create_input"
+              ]
+            },
+            "DeleteChannel": {
+              "methods": [
+                "delete_channel"
+              ]
+            },
+            "DeleteEvent": {
+              "methods": [
+                "delete_event"
+              ]
+            },
+            "DeleteInput": {
+              "methods": [
+                "delete_input"
+              ]
+            },
+            "GetChannel": {
+              "methods": [
+                "get_channel"
+              ]
+            },
+            "GetEvent": {
+              "methods": [
+                "get_event"
+              ]
+            },
+            "GetInput": {
+              "methods": [
+                "get_input"
+              ]
+            },
+            "ListChannels": {
+              "methods": [
+                "list_channels"
+              ]
+            },
+            "ListEvents": {
+              "methods": [
+                "list_events"
+              ]
+            },
+            "ListInputs": {
+              "methods": [
+                "list_inputs"
+              ]
+            },
+            "StartChannel": {
+              "methods": [
+                "start_channel"
+              ]
+            },
+            "StopChannel": {
+              "methods": [
+                "stop_channel"
+              ]
+            },
+            "UpdateChannel": {
+              "methods": [
+                "update_channel"
+              ]
+            },
+            "UpdateInput": {
+              "methods": [
+                "update_input"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "LivestreamServiceAsyncClient",
+          "rpcs": {
+            "CreateChannel": {
+              "methods": [
+                "create_channel"
+              ]
+            },
+            "CreateEvent": {
+              "methods": [
+                "create_event"
+              ]
+            },
+            "CreateInput": {
+              "methods": [
+                "create_input"
+              ]
+            },
+            "DeleteChannel": {
+              "methods": [
+                "delete_channel"
+              ]
+            },
+            "DeleteEvent": {
+              "methods": [
+                "delete_event"
+              ]
+            },
+            "DeleteInput": {
+              "methods": [
+                "delete_input"
+              ]
+            },
+            "GetChannel": {
+              "methods": [
+                "get_channel"
+              ]
+            },
+            "GetEvent": {
+              "methods": [
+                "get_event"
+              ]
+            },
+            "GetInput": {
+              "methods": [
+                "get_input"
+              ]
+            },
+            "ListChannels": {
+              "methods": [
+                "list_channels"
+              ]
+            },
+            "ListEvents": {
+              "methods": [
+                "list_events"
+              ]
+            },
+            "ListInputs": {
+              "methods": [
+                "list_inputs"
+              ]
+            },
+            "StartChannel": {
+              "methods": [
+                "start_channel"
+              ]
+            },
+            "StopChannel": {
+              "methods": [
+                "stop_channel"
+              ]
+            },
+            "UpdateChannel": {
+              "methods": [
+                "update_channel"
+              ]
+            },
+            "UpdateInput": {
+              "methods": [
+                "update_input"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
