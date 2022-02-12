@@ -287,7 +287,16 @@ def test_method_field_headers_present():
     for v in verbs:
         rule = http_pb2.HttpRule(**{v: '/v1/{parent=projects/*}/topics'})
         method = make_method('DoSomething', http_rule=rule)
-        assert method.field_headers == ('parent',)
+        assert method.field_headers == (wrappers.FieldHeader('parent'),)
+        assert method.field_headers[0].raw == 'parent'
+        assert method.field_headers[0].disambiguated == 'parent'
+
+        # test that reserved keyword in field header is disambiguated
+        rule = http_pb2.HttpRule(**{v: '/v1/{object=objects/*}/topics'})
+        method = make_method('DoSomething', http_rule=rule)
+        assert method.field_headers == (wrappers.FieldHeader('object'),)
+        assert method.field_headers[0].raw == 'object'
+        assert method.field_headers[0].disambiguated == 'object_'
 
 
 def test_method_routing_rule():
