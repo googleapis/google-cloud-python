@@ -1,0 +1,16 @@
+{
+    "name": "certificatemanager",
+    "name_pretty": "Certificate Manager API",
+    "product_documentation": "",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/certificatemanager/latest",
+    "issue_tracker": "",
+    "release_level": "preview",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-certificate-manager",
+    "distribution_name": "google-cloud-certificate-manager",
+    "api_id": "certificatemanager.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": "",
+    "api_shortname": "certificatemanager"
+}
