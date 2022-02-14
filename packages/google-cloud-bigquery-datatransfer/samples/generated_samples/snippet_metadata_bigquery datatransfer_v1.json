@@ -1,0 +1,1327 @@
+{
+  "snippets": [
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "CheckValidCreds"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_check_valid_creds_async.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_CheckValidCreds_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "CheckValidCreds"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_check_valid_creds_sync.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_CheckValidCreds_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "CreateTransferConfig"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_create_transfer_config_async.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_CreateTransferConfig_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "CreateTransferConfig"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_create_transfer_config_sync.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_CreateTransferConfig_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "DeleteTransferConfig"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_delete_transfer_config_async.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_DeleteTransferConfig_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "DeleteTransferConfig"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_delete_transfer_config_sync.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_DeleteTransferConfig_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "DeleteTransferRun"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_delete_transfer_run_async.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_DeleteTransferRun_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "DeleteTransferRun"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_delete_transfer_run_sync.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_DeleteTransferRun_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "EnrollDataSources"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_enroll_data_sources_async.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_EnrollDataSources_async",
+      "segments": [
+        {
+          "end": 41,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 41,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "EnrollDataSources"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_enroll_data_sources_sync.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_EnrollDataSources_sync",
+      "segments": [
+        {
+          "end": 41,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 41,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "GetDataSource"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_get_data_source_async.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_GetDataSource_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "GetDataSource"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_get_data_source_sync.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_GetDataSource_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "GetTransferConfig"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_get_transfer_config_async.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_GetTransferConfig_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "GetTransferConfig"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_get_transfer_config_sync.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_GetTransferConfig_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "GetTransferRun"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_get_transfer_run_async.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_GetTransferRun_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "GetTransferRun"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_get_transfer_run_sync.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_GetTransferRun_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "ListDataSources"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_list_data_sources_async.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_ListDataSources_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "ListDataSources"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_list_data_sources_sync.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_ListDataSources_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "ListTransferConfigs"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_list_transfer_configs_async.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_ListTransferConfigs_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "ListTransferConfigs"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_list_transfer_configs_sync.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_ListTransferConfigs_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "ListTransferLogs"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_list_transfer_logs_async.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_ListTransferLogs_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "ListTransferLogs"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_list_transfer_logs_sync.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_ListTransferLogs_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "ListTransferRuns"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_list_transfer_runs_async.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_ListTransferRuns_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "ListTransferRuns"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_list_transfer_runs_sync.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_ListTransferRuns_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "ScheduleTransferRuns"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_schedule_transfer_runs_async.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_ScheduleTransferRuns_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "ScheduleTransferRuns"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_schedule_transfer_runs_sync.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_ScheduleTransferRuns_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "StartManualTransferRuns"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_start_manual_transfer_runs_async.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_StartManualTransferRuns_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "StartManualTransferRuns"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_start_manual_transfer_runs_sync.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_StartManualTransferRuns_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "UpdateTransferConfig"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_update_transfer_config_async.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_UpdateTransferConfig_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "DataTransferService"
+          },
+          "shortName": "UpdateTransferConfig"
+        }
+      },
+      "file": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_data_transfer_service_update_transfer_config_sync.py",
+      "regionTag": "bigquerydatatransfer_generated_bigquery_datatransfer_v1_DataTransferService_UpdateTransferConfig_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    }
+  ]
+}

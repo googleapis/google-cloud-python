@@ -232,6 +232,26 @@ class DataTransferServiceAsyncClient:
         r"""Retrieves a supported data source and returns its
         settings.
 
+
+        .. code-block::
+
+            from google.cloud import bigquery_datatransfer_v1
+
+            def sample_get_data_source():
+                # Create a client
+                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_datatransfer_v1.GetDataSourceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_data_source(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.GetDataSourceRequest, dict]):
                 The request object. A request to get data source info.
@@ -315,6 +335,27 @@ class DataTransferServiceAsyncClient:
     ) -> pagers.ListDataSourcesAsyncPager:
         r"""Lists supported data sources and returns their
         settings.
+
+
+        .. code-block::
+
+            from google.cloud import bigquery_datatransfer_v1
+
+            def sample_list_data_sources():
+                # Create a client
+                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_datatransfer_v1.ListDataSourcesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_data_sources(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesRequest, dict]):
@@ -408,6 +449,29 @@ class DataTransferServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer.TransferConfig:
         r"""Creates a new data transfer configuration.
+
+        .. code-block::
+
+            from google.cloud import bigquery_datatransfer_v1
+
+            def sample_create_transfer_config():
+                # Create a client
+                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+
+                # Initialize request argument(s)
+                transfer_config = bigquery_datatransfer_v1.TransferConfig()
+                transfer_config.destination_dataset_id = "destination_dataset_id_value"
+
+                request = bigquery_datatransfer_v1.CreateTransferConfigRequest(
+                    parent="parent_value",
+                    transfer_config=transfer_config,
+                )
+
+                # Make the request
+                response = client.create_transfer_config(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.CreateTransferConfigRequest, dict]):
@@ -507,6 +571,29 @@ class DataTransferServiceAsyncClient:
         r"""Updates a data transfer configuration.
         All fields must be set, even if they are not updated.
 
+
+        .. code-block::
+
+            from google.cloud import bigquery_datatransfer_v1
+
+            def sample_update_transfer_config():
+                # Create a client
+                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+
+                # Initialize request argument(s)
+                transfer_config = bigquery_datatransfer_v1.TransferConfig()
+                transfer_config.destination_dataset_id = "destination_dataset_id_value"
+
+                request = bigquery_datatransfer_v1.UpdateTransferConfigRequest(
+                    transfer_config=transfer_config,
+                )
+
+                # Make the request
+                response = client.update_transfer_config(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.UpdateTransferConfigRequest, dict]):
                 The request object. A request to update a transfer
@@ -598,6 +685,23 @@ class DataTransferServiceAsyncClient:
         r"""Deletes a data transfer configuration, including any
         associated transfer runs and logs.
 
+
+        .. code-block::
+
+            from google.cloud import bigquery_datatransfer_v1
+
+            def sample_delete_transfer_config():
+                # Create a client
+                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_datatransfer_v1.DeleteTransferConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_transfer_config(request=request)
+
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.DeleteTransferConfigRequest, dict]):
                 The request object. A request to delete data transfer
@@ -674,6 +778,25 @@ class DataTransferServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> transfer.TransferConfig:
         r"""Returns information about a data transfer config.
+
+        .. code-block::
+
+            from google.cloud import bigquery_datatransfer_v1
+
+            def sample_get_transfer_config():
+                # Create a client
+                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_datatransfer_v1.GetTransferConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_transfer_config(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.GetTransferConfigRequest, dict]):
@@ -764,6 +887,27 @@ class DataTransferServiceAsyncClient:
     ) -> pagers.ListTransferConfigsAsyncPager:
         r"""Returns information about all transfer configs owned
         by a project in the specified location.
+
+
+        .. code-block::
+
+            from google.cloud import bigquery_datatransfer_v1
+
+            def sample_list_transfer_configs():
+                # Create a client
+                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_datatransfer_v1.ListTransferConfigsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_transfer_configs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsRequest, dict]):
@@ -862,6 +1006,26 @@ class DataTransferServiceAsyncClient:
         created per UTC time in the time range. DEPRECATED: use
         StartManualTransferRuns instead.
 
+
+        .. code-block::
+
+            from google.cloud import bigquery_datatransfer_v1
+
+            def sample_schedule_transfer_runs():
+                # Create a client
+                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_datatransfer_v1.ScheduleTransferRunsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.schedule_transfer_runs(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.ScheduleTransferRunsRequest, dict]):
                 The request object. A request to schedule transfer runs
@@ -959,6 +1123,25 @@ class DataTransferServiceAsyncClient:
         time range where the run_time is between start_time (inclusive)
         and end_time (exclusive), or for a specific run_time.
 
+
+        .. code-block::
+
+            from google.cloud import bigquery_datatransfer_v1
+
+            def sample_start_manual_transfer_runs():
+                # Create a client
+                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_datatransfer_v1.StartManualTransferRunsRequest(
+                )
+
+                # Make the request
+                response = client.start_manual_transfer_runs(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsRequest, dict]):
                 The request object. A request to start manual transfer
@@ -1009,6 +1192,26 @@ class DataTransferServiceAsyncClient:
     ) -> transfer.TransferRun:
         r"""Returns information about the particular transfer
         run.
+
+
+        .. code-block::
+
+            from google.cloud import bigquery_datatransfer_v1
+
+            def sample_get_transfer_run():
+                # Create a client
+                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_datatransfer_v1.GetTransferRunRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_transfer_run(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.GetTransferRunRequest, dict]):
@@ -1092,6 +1295,22 @@ class DataTransferServiceAsyncClient:
     ) -> None:
         r"""Deletes the specified transfer run.
 
+        .. code-block::
+
+            from google.cloud import bigquery_datatransfer_v1
+
+            def sample_delete_transfer_run():
+                # Create a client
+                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_datatransfer_v1.DeleteTransferRunRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_transfer_run(request=request)
+
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.DeleteTransferRunRequest, dict]):
                 The request object. A request to delete data transfer
@@ -1169,6 +1388,27 @@ class DataTransferServiceAsyncClient:
     ) -> pagers.ListTransferRunsAsyncPager:
         r"""Returns information about running and completed
         transfer runs.
+
+
+        .. code-block::
+
+            from google.cloud import bigquery_datatransfer_v1
+
+            def sample_list_transfer_runs():
+                # Create a client
+                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_datatransfer_v1.ListTransferRunsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_transfer_runs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsRequest, dict]):
@@ -1263,6 +1503,26 @@ class DataTransferServiceAsyncClient:
     ) -> pagers.ListTransferLogsAsyncPager:
         r"""Returns log messages for the transfer run.
 
+        .. code-block::
+
+            from google.cloud import bigquery_datatransfer_v1
+
+            def sample_list_transfer_logs():
+                # Create a client
+                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_datatransfer_v1.ListTransferLogsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_transfer_logs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsRequest, dict]):
                 The request object. A request to get user facing log
@@ -1355,6 +1615,26 @@ class DataTransferServiceAsyncClient:
     ) -> datatransfer.CheckValidCredsResponse:
         r"""Returns true if valid credentials exist for the given
         data source and requesting user.
+
+
+        .. code-block::
+
+            from google.cloud import bigquery_datatransfer_v1
+
+            def sample_check_valid_creds():
+                # Create a client
+                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_datatransfer_v1.CheckValidCredsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.check_valid_creds(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.CheckValidCredsRequest, dict]):
@@ -1450,6 +1730,22 @@ class DataTransferServiceAsyncClient:
         can be found at
         https://cloud.google.com/bigquery/bigquery-web-ui and
         https://cloud.google.com/bigquery/docs/working-with-transfers).
+
+
+        .. code-block::
+
+            from google.cloud import bigquery_datatransfer_v1
+
+            def sample_enroll_data_sources():
+                # Create a client
+                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_datatransfer_v1.EnrollDataSourcesRequest(
+                )
+
+                # Make the request
+                client.enroll_data_sources(request=request)
 
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.EnrollDataSourcesRequest, dict]):
