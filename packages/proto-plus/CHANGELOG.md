@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.20.1](https://github.com/googleapis/proto-plus-python/compare/v1.20.0...v1.20.1) (2022-02-14)
+
+
+### Bug Fixes
+
+* mitigate collisions in field names ([#295](https://github.com/googleapis/proto-plus-python/issues/295)) ([158ae99](https://github.com/googleapis/proto-plus-python/commit/158ae995aa4fdf6239c864a41f5df5575a3c30b3))
+
 ## [1.20.0](https://github.com/googleapis/proto-plus-python/compare/v1.19.9...v1.20.0) (2022-02-07)
 
 
