@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+### [2.7.1](https://github.com/googleapis/python-recommender/compare/v2.7.0...v2.7.1) (2022-02-11)
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([7d26e56](https://github.com/googleapis/python-recommender/commit/7d26e56274b56356faff179215a4cb8aad3ecc90))
+
 ## [2.7.0](https://github.com/googleapis/python-recommender/compare/v2.6.0...v2.7.0) (2022-01-26)
 
 
