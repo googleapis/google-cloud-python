@@ -527,12 +527,23 @@ class Message(metaclass=MessageMeta):
             try:
                 pb_type = self._meta.fields[key].pb_type
             except KeyError:
-                if ignore_unknown_fields:
-                    continue
+                # Underscores may be appended to field names
+                # that collide with python or proto-plus keywords.
+                # In case a key only exists with a `_` suffix, coerce the key
+                # to include the `_` suffix. Is not possible to
+                # natively define the same field with a trailing underscore in protobuf.
+                # See related issue
+                # https://github.com/googleapis/python-api-core/issues/227
+                if f"{key}_" in self._meta.fields:
+                    key = f"{key}_"
+                    pb_type = self._meta.fields[key].pb_type
+                else:
+                    if ignore_unknown_fields:
+                        continue
 
-                raise ValueError(
-                    "Unknown field for {}: {}".format(self.__class__.__name__, key)
-                )
+                    raise ValueError(
+                        "Unknown field for {}: {}".format(self.__class__.__name__, key)
+                    )
 
             pb_value = marshal.to_proto(pb_type, value)
             if pb_value is not None:
