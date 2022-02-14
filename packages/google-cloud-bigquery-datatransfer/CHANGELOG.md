@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## [3.6.0](https://github.com/googleapis/python-bigquery-datatransfer/compare/v3.5.0...v3.6.0) (2022-02-14)
+
+
+### Features
+
+* add api key support ([6bd57bd](https://github.com/googleapis/python-bigquery-datatransfer/commit/6bd57bd2fb0a8fbf8d4507045a1dad5abebb7cbb))
+* add owner email to TransferConfig message ([#279](https://github.com/googleapis/python-bigquery-datatransfer/issues/279)) ([6bd57bd](https://github.com/googleapis/python-bigquery-datatransfer/commit/6bd57bd2fb0a8fbf8d4507045a1dad5abebb7cbb))
+* allow customer to enroll a datasource programmatically ([6bd57bd](https://github.com/googleapis/python-bigquery-datatransfer/commit/6bd57bd2fb0a8fbf8d4507045a1dad5abebb7cbb))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([6bd57bd](https://github.com/googleapis/python-bigquery-datatransfer/commit/6bd57bd2fb0a8fbf8d4507045a1dad5abebb7cbb))
+
+
+### Documentation
+
+* add generated code samples ([#283](https://github.com/googleapis/python-bigquery-datatransfer/issues/283)) ([939d4c3](https://github.com/googleapis/python-bigquery-datatransfer/commit/939d4c3d507a0c38daf6f8568c64f7c44a7dd4f3))
+* add generated snippets ([939d4c3](https://github.com/googleapis/python-bigquery-datatransfer/commit/939d4c3d507a0c38daf6f8568c64f7c44a7dd4f3))
+* improvements to various message and field descriptions ([6bd57bd](https://github.com/googleapis/python-bigquery-datatransfer/commit/6bd57bd2fb0a8fbf8d4507045a1dad5abebb7cbb))
+* preserve hyperlinks with hyphens ([6bd57bd](https://github.com/googleapis/python-bigquery-datatransfer/commit/6bd57bd2fb0a8fbf8d4507045a1dad5abebb7cbb))
+
 ## [3.5.0](https://github.com/googleapis/python-bigquery-datatransfer/compare/v3.4.1...v3.5.0) (2022-01-14)
 
 
