@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+### [2.10.4](https://github.com/googleapis/python-container/compare/v2.10.3...v2.10.4) (2022-02-14)
+
+
+### Bug Fixes
+
+* **deps:** move libcst to extras ([#194](https://github.com/googleapis/python-container/issues/194)) ([1c308c2](https://github.com/googleapis/python-container/commit/1c308c2e44dc16d0e8df5976de0b65d1e7c2041e))
+
 ### [2.10.3](https://github.com/googleapis/python-container/compare/v2.10.2...v2.10.3) (2022-02-11)
 
 
