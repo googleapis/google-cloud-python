@@ -33,9 +33,21 @@ from google.cloud.bigquery.job.base import _JobReference
 class LoadJobConfig(_JobConfig):
     """Configuration options for load jobs.
 
-    All properties in this class are optional. Values which are :data:`None` ->
-    server defaults. Set properties on the constructed configuration by using
-    the property name as the name of a keyword argument.
+    Set properties on the constructed configuration by using the property name
+    as the name of a keyword argument. Values which are unset or :data:`None`
+    use the BigQuery REST API default values. See the `BigQuery REST API
+    reference documentation
+    <https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad>`_
+    for a list of default values.
+
+    Required options differ based on the
+    :attr:`~google.cloud.bigquery.job.LoadJobConfig.source_format` value.
+    For example, the BigQuery API's default value for
+    :attr:`~google.cloud.bigquery.job.LoadJobConfig.source_format` is ``"CSV"``.
+    When loading a CSV file, either
+    :attr:`~google.cloud.bigquery.job.LoadJobConfig.schema` must be set or
+    :attr:`~google.cloud.bigquery.job.LoadJobConfig.autodetect` must be set to
+    :data:`True`.
     """
 
     def __init__(self, **kwargs):
