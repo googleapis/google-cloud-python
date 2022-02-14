@@ -33,9 +33,10 @@ dependencies = [
     # https://github.com/googleapis/google-cloud-python/issues/10566
     "google-api-core[grpc] >= 1.28.0, <3.0.0dev",
     "grpc-google-iam-v1 >= 0.12.3, < 0.13dev",
-    "libcst >= 0.2.5",
     "proto-plus >= 1.4.0",
 ]
+
+extras = {"libcst": "libcst >= 0.2.5"}
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
@@ -84,6 +85,7 @@ setuptools.setup(
     ],
     namespace_packages=namespaces,
     install_requires=dependencies,
+    extras_require=extras,
     include_package_data=True,
     zip_safe=False,
 )

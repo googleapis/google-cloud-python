@@ -22,7 +22,7 @@ If you experience issues or have questions, please file an [issue](https://githu
 * Install the library
 
 ```py
-python3 -m pip install google-cloud-datacatalog
+python3 -m pip install google-cloud-datacatalog[libcst]
 ```
 
 * The script `fixup_datacatalog_v1_keywords.py` is shipped with the library. It expects
