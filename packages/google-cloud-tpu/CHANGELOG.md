@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.1](https://github.com/googleapis/python-tpu/compare/v1.3.0...v1.3.1) (2022-02-11)
+
+
+### Documentation
+
+* add generated snippets ([#79](https://github.com/googleapis/python-tpu/issues/79)) ([c09c807](https://github.com/googleapis/python-tpu/commit/c09c807b4f57798d4798589be0bf4c4d287e6073))
+
 ## [1.3.0](https://github.com/googleapis/python-tpu/compare/v1.2.1...v1.3.0) (2022-02-03)
 
 
