@@ -757,6 +757,7 @@ def test_client_query_total_rows(client, capsys):
 
 
 def test_manage_job(client):
+    # TODO(b/199162556): delete after migrating docs
     sql = """
         SELECT corpus
         FROM `bigquery-public-data.samples.shakespeare`
