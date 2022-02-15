@@ -20,10 +20,10 @@ If you previously were using modules or functions under the namespace
 To assist with this, we have included some helpful scripts to make some of the code
 modifications required to use 2.0.0.
 
-* Install the library
+* Install the library with `libcst`.
 
 ```py
-python3 -m pip install google-cloud-datastore
+python3 -m pip install google-cloud-datastore[libcst]
 ```
 
 * The scripts `fixup_datastore_v1_keywords.py` and `fixup_datastore_admin_v1_keywords.py` 

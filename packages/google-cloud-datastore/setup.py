@@ -38,9 +38,8 @@ dependencies = [
     # https://github.com/googleapis/google-cloud-python/issues/10566
     "google-cloud-core >= 1.4.0, <3.0.0dev",
     "proto-plus >= 1.4.0",
-    "libcst >= 0.2.5",
 ]
-extras = {}
+extras = {"libcst": "libcst >= 0.2.5"}
 
 
 # Setup boilerplate below this line.
