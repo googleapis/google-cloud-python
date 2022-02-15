@@ -1093,7 +1093,7 @@ class AudioStream(proto.Message):
             -  'sr' - Side right channel
             -  'fc' - Front center channel
             -  'lfe' - Low frequency
-        mapping (Sequence[google.cloud.video.transcoder_v1beta1.types.AudioStream.AudioAtom]):
+        mapping_ (Sequence[google.cloud.video.transcoder_v1beta1.types.AudioStream.AudioAtom]):
             The mapping for the ``Job.edit_list`` atoms with audio
             ``EditAtom.inputs``.
         sample_rate_hertz (int):
@@ -1161,7 +1161,7 @@ class AudioStream(proto.Message):
     bitrate_bps = proto.Field(proto.INT32, number=2,)
     channel_count = proto.Field(proto.INT32, number=3,)
     channel_layout = proto.RepeatedField(proto.STRING, number=4,)
-    mapping = proto.RepeatedField(proto.MESSAGE, number=5, message=AudioAtom,)
+    mapping_ = proto.RepeatedField(proto.MESSAGE, number=5, message=AudioAtom,)
     sample_rate_hertz = proto.Field(proto.INT32, number=6,)
 
 
@@ -1184,7 +1184,7 @@ class TextStream(proto.Message):
             Required. The BCP-47 language code, such as ``"en-US"`` or
             ``"sr-Latn"``. For more information, see
             https://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
-        mapping (Sequence[google.cloud.video.transcoder_v1beta1.types.TextStream.TextAtom]):
+        mapping_ (Sequence[google.cloud.video.transcoder_v1beta1.types.TextStream.TextAtom]):
             The mapping for the ``Job.edit_list`` atoms with text
             ``EditAtom.inputs``.
     """
@@ -1223,7 +1223,7 @@ class TextStream(proto.Message):
 
     codec = proto.Field(proto.STRING, number=1,)
     language_code = proto.Field(proto.STRING, number=2,)
-    mapping = proto.RepeatedField(proto.MESSAGE, number=3, message=TextAtom,)
+    mapping_ = proto.RepeatedField(proto.MESSAGE, number=3, message=TextAtom,)
 
 
 class SegmentSettings(proto.Message):
