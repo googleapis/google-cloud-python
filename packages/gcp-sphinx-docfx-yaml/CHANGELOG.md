@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.4.3](https://github.com/googleapis/sphinx-docfx-yaml/compare/v1.4.2...v1.4.3) (2022-02-15)
+
+
+### Bug Fixes
+
+* retrieve constructors ([#181](https://github.com/googleapis/sphinx-docfx-yaml/issues/181)) ([1e6efa4](https://github.com/googleapis/sphinx-docfx-yaml/commit/1e6efa4007e3191ad07dd4e82fcb06a8fd1be746))
+* use `id` field for Attributes instead of `name` ([#179](https://github.com/googleapis/sphinx-docfx-yaml/issues/179)) ([fa38c8c](https://github.com/googleapis/sphinx-docfx-yaml/commit/fa38c8ce98b92a460755c8db548cfee9309812c7))
+
 ### [1.4.2](https://github.com/googleapis/sphinx-docfx-yaml/compare/v1.4.1...v1.4.2) (2022-02-07)
 
 
