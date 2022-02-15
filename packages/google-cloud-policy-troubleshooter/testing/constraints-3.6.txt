@@ -21,5 +21,4 @@
 # Then this file should have foo==1.14.0
 google-api-core==1.28.0
 grpc-google-iam-v1==0.12.3
-libcst==0.2.5
 proto-plus==1.15.0
