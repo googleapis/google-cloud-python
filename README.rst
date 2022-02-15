@@ -433,6 +433,9 @@ Libraries
    * - `Life Sciences <https://github.com/googleapis/python-life-sciences>`_
      - |preview|
      - |PyPI-google-cloud-life-sciences|
+   * - `Live Stream API <https://github.com/googleapis/python-video-live-stream>`_
+     - |preview|
+     - |PyPI-google-cloud-video-live-stream|
    * - `Media Translation <https://github.com/googleapis/python-media-translation>`_
      - |preview|
      - |PyPI-google-cloud-media-translation|
@@ -457,6 +460,9 @@ Libraries
    * - `SQLAlchemy dialect for BigQuery <https://github.com/googleapis/python-bigquery-sqlalchemy>`_
      - |preview|
      - |PyPI-sqlalchemy-bigquery|
+   * - `Video Stitcher <https://github.com/googleapis/python-video-stitcher>`_
+     - |preview|
+     - |PyPI-google-cloud-video-stitcher|
 
 .. |PyPI-google-cloud-aiplatform| image:: https://img.shields.io/pypi/v/google-cloud-aiplatform.svg
      :target: https://pypi.org/project/google-cloud-aiplatform
@@ -700,6 +706,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-gke-connect-gateway
 .. |PyPI-google-cloud-life-sciences| image:: https://img.shields.io/pypi/v/google-cloud-life-sciences.svg
      :target: https://pypi.org/project/google-cloud-life-sciences
+.. |PyPI-google-cloud-video-live-stream| image:: https://img.shields.io/pypi/v/google-cloud-video-live-stream.svg
+     :target: https://pypi.org/project/google-cloud-video-live-stream
 .. |PyPI-google-cloud-media-translation| image:: https://img.shields.io/pypi/v/google-cloud-media-translation.svg
      :target: https://pypi.org/project/google-cloud-media-translation
 .. |PyPI-google-cloud-network-security| image:: https://img.shields.io/pypi/v/google-cloud-network-security.svg
@@ -716,6 +724,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-runtimeconfig
 .. |PyPI-sqlalchemy-bigquery| image:: https://img.shields.io/pypi/v/sqlalchemy-bigquery.svg
      :target: https://pypi.org/project/sqlalchemy-bigquery
+.. |PyPI-google-cloud-video-stitcher| image:: https://img.shields.io/pypi/v/google-cloud-video-stitcher.svg
+     :target: https://pypi.org/project/google-cloud-video-stitcher
 
 .. API_TABLE_END
 
