@@ -52,7 +52,6 @@ setuptools.setup(
         "proto-plus >= 1.10.0",
     ),
     python_requires=">=3.6",
-    setup_requires=["libcst >= 0.2.5"],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
