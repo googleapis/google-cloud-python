@@ -66,7 +66,7 @@ class {{ service.name }}RestInterceptor:
     These use cases and more can be enabled by injecting an
     instance of a custom subclass when constructing the {{ service.name }}RestTransport.
 
-    .. code-block:
+    .. code-block:: python
         class MyCustom{{ service.name }}Interceptor({{ service.name }}RestInterceptor):
     {% for _, method in service.methods|dictsort if not method.client_streaming %}
             def pre_{{ method.name|snake_case }}(request, metadata):

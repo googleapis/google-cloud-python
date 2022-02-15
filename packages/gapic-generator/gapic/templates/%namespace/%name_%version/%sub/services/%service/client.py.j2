@@ -371,11 +371,10 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             ) -> Iterable[{{ method.client_output.ident }}]:
             {% endif %}
         r"""{{ method.meta.doc|rst(width=72, indent=8) }}
-
         
         {% with snippet = snippet_index.get_snippet(service.name, method.name, sync=True) %}
         {% if snippet is not none %}
-        .. code-block::
+        .. code-block:: python
 
 {{ snippet.full_snippet|indent(width=12, first=True) }}
         {% endif %}

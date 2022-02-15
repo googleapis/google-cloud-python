@@ -209,7 +209,7 @@ class {{ service.async_client_name }}:
 
         {% with snippet = snippet_index.get_snippet(service.name, method.name, sync=True) %}
         {% if snippet is not none %}
-        .. code-block::
+        .. code-block:: python
 
 {{ snippet.full_snippet|indent(width=12, first=True) }}
         {% endif %}

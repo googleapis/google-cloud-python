@@ -211,7 +211,7 @@ class AssetServiceAsyncClient:
         the export operation usually finishes within 5 minutes.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1
 
@@ -308,7 +308,7 @@ class AssetServiceAsyncClient:
         paged results in response.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1
 
@@ -422,7 +422,7 @@ class AssetServiceAsyncClient:
         INVALID_ARGUMENT error.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1
 
@@ -504,7 +504,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         updates.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1
 
@@ -614,7 +614,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             ) -> asset_service.Feed:
         r"""Gets details about an asset feed.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1
 
@@ -723,7 +723,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         project/folder/organization.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1
 
@@ -825,7 +825,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             ) -> asset_service.Feed:
         r"""Updates an asset feed configuration.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1
 
@@ -929,7 +929,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             ) -> None:
         r"""Deletes an asset feed.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1
 
@@ -1025,7 +1025,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         desired scope, otherwise the request will be rejected.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1
 
@@ -1232,7 +1232,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         desired scope, otherwise the request will be rejected.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1
 
@@ -1415,7 +1415,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         what accesses on which resources.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1
 
@@ -1510,7 +1510,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         to help callers to map responses to requests.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import asset_v1
 

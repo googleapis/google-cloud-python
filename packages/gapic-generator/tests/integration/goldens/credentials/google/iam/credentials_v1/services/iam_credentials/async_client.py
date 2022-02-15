@@ -209,7 +209,7 @@ class IAMCredentialsAsyncClient:
         account.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.iam import credentials_v1
 
@@ -363,7 +363,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         account.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.iam import credentials_v1
 
@@ -510,7 +510,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         private key.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.iam import credentials_v1
 
@@ -644,7 +644,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         private key.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.iam import credentials_v1
 

@@ -203,7 +203,7 @@ class ConfigServiceV2AsyncClient:
             ) -> pagers.ListBucketsAsyncPager:
         r"""Lists buckets.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import logging_v2
 
@@ -318,7 +318,7 @@ class ConfigServiceV2AsyncClient:
             ) -> logging_config.LogBucket:
         r"""Gets a bucket.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import logging_v2
 
@@ -392,7 +392,7 @@ class ConfigServiceV2AsyncClient:
         cannot be changed.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import logging_v2
 
@@ -475,7 +475,7 @@ class ConfigServiceV2AsyncClient:
         A buckets region may not be modified after it is created.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import logging_v2
 
@@ -549,7 +549,7 @@ class ConfigServiceV2AsyncClient:
         the bucket will be permanently deleted.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import logging_v2
 
@@ -612,7 +612,7 @@ class ConfigServiceV2AsyncClient:
         may be undeleted within the grace period of 7 days.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import logging_v2
 
@@ -674,7 +674,7 @@ class ConfigServiceV2AsyncClient:
             ) -> pagers.ListViewsAsyncPager:
         r"""Lists views on a bucket.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import logging_v2
 
@@ -781,7 +781,7 @@ class ConfigServiceV2AsyncClient:
             ) -> logging_config.LogView:
         r"""Gets a view.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import logging_v2
 
@@ -856,7 +856,7 @@ class ConfigServiceV2AsyncClient:
         contain a maximum of 50 views.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import logging_v2
 
@@ -932,7 +932,7 @@ class ConfigServiceV2AsyncClient:
         existing view with values from the new view: ``filter``.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import logging_v2
 
@@ -1005,7 +1005,7 @@ class ConfigServiceV2AsyncClient:
             ) -> None:
         r"""Deletes a view from a bucket.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import logging_v2
 
@@ -1067,7 +1067,7 @@ class ConfigServiceV2AsyncClient:
             ) -> pagers.ListSinksAsyncPager:
         r"""Lists sinks.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import logging_v2
 
@@ -1187,7 +1187,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             ) -> logging_config.LogSink:
         r"""Gets a sink.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import logging_v2
 
@@ -1309,7 +1309,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         entries only from the resource owning the sink.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import logging_v2
 
@@ -1440,7 +1440,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         the ``unique_writer_identity`` field.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import logging_v2
 
@@ -1595,7 +1595,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         then that service account is also deleted.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import logging_v2
 
@@ -1693,7 +1693,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             ) -> pagers.ListExclusionsAsyncPager:
         r"""Lists all the exclusions in a parent resource.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import logging_v2
 
@@ -1813,7 +1813,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             ) -> logging_config.LogExclusion:
         r"""Gets the description of an exclusion.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import logging_v2
 
@@ -1937,7 +1937,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         resource.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import logging_v2
 
@@ -2068,7 +2068,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         exclusion.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import logging_v2
 
@@ -2210,7 +2210,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             ) -> None:
         r"""Deletes an exclusion.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import logging_v2
 
@@ -2317,7 +2317,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         for more information.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import logging_v2
 
@@ -2419,7 +2419,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         for more information.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import logging_v2
 
