@@ -17,10 +17,10 @@ The 2.0.0 release requires Python 3.6+.
 
 Methods expect request objects. We provide a script that will convert most common use cases.
 
-* Install the library
+* Install the library with the `libcst` extra
 
 ```py
-python3 -m pip install google-cloud-speech
+python3 -m pip install google-cloud-speech[libcst]
 ```
 
 * The scripts `fixup_speech_v1_keywords.py` and `fixup_speech_v1p1beta1_keywords.py` are shipped with the library. It expects an input directory (with the code to convert) and an empty destination directory.
