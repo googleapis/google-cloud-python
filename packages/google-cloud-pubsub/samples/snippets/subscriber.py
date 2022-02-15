@@ -605,6 +605,9 @@ def synchronous_pull(project_id: str, subscription_id: str) -> None:
             retry=retry.Retry(deadline=300),
         )
 
+        if len(response.received_messages) == 0:
+            return
+
         ack_ids = []
         for received_message in response.received_messages:
             print(f"Received: {received_message.message.data}.")
@@ -650,6 +653,9 @@ def synchronous_pull_with_lease_management(
         request={"subscription": subscription_path, "max_messages": 3},
         retry=retry.Retry(deadline=300),
     )
+
+    if len(response.received_messages) == 0:
+        return
 
     # Start a process for each message based on its size modulo 10.
     for message in response.received_messages:
