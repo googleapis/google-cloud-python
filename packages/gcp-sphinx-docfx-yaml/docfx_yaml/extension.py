@@ -717,7 +717,7 @@ def _create_datam(app, cls, module, name, _type, obj, lines=None):
     # Check how many arguments are present in the function.
     arg_count = 0
     try:
-        if _type in [METHOD, FUNCTION]:
+        if _type in [METHOD, FUNCTION, CLASS]:
             argspec = inspect.getfullargspec(obj) # noqa
             type_map = {}
             if argspec.annotations:
@@ -773,11 +773,11 @@ def _create_datam(app, cls, module, name, _type, obj, lines=None):
                 except IndexError:
                     pass
             try:
-                lines = inspect.getdoc(obj)
-                lines = lines.split("\n") if lines else []
+                if len(lines) == 0:
+                    lines = inspect.getdoc(obj)
+                    lines = lines.split("\n") if lines else []
             except TypeError as e:
                 print("couldn't getdoc from method, function: {}".format(e))
-        
         elif _type in [PROPERTY]:
             lines = inspect.getdoc(obj)
             lines = lines.split("\n") if lines else []
@@ -890,24 +890,35 @@ def _create_datam(app, cls, module, name, _type, obj, lines=None):
     if args or arg_count > 0:
         variables = summary_info['variables']
         arg_id = []
+        incomplete_args = []
         for arg in args:
             arg_id.append(arg['id'])
 
             if arg['id'] in variables:
                 # Retrieve argument info from extracted map of variable info
                 arg_var = variables[arg['id']]
-                arg['var_type'] = arg_var.get('var_type') if arg_var.get('var_type') else ''
-                arg['description'] = arg_var.get('description') if arg_var.get('description') else ''
+                arg['var_type'] = arg_var.get('var_type')
+                arg['description'] = arg_var.get('description')
+
+            # Only add arguments with type and description.
+            if not (arg.get('var_type') and arg.get('description')):
+                incomplete_args.append(arg)
+
+        # Remove any arguments with missing type or description from the YAML.
+        for incomplete_arg in incomplete_args:
+            args.remove(incomplete_arg)
 
         # Add any variables we might have missed from extraction.
         for variable in variables:
             if variable not in arg_id:
-                new_arg = {
-                    "id": variable,
-                    "var_type": variables[variable].get('var_type'),
-                    "description": variables[variable].get('description')
-                }
-                args.append(new_arg)
+                # Only include arguments with type and description.
+                if variables[variable].get('var_type') and variables[variable].get('description'):
+                    new_arg = {
+                        "id": variable,
+                        "var_type": variables[variable].get('var_type'),
+                        "description": variables[variable].get('description')
+                    }
+                    args.append(new_arg)
 
         datam['syntax']['parameters'] = args
 
@@ -941,9 +952,18 @@ def process_docstring(app, _type, name, obj, options, lines):
     This function takes the docstring and indexes it into memory.
     """
 
+    cls = ""
+    module = ""
+
     # Check if we already processed this docstring.
     if name in app.env.docfx_uid_names:
-        return
+        if _type != CLASS:
+            return
+        else:
+            # If we run into the same docstring twice for a class it's a
+            # constructor. Change the constructor type from CLASS to METHOD.
+            cls, module = _get_cls_module(_type, name)
+            _type = METHOD
 
     # Register current docstring to a set.
     app.env.docfx_uid_names[name] = ''
@@ -952,7 +972,9 @@ def process_docstring(app, _type, name, obj, options, lines):
     if _type == EXCEPTION:
         _type = CLASS
 
-    cls, module = _get_cls_module(_type, name)
+    if not cls and not module:
+        cls, module = _get_cls_module(_type, name)
+
     if not module and _type != PROPERTY:
         print('Unknown Type: %s' % _type)
         return None
