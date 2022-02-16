@@ -45,6 +45,7 @@ _ERROR_REASON_TO_EXCEPTION = {
     "invalidQuery": http.client.BAD_REQUEST,
     "notFound": http.client.NOT_FOUND,
     "notImplemented": http.client.NOT_IMPLEMENTED,
+    "policyViolation": http.client.FORBIDDEN,
     "quotaExceeded": http.client.FORBIDDEN,
     "rateLimitExceeded": http.client.FORBIDDEN,
     "resourceInUse": http.client.BAD_REQUEST,
