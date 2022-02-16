@@ -277,7 +277,7 @@ class CertificateManagerAsyncClient:
     ) -> pagers.ListCertificatesAsyncPager:
         r"""Lists Certificates in a given project and location.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import certificate_manager_v1
 
@@ -386,7 +386,7 @@ class CertificateManagerAsyncClient:
     ) -> certificate_manager.Certificate:
         r"""Gets details of a single Certificate.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import certificate_manager_v1
 
@@ -487,7 +487,7 @@ class CertificateManagerAsyncClient:
         location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import certificate_manager_v1
 
@@ -621,7 +621,7 @@ class CertificateManagerAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates a Certificate.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import certificate_manager_v1
 
@@ -746,7 +746,7 @@ class CertificateManagerAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Certificate.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import certificate_manager_v1
 
@@ -872,7 +872,7 @@ class CertificateManagerAsyncClient:
         location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import certificate_manager_v1
 
@@ -981,7 +981,7 @@ class CertificateManagerAsyncClient:
     ) -> certificate_manager.CertificateMap:
         r"""Gets details of a single CertificateMap.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import certificate_manager_v1
 
@@ -1085,7 +1085,7 @@ class CertificateManagerAsyncClient:
         location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import certificate_manager_v1
 
@@ -1219,7 +1219,7 @@ class CertificateManagerAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates a CertificateMap.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import certificate_manager_v1
 
@@ -1348,7 +1348,7 @@ class CertificateManagerAsyncClient:
         method.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import certificate_manager_v1
 
@@ -1477,7 +1477,7 @@ class CertificateManagerAsyncClient:
         location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import certificate_manager_v1
 
@@ -1587,7 +1587,7 @@ class CertificateManagerAsyncClient:
     ) -> certificate_manager.CertificateMapEntry:
         r"""Gets details of a single CertificateMapEntry.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import certificate_manager_v1
 
@@ -1691,7 +1691,7 @@ class CertificateManagerAsyncClient:
         and location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import certificate_manager_v1
 
@@ -1834,7 +1834,7 @@ class CertificateManagerAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates a CertificateMapEntry.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import certificate_manager_v1
 
@@ -1966,7 +1966,7 @@ class CertificateManagerAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single CertificateMapEntry.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import certificate_manager_v1
 
@@ -2093,7 +2093,7 @@ class CertificateManagerAsyncClient:
         location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import certificate_manager_v1
 
@@ -2202,7 +2202,7 @@ class CertificateManagerAsyncClient:
     ) -> certificate_manager.DnsAuthorization:
         r"""Gets details of a single DnsAuthorization.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import certificate_manager_v1
 
@@ -2307,7 +2307,7 @@ class CertificateManagerAsyncClient:
         location.
 
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import certificate_manager_v1
 
@@ -2444,7 +2444,7 @@ class CertificateManagerAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates a DnsAuthorization.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import certificate_manager_v1
 
@@ -2572,7 +2572,7 @@ class CertificateManagerAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single DnsAuthorization.
 
-        .. code-block::
+        .. code-block:: python
 
             from google.cloud import certificate_manager_v1
 

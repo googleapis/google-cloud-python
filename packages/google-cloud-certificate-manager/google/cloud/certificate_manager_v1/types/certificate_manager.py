@@ -935,10 +935,10 @@ class CertificateMapEntry(proto.Message):
             Set of labels associated with a Certificate
             Map Entry.
         hostname (str):
-            A Hostname (FQDN, e.g. example.com) or a wildcard hostname
-            expression (`*.example.com`) for a set of hostnames with
-            common suffix. Used as Server Name Indication (SNI) for
-            selecting a proper certificate.
+            A Hostname (FQDN, e.g. ``example.com``) or a wildcard
+            hostname expression (``*.example.com``) for a set of
+            hostnames with common suffix. Used as Server Name Indication
+            (SNI) for selecting a proper certificate.
 
             This field is a member of `oneof`_ ``match``.
         matcher (google.cloud.certificate_manager_v1.types.CertificateMapEntry.Matcher):
@@ -998,8 +998,9 @@ class DnsAuthorization(proto.Message):
         domain (str):
             Required. Immutable. A domain which is being authorized. A
             DnsAuthorization resource covers a single domain and its
-            wildcard, e.g. authorization for "example.com" can be used
-            to issue certificates for `example.com` and `*.example.com`.
+            wildcard, e.g. authorization for ``example.com`` can be used
+            to issue certificates for ``example.com`` and
+            ``*.example.com``.
         dns_resource_record (google.cloud.certificate_manager_v1.types.DnsAuthorization.DnsResourceRecord):
             Output only. DNS Resource Record that needs
             to be added to DNS configuration.
@@ -1013,7 +1014,7 @@ class DnsAuthorization(proto.Message):
         Attributes:
             name (str):
                 Output only. Fully qualified name of the DNS Resource
-                Record. e.g. "_acme-challenge.example.com.".
+                Record. e.g. ``_acme-challenge.example.com``
             type_ (str):
                 Output only. Type of the DNS Resource Record.
                 Currently always set to "CNAME".
