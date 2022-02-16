@@ -27,9 +27,9 @@ class Constraint(proto.Message):
     controls which cloud services can be activated across an
     organization, or whether a Compute Engine instance can have serial
     port connections established. ``Constraints`` can be configured by
-    the organization's policy adminstrator to fit the needs of the
-    organzation by setting a ``policy`` that includes ``constraints`` at
-    different locations in the organization's resource hierarchy.
+    the organization's policy administrator to fit the needs of the
+    organization by setting a ``policy`` that includes ``constraints``
+    at different locations in the organization's resource hierarchy.
     Policies are inherited down the resource hierarchy from higher
     levels, but can also be overridden. For details about the
     inheritance rules please read about
