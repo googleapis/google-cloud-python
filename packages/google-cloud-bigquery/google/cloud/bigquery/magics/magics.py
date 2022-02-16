@@ -35,6 +35,8 @@
         A dataset and table to store the query results. If table does not exists,
         it will be created. If table already exists, its data will be overwritten.
         Variable should be in a format <dataset_id>.<table_id>.
+    * ``--no_query_cache`` (Optional[line argument]):
+        Do not use cached query results.
     * ``--project <project>`` (Optional[line argument]):
         Project to use for running the query. Defaults to the context
         :attr:`~google.cloud.bigquery.magics.Context.project`.
@@ -443,6 +445,12 @@ def _create_dataset_if_necessary(client, dataset_id):
     ),
 )
 @magic_arguments.argument(
+    "--no_query_cache",
+    action="store_true",
+    default=False,
+    help=("Do not use cached query results."),
+)
+@magic_arguments.argument(
     "--use_bqstorage_api",
     action="store_true",
     default=None,
@@ -641,6 +649,10 @@ def _cell_magic(line, query):
         job_config.query_parameters = params
         job_config.use_legacy_sql = args.use_legacy_sql
         job_config.dry_run = args.dry_run
+
+        # Don't override context job config unless --no_query_cache is explicitly set.
+        if args.no_query_cache:
+            job_config.use_query_cache = False
 
         if args.destination_table:
             split = args.destination_table.split(".")
