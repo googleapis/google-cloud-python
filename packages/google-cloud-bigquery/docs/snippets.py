@@ -756,46 +756,6 @@ def test_client_query_total_rows(client, capsys):
     assert "Got 100 rows." in out
 
 
-def test_manage_job(client):
-    # TODO(b/199162556): delete after migrating docs
-    sql = """
-        SELECT corpus
-        FROM `bigquery-public-data.samples.shakespeare`
-        GROUP BY corpus;
-    """
-    location = "us"
-    job = client.query(sql, location=location)
-    job_id = job.job_id
-
-    # [START bigquery_cancel_job]
-    # TODO(developer): Uncomment the lines below and replace with your values.
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # job_id = 'bq-job-123x456-123y123z123c'  # replace with your job ID
-    # location = 'us'                         # replace with your location
-
-    job = client.cancel_job(job_id, location=location)
-    # [END bigquery_cancel_job]
-
-    # [START bigquery_get_job]
-    # TODO(developer): Uncomment the lines below and replace with your values.
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # job_id = 'bq-job-123x456-123y123z123c'  # replace with your job ID
-    # location = 'us'                         # replace with your location
-
-    job = client.get_job(job_id, location=location)  # API request
-
-    # Print selected job properties
-    print("Details for job {} running in {}:".format(job_id, location))
-    print(
-        "\tType: {}\n\tState: {}\n\tCreated: {}".format(
-            job.job_type, job.state, job.created
-        )
-    )
-    # [END bigquery_get_job]
-
-
 def test_query_external_gcs_permanent_table(client, to_delete):
     dataset_id = "query_external_gcs_{}".format(_millis())
     project = client.project
