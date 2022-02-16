@@ -505,6 +505,28 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         r"""Use this method to list connection profiles created
         in a project and location.
 
+
+
+        .. code-block::
+
+            from google.cloud import datastream_v1
+
+            def sample_list_connection_profiles():
+                # Create a client
+                client = datastream_v1.DatastreamClient()
+
+                # Initialize request argument(s)
+                request = datastream_v1.ListConnectionProfilesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_connection_profiles(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.datastream_v1.types.ListConnectionProfilesRequest, dict]):
                 The request object. Request message for listing
@@ -586,6 +608,27 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         r"""Use this method to get details about a connection
         profile.
 
+
+
+        .. code-block::
+
+            from google.cloud import datastream_v1
+
+            def sample_get_connection_profile():
+                # Create a client
+                client = datastream_v1.DatastreamClient()
+
+                # Initialize request argument(s)
+                request = datastream_v1.GetConnectionProfileRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_connection_profile(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.datastream_v1.types.GetConnectionProfileRequest, dict]):
                 The request object. Request message for getting a
@@ -660,6 +703,40 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
     ) -> operation.Operation:
         r"""Use this method to create a connection profile in a
         project and location.
+
+
+
+        .. code-block::
+
+            from google.cloud import datastream_v1
+
+            def sample_create_connection_profile():
+                # Create a client
+                client = datastream_v1.DatastreamClient()
+
+                # Initialize request argument(s)
+                connection_profile = datastream_v1.ConnectionProfile()
+                connection_profile.oracle_profile.hostname = "hostname_value"
+                connection_profile.oracle_profile.username = "username_value"
+                connection_profile.oracle_profile.password = "password_value"
+                connection_profile.oracle_profile.database_service = "database_service_value"
+                connection_profile.display_name = "display_name_value"
+
+                request = datastream_v1.CreateConnectionProfileRequest(
+                    parent="parent_value",
+                    connection_profile_id="connection_profile_id_value",
+                    connection_profile=connection_profile,
+                )
+
+                # Make the request
+                operation = client.create_connection_profile(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.datastream_v1.types.CreateConnectionProfileRequest, dict]):
@@ -764,6 +841,38 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         r"""Use this method to update the parameters of a
         connection profile.
 
+
+
+        .. code-block::
+
+            from google.cloud import datastream_v1
+
+            def sample_update_connection_profile():
+                # Create a client
+                client = datastream_v1.DatastreamClient()
+
+                # Initialize request argument(s)
+                connection_profile = datastream_v1.ConnectionProfile()
+                connection_profile.oracle_profile.hostname = "hostname_value"
+                connection_profile.oracle_profile.username = "username_value"
+                connection_profile.oracle_profile.password = "password_value"
+                connection_profile.oracle_profile.database_service = "database_service_value"
+                connection_profile.display_name = "display_name_value"
+
+                request = datastream_v1.UpdateConnectionProfileRequest(
+                    connection_profile=connection_profile,
+                )
+
+                # Make the request
+                operation = client.update_connection_profile(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.datastream_v1.types.UpdateConnectionProfileRequest, dict]):
                 The request object. Connection profile update message.
@@ -862,6 +971,30 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
     ) -> operation.Operation:
         r"""Use this method to delete a connection profile.
 
+
+        .. code-block::
+
+            from google.cloud import datastream_v1
+
+            def sample_delete_connection_profile():
+                # Create a client
+                client = datastream_v1.DatastreamClient()
+
+                # Initialize request argument(s)
+                request = datastream_v1.DeleteConnectionProfileRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_connection_profile(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.datastream_v1.types.DeleteConnectionProfileRequest, dict]):
                 The request object. Request message for deleting a
@@ -959,6 +1092,36 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         returns children data objects of a parent data object
         that's optionally supplied in the request.
 
+
+
+        .. code-block::
+
+            from google.cloud import datastream_v1
+
+            def sample_discover_connection_profile():
+                # Create a client
+                client = datastream_v1.DatastreamClient()
+
+                # Initialize request argument(s)
+                connection_profile = datastream_v1.ConnectionProfile()
+                connection_profile.oracle_profile.hostname = "hostname_value"
+                connection_profile.oracle_profile.username = "username_value"
+                connection_profile.oracle_profile.password = "password_value"
+                connection_profile.oracle_profile.database_service = "database_service_value"
+                connection_profile.display_name = "display_name_value"
+
+                request = datastream_v1.DiscoverConnectionProfileRequest(
+                    connection_profile=connection_profile,
+                    full_hierarchy=True,
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.discover_connection_profile(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.datastream_v1.types.DiscoverConnectionProfileRequest, dict]):
                 The request object. Request message for 'discover'
@@ -1010,6 +1173,28 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
     ) -> pagers.ListStreamsPager:
         r"""Use this method to list streams in a project and
         location.
+
+
+
+        .. code-block::
+
+            from google.cloud import datastream_v1
+
+            def sample_list_streams():
+                # Create a client
+                client = datastream_v1.DatastreamClient()
+
+                # Initialize request argument(s)
+                request = datastream_v1.ListStreamsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_streams(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.datastream_v1.types.ListStreamsRequest, dict]):
@@ -1089,6 +1274,26 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
     ) -> datastream_resources.Stream:
         r"""Use this method to get details about a stream.
 
+
+        .. code-block::
+
+            from google.cloud import datastream_v1
+
+            def sample_get_stream():
+                # Create a client
+                client = datastream_v1.DatastreamClient()
+
+                # Initialize request argument(s)
+                request = datastream_v1.GetStreamRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_stream(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.datastream_v1.types.GetStreamRequest, dict]):
                 The request object. Request message for getting a
@@ -1161,6 +1366,37 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Use this method to create a stream.
+
+
+        .. code-block::
+
+            from google.cloud import datastream_v1
+
+            def sample_create_stream():
+                # Create a client
+                client = datastream_v1.DatastreamClient()
+
+                # Initialize request argument(s)
+                stream = datastream_v1.Stream()
+                stream.display_name = "display_name_value"
+                stream.source_config.source_connection_profile = "source_connection_profile_value"
+                stream.destination_config.destination_connection_profile = "destination_connection_profile_value"
+
+                request = datastream_v1.CreateStreamRequest(
+                    parent="parent_value",
+                    stream_id="stream_id_value",
+                    stream=stream,
+                )
+
+                # Make the request
+                operation = client.create_stream(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.datastream_v1.types.CreateStreamRequest, dict]):
@@ -1263,6 +1499,36 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         r"""Use this method to update the configuration of a
         stream.
 
+
+
+        .. code-block::
+
+            from google.cloud import datastream_v1
+
+            def sample_update_stream():
+                # Create a client
+                client = datastream_v1.DatastreamClient()
+
+                # Initialize request argument(s)
+                stream = datastream_v1.Stream()
+                stream.display_name = "display_name_value"
+                stream.source_config.source_connection_profile = "source_connection_profile_value"
+                stream.destination_config.destination_connection_profile = "destination_connection_profile_value"
+
+                request = datastream_v1.UpdateStreamRequest(
+                    stream=stream,
+                )
+
+                # Make the request
+                operation = client.update_stream(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.datastream_v1.types.UpdateStreamRequest, dict]):
                 The request object. Request message for updating a
@@ -1361,6 +1627,30 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
     ) -> operation.Operation:
         r"""Use this method to delete a stream.
 
+
+        .. code-block::
+
+            from google.cloud import datastream_v1
+
+            def sample_delete_stream():
+                # Create a client
+                client = datastream_v1.DatastreamClient()
+
+                # Initialize request argument(s)
+                request = datastream_v1.DeleteStreamRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_stream(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.datastream_v1.types.DeleteStreamRequest, dict]):
                 The request object. Request message for deleting a
@@ -1453,6 +1743,26 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
     ) -> datastream_resources.StreamObject:
         r"""Use this method to get details about a stream object.
 
+
+        .. code-block::
+
+            from google.cloud import datastream_v1
+
+            def sample_get_stream_object():
+                # Create a client
+                client = datastream_v1.DatastreamClient()
+
+                # Initialize request argument(s)
+                request = datastream_v1.GetStreamObjectRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_stream_object(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.datastream_v1.types.GetStreamObjectRequest, dict]):
                 The request object. Request for fetching a specific
@@ -1524,6 +1834,32 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         r"""Use this method to look up a stream object by its
         source object identifier.
 
+
+
+        .. code-block::
+
+            from google.cloud import datastream_v1
+
+            def sample_lookup_stream_object():
+                # Create a client
+                client = datastream_v1.DatastreamClient()
+
+                # Initialize request argument(s)
+                source_object_identifier = datastream_v1.SourceObjectIdentifier()
+                source_object_identifier.oracle_identifier.schema = "schema_value"
+                source_object_identifier.oracle_identifier.table = "table_value"
+
+                request = datastream_v1.LookupStreamObjectRequest(
+                    parent="parent_value",
+                    source_object_identifier=source_object_identifier,
+                )
+
+                # Make the request
+                response = client.lookup_stream_object(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.datastream_v1.types.LookupStreamObjectRequest, dict]):
                 The request object. Request for looking up a specific
@@ -1575,6 +1911,28 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
     ) -> pagers.ListStreamObjectsPager:
         r"""Use this method to list the objects of a specific
         stream.
+
+
+
+        .. code-block::
+
+            from google.cloud import datastream_v1
+
+            def sample_list_stream_objects():
+                # Create a client
+                client = datastream_v1.DatastreamClient()
+
+                # Initialize request argument(s)
+                request = datastream_v1.ListStreamObjectsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_stream_objects(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.datastream_v1.types.ListStreamObjectsRequest, dict]):
@@ -1657,6 +2015,27 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         r"""Use this method to start a backfill job for the
         specified stream object.
 
+
+
+        .. code-block::
+
+            from google.cloud import datastream_v1
+
+            def sample_start_backfill_job():
+                # Create a client
+                client = datastream_v1.DatastreamClient()
+
+                # Initialize request argument(s)
+                request = datastream_v1.StartBackfillJobRequest(
+                    object_="object__value",
+                )
+
+                # Make the request
+                response = client.start_backfill_job(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.datastream_v1.types.StartBackfillJobRequest, dict]):
                 The request object. Request for manually initiating a
@@ -1731,6 +2110,27 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         r"""Use this method to stop a backfill job for the
         specified stream object.
 
+
+
+        .. code-block::
+
+            from google.cloud import datastream_v1
+
+            def sample_stop_backfill_job():
+                # Create a client
+                client = datastream_v1.DatastreamClient()
+
+                # Initialize request argument(s)
+                request = datastream_v1.StopBackfillJobRequest(
+                    object_="object__value",
+                )
+
+                # Make the request
+                response = client.stop_backfill_job(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.datastream_v1.types.StopBackfillJobRequest, dict]):
                 The request object. Request for manually stopping a
@@ -1803,6 +2203,28 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
     ) -> pagers.FetchStaticIpsPager:
         r"""The FetchStaticIps API call exposes the static IP
         addresses used by Datastream.
+
+
+
+        .. code-block::
+
+            from google.cloud import datastream_v1
+
+            def sample_fetch_static_ips():
+                # Create a client
+                client = datastream_v1.DatastreamClient()
+
+                # Initialize request argument(s)
+                request = datastream_v1.FetchStaticIpsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                page_result = client.fetch_static_ips(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.datastream_v1.types.FetchStaticIpsRequest, dict]):
@@ -1887,6 +2309,36 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
     ) -> operation.Operation:
         r"""Use this method to create a private connectivity
         configuration.
+
+
+
+        .. code-block::
+
+            from google.cloud import datastream_v1
+
+            def sample_create_private_connection():
+                # Create a client
+                client = datastream_v1.DatastreamClient()
+
+                # Initialize request argument(s)
+                private_connection = datastream_v1.PrivateConnection()
+                private_connection.display_name = "display_name_value"
+
+                request = datastream_v1.CreatePrivateConnectionRequest(
+                    parent="parent_value",
+                    private_connection_id="private_connection_id_value",
+                    private_connection=private_connection,
+                )
+
+                # Make the request
+                operation = client.create_private_connection(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.datastream_v1.types.CreatePrivateConnectionRequest, dict]):
@@ -1990,6 +2442,27 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         r"""Use this method to get details about a private
         connectivity configuration.
 
+
+
+        .. code-block::
+
+            from google.cloud import datastream_v1
+
+            def sample_get_private_connection():
+                # Create a client
+                client = datastream_v1.DatastreamClient()
+
+                # Initialize request argument(s)
+                request = datastream_v1.GetPrivateConnectionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_private_connection(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.datastream_v1.types.GetPrivateConnectionRequest, dict]):
                 The request object. Request to get a private connection
@@ -2063,6 +2536,28 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
     ) -> pagers.ListPrivateConnectionsPager:
         r"""Use this method to list private connectivity
         configurations in a project and location.
+
+
+
+        .. code-block::
+
+            from google.cloud import datastream_v1
+
+            def sample_list_private_connections():
+                # Create a client
+                client = datastream_v1.DatastreamClient()
+
+                # Initialize request argument(s)
+                request = datastream_v1.ListPrivateConnectionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_private_connections(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.datastream_v1.types.ListPrivateConnectionsRequest, dict]):
@@ -2145,6 +2640,31 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
     ) -> operation.Operation:
         r"""Use this method to delete a private connectivity
         configuration.
+
+
+
+        .. code-block::
+
+            from google.cloud import datastream_v1
+
+            def sample_delete_private_connection():
+                # Create a client
+                client = datastream_v1.DatastreamClient()
+
+                # Initialize request argument(s)
+                request = datastream_v1.DeletePrivateConnectionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_private_connection(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.datastream_v1.types.DeletePrivateConnectionRequest, dict]):
@@ -2243,6 +2763,37 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         r"""Use this method to create a route for a private
         connectivity configuration in a project and location.
 
+
+
+        .. code-block::
+
+            from google.cloud import datastream_v1
+
+            def sample_create_route():
+                # Create a client
+                client = datastream_v1.DatastreamClient()
+
+                # Initialize request argument(s)
+                route = datastream_v1.Route()
+                route.display_name = "display_name_value"
+                route.destination_address = "destination_address_value"
+
+                request = datastream_v1.CreateRouteRequest(
+                    parent="parent_value",
+                    route_id="route_id_value",
+                    route=route,
+                )
+
+                # Make the request
+                operation = client.create_route(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.datastream_v1.types.CreateRouteRequest, dict]):
                 The request object. Route creation request.
@@ -2339,6 +2890,26 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
     ) -> datastream_resources.Route:
         r"""Use this method to get details about a route.
 
+
+        .. code-block::
+
+            from google.cloud import datastream_v1
+
+            def sample_get_route():
+                # Create a client
+                client = datastream_v1.DatastreamClient()
+
+                # Initialize request argument(s)
+                request = datastream_v1.GetRouteRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_route(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.datastream_v1.types.GetRouteRequest, dict]):
                 The request object. Route get request.
@@ -2411,6 +2982,28 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
     ) -> pagers.ListRoutesPager:
         r"""Use this method to list routes created for a private
         connectivity configuration in a project and location.
+
+
+
+        .. code-block::
+
+            from google.cloud import datastream_v1
+
+            def sample_list_routes():
+                # Create a client
+                client = datastream_v1.DatastreamClient()
+
+                # Initialize request argument(s)
+                request = datastream_v1.ListRoutesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_routes(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.datastream_v1.types.ListRoutesRequest, dict]):
@@ -2489,6 +3082,30 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Use this method to delete a route.
+
+
+        .. code-block::
+
+            from google.cloud import datastream_v1
+
+            def sample_delete_route():
+                # Create a client
+                client = datastream_v1.DatastreamClient()
+
+                # Initialize request argument(s)
+                request = datastream_v1.DeleteRouteRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_route(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.datastream_v1.types.DeleteRouteRequest, dict]):
