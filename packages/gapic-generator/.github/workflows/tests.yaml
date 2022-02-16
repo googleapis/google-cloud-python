@@ -83,6 +83,7 @@ jobs:
     strategy:
       matrix:
         target: [showcase_mtls, showcase_mtls_alternative_templates]
+      max-parallel: 1
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
