@@ -68,7 +68,7 @@ class Document(proto.Message):
             Optional. UTF-8 encoded text in reading order
             from the document.
         text_styles (Sequence[google.cloud.documentai_v1beta3.types.Document.Style]):
-            Styles for the
+            Placeholder. Styles for the
             [Document.text][google.cloud.documentai.v1beta3.Document.text].
         pages (Sequence[google.cloud.documentai_v1beta3.types.Document.Page]):
             Visual page layout for the
@@ -79,13 +79,13 @@ class Document(proto.Message):
             For document shards, entities in this list may cross shard
             boundaries.
         entity_relations (Sequence[google.cloud.documentai_v1beta3.types.Document.EntityRelation]):
-            Relationship among
+            Placeholder. Relationship among
             [Document.entities][google.cloud.documentai.v1beta3.Document.entities].
         text_changes (Sequence[google.cloud.documentai_v1beta3.types.Document.TextChange]):
-            A list of text corrections made to [Document.text]. This is
-            usually used for annotating corrections to OCR mistakes.
-            Text changes for a given revision may not overlap with each
-            other.
+            Placeholder. A list of text corrections made to
+            [Document.text]. This is usually used for annotating
+            corrections to OCR mistakes. Text changes for a given
+            revision may not overlap with each other.
         shard_info (google.cloud.documentai_v1beta3.types.Document.ShardInfo):
             Information about the sharding if this
             document is sharded part of a larger document.
@@ -95,7 +95,8 @@ class Document(proto.Message):
             Any error that occurred while processing this
             document.
         revisions (Sequence[google.cloud.documentai_v1beta3.types.Document.Revision]):
-            Revision history of this document.
+            Placeholder. Revision history of this
+            document.
     """
 
     class ShardInfo(proto.Message):
@@ -224,6 +225,9 @@ class Document(proto.Message):
             form_fields (Sequence[google.cloud.documentai_v1beta3.types.Document.Page.FormField]):
                 A list of visually detected form fields on
                 the page.
+            symbols (Sequence[google.cloud.documentai_v1beta3.types.Document.Page.Symbol]):
+                A list of visually detected symbols on the
+                page.
             provenance (google.cloud.documentai_v1beta3.types.Document.Provenance):
                 The history of this page.
         """
@@ -457,6 +461,26 @@ class Document(proto.Message):
                 proto.MESSAGE, number=4, message="Document.Provenance",
             )
 
+        class Symbol(proto.Message):
+            r"""A detected symbol.
+
+            Attributes:
+                layout (google.cloud.documentai_v1beta3.types.Document.Page.Layout):
+                    [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout]
+                    for
+                    [Symbol][google.cloud.documentai.v1beta3.Document.Page.Symbol].
+                detected_languages (Sequence[google.cloud.documentai_v1beta3.types.Document.Page.DetectedLanguage]):
+                    A list of detected languages together with
+                    confidence.
+            """
+
+            layout = proto.Field(
+                proto.MESSAGE, number=1, message="Document.Page.Layout",
+            )
+            detected_languages = proto.RepeatedField(
+                proto.MESSAGE, number=2, message="Document.Page.DetectedLanguage",
+            )
+
         class VisualElement(proto.Message):
             r"""Detected non-text visual elements e.g. checkbox, signature
             etc. on the page.
@@ -606,7 +630,7 @@ class Document(proto.Message):
                 language_code (str):
                     The BCP-47 language code, such as "en-US" or "sr-Latn". For
                     more information, see
-                    http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
+                    https://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
                 confidence (float):
                     Confidence of detected language. Range [0, 1].
             """
@@ -647,13 +671,17 @@ class Document(proto.Message):
         form_fields = proto.RepeatedField(
             proto.MESSAGE, number=11, message="Document.Page.FormField",
         )
+        symbols = proto.RepeatedField(
+            proto.MESSAGE, number=12, message="Document.Page.Symbol",
+        )
         provenance = proto.Field(
             proto.MESSAGE, number=16, message="Document.Provenance",
         )
 
     class Entity(proto.Message):
-        r"""A phrase in the text that is a known entity type, such as a
-        person, an organization, or location.
+        r"""An entity that could be a phrase in the text or a property
+        that belongs to the document. It is a known entity type, such as
+        a person, an organization, or location.
 
         Attributes:
             text_anchor (google.cloud.documentai_v1beta3.types.Document.TextAnchor):
@@ -664,7 +692,8 @@ class Document(proto.Message):
                 Entity type from a schema e.g. ``Address``.
             mention_text (str):
                 Optional. Text value in the document e.g.
-                ``1600 Amphitheatre Pkwy``.
+                ``1600 Amphitheatre Pkwy``. If the entity is not present in
+                the document, this field will be empty.
             mention_id (str):
                 Optional. Deprecated. Use ``id`` field instead.
             confidence (float):
@@ -733,10 +762,14 @@ class Document(proto.Message):
 
                     This field is a member of `oneof`_ ``structured_value``.
                 text (str):
-                    Required. Normalized entity value stored as a string. This
-                    field is populated for supported document type (e.g.
-                    Invoice). For some entity types, one of respective
-                    'structured_value' fields may also be populated.
+                    Optional. An optional field to store a normalized string.
+                    For some entity types, one of respective
+                    ``structured_value`` fields may also be populated. Also not
+                    all the types of ``structured_value`` will be normalized.
+                    For example, some processors may not generate float or int
+                    normalized text by default.
+
+                    Below are sample formats mapped to structured values.
 
                     -  Money/Currency type (``money_value``) is in the ISO 4217
                        text format.
@@ -822,7 +855,8 @@ class Document(proto.Message):
                 [Document.text][google.cloud.documentai.v1beta3.Document.text].
             content (str):
                 Contains the content of the text span so that users do not
-                have to look it up in the text_segments.
+                have to look it up in the text_segments. It is always
+                populated for formFields.
         """
 
         class TextSegment(proto.Message):
@@ -946,18 +980,18 @@ class Document(proto.Message):
             EVAL_SKIPPED = 6
 
         class Parent(proto.Message):
-            r"""Structure for referencing parent provenances.  When an
-            element replaces one of more other elements parent references
-            identify the elements that are replaced.
+            r"""The parent element the current element is based on. Used for
+            referencing/aligning, removal and replacement operations.
 
             Attributes:
                 revision (int):
-                    The index of the [Document.revisions] identifying the parent
-                    revision.
+                    The index of the index into current revision's parent_ids
+                    list.
                 index (int):
-                    The index of the parent revisions
-                    corresponding collection of items (eg. list of
-                    entities, properties within entities, etc.)
+                    The index of the parent item in the
+                    corresponding item list (eg. list of entities,
+                    properties within entities, etc.) in the parent
+                    revision.
                 id (int):
                     The id of the parent provenance.
             """
