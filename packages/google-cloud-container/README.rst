@@ -79,6 +79,19 @@ Windows
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install google-cloud-container
 
+Once you have the virtual environment setup and activated, you can install the library:
+
+.. code-block:: console
+   
+   pip install google-cloud-container
+
+Using the client library
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+See the examples in the `samples`_ directory. You can start with `quickstart.py`_.
+
+.. _samples: /samples
+.. _quickstart.py: /samples/snippets/quickstart.py
 
 Next Steps
 ~~~~~~~~~~
