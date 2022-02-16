@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+### [2.10.5](https://github.com/googleapis/python-container/compare/v2.10.4...v2.10.5) (2022-02-16)
+
+
+### Documentation
+
+* **samples:** add usage samples to show handling of LRO response Operation ([#191](https://github.com/googleapis/python-container/issues/191)) ([309ad62](https://github.com/googleapis/python-container/commit/309ad6219a6e80d08bcd365a163e8273a6413ede))
+
 ### [2.10.4](https://github.com/googleapis/python-container/compare/v2.10.3...v2.10.4) (2022-02-14)
 
 
