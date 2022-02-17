@@ -38,7 +38,7 @@ def sample_approve_approval_request():
     # Make the request
     response = client.approve_approval_request(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END accessapproval_generated_accessapproval_v1_AccessApproval_ApproveApprovalRequest_sync]

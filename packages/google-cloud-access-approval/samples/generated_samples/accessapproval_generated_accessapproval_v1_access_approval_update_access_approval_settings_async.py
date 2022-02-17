@@ -38,7 +38,7 @@ async def sample_update_access_approval_settings():
     # Make the request
     response = await client.update_access_approval_settings(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END accessapproval_generated_accessapproval_v1_AccessApproval_UpdateAccessApprovalSettings_async]

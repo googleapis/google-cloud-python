@@ -37,7 +37,7 @@ class AccessApprovalGrpcTransport(AccessApprovalTransport):
 
     -  The API has a collection of
        [ApprovalRequest][google.cloud.accessapproval.v1.ApprovalRequest]
-       resources, named ``approvalRequests/{approval_request_id}``
+       resources, named ``approvalRequests/{approval_request}``
     -  The API has top-level settings per Project/Folder/Organization,
        named ``accessApprovalSettings``
 
@@ -45,10 +45,10 @@ class AccessApprovalGrpcTransport(AccessApprovalTransport):
     at the Project/Folder/Organization level in the
     accessApprovalSettings, when there is a pending ApprovalRequest for
     them to act on. The ApprovalRequests can also optionally be
-    published to a Cloud Pub/Sub topic owned by the customer (for Beta,
-    the Pub/Sub setup is managed manually).
+    published to a Pub/Sub topic owned by the customer (contact support
+    if you would like to enable Pub/Sub notifications).
 
-    ApprovalRequests can be approved or dismissed. Google personel can
+    ApprovalRequests can be approved or dismissed. Google personnel can
     only access the indicated resource or resources if the request is
     approved (subject to some exclusions:
     https://cloud.google.com/access-approval/docs/overview#exclusions).

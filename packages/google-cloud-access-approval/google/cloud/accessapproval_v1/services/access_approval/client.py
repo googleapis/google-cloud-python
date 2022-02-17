@@ -82,7 +82,7 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
 
     -  The API has a collection of
        [ApprovalRequest][google.cloud.accessapproval.v1.ApprovalRequest]
-       resources, named ``approvalRequests/{approval_request_id}``
+       resources, named ``approvalRequests/{approval_request}``
     -  The API has top-level settings per Project/Folder/Organization,
        named ``accessApprovalSettings``
 
@@ -90,10 +90,10 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
     at the Project/Folder/Organization level in the
     accessApprovalSettings, when there is a pending ApprovalRequest for
     them to act on. The ApprovalRequests can also optionally be
-    published to a Cloud Pub/Sub topic owned by the customer (for Beta,
-    the Pub/Sub setup is managed manually).
+    published to a Pub/Sub topic owned by the customer (contact support
+    if you would like to enable Pub/Sub notifications).
 
-    ApprovalRequests can be approved or dismissed. Google personel can
+    ApprovalRequests can be approved or dismissed. Google personnel can
     only access the indicated resource or resources if the request is
     approved (subject to some exclusions:
     https://cloud.google.com/access-approval/docs/overview#exclusions).
@@ -195,6 +195,33 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
                 instance.
         """
         return self._transport
+
+    @staticmethod
+    def access_approval_settings_path(project: str,) -> str:
+        """Returns a fully-qualified access_approval_settings string."""
+        return "projects/{project}/accessApprovalSettings".format(project=project,)
+
+    @staticmethod
+    def parse_access_approval_settings_path(path: str) -> Dict[str, str]:
+        """Parses a access_approval_settings path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/accessApprovalSettings$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def approval_request_path(project: str, approval_request: str,) -> str:
+        """Returns a fully-qualified approval_request string."""
+        return "projects/{project}/approvalRequests/{approval_request}".format(
+            project=project, approval_request=approval_request,
+        )
+
+    @staticmethod
+    def parse_approval_request_path(path: str) -> Dict[str, str]:
+        """Parses a approval_request path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/approvalRequests/(?P<approval_request>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
 
     @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
@@ -450,6 +477,8 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
 
                 # Make the request
                 page_result = client.list_approval_requests(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -458,8 +487,9 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
                 The request object. Request to list approval requests.
             parent (str):
                 The parent resource. This may be
-                "projects/{project_id}", "folders/{folder_id}", or
-                "organizations/{organization_id}".
+                "projects/{project}",
+                "folders/{folder}", or
+                "organizations/{organization}".
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -551,15 +581,15 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
                 # Make the request
                 response = client.get_approval_request(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
             request (Union[google.cloud.accessapproval_v1.types.GetApprovalRequestMessage, dict]):
                 The request object. Request to get an approval request.
             name (str):
-                Name of the approval request to
-                retrieve.
+                The name of the approval request to retrieve. Format:
+                "{projects|folders|organizations}/{id}/approvalRequests/{approval_request}"
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -644,7 +674,7 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
                 # Make the request
                 response = client.approve_approval_request(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -723,7 +753,7 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
                 # Make the request
                 response = client.dismiss_approval_request(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -795,7 +825,7 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
                 # Make the request
                 response = client.get_access_approval_settings(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -803,8 +833,9 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
                 The request object. Request to get access approval
                 settings.
             name (str):
-                Name of the AccessApprovalSettings to
-                retrieve.
+                The name of the AccessApprovalSettings to retrieve.
+                Format:
+                "{projects|folders|organizations}/{id}/accessApprovalSettings"
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -892,7 +923,7 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
                 # Make the request
                 response = client.update_access_approval_settings(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -1009,7 +1040,7 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
                 )
 
                 # Make the request
-                response = client.delete_access_approval_settings(request=request)
+                client.delete_access_approval_settings(request=request)
 
         Args:
             request (Union[google.cloud.accessapproval_v1.types.DeleteAccessApprovalSettingsMessage, dict]):

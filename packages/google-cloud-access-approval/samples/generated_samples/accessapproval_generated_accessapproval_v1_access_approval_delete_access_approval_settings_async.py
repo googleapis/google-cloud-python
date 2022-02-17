@@ -36,7 +36,7 @@ async def sample_delete_access_approval_settings():
     )
 
     # Make the request
-    response = await client.delete_access_approval_settings(request=request)
+    await client.delete_access_approval_settings(request=request)
 
 
 # [END accessapproval_generated_accessapproval_v1_AccessApproval_DeleteAccessApprovalSettings_async]

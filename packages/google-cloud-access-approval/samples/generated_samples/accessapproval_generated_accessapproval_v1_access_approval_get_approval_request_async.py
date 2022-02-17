@@ -38,7 +38,7 @@ async def sample_get_approval_request():
     # Make the request
     response = await client.get_approval_request(request=request)
 
-    # Handle response
+    # Handle the response
     print(response)
 
 # [END accessapproval_generated_accessapproval_v1_AccessApproval_GetApprovalRequest_async]

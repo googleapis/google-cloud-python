@@ -56,39 +56,35 @@ class AccessLocations(proto.Message):
 
     Attributes:
         principal_office_country (str):
-            The "home office" location of the principal.
-            A two-letter country code (ISO 3166-1 alpha-2),
-            such as "US", "DE" or "GB" or a region code. In
-            some limited situations Google systems may refer
-            refer to a region code instead of a country
-            code.
-            Possible Region Codes:
+            The "home office" location of the principal. A two-letter
+            country code (ISO 3166-1 alpha-2), such as "US", "DE" or
+            "GB" or a region code. In some limited situations Google
+            systems may refer refer to a region code instead of a
+            country code. Possible Region Codes:
 
-            - ASI: Asia
-            - EUR: Europe
-            - OCE: Oceania
-            - AFR: Africa
-            - NAM: North America
-            - SAM: South America
-            - ANT: Antarctica
-            - ANY: Any location
+            -  ASI: Asia
+            -  EUR: Europe
+            -  OCE: Oceania
+            -  AFR: Africa
+            -  NAM: North America
+            -  SAM: South America
+            -  ANT: Antarctica
+            -  ANY: Any location
         principal_physical_location_country (str):
-            Physical location of the principal at the
-            time of the access. A two-letter country code
-            (ISO 3166-1 alpha-2), such as "US", "DE" or "GB"
-            or a region code. In some limited situations
-            Google systems may refer refer to a region code
-            instead of a country code.
-            Possible Region Codes:
+            Physical location of the principal at the time of the
+            access. A two-letter country code (ISO 3166-1 alpha-2), such
+            as "US", "DE" or "GB" or a region code. In some limited
+            situations Google systems may refer refer to a region code
+            instead of a country code. Possible Region Codes:
 
-            - ASI: Asia
-            - EUR: Europe
-            - OCE: Oceania
-            - AFR: Africa
-            - NAM: North America
-            - SAM: South America
-            - ANT: Antarctica
-            - ANY: Any location
+            -  ASI: Asia
+            -  EUR: Europe
+            -  OCE: Oceania
+            -  AFR: Africa
+            -  NAM: North America
+            -  SAM: South America
+            -  ANT: Antarctica
+            -  ANY: Any location
     """
 
     principal_office_country = proto.Field(proto.STRING, number=1,)
@@ -141,11 +137,18 @@ class DismissDecision(proto.Message):
         dismiss_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which the approval request was
             dismissed.
+        implicit (bool):
+            This field will be true if the
+            ApprovalRequest was implcitly dismissed due to
+            inaction by the access approval approvers (the
+            request is not acted on by the approvers before
+            the exiration time).
     """
 
     dismiss_time = proto.Field(
         proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
     )
+    implicit = proto.Field(proto.BOOL, number=2,)
 
 
 class ResourceProperties(proto.Message):
@@ -173,7 +176,7 @@ class ApprovalRequest(proto.Message):
     Attributes:
         name (str):
             The resource name of the request. Format is
-            "{projects|folders|organizations}/{id}/approvalRequests/{approval_request_id}".
+            "{projects|folders|organizations}/{id}/approvalRequests/{approval_request}".
         requested_resource_name (str):
             The resource for which approval is being requested. The
             format of the resource name is defined at
@@ -238,19 +241,64 @@ class EnrolledService(proto.Message):
 
     Attributes:
         cloud_product (str):
-            The product for which Access Approval will be
-            enrolled. Allowed values are listed below
-            (case-sensitive):
-            - all
-            - appengine.googleapis.com
-            - bigquery.googleapis.com
-            - bigtable.googleapis.com
-            - cloudkms.googleapis.com
-            - compute.googleapis.com
-            - dataflow.googleapis.com
-            - iam.googleapis.com
-            - pubsub.googleapis.com
-            - storage.googleapis.com
+            The product for which Access Approval will be enrolled.
+            Allowed values are listed below (case-sensitive):
+
+            -  all
+            -  GA
+            -  App Engine
+            -  BigQuery
+            -  Cloud Bigtable
+            -  Cloud Key Management Service
+            -  Compute Engine
+            -  Cloud Dataflow
+            -  Cloud DLP
+            -  Cloud EKM
+            -  Cloud HSM
+            -  Cloud Identity and Access Management
+            -  Cloud Logging
+            -  Cloud Pub/Sub
+            -  Cloud Spanner
+            -  Cloud SQL
+            -  Cloud Storage
+            -  Google Kubernetes Engine
+            -  Organization Policy Serivice
+            -  Persistent Disk
+            -  Resource Manager
+            -  Speaker ID
+
+            Note: These values are supported as input for legacy
+            purposes, but will not be returned from the API.
+
+            -  all
+            -  ga-only
+            -  appengine.googleapis.com
+            -  bigquery.googleapis.com
+            -  bigtable.googleapis.com
+            -  container.googleapis.com
+            -  cloudkms.googleapis.com
+            -  cloudresourcemanager.googleapis.com
+            -  cloudsql.googleapis.com
+            -  compute.googleapis.com
+            -  dataflow.googleapis.com
+            -  dlp.googleapis.com
+            -  iam.googleapis.com
+            -  logging.googleapis.com
+            -  orgpolicy.googleapis.com
+            -  pubsub.googleapis.com
+            -  spanner.googleapis.com
+            -  speakerid.googleapis.com
+            -  storage.googleapis.com
+
+            Calls to UpdateAccessApprovalSettings using 'all' or any of
+            the XXX.googleapis.com will be translated to the associated
+            product name ('all', 'App Engine', etc.).
+
+            Note: 'all' will enroll the resource in all products
+            supported at both 'GA' and 'Preview' levels.
+
+            More information about levels of support is available at
+            https://cloud.google.com/access-approval/docs/supported-services
         enrollment_level (google.cloud.accessapproval_v1.types.EnrollmentLevel):
             The enrollment level of the service.
     """
@@ -267,9 +315,9 @@ class AccessApprovalSettings(proto.Message):
         name (str):
             The resource name of the settings. Format is one of:
 
-            -  "projects/{project_id}/accessApprovalSettings"
-            -  "folders/{folder_id}/accessApprovalSettings"
-            -  "organizations/{organization_id}/accessApprovalSettings".
+            -  "projects/{project}/accessApprovalSettings"
+            -  "folders/{folder}/accessApprovalSettings"
+            -  "organizations/{organization}/accessApprovalSettings".
         notification_emails (Sequence[str]):
             A list of email addresses to which
             notifications relating to approval requests
@@ -293,7 +341,7 @@ class AccessApprovalSettings(proto.Message):
             expanded as the set of supported services is expanded.
         enrolled_ancestor (bool):
             Output only. This field is read only (not
-            settable via UpdateAccessAccessApprovalSettings
+            settable via UpdateAccessApprovalSettings
             method). If the field is true, that indicates
             that at least one service is enrolled for Access
             Approval in one or more ancestors of the Project
@@ -315,8 +363,9 @@ class ListApprovalRequestsMessage(proto.Message):
 
     Attributes:
         parent (str):
-            The parent resource. This may be "projects/{project_id}",
-            "folders/{folder_id}", or "organizations/{organization_id}".
+            The parent resource. This may be
+            "projects/{project}", "folders/{folder}", or
+            "organizations/{organization}".
         filter (str):
             A filter on the type of approval requests to retrieve. Must
             be one of the following values:
@@ -326,7 +375,11 @@ class ListApprovalRequestsMessage(proto.Message):
             -  ALL: All requests.
             -  PENDING: Only pending requests.
             -  ACTIVE: Only active (i.e. currently approved) requests.
-            -  DISMISSED: Only dismissed (including expired) requests.
+            -  DISMISSED: Only requests that have been dismissed, or
+               requests that are not approved and past expiration.
+            -  EXPIRED: Only requests that have been approved, and the
+               approval has expired.
+            -  HISTORY: Active, dismissed and expired requests.
         page_size (int):
             Requested page size.
         page_token (str):
@@ -366,7 +419,8 @@ class GetApprovalRequestMessage(proto.Message):
 
     Attributes:
         name (str):
-            Name of the approval request to retrieve.
+            The name of the approval request to retrieve. Format:
+            "{projects|folders|organizations}/{id}/approvalRequests/{approval_request}".
     """
 
     name = proto.Field(proto.STRING, number=1,)
@@ -402,8 +456,8 @@ class GetAccessApprovalSettingsMessage(proto.Message):
 
     Attributes:
         name (str):
-            Name of the AccessApprovalSettings to
-            retrieve.
+            The name of the AccessApprovalSettings to retrieve. Format:
+            "{projects|folders|organizations}/{id}/accessApprovalSettings".
     """
 
     name = proto.Field(proto.STRING, number=1,)

@@ -46,7 +46,7 @@ class AccessApprovalAsyncClient:
 
     -  The API has a collection of
        [ApprovalRequest][google.cloud.accessapproval.v1.ApprovalRequest]
-       resources, named ``approvalRequests/{approval_request_id}``
+       resources, named ``approvalRequests/{approval_request}``
     -  The API has top-level settings per Project/Folder/Organization,
        named ``accessApprovalSettings``
 
@@ -54,10 +54,10 @@ class AccessApprovalAsyncClient:
     at the Project/Folder/Organization level in the
     accessApprovalSettings, when there is a pending ApprovalRequest for
     them to act on. The ApprovalRequests can also optionally be
-    published to a Cloud Pub/Sub topic owned by the customer (for Beta,
-    the Pub/Sub setup is managed manually).
+    published to a Pub/Sub topic owned by the customer (contact support
+    if you would like to enable Pub/Sub notifications).
 
-    ApprovalRequests can be approved or dismissed. Google personel can
+    ApprovalRequests can be approved or dismissed. Google personnel can
     only access the indicated resource or resources if the request is
     approved (subject to some exclusions:
     https://cloud.google.com/access-approval/docs/overview#exclusions).
@@ -83,6 +83,16 @@ class AccessApprovalAsyncClient:
     DEFAULT_ENDPOINT = AccessApprovalClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = AccessApprovalClient.DEFAULT_MTLS_ENDPOINT
 
+    access_approval_settings_path = staticmethod(
+        AccessApprovalClient.access_approval_settings_path
+    )
+    parse_access_approval_settings_path = staticmethod(
+        AccessApprovalClient.parse_access_approval_settings_path
+    )
+    approval_request_path = staticmethod(AccessApprovalClient.approval_request_path)
+    parse_approval_request_path = staticmethod(
+        AccessApprovalClient.parse_approval_request_path
+    )
     common_billing_account_path = staticmethod(
         AccessApprovalClient.common_billing_account_path
     )
@@ -266,6 +276,8 @@ class AccessApprovalAsyncClient:
 
                 # Make the request
                 page_result = client.list_approval_requests(request=request)
+
+                # Handle the response
                 for response in page_result:
                     print(response)
 
@@ -274,8 +286,9 @@ class AccessApprovalAsyncClient:
                 The request object. Request to list approval requests.
             parent (:class:`str`):
                 The parent resource. This may be
-                "projects/{project_id}", "folders/{folder_id}", or
-                "organizations/{organization_id}".
+                "projects/{project}",
+                "folders/{folder}", or
+                "organizations/{organization}".
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -375,15 +388,15 @@ class AccessApprovalAsyncClient:
                 # Make the request
                 response = client.get_approval_request(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
             request (Union[google.cloud.accessapproval_v1.types.GetApprovalRequestMessage, dict]):
                 The request object. Request to get an approval request.
             name (:class:`str`):
-                Name of the approval request to
-                retrieve.
+                The name of the approval request to retrieve. Format:
+                "{projects|folders|organizations}/{id}/approvalRequests/{approval_request}"
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -476,7 +489,7 @@ class AccessApprovalAsyncClient:
                 # Make the request
                 response = client.approve_approval_request(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -553,7 +566,7 @@ class AccessApprovalAsyncClient:
                 # Make the request
                 response = client.dismiss_approval_request(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -623,7 +636,7 @@ class AccessApprovalAsyncClient:
                 # Make the request
                 response = client.get_access_approval_settings(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -631,8 +644,9 @@ class AccessApprovalAsyncClient:
                 The request object. Request to get access approval
                 settings.
             name (:class:`str`):
-                Name of the AccessApprovalSettings to
-                retrieve.
+                The name of the AccessApprovalSettings to retrieve.
+                Format:
+                "{projects|folders|organizations}/{id}/accessApprovalSettings"
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -726,7 +740,7 @@ class AccessApprovalAsyncClient:
                 # Make the request
                 response = client.update_access_approval_settings(request=request)
 
-                # Handle response
+                # Handle the response
                 print(response)
 
         Args:
@@ -840,7 +854,7 @@ class AccessApprovalAsyncClient:
                 )
 
                 # Make the request
-                response = client.delete_access_approval_settings(request=request)
+                client.delete_access_approval_settings(request=request)
 
         Args:
             request (Union[google.cloud.accessapproval_v1.types.DeleteAccessApprovalSettingsMessage, dict]):

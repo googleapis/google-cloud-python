@@ -37,6 +37,8 @@ async def sample_list_approval_requests():
 
     # Make the request
     page_result = client.list_approval_requests(request=request)
+
+    # Handle the response
     async for response in page_result:
         print(response)
 
