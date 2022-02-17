@@ -403,6 +403,9 @@ Libraries
    * - `BigQuery connector for pandas <https://github.com/googleapis/python-bigquery-pandas>`_
      - |preview|
      - |PyPI-pandas-gbq|
+   * - `Certificate Manager API <https://github.com/googleapis/python-certificate-manager>`_
+     - |preview|
+     - |PyPI-google-cloud-certificate-manager|
    * - `DNS <https://github.com/googleapis/python-dns>`_
      - |preview|
      - |PyPI-google-cloud-dns|
@@ -686,6 +689,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-bigquery-migration
 .. |PyPI-pandas-gbq| image:: https://img.shields.io/pypi/v/pandas-gbq.svg
      :target: https://pypi.org/project/pandas-gbq
+.. |PyPI-google-cloud-certificate-manager| image:: https://img.shields.io/pypi/v/google-cloud-certificate-manager.svg
+     :target: https://pypi.org/project/google-cloud-certificate-manager
 .. |PyPI-google-cloud-dns| image:: https://img.shields.io/pypi/v/google-cloud-dns.svg
      :target: https://pypi.org/project/google-cloud-dns
 .. |PyPI-google-cloud-datalabeling| image:: https://img.shields.io/pypi/v/google-cloud-datalabeling.svg
