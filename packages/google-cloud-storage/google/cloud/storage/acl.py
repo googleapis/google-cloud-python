@@ -412,7 +412,7 @@ class ACL(object):
         self._ensure_loaded()
         return list(self.entities.values())
 
-    @property
+    @property  # type: ignore
     def client(self):
         """Abstract getter for the object client."""
         raise NotImplementedError

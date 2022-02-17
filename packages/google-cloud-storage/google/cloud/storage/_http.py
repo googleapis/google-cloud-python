@@ -16,9 +16,9 @@
 
 import functools
 import os
-import pkg_resources
+import pkg_resources  # type: ignore
 
-from google.cloud import _http
+from google.cloud import _http  # type: ignore
 
 from google.cloud.storage import __version__
 
