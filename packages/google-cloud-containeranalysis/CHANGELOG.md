@@ -1,5 +1,12 @@
 # Changelog
 
+### [2.7.1](https://github.com/googleapis/python-containeranalysis/compare/v2.7.0...v2.7.1) (2022-02-11)
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([fecf484](https://github.com/googleapis/python-containeranalysis/commit/fecf4844db8e44a12f3ea42af7663196177a6b1a))
+
 ## [2.7.0](https://github.com/googleapis/python-containeranalysis/compare/v2.6.3...v2.7.0) (2022-01-25)
 
 
