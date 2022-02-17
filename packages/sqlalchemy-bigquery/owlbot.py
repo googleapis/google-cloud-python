@@ -66,6 +66,12 @@ s.replace(
 )
 
 s.replace(
+    ["noxfile.py"],
+    r"import shutil",
+    "import re\nimport shutil",
+)
+
+s.replace(
     ["noxfile.py"], "--cov=google", "--cov=sqlalchemy_bigquery",
 )
 
@@ -89,28 +95,84 @@ place_before(
     "nox.options.stop_on_first_error = True",
 )
 
-old_sessions = '''
-    "unit",
-    "system",
-    "cover",
-    "lint",
-'''
+prerelease = r'''
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def prerelease(session):
+    session.install(
+        "--prefer-binary",
+        "--pre",
+        "--upgrade",
+        "alembic",
+        "geoalchemy2",
+        "google-api-core",
+        "google-cloud-bigquery",
+        "google-cloud-bigquery-storage",
+        "sqlalchemy",
+        "shapely",
+        # These are transitive dependencies, but we'd still like to know if a
+        # change in a prerelease there breaks this connector.
+        "google-cloud-core",
+        "grpcio",
+    )
+    session.install(
+        "freezegun",
+        "google-cloud-testutils",
+        "mock",
+        "psutil",
+        "pytest",
+        "pytest-cov",
+        "pytz",
+    )
 
-new_sessions = '''
-    "lint",
-    "unit",
-    "cover",
-    "system",
-    "compliance",
-'''
+    # Because we test minimum dependency versions on the minimum Python
+    # version, the first version we test with in the unit tests sessions has a
+    # constraints file containing all dependencies and extras.
+    with open(
+        CURRENT_DIRECTORY
+        / "testing"
+        / f"constraints-{UNIT_TEST_PYTHON_VERSIONS[0]}.txt",
+        encoding="utf-8",
+    ) as constraints_file:
+        constraints_text = constraints_file.read()
 
-s.replace( ["noxfile.py"], old_sessions, new_sessions)
+    # Ignore leading whitespace and comment lines.
+    deps = [
+        match.group(1)
+        for match in re.finditer(
+            r"^\\s*(\\S+)(?===\\S+)", constraints_text, flags=re.MULTILINE
+        )
+    ]
+
+    # We use --no-deps to ensure that pre-release versions aren't overwritten
+    # by the version ranges in setup.py.
+    session.install(*deps)
+    session.install("--no-deps", "-e", ".")
+
+    # Print out prerelease package versions.
+    session.run("python", "-m", "pip", "freeze")
+
+    # Run all tests, except a few samples tests which require extra dependencies.
+    session.run(
+        "py.test",
+        "--quiet",
+        f"--junitxml=prerelease_unit_{session.python}_sponge_log.xml",
+        os.path.join("tests", "unit"),
+    )
+    session.run(
+        "py.test",
+        "--quiet",
+        f"--junitxml=prerelease_system_{session.python}_sponge_log.xml",
+        os.path.join("tests", "system"),
+    )
+
+
+'''
 
 # Maybe we can get rid of this when we don't need pytest-rerunfailures,
 # which we won't need when BQ retries itself:
 # https://github.com/googleapis/python-bigquery/pull/837
 compliance = '''
-@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS[-1])
 def compliance(session):
     """Run the SQLAlchemy dialect-compliance system tests"""
     constraints_path = str(
@@ -120,8 +182,6 @@ def compliance(session):
 
     if os.environ.get("RUN_COMPLIANCE_TESTS", "true") == "false":
         session.skip("RUN_COMPLIANCE_TESTS is set to false, skipping")
-    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
-        session.skip("Credentials must be set via environment variable")
     if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true":
         session.install("pyopenssl")
     if not os.path.exists(system_test_folder_path):
@@ -131,7 +191,9 @@ def compliance(session):
 
     session.install(
         "mock",
-        "pytest",
+        # TODO: Allow latest version of pytest once SQLAlchemy 1.4.28+ is supported.
+        # See: https://github.com/googleapis/python-bigquery-sqlalchemy/issues/413
+        "pytest<=7.0.0dev",
         "pytest-rerunfailures",
         "google-cloud-testutils",
         "-c",
@@ -166,7 +228,7 @@ place_before(
      "noxfile.py",
      "@nox.session(python=DEFAULT_PYTHON_VERSION)\n"
      "def cover(session):",
-     compliance,
+     prerelease + compliance,
      escape="()",
      )
 
