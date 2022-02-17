@@ -753,6 +753,7 @@ class BigQueryDialect(DefaultDialect):
         credentials_path=None,
         location=None,
         credentials_info=None,
+        credentials_base64=None,
         list_tables_page_size=1000,
         *args,
         **kwargs,
@@ -761,6 +762,7 @@ class BigQueryDialect(DefaultDialect):
         self.arraysize = arraysize
         self.credentials_path = credentials_path
         self.credentials_info = credentials_info
+        self.credentials_base64 = credentials_base64
         self.location = location
         self.dataset_id = None
         self.list_tables_page_size = list_tables_page_size
@@ -791,6 +793,7 @@ class BigQueryDialect(DefaultDialect):
             dataset_id,
             arraysize,
             credentials_path,
+            credentials_base64,
             default_query_job_config,
             list_tables_page_size,
         ) = parse_url(url)
@@ -799,6 +802,7 @@ class BigQueryDialect(DefaultDialect):
         self.list_tables_page_size = list_tables_page_size or self.list_tables_page_size
         self.location = location or self.location
         self.credentials_path = credentials_path or self.credentials_path
+        self.credentials_base64 = credentials_base64 or self.credentials_base64
         self.dataset_id = dataset_id
         self._add_default_dataset_to_job_config(
             default_query_job_config, project_id, dataset_id
@@ -806,6 +810,7 @@ class BigQueryDialect(DefaultDialect):
         client = _helpers.create_bigquery_client(
             credentials_path=self.credentials_path,
             credentials_info=self.credentials_info,
+            credentials_base64=self.credentials_base64,
             project_id=project_id,
             location=self.location,
             default_query_job_config=default_query_job_config,

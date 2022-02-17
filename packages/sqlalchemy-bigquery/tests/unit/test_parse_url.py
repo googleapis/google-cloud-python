@@ -48,6 +48,7 @@ def url_with_everything():
     return make_url(
         "bigquery://some-project/some-dataset"
         "?credentials_path=/some/path/to.json"
+        "&credentials_base64=eyJrZXkiOiJ2YWx1ZSJ9Cg=="
         "&location=some-location"
         "&arraysize=1000"
         "&list_tables_page_size=5000"
@@ -72,6 +73,7 @@ def test_basic(url_with_everything):
         dataset_id,
         arraysize,
         credentials_path,
+        credentials_base64,
         job_config,
         list_tables_page_size,
     ) = parse_url(url_with_everything)
@@ -82,6 +84,7 @@ def test_basic(url_with_everything):
     assert arraysize == 1000
     assert list_tables_page_size == 5000
     assert credentials_path == "/some/path/to.json"
+    assert credentials_base64 == "eyJrZXkiOiJ2YWx1ZSJ9Cg=="
     assert isinstance(job_config, QueryJobConfig)
 
 
@@ -123,7 +126,7 @@ def test_all_values(url_with_everything, param, value, default):
     )
 
     for url in url_with_everything, url_with_this_one:
-        job_config = parse_url(url)[5]
+        job_config = parse_url(url)[6]
         config_value = getattr(job_config, param)
         if callable(value):
             assert value(config_value)
@@ -131,7 +134,7 @@ def test_all_values(url_with_everything, param, value, default):
             assert config_value == value
 
     url_with_nothing = make_url("bigquery://some-project/some-dataset")
-    job_config = parse_url(url_with_nothing)[5]
+    job_config = parse_url(url_with_nothing)[6]
     assert getattr(job_config, param) == default
 
 
@@ -177,6 +180,7 @@ def test_empty_with_non_config():
         dataset_id,
         arraysize,
         credentials_path,
+        credentials_base64,
         job_config,
         list_tables_page_size,
     ) = url
@@ -186,6 +190,7 @@ def test_empty_with_non_config():
     assert dataset_id is None
     assert arraysize == 1000
     assert credentials_path == "/some/path/to.json"
+    assert credentials_base64 is None
     assert job_config is None
     assert list_tables_page_size is None
 
@@ -198,6 +203,7 @@ def test_only_dataset():
         dataset_id,
         arraysize,
         credentials_path,
+        credentials_base64,
         job_config,
         list_tables_page_size,
     ) = url
@@ -207,6 +213,7 @@ def test_only_dataset():
     assert dataset_id == "some-dataset"
     assert arraysize is None
     assert credentials_path is None
+    assert credentials_base64 is None
     assert list_tables_page_size is None
     assert isinstance(job_config, QueryJobConfig)
     # we can't actually test that the dataset is on the job_config,

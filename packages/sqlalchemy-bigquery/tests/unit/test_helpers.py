@@ -4,12 +4,14 @@
 # license that can be found in the LICENSE file or at
 # https://opensource.org/licenses/MIT.
 
+import base64
+import json
 from unittest import mock
 
 import google.auth
 import google.auth.credentials
-from google.oauth2 import service_account
 import pytest
+from google.oauth2 import service_account
 
 
 class AnonymousCredentialsWithProject(google.auth.credentials.AnonymousCredentials):
@@ -100,6 +102,52 @@ def test_create_bigquery_client_with_credentials_info_respects_project(
             "project_id": "service-account-project",
         },
         project_id="connection-url-project",
+    )
+
+    assert bqclient.project == "connection-url-project"
+
+
+def test_create_bigquery_client_with_credentials_base64(monkeypatch, module_under_test):
+    mock_service_account = mock.create_autospec(service_account.Credentials)
+    mock_service_account.from_service_account_info.return_value = AnonymousCredentialsWithProject(
+        "service-account-project"
+    )
+    monkeypatch.setattr(service_account, "Credentials", mock_service_account)
+
+    credentials_info = (
+        {"type": "service_account", "project_id": "service-account-project"},
+    )
+
+    credentials_base64 = base64.b64encode(json.dumps(credentials_info).encode())
+
+    bqclient = module_under_test.create_bigquery_client(
+        credentials_base64=credentials_base64
+    )
+
+    assert bqclient.project == "service-account-project"
+
+
+def test_create_bigquery_client_with_credentials_base64_respects_project(
+    monkeypatch, module_under_test
+):
+    """Test that project_id is used, even when there is a default project.
+
+    https://github.com/googleapis/python-bigquery-sqlalchemy/issues/48
+    """
+    mock_service_account = mock.create_autospec(service_account.Credentials)
+    mock_service_account.from_service_account_info.return_value = AnonymousCredentialsWithProject(
+        "service-account-project"
+    )
+    monkeypatch.setattr(service_account, "Credentials", mock_service_account)
+
+    credentials_info = (
+        {"type": "service_account", "project_id": "service-account-project"},
+    )
+
+    credentials_base64 = base64.b64encode(json.dumps(credentials_info).encode())
+
+    bqclient = module_under_test.create_bigquery_client(
+        credentials_base64=credentials_base64, project_id="connection-url-project",
     )
 
     assert bqclient.project == "connection-url-project"

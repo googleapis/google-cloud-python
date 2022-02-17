@@ -180,7 +180,7 @@ Connection String Parameters
 
 There are many situations where you can't call ``create_engine`` directly, such as when using tools like `Flask SQLAlchemy <http://flask-sqlalchemy.pocoo.org/2.3/>`_. For situations like these, or for situations where you want the ``Client`` to have a `default_query_job_config <https://googlecloudplatform.github.io/google-cloud-python/latest/bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client>`_, you can pass many arguments in the query of the connection string.
 
-The ``credentials_path``, ``credentials_info``, ``location``, ``arraysize`` and ``list_tables_page_size`` parameters are used by this library, and the rest are used to create a `QueryJobConfig <https://googlecloudplatform.github.io/google-cloud-python/latest/bigquery/generated/google.cloud.bigquery.job.QueryJobConfig.html#google.cloud.bigquery.job.QueryJobConfig>`_
+The ``credentials_path``, ``credentials_info``, ``credentials_base64``, ``location``, ``arraysize`` and ``list_tables_page_size`` parameters are used by this library, and the rest are used to create a `QueryJobConfig <https://googlecloudplatform.github.io/google-cloud-python/latest/bigquery/generated/google.cloud.bigquery.job.QueryJobConfig.html#google.cloud.bigquery.job.QueryJobConfig>`_
 
 Note that if you want to use query strings, it will be more reliable if you use three slashes, so ``'bigquery:///?a=b'`` will work reliably, but ``'bigquery://?a=b'`` might be interpreted as having a "database" of ``?a=b``, depending on the system being used to parse the connection string.
 
@@ -207,6 +207,32 @@ Here are examples of all the supported arguments. Any not present are either for
         'write_disposition=WRITE_APPEND'
     )
 
+In cases where you wish to include the full credentials in the connection URI you can base64 the credentials JSON file and supply the encoded string to the ``credentials_base64`` parameter.
+
+.. code-block:: python
+
+    engine = create_engine(
+        'bigquery://some-project/some-dataset' '?'
+        'credentials_base64=eyJrZXkiOiJ2YWx1ZSJ9Cg==' '&'
+        'location=some-location' '&'
+        'arraysize=1000' '&'
+        'list_tables_page_size=100' '&'
+        'clustering_fields=a,b,c' '&'
+        'create_disposition=CREATE_IF_NEEDED' '&'
+        'destination=different-project.different-dataset.table' '&'
+        'destination_encryption_configuration=some-configuration' '&'
+        'dry_run=true' '&'
+        'labels=a:b,c:d' '&'
+        'maximum_bytes_billed=1000' '&'
+        'priority=INTERACTIVE' '&'
+        'schema_update_options=ALLOW_FIELD_ADDITION,ALLOW_FIELD_RELAXATION' '&'
+        'use_query_cache=true' '&'
+        'write_disposition=WRITE_APPEND'
+    )
+
+To create the base64 encoded string you can use the command line tool ``base64``, or ``openssl base64``, or ``python -m base64``.
+
+Alternatively, you can use an online generator like `www.base64encode.org <https://www.base64encode.org>_` to paste your credentials JSON file to be encoded.
 
 Creating tables
 ^^^^^^^^^^^^^^^

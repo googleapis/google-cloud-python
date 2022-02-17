@@ -12,6 +12,8 @@ import google.auth
 from google.cloud import bigquery
 from google.oauth2 import service_account
 import sqlalchemy
+import base64
+import json
 
 
 USER_AGENT_TEMPLATE = "sqlalchemy/{}"
@@ -30,11 +32,15 @@ def google_client_info():
 def create_bigquery_client(
     credentials_info=None,
     credentials_path=None,
+    credentials_base64=None,
     default_query_job_config=None,
     location=None,
     project_id=None,
 ):
     default_project = None
+
+    if credentials_base64:
+        credentials_info = json.loads(base64.b64decode(credentials_base64))
 
     if credentials_path:
         credentials = service_account.Credentials.from_service_account_file(

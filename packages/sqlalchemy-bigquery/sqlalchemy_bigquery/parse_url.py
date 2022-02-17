@@ -68,6 +68,7 @@ def parse_url(url):  # noqa: C901
     dataset_id = url.database or None
     arraysize = None
     credentials_path = None
+    credentials_base64 = None
     list_tables_page_size = None
 
     # location
@@ -77,6 +78,10 @@ def parse_url(url):  # noqa: C901
     # credentials_path
     if "credentials_path" in query:
         credentials_path = query.pop("credentials_path")
+
+    # credentials_base64
+    if "credentials_base64" in query:
+        credentials_base64 = query.pop("credentials_base64")
 
     # arraysize
     if "arraysize" in query:
@@ -107,6 +112,7 @@ def parse_url(url):  # noqa: C901
                 dataset_id,
                 arraysize,
                 credentials_path,
+                credentials_base64,
                 QueryJobConfig(),
                 list_tables_page_size,
             )
@@ -117,6 +123,7 @@ def parse_url(url):  # noqa: C901
                 dataset_id,
                 arraysize,
                 credentials_path,
+                credentials_base64,
                 None,
                 list_tables_page_size,
             )
@@ -265,6 +272,7 @@ def parse_url(url):  # noqa: C901
         dataset_id,
         arraysize,
         credentials_path,
+        credentials_base64,
         job_config,
         list_tables_page_size,
     )
