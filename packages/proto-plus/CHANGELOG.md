@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.20.2](https://github.com/googleapis/proto-plus-python/compare/v1.20.1...v1.20.2) (2022-02-17)
+
+
+### Bug Fixes
+
+* dir(proto.Message) does not raise ([#302](https://github.com/googleapis/proto-plus-python/issues/302)) ([80dcce9](https://github.com/googleapis/proto-plus-python/commit/80dcce9099e630a6217792b6b3a14213add690e6))
+
 ### [1.20.1](https://github.com/googleapis/proto-plus-python/compare/v1.20.0...v1.20.1) (2022-02-14)
 
 
