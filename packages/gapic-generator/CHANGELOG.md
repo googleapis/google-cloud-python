@@ -1,6 +1,15 @@
 # Changelog
 
 
+### [0.63.3](https://github.com/googleapis/gapic-generator-python/compare/v0.63.2...v0.63.3) (2022-02-16)
+
+
+### Bug Fixes
+
+* disambiguate field headers whose names are reserved python words ([#1178](https://github.com/googleapis/gapic-generator-python/issues/1178)) ([98aa690](https://github.com/googleapis/gapic-generator-python/commit/98aa6906031276dcad899fdb88f47cbafc651ae4))
+* fix docstring code block formatting ([#1206](https://github.com/googleapis/gapic-generator-python/issues/1206)) ([500dfe7](https://github.com/googleapis/gapic-generator-python/commit/500dfe7e401888b3bea6488d6e6fee9955f1a2ab))
+* HTTP body field messages with enums or recursive fields ([#1201](https://github.com/googleapis/gapic-generator-python/issues/1201)) ([246bfe2](https://github.com/googleapis/gapic-generator-python/commit/246bfe2948362bc8f6035aafc0dbd9e65f5acc2b))
+
 ### [0.63.2](https://github.com/googleapis/gapic-generator-python/compare/v0.63.1...v0.63.2) (2022-02-09)
 
 
