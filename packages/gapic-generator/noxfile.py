@@ -29,7 +29,7 @@ import shutil
 nox.options.error_on_missing_interpreters = True
 
 
-showcase_version = os.environ.get("SHOWCASE_VERSION", "0.18.0")
+showcase_version = os.environ.get("SHOWCASE_VERSION", "0.19.0")
 ADS_TEMPLATES = path.join(path.dirname(__file__), "gapic", "ads-templates")
 
 
@@ -38,6 +38,7 @@ ALL_PYTHON = (
     "3.7",
     "3.8",
     "3.9",
+    "3.10",
 )
 
 NEWEST_PYTHON = ALL_PYTHON[-1]
@@ -393,7 +394,7 @@ def snippetgen(session):
     session.run("py.test", "-vv", "tests/snippetgen")
 
 
-@nox.session(python=NEWEST_PYTHON)
+@nox.session(python="3.9")
 def docs(session):
     """Build the docs."""
 
