@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+## [1.5.0](https://github.com/googleapis/python-error-reporting/compare/v1.4.1...v1.5.0) (2022-02-16)
+
+
+### Features
+
+* add api key support ([#221](https://github.com/googleapis/python-error-reporting/issues/221)) ([b207f2c](https://github.com/googleapis/python-error-reporting/commit/b207f2cec4f5f3196e775ed35cd429f34f9c0bd1))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([f0afcae](https://github.com/googleapis/python-error-reporting/commit/f0afcae54c834872d1e40d1f5c948c1e0c299b85))
+
 ### [1.4.1](https://www.github.com/googleapis/python-error-reporting/compare/v1.4.0...v1.4.1) (2021-11-01)
 
 
