@@ -415,3 +415,7 @@ def test_dir():
 
     actual = set(dir(Mollusc))
     assert actual == expected
+
+
+def test_dir_message_base():
+    assert set(dir(proto.Message)) == set(dir(type))

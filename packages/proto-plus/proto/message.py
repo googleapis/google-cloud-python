@@ -274,25 +274,28 @@ class MessageMeta(type):
         return cls._meta
 
     def __dir__(self):
-        names = set(dir(type))
-        names.update(
-            (
-                "meta",
-                "pb",
-                "wrap",
-                "serialize",
-                "deserialize",
-                "to_json",
-                "from_json",
-                "to_dict",
-                "copy_from",
+        try:
+            names = set(dir(type))
+            names.update(
+                (
+                    "meta",
+                    "pb",
+                    "wrap",
+                    "serialize",
+                    "deserialize",
+                    "to_json",
+                    "from_json",
+                    "to_dict",
+                    "copy_from",
+                )
             )
-        )
-        desc = self.pb().DESCRIPTOR
-        names.update(t.name for t in desc.nested_types)
-        names.update(e.name for e in desc.enum_types)
+            desc = self.pb().DESCRIPTOR
+            names.update(t.name for t in desc.nested_types)
+            names.update(e.name for e in desc.enum_types)
 
-        return names
+            return names
+        except AttributeError:
+            return dir(type)
 
     def pb(cls, obj=None, *, coerce: bool = False):
         """Return the underlying protobuf Message class or instance.
