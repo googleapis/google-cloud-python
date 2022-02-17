@@ -39,9 +39,8 @@ dependencies = [
     "google-cloud-core >= 1.4.1, <3.0.0dev",
     "grpc-google-iam-v1 >= 0.12.3, < 0.13dev",
     "proto-plus >= 1.13.0",
-    "libcst >= 0.2.5",
 ]
-extras = {}
+extras = {"libcst": "libcst >= 0.2.5"}
 
 
 # Setup boilerplate below this line.
