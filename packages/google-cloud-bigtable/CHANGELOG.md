@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+### [2.5.1](https://github.com/googleapis/python-bigtable/compare/v2.5.0...v2.5.1) (2022-02-17)
+
+
+### Bug Fixes
+
+* **deps:** move libcst to extras ([#508](https://github.com/googleapis/python-bigtable/issues/508)) ([4b4d7e2](https://github.com/googleapis/python-bigtable/commit/4b4d7e2796788b2cd3764f54ff532a9c9d092aec))
+
 ## [2.5.0](https://github.com/googleapis/python-bigtable/compare/v2.4.0...v2.5.0) (2022-02-07)
 
 
