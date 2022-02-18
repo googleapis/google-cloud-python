@@ -25,6 +25,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 import grpc  # type: ignore
 
 from google.cloud.dataplex_v1.types import metadata_
+from google.protobuf import empty_pb2  # type: ignore
 from .base import MetadataServiceTransport, DEFAULT_CLIENT_INFO
 
 
@@ -230,6 +231,85 @@ class MetadataServiceGrpcTransport(MetadataServiceTransport):
         return self._grpc_channel
 
     @property
+    def create_entity(
+        self,
+    ) -> Callable[[metadata_.CreateEntityRequest], metadata_.Entity]:
+        r"""Return a callable for the create entity method over gRPC.
+
+        Create a metadata entity.
+
+        Returns:
+            Callable[[~.CreateEntityRequest],
+                    ~.Entity]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_entity" not in self._stubs:
+            self._stubs["create_entity"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataplex.v1.MetadataService/CreateEntity",
+                request_serializer=metadata_.CreateEntityRequest.serialize,
+                response_deserializer=metadata_.Entity.deserialize,
+            )
+        return self._stubs["create_entity"]
+
+    @property
+    def update_entity(
+        self,
+    ) -> Callable[[metadata_.UpdateEntityRequest], metadata_.Entity]:
+        r"""Return a callable for the update entity method over gRPC.
+
+        Update a metadata entity. Only supports full resource
+        update.
+
+        Returns:
+            Callable[[~.UpdateEntityRequest],
+                    ~.Entity]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_entity" not in self._stubs:
+            self._stubs["update_entity"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataplex.v1.MetadataService/UpdateEntity",
+                request_serializer=metadata_.UpdateEntityRequest.serialize,
+                response_deserializer=metadata_.Entity.deserialize,
+            )
+        return self._stubs["update_entity"]
+
+    @property
+    def delete_entity(
+        self,
+    ) -> Callable[[metadata_.DeleteEntityRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete entity method over gRPC.
+
+        Delete a metadata entity.
+
+        Returns:
+            Callable[[~.DeleteEntityRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_entity" not in self._stubs:
+            self._stubs["delete_entity"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataplex.v1.MetadataService/DeleteEntity",
+                request_serializer=metadata_.DeleteEntityRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_entity"]
+
+    @property
     def get_entity(self) -> Callable[[metadata_.GetEntityRequest], metadata_.Entity]:
         r"""Return a callable for the get entity method over gRPC.
 
@@ -278,6 +358,58 @@ class MetadataServiceGrpcTransport(MetadataServiceTransport):
                 response_deserializer=metadata_.ListEntitiesResponse.deserialize,
             )
         return self._stubs["list_entities"]
+
+    @property
+    def create_partition(
+        self,
+    ) -> Callable[[metadata_.CreatePartitionRequest], metadata_.Partition]:
+        r"""Return a callable for the create partition method over gRPC.
+
+        Create a metadata partition.
+
+        Returns:
+            Callable[[~.CreatePartitionRequest],
+                    ~.Partition]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_partition" not in self._stubs:
+            self._stubs["create_partition"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataplex.v1.MetadataService/CreatePartition",
+                request_serializer=metadata_.CreatePartitionRequest.serialize,
+                response_deserializer=metadata_.Partition.deserialize,
+            )
+        return self._stubs["create_partition"]
+
+    @property
+    def delete_partition(
+        self,
+    ) -> Callable[[metadata_.DeletePartitionRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete partition method over gRPC.
+
+        Delete a metadata partition.
+
+        Returns:
+            Callable[[~.DeletePartitionRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_partition" not in self._stubs:
+            self._stubs["delete_partition"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataplex.v1.MetadataService/DeletePartition",
+                request_serializer=metadata_.DeletePartitionRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_partition"]
 
     @property
     def get_partition(

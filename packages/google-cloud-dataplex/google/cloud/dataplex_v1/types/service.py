@@ -15,6 +15,7 @@
 #
 import proto  # type: ignore
 
+from google.cloud.dataplex_v1.types import analyze
 from google.cloud.dataplex_v1.types import resources
 from google.cloud.dataplex_v1.types import tasks as gcd_tasks
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -57,6 +58,14 @@ __protobuf__ = proto.module(
         "ListJobsRequest",
         "ListJobsResponse",
         "CancelJobRequest",
+        "CreateEnvironmentRequest",
+        "UpdateEnvironmentRequest",
+        "DeleteEnvironmentRequest",
+        "ListEnvironmentsRequest",
+        "ListEnvironmentsResponse",
+        "GetEnvironmentRequest",
+        "ListSessionsRequest",
+        "ListSessionsResponse",
     },
 )
 
@@ -67,7 +76,7 @@ class CreateLakeRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The resource name of the lake location, of the
-            form: ``projects/{project_number}/locations/{location_id}``
+            form: projects/{project_number}/locations/{location_id}
             where ``location_id`` refers to a GCP region.
         lake_id (str):
             Required. Lake identifier. This ID will be used to generate
@@ -773,6 +782,179 @@ class CancelJobRequest(proto.Message):
     """
 
     name = proto.Field(proto.STRING, number=1,)
+
+
+class CreateEnvironmentRequest(proto.Message):
+    r"""Create environment request.
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the parent lake:
+            projects/{project_id}/locations/{location_id}/lakes/{lake_id}
+        environment_id (str):
+            Required. Environment identifier.
+
+            -  Must contain only lowercase letters, numbers and hyphens.
+            -  Must start with a letter.
+            -  Must be between 1-63 characters.
+            -  Must end with a number or a letter.
+            -  Must be unique within the lake.
+        environment (google.cloud.dataplex_v1.types.Environment):
+            Required. Environment resource.
+        validate_only (bool):
+            Optional. Only validate the request, but do
+            not perform mutations. The default is false.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    environment_id = proto.Field(proto.STRING, number=2,)
+    environment = proto.Field(proto.MESSAGE, number=3, message=analyze.Environment,)
+    validate_only = proto.Field(proto.BOOL, number=4,)
+
+
+class UpdateEnvironmentRequest(proto.Message):
+    r"""Update environment request.
+
+    Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. Mask of fields to update.
+        environment (google.cloud.dataplex_v1.types.Environment):
+            Required. Update description. Only fields specified in
+            ``update_mask`` are updated.
+        validate_only (bool):
+            Optional. Only validate the request, but do
+            not perform mutations. The default is false.
+    """
+
+    update_mask = proto.Field(
+        proto.MESSAGE, number=1, message=field_mask_pb2.FieldMask,
+    )
+    environment = proto.Field(proto.MESSAGE, number=2, message=analyze.Environment,)
+    validate_only = proto.Field(proto.BOOL, number=3,)
+
+
+class DeleteEnvironmentRequest(proto.Message):
+    r"""Delete environment request.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the environment:
+            projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environments/{environment_id}\`
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class ListEnvironmentsRequest(proto.Message):
+    r"""List environments request.
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the parent lake:
+            projects/{project_id}/locations/{location_id}/lakes/{lake_id}
+        page_size (int):
+            Optional. Maximum number of environments to
+            return. The service may return fewer than this
+            value. If unspecified, at most 10 environments
+            will be returned. The maximum value is 1000;
+            values above 1000 will be coerced to 1000.
+        page_token (str):
+            Optional. Page token received from a previous
+            ``ListEnvironments`` call. Provide this to retrieve the
+            subsequent page. When paginating, all other parameters
+            provided to ``ListEnvironments`` must match the call that
+            provided the page token.
+        filter (str):
+            Optional. Filter request.
+        order_by (str):
+            Optional. Order by fields for the result.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
+    filter = proto.Field(proto.STRING, number=4,)
+    order_by = proto.Field(proto.STRING, number=5,)
+
+
+class ListEnvironmentsResponse(proto.Message):
+    r"""List environments response.
+
+    Attributes:
+        environments (Sequence[google.cloud.dataplex_v1.types.Environment]):
+            Environments under the given parent lake.
+        next_page_token (str):
+            Token to retrieve the next page of results,
+            or empty if there are no more results in the
+            list.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    environments = proto.RepeatedField(
+        proto.MESSAGE, number=1, message=analyze.Environment,
+    )
+    next_page_token = proto.Field(proto.STRING, number=2,)
+
+
+class GetEnvironmentRequest(proto.Message):
+    r"""Get environment request.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the environment:
+            projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environments/{environment_id}
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class ListSessionsRequest(proto.Message):
+    r"""List sessions request.
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the parent environment:
+            projects/{project_number}/locations/{location_id}/lakes/{lake_id}/environment/{environment_id}
+        page_size (int):
+            Optional. Maximum number of sessions to
+            return. The service may return fewer than this
+            value. If unspecified, at most 10 sessions will
+            be returned. The maximum value is 1000; values
+            above 1000 will be coerced to 1000.
+        page_token (str):
+            Optional. Page token received from a previous
+            ``ListSessions`` call. Provide this to retrieve the
+            subsequent page. When paginating, all other parameters
+            provided to ``ListSessions`` must match the call that
+            provided the page token.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
+
+
+class ListSessionsResponse(proto.Message):
+    r"""List sessions response.
+
+    Attributes:
+        sessions (Sequence[google.cloud.dataplex_v1.types.Session]):
+            Sessions under a given environment.
+        next_page_token (str):
+            Token to retrieve the next page of results,
+            or empty if there are no more results in the
+            list.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    sessions = proto.RepeatedField(proto.MESSAGE, number=1, message=analyze.Session,)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -443,6 +443,281 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
                 always_use_jwt_access=True,
             )
 
+    def create_entity(
+        self,
+        request: Union[metadata_.CreateEntityRequest, dict] = None,
+        *,
+        parent: str = None,
+        entity: metadata_.Entity = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> metadata_.Entity:
+        r"""Create a metadata entity.
+
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_create_entity():
+                # Create a client
+                client = dataplex_v1.MetadataServiceClient()
+
+                # Initialize request argument(s)
+                entity = dataplex_v1.Entity()
+                entity.id = "id_value"
+                entity.type_ = "FILESET"
+                entity.asset = "asset_value"
+                entity.data_path = "data_path_value"
+                entity.system = "BIGQUERY"
+                entity.format_.mime_type = "mime_type_value"
+                entity.schema.user_managed = True
+
+                request = dataplex_v1.CreateEntityRequest(
+                    parent="parent_value",
+                    entity=entity,
+                )
+
+                # Make the request
+                response = client.create_entity(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.CreateEntityRequest, dict]):
+                The request object. Create a metadata entity request.
+            parent (str):
+                Required. The resource name of the parent zone:
+                ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            entity (google.cloud.dataplex_v1.types.Entity):
+                Required. Entity resource.
+                This corresponds to the ``entity`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dataplex_v1.types.Entity:
+                Represents tables and fileset
+                metadata contained within a zone.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, entity])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a metadata_.CreateEntityRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, metadata_.CreateEntityRequest):
+            request = metadata_.CreateEntityRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if entity is not None:
+                request.entity = entity
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_entity]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def update_entity(
+        self,
+        request: Union[metadata_.UpdateEntityRequest, dict] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> metadata_.Entity:
+        r"""Update a metadata entity. Only supports full resource
+        update.
+
+
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_update_entity():
+                # Create a client
+                client = dataplex_v1.MetadataServiceClient()
+
+                # Initialize request argument(s)
+                entity = dataplex_v1.Entity()
+                entity.id = "id_value"
+                entity.type_ = "FILESET"
+                entity.asset = "asset_value"
+                entity.data_path = "data_path_value"
+                entity.system = "BIGQUERY"
+                entity.format_.mime_type = "mime_type_value"
+                entity.schema.user_managed = True
+
+                request = dataplex_v1.UpdateEntityRequest(
+                    entity=entity,
+                )
+
+                # Make the request
+                response = client.update_entity(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.UpdateEntityRequest, dict]):
+                The request object. Update a metadata entity request.
+                The exiting entity will be fully replaced by the entity
+                in the request. The entity ID is mutable. To modify the
+                ID, use the current entity ID in the request URL and
+                specify the new ID in the request body.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dataplex_v1.types.Entity:
+                Represents tables and fileset
+                metadata contained within a zone.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a metadata_.UpdateEntityRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, metadata_.UpdateEntityRequest):
+            request = metadata_.UpdateEntityRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_entity]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("entity.name", request.entity.name),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def delete_entity(
+        self,
+        request: Union[metadata_.DeleteEntityRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Delete a metadata entity.
+
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_delete_entity():
+                # Create a client
+                client = dataplex_v1.MetadataServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.DeleteEntityRequest(
+                    name="name_value",
+                    etag="etag_value",
+                )
+
+                # Make the request
+                client.delete_entity(request=request)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.DeleteEntityRequest, dict]):
+                The request object. Delete a metadata entity request.
+            name (str):
+                Required. The resource name of the entity:
+                ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a metadata_.DeleteEntityRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, metadata_.DeleteEntityRequest):
+            request = metadata_.DeleteEntityRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_entity]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(
+            request, retry=retry, timeout=timeout, metadata=metadata,
+        )
+
     def get_entity(
         self,
         request: Union[metadata_.GetEntityRequest, dict] = None,
@@ -633,6 +908,192 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
         # Done; return the response.
         return response
 
+    def create_partition(
+        self,
+        request: Union[metadata_.CreatePartitionRequest, dict] = None,
+        *,
+        parent: str = None,
+        partition: metadata_.Partition = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> metadata_.Partition:
+        r"""Create a metadata partition.
+
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_create_partition():
+                # Create a client
+                client = dataplex_v1.MetadataServiceClient()
+
+                # Initialize request argument(s)
+                partition = dataplex_v1.Partition()
+                partition.values = ['values_value_1', 'values_value_2']
+                partition.location = "location_value"
+
+                request = dataplex_v1.CreatePartitionRequest(
+                    parent="parent_value",
+                    partition=partition,
+                )
+
+                # Make the request
+                response = client.create_partition(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.CreatePartitionRequest, dict]):
+                The request object. Create metadata partition request.
+            parent (str):
+                Required. The resource name of the parent zone:
+                ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            partition (google.cloud.dataplex_v1.types.Partition):
+                Required. Partition resource.
+                This corresponds to the ``partition`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dataplex_v1.types.Partition:
+                Represents partition metadata
+                contained within entity instances.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, partition])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a metadata_.CreatePartitionRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, metadata_.CreatePartitionRequest):
+            request = metadata_.CreatePartitionRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if partition is not None:
+                request.partition = partition
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_partition]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def delete_partition(
+        self,
+        request: Union[metadata_.DeletePartitionRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Delete a metadata partition.
+
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_delete_partition():
+                # Create a client
+                client = dataplex_v1.MetadataServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.DeletePartitionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_partition(request=request)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.DeletePartitionRequest, dict]):
+                The request object. Delete metadata partition request.
+            name (str):
+                Required. The resource name of the partition. format:
+                ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}/partitions/{partition_value_path}``.
+                The {partition_value_path} segment consists of an
+                ordered sequence of partition values separated by "/".
+                All values must be provided.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a metadata_.DeletePartitionRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, metadata_.DeletePartitionRequest):
+            request = metadata_.DeletePartitionRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_partition]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(
+            request, retry=retry, timeout=timeout, metadata=metadata,
+        )
+
     def get_partition(
         self,
         request: Union[metadata_.GetPartitionRequest, dict] = None,
@@ -669,7 +1130,10 @@ class MetadataServiceClient(metaclass=MetadataServiceClientMeta):
                 The request object. Get metadata partition request.
             name (str):
                 Required. The resource name of the partition:
-                ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}/partitions/{partition_id}``.
+                ``projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}/partitions/{partition_value_path}``.
+                The {partition_value_path} segment consists of an
+                ordered sequence of partition values separated by "/".
+                All values must be provided.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

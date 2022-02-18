@@ -25,6 +25,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
+from google.cloud.dataplex_v1.types import analyze
 from google.cloud.dataplex_v1.types import resources
 from google.cloud.dataplex_v1.types import service
 from google.cloud.dataplex_v1.types import tasks
@@ -934,6 +935,174 @@ class DataplexServiceGrpcAsyncIOTransport(DataplexServiceTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["cancel_job"]
+
+    @property
+    def create_environment(
+        self,
+    ) -> Callable[
+        [service.CreateEnvironmentRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the create environment method over gRPC.
+
+        Create an environment resource.
+
+        Returns:
+            Callable[[~.CreateEnvironmentRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_environment" not in self._stubs:
+            self._stubs["create_environment"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataplex.v1.DataplexService/CreateEnvironment",
+                request_serializer=service.CreateEnvironmentRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_environment"]
+
+    @property
+    def update_environment(
+        self,
+    ) -> Callable[
+        [service.UpdateEnvironmentRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the update environment method over gRPC.
+
+        Update the environment resource.
+
+        Returns:
+            Callable[[~.UpdateEnvironmentRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_environment" not in self._stubs:
+            self._stubs["update_environment"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataplex.v1.DataplexService/UpdateEnvironment",
+                request_serializer=service.UpdateEnvironmentRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_environment"]
+
+    @property
+    def delete_environment(
+        self,
+    ) -> Callable[
+        [service.DeleteEnvironmentRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the delete environment method over gRPC.
+
+        Delete the environment resource. All the child
+        resources must have been deleted before environment
+        deletion can be initiated.
+
+        Returns:
+            Callable[[~.DeleteEnvironmentRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_environment" not in self._stubs:
+            self._stubs["delete_environment"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataplex.v1.DataplexService/DeleteEnvironment",
+                request_serializer=service.DeleteEnvironmentRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_environment"]
+
+    @property
+    def list_environments(
+        self,
+    ) -> Callable[
+        [service.ListEnvironmentsRequest], Awaitable[service.ListEnvironmentsResponse]
+    ]:
+        r"""Return a callable for the list environments method over gRPC.
+
+        Lists environments under the given lake.
+
+        Returns:
+            Callable[[~.ListEnvironmentsRequest],
+                    Awaitable[~.ListEnvironmentsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_environments" not in self._stubs:
+            self._stubs["list_environments"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataplex.v1.DataplexService/ListEnvironments",
+                request_serializer=service.ListEnvironmentsRequest.serialize,
+                response_deserializer=service.ListEnvironmentsResponse.deserialize,
+            )
+        return self._stubs["list_environments"]
+
+    @property
+    def get_environment(
+        self,
+    ) -> Callable[[service.GetEnvironmentRequest], Awaitable[analyze.Environment]]:
+        r"""Return a callable for the get environment method over gRPC.
+
+        Get environment resource.
+
+        Returns:
+            Callable[[~.GetEnvironmentRequest],
+                    Awaitable[~.Environment]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_environment" not in self._stubs:
+            self._stubs["get_environment"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataplex.v1.DataplexService/GetEnvironment",
+                request_serializer=service.GetEnvironmentRequest.serialize,
+                response_deserializer=analyze.Environment.deserialize,
+            )
+        return self._stubs["get_environment"]
+
+    @property
+    def list_sessions(
+        self,
+    ) -> Callable[
+        [service.ListSessionsRequest], Awaitable[service.ListSessionsResponse]
+    ]:
+        r"""Return a callable for the list sessions method over gRPC.
+
+        Lists session resources in an environment.
+
+        Returns:
+            Callable[[~.ListSessionsRequest],
+                    Awaitable[~.ListSessionsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_sessions" not in self._stubs:
+            self._stubs["list_sessions"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataplex.v1.DataplexService/ListSessions",
+                request_serializer=service.ListSessionsRequest.serialize,
+                response_deserializer=service.ListSessionsResponse.deserialize,
+            )
+        return self._stubs["list_sessions"]
 
     def close(self):
         return self.grpc_channel.close()

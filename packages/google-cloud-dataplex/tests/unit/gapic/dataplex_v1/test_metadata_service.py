@@ -644,6 +644,625 @@ def test_metadata_service_client_create_channel_credentials_file(
         )
 
 
+@pytest.mark.parametrize("request_type", [metadata_.CreateEntityRequest, dict,])
+def test_create_entity(request_type, transport: str = "grpc"):
+    client = MetadataServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_entity), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = metadata_.Entity(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            id="id_value",
+            etag="etag_value",
+            type_=metadata_.Entity.Type.TABLE,
+            asset="asset_value",
+            data_path="data_path_value",
+            data_path_pattern="data_path_pattern_value",
+            catalog_entry="catalog_entry_value",
+            system=metadata_.StorageSystem.CLOUD_STORAGE,
+        )
+        response = client.create_entity(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metadata_.CreateEntityRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, metadata_.Entity)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.id == "id_value"
+    assert response.etag == "etag_value"
+    assert response.type_ == metadata_.Entity.Type.TABLE
+    assert response.asset == "asset_value"
+    assert response.data_path == "data_path_value"
+    assert response.data_path_pattern == "data_path_pattern_value"
+    assert response.catalog_entry == "catalog_entry_value"
+    assert response.system == metadata_.StorageSystem.CLOUD_STORAGE
+
+
+def test_create_entity_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetadataServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_entity), "__call__") as call:
+        client.create_entity()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metadata_.CreateEntityRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_entity_async(
+    transport: str = "grpc_asyncio", request_type=metadata_.CreateEntityRequest
+):
+    client = MetadataServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_entity), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metadata_.Entity(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                id="id_value",
+                etag="etag_value",
+                type_=metadata_.Entity.Type.TABLE,
+                asset="asset_value",
+                data_path="data_path_value",
+                data_path_pattern="data_path_pattern_value",
+                catalog_entry="catalog_entry_value",
+                system=metadata_.StorageSystem.CLOUD_STORAGE,
+            )
+        )
+        response = await client.create_entity(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metadata_.CreateEntityRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, metadata_.Entity)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.id == "id_value"
+    assert response.etag == "etag_value"
+    assert response.type_ == metadata_.Entity.Type.TABLE
+    assert response.asset == "asset_value"
+    assert response.data_path == "data_path_value"
+    assert response.data_path_pattern == "data_path_pattern_value"
+    assert response.catalog_entry == "catalog_entry_value"
+    assert response.system == metadata_.StorageSystem.CLOUD_STORAGE
+
+
+@pytest.mark.asyncio
+async def test_create_entity_async_from_dict():
+    await test_create_entity_async(request_type=dict)
+
+
+def test_create_entity_field_headers():
+    client = MetadataServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = metadata_.CreateEntityRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_entity), "__call__") as call:
+        call.return_value = metadata_.Entity()
+        client.create_entity(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_entity_field_headers_async():
+    client = MetadataServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = metadata_.CreateEntityRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_entity), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(metadata_.Entity())
+        await client.create_entity(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+def test_create_entity_flattened():
+    client = MetadataServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_entity), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = metadata_.Entity()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_entity(
+            parent="parent_value", entity=metadata_.Entity(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].entity
+        mock_val = metadata_.Entity(name="name_value")
+        assert arg == mock_val
+
+
+def test_create_entity_flattened_error():
+    client = MetadataServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_entity(
+            metadata_.CreateEntityRequest(),
+            parent="parent_value",
+            entity=metadata_.Entity(name="name_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_entity_flattened_async():
+    client = MetadataServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_entity), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = metadata_.Entity()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(metadata_.Entity())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_entity(
+            parent="parent_value", entity=metadata_.Entity(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].entity
+        mock_val = metadata_.Entity(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_entity_flattened_error_async():
+    client = MetadataServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_entity(
+            metadata_.CreateEntityRequest(),
+            parent="parent_value",
+            entity=metadata_.Entity(name="name_value"),
+        )
+
+
+@pytest.mark.parametrize("request_type", [metadata_.UpdateEntityRequest, dict,])
+def test_update_entity(request_type, transport: str = "grpc"):
+    client = MetadataServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_entity), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = metadata_.Entity(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            id="id_value",
+            etag="etag_value",
+            type_=metadata_.Entity.Type.TABLE,
+            asset="asset_value",
+            data_path="data_path_value",
+            data_path_pattern="data_path_pattern_value",
+            catalog_entry="catalog_entry_value",
+            system=metadata_.StorageSystem.CLOUD_STORAGE,
+        )
+        response = client.update_entity(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metadata_.UpdateEntityRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, metadata_.Entity)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.id == "id_value"
+    assert response.etag == "etag_value"
+    assert response.type_ == metadata_.Entity.Type.TABLE
+    assert response.asset == "asset_value"
+    assert response.data_path == "data_path_value"
+    assert response.data_path_pattern == "data_path_pattern_value"
+    assert response.catalog_entry == "catalog_entry_value"
+    assert response.system == metadata_.StorageSystem.CLOUD_STORAGE
+
+
+def test_update_entity_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetadataServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_entity), "__call__") as call:
+        client.update_entity()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metadata_.UpdateEntityRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_entity_async(
+    transport: str = "grpc_asyncio", request_type=metadata_.UpdateEntityRequest
+):
+    client = MetadataServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_entity), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metadata_.Entity(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                id="id_value",
+                etag="etag_value",
+                type_=metadata_.Entity.Type.TABLE,
+                asset="asset_value",
+                data_path="data_path_value",
+                data_path_pattern="data_path_pattern_value",
+                catalog_entry="catalog_entry_value",
+                system=metadata_.StorageSystem.CLOUD_STORAGE,
+            )
+        )
+        response = await client.update_entity(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metadata_.UpdateEntityRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, metadata_.Entity)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.id == "id_value"
+    assert response.etag == "etag_value"
+    assert response.type_ == metadata_.Entity.Type.TABLE
+    assert response.asset == "asset_value"
+    assert response.data_path == "data_path_value"
+    assert response.data_path_pattern == "data_path_pattern_value"
+    assert response.catalog_entry == "catalog_entry_value"
+    assert response.system == metadata_.StorageSystem.CLOUD_STORAGE
+
+
+@pytest.mark.asyncio
+async def test_update_entity_async_from_dict():
+    await test_update_entity_async(request_type=dict)
+
+
+def test_update_entity_field_headers():
+    client = MetadataServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = metadata_.UpdateEntityRequest()
+
+    request.entity.name = "entity.name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_entity), "__call__") as call:
+        call.return_value = metadata_.Entity()
+        client.update_entity(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "entity.name=entity.name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_entity_field_headers_async():
+    client = MetadataServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = metadata_.UpdateEntityRequest()
+
+    request.entity.name = "entity.name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_entity), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(metadata_.Entity())
+        await client.update_entity(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "entity.name=entity.name/value",) in kw["metadata"]
+
+
+@pytest.mark.parametrize("request_type", [metadata_.DeleteEntityRequest, dict,])
+def test_delete_entity(request_type, transport: str = "grpc"):
+    client = MetadataServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_entity), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_entity(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metadata_.DeleteEntityRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_entity_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetadataServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_entity), "__call__") as call:
+        client.delete_entity()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metadata_.DeleteEntityRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_entity_async(
+    transport: str = "grpc_asyncio", request_type=metadata_.DeleteEntityRequest
+):
+    client = MetadataServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_entity), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_entity(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metadata_.DeleteEntityRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_entity_async_from_dict():
+    await test_delete_entity_async(request_type=dict)
+
+
+def test_delete_entity_field_headers():
+    client = MetadataServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = metadata_.DeleteEntityRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_entity), "__call__") as call:
+        call.return_value = None
+        client.delete_entity(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_entity_field_headers_async():
+    client = MetadataServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = metadata_.DeleteEntityRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_entity), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_entity(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_delete_entity_flattened():
+    client = MetadataServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_entity), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_entity(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_entity_flattened_error():
+    client = MetadataServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_entity(
+            metadata_.DeleteEntityRequest(), name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_entity_flattened_async():
+    client = MetadataServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_entity), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_entity(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_entity_flattened_error_async():
+    client = MetadataServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_entity(
+            metadata_.DeleteEntityRequest(), name="name_value",
+        )
+
+
 @pytest.mark.parametrize("request_type", [metadata_.GetEntityRequest, dict,])
 def test_get_entity(request_type, transport: str = "grpc"):
     client = MetadataServiceClient(
@@ -1216,6 +1835,426 @@ async def test_list_entities_async_pages():
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize("request_type", [metadata_.CreatePartitionRequest, dict,])
+def test_create_partition(request_type, transport: str = "grpc"):
+    client = MetadataServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_partition), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = metadata_.Partition(
+            name="name_value",
+            values=["values_value"],
+            location="location_value",
+            etag="etag_value",
+        )
+        response = client.create_partition(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metadata_.CreatePartitionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, metadata_.Partition)
+    assert response.name == "name_value"
+    assert response.values == ["values_value"]
+    assert response.location == "location_value"
+    assert response.etag == "etag_value"
+
+
+def test_create_partition_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetadataServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_partition), "__call__") as call:
+        client.create_partition()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metadata_.CreatePartitionRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_partition_async(
+    transport: str = "grpc_asyncio", request_type=metadata_.CreatePartitionRequest
+):
+    client = MetadataServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_partition), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metadata_.Partition(
+                name="name_value",
+                values=["values_value"],
+                location="location_value",
+                etag="etag_value",
+            )
+        )
+        response = await client.create_partition(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metadata_.CreatePartitionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, metadata_.Partition)
+    assert response.name == "name_value"
+    assert response.values == ["values_value"]
+    assert response.location == "location_value"
+    assert response.etag == "etag_value"
+
+
+@pytest.mark.asyncio
+async def test_create_partition_async_from_dict():
+    await test_create_partition_async(request_type=dict)
+
+
+def test_create_partition_field_headers():
+    client = MetadataServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = metadata_.CreatePartitionRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_partition), "__call__") as call:
+        call.return_value = metadata_.Partition()
+        client.create_partition(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_partition_field_headers_async():
+    client = MetadataServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = metadata_.CreatePartitionRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_partition), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(metadata_.Partition())
+        await client.create_partition(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+def test_create_partition_flattened():
+    client = MetadataServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_partition), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = metadata_.Partition()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_partition(
+            parent="parent_value", partition=metadata_.Partition(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].partition
+        mock_val = metadata_.Partition(name="name_value")
+        assert arg == mock_val
+
+
+def test_create_partition_flattened_error():
+    client = MetadataServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_partition(
+            metadata_.CreatePartitionRequest(),
+            parent="parent_value",
+            partition=metadata_.Partition(name="name_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_partition_flattened_async():
+    client = MetadataServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_partition), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = metadata_.Partition()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(metadata_.Partition())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_partition(
+            parent="parent_value", partition=metadata_.Partition(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].partition
+        mock_val = metadata_.Partition(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_partition_flattened_error_async():
+    client = MetadataServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_partition(
+            metadata_.CreatePartitionRequest(),
+            parent="parent_value",
+            partition=metadata_.Partition(name="name_value"),
+        )
+
+
+@pytest.mark.parametrize("request_type", [metadata_.DeletePartitionRequest, dict,])
+def test_delete_partition(request_type, transport: str = "grpc"):
+    client = MetadataServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_partition), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_partition(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metadata_.DeletePartitionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_partition_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MetadataServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_partition), "__call__") as call:
+        client.delete_partition()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metadata_.DeletePartitionRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_partition_async(
+    transport: str = "grpc_asyncio", request_type=metadata_.DeletePartitionRequest
+):
+    client = MetadataServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_partition), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_partition(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == metadata_.DeletePartitionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_partition_async_from_dict():
+    await test_delete_partition_async(request_type=dict)
+
+
+def test_delete_partition_field_headers():
+    client = MetadataServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = metadata_.DeletePartitionRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_partition), "__call__") as call:
+        call.return_value = None
+        client.delete_partition(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_partition_field_headers_async():
+    client = MetadataServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = metadata_.DeletePartitionRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_partition), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_partition(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_delete_partition_flattened():
+    client = MetadataServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_partition), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_partition(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_partition_flattened_error():
+    client = MetadataServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_partition(
+            metadata_.DeletePartitionRequest(), name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_partition_flattened_async():
+    client = MetadataServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_partition), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_partition(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_partition_flattened_error_async():
+    client = MetadataServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_partition(
+            metadata_.DeletePartitionRequest(), name="name_value",
+        )
 
 
 @pytest.mark.parametrize("request_type", [metadata_.GetPartitionRequest, dict,])
@@ -1894,8 +2933,13 @@ def test_metadata_service_base_transport():
     # Every method on the transport should just blindly
     # raise NotImplementedError.
     methods = (
+        "create_entity",
+        "update_entity",
+        "delete_entity",
         "get_entity",
         "list_entities",
+        "create_partition",
+        "delete_partition",
         "get_partition",
         "list_partitions",
     )

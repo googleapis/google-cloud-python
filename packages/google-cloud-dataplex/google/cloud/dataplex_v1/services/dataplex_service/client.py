@@ -37,6 +37,7 @@ except AttributeError:  # pragma: NO COVER
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.dataplex_v1.services.dataplex_service import pagers
+from google.cloud.dataplex_v1.types import analyze
 from google.cloud.dataplex_v1.types import resources
 from google.cloud.dataplex_v1.types import service
 from google.cloud.dataplex_v1.types import tasks
@@ -207,6 +208,24 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def environment_path(
+        project: str, location: str, lake: str, environment: str,
+    ) -> str:
+        """Returns a fully-qualified environment string."""
+        return "projects/{project}/locations/{location}/lakes/{lake}/environments/{environment}".format(
+            project=project, location=location, lake=lake, environment=environment,
+        )
+
+    @staticmethod
+    def parse_environment_path(path: str) -> Dict[str, str]:
+        """Parses a environment path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/lakes/(?P<lake>.+?)/environments/(?P<environment>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def job_path(project: str, location: str, lake: str, task: str, job: str,) -> str:
         """Returns a fully-qualified job string."""
         return "projects/{project}/locations/{location}/lakes/{lake}/tasks/{task}/jobs/{job}".format(
@@ -234,6 +253,28 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         """Parses a lake path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/lakes/(?P<lake>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def session_path(
+        project: str, location: str, lake: str, environment: str, session: str,
+    ) -> str:
+        """Returns a fully-qualified session string."""
+        return "projects/{project}/locations/{location}/lakes/{lake}/environments/{environment}/sessions/{session}".format(
+            project=project,
+            location=location,
+            lake=lake,
+            environment=environment,
+            session=session,
+        )
+
+    @staticmethod
+    def parse_session_path(path: str) -> Dict[str, str]:
+        """Parses a session path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/lakes/(?P<lake>.+?)/environments/(?P<environment>.+?)/sessions/(?P<session>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -537,8 +578,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
                 The request object. Create lake request.
             parent (str):
                 Required. The resource name of the lake location, of the
-                form:
-                ``projects/{project_number}/locations/{location_id}``
+                form: projects/{project_number}/locations/{location_id}
                 where ``location_id`` refers to a GCP region.
 
                 This corresponds to the ``parent`` field
@@ -3335,6 +3375,663 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         rpc(
             request, retry=retry, timeout=timeout, metadata=metadata,
         )
+
+    def create_environment(
+        self,
+        request: Union[service.CreateEnvironmentRequest, dict] = None,
+        *,
+        parent: str = None,
+        environment: analyze.Environment = None,
+        environment_id: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Create an environment resource.
+
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_create_environment():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                environment = dataplex_v1.Environment()
+                environment.infrastructure_spec.os_image.image_version = "image_version_value"
+
+                request = dataplex_v1.CreateEnvironmentRequest(
+                    parent="parent_value",
+                    environment_id="environment_id_value",
+                    environment=environment,
+                )
+
+                # Make the request
+                operation = client.create_environment(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.CreateEnvironmentRequest, dict]):
+                The request object. Create environment request.
+            parent (str):
+                Required. The resource name of the parent lake:
+                projects/{project_id}/locations/{location_id}/lakes/{lake_id}
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            environment (google.cloud.dataplex_v1.types.Environment):
+                Required. Environment resource.
+                This corresponds to the ``environment`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            environment_id (str):
+                Required. Environment identifier.
+
+                -  Must contain only lowercase letters, numbers and
+                   hyphens.
+                -  Must start with a letter.
+                -  Must be between 1-63 characters.
+                -  Must end with a number or a letter.
+                -  Must be unique within the lake.
+
+                This corresponds to the ``environment_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.dataplex_v1.types.Environment` Environment represents a user-visible compute infrastructure for analytics
+                   within a lake.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, environment, environment_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.CreateEnvironmentRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.CreateEnvironmentRequest):
+            request = service.CreateEnvironmentRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if environment is not None:
+                request.environment = environment
+            if environment_id is not None:
+                request.environment_id = environment_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_environment]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            analyze.Environment,
+            metadata_type=service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_environment(
+        self,
+        request: Union[service.UpdateEnvironmentRequest, dict] = None,
+        *,
+        environment: analyze.Environment = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Update the environment resource.
+
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_update_environment():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                environment = dataplex_v1.Environment()
+                environment.infrastructure_spec.os_image.image_version = "image_version_value"
+
+                request = dataplex_v1.UpdateEnvironmentRequest(
+                    environment=environment,
+                )
+
+                # Make the request
+                operation = client.update_environment(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.UpdateEnvironmentRequest, dict]):
+                The request object. Update environment request.
+            environment (google.cloud.dataplex_v1.types.Environment):
+                Required. Update description. Only fields specified in
+                ``update_mask`` are updated.
+
+                This corresponds to the ``environment`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. Mask of fields to update.
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.dataplex_v1.types.Environment` Environment represents a user-visible compute infrastructure for analytics
+                   within a lake.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([environment, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.UpdateEnvironmentRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.UpdateEnvironmentRequest):
+            request = service.UpdateEnvironmentRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if environment is not None:
+                request.environment = environment
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_environment]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("environment.name", request.environment.name),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            analyze.Environment,
+            metadata_type=service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_environment(
+        self,
+        request: Union[service.DeleteEnvironmentRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Delete the environment resource. All the child
+        resources must have been deleted before environment
+        deletion can be initiated.
+
+
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_delete_environment():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.DeleteEnvironmentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_environment(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.DeleteEnvironmentRequest, dict]):
+                The request object. Delete environment request.
+            name (str):
+                Required. The resource name of the environment:
+                projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environments/{environment_id}\`
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+                   The JSON representation for Empty is empty JSON
+                   object {}.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.DeleteEnvironmentRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.DeleteEnvironmentRequest):
+            request = service.DeleteEnvironmentRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_environment]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_environments(
+        self,
+        request: Union[service.ListEnvironmentsRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListEnvironmentsPager:
+        r"""Lists environments under the given lake.
+
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_list_environments():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.ListEnvironmentsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_environments(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.ListEnvironmentsRequest, dict]):
+                The request object. List environments request.
+            parent (str):
+                Required. The resource name of the parent lake:
+                projects/{project_id}/locations/{location_id}/lakes/{lake_id}
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dataplex_v1.services.dataplex_service.pagers.ListEnvironmentsPager:
+                List environments response.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.ListEnvironmentsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.ListEnvironmentsRequest):
+            request = service.ListEnvironmentsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_environments]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListEnvironmentsPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_environment(
+        self,
+        request: Union[service.GetEnvironmentRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> analyze.Environment:
+        r"""Get environment resource.
+
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_get_environment():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.GetEnvironmentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_environment(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.GetEnvironmentRequest, dict]):
+                The request object. Get environment request.
+            name (str):
+                Required. The resource name of the environment:
+                projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environments/{environment_id}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dataplex_v1.types.Environment:
+                Environment represents a user-visible
+                compute infrastructure for analytics
+                within a lake.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.GetEnvironmentRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.GetEnvironmentRequest):
+            request = service.GetEnvironmentRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_environment]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def list_sessions(
+        self,
+        request: Union[service.ListSessionsRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListSessionsPager:
+        r"""Lists session resources in an environment.
+
+
+        .. code-block::
+
+            from google.cloud import dataplex_v1
+
+            def sample_list_sessions():
+                # Create a client
+                client = dataplex_v1.DataplexServiceClient()
+
+                # Initialize request argument(s)
+                request = dataplex_v1.ListSessionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_sessions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.dataplex_v1.types.ListSessionsRequest, dict]):
+                The request object. List sessions request.
+            parent (str):
+                Required. The resource name of the parent environment:
+                projects/{project_number}/locations/{location_id}/lakes/{lake_id}/environment/{environment_id}
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dataplex_v1.services.dataplex_service.pagers.ListSessionsPager:
+                List sessions response.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.ListSessionsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.ListSessionsRequest):
+            request = service.ListSessionsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_sessions]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListSessionsPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
 
     def __enter__(self):
         return self

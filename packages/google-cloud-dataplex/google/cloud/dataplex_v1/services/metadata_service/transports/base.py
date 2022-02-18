@@ -26,6 +26,7 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.dataplex_v1.types import metadata_
+from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -118,6 +119,15 @@ class MetadataServiceTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
+            self.create_entity: gapic_v1.method.wrap_method(
+                self.create_entity, default_timeout=60.0, client_info=client_info,
+            ),
+            self.update_entity: gapic_v1.method.wrap_method(
+                self.update_entity, default_timeout=60.0, client_info=client_info,
+            ),
+            self.delete_entity: gapic_v1.method.wrap_method(
+                self.delete_entity, default_timeout=60.0, client_info=client_info,
+            ),
             self.get_entity: gapic_v1.method.wrap_method(
                 self.get_entity,
                 default_retry=retries.Retry(
@@ -145,6 +155,12 @@ class MetadataServiceTransport(abc.ABC):
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
+            ),
+            self.create_partition: gapic_v1.method.wrap_method(
+                self.create_partition, default_timeout=60.0, client_info=client_info,
+            ),
+            self.delete_partition: gapic_v1.method.wrap_method(
+                self.delete_partition, default_timeout=60.0, client_info=client_info,
             ),
             self.get_partition: gapic_v1.method.wrap_method(
                 self.get_partition,
@@ -186,6 +202,33 @@ class MetadataServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def create_entity(
+        self,
+    ) -> Callable[
+        [metadata_.CreateEntityRequest],
+        Union[metadata_.Entity, Awaitable[metadata_.Entity]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_entity(
+        self,
+    ) -> Callable[
+        [metadata_.UpdateEntityRequest],
+        Union[metadata_.Entity, Awaitable[metadata_.Entity]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_entity(
+        self,
+    ) -> Callable[
+        [metadata_.DeleteEntityRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def get_entity(
         self,
     ) -> Callable[
@@ -202,6 +245,24 @@ class MetadataServiceTransport(abc.ABC):
         Union[
             metadata_.ListEntitiesResponse, Awaitable[metadata_.ListEntitiesResponse]
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_partition(
+        self,
+    ) -> Callable[
+        [metadata_.CreatePartitionRequest],
+        Union[metadata_.Partition, Awaitable[metadata_.Partition]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_partition(
+        self,
+    ) -> Callable[
+        [metadata_.DeletePartitionRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 

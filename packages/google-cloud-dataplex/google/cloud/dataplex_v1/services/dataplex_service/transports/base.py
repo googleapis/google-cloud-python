@@ -26,6 +26,7 @@ from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.dataplex_v1.types import analyze
 from google.cloud.dataplex_v1.types import resources
 from google.cloud.dataplex_v1.types import service
 from google.cloud.dataplex_v1.types import tasks
@@ -344,6 +345,24 @@ class DataplexServiceTransport(abc.ABC):
             self.cancel_job: gapic_v1.method.wrap_method(
                 self.cancel_job, default_timeout=60.0, client_info=client_info,
             ),
+            self.create_environment: gapic_v1.method.wrap_method(
+                self.create_environment, default_timeout=None, client_info=client_info,
+            ),
+            self.update_environment: gapic_v1.method.wrap_method(
+                self.update_environment, default_timeout=None, client_info=client_info,
+            ),
+            self.delete_environment: gapic_v1.method.wrap_method(
+                self.delete_environment, default_timeout=None, client_info=client_info,
+            ),
+            self.list_environments: gapic_v1.method.wrap_method(
+                self.list_environments, default_timeout=None, client_info=client_info,
+            ),
+            self.get_environment: gapic_v1.method.wrap_method(
+                self.get_environment, default_timeout=None, client_info=client_info,
+            ),
+            self.list_sessions: gapic_v1.method.wrap_method(
+                self.list_sessions, default_timeout=None, client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -581,6 +600,63 @@ class DataplexServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.CancelJobRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_environment(
+        self,
+    ) -> Callable[
+        [service.CreateEnvironmentRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_environment(
+        self,
+    ) -> Callable[
+        [service.UpdateEnvironmentRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_environment(
+        self,
+    ) -> Callable[
+        [service.DeleteEnvironmentRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_environments(
+        self,
+    ) -> Callable[
+        [service.ListEnvironmentsRequest],
+        Union[
+            service.ListEnvironmentsResponse,
+            Awaitable[service.ListEnvironmentsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_environment(
+        self,
+    ) -> Callable[
+        [service.GetEnvironmentRequest],
+        Union[analyze.Environment, Awaitable[analyze.Environment]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_sessions(
+        self,
+    ) -> Callable[
+        [service.ListSessionsRequest],
+        Union[service.ListSessionsResponse, Awaitable[service.ListSessionsResponse]],
     ]:
         raise NotImplementedError()
 

@@ -776,14 +776,7 @@ class Asset(proto.Message):
                 Immutable. Relative name of the cloud resource that contains
                 the data that is being managed within a lake. For example:
                 ``projects/{project_number}/buckets/{bucket_id}``
-                ``projects/{project_number}/datasets/{dataset_id}`` If the
-                creation policy indicates ATTACH behavior, then an existing
-                resource must be provided. If the policy indicates CREATE
-                behavior, new resource will be created with the given
-                name.However if it is empty, then the resource will be
-                created using {asset_id}-{UUID} template for name. The
-                location of the referenced resource must always match that
-                of the asset.
+                ``projects/{project_number}/datasets/{dataset_id}``
             type_ (google.cloud.dataplex_v1.types.Asset.ResourceSpec.Type):
                 Required. Immutable. Type of resource.
         """

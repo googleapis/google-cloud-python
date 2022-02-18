@@ -5,6 +5,447 @@
         "async": true,
         "method": {
           "service": {
+            "shortName": "ContentService"
+          },
+          "shortName": "CreateContent"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_content_service_create_content_async.py",
+      "regionTag": "dataplex_generated_dataplex_v1_ContentService_CreateContent_async",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ContentService"
+          },
+          "shortName": "CreateContent"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_content_service_create_content_sync.py",
+      "regionTag": "dataplex_generated_dataplex_v1_ContentService_CreateContent_sync",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ContentService"
+          },
+          "shortName": "DeleteContent"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_content_service_delete_content_async.py",
+      "regionTag": "dataplex_generated_dataplex_v1_ContentService_DeleteContent_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ContentService"
+          },
+          "shortName": "DeleteContent"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_content_service_delete_content_sync.py",
+      "regionTag": "dataplex_generated_dataplex_v1_ContentService_DeleteContent_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ContentService"
+          },
+          "shortName": "GetContent"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_content_service_get_content_async.py",
+      "regionTag": "dataplex_generated_dataplex_v1_ContentService_GetContent_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ContentService"
+          },
+          "shortName": "GetContent"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_content_service_get_content_sync.py",
+      "regionTag": "dataplex_generated_dataplex_v1_ContentService_GetContent_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ContentService"
+          },
+          "shortName": "ListContent"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_content_service_list_content_async.py",
+      "regionTag": "dataplex_generated_dataplex_v1_ContentService_ListContent_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ContentService"
+          },
+          "shortName": "ListContent"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_content_service_list_content_sync.py",
+      "regionTag": "dataplex_generated_dataplex_v1_ContentService_ListContent_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ContentService"
+          },
+          "shortName": "UpdateContent"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_content_service_update_content_async.py",
+      "regionTag": "dataplex_generated_dataplex_v1_ContentService_UpdateContent_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "start": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ContentService"
+          },
+          "shortName": "UpdateContent"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_content_service_update_content_sync.py",
+      "regionTag": "dataplex_generated_dataplex_v1_ContentService_UpdateContent_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "start": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
             "shortName": "DataplexService"
           },
           "shortName": "CancelJob"
@@ -141,6 +582,95 @@
       },
       "file": "dataplex_generated_dataplex_v1_dataplex_service_create_asset_sync.py",
       "regionTag": "dataplex_generated_dataplex_v1_DataplexService_CreateAsset_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "DataplexService"
+          },
+          "shortName": "CreateEnvironment"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_dataplex_service_create_environment_async.py",
+      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_CreateEnvironment_async",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "DataplexService"
+          },
+          "shortName": "CreateEnvironment"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_dataplex_service_create_environment_sync.py",
+      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_CreateEnvironment_sync",
       "segments": [
         {
           "end": 53,
@@ -537,6 +1067,95 @@
           "service": {
             "shortName": "DataplexService"
           },
+          "shortName": "DeleteEnvironment"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_dataplex_service_delete_environment_async.py",
+      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_DeleteEnvironment_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "DataplexService"
+          },
+          "shortName": "DeleteEnvironment"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_dataplex_service_delete_environment_sync.py",
+      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_DeleteEnvironment_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "DataplexService"
+          },
           "shortName": "DeleteLake"
         }
       },
@@ -853,6 +1472,95 @@
       },
       "file": "dataplex_generated_dataplex_v1_dataplex_service_get_asset_sync.py",
       "regionTag": "dataplex_generated_dataplex_v1_DataplexService_GetAsset_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "DataplexService"
+          },
+          "shortName": "GetEnvironment"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_dataplex_service_get_environment_async.py",
+      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_GetEnvironment_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "DataplexService"
+          },
+          "shortName": "GetEnvironment"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_dataplex_service_get_environment_sync.py",
+      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_GetEnvironment_sync",
       "segments": [
         {
           "end": 44,
@@ -1427,6 +2135,95 @@
           "service": {
             "shortName": "DataplexService"
           },
+          "shortName": "ListEnvironments"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_dataplex_service_list_environments_async.py",
+      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_ListEnvironments_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "DataplexService"
+          },
+          "shortName": "ListEnvironments"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_dataplex_service_list_environments_sync.py",
+      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_ListEnvironments_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "DataplexService"
+          },
           "shortName": "ListJobs"
         }
       },
@@ -1654,6 +2451,95 @@
       },
       "file": "dataplex_generated_dataplex_v1_dataplex_service_list_lakes_sync.py",
       "regionTag": "dataplex_generated_dataplex_v1_DataplexService_ListLakes_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "DataplexService"
+          },
+          "shortName": "ListSessions"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_dataplex_service_list_sessions_async.py",
+      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_ListSessions_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "DataplexService"
+          },
+          "shortName": "ListSessions"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_dataplex_service_list_sessions_sync.py",
+      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_ListSessions_sync",
       "segments": [
         {
           "end": 45,
@@ -2050,6 +2936,95 @@
           "service": {
             "shortName": "DataplexService"
           },
+          "shortName": "UpdateEnvironment"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_dataplex_service_update_environment_async.py",
+      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_UpdateEnvironment_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "DataplexService"
+          },
+          "shortName": "UpdateEnvironment"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_dataplex_service_update_environment_sync.py",
+      "regionTag": "dataplex_generated_dataplex_v1_DataplexService_UpdateEnvironment_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "DataplexService"
+          },
           "shortName": "UpdateLake"
         }
       },
@@ -2306,6 +3281,354 @@
         {
           "end": 53,
           "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "MetadataService"
+          },
+          "shortName": "CreateEntity"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_metadata_service_create_entity_async.py",
+      "regionTag": "dataplex_generated_dataplex_v1_MetadataService_CreateEntity_async",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "MetadataService"
+          },
+          "shortName": "CreateEntity"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_metadata_service_create_entity_sync.py",
+      "regionTag": "dataplex_generated_dataplex_v1_MetadataService_CreateEntity_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "MetadataService"
+          },
+          "shortName": "CreatePartition"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_metadata_service_create_partition_async.py",
+      "regionTag": "dataplex_generated_dataplex_v1_MetadataService_CreatePartition_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "start": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "MetadataService"
+          },
+          "shortName": "CreatePartition"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_metadata_service_create_partition_sync.py",
+      "regionTag": "dataplex_generated_dataplex_v1_MetadataService_CreatePartition_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 43,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 44,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "start": 47,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "MetadataService"
+          },
+          "shortName": "DeleteEntity"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_metadata_service_delete_entity_async.py",
+      "regionTag": "dataplex_generated_dataplex_v1_MetadataService_DeleteEntity_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "MetadataService"
+          },
+          "shortName": "DeleteEntity"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_metadata_service_delete_entity_sync.py",
+      "regionTag": "dataplex_generated_dataplex_v1_MetadataService_DeleteEntity_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 39,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 40,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "MetadataService"
+          },
+          "shortName": "DeletePartition"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_metadata_service_delete_partition_async.py",
+      "regionTag": "dataplex_generated_dataplex_v1_MetadataService_DeletePartition_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "MetadataService"
+          },
+          "shortName": "DeletePartition"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_metadata_service_delete_partition_sync.py",
+      "regionTag": "dataplex_generated_dataplex_v1_MetadataService_DeletePartition_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
           "type": "RESPONSE_HANDLING"
         }
       ]
@@ -2662,6 +3985,95 @@
         {
           "end": 46,
           "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "MetadataService"
+          },
+          "shortName": "UpdateEntity"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_metadata_service_update_entity_async.py",
+      "regionTag": "dataplex_generated_dataplex_v1_MetadataService_UpdateEntity_async",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "MetadataService"
+          },
+          "shortName": "UpdateEntity"
+        }
+      },
+      "file": "dataplex_generated_dataplex_v1_metadata_service_update_entity_sync.py",
+      "regionTag": "dataplex_generated_dataplex_v1_MetadataService_UpdateEntity_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
           "type": "RESPONSE_HANDLING"
         }
       ]
