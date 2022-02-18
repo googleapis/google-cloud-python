@@ -107,6 +107,8 @@ class Finding(proto.Message):
         mute (google.cloud.securitycenter_v1.types.Finding.Mute):
             Indicates the mute state of a finding (either
             unspecified, muted, unmuted or undefined).
+            Unlike other attributes of a finding, a finding
+            provider shouldn't set the value of mute.
         finding_class (google.cloud.securitycenter_v1.types.Finding.FindingClass):
             The class of the finding.
         indicator (google.cloud.securitycenter_v1.types.Indicator):
@@ -134,7 +136,9 @@ class Finding(proto.Message):
         mute_initiator (str):
             First known as mute_annotation. Records additional
             information about the mute operation e.g. mute config that
-            muted the finding, user who muted the finding, etc.
+            muted the finding, user who muted the finding, etc. Unlike
+            other attributes of a finding, a finding provider shouldn't
+            set the value of mute.
     """
 
     class State(proto.Enum):

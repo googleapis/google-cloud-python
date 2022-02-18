@@ -34,8 +34,7 @@ class Resource(proto.Message):
             The full resource name of project that the
             resource belongs to.
         project_display_name (str):
-            The human readable name of project that the
-            resource belongs to.
+            The project id that the resource belongs to.
         parent (str):
             The full resource name of resource's parent.
         parent_display_name (str):
