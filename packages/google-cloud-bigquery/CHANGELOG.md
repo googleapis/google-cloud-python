@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [2.34.0](https://github.com/googleapis/python-bigquery/compare/v2.33.0...v2.34.0) (2022-02-18)
+
+
+### Features
+
+* support BI Engine statistics in query job ([#1144](https://github.com/googleapis/python-bigquery/issues/1144)) ([7482549](https://github.com/googleapis/python-bigquery/commit/7482549cb42ed5302634ab4fb7b4efcd97b35c68))
+
 ## [2.33.0](https://github.com/googleapis/python-bigquery/compare/v2.32.0...v2.33.0) (2022-02-16)
 
 
