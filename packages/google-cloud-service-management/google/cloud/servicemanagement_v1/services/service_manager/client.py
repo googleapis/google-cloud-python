@@ -18,7 +18,6 @@ import os
 import re
 from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
-import warnings
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -103,9 +102,7 @@ class ServiceManagerClientMeta(type):
 
 
 class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
-    """`Google Service Management
-    API <https://cloud.google.com/service-management/overview>`__
-    """
+    """`Google Service Management API </service-management/overview>`__"""
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
@@ -424,14 +421,9 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServicesPager:
         r"""Lists managed services.
-
-        Returns all public services. For authenticated users, also
-        returns all services the calling user has
+        Returns all public services. For authenticated users,
+        also returns all services the calling user has
         "servicemanagement.services.get" permission for.
-
-        **BETA:** If the caller specifies the ``consumer_id``, it
-        returns only the services enabled on the consumer. The
-        ``consumer_id`` must have the format of "project:{PROJECT-ID}".
 
 
 
@@ -628,8 +620,15 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a new managed service.
-        Please note one producer project can own no more than 20
-        services.
+        A managed service is immutable, and is subject to
+        mandatory 30-day data retention. You cannot move a
+        service or recreate it within 30 days after deletion.
+
+        One producer project can own no more than 500 services.
+        For security and reliability purposes, a production
+        service should be hosted in a dedicated producer
+        project.
+
         Operation<response: ManagedService>
 
 
@@ -769,9 +768,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                 method.
             service_name (str):
                 Required. The name of the service. See the
-                `overview <https://cloud.google.com/service-management/overview>`__
-                for naming requirements. For example:
-                ``example.googleapis.com``.
+                `overview </service-management/overview>`__ for naming
+                requirements. For example: ``example.googleapis.com``.
 
                 This corresponds to the ``service_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -888,9 +886,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                 method.
             service_name (str):
                 Required. The name of the service. See the
-                `overview <https://cloud.google.com/service-management/overview>`__
-                for naming requirements. For example:
-                ``example.googleapis.com``.
+                `overview </service-management/overview>`__ for naming
+                requirements. For example: ``example.googleapis.com``.
 
                 This corresponds to the ``service_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -989,9 +986,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                 ListServiceConfigs method.
             service_name (str):
                 Required. The name of the service. See the
-                `overview <https://cloud.google.com/service-management/overview>`__
-                for naming requirements. For example:
-                ``example.googleapis.com``.
+                `overview </service-management/overview>`__ for naming
+                requirements. For example: ``example.googleapis.com``.
 
                 This corresponds to the ``service_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1090,9 +1086,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                 method.
             service_name (str):
                 Required. The name of the service. See the
-                `overview <https://cloud.google.com/service-management/overview>`__
-                for naming requirements. For example:
-                ``example.googleapis.com``.
+                `overview </service-management/overview>`__ for naming
+                requirements. For example: ``example.googleapis.com``.
 
                 This corresponds to the ``service_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1225,9 +1220,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                 CreateServiceConfig method.
             service_name (str):
                 Required. The name of the service. See the
-                `overview <https://cloud.google.com/service-management/overview>`__
-                for naming requirements. For example:
-                ``example.googleapis.com``.
+                `overview </service-management/overview>`__ for naming
+                requirements. For example: ``example.googleapis.com``.
 
                 This corresponds to the ``service_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1357,9 +1351,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                 SubmitConfigSource method.
             service_name (str):
                 Required. The name of the service. See the
-                `overview <https://cloud.google.com/service-management/overview>`__
-                for naming requirements. For example:
-                ``example.googleapis.com``.
+                `overview </service-management/overview>`__ for naming
+                requirements. For example: ``example.googleapis.com``.
 
                 This corresponds to the ``service_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1481,9 +1474,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                 'ListServiceRollouts'
             service_name (str):
                 Required. The name of the service. See the
-                `overview <https://cloud.google.com/service-management/overview>`__
-                for naming requirements. For example:
-                ``example.googleapis.com``.
+                `overview </service-management/overview>`__ for naming
+                requirements. For example: ``example.googleapis.com``.
 
                 This corresponds to the ``service_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1491,11 +1483,11 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
             filter (str):
                 Required. Use ``filter`` to return subset of rollouts.
                 The following filters are supported: -- To limit the
-                results to only those in status
-                (google.api.servicemanagement.v1.RolloutStatus)
+                results to only those in
+                `status <google.api.servicemanagement.v1.RolloutStatus>`__
                 'SUCCESS', use filter='status=SUCCESS' -- To limit the
-                results to those in status
-                (google.api.servicemanagement.v1.RolloutStatus)
+                results to those in
+                `status <google.api.servicemanagement.v1.RolloutStatus>`__
                 'CANCELLED' or 'FAILED', use filter='status=CANCELLED OR
                 status=FAILED'
 
@@ -1597,9 +1589,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                 GetServiceRollout method.
             service_name (str):
                 Required. The name of the service. See the
-                `overview <https://cloud.google.com/service-management/overview>`__
-                for naming requirements. For example:
-                ``example.googleapis.com``.
+                `overview </service-management/overview>`__ for naming
+                requirements. For example: ``example.googleapis.com``.
 
                 This corresponds to the ``service_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1719,9 +1710,8 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                 'CreateServiceRollout'
             service_name (str):
                 Required. The name of the service. See the
-                `overview <https://cloud.google.com/service-management/overview>`__
-                for naming requirements. For example:
-                ``example.googleapis.com``.
+                `overview </service-management/overview>`__ for naming
+                requirements. For example: ``example.googleapis.com``.
 
                 This corresponds to the ``service_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1900,268 +1890,6 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Done; return the response.
-        return response
-
-    def enable_service(
-        self,
-        request: Union[servicemanager.EnableServiceRequest, dict] = None,
-        *,
-        service_name: str = None,
-        consumer_id: str = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
-        r"""Enables a
-        [service][google.api.servicemanagement.v1.ManagedService] for a
-        project, so it can be used for the project. See `Cloud Auth
-        Guide <https://cloud.google.com/docs/authentication>`__ for more
-        information.
-
-        Operation<response: EnableServiceResponse>
-
-
-
-        .. code-block::
-
-            from google.cloud import servicemanagement_v1
-
-            def sample_enable_service():
-                # Create a client
-                client = servicemanagement_v1.ServiceManagerClient()
-
-                # Initialize request argument(s)
-                request = servicemanagement_v1.EnableServiceRequest(
-                    service_name="service_name_value",
-                    consumer_id="consumer_id_value",
-                )
-
-                # Make the request
-                operation = client.enable_service(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = operation.result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.cloud.servicemanagement_v1.types.EnableServiceRequest, dict]):
-                The request object. Request message for EnableService
-                method.
-            service_name (str):
-                Required. Name of the service to
-                enable. Specifying an unknown service
-                name will cause the request to fail.
-
-                This corresponds to the ``service_name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            consumer_id (str):
-                Required. The identity of consumer resource which
-                service enablement will be applied to.
-
-                The Google Service Management implementation accepts the
-                following forms:
-
-                -  "project:<project_id>"
-
-                Note: this is made compatible with
-                google.api.servicecontrol.v1.Operation.consumer_id.
-
-                This corresponds to the ``consumer_id`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.servicemanagement_v1.types.EnableServiceResponse`
-                Operation payload for EnableService method.
-
-        """
-        warnings.warn(
-            "ServiceManagerClient.enable_service is deprecated", DeprecationWarning
-        )
-
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([service_name, consumer_id])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a servicemanager.EnableServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, servicemanager.EnableServiceRequest):
-            request = servicemanager.EnableServiceRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if service_name is not None:
-                request.service_name = service_name
-            if consumer_id is not None:
-                request.consumer_id = consumer_id
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.enable_service]
-
-        # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            servicemanager.EnableServiceResponse,
-            metadata_type=resources.OperationMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def disable_service(
-        self,
-        request: Union[servicemanager.DisableServiceRequest, dict] = None,
-        *,
-        service_name: str = None,
-        consumer_id: str = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
-        r"""Disables a
-        [service][google.api.servicemanagement.v1.ManagedService] for a
-        project, so it can no longer be be used for the project. It
-        prevents accidental usage that may cause unexpected billing
-        charges or security leaks.
-
-        Operation<response: DisableServiceResponse>
-
-
-
-        .. code-block::
-
-            from google.cloud import servicemanagement_v1
-
-            def sample_disable_service():
-                # Create a client
-                client = servicemanagement_v1.ServiceManagerClient()
-
-                # Initialize request argument(s)
-                request = servicemanagement_v1.DisableServiceRequest(
-                    service_name="service_name_value",
-                    consumer_id="consumer_id_value",
-                )
-
-                # Make the request
-                operation = client.disable_service(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = operation.result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.cloud.servicemanagement_v1.types.DisableServiceRequest, dict]):
-                The request object. Request message for DisableService
-                method.
-            service_name (str):
-                Required. Name of the service to
-                disable. Specifying an unknown service
-                name will cause the request to fail.
-
-                This corresponds to the ``service_name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            consumer_id (str):
-                Required. The identity of consumer resource which
-                service disablement will be applied to.
-
-                The Google Service Management implementation accepts the
-                following forms:
-
-                -  "project:<project_id>"
-
-                Note: this is made compatible with
-                google.api.servicecontrol.v1.Operation.consumer_id.
-
-                This corresponds to the ``consumer_id`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.servicemanagement_v1.types.DisableServiceResponse`
-                Operation payload for DisableService method.
-
-        """
-        warnings.warn(
-            "ServiceManagerClient.disable_service is deprecated", DeprecationWarning
-        )
-
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([service_name, consumer_id])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a servicemanager.DisableServiceRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, servicemanager.DisableServiceRequest):
-            request = servicemanager.DisableServiceRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if service_name is not None:
-                request.service_name = service_name
-            if consumer_id is not None:
-                request.consumer_id = consumer_id
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.disable_service]
-
-        # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            servicemanager.DisableServiceResponse,
-            metadata_type=resources.OperationMetadata,
-        )
 
         # Done; return the response.
         return response

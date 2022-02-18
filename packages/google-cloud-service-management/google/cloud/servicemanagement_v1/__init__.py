@@ -29,10 +29,6 @@ from .types.servicemanager import CreateServiceConfigRequest
 from .types.servicemanager import CreateServiceRequest
 from .types.servicemanager import CreateServiceRolloutRequest
 from .types.servicemanager import DeleteServiceRequest
-from .types.servicemanager import DisableServiceRequest
-from .types.servicemanager import DisableServiceResponse
-from .types.servicemanager import EnableServiceRequest
-from .types.servicemanager import EnableServiceResponse
 from .types.servicemanager import GenerateConfigReportRequest
 from .types.servicemanager import GenerateConfigReportResponse
 from .types.servicemanager import GetServiceConfigRequest
@@ -60,10 +56,6 @@ __all__ = (
     "CreateServiceRolloutRequest",
     "DeleteServiceRequest",
     "Diagnostic",
-    "DisableServiceRequest",
-    "DisableServiceResponse",
-    "EnableServiceRequest",
-    "EnableServiceResponse",
     "GenerateConfigReportRequest",
     "GenerateConfigReportResponse",
     "GetServiceConfigRequest",

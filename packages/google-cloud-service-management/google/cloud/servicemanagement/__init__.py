@@ -37,12 +37,6 @@ from google.cloud.servicemanagement_v1.types.servicemanager import (
     CreateServiceRolloutRequest,
 )
 from google.cloud.servicemanagement_v1.types.servicemanager import DeleteServiceRequest
-from google.cloud.servicemanagement_v1.types.servicemanager import DisableServiceRequest
-from google.cloud.servicemanagement_v1.types.servicemanager import (
-    DisableServiceResponse,
-)
-from google.cloud.servicemanagement_v1.types.servicemanager import EnableServiceRequest
-from google.cloud.servicemanagement_v1.types.servicemanager import EnableServiceResponse
 from google.cloud.servicemanagement_v1.types.servicemanager import (
     GenerateConfigReportRequest,
 )
@@ -98,10 +92,6 @@ __all__ = (
     "CreateServiceRequest",
     "CreateServiceRolloutRequest",
     "DeleteServiceRequest",
-    "DisableServiceRequest",
-    "DisableServiceResponse",
-    "EnableServiceRequest",
-    "EnableServiceResponse",
     "GenerateConfigReportRequest",
     "GenerateConfigReportResponse",
     "GetServiceConfigRequest",

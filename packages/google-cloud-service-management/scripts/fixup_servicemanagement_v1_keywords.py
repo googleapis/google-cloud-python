@@ -43,8 +43,6 @@ class servicemanagementCallTransformer(cst.CSTTransformer):
         'create_service_config': ('service_name', 'service_config', ),
         'create_service_rollout': ('service_name', 'rollout', ),
         'delete_service': ('service_name', ),
-        'disable_service': ('service_name', 'consumer_id', ),
-        'enable_service': ('service_name', 'consumer_id', ),
         'generate_config_report': ('new_config', 'old_config', ),
         'get_service': ('service_name', ),
         'get_service_config': ('service_name', 'config_id', 'view', ),

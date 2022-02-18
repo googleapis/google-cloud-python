@@ -180,12 +180,6 @@ class ServiceManagerTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.enable_service: gapic_v1.method.wrap_method(
-                self.enable_service, default_timeout=None, client_info=client_info,
-            ),
-            self.disable_service: gapic_v1.method.wrap_method(
-                self.disable_service, default_timeout=None, client_info=client_info,
-            ),
         }
 
     def close(self):
@@ -328,24 +322,6 @@ class ServiceManagerTransport(abc.ABC):
             servicemanager.GenerateConfigReportResponse,
             Awaitable[servicemanager.GenerateConfigReportResponse],
         ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def enable_service(
-        self,
-    ) -> Callable[
-        [servicemanager.EnableServiceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def disable_service(
-        self,
-    ) -> Callable[
-        [servicemanager.DisableServiceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

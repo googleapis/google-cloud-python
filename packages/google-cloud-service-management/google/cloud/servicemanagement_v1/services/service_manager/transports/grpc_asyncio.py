@@ -36,8 +36,7 @@ from .grpc import ServiceManagerGrpcTransport
 class ServiceManagerGrpcAsyncIOTransport(ServiceManagerTransport):
     """gRPC AsyncIO backend transport for ServiceManager.
 
-    `Google Service Management
-    API <https://cloud.google.com/service-management/overview>`__
+    `Google Service Management API </service-management/overview>`__
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -262,14 +261,9 @@ class ServiceManagerGrpcAsyncIOTransport(ServiceManagerTransport):
         r"""Return a callable for the list services method over gRPC.
 
         Lists managed services.
-
-        Returns all public services. For authenticated users, also
-        returns all services the calling user has
+        Returns all public services. For authenticated users,
+        also returns all services the calling user has
         "servicemanagement.services.get" permission for.
-
-        **BETA:** If the caller specifies the ``consumer_id``, it
-        returns only the services enabled on the consumer. The
-        ``consumer_id`` must have the format of "project:{PROJECT-ID}".
 
         Returns:
             Callable[[~.ListServicesRequest],
@@ -327,8 +321,15 @@ class ServiceManagerGrpcAsyncIOTransport(ServiceManagerTransport):
         r"""Return a callable for the create service method over gRPC.
 
         Creates a new managed service.
-        Please note one producer project can own no more than 20
-        services.
+        A managed service is immutable, and is subject to
+        mandatory 30-day data retention. You cannot move a
+        service or recreate it within 30 days after deletion.
+
+        One producer project can own no more than 500 services.
+        For security and reliability purposes, a production
+        service should be hosted in a dedicated producer
+        project.
+
         Operation<response: ManagedService>
 
         Returns:
@@ -697,74 +698,6 @@ class ServiceManagerGrpcAsyncIOTransport(ServiceManagerTransport):
                 response_deserializer=servicemanager.GenerateConfigReportResponse.deserialize,
             )
         return self._stubs["generate_config_report"]
-
-    @property
-    def enable_service(
-        self,
-    ) -> Callable[
-        [servicemanager.EnableServiceRequest], Awaitable[operations_pb2.Operation]
-    ]:
-        r"""Return a callable for the enable service method over gRPC.
-
-        Enables a
-        [service][google.api.servicemanagement.v1.ManagedService] for a
-        project, so it can be used for the project. See `Cloud Auth
-        Guide <https://cloud.google.com/docs/authentication>`__ for more
-        information.
-
-        Operation<response: EnableServiceResponse>
-
-        Returns:
-            Callable[[~.EnableServiceRequest],
-                    Awaitable[~.Operation]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "enable_service" not in self._stubs:
-            self._stubs["enable_service"] = self.grpc_channel.unary_unary(
-                "/google.api.servicemanagement.v1.ServiceManager/EnableService",
-                request_serializer=servicemanager.EnableServiceRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["enable_service"]
-
-    @property
-    def disable_service(
-        self,
-    ) -> Callable[
-        [servicemanager.DisableServiceRequest], Awaitable[operations_pb2.Operation]
-    ]:
-        r"""Return a callable for the disable service method over gRPC.
-
-        Disables a
-        [service][google.api.servicemanagement.v1.ManagedService] for a
-        project, so it can no longer be be used for the project. It
-        prevents accidental usage that may cause unexpected billing
-        charges or security leaks.
-
-        Operation<response: DisableServiceResponse>
-
-        Returns:
-            Callable[[~.DisableServiceRequest],
-                    Awaitable[~.Operation]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "disable_service" not in self._stubs:
-            self._stubs["disable_service"] = self.grpc_channel.unary_unary(
-                "/google.api.servicemanagement.v1.ServiceManager/DisableService",
-                request_serializer=servicemanager.DisableServiceRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["disable_service"]
 
     def close(self):
         return self.grpc_channel.close()
