@@ -612,7 +612,6 @@ def test_big_query_read_client_create_channel_credentials_file(
             quota_project_id=None,
             default_scopes=(
                 "https://www.googleapis.com/auth/bigquery",
-                "https://www.googleapis.com/auth/bigquery.readonly",
                 "https://www.googleapis.com/auth/cloud-platform",
             ),
             scopes=None,
@@ -1356,7 +1355,6 @@ def test_big_query_read_base_transport_with_credentials_file():
             scopes=None,
             default_scopes=(
                 "https://www.googleapis.com/auth/bigquery",
-                "https://www.googleapis.com/auth/bigquery.readonly",
                 "https://www.googleapis.com/auth/cloud-platform",
             ),
             quota_project_id="octopus",
@@ -1383,7 +1381,6 @@ def test_big_query_read_auth_adc():
             scopes=None,
             default_scopes=(
                 "https://www.googleapis.com/auth/bigquery",
-                "https://www.googleapis.com/auth/bigquery.readonly",
                 "https://www.googleapis.com/auth/cloud-platform",
             ),
             quota_project_id=None,
@@ -1407,7 +1404,6 @@ def test_big_query_read_transport_auth_adc(transport_class):
             scopes=["1", "2"],
             default_scopes=(
                 "https://www.googleapis.com/auth/bigquery",
-                "https://www.googleapis.com/auth/bigquery.readonly",
                 "https://www.googleapis.com/auth/cloud-platform",
             ),
             quota_project_id="octopus",
@@ -1440,7 +1436,6 @@ def test_big_query_read_transport_create_channel(transport_class, grpc_helpers):
             quota_project_id="octopus",
             default_scopes=(
                 "https://www.googleapis.com/auth/bigquery",
-                "https://www.googleapis.com/auth/bigquery.readonly",
                 "https://www.googleapis.com/auth/cloud-platform",
             ),
             scopes=["1", "2"],

@@ -43,7 +43,6 @@ class BigQueryReadTransport(abc.ABC):
 
     AUTH_SCOPES = (
         "https://www.googleapis.com/auth/bigquery",
-        "https://www.googleapis.com/auth/bigquery.readonly",
         "https://www.googleapis.com/auth/cloud-platform",
     )
 

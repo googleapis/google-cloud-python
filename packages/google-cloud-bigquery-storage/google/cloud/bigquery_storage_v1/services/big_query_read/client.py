@@ -471,6 +471,27 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         are created and do not require manual clean-up by the
         caller.
 
+
+
+        .. code-block::
+
+            from google.cloud import bigquery_storage_v1
+
+            def sample_create_read_session():
+                # Create a client
+                client = bigquery_storage_v1.BigQueryReadClient()
+
+                # Initialize request argument(s)
+                request = bigquery_storage_v1.CreateReadSessionRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_read_session(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigquery_storage_v1.types.CreateReadSessionRequest, dict]):
                 The request object. Request message for
@@ -578,6 +599,28 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         Each request also returns a set of stream statistics
         reflecting the current state of the stream.
 
+
+
+        .. code-block::
+
+            from google.cloud import bigquery_storage_v1
+
+            def sample_read_rows():
+                # Create a client
+                client = bigquery_storage_v1.BigQueryReadClient()
+
+                # Initialize request argument(s)
+                request = bigquery_storage_v1.ReadRowsRequest(
+                    read_stream="read_stream_value",
+                )
+
+                # Make the request
+                stream = client.read_rows(request=request)
+
+                # Handle the response
+                for response in stream:
+                    print(response)
+
         Args:
             request (Union[google.cloud.bigquery_storage_v1.types.ReadRowsRequest, dict]):
                 The request object. Request message for `ReadRows`.
@@ -670,6 +713,27 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         that for streams original, primary, and residual, that
         original[0-j] = primary[0-j] and original[j-n] = residual[0-m]
         once the streams have been read to completion.
+
+
+
+        .. code-block::
+
+            from google.cloud import bigquery_storage_v1
+
+            def sample_split_read_stream():
+                # Create a client
+                client = bigquery_storage_v1.BigQueryReadClient()
+
+                # Initialize request argument(s)
+                request = bigquery_storage_v1.SplitReadStreamRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.split_read_stream(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigquery_storage_v1.types.SplitReadStreamRequest, dict]):

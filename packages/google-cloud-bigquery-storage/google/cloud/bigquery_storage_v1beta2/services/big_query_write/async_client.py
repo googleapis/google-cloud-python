@@ -237,6 +237,26 @@ class BigQueryWriteAsyncClient:
         stream is considered committed as soon as an acknowledgement is
         received.
 
+
+        .. code-block::
+
+            from google.cloud import bigquery_storage_v1beta2
+
+            def sample_create_write_stream():
+                # Create a client
+                client = bigquery_storage_v1beta2.BigQueryWriteClient()
+
+                # Initialize request argument(s)
+                request = bigquery_storage_v1beta2.CreateWriteStreamRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_write_stream(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigquery_storage_v1beta2.types.CreateWriteStreamRequest, dict]):
                 The request object. Request message for
@@ -347,6 +367,37 @@ class BigQueryWriteAsyncClient:
         If the stream is of ``PENDING`` type, data will only be
         available for read operations after the stream is committed.
 
+
+        .. code-block::
+
+            from google.cloud import bigquery_storage_v1beta2
+
+            def sample_append_rows():
+                # Create a client
+                client = bigquery_storage_v1beta2.BigQueryWriteClient()
+
+                # Initialize request argument(s)
+                request = bigquery_storage_v1beta2.AppendRowsRequest(
+                    write_stream="write_stream_value",
+                )
+
+                # This method expects an iterator which contains
+                # 'bigquery_storage_v1beta2.AppendRowsRequest' objects
+                # Here we create a generator that yields a single `request` for
+                # demonstrative purposes.
+                requests = [request]
+
+                def request_generator():
+                    for request in requests:
+                        yield request
+
+                # Make the request
+                stream = client.append_rows(requests=request_generator())
+
+                # Handle the response
+                for response in stream:
+                    print(response)
+
         Args:
             requests (AsyncIterator[`google.cloud.bigquery_storage_v1beta2.types.AppendRowsRequest`]):
                 The request object AsyncIterator. Request message for `AppendRows`.
@@ -399,6 +450,25 @@ class BigQueryWriteAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> stream.WriteStream:
         r"""Gets a write stream.
+
+        .. code-block::
+
+            from google.cloud import bigquery_storage_v1beta2
+
+            def sample_get_write_stream():
+                # Create a client
+                client = bigquery_storage_v1beta2.BigQueryWriteClient()
+
+                # Initialize request argument(s)
+                request = bigquery_storage_v1beta2.GetWriteStreamRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_write_stream(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigquery_storage_v1beta2.types.GetWriteStreamRequest, dict]):
@@ -483,6 +553,26 @@ class BigQueryWriteAsyncClient:
         r"""Finalize a write stream so that no new data can be appended to
         the stream. Finalize is not supported on the '_default' stream.
 
+
+        .. code-block::
+
+            from google.cloud import bigquery_storage_v1beta2
+
+            def sample_finalize_write_stream():
+                # Create a client
+                client = bigquery_storage_v1beta2.BigQueryWriteClient()
+
+                # Initialize request argument(s)
+                request = bigquery_storage_v1beta2.FinalizeWriteStreamRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.finalize_write_stream(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigquery_storage_v1beta2.types.FinalizeWriteStreamRequest, dict]):
                 The request object. Request message for invoking
@@ -565,6 +655,27 @@ class BigQueryWriteAsyncClient:
         commit and cannot be committed multiple times. Once a stream is
         committed, data in the stream becomes available for read
         operations.
+
+
+        .. code-block::
+
+            from google.cloud import bigquery_storage_v1beta2
+
+            def sample_batch_commit_write_streams():
+                # Create a client
+                client = bigquery_storage_v1beta2.BigQueryWriteClient()
+
+                # Initialize request argument(s)
+                request = bigquery_storage_v1beta2.BatchCommitWriteStreamsRequest(
+                    parent="parent_value",
+                    write_streams=['write_streams_value_1', 'write_streams_value_2'],
+                )
+
+                # Make the request
+                response = client.batch_commit_write_streams(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigquery_storage_v1beta2.types.BatchCommitWriteStreamsRequest, dict]):
@@ -650,6 +761,26 @@ class BigQueryWriteAsyncClient:
         up to any previously flushed offset in a BUFFERED stream, to the
         offset specified in the request. Flush is not supported on the
         \_default stream, since it is not BUFFERED.
+
+
+        .. code-block::
+
+            from google.cloud import bigquery_storage_v1beta2
+
+            def sample_flush_rows():
+                # Create a client
+                client = bigquery_storage_v1beta2.BigQueryWriteClient()
+
+                # Initialize request argument(s)
+                request = bigquery_storage_v1beta2.FlushRowsRequest(
+                    write_stream="write_stream_value",
+                )
+
+                # Make the request
+                response = client.flush_rows(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigquery_storage_v1beta2.types.FlushRowsRequest, dict]):
