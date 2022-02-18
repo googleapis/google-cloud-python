@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.20.3](https://github.com/googleapis/proto-plus-python/compare/v1.20.2...v1.20.3) (2022-02-18)
+
+
+### Bug Fixes
+
+* additional logic to mitigate collisions with reserved terms ([#301](https://github.com/googleapis/proto-plus-python/issues/301)) ([c9a77df](https://github.com/googleapis/proto-plus-python/commit/c9a77df58e93a87952470d809538a08103644364))
+
 ### [1.20.2](https://github.com/googleapis/proto-plus-python/compare/v1.20.1...v1.20.2) (2022-02-17)
 
 
