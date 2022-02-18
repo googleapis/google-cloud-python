@@ -15,6 +15,62 @@
 from .helpers import _Base
 
 
+class TestBiEngineStats:
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.job.query import BiEngineStats
+
+        return BiEngineStats
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_ctor_defaults(self):
+        bi_engine_stats = self._make_one()
+        assert bi_engine_stats.mode == "ACCELERATION_MODE_UNSPECIFIED"
+        assert bi_engine_stats.reasons == []
+
+    def test_from_api_repr_unspecified(self):
+        klass = self._get_target_class()
+        result = klass.from_api_repr({"biEngineMode": "ACCELERATION_MODE_UNSPECIFIED"})
+
+        assert isinstance(result, klass)
+        assert result.mode == "ACCELERATION_MODE_UNSPECIFIED"
+        assert result.reasons == []
+
+    def test_from_api_repr_full(self):
+        klass = self._get_target_class()
+        result = klass.from_api_repr({"biEngineMode": "FULL"})
+
+        assert isinstance(result, klass)
+        assert result.mode == "FULL"
+        assert result.reasons == []
+
+    def test_from_api_repr_disabled(self):
+        klass = self._get_target_class()
+        result = klass.from_api_repr(
+            {
+                "biEngineMode": "DISABLED",
+                "biEngineReasons": [
+                    {
+                        "code": "OTHER_REASON",
+                        "message": "Unable to support input table xyz due to an internal error.",
+                    }
+                ],
+            }
+        )
+
+        assert isinstance(result, klass)
+        assert result.mode == "DISABLED"
+
+        reason = result.reasons[0]
+        assert reason.code == "OTHER_REASON"
+        assert (
+            reason.reason
+            == "Unable to support input table xyz due to an internal error."
+        )
+
+
 class TestDmlStats:
     @staticmethod
     def _get_target_class():

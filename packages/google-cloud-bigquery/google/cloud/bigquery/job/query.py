@@ -121,6 +121,44 @@ def _to_api_repr_table_defs(value):
     return {k: ExternalConfig.to_api_repr(v) for k, v in value.items()}
 
 
+class BiEngineReason(typing.NamedTuple):
+    """Reason for BI Engine acceleration failure
+
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#bienginereason
+    """
+
+    code: str = "CODE_UNSPECIFIED"
+
+    reason: str = ""
+
+    @classmethod
+    def from_api_repr(cls, reason: Dict[str, str]) -> "BiEngineReason":
+        return cls(reason.get("code", "CODE_UNSPECIFIED"), reason.get("message", ""))
+
+
+class BiEngineStats(typing.NamedTuple):
+    """Statistics for a BI Engine query
+
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#bienginestatistics
+    """
+
+    mode: str = "ACCELERATION_MODE_UNSPECIFIED"
+    """ Specifies which mode of BI Engine acceleration was performed (if any)
+    """
+
+    reasons: List[BiEngineReason] = []
+    """ Contains explanatory messages in case of DISABLED / PARTIAL acceleration
+    """
+
+    @classmethod
+    def from_api_repr(cls, stats: Dict[str, Any]) -> "BiEngineStats":
+        mode = stats.get("biEngineMode", "ACCELERATION_MODE_UNSPECIFIED")
+        reasons = [
+            BiEngineReason.from_api_repr(r) for r in stats.get("biEngineReasons", [])
+        ]
+        return cls(mode, reasons)
+
+
 class DmlStats(typing.NamedTuple):
     """Detailed statistics for DML statements.
 
@@ -1190,6 +1228,15 @@ class QueryJob(_AsyncJob):
             return None
         else:
             return DmlStats.from_api_repr(stats)
+
+    @property
+    def bi_engine_stats(self) -> Optional[BiEngineStats]:
+        stats = self._job_statistics().get("biEngineStatistics")
+
+        if stats is None:
+            return None
+        else:
+            return BiEngineStats.from_api_repr(stats)
 
     def _blocking_poll(self, timeout=None, **kwargs):
         self._done_timeout = timeout

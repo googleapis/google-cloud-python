@@ -877,6 +877,23 @@ class TestQueryJob(_Base):
         query_stats["estimatedBytesProcessed"] = str(est_bytes)
         self.assertEqual(job.estimated_bytes_processed, est_bytes)
 
+    def test_bi_engine_stats(self):
+        from google.cloud.bigquery.job.query import BiEngineStats
+
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+        assert job.bi_engine_stats is None
+
+        statistics = job._properties["statistics"] = {}
+        assert job.bi_engine_stats is None
+
+        query_stats = statistics["query"] = {}
+        assert job.bi_engine_stats is None
+
+        query_stats["biEngineStatistics"] = {"biEngineMode": "FULL"}
+        assert isinstance(job.bi_engine_stats, BiEngineStats)
+        assert job.bi_engine_stats.mode == "FULL"
+
     def test_dml_stats(self):
         from google.cloud.bigquery.job.query import DmlStats
 
