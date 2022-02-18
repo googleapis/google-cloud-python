@@ -2053,7 +2053,7 @@ def test_generate_sample_spec_basic():
         "rpc": "Ramshorn",
         "transport": "grpc",
         "service": "animalia.mollusca.v1.Squid",
-        "region_tag": "example_generated_mollusca_v1_Squid_Ramshorn_sync",
+        "region_tag": "example_v1_generated_Squid_Ramshorn_sync",
         "description": "Snippet for ramshorn"
     }
 
@@ -2061,7 +2061,7 @@ def test_generate_sample_spec_basic():
         "rpc": "Ramshorn",
         "transport": "grpc-async",
         "service": "animalia.mollusca.v1.Squid",
-        "region_tag": "example_generated_mollusca_v1_Squid_Ramshorn_async",
+        "region_tag": "example_v1_generated_Squid_Ramshorn_async",
         "description": "Snippet for ramshorn"
     }
 

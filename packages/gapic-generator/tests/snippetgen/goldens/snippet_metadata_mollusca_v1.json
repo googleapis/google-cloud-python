@@ -10,8 +10,8 @@
           "shortName": "ListResources"
         }
       },
-      "file": "mollusca_generated_mollusca_v1_snippets_list_resources_async.py",
-      "regionTag": "mollusca_generated_mollusca_v1_Snippets_ListResources_async",
+      "file": "mollusca_v1_generated_snippets_list_resources_async.py",
+      "regionTag": "mollusca_v1_generated_Snippets_ListResources_async",
       "segments": [
         {
           "end": 46,
@@ -54,8 +54,8 @@
           "shortName": "ListResources"
         }
       },
-      "file": "mollusca_generated_mollusca_v1_snippets_list_resources_sync.py",
-      "regionTag": "mollusca_generated_mollusca_v1_Snippets_ListResources_sync",
+      "file": "mollusca_v1_generated_snippets_list_resources_sync.py",
+      "regionTag": "mollusca_v1_generated_Snippets_ListResources_sync",
       "segments": [
         {
           "end": 46,
@@ -99,8 +99,8 @@
           "shortName": "MethodBidiStreaming"
         }
       },
-      "file": "mollusca_generated_mollusca_v1_snippets_method_bidi_streaming_async.py",
-      "regionTag": "mollusca_generated_mollusca_v1_Snippets_MethodBidiStreaming_async",
+      "file": "mollusca_v1_generated_snippets_method_bidi_streaming_async.py",
+      "regionTag": "mollusca_v1_generated_Snippets_MethodBidiStreaming_async",
       "segments": [
         {
           "end": 55,
@@ -143,8 +143,8 @@
           "shortName": "MethodBidiStreaming"
         }
       },
-      "file": "mollusca_generated_mollusca_v1_snippets_method_bidi_streaming_sync.py",
-      "regionTag": "mollusca_generated_mollusca_v1_Snippets_MethodBidiStreaming_sync",
+      "file": "mollusca_v1_generated_snippets_method_bidi_streaming_sync.py",
+      "regionTag": "mollusca_v1_generated_Snippets_MethodBidiStreaming_sync",
       "segments": [
         {
           "end": 55,
@@ -188,8 +188,8 @@
           "shortName": "MethodLroSignatures"
         }
       },
-      "file": "mollusca_generated_mollusca_v1_snippets_method_lro_signatures_async.py",
-      "regionTag": "mollusca_generated_mollusca_v1_Snippets_MethodLroSignatures_async",
+      "file": "mollusca_v1_generated_snippets_method_lro_signatures_async.py",
+      "regionTag": "mollusca_v1_generated_Snippets_MethodLroSignatures_async",
       "segments": [
         {
           "end": 56,
@@ -232,8 +232,8 @@
           "shortName": "MethodLroSignatures"
         }
       },
-      "file": "mollusca_generated_mollusca_v1_snippets_method_lro_signatures_sync.py",
-      "regionTag": "mollusca_generated_mollusca_v1_Snippets_MethodLroSignatures_sync",
+      "file": "mollusca_v1_generated_snippets_method_lro_signatures_sync.py",
+      "regionTag": "mollusca_v1_generated_Snippets_MethodLroSignatures_sync",
       "segments": [
         {
           "end": 56,
@@ -277,8 +277,8 @@
           "shortName": "MethodOneSignature"
         }
       },
-      "file": "mollusca_generated_mollusca_v1_snippets_method_one_signature_async.py",
-      "regionTag": "mollusca_generated_mollusca_v1_Snippets_MethodOneSignature_async",
+      "file": "mollusca_v1_generated_snippets_method_one_signature_async.py",
+      "regionTag": "mollusca_v1_generated_Snippets_MethodOneSignature_async",
       "segments": [
         {
           "end": 52,
@@ -321,8 +321,8 @@
           "shortName": "MethodOneSignature"
         }
       },
-      "file": "mollusca_generated_mollusca_v1_snippets_method_one_signature_sync.py",
-      "regionTag": "mollusca_generated_mollusca_v1_Snippets_MethodOneSignature_sync",
+      "file": "mollusca_v1_generated_snippets_method_one_signature_sync.py",
+      "regionTag": "mollusca_v1_generated_Snippets_MethodOneSignature_sync",
       "segments": [
         {
           "end": 52,
@@ -366,8 +366,8 @@
           "shortName": "MethodServerStreaming"
         }
       },
-      "file": "mollusca_generated_mollusca_v1_snippets_method_server_streaming_async.py",
-      "regionTag": "mollusca_generated_mollusca_v1_Snippets_MethodServerStreaming_async",
+      "file": "mollusca_v1_generated_snippets_method_server_streaming_async.py",
+      "regionTag": "mollusca_v1_generated_Snippets_MethodServerStreaming_async",
       "segments": [
         {
           "end": 53,
@@ -410,8 +410,8 @@
           "shortName": "MethodServerStreaming"
         }
       },
-      "file": "mollusca_generated_mollusca_v1_snippets_method_server_streaming_sync.py",
-      "regionTag": "mollusca_generated_mollusca_v1_Snippets_MethodServerStreaming_sync",
+      "file": "mollusca_v1_generated_snippets_method_server_streaming_sync.py",
+      "regionTag": "mollusca_v1_generated_Snippets_MethodServerStreaming_sync",
       "segments": [
         {
           "end": 53,
@@ -455,8 +455,8 @@
           "shortName": "OneOfMethodRequiredField"
         }
       },
-      "file": "mollusca_generated_mollusca_v1_snippets_one_of_method_required_field_async.py",
-      "regionTag": "mollusca_generated_mollusca_v1_Snippets_OneOfMethodRequiredField_async",
+      "file": "mollusca_v1_generated_snippets_one_of_method_required_field_async.py",
+      "regionTag": "mollusca_v1_generated_Snippets_OneOfMethodRequiredField_async",
       "segments": [
         {
           "end": 45,
@@ -499,8 +499,8 @@
           "shortName": "OneOfMethodRequiredField"
         }
       },
-      "file": "mollusca_generated_mollusca_v1_snippets_one_of_method_required_field_sync.py",
-      "regionTag": "mollusca_generated_mollusca_v1_Snippets_OneOfMethodRequiredField_sync",
+      "file": "mollusca_v1_generated_snippets_one_of_method_required_field_sync.py",
+      "regionTag": "mollusca_v1_generated_Snippets_OneOfMethodRequiredField_sync",
       "segments": [
         {
           "end": 45,
@@ -544,8 +544,8 @@
           "shortName": "OneOfMethod"
         }
       },
-      "file": "mollusca_generated_mollusca_v1_snippets_one_of_method_async.py",
-      "regionTag": "mollusca_generated_mollusca_v1_Snippets_OneOfMethod_async",
+      "file": "mollusca_v1_generated_snippets_one_of_method_async.py",
+      "regionTag": "mollusca_v1_generated_Snippets_OneOfMethod_async",
       "segments": [
         {
           "end": 45,
@@ -588,8 +588,8 @@
           "shortName": "OneOfMethod"
         }
       },
-      "file": "mollusca_generated_mollusca_v1_snippets_one_of_method_sync.py",
-      "regionTag": "mollusca_generated_mollusca_v1_Snippets_OneOfMethod_sync",
+      "file": "mollusca_v1_generated_snippets_one_of_method_sync.py",
+      "regionTag": "mollusca_v1_generated_Snippets_OneOfMethod_sync",
       "segments": [
         {
           "end": 45,

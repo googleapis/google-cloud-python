@@ -996,12 +996,13 @@ def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, A
 
     for service_name, service in gapic_metadata.services.items():
         api_short_name = api_schema.services[f"{api_schema.naming.proto_package}.{service_name}"].shortname
+        api_version = api_schema.naming.version
         for transport, client in service.clients.items():
             transport_type = "async" if transport == api.TRANSPORT_GRPC_ASYNC else "sync"
             for rpc_name, method_list in client.rpcs.items():
                 # Region Tag Format:
-                # [{START|END} ${apishortname}_generated_${api}_${apiVersion}_${serviceName}_${rpcName}_{sync|async}_${overloadDisambiguation}]
-                region_tag = f"{api_short_name}_generated_{api_schema.naming.versioned_module_name}_{service_name}_{rpc_name}_{transport_type}"
+                # [{START|END} ${apishortname}_${apiVersion}_generated_${serviceName}_${rpcName}_{sync|async}]
+                region_tag = f"{api_short_name}_{api_version}_generated_{service_name}_{rpc_name}_{transport_type}"
                 spec = {
                     "rpc": rpc_name,
                     "transport": transport,
