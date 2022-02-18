@@ -70,13 +70,13 @@ jobs:
           SHOWCASE_VERSION: 0.19.0
       - name: Install nox.
         run: python -m pip install nox
-      - name: Install protoc 3.12.1.
+      - name: Install protoc 3.19.0.
         run: |
             sudo mkdir -p /usr/src/protoc/
             sudo chown -R ${USER} /usr/src/
-            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+            curl --location https://github.com/google/protobuf/releases/download/v3.19.0/protoc-3.19.0-linux-x86_64.zip --output /usr/src/protoc/protoc-3.19.0.zip
             cd /usr/src/protoc/
-            unzip protoc-3.12.1.zip
+            unzip protoc-3.19.0.zip
             sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
       - name: Run showcase tests.
         run: nox -s ${{ matrix.target }}
@@ -105,13 +105,13 @@ jobs:
           sudo apt-get install -y curl pandoc unzip gcc
       - name: Install nox.
         run: python -m pip install nox
-      - name: Install protoc 3.12.1.
+      - name: Install protoc 3.19.0.
         run: |
           sudo mkdir -p /usr/src/protoc/
           sudo chown -R ${USER} /usr/src
-          curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+          curl --location https://github.com/google/protobuf/releases/download/v3.19.0/protoc-3.19.0-linux-x86_64.zip --output /usr/src/protoc/protoc-3.19.0.zip
           cd /usr/src/protoc/
-          unzip protoc-3.12.1.zip
+          unzip protoc-3.19.0.zip
           sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
           cd -
       - name: Run showcase tests.
@@ -121,15 +121,6 @@ jobs:
             cd gapic_showcase
             curl -sSL https://github.com/googleapis/gapic-showcase/releases/download/v${SHOWCASE_VERSION}/gapic-showcase-${SHOWCASE_VERSION}-linux-amd64.tar.gz | tar xz
             ./gapic-showcase run --mtls-ca-cert=/tmp/workspace/tests/cert/mtls.crt --mtls-cert=/tmp/workspace/tests/cert/mtls.crt --mtls-key=/tmp/workspace/tests/cert/mtls.key &
-            showcase_pid=$!
-
-            cleanup() {
-              echo "kill showcase server"
-            	kill $showcase_pid
-            	# Wait for the process to die, but don't report error from the kill.
-            	wait $showcase_pid || exit $exit_code
-            }
-            trap cleanup EXIT
 
             cd ..
             nox -s ${{ matrix.target }}
@@ -156,13 +147,13 @@ jobs:
         run: |
             sudo apt-get update
             sudo apt-get install -y curl pandoc unzip gcc
-      - name: Install protoc 3.12.1.
+      - name: Install protoc 3.19.0.
         run: |
             sudo mkdir -p /usr/src/protoc/
             sudo chown -R ${USER} /usr/src/
-            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+            curl --location https://github.com/google/protobuf/releases/download/v3.19.0/protoc-3.19.0-linux-x86_64.zip --output /usr/src/protoc/protoc-3.19.0.zip
             cd /usr/src/protoc/
-            unzip protoc-3.12.1.zip
+            unzip protoc-3.19.0.zip
             sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
       - name: Install nox.
         run: python -m pip install nox
@@ -183,13 +174,13 @@ jobs:
         run: |
             sudo apt-get update
             sudo apt-get install -y curl pandoc unzip gcc
-      - name: Install protoc 3.12.1.
+      - name: Install protoc 3.19.0.
         run: |
             sudo mkdir -p /usr/src/protoc/
             sudo chown -R ${USER} /usr/src/
-            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+            curl --location https://github.com/google/protobuf/releases/download/v3.19.0/protoc-3.19.0-linux-x86_64.zip --output /usr/src/protoc/protoc-3.19.0.zip
             cd /usr/src/protoc/
-            unzip protoc-3.12.1.zip
+            unzip protoc-3.19.0.zip
             sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
       - name: Install nox.
         run: python -m pip install nox
@@ -213,13 +204,13 @@ jobs:
         run: |
             sudo apt-get update
             sudo apt-get install -y curl pandoc unzip gcc
-      - name: Install protoc 3.12.1.
+      - name: Install protoc 3.19.0.
         run: |
             sudo mkdir -p /usr/src/protoc/
             sudo chown -R ${USER} /usr/src/
-            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+            curl --location https://github.com/google/protobuf/releases/download/v3.19.0/protoc-3.19.0-linux-x86_64.zip --output /usr/src/protoc/protoc-3.19.0.zip
             cd /usr/src/protoc/
-            unzip protoc-3.12.1.zip
+            unzip protoc-3.19.0.zip
             sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
       - name: Install nox.
         run: python -m pip install nox
