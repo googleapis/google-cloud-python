@@ -1,6 +1,13 @@
 # Changelog
 
 
+### [0.63.4](https://github.com/googleapis/gapic-generator-python/compare/v0.63.3...v0.63.4) (2022-02-22)
+
+
+### Bug Fixes
+
+* fix snippet region tag format ([#1210](https://github.com/googleapis/gapic-generator-python/issues/1210)) ([e895106](https://github.com/googleapis/gapic-generator-python/commit/e8951064827c726bb651801336b86188e2628386))
+
 ### [0.63.3](https://github.com/googleapis/gapic-generator-python/compare/v0.63.2...v0.63.3) (2022-02-16)
 
 
