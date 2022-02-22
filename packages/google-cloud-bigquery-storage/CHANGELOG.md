@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.12.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.11.0...v2.12.0) (2022-02-22)
+
+
+### Features
+
+* add api key support ([#387](https://github.com/googleapis/python-bigquery-storage/issues/387)) ([5e7b502](https://github.com/googleapis/python-bigquery-storage/commit/5e7b5023ab9d9bcfa7661a19a79f05c07cded77e))
+* add trace_id for Read API ([#396](https://github.com/googleapis/python-bigquery-storage/issues/396)) ([5d7f918](https://github.com/googleapis/python-bigquery-storage/commit/5d7f9188a9ae3db7b3cfb6cc6789dcb071723166))
+
+
+### Bug Fixes
+
+* remove bigquery.readonly auth scope ([#394](https://github.com/googleapis/python-bigquery-storage/issues/394)) ([e08d2fd](https://github.com/googleapis/python-bigquery-storage/commit/e08d2fd146153709ce09af751c9437b2365313f0))
+* remove libcst as a required dependency ([#389](https://github.com/googleapis/python-bigquery-storage/issues/389)) ([92b503a](https://github.com/googleapis/python-bigquery-storage/commit/92b503a4ec17f8fc8dabfc24b58ac58fe10eb57f))
+* resolve DuplicateCredentialArgs error when using credentials_file ([16520e3](https://github.com/googleapis/python-bigquery-storage/commit/16520e3c3386c412bdaf545994264d66ee641588))
+
+
+### Documentation
+
+* add generated snippets ([e08d2fd](https://github.com/googleapis/python-bigquery-storage/commit/e08d2fd146153709ce09af751c9437b2365313f0))
+
 ## [2.11.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.10.1...v2.11.0) (2022-01-12)
 
 
