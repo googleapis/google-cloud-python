@@ -14,6 +14,18 @@ Older versions of this project were distributed as [pybigquery][0].
 [2]: https://pypi.org/project/pybigquery/#history
 
 
+## [1.4.0](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.3.0...v1.4.0) (2022-02-22)
+
+
+### Features
+
+* Allow base64 encoded credentials in URI ([#410](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/410)) ([e2f9821](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/e2f9821e66507ee3ac3260d9c1b0ba899cf2efc4))
+
+
+### Bug Fixes
+
+* POSTCOMPILE expansion in SQLAlchemy 1.4.27+ ([#408](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/408)) ([7844813](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/7844813c6eb3a52cc9d3e91e88d5f8ecebba08c5))
+
 ## [1.3.0](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.2.2...v1.3.0) (2021-12-31)
 
 
