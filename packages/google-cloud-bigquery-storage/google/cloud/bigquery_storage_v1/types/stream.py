@@ -87,6 +87,15 @@ class ReadSession(proto.Message):
             are completely consumed. This estimate is based
             on metadata from the table which might be
             incomplete or stale.
+        trace_id (str):
+            Optional. ID set by client to annotate a
+            session identity.  This does not need to be
+            strictly unique, but instead the same ID should
+            be used to group logically connected sessions
+            (e.g. All using the same ID for all sessions
+            needed to complete a Spark SQL query is
+            reasonable).
+            Maximum length is 256 bytes.
     """
 
     class TableModifiers(proto.Message):
@@ -154,6 +163,7 @@ class ReadSession(proto.Message):
     read_options = proto.Field(proto.MESSAGE, number=8, message=TableReadOptions,)
     streams = proto.RepeatedField(proto.MESSAGE, number=10, message="ReadStream",)
     estimated_total_bytes_scanned = proto.Field(proto.INT64, number=12,)
+    trace_id = proto.Field(proto.STRING, number=13,)
 
 
 class ReadStream(proto.Message):
