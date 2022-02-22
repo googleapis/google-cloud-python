@@ -42,7 +42,7 @@ TOKEN_URL = "https://sts.googleapis.com/v1/token"
 SUBJECT_TOKEN_TYPE = "urn:ietf:params:aws:token-type:aws4_request"
 AUDIENCE = "//iam.googleapis.com/projects/123456/locations/global/workloadIdentityPools/POOL_ID/providers/PROVIDER_ID"
 REGION_URL = "http://169.254.169.254/latest/meta-data/placement/availability-zone"
-AWS_SESSION_TOKEN_URL = "http://169.254.169.254/latest/api/token"
+IMDSV2_SESSION_TOKEN_URL = "http://169.254.169.254/latest/api/token"
 SECURITY_CREDS_URL = "http://169.254.169.254/latest/meta-data/iam/security-credentials"
 CRED_VERIFICATION_URL = (
     "https://sts.{region}.amazonaws.com?Action=GetCallerIdentity&Version=2011-06-15"
@@ -579,7 +579,7 @@ class TestCredentials(object):
         "SecretAccessKey": SECRET_ACCESS_KEY,
         "Token": TOKEN,
     }
-    AWS_SESSION_TOKEN = "awssessiontoken"
+    AWS_IMDSV2_SESSION_TOKEN = "awsimdsv2sessiontoken"
     AWS_SIGNATURE_TIME = "2020-08-11T06:55:22Z"
     CREDENTIAL_SOURCE = {
         "environment_id": "aws1",
@@ -656,8 +656,8 @@ class TestCredentials(object):
         token_data=None,
         impersonation_status=None,
         impersonation_data=None,
-        session_token_status=None,
-        session_token_data=None,
+        imdsv2_session_token_status=None,
+        imdsv2_session_token_data=None,
     ):
         """Utility function to generate a mock HTTP request object.
         This will facilitate testing various edge cases by specify how the
@@ -665,12 +665,14 @@ class TestCredentials(object):
         in an AWS environment.
         """
         responses = []
-        if session_token_status:
+        if imdsv2_session_token_status:
             # AWS session token request
-            session_response = mock.create_autospec(transport.Response, instance=True)
-            session_response.status = session_token_status
-            session_response.data = session_token_data
-            responses.append(session_response)
+            imdsv2_session_response = mock.create_autospec(
+                transport.Response, instance=True
+            )
+            imdsv2_session_response.status = imdsv2_session_token_status
+            imdsv2_session_response.data = imdsv2_session_token_data
+            responses.append(imdsv2_session_response)
 
         if region_status:
             # AWS region request.
@@ -1035,11 +1037,13 @@ class TestCredentials(object):
             role_name=self.AWS_ROLE,
             security_credentials_status=http_client.OK,
             security_credentials_data=self.AWS_SECURITY_CREDENTIALS_RESPONSE,
-            session_token_status=http_client.OK,
-            session_token_data=self.AWS_SESSION_TOKEN,
+            imdsv2_session_token_status=http_client.OK,
+            imdsv2_session_token_data=self.AWS_IMDSV2_SESSION_TOKEN,
         )
         credential_source_token_url = self.CREDENTIAL_SOURCE.copy()
-        credential_source_token_url["aws_session_token_url"] = AWS_SESSION_TOKEN_URL
+        credential_source_token_url[
+            "imdsv2_session_token_url"
+        ] = IMDSV2_SESSION_TOKEN_URL
         credentials = self.make_credentials(
             credential_source=credential_source_token_url
         )
@@ -1056,21 +1060,21 @@ class TestCredentials(object):
         # Assert session token request
         self.assert_aws_metadata_request_kwargs(
             request.call_args_list[0][1],
-            AWS_SESSION_TOKEN_URL,
-            {"X-aws-ec2-metadata-token-ttl-seconds": "21600"},
+            IMDSV2_SESSION_TOKEN_URL,
+            {"X-aws-ec2-metadata-token-ttl-seconds": "300"},
             "PUT",
         )
         # Assert region request.
         self.assert_aws_metadata_request_kwargs(
             request.call_args_list[1][1],
             REGION_URL,
-            {"X-aws-ec2-metadata-token": self.AWS_SESSION_TOKEN},
+            {"X-aws-ec2-metadata-token": self.AWS_IMDSV2_SESSION_TOKEN},
         )
         # Assert role request.
         self.assert_aws_metadata_request_kwargs(
             request.call_args_list[2][1],
             SECURITY_CREDS_URL,
-            {"X-aws-ec2-metadata-token": self.AWS_SESSION_TOKEN},
+            {"X-aws-ec2-metadata-token": self.AWS_IMDSV2_SESSION_TOKEN},
         )
         # Assert security credentials request.
         self.assert_aws_metadata_request_kwargs(
@@ -1078,7 +1082,7 @@ class TestCredentials(object):
             "{}/{}".format(SECURITY_CREDS_URL, self.AWS_ROLE),
             {
                 "Content-Type": "application/json",
-                "X-aws-ec2-metadata-token": self.AWS_SESSION_TOKEN,
+                "X-aws-ec2-metadata-token": self.AWS_IMDSV2_SESSION_TOKEN,
             },
         )
 
@@ -1088,8 +1092,8 @@ class TestCredentials(object):
             role_name=self.AWS_ROLE,
             security_credentials_status=http_client.OK,
             security_credentials_data=self.AWS_SECURITY_CREDENTIALS_RESPONSE,
-            session_token_status=http_client.OK,
-            session_token_data=self.AWS_SESSION_TOKEN,
+            imdsv2_session_token_status=http_client.OK,
+            imdsv2_session_token_data=self.AWS_IMDSV2_SESSION_TOKEN,
         )
 
         credentials.retrieve_subject_token(new_request)
@@ -1099,15 +1103,15 @@ class TestCredentials(object):
         # Assert session token request
         self.assert_aws_metadata_request_kwargs(
             request.call_args_list[0][1],
-            AWS_SESSION_TOKEN_URL,
-            {"X-aws-ec2-metadata-token-ttl-seconds": "21600"},
+            IMDSV2_SESSION_TOKEN_URL,
+            {"X-aws-ec2-metadata-token-ttl-seconds": "300"},
             "PUT",
         )
         # Assert role request.
         self.assert_aws_metadata_request_kwargs(
             new_request.call_args_list[1][1],
             SECURITY_CREDS_URL,
-            {"X-aws-ec2-metadata-token": self.AWS_SESSION_TOKEN},
+            {"X-aws-ec2-metadata-token": self.AWS_IMDSV2_SESSION_TOKEN},
         )
         # Assert security credentials request.
         self.assert_aws_metadata_request_kwargs(
@@ -1115,7 +1119,7 @@ class TestCredentials(object):
             "{}/{}".format(SECURITY_CREDS_URL, self.AWS_ROLE),
             {
                 "Content-Type": "application/json",
-                "X-aws-ec2-metadata-token": self.AWS_SESSION_TOKEN,
+                "X-aws-ec2-metadata-token": self.AWS_IMDSV2_SESSION_TOKEN,
             },
         )
 
@@ -1125,11 +1129,13 @@ class TestCredentials(object):
             self.AWS_SIGNATURE_TIME, "%Y-%m-%dT%H:%M:%SZ"
         )
         request = self.make_mock_request(
-            session_token_status=http_client.UNAUTHORIZED,
-            session_token_data="unauthorized",
+            imdsv2_session_token_status=http_client.UNAUTHORIZED,
+            imdsv2_session_token_data="unauthorized",
         )
         credential_source_token_url = self.CREDENTIAL_SOURCE.copy()
-        credential_source_token_url["aws_session_token_url"] = AWS_SESSION_TOKEN_URL
+        credential_source_token_url[
+            "imdsv2_session_token_url"
+        ] = IMDSV2_SESSION_TOKEN_URL
         credentials = self.make_credentials(
             credential_source=credential_source_token_url
         )
@@ -1142,8 +1148,8 @@ class TestCredentials(object):
         # Assert session token request
         self.assert_aws_metadata_request_kwargs(
             request.call_args_list[0][1],
-            AWS_SESSION_TOKEN_URL,
-            {"X-aws-ec2-metadata-token-ttl-seconds": "21600"},
+            IMDSV2_SESSION_TOKEN_URL,
+            {"X-aws-ec2-metadata-token-ttl-seconds": "300"},
             "PUT",
         )
 
