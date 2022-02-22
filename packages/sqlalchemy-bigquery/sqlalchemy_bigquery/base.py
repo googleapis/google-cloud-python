@@ -341,16 +341,19 @@ class BigQueryCompiler(_struct.SQLCompiler, SQLCompiler):
 
     __sqlalchemy_version_info = tuple(map(int, sqlalchemy.__version__.split(".")))
 
-    __expandng_text = (
+    __expanding_text = (
         "EXPANDING" if __sqlalchemy_version_info < (1, 4) else "POSTCOMPILE"
     )
+
+    # https://github.com/sqlalchemy/sqlalchemy/commit/f79df12bd6d99b8f6f09d4bf07722638c4b4c159
+    __expanding_conflict = "" if __sqlalchemy_version_info < (1, 4, 27) else "__"
 
     __in_expanding_bind = _helpers.substitute_string_re_method(
         fr"""
         \sIN\s\(                     # ' IN ('
         (
-        \[                           # Expanding placeholder
-        {__expandng_text}            #   e.g. [EXPANDING_foo_1]
+        {__expanding_conflict}\[     # Expanding placeholder
+        {__expanding_text}           #   e.g. [EXPANDING_foo_1]
         _[^\]]+                      #
         \]
         (:[A-Z0-9]+)?                # type marker (e.g. ':INT64'
@@ -431,7 +434,9 @@ class BigQueryCompiler(_struct.SQLCompiler, SQLCompiler):
 
     __placeholder = re.compile(r"%\(([^\]:]+)(:[^\]:]+)?\)s$").match
 
-    __expanded_param = re.compile(fr"\(\[" fr"{__expandng_text}" fr"_[^\]]+\]\)$").match
+    __expanded_param = re.compile(
+        fr"\({__expanding_conflict}\[" fr"{__expanding_text}" fr"_[^\]]+\]\)$"
+    ).match
 
     __remove_type_parameter = _helpers.substitute_string_re_method(
         r"""
@@ -521,9 +526,10 @@ class BigQueryCompiler(_struct.SQLCompiler, SQLCompiler):
 
         assert_(param != "%s", f"Unexpected param: {param}")
 
-        if bindparam.expanding:
+        if bindparam.expanding:  # pragma: NO COVER
             assert_(self.__expanded_param(param), f"Unexpected param: {param}")
-            param = param.replace(")", f":{bq_type})")
+            if self.__sqlalchemy_version_info < (1, 4, 27):
+                param = param.replace(")", f":{bq_type})")
 
         else:
             m = self.__placeholder(param)
