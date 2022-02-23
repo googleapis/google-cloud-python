@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.2.0](https://github.com/googleapis/python-service-management/compare/v1.1.1...v1.2.0) (2022-02-18)
+
+
+### Features
+
+* add api key support ([#91](https://github.com/googleapis/python-service-management/issues/91)) ([ad49299](https://github.com/googleapis/python-service-management/commit/ad49299424aefbaaef686c79af533058d5fa5b66))
+
+
+### Bug Fixes
+
+* **deps:** remove unused dependency libcst ([#97](https://github.com/googleapis/python-service-management/issues/97)) ([b2b62f1](https://github.com/googleapis/python-service-management/commit/b2b62f156e0ca50d10c0941af7e4fedcd42d8e4c))
+* Remove EnableService and DisableService RPC methods and related modules ([#98](https://github.com/googleapis/python-service-management/issues/98)) ([9a2d72c](https://github.com/googleapis/python-service-management/commit/9a2d72c0eb27238925634b1950f40a90ff4d64a0))
+* resolve DuplicateCredentialArgs error when using credentials_file ([21f9f5d](https://github.com/googleapis/python-service-management/commit/21f9f5deb04992ecc683afda5c4dd3cae5ffffd3))
+
 ### [1.1.1](https://www.github.com/googleapis/python-service-management/compare/v1.1.0...v1.1.1) (2021-11-01)
 
 
