@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.55.0](https://github.com/googleapis/python-api-common-protos/compare/v1.54.0...v1.55.0) (2022-02-15)
+
+
+### Features
+
+* add location proto files. ([#84](https://github.com/googleapis/python-api-common-protos/issues/84)) ([9a33e56](https://github.com/googleapis/python-api-common-protos/commit/9a33e56ac6a07a2e717edc55a39fa7cf2f9eec15))
+
 ## [1.54.0](https://www.github.com/googleapis/python-api-common-protos/compare/v1.53.0...v1.54.0) (2021-12-07)
 
 
