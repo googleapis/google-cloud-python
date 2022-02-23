@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+## [2.3.0](https://github.com/googleapis/google-resumable-media-python/compare/v2.2.1...v2.3.0) (2022-02-11)
+
+
+### Features
+
+* safely resume interrupted downloads ([#294](https://github.com/googleapis/google-resumable-media-python/issues/294)) ([b363329](https://github.com/googleapis/google-resumable-media-python/commit/b36332915a783ef748bc6f8126bc6b41ee9a044d))
+
 ### [2.2.1](https://github.com/googleapis/google-resumable-media-python/compare/v2.2.0...v2.2.1) (2022-02-09)
 
 
