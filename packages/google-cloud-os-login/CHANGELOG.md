@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-oslogin/#history
 
+## [2.6.0](https://github.com/googleapis/python-oslogin/compare/v2.5.1...v2.6.0) (2022-02-17)
+
+
+### Features
+
+* add api key support ([#144](https://github.com/googleapis/python-oslogin/issues/144)) ([1bc7f50](https://github.com/googleapis/python-oslogin/commit/1bc7f50756b0a574285b3ed11ef71305c938e891))
+
+
+### Bug Fixes
+
+* **deps:** move libcst to extras ([#151](https://github.com/googleapis/python-oslogin/issues/151)) ([ff0b7be](https://github.com/googleapis/python-oslogin/commit/ff0b7be858c400247056a53efb19b9d520611a34))
+* resolve DuplicateCredentialArgs error when using credentials_file ([757c2c7](https://github.com/googleapis/python-oslogin/commit/757c2c749d709150d15a703bca230126594aa4ef))
+
 ### [2.5.1](https://www.github.com/googleapis/python-oslogin/compare/v2.5.0...v2.5.1) (2021-11-01)
 
 
