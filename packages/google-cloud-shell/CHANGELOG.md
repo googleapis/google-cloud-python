@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.1](https://github.com/googleapis/python-shell/compare/v1.3.0...v1.3.1) (2022-02-11)
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([b660c07](https://github.com/googleapis/python-shell/commit/b660c07d2f42673a85dd596590c82e2f972530fd))
+
 ## [1.3.0](https://github.com/googleapis/python-shell/compare/v1.2.2...v1.3.0) (2022-01-25)
 
 
