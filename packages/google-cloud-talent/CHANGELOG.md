@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+## [2.5.0](https://github.com/googleapis/python-talent/compare/v2.4.0...v2.5.0) (2022-02-11)
+
+
+### Features
+
+* add api key support ([#197](https://github.com/googleapis/python-talent/issues/197)) ([8109720](https://github.com/googleapis/python-talent/commit/810972062fd7dfbd495a510cfcbe738eb0acc70d))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([#200](https://github.com/googleapis/python-talent/issues/200)) ([36a4f52](https://github.com/googleapis/python-talent/commit/36a4f52b2fc149a8792d90a42c655f7490844d31))
+
 ## [2.4.0](https://www.github.com/googleapis/python-talent/compare/v2.3.0...v2.4.0) (2021-11-04)
 
 
