@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+## [1.6.0](https://github.com/googleapis/python-trace/compare/v1.5.1...v1.6.0) (2022-02-11)
+
+
+### Features
+
+* add api key support ([#176](https://github.com/googleapis/python-trace/issues/176)) ([5c1ea85](https://github.com/googleapis/python-trace/commit/5c1ea8505ba5dbbf9d0d544db95e14bd63e1be53))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([e0294af](https://github.com/googleapis/python-trace/commit/e0294af5d06c22a8739e9d50f514e4bbe85e8463))
+
 ### [1.5.1](https://www.github.com/googleapis/python-trace/compare/v1.5.0...v1.5.1) (2021-11-01)
 
 
