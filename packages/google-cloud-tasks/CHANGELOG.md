@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.8.0](https://github.com/googleapis/python-tasks/compare/v2.7.2...v2.8.0) (2022-02-14)
+
+
+### Features
+
+* add api key support ([#214](https://github.com/googleapis/python-tasks/issues/214)) ([ce21598](https://github.com/googleapis/python-tasks/commit/ce215987f969cbc6347fb58cd2163394a6fc7f1c))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([8dd8aec](https://github.com/googleapis/python-tasks/commit/8dd8aec79d2302007e3f9511daeab817f05d2aa6))
+
 ### [2.7.2](https://www.github.com/googleapis/python-tasks/compare/v2.7.1...v2.7.2) (2022-01-08)
 
 
