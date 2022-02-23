@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-redis/#history
 
+## [2.6.0](https://github.com/googleapis/python-redis/compare/v2.5.1...v2.6.0) (2022-02-03)
+
+
+### Features
+
+* add api key support ([#151](https://github.com/googleapis/python-redis/issues/151)) ([044d0b5](https://github.com/googleapis/python-redis/commit/044d0b577b83408e3c724817b790ff2f767be103))
+* add automated RDB, also known as persistence ([#153](https://github.com/googleapis/python-redis/issues/153)) ([30d3fc6](https://github.com/googleapis/python-redis/commit/30d3fc6bb0324cba1509141bd1679850f9bda0e4))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([73a5057](https://github.com/googleapis/python-redis/commit/73a50579622e3f780cbb457a08c20402698d1b63))
+
 ### [2.5.1](https://github.com/googleapis/python-redis/compare/v2.5.0...v2.5.1) (2022-01-14)
 
 
