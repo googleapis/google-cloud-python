@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## [2.6.0](https://github.com/googleapis/python-videointelligence/compare/v2.5.1...v2.6.0) (2022-02-11)
+
+
+### Features
+
+* add api key support ([#268](https://github.com/googleapis/python-videointelligence/issues/268)) ([a35f538](https://github.com/googleapis/python-videointelligence/commit/a35f538ae5595fb15112025e69661f0484317294))
+
+
+### Bug Fixes
+
+* resolve DuplicateCredentialArgs error when using credentials_file ([aef5b0c](https://github.com/googleapis/python-videointelligence/commit/aef5b0cf7bf0878be037ebf5b1dd65921d966ff4))
+
+
+### Documentation
+
+* add generated snippets ([#273](https://github.com/googleapis/python-videointelligence/issues/273)) ([f0cc364](https://github.com/googleapis/python-videointelligence/commit/f0cc36444044b971b43362915e7d8d0e9bef62bf))
+
 ### [2.5.1](https://www.github.com/googleapis/python-videointelligence/compare/v2.5.0...v2.5.1) (2021-11-01)
 
 
