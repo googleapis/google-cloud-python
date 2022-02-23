@@ -72,6 +72,8 @@ for bucket_item in $(gsutil ls 'gs://docs-staging-v2/docfx-python*' | sort -u -t
   fi
 
   for tag in ${GITHUB_TAGS}; do
+    # Ensure noxfile.py is reverted so merge conflicts do not occur.
+    git restore "noxfile.py"
     git checkout ${tag}
 
     # Use the latest noxfile for all tags.
